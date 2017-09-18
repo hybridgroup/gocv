@@ -29,14 +29,10 @@ typedef struct Rects {
 #ifdef __cplusplus
 typedef cv::Mat_<cv::Vec3b>* MatVec3b;
 typedef cv::Mat_<cv::Vec4b>* MatVec4b;
-typedef cv::VideoCapture* VideoCapture;
-typedef cv::VideoWriter* VideoWriter;
 typedef cv::CascadeClassifier* CascadeClassifier;
 #else
 typedef void* MatVec3b;
 typedef void* MatVec4b;
-typedef void* VideoCapture;
-typedef void* VideoWriter;
 typedef void* CascadeClassifier;
 #endif
 
@@ -51,25 +47,6 @@ MatVec3b RawData_ToMatVec3b(struct RawData r);
 void MatVec4b_Delete(MatVec4b m);
 struct RawData MatVec4b_ToRawData(MatVec4b m);
 MatVec4b RawData_ToMatVec4b(struct RawData r);
-
-VideoCapture VideoCapture_New();
-void VideoCapture_Delete(VideoCapture v);
-int VideoCapture_Open(VideoCapture v, const char* uri);
-int VideoCapture_OpenDevice(VideoCapture v, int device);
-void VideoCapture_Release(VideoCapture v);
-void VideoCapture_Set(VideoCapture v, int prop, int param);
-int VideoCapture_IsOpened(VideoCapture v);
-int VideoCapture_Read(VideoCapture v, MatVec3b buf);
-void VideoCapture_Grab(VideoCapture v, int skip);
-
-VideoWriter VideoWriter_New();
-void VideoWriter_Delete(VideoWriter vw);
-void VideoWriter_Open(VideoWriter vw, const char* name, double fps, int width,
-  int height);
-void VideoWriter_OpenWithMat(VideoWriter vw, const char* name, double fps,
-  MatVec3b img);
-int VideoWriter_IsOpened(VideoWriter vw);
-void VideoWriter_Write(VideoWriter vw, MatVec3b img);
 
 CascadeClassifier CascadeClassifier_New();
 void CascadeClassifier_Delete(CascadeClassifier cs);
