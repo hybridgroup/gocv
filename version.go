@@ -1,8 +1,6 @@
 package opencv3
 
 /*
-#cgo linux pkg-config: opencv
-#cgo darwin pkg-config: opencv
 #include <stdlib.h>
 #include "version.h"
 */
