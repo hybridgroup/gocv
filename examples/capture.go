@@ -8,20 +8,20 @@ import (
 
 func main() {
 	deviceID := 0
-	vcap := opencv3.NewVideoCapture()
-	defer vcap.Delete()
+	webcam := opencv3.NewVideoCapture()
+	defer webcam.Delete()
 
-	if ok := vcap.OpenDevice(int(deviceID)); !ok {
-		fmt.Errorf("error opening device: %v", deviceID)
+	if ok := webcam.OpenDevice(int(deviceID)); !ok {
+		fmt.Printf("error opening device: %v\n", deviceID)
 	}
 
-	// streaming, capture from vcap
+	// streaming, capture from webcam
 	buf := opencv3.NewMatVec3b()
 	defer buf.Delete()
-	fmt.Printf("start reading camera device: %v", deviceID)
+	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
-		if ok := vcap.Read(buf); !ok {
-			fmt.Errorf("cannot read a new file (device no: %d)", deviceID)
+		if ok := webcam.Read(buf); !ok {
+			fmt.Printf("cannot read device %d\n", deviceID)
 			return
 		}
 		if buf.Empty() {
