@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 
-#include "opencv3.h"
+#include "core.h"
 
 #ifdef __cplusplus
 typedef cv::VideoCapture* VideoCapture;
