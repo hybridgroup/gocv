@@ -1,5 +1,5 @@
-#ifndef _OPENCV3_VIDEOCAPTURE_H_
-#define _OPENCV3_VIDEOCAPTURE_H_
+#ifndef _OPENCV3_VIDEOIO_H_
+#define _OPENCV3_VIDEOIO_H_
 
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
@@ -41,4 +41,4 @@ void VideoWriter_Write(VideoWriter vw, MatVec3b img);
 }
 #endif
 
-#endif //_OPENCV3_VIDEOCAPTURE_H_
+#endif //_OPENCV3_VIDEOIO_H_
