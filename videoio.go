@@ -4,7 +4,7 @@ package opencv3
 #cgo linux pkg-config: opencv
 #cgo darwin pkg-config: opencv
 #include <stdlib.h>
-#include "videocapture.h"
+#include "videoio.h"
 */
 import "C"
 import (

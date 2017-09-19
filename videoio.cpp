@@ -1,4 +1,4 @@
-#include "videocapture.h"
+#include "videoio.h"
 
 // VideoWriter
 VideoCapture VideoCapture_New() {
