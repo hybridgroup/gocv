@@ -30,7 +30,7 @@ Once you have this info, you can build or run the Go code that consumes it by po
 
 ```
 $ export CGO_CPPFLAGS="-I/opt/intel/computer_vision_sdk_2017.0.113/opencv/include" CGO_LDFLAGS="-L/opt/intel/computer_vision_sdk_2017.0.113/opencv/lib -lopencv_core -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_pvl -lopencv_imgcodecs -lopencv_objdetect -lopencv_calib3d"
-ron@ron-XPS-13-9343:~/Development/go-opencv3 (feature/highgui)
+
 $ go run ./examples/showinfo.go 
 go-opencv3 version: 0.0.1
 opencv lib version: 3.3.0-cvsdk.604
