@@ -9,6 +9,7 @@ typedef struct String {
   const char* str;
   int length;
 } String;
+
 typedef struct ByteArray{
   char *data;
   int length;

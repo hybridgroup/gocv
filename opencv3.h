@@ -29,12 +29,13 @@ typedef struct Rects {
 #ifdef __cplusplus
 typedef cv::Mat_<cv::Vec3b>* MatVec3b;
 typedef cv::Mat_<cv::Vec4b>* MatVec4b;
-typedef cv::CascadeClassifier* CascadeClassifier;
 #else
 typedef void* MatVec3b;
 typedef void* MatVec4b;
-typedef void* CascadeClassifier;
 #endif
+
+void Rects_Delete(struct Rects rs);
+void DrawRectsToImage(MatVec3b img, struct Rects rects);
 
 MatVec3b MatVec3b_New();
 struct ByteArray MatVec3b_ToJpegData(MatVec3b m, int quality);
@@ -47,13 +48,6 @@ MatVec3b RawData_ToMatVec3b(struct RawData r);
 void MatVec4b_Delete(MatVec4b m);
 struct RawData MatVec4b_ToRawData(MatVec4b m);
 MatVec4b RawData_ToMatVec4b(struct RawData r);
-
-CascadeClassifier CascadeClassifier_New();
-void CascadeClassifier_Delete(CascadeClassifier cs);
-int CascadeClassifier_Load(CascadeClassifier cs, const char* name);
-struct Rects CascadeClassifier_DetectMultiScale(CascadeClassifier cs, MatVec3b img);
-void Rects_Delete(struct Rects rs);
-void DrawRectsToImage(MatVec3b img, struct Rects rects);
 MatVec4b LoadAlphaImg(const char* name);
 void MountAlphaImage(MatVec4b img, MatVec3b back, struct Rects rects);
 
