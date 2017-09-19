@@ -1,7 +1,7 @@
 #ifndef _OPENCV3_H_
 #define _OPENCV3_H_
 
-#include "util.h"
+#include "convert.h"
 
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>

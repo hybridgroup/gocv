@@ -1,7 +1,7 @@
 package opencv3
 
 /*
-#include "util.h"
+#include "convert.h"
 */
 import "C"
 import (
