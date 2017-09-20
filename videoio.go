@@ -54,9 +54,9 @@ func (v *VideoCapture) IsOpened() bool {
 	return isOpened != 0
 }
 
-// Read set frame to argument MatVec3b, returns `false` when the video capture
+// Read set frame to argument Mat, returns `false` when the video capture
 // cannot read frame.
-func (v *VideoCapture) Read(m MatVec3b) bool {
+func (v *VideoCapture) Read(m Mat) bool {
 	return C.VideoCapture_Read(v.p, m.p) != 0
 }
 

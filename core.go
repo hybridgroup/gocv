@@ -37,6 +37,12 @@ func (m *Mat) Delete() {
 	m.p = nil
 }
 
+// Empty determines if the Mat is empty or not.
+func (m *Mat) Empty() bool {
+	isEmpty := C.Mat_Empty(m.p)
+	return isEmpty != 0
+}
+
 // CMatVec3b is an alias for C pointer.
 type CMatVec3b C.MatVec3b
 

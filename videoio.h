@@ -24,7 +24,7 @@ int VideoCapture_OpenDevice(VideoCapture v, int device);
 void VideoCapture_Release(VideoCapture v);
 void VideoCapture_Set(VideoCapture v, int prop, int param);
 int VideoCapture_IsOpened(VideoCapture v);
-int VideoCapture_Read(VideoCapture v, MatVec3b buf);
+int VideoCapture_Read(VideoCapture v, Mat buf);
 void VideoCapture_Grab(VideoCapture v, int skip);
 
 // VideoWriter

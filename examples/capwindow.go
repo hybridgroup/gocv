@@ -13,21 +13,25 @@ func main() {
 
 	if ok := webcam.OpenDevice(int(deviceID)); !ok {
 		fmt.Printf("error opening device: %v\n", deviceID)
+		return
 	}
 
+	window := opencv3.NewWindow("Capture")
+
 	// streaming, capture from webcam
-	buf := opencv3.NewMat()
-	defer buf.Delete()
+	img := opencv3.NewMat()
+	defer img.Delete()
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
-		if ok := webcam.Read(buf); !ok {
+		if ok := webcam.Read(img); !ok {
 			fmt.Printf("cannot read device %d\n", deviceID)
 			return
 		}
-		if buf.Empty() {
+		if img.Empty() {
 			continue
 		}
 
-		fmt.Println("frame")
+		window.IMShow(img)
+		opencv3.WaitKey(1)
 	}
 }

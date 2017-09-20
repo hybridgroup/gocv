@@ -10,6 +10,10 @@ void Mat_Delete(Mat m) {
     delete m;
 }
 
+int Mat_Empty(Mat m) {
+    return m->empty();
+}
+
 // MatVec3b
 MatVec3b MatVec3b_New() {
     return new cv::Mat_<cv::Vec3b>();

@@ -41,6 +41,7 @@ typedef struct RawData {
   
   Mat Mat_New();
   void Mat_Delete(Mat m);
+  int Mat_Empty(Mat m);
 
   MatVec3b MatVec3b_New();
   struct ByteArray MatVec3b_ToJpegData(MatVec3b m, int quality);

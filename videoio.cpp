@@ -29,7 +29,7 @@ int VideoCapture_IsOpened(VideoCapture v) {
     return v->isOpened();
 }
   
-int VideoCapture_Read(VideoCapture v, MatVec3b buf) {
+int VideoCapture_Read(VideoCapture v, Mat buf) {
     return v->read(*buf);
 }
   
