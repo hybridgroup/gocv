@@ -4,14 +4,6 @@ Go bindings for the [OpenCV 3](http://opencv.org/) computer vision package.
 
 Supports the latest OpenCV v3.3
 
-Uses C-style wrapper around the OpenCV 3 C++ classes to avoid having to deal with applying SWIG to a huge existing codebase.
-
-The mappings are intended to match as close as possible to the original OpenCV project structure.
-
-For example, the [OpenCV `videoio` module](https://github.com/opencv/opencv/tree/master/modules/videoio) wrappers can be found in this project in the `videoio.*` files.
-
-Based on concepts & code from the blog post https://medium.com/@peterleyssens/using-opencv-3-from-golang-5510c312a3c and the repo at https://github.com/sensorbee/opencv
-
 ## How to use
 
 This example opens a capture device and output window, and then displays the camera in the window:
@@ -81,3 +73,19 @@ $ go run ./examples/showinfo.go
 go-opencv3 version: 0.0.1
 opencv lib version: 3.3.0-cvsdk.604
 ```
+
+## Why it exists
+
+The [https://github.com/go-opencv/go-opencv](https://github.com/go-opencv/go-opencv) package for Go and OpenCV does not support any version above OpenCV 2.x, and work on adding support for OpenCV 3 has stalled mostly due to the complexity of SWIG.
+
+This package uses C-style wrapper around the OpenCV 3 C++ classes to avoid having to deal with applying SWIG to a huge existing codebase.
+
+The mappings are intended to match as close as possible to the original OpenCV project structure, to make it easier to find where to add further support.
+
+For example, the [OpenCV `videoio` module](https://github.com/opencv/opencv/tree/master/modules/videoio) wrappers can be found in this project in the `videoio.*` files.
+
+This package was influenced by the blog post https://medium.com/@peterleyssens/using-opencv-3-from-golang-5510c312a3c and the repo at https://github.com/sensorbee/opencv thank you!
+
+## License
+
+Licensed under the Apache 2.0 license. Copyright (c) 2017 The Hybrid Group.
