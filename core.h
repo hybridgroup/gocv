@@ -1,19 +1,28 @@
 #ifndef _OPENCV3_CORE_H_
 #define _OPENCV3_CORE_H_
 
-#include "convert.h"
+typedef struct String {
+  const char* str;
+  int length;
+} String;
+
+typedef struct ByteArray{
+  char *data;
+  int length;
+} ByteArray;
 
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
 extern "C" {
 #endif
 
-typedef struct RawData {
+  typedef struct RawData {
     int width;
     int height;
     struct ByteArray data;
   } RawData;
   
+  // Wrapper for an individual cv::cvRect
   typedef struct Rect {
     int x;
     int y;
@@ -21,6 +30,7 @@ typedef struct RawData {
     int height;
   } Rect;
   
+  // Wrapper for the vector of Rect struct aka std::vector<Rect>
   typedef struct Rects {
     Rect* rects;
     int length;
@@ -35,6 +45,9 @@ typedef struct RawData {
   typedef void* MatVec3b;
   typedef void* MatVec4b;
   #endif
+  
+  struct ByteArray toByteArray(const char* buf, int len);
+  void ByteArray_Release(struct ByteArray buf);
   
   void Rects_Delete(struct Rects rs);
   void DrawRectsToImage(MatVec3b img, struct Rects rects);

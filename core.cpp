@@ -1,33 +1,27 @@
 #include "core.h"
 #include <string.h>
 
-// Mat
+// Mat_New creates a new empty Mat
 Mat Mat_New() {
     return new cv::Mat();
 }
 
+// Mat_Delete deletes an existing Mat
 void Mat_Delete(Mat m) {
     delete m;
 }
 
+// Mat_Empty tests if a Mat is empty
 int Mat_Empty(Mat m) {
     return m->empty();
 }
 
-// MatVec3b
+// MatVec3b_New creates a new empty MatVec3b
 MatVec3b MatVec3b_New() {
     return new cv::Mat_<cv::Vec3b>();
 }
-  
-struct ByteArray MatVec3b_ToJpegData(MatVec3b m, int quality){
-    std::vector<int> param(2);
-    param[0] = CV_IMWRITE_JPEG_QUALITY;
-    param[1] = quality;
-    std::vector<uchar> data;
-    cv::imencode(".jpg", *m, data, param);
-    return toByteArray(reinterpret_cast<const char*>(&data[0]), data.size());
-}
-  
+
+// MatVec3b_Delete deletes an existing MatVec3b
 void MatVec3b_Delete(MatVec3b m) {
     delete m;
 }
@@ -35,9 +29,19 @@ void MatVec3b_Delete(MatVec3b m) {
 void MatVec3b_CopyTo(MatVec3b src, MatVec3b dst) {
     src->copyTo(*dst);
 }
-  
+
+// MatVec3b_Empty tests if a MatVec3b is empty
 int MatVec3b_Empty(MatVec3b m) {
     return m->empty();
+}
+
+struct ByteArray MatVec3b_ToJpegData(MatVec3b m, int quality){
+    std::vector<int> param(2);
+    param[0] = CV_IMWRITE_JPEG_QUALITY;
+    param[1] = quality;
+    std::vector<uchar> data;
+    cv::imencode(".jpg", *m, data, param);
+    return toByteArray(reinterpret_cast<const char*>(&data[0]), data.size());
 }
   
 struct RawData MatVec3b_ToRawData(MatVec3b m) {
@@ -58,7 +62,15 @@ MatVec3b RawData_ToMatVec3b(struct RawData r) {
     mat->data = data;
     return mat;
 }
-  
+
+void DrawRectsToImage(MatVec3b img, struct Rects rects) {
+    for (int i = 0; i < rects.length; ++i) {
+        Rect r = rects.rects[i];
+        cv::rectangle(*img, cv::Point(r.x, r.y), cv::Point(r.x+r.width, r.y+r.height),
+            cv::Scalar(0, 200, 0), 3, CV_AA);
+    }
+}
+
 void MatVec4b_Delete(MatVec4b m) {
     delete m;
 }
@@ -80,19 +92,6 @@ MatVec4b RawData_ToMatVec4b(struct RawData r) {
     unsigned char* data = reinterpret_cast<unsigned char*>(r.data.data);
     mat->data = data;
     return mat;
-}
-  
-  
-void Rects_Delete(struct Rects rs) {
-    delete rs.rects;
-}
-  
-void DrawRectsToImage(MatVec3b img, struct Rects rects) {
-    for (int i = 0; i < rects.length; ++i) {
-        Rect r = rects.rects[i];
-        cv::rectangle(*img, cv::Point(r.x, r.y), cv::Point(r.x+r.width, r.y+r.height),
-            cv::Scalar(0, 200, 0), 3, CV_AA);
-    }
 }
   
 MatVec4b LoadAlphaImg(const char* name) {
@@ -157,4 +156,17 @@ void MountAlphaImage(MatVec4b img, MatVec3b back, struct Rects rects) {
             + back->mul(img_backa, 1.0/(float)maxVal);
     }
 }
-  
+
+void ByteArray_Release(struct ByteArray buf) {
+  delete[] buf.data;
+}
+
+struct ByteArray toByteArray(const char* buf, int len) {
+  ByteArray ret = {new char[len], len};
+  memcpy(ret.data, buf, len);
+  return ret;
+}
+
+void Rects_Delete(struct Rects rs) {
+    delete rs.rects;
+}
