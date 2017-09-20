@@ -43,6 +43,33 @@ func (m *Mat) Empty() bool {
 	return isEmpty != 0
 }
 
+// Rect represents rectangle. X and Y is a start point of Width and Height.
+type Rect struct {
+	X      int
+	Y      int
+	Width  int
+	Height int
+}
+
+// DrawRectsToImage draws rectangle information to target image Mat.
+func DrawRectsToImage(img Mat, rects []Rect) {
+	cRectArray := make([]C.struct_Rect, len(rects))
+	for i, r := range rects {
+		cRect := C.struct_Rect{
+			x:      C.int(r.X),
+			y:      C.int(r.Y),
+			width:  C.int(r.Width),
+			height: C.int(r.Height),
+		}
+		cRectArray[i] = cRect
+	}
+	cRects := C.struct_Rects{
+		rects:  (*C.Rect)(&cRectArray[0]),
+		length: C.int(len(rects)),
+	}
+	C.DrawRectsToImage(img.p, cRects)
+}
+
 // CMatVec3b is an alias for C pointer.
 type CMatVec3b C.MatVec3b
 
@@ -133,33 +160,6 @@ func ToMatVec4b(width int, height int, data []byte) MatVec4b {
 		data:   toByteArray(data),
 	}
 	return MatVec4b{p: C.RawData_ToMatVec4b(cr)}
-}
-
-// Rect represents rectangle. X and Y is a start point of Width and Height.
-type Rect struct {
-	X      int
-	Y      int
-	Width  int
-	Height int
-}
-
-// DrawRectsToImage draws rectangle information to target image.
-func DrawRectsToImage(img Mat, rects []Rect) {
-	cRectArray := make([]C.struct_Rect, len(rects))
-	for i, r := range rects {
-		cRect := C.struct_Rect{
-			x:      C.int(r.X),
-			y:      C.int(r.Y),
-			width:  C.int(r.Width),
-			height: C.int(r.Height),
-		}
-		cRectArray[i] = cRect
-	}
-	cRects := C.struct_Rects{
-		rects:  (*C.Rect)(&cRectArray[0]),
-		length: C.int(len(rects)),
-	}
-	C.DrawRectsToImage(img.p, cRects)
 }
 
 // LoadAlphaImage loads RGBA type image.
