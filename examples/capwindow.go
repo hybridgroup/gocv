@@ -18,9 +18,9 @@ func main() {
 
 	window := opencv3.NewWindow("Capture")
 
-	// streaming, capture from webcam
 	img := opencv3.NewMat()
 	defer img.Delete()
+
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
 		if ok := webcam.Read(img); !ok {

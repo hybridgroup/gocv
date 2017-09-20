@@ -12,6 +12,52 @@ For example, the [OpenCV `videoio` module](https://github.com/opencv/opencv/tree
 
 Based on concepts & code from the blog post https://medium.com/@peterleyssens/using-opencv-3-from-golang-5510c312a3c and the repo at https://github.com/sensorbee/opencv
 
+## How to use
+
+This example opens a capture device and output window, and then displays the camera in the window:
+
+
+```go
+package main
+
+import (
+	"fmt"
+
+	opencv3 ".."
+)
+
+func main() {
+	deviceID := 0
+	webcam := opencv3.NewVideoCapture()
+	defer webcam.Delete()
+
+	if ok := webcam.OpenDevice(int(deviceID)); !ok {
+		fmt.Printf("error opening device: %v\n", deviceID)
+		return
+	}
+
+	window := opencv3.NewWindow("Capture")
+
+	img := opencv3.NewMat()
+	defer img.Delete()
+
+	fmt.Printf("start reading camera device: %v\n", deviceID)
+	for {
+		if ok := webcam.Read(img); !ok {
+			fmt.Printf("cannot read device %d\n", deviceID)
+			return
+		}
+		if img.Empty() {
+			continue
+		}
+
+		window.IMShow(img)
+		opencv3.WaitKey(1)
+	}
+}
+```
+
+
 ## How to build/run
 
 You will need to specify the location for the includes and libs for your OpenCV3 installation.
