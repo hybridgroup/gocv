@@ -31,6 +31,12 @@ func NewMat() Mat {
 	return Mat{p: C.Mat_New()}
 }
 
+// Delete object.
+func (m *Mat) Delete() {
+	C.Mat_Delete(m.p)
+	m.p = nil
+}
+
 // CMatVec3b is an alias for C pointer.
 type CMatVec3b C.MatVec3b
 

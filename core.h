@@ -40,7 +40,8 @@ typedef struct RawData {
   void DrawRectsToImage(MatVec3b img, struct Rects rects);
   
   Mat Mat_New();
-  
+  void Mat_Delete(Mat m);
+
   MatVec3b MatVec3b_New();
   struct ByteArray MatVec3b_ToJpegData(MatVec3b m, int quality);
   void MatVec3b_Delete(MatVec3b m);

@@ -1,10 +1,16 @@
 #include "core.h"
 #include <string.h>
 
+// Mat
 Mat Mat_New() {
     return new cv::Mat();
 }
 
+void Mat_Delete(Mat m) {
+    delete m;
+}
+
+// MatVec3b
 MatVec3b MatVec3b_New() {
     return new cv::Mat_<cv::Vec3b>();
 }
