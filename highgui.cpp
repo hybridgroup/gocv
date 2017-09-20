@@ -9,7 +9,7 @@ void Window_Delete(const char* winname) {
     cv::destroyWindow(winname);
 }
 
-void Window_IMShow(const char* winname, MatVec3b mat) {
+void Window_IMShow(const char* winname, Mat mat) {
     cv::imshow(winname, *mat);
 }
 

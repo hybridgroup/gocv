@@ -11,7 +11,7 @@ extern "C" {
 // Window
 void Window_New(const char* winname, int flags);
 void Window_Delete(const char* winname);
-void Window_IMShow(const char* winname, MatVec3b mat);
+void Window_IMShow(const char* winname, Mat mat);
 int Window_WaitKey(int);
 
 

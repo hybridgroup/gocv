@@ -18,6 +18,19 @@ const (
 	CvCapPropFps = 5
 )
 
+// CMat is an alias for C pointer.
+type CMat C.Mat
+
+// Mat is a bind of `cv::Mat
+type Mat struct {
+	p C.Mat
+}
+
+// NewMat returns a new Mat.
+func NewMat() Mat {
+	return Mat{p: C.Mat_New()}
+}
+
 // CMatVec3b is an alias for C pointer.
 type CMatVec3b C.MatVec3b
 

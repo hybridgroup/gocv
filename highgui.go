@@ -33,7 +33,7 @@ func (w *Window) Delete() {
 }
 
 // IMShow takes an image Mat and displays it in the Window
-func (w *Window) IMShow(img MatVec3b) {
+func (w *Window) IMShow(img Mat) {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 

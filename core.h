@@ -27,15 +27,19 @@ typedef struct RawData {
   } Rects;
   
   #ifdef __cplusplus
+  typedef cv::Mat* Mat;
   typedef cv::Mat_<cv::Vec3b>* MatVec3b;
   typedef cv::Mat_<cv::Vec4b>* MatVec4b;
   #else
+  typedef void* Mat;
   typedef void* MatVec3b;
   typedef void* MatVec4b;
   #endif
   
   void Rects_Delete(struct Rects rs);
   void DrawRectsToImage(MatVec3b img, struct Rects rects);
+  
+  Mat Mat_New();
   
   MatVec3b MatVec3b_New();
   struct ByteArray MatVec3b_ToJpegData(MatVec3b m, int quality);

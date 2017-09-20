@@ -1,6 +1,10 @@
 #include "core.h"
 #include <string.h>
 
+Mat Mat_New() {
+    return new cv::Mat();
+}
+
 MatVec3b MatVec3b_New() {
     return new cv::Mat_<cv::Vec3b>();
 }
