@@ -40,6 +40,9 @@ func main() {
 
 		rects := classifier.DetectMultiScale(img)
 		fmt.Printf("found %d\n", len(rects))
+		if len(rects) > 0 {
+			opencv3.DrawRectsToImage(img, rects)
+		}
 
 		window.IMShow(img)
 		opencv3.WaitKey(1)

@@ -144,7 +144,7 @@ type Rect struct {
 }
 
 // DrawRectsToImage draws rectangle information to target image.
-func DrawRectsToImage(img MatVec3b, rects []Rect) {
+func DrawRectsToImage(img Mat, rects []Rect) {
 	cRectArray := make([]C.struct_Rect, len(rects))
 	for i, r := range rects {
 		cRect := C.struct_Rect{

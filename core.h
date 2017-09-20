@@ -50,7 +50,7 @@ extern "C" {
   void ByteArray_Release(struct ByteArray buf);
   
   void Rects_Delete(struct Rects rs);
-  void DrawRectsToImage(MatVec3b img, struct Rects rects);
+  void DrawRectsToImage(Mat img, struct Rects rects);
   
   Mat Mat_New();
   void Mat_Delete(Mat m);

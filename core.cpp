@@ -16,6 +16,14 @@ int Mat_Empty(Mat m) {
     return m->empty();
 }
 
+void DrawRectsToImage(Mat img, struct Rects rects) {
+    for (int i = 0; i < rects.length; ++i) {
+        Rect r = rects.rects[i];
+        cv::rectangle(*img, cv::Point(r.x, r.y), cv::Point(r.x+r.width, r.y+r.height),
+            cv::Scalar(0, 200, 0), 3, CV_AA);
+    }
+}
+
 // MatVec3b_New creates a new empty MatVec3b
 MatVec3b MatVec3b_New() {
     return new cv::Mat_<cv::Vec3b>();
@@ -61,14 +69,6 @@ MatVec3b RawData_ToMatVec3b(struct RawData r) {
     unsigned char* data = reinterpret_cast<unsigned char*>(r.data.data);
     mat->data = data;
     return mat;
-}
-
-void DrawRectsToImage(MatVec3b img, struct Rects rects) {
-    for (int i = 0; i < rects.length; ++i) {
-        Rect r = rects.rects[i];
-        cv::rectangle(*img, cv::Point(r.x, r.y), cv::Point(r.x+r.width, r.y+r.height),
-            cv::Scalar(0, 200, 0), 3, CV_AA);
-    }
 }
 
 void MatVec4b_Delete(MatVec4b m) {
