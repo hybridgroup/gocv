@@ -13,7 +13,7 @@ int CascadeClassifier_Load(CascadeClassifier cs, const char* name) {
     return cs->load(name);
 }
   
-struct Rects CascadeClassifier_DetectMultiScale(CascadeClassifier cs, MatVec3b img) {
+struct Rects CascadeClassifier_DetectMultiScale(CascadeClassifier cs, Mat img) {
     std::vector<cv::Rect> faces;
     cs->detectMultiScale(*img, faces); // TODO control default parameter
     Rect* rects = new Rect[faces.size()];

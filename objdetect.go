@@ -35,7 +35,7 @@ func (c *CascadeClassifier) Load(name string) bool {
 
 // DetectMultiScale detects something which is decided by loaded file. Returns
 // multi results addressed with rectangle.
-func (c *CascadeClassifier) DetectMultiScale(img MatVec3b) []Rect {
+func (c *CascadeClassifier) DetectMultiScale(img Mat) []Rect {
 	ret := C.CascadeClassifier_DetectMultiScale(c.p, img.p)
 	defer C.Rects_Delete(ret)
 
