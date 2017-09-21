@@ -1,4 +1,11 @@
-// how to use
+// +build example
+//
+// Do not build by default.
+//
+// This example uses the Window class to open an image file, and then display
+// the image in a Window class.
+//
+// how to run:
 // 		go run ./examples/window.go /home/ron/Pictures/mcp23017.jpg
 //
 package main
