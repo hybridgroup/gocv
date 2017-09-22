@@ -61,7 +61,7 @@ func main() {
 
 ### Ubuntu/Linux
 
-You can use `make` to install OpenCV 3.3 with the handy `Makefile` included with this repo. If you already have installed it, you do not need to do so again. Also the installation performed by the `Makefile` may remove options that you have already installed.
+You can use `make` to install OpenCV 3.3 with the handy `Makefile` included with this repo. If you already have installed it, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options if you have already installed it some other way.
 
 #### Install required packages
 
@@ -115,7 +115,7 @@ The showinfo.go program should output the following:
 
 		go-opencv3 version: 0.0.1
 		opencv lib version: 3.3.0
-		
+
 ### Other Linux installations
 
 One way to find out thelocations for your includes and libs is to use the `pkg-config` tool like this:
