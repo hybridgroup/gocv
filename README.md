@@ -92,6 +92,13 @@ func main() {
 		sudo make install
 		sudo ldconfig
 
+#### Cleanup extra files
+
+After the installation is complete, you can remove the extra files and folders:
+
+		cd ~
+		rm -rf opencv-3.3.0 opencv_contrib-3.3.0 opencv.zip opencv_contrib.zip
+
 ### OS X
 
 You can install OpenCV 3.3 using Homebrew:
@@ -133,12 +140,6 @@ The showinfo.go program should output the following:
 
 		go-opencv3 version: 0.0.1
 		opencv lib version: 3.3.0
-
-
-After the installation is complete, you can remove the extra files and folders:
-
-		cd ~
-		rm -rf opencv-3.3.0 opencv_contrib-3.3.0 opencv.zip opencv_contrib.zip
 
 ### OS X
 
