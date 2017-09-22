@@ -103,7 +103,22 @@ Instructions needed...
 
 In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your OpenCV3 installation.
 
-Once way to find out is to use the `pkg-config` tools like this:
+For most Linux installations, you can simply run the script:
+
+		./setupvars.sh
+
+Now you should be able to build or run any of the examples:
+
+		go run ./examples/showinfo.go
+
+The showinfo.go program should output the following:
+
+		go-opencv3 version: 0.0.1
+		opencv lib version: 3.3.0
+		
+### Other Linux installations
+
+One way to find out thelocations for your includes and libs is to use the `pkg-config` tool like this:
 
 		pkg-config --cflags opencv                                            
 		-I/usr/local/include/opencv -I/usr/local/include
@@ -119,15 +134,6 @@ For example:
 		export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_calib3d"
 
 Please note that you will need to run these 2 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables.
-
-Now you should be able to build or run any of the examples:
-
-		go run ./examples/showinfo.go
-
-The showinfo.go program should output the following:
-
-		go-opencv3 version: 0.0.1
-		opencv lib version: 3.3.0
 
 ### OS X
 
