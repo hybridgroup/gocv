@@ -61,6 +61,8 @@ func main() {
 
 ### Ubuntu/Linux
 
+You can use `make` to install OpenCV 3.3 with the handy `Makefile` included with this repo. If you already have installed it, you do not need to do so again. Also the installation performed by the `Makefile` may remove options that you have already installed.
+
 #### Install required packages
 
 First, you need to update the system, and install any required packages:
