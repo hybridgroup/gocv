@@ -140,7 +140,9 @@ After the installation is complete, you can remove the extra files and folders:
 
 ### OS X
 
-Instructions here...
+You can install OpenCV 3.3 using Homebrew:
+
+		brew install opencv
 
 ### Windows
 
