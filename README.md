@@ -6,16 +6,15 @@ Supports the latest OpenCV v3.3
 
 ## How to use
 
-This example opens a capture device and output window, uses the CascadeClassifier class to detect faces and draw a rectangle around each, then displays the image in the window:
+This example opens a video capture device using device "0". It also uses the CascadeClassifier class, after having loaded an external data file containing the classifier data. The program grabs each frame from the video, then uses the classifier to detect faces. If any faces are found, it draws a green rectangle around each one, then displays the image in an output window:
 
 ```go
 package main
 
 import (
 	"fmt"
-	"os"
 
-	opencv3 ".."
+	opencv3 "github.com/hybridgroup/go-opencv3"
 )
 
 func main() {
@@ -34,7 +33,7 @@ func main() {
 	defer img.Delete()
 
 	classifier := opencv3.NewCascadeClassifier()
-	classifier.Load(os.Args[1])
+	classifier.Load("data/haarcascade_frontalface_default.xml")
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
