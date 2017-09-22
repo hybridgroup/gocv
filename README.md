@@ -94,7 +94,9 @@ func main() {
 
 ### OS X
 
-Instructions needed...
+You can install OpenCV 3.3 using Homebrew:
+
+		brew install opencv
 
 ### Windows
 
@@ -140,9 +142,7 @@ After the installation is complete, you can remove the extra files and folders:
 
 ### OS X
 
-You can install OpenCV 3.3 using Homebrew:
-
-		brew install opencv
+Instructions here...
 
 ### Windows
 
