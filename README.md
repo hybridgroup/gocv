@@ -49,10 +49,25 @@ func main() {
 }
 ```
 
+## How to install OpenCV 3.x
 
-## How to build/run
+### Ubuntu/Linux
 
-You will need to specify the location for the includes and libs for your OpenCV3 installation.
+You will need to install from source.
+
+### OS X
+
+Instructions needed...
+
+### Windows
+
+Instructions needed...
+
+## How to build/run code
+
+### Ubuntu/Linux
+
+In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your OpenCV3 installation.
 
 Once way to find out is to use the `pkg-config` tools like this:
 
@@ -74,7 +89,15 @@ go-opencv3 version: 0.0.1
 opencv lib version: 3.3.0-cvsdk.604
 ```
 
-## Why it exists
+### OS X
+
+Instructions here...
+
+### Windows
+
+Instructions here...
+
+## Why this project exists
 
 The [https://github.com/go-opencv/go-opencv](https://github.com/go-opencv/go-opencv) package for Go and OpenCV does not support any version above OpenCV 2.x, and work on adding support for OpenCV 3 has stalled mostly due to the complexity of SWIG.
 
