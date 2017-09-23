@@ -1,13 +1,14 @@
-// +build example
-//
-// Do not build by default.
+// What it does:
 //
 // This example uses the VideoCapture class to capture a frame from a connected webcam,
 // then save it to a file on disk
 //
-// how to run:
+// How to run:
+//
 // 		go run ./examples/saveimage.go filename.jpg
 //
+// +build example
+
 package main
 
 import (

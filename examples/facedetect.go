@@ -1,13 +1,14 @@
-// +build example
+// What it does:
 //
-// Do not build by default.
+// This example uses the CascadeClassifier class to detect faces,
+// and draw a rectangle around each of them, before displaying them within a Window.
 //
-// This example uses the CascadeClassifier class to detect faces, and draw a rectangle around
-// each of them, before displaying them within a Window.
+// How to run:
 //
-// how to run:
 // 		go run ./examples/facedetect.go data/haarcascade_frontalface_default.xml
 //
+// +build example
+
 package main
 
 import (

@@ -1,12 +1,13 @@
-// +build example
+// What it does:
 //
-// Do not build by default.
+// 	This program outputs the current OpenCV library version to the console.
 //
-// This example outputs the current OpenCV library version to the console.
+// How to run:
 //
-// how to run:
 // 		go run ./examples/showinfo.go
 //
+// +build example
+
 package main
 
 import (

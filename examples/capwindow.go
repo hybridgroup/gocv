@@ -1,13 +1,14 @@
-// +build example
-//
-// Do not build by default.
+// What it does:
 //
 // This example uses the VideoCapture class to capture frames from a connected webcam,
 // then displays the image in a Window class.
 //
-// how to run:
+// How to run:
+//
 // 		go run ./examples/capwindow.go
 //
+// +build example
+
 package main
 
 import (
