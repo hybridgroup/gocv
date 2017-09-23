@@ -107,9 +107,9 @@ Instructions needed...
 
 In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your OpenCV3 installation.
 
-For most Linux installations, you can simply run the script:
+One time per session, you must run the script:
 
-		./setupvars.sh
+		./setupvars_linux.sh
 
 Now you should be able to build or run any of the examples:
 
@@ -141,7 +141,20 @@ Please note that you will need to run these 2 lines of code one time in your cur
 
 ### OS X
 
-Instructions here...
+In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your OpenCV3 installation. If you have used Homebrew to install OpenCV 3.3, the following instructions should work.
+
+One time per session, you must run the script:
+
+		./setupvars_osx.sh
+
+Now you should be able to build or run any of the examples:
+
+		go run ./examples/showinfo.go
+
+The showinfo.go program should output the following:
+
+		go-opencv3 version: 0.0.1
+		opencv lib version: 3.3.0
 
 ### Windows
 
