@@ -1,8 +1,8 @@
 # Go OpenCV3
 
-Go bindings for the [OpenCV 3](http://opencv.org/) computer vision package.
+Golang bindings for the [OpenCV 3](http://opencv.org/) computer vision package.
 
-Supports the latest OpenCV v3.3
+Supports the latest release of OpenCV (v3.3) on as many platforms as we can.
 
 ## How to use
 
@@ -57,11 +57,15 @@ func main() {
 }
 ```
 
+There are more examples in the [examples directory](./examples) of this repo.
+
 ## How to install OpenCV 3.x
+
+To use this Golang package, you must have installed OpenCV 3.3 on your system already. Here are instructions for Ubuntu, OS X, and Windows.
 
 ### Ubuntu/Linux
 
-You can use `make` to install OpenCV 3.3 with the handy `Makefile` included with this repo. If you already have installed it, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options if you have already installed it some other way.
+You can use `make` to install OpenCV 3.3 with the handy `Makefile` included with this repo. If you already have installed OpenCV, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options such as Python or Java wrappers if you have already installed OpenCV some other way.
 
 #### Install required packages
 
