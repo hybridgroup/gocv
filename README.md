@@ -2,7 +2,7 @@
 
 Golang bindings for the [OpenCV 3](http://opencv.org/) computer vision package.
 
-Supports the latest release of OpenCV (v3.3) on as many platforms as we can.
+Supports the latest release of OpenCV (v3.3) on Linux, OS X, and (soon) Windows.
 
 ## How to use
 
@@ -160,10 +160,16 @@ The showinfo.go program should output the following:
 
 Instructions here...
 
-## What to work on next
+## What works and to work on next
 
+- [X] Video capture
+- [X] GUI Window to display video
+- [X] Image load/save
+- [X] CascadeClassifier for object detection/face tracking/etc.
+- [X] Installation instructions for Ubuntu
+- [X] Installation instructions for OS X
+- [ ] Installation instructions for Windows
 - [ ] Travis CI build
-- [ ] Windows support/install instructions
 - [ ] Code example to use VideoWriter
 - [ ] More tests
 - [ ] Intel CV SDK support
