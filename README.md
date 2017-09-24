@@ -168,11 +168,15 @@ Instructions here...
 - [X] CascadeClassifier for object detection/face tracking/etc.
 - [X] Installation instructions for Ubuntu
 - [X] Installation instructions for OS X
-- [ ] Installation instructions for Windows
-- [ ] Travis CI build
 - [ ] Code example to use VideoWriter
+- [ ] Travis CI build
 - [ ] More tests
-- [ ] Intel CV SDK support
+- [ ] Installation/usage instructions for Windows
+- [ ] Appveyor build
+- [ ] Intel CV SDK PVL support
+- [ ] calib3d Camera Calibration and 3D Reconstruction
+- [ ] imgproc Image processing
+- [ ] Your favorite OpenCV module!
 
 ## Why this project exists
 
