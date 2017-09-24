@@ -182,11 +182,13 @@ Instructions here...
 
 The [https://github.com/go-opencv/go-opencv](https://github.com/go-opencv/go-opencv) package for Go and OpenCV does not support any version above OpenCV 2.x, and work on adding support for OpenCV 3 has stalled for over a year, mostly due to the complexity of SWIG.
 
-This package uses C-style wrapper around the OpenCV 3 C++ classes to avoid having to deal with applying SWIG to a huge existing codebase.
+This package uses a C-style wrapper around the OpenCV 3 C++ classes to avoid having to deal with applying SWIG to a huge existing codebase.
 
 The go-opencv3 mappings are intended to match as close as possible to the original OpenCV project structure, to make it easier to find where to add further support.
 
 For example, the [OpenCV `videoio` module](https://github.com/opencv/opencv/tree/master/modules/videoio) wrappers can be found in this project in the `videoio.*` files.
+
+We hope to make the Go programming language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
 
 This package was influenced by the original https://github.com/go-opencv/go-opencv project, the blog post https://medium.com/@peterleyssens/using-opencv-3-from-golang-5510c312a3c and the repo at https://github.com/sensorbee/opencv thank you all!
 
