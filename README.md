@@ -160,17 +160,25 @@ The showinfo.go program should output the following:
 
 Instructions here...
 
+## What to work on next
+
+- [ ] Travis CI build
+- [ ] Windows support/install instructions
+- [ ] Code example to use VideoWriter
+- [ ] More tests
+- [ ] Intel CV SDK support
+
 ## Why this project exists
 
-The [https://github.com/go-opencv/go-opencv](https://github.com/go-opencv/go-opencv) package for Go and OpenCV does not support any version above OpenCV 2.x, and work on adding support for OpenCV 3 has stalled mostly due to the complexity of SWIG.
+The [https://github.com/go-opencv/go-opencv](https://github.com/go-opencv/go-opencv) package for Go and OpenCV does not support any version above OpenCV 2.x, and work on adding support for OpenCV 3 has stalled for over a year, mostly due to the complexity of SWIG.
 
 This package uses C-style wrapper around the OpenCV 3 C++ classes to avoid having to deal with applying SWIG to a huge existing codebase.
 
-The mappings are intended to match as close as possible to the original OpenCV project structure, to make it easier to find where to add further support.
+The go-opencv3 mappings are intended to match as close as possible to the original OpenCV project structure, to make it easier to find where to add further support.
 
 For example, the [OpenCV `videoio` module](https://github.com/opencv/opencv/tree/master/modules/videoio) wrappers can be found in this project in the `videoio.*` files.
 
-This package was influenced by the blog post https://medium.com/@peterleyssens/using-opencv-3-from-golang-5510c312a3c and the repo at https://github.com/sensorbee/opencv thank you!
+This package was influenced by the original https://github.com/go-opencv/go-opencv project, the blog post https://medium.com/@peterleyssens/using-opencv-3-from-golang-5510c312a3c and the repo at https://github.com/sensorbee/opencv thank you all!
 
 ## License
 
