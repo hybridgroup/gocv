@@ -33,9 +33,9 @@ void VideoWriter_Delete(VideoWriter vw);
 void VideoWriter_Open(VideoWriter vw, const char* name, double fps, int width,
   int height);
 void VideoWriter_OpenWithMat(VideoWriter vw, const char* name, double fps,
-  MatVec3b img);
+  Mat img);
 int VideoWriter_IsOpened(VideoWriter vw);
-void VideoWriter_Write(VideoWriter vw, MatVec3b img);
+void VideoWriter_Write(VideoWriter vw, Mat img);
 
 #ifdef __cplusplus
 }

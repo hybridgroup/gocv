@@ -82,28 +82,29 @@ func (vw *VideoWriter) Delete() {
 	vw.p = nil
 }
 
-// Open a video writer.
+// Open a VideoWriter with a specific output file.
 func (vw *VideoWriter) Open(name string, fps float64, width int, height int) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	C.VideoWriter_Open(vw.p, cName, C.double(fps), C.int(width), C.int(height))
 }
 
-// OpenWithMat opens video writer.
-func (vw *VideoWriter) OpenWithMat(name string, fps float64, img MatVec3b) {
+// OpenWithMat opens a VideoWriter with a specific output file
+// using the dimensions from a specific Mat.
+func (vw *VideoWriter) OpenWithMat(name string, fps float64, img Mat) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	C.VideoWriter_OpenWithMat(vw.p, cName, C.double(fps), img.p)
 }
 
-// IsOpened returns the video writer opens a file or not.
+// IsOpened checks if the VideoWriter is open and ready to be written to.
 func (vw *VideoWriter) IsOpened() bool {
 	isOpend := C.VideoWriter_IsOpened(vw.p)
 	return isOpend != 0
 }
 
-// Write the image to file.
-func (vw *VideoWriter) Write(img MatVec3b) {
+// Write a single Mat image to the open VideoWriter.
+func (vw *VideoWriter) Write(img Mat) {
 	vw.mu.Lock()
 	defer vw.mu.Unlock()
 	C.VideoWriter_Write(vw.p, img.p)
