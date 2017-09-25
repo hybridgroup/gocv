@@ -6,7 +6,9 @@ Supports the latest release of OpenCV (v3.3) on Linux, OS X, and (soon) Windows.
 
 ## How to use
 
-This example opens a video capture device using device "0". It also uses the CascadeClassifier class, after having loaded an external data file containing the classifier data. The program grabs each frame from the video, then uses the classifier to detect faces. If any faces are found, it draws a green rectangle around each one, then displays the image in an output window:
+[![Go OpenCV3](https://raw.githubusercontent.com/hybridgroup/go-opencv3/master/images/elements/face-detect.png)]
+
+This example opens a video capture device using device "0". It also uses the CascadeClassifier class to load an external data file containing the classifier data. The program grabs each frame from the video, then uses the classifier to detect faces. If any faces are found, it draws a green rectangle around each one, then displays the image in an output window:
 
 ```go
 package main
