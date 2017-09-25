@@ -6,6 +6,27 @@ package pvl
 */
 import "C"
 
+// Face is a wrapper around `cv::pvl::Face`.
+type Face struct {
+	p C.Face
+}
+
+// NewFace returns a new PVL Face
+func NewFace() Face {
+	return Face{p: C.Face_New()}
+}
+
+// Delete Face.
+func (f *Face) Delete() {
+	C.Face_Delete(f.p)
+	f.p = nil
+}
+
+// Rect returns the Rect for this Face
+func (f *Face) Rect() Rect {
+	C.struct_Rect(C.Face_GetRect(f.p))
+}
+
 // FaceDetector is a bind of `cv::pvl::FaceDetector`.
 type FaceDetector struct {
 	p C.FaceDetector

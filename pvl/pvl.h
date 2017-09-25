@@ -12,10 +12,17 @@ extern "C" {
 #include "../core.h"
 
 #ifdef __cplusplus
+typedef cv::pvl::Face* Face;
 typedef cv::Ptr<cv::pvl::FaceDetector> FaceDetector;
 #else
+typedef void* Face;
 typedef void* FaceDetector;
 #endif
+
+// Face
+Face Face_New();
+void Face_Delete(Face f);
+Rect Face_GetRect(Face f);
 
 // FaceDetector
 FaceDetector FaceDetector_New();
