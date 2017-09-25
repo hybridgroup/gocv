@@ -1,9 +1,11 @@
 // What it does:
 //
 // This example uses the VideoCapture class to capture a frame from a connected webcam,
-// then save it to a file on disk
+// then save it to an image file on disk
 //
 // How to run:
+//
+// saveimage [camera ID] [image file]
 //
 // 		go run ./examples/saveimage.go filename.jpg
 //
@@ -14,16 +16,24 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	opencv3 ".."
 )
 
 func main() {
-	deviceID := 0
+	if len(os.Args) < 3 {
+		fmt.Println("How to run:\n\tsaveimage [camera ID] [image file]")
+		return
+	}
+
+	deviceID, _ := strconv.Atoi(os.Args[1])
+	saveFile := os.Args[2]
+
 	webcam := opencv3.NewVideoCapture()
 	defer webcam.Delete()
 
-	if ok := webcam.OpenDevice(int(deviceID)); !ok {
+	if ok := webcam.OpenDevice(deviceID); !ok {
 		fmt.Printf("error opening device: %v\n", deviceID)
 	}
 
@@ -39,5 +49,5 @@ func main() {
 		return
 	}
 
-	opencv3.IMWrite(os.Args[1], img)
+	opencv3.IMWrite(saveFile, img)
 }
