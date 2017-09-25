@@ -5,7 +5,9 @@
 //
 // How to run:
 //
-// 		go run ./examples/facedetect.go data/haarcascade_frontalface_default.xml
+// facedetect [camera ID] [classifier XML file]
+//
+// 		go run ./examples/facedetect.go 0 data/haarcascade_frontalface_default.xml
 //
 // +build example
 
@@ -14,16 +16,24 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	opencv3 ".."
 )
 
 func main() {
-	deviceID := 0
+	if len(os.Args) < 3 {
+		fmt.Println("How to run:\n\tfacedetect [camera ID] [classifier XML file]")
+		return
+	}
+
+	deviceID, _ := strconv.Atoi(os.Args[1])
+	xmlFile := os.Args[2]
+
 	webcam := opencv3.NewVideoCapture()
 	defer webcam.Delete()
 
-	if ok := webcam.OpenDevice(int(deviceID)); !ok {
+	if ok := webcam.OpenDevice(deviceID); !ok {
 		fmt.Printf("error opening device: %v\n", deviceID)
 		return
 	}
@@ -34,7 +44,7 @@ func main() {
 	defer img.Delete()
 
 	classifier := opencv3.NewCascadeClassifier()
-	classifier.Load(os.Args[1])
+	classifier.Load(xmlFile)
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
