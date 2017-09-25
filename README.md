@@ -109,7 +109,7 @@ In order to build/run Go code that uses this package, you will need to specify t
 
 One time per session, you must run the script:
 
-		./setupvars_linux.sh
+		source ./setupvars_linux.sh
 
 Now you should be able to build or run any of the examples:
 
@@ -145,7 +145,7 @@ In order to build/run Go code that uses this package, you will need to specify t
 
 One time per session, you must run the script:
 
-		./setupvars_osx.sh
+		source ./setupvars_osx.sh
 
 Now you should be able to build or run any of the examples:
 
