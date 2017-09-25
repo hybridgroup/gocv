@@ -1,5 +1,21 @@
 #include "pvl.h"
 
+// Face
+Face Face_New()
+{
+    return new cv::pvl::Face();
+}
+
+void Face_Delete(Face f)
+{
+    delete f;
+}
+
+Rect Face_GetRect(Face f)
+{
+    return f->faceRect;
+}
+
 // FaceDetector
 FaceDetector FaceDetector_New() 
 {
