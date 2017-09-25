@@ -170,7 +170,7 @@ Instructions here...
 - [X] CascadeClassifier for object detection/face tracking/etc.
 - [X] Installation instructions for Ubuntu
 - [X] Installation instructions for OS X
-- [ ] Code example to use VideoWriter
+- [X] Code example to use VideoWriter
 - [ ] Travis CI build
 - [ ] More tests
 - [ ] Installation/usage instructions for Windows
