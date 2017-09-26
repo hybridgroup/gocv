@@ -1,8 +1,10 @@
 # Go OpenCV3
 
-Golang bindings for the [OpenCV 3](http://opencv.org/) computer vision package.
+This Go package provides bindings for the [OpenCV 3](http://opencv.org/) computer vision library.
 
 Supports the latest release of OpenCV (v3.3) on Linux, OS X, and (soon) Windows.
+
+It also supports the [Intel Computer Vision SDK](https://software.intel.com/en-us/cvsdk-devguide) using the Photography Vision Library (PVL). Check out the [PVL README](./pvl/README.md) for more info.
 
 ## How to use
 
