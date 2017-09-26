@@ -30,9 +30,12 @@ func (f *Face) Delete() {
 }
 
 // Rect returns the Rect for this Face
-func (f *Face) Rect() { //opencv3.Rect {
-	return
-	//return opencv3.Rect{p: C.Face_GetRect(f.p)}
+func (f *Face) Rect() opencv3.Rect {
+	rect := C.Face_GetRect(f.p)
+	return opencv3.Rect{X: int(rect.x),
+		Y:      int(rect.y),
+		Width:  int(rect.width),
+		Height: int(rect.height)}
 }
 
 // FaceDetector is a bind of `cv::pvl::FaceDetector`.
@@ -56,8 +59,8 @@ func (f *FaceDetector) SetTrackingModeEnabled(enabled bool) {
 	C.FaceDetector_SetTrackingModeEnabled(f.p, C.bool(enabled))
 }
 
-// DetectFaceRect tries to detect Faces from the Mat passed in as the param.
-// Note that this Mat must be gray-scale or the call to PVL will fail.
+// DetectFaceRect tries to detect Faces from the image Mat passed in as the param.
+// The Mat must be a grayed image that has only one channel and 8-bit depth.
 func (f *FaceDetector) DetectFaceRect(img opencv3.Mat) []Face {
 	ret := C.FaceDetector_DetectFaceRect(f.p, C.Mat(img.Ptr()))
 	fArray := ret.faces

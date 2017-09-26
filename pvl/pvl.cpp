@@ -6,14 +6,15 @@ Face Face_New()
     return new cv::pvl::Face();
 }
 
-void Face_Delete(Face f)
+void Face_Delete(Face face)
 {
-    delete f;
+    delete face;
 }
 
-Rect Face_GetRect(Face f)
+Rect Face_GetRect(Face face)
 {
-    cv::Rect faceRect = f->get<cv::Rect>(cv::pvl::Face::FACE_RECT);
+    cv::Rect faceRect = face->get<cv::Rect>(cv::pvl::Face::FACE_RECT);
+
     Rect r = {faceRect.x, faceRect.y, faceRect.width, faceRect.height};
     return r;
 }
@@ -39,16 +40,24 @@ void FaceDetector_SetTrackingModeEnabled(FaceDetector f, bool enabled)
     return;
 }
 
-struct Faces FaceDetector_DetectFaceRect(FaceDetector f, Mat img)
+struct Faces FaceDetector_DetectFaceRect(FaceDetector fd, Mat img)
 {
-    std::vector<cv::pvl::Face> faces;
+    // TODO: do conversion in imgproc
     cv::Mat grayedFrame;
     cv::cvtColor(*img, grayedFrame, cv::COLOR_BGR2GRAY);
-    f->detectFaceRect(grayedFrame, faces);
+
+    std::vector<cv::pvl::Face> faces;
+    fd->detectFaceRect(grayedFrame, faces);
 
     Face* fs = new Face[faces.size()];
     for (size_t i = 0; i < faces.size(); ++i) {
-        fs[i] = &faces[i];
+        cv::Rect faceRect = faces[i].get<cv::Rect>(cv::pvl::Face::FACE_RECT);
+
+        Face f = Face_New();
+        f->setFaceRectInfo(faceRect);
+        // TODO: copy all the other face info...
+
+        fs[i] = f;
     }
     Faces ret = {fs, (int)faces.size()};
     return ret;

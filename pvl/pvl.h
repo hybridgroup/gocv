@@ -31,6 +31,7 @@ void Face_Delete(Face f);
 Rect Face_GetRect(Face f);
 
 // Faces
+struct Faces Faces_New();
 void Faces_Delete(struct Faces fs);
 
 // FaceDetector

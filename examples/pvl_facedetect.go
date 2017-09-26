@@ -57,10 +57,12 @@ func main() {
 		}
 
 		faces := fd.DetectFaceRect(img)
+
 		fmt.Printf("found %d\n", len(faces))
-		// if len(faces) > 0 {
-		// 	opencv3.DrawRectsToImage(img, rects)
-		// }
+		if len(faces) > 0 {
+			rects := []opencv3.Rect{faces[0].Rect()}
+			opencv3.DrawRectsToImage(img, rects)
+		}
 
 		window.IMShow(img)
 		opencv3.WaitKey(1)
