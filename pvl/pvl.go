@@ -6,6 +6,8 @@ package pvl
 */
 import "C"
 
+import opencv3 ".."
+
 // Face is a wrapper around `cv::pvl::Face`.
 type Face struct {
 	p C.Face
@@ -23,8 +25,9 @@ func (f *Face) Delete() {
 }
 
 // Rect returns the Rect for this Face
-func (f *Face) Rect() Rect {
-	C.struct_Rect(C.Face_GetRect(f.p))
+func (f *Face) Rect() { //opencv3.Rect {
+	return
+	//return opencv3.Rect{p: C.Face_GetRect(f.p)}
 }
 
 // FaceDetector is a bind of `cv::pvl::FaceDetector`.
@@ -46,4 +49,10 @@ func (f *FaceDetector) Delete() {
 // SetTrackingModeEnabled sets if the PVL FaceDetector tracking mode is enabled.
 func (f *FaceDetector) SetTrackingModeEnabled(enabled bool) {
 	C.FaceDetector_SetTrackingModeEnabled(f.p, C.bool(enabled))
+}
+
+// DetectFaceRect tries to detect Faces from the Mat passed in as the param.
+// Note that this Mat must be gray-scale or the call to PVL will fail.
+func (f *FaceDetector) DetectFaceRect(img opencv3.Mat) {
+	C.FaceDetector_DetectFaceRect(f.p, C.Mat(img.Ptr()))
 }

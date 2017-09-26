@@ -34,6 +34,11 @@ func (m *Mat) Delete() {
 	m.p = nil
 }
 
+// Delete object.
+func (m *Mat) Ptr() C.Mat {
+	return m.p
+}
+
 // Empty determines if the Mat is empty or not.
 func (m *Mat) Empty() bool {
 	isEmpty := C.Mat_Empty(m.p)

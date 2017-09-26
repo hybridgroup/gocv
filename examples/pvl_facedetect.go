@@ -56,9 +56,10 @@ func main() {
 			continue
 		}
 
-		//rects := classifier.DetectMultiScale(img)
-		// fmt.Printf("found %d\n", len(rects))
-		// if len(rects) > 0 {
+		fd.DetectFaceRect(img)
+		//faces := fd.DetectFaceRect(img)
+		// fmt.Printf("found %d\n", len(faces))
+		// if len(faces) > 0 {
 		// 	opencv3.DrawRectsToImage(img, rects)
 		// }
 

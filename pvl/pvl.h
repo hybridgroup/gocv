@@ -28,6 +28,7 @@ Rect Face_GetRect(Face f);
 FaceDetector FaceDetector_New();
 void FaceDetector_Delete(FaceDetector f);
 void FaceDetector_SetTrackingModeEnabled(FaceDetector f, bool enabled);
+void FaceDetector_DetectFaceRect(FaceDetector f, Mat img);
 
 #ifdef __cplusplus
 }
