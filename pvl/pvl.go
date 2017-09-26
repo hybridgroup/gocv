@@ -6,7 +6,12 @@ package pvl
 */
 import "C"
 
-import opencv3 ".."
+import (
+	"reflect"
+	"unsafe"
+
+	opencv3 ".."
+)
 
 // Face is a wrapper around `cv::pvl::Face`.
 type Face struct {
@@ -53,6 +58,20 @@ func (f *FaceDetector) SetTrackingModeEnabled(enabled bool) {
 
 // DetectFaceRect tries to detect Faces from the Mat passed in as the param.
 // Note that this Mat must be gray-scale or the call to PVL will fail.
-func (f *FaceDetector) DetectFaceRect(img opencv3.Mat) {
-	C.FaceDetector_DetectFaceRect(f.p, C.Mat(img.Ptr()))
+func (f *FaceDetector) DetectFaceRect(img opencv3.Mat) []Face {
+	ret := C.FaceDetector_DetectFaceRect(f.p, C.Mat(img.Ptr()))
+	fArray := ret.faces
+	length := int(ret.length)
+	hdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(fArray)),
+		Len:  length,
+		Cap:  length,
+	}
+	goSlice := *(*[]C.Face)(unsafe.Pointer(&hdr))
+
+	faces := make([]Face, length)
+	for i, r := range goSlice {
+		faces[i] = Face{p: r}
+	}
+	return faces
 }

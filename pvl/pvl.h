@@ -19,16 +19,25 @@ typedef void* Face;
 typedef void* FaceDetector;
 #endif
 
+// Wrapper for the vector of Face struct aka std::vector<Face>
+typedef struct Faces {
+    Face* faces;
+    int length;
+} Faces;
+
 // Face
 Face Face_New();
 void Face_Delete(Face f);
 Rect Face_GetRect(Face f);
 
+// Faces
+void Faces_Delete(struct Faces fs);
+
 // FaceDetector
 FaceDetector FaceDetector_New();
 void FaceDetector_Delete(FaceDetector f);
 void FaceDetector_SetTrackingModeEnabled(FaceDetector f, bool enabled);
-void FaceDetector_DetectFaceRect(FaceDetector f, Mat img);
+struct Faces FaceDetector_DetectFaceRect(FaceDetector f, Mat img);
 
 #ifdef __cplusplus
 }

@@ -56,9 +56,8 @@ func main() {
 			continue
 		}
 
-		fd.DetectFaceRect(img)
-		//faces := fd.DetectFaceRect(img)
-		// fmt.Printf("found %d\n", len(faces))
+		faces := fd.DetectFaceRect(img)
+		fmt.Printf("found %d\n", len(faces))
 		// if len(faces) > 0 {
 		// 	opencv3.DrawRectsToImage(img, rects)
 		// }
