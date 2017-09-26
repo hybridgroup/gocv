@@ -171,13 +171,14 @@ Instructions here...
 - [X] Installation instructions for Ubuntu
 - [X] Installation instructions for OS X
 - [X] Code example to use VideoWriter
+- [X] Intel CV SDK PVL FaceTracker support
 - [ ] Travis CI build
 - [ ] More tests
 - [ ] Installation/usage instructions for Windows
 - [ ] Appveyor build
-- [ ] Intel CV SDK PVL support
 - [ ] calib3d Camera Calibration and 3D Reconstruction
 - [ ] imgproc Image processing
+- [ ] Intel CV SDK PVL FaceRecognizer
 - [ ] Your favorite OpenCV module!
 
 ## Why this project exists
