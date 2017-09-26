@@ -1,6 +1,6 @@
-# Using the Intel Photographic Vision Library
+# Using the Intel Photography Vision Library
 
-The Intel [Photography Vision Library (PVL)](https://software.intel.com/en-us/cvsdk-devguide-advanced-face-capabilities-in-intels-opencv) is a set of computer vision and imaging algorithms developed at Intel. The PVL is a set of extensions to OpenCV that is installed with the Intel CV SDK.
+The Intel [Photography Vision Library (PVL)](https://software.intel.com/en-us/cvsdk-devguide-advanced-face-capabilities-in-intels-opencv) is a set of extensions to OpenCV that is installed with the Intel CV SDK. It uses computer vision and imaging algorithms developed at Intel.
 
 ## How to use
 
@@ -9,21 +9,13 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strconv"
 
 	opencv3 ".."
 	pvl "../pvl"
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("How to run:\n\tpvl_facedetect [camera ID]")
-		return
-	}
-
-	deviceID, _ := strconv.Atoi(os.Args[1])
-
+	deviceID := 0
 	webcam := opencv3.NewVideoCapture()
 	defer webcam.Delete()
 
@@ -32,7 +24,7 @@ func main() {
 		return
 	}
 
-	window := opencv3.NewWindow("Capture")
+	window := opencv3.NewWindow("PVL")
 
 	img := opencv3.NewMat()
 	defer img.Delete()
@@ -66,7 +58,9 @@ func main() {
 
 ## How to install the Intel CV SDK
 
-Info here...
+You can download the Intel CV SDK from here:
+
+https://software.intel.com/en-us/computer-vision-sdk
 
 ## How to build/run code
 
