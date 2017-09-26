@@ -1,7 +1,8 @@
 # Using the Intel Photographic Vision Library
 
-## How to use
+The Intel [Photography Vision Library (PVL)](https://software.intel.com/en-us/cvsdk-devguide-advanced-face-capabilities-in-intels-opencv) is a set of computer vision and imaging algorithms developed at Intel. The PVL is a set of extensions to OpenCV that is installed with the Intel CV SDK.
 
+## How to use
 
 ```go
 package main
