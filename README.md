@@ -24,7 +24,7 @@ import (
 func main() {
 	deviceID := 0
 	webcam := opencv3.NewVideoCapture()
-	defer webcam.Delete()
+	defer webcam.Close()
 
 	if ok := webcam.OpenDevice(int(deviceID)); !ok {
 		fmt.Printf("error opening device: %v\n", deviceID)
@@ -34,7 +34,7 @@ func main() {
 	window := opencv3.NewWindow("Capture")
 
 	img := opencv3.NewMat()
-	defer img.Delete()
+	defer img.Close()
 
 	classifier := opencv3.NewCascadeClassifier()
 	classifier.Load("data/haarcascade_frontalface_default.xml")
