@@ -70,10 +70,10 @@ func (f *FaceDetector) DetectFaceRect(img opencv3.Mat) []Face {
 		Len:  length,
 		Cap:  length,
 	}
-	goSlice := *(*[]C.Face)(unsafe.Pointer(&hdr))
+	s := *(*[]C.Face)(unsafe.Pointer(&hdr))
 
 	faces := make([]Face, length)
-	for i, r := range goSlice {
+	for i, r := range s {
 		faces[i] = Face{p: r}
 	}
 	return faces

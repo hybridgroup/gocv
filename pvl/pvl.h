@@ -28,6 +28,7 @@ typedef struct Faces {
 // Face
 Face Face_New();
 void Face_Delete(Face f);
+void Face_CopyTo(Face src, Face dst);
 Rect Face_GetRect(Face f);
 
 // Faces
