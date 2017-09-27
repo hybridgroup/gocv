@@ -52,22 +52,3 @@ type Rect struct {
 	Width  int
 	Height int
 }
-
-// DrawRectsToImage draws rectangle information to target image Mat.
-func DrawRectsToImage(img Mat, rects []Rect) {
-	cRectArray := make([]C.struct_Rect, len(rects))
-	for i, r := range rects {
-		cRect := C.struct_Rect{
-			x:      C.int(r.X),
-			y:      C.int(r.Y),
-			width:  C.int(r.Width),
-			height: C.int(r.Height),
-		}
-		cRectArray[i] = cRect
-	}
-	cRects := C.struct_Rects{
-		rects:  (*C.Rect)(&cRectArray[0]),
-		length: C.int(len(rects)),
-	}
-	C.DrawRectsToImage(img.p, cRects)
-}

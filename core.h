@@ -46,7 +46,6 @@ extern "C" {
   void ByteArray_Release(struct ByteArray buf);
   
   void Rects_Close(struct Rects rs);
-  void DrawRectsToImage(Mat img, struct Rects rects);
   
   Mat Mat_New();
   void Mat_Close(Mat m);

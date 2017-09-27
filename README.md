@@ -23,6 +23,8 @@ import (
 
 func main() {
 	deviceID := 0
+
+	// open webcam
 	webcam := opencv3.NewVideoCapture()
 	defer webcam.Close()
 
@@ -31,11 +33,14 @@ func main() {
 		return
 	}
 
+	// open display window
 	window := opencv3.NewWindow("Capture")
 
+	// prepare image matrix
 	img := opencv3.NewMat()
 	defer img.Close()
 
+	// load classifier to recognize faces
 	classifier := opencv3.NewCascadeClassifier()
 	classifier.Load("data/haarcascade_frontalface_default.xml")
 
@@ -49,12 +54,16 @@ func main() {
 			continue
 		}
 
+		// detect faces
 		rects := classifier.DetectMultiScale(img)
 		fmt.Printf("found %d\n", len(rects))
-		if len(rects) > 0 {
-			opencv3.DrawRectsToImage(img, rects)
+		
+		// draw a rectagle around each face
+		for _, r := range rects {
+			opencv3.Rectangle(img, r)	
 		}
 
+		// show the image in the window, and wait 1 millisecond
 		window.IMShow(img)
 		opencv3.WaitKey(1)
 	}
