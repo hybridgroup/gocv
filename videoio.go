@@ -20,9 +20,9 @@ func NewVideoCapture() VideoCapture {
 	return VideoCapture{p: C.VideoCapture_New()}
 }
 
-// Delete object.
-func (v *VideoCapture) Delete() {
-	C.VideoCapture_Delete(v.p)
+// Close VideoCapture object.
+func (v *VideoCapture) Close() {
+	C.VideoCapture_Close(v.p)
 	v.p = nil
 }
 
@@ -76,9 +76,9 @@ func NewVideoWriter() VideoWriter {
 	return VideoWriter{p: C.VideoWriter_New()}
 }
 
-// Delete object.
-func (vw *VideoWriter) Delete() {
-	C.VideoWriter_Delete(vw.p)
+// Close VideoWriter object.
+func (vw *VideoWriter) Close() {
+	C.VideoWriter_Close(vw.p)
 	vw.p = nil
 }
 

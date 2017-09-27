@@ -28,13 +28,13 @@ func NewMat() Mat {
 	return Mat{p: C.Mat_New()}
 }
 
-// Delete object.
-func (m *Mat) Delete() {
-	C.Mat_Delete(m.p)
+// Close the Mat object.
+func (m *Mat) Close() {
+	C.Mat_Close(m.p)
 	m.p = nil
 }
 
-// Delete object.
+// Ptr returns the Mat's underlying object pointer.
 func (m *Mat) Ptr() C.Mat {
 	return m.p
 }

@@ -5,7 +5,7 @@ void Window_New(const char* winname, int flags) {
     cv::namedWindow(winname, flags);
 }
 
-void Window_Delete(const char* winname) {
+void Window_Close(const char* winname) {
     cv::destroyWindow(winname);
 }
 

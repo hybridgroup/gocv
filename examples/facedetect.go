@@ -31,7 +31,7 @@ func main() {
 	xmlFile := os.Args[2]
 
 	webcam := opencv3.NewVideoCapture()
-	defer webcam.Delete()
+	defer webcam.Close()
 
 	if ok := webcam.OpenDevice(deviceID); !ok {
 		fmt.Printf("error opening device: %v\n", deviceID)
@@ -39,11 +39,14 @@ func main() {
 	}
 
 	window := opencv3.NewWindow("Capture")
+	defer window.Close()
 
 	img := opencv3.NewMat()
-	defer img.Delete()
+	defer img.Close()
 
 	classifier := opencv3.NewCascadeClassifier()
+	defer classifier.Close()
+	
 	classifier.Load(xmlFile)
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)

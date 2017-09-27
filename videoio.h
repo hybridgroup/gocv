@@ -18,7 +18,7 @@ typedef void* VideoWriter;
 
 // VideoCapture
 VideoCapture VideoCapture_New();
-void VideoCapture_Delete(VideoCapture v);
+void VideoCapture_Close(VideoCapture v);
 int VideoCapture_Open(VideoCapture v, const char* uri);
 int VideoCapture_OpenDevice(VideoCapture v, int device);
 void VideoCapture_Release(VideoCapture v);
@@ -29,7 +29,7 @@ void VideoCapture_Grab(VideoCapture v, int skip);
 
 // VideoWriter
 VideoWriter VideoWriter_New();
-void VideoWriter_Delete(VideoWriter vw);
+void VideoWriter_Close(VideoWriter vw);
 void VideoWriter_Open(VideoWriter vw, const char* name, double fps, int width,
   int height);
 void VideoWriter_OpenWithMat(VideoWriter vw, const char* name, double fps,

@@ -6,14 +6,18 @@ Mat Mat_New() {
     return new cv::Mat();
 }
 
-// Mat_Delete deletes an existing Mat
-void Mat_Delete(Mat m) {
+// Mat_Close deletes an existing Mat
+void Mat_Close(Mat m) {
     delete m;
 }
 
 // Mat_Empty tests if a Mat is empty
 int Mat_Empty(Mat m) {
     return m->empty();
+}
+
+void Rects_Close(struct Rects rs) {
+    delete rs.rects;
 }
 
 void DrawRectsToImage(Mat img, struct Rects rects) {
@@ -32,8 +36,4 @@ struct ByteArray toByteArray(const char* buf, int len) {
   ByteArray ret = {new char[len], len};
   memcpy(ret.data, buf, len);
   return ret;
-}
-
-void Rects_Delete(struct Rects rs) {
-    delete rs.rects;
 }

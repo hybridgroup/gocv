@@ -13,7 +13,6 @@ package main
 
 import (
 	"os"
-	"time"
 
 	opencv3 ".."
 )
@@ -26,6 +25,5 @@ func main() {
 	for {
 		window.IMShow(img)
 		opencv3.WaitKey(1)
-		time.Sleep(100 * time.Microsecond)
 	}
 }

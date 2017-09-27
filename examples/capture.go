@@ -19,7 +19,7 @@ import (
 func main() {
 	deviceID := 0
 	webcam := opencv3.NewVideoCapture()
-	defer webcam.Delete()
+	defer webcam.Close()
 
 	if ok := webcam.OpenDevice(int(deviceID)); !ok {
 		fmt.Printf("error opening device: %v\n", deviceID)
@@ -27,7 +27,8 @@ func main() {
 
 	// streaming, capture from webcam
 	buf := opencv3.NewMat()
-	defer buf.Delete()
+	defer buf.Close()
+	
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
 		if ok := webcam.Read(buf); !ok {

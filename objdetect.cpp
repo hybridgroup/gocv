@@ -5,7 +5,7 @@ CascadeClassifier CascadeClassifier_New() {
     return new cv::CascadeClassifier();
 }
   
-void CascadeClassifier_Delete(CascadeClassifier cs) {
+void CascadeClassifier_Close(CascadeClassifier cs) {
     delete cs;
 }
   
