@@ -183,12 +183,13 @@ Instructions here...
 - [X] Installation instructions for OS X
 - [X] Code example to use VideoWriter
 - [X] Intel CV SDK PVL FaceTracker support
+- [X] imgproc Image processing
 - [ ] Travis CI build
 - [ ] More tests
 - [ ] Installation/usage instructions for Windows
 - [ ] Appveyor build
 - [ ] calib3d Camera Calibration and 3D Reconstruction
-- [ ] imgproc Image processing
+- [ ] Implement more of imgproc Image processing
 - [ ] Intel CV SDK PVL FaceRecognizer
 - [ ] Your favorite OpenCV module!
 

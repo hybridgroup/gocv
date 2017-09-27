@@ -6,6 +6,11 @@ package opencv3
 */
 import "C"
 
+// CvtColor converts an image from one color space to another
+func CvtColor(src Mat, dst Mat, code int) {
+	C.CvtColor(src.p, dst.p, C.int(code))
+}
+
 // Rectangle draws a rectangle using to target image Mat.
 func Rectangle(img Mat, r Rect) {
 	cRect := C.struct_Rect{
