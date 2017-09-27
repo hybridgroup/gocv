@@ -23,9 +23,9 @@ func NewFace() Face {
 	return Face{p: C.Face_New()}
 }
 
-// Delete Face.
-func (f *Face) Delete() {
-	C.Face_Delete(f.p)
+// Close Face.
+func (f *Face) Close() {
+	C.Face_Close(f.p)
 	f.p = nil
 }
 
@@ -48,9 +48,9 @@ func NewFaceDetector() FaceDetector {
 	return FaceDetector{p: C.FaceDetector_New()}
 }
 
-// Delete object.
-func (f *FaceDetector) Delete() {
-	C.FaceDetector_Delete(f.p)
+// Close FaceDetector.
+func (f *FaceDetector) Close() {
+	C.FaceDetector_Close(f.p)
 	f.p = nil
 }
 
