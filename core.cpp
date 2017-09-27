@@ -20,14 +20,6 @@ void Rects_Close(struct Rects rs) {
     delete rs.rects;
 }
 
-void DrawRectsToImage(Mat img, struct Rects rects) {
-    for (int i = 0; i < rects.length; ++i) {
-        Rect r = rects.rects[i];
-        cv::rectangle(*img, cv::Point(r.x, r.y), cv::Point(r.x+r.width, r.y+r.height),
-            cv::Scalar(0, 200, 0), 3, CV_AA);
-    }
-}
-
 void ByteArray_Release(struct ByteArray buf) {
   delete[] buf.data;
 }

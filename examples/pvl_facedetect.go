@@ -28,8 +28,10 @@ func main() {
 		return
 	}
 
+	// parse args
 	deviceID, _ := strconv.Atoi(os.Args[1])
 
+	// open webcam
 	webcam := opencv3.NewVideoCapture()
 	defer webcam.Close()
 
@@ -38,15 +40,19 @@ func main() {
 		return
 	}
 
-	window := opencv3.NewWindow("Capture")
+	// open display window
+	window := opencv3.NewWindow("PVL Face Detect")
 	defer window.Close()
 	
+	// prepare image matrix
 	img := opencv3.NewMat()
 	defer img.Close()
 
+	// load PVL FaceDetector to recognize faces
 	fd := pvl.NewFaceDetector()
 	defer fd.Close()
 
+	// enable tracking mode for more efficient tracking of video source
 	fd.SetTrackingModeEnabled(true)
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
@@ -59,14 +65,16 @@ func main() {
 			continue
 		}
 
+		// detect faces
 		faces := fd.DetectFaceRect(img)
+		fmt.Printf("found %d faces\n", len(faces))
 
-		fmt.Printf("found %d\n", len(faces))
-		if len(faces) > 0 {
-			rects := []opencv3.Rect{faces[0].Rect()}
-			opencv3.DrawRectsToImage(img, rects)
+		// draw a rectagle around each face
+		for _, face := range faces {
+			opencv3.Rectangle(img, face.Rect())	
 		}
 
+		// show the image in the window, and wait 1 millisecond
 		window.IMShow(img)
 		opencv3.WaitKey(1)
 	}
