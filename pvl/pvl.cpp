@@ -6,7 +6,7 @@ Face Face_New()
     return new cv::pvl::Face();
 }
 
-void Face_Delete(Face face)
+void Face_Close(Face face)
 {
     delete face;
 }
@@ -32,17 +32,13 @@ Rect Face_GetRect(Face face)
     return r;
 }
 
-void Faces_Delete(struct Faces fs) {
-    delete fs.faces;
-}
-
 // FaceDetector
 FaceDetector FaceDetector_New() 
 {
     return cv::pvl::FaceDetector::create();
 }
 
-void FaceDetector_Delete(FaceDetector f) 
+void FaceDetector_Close(FaceDetector f) 
 {
     delete f;
 }

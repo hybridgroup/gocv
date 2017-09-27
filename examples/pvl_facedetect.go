@@ -44,6 +44,8 @@ func main() {
 	defer img.Delete()
 
 	fd := pvl.NewFaceDetector()
+	defer fd.Close()
+
 	fd.SetTrackingModeEnabled(true)
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)

@@ -27,17 +27,13 @@ typedef struct Faces {
 
 // Face
 Face Face_New();
-void Face_Delete(Face f);
+void Face_Close(Face f);
 void Face_CopyTo(Face src, Face dst);
 Rect Face_GetRect(Face f);
 
-// Faces
-struct Faces Faces_New();
-void Faces_Delete(struct Faces fs);
-
 // FaceDetector
 FaceDetector FaceDetector_New();
-void FaceDetector_Delete(FaceDetector f);
+void FaceDetector_Close(FaceDetector f);
 void FaceDetector_SetTrackingModeEnabled(FaceDetector f, bool enabled);
 struct Faces FaceDetector_DetectFaceRect(FaceDetector f, Mat img);
 
