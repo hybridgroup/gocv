@@ -51,12 +51,8 @@ void FaceDetector_SetTrackingModeEnabled(FaceDetector f, bool enabled)
 
 struct Faces FaceDetector_DetectFaceRect(FaceDetector fd, Mat img)
 {
-    // TODO: do conversion in imgproc
-    cv::Mat grayedFrame;
-    cv::cvtColor(*img, grayedFrame, cv::COLOR_BGR2GRAY);
-
     std::vector<cv::pvl::Face> faces;
-    fd->detectFaceRect(grayedFrame, faces);
+    fd->detectFaceRect(*img, faces);
 
     Face* fs = new Face[faces.size()];
     for (size_t i = 0; i < faces.size(); ++i) {

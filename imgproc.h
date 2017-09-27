@@ -10,6 +10,7 @@ extern "C" {
 
 #include "core.h"
 
+void CvtColor(Mat src, Mat dst, int code);
 void Rectangle(Mat img, Rect rect);
 
 #ifdef __cplusplus

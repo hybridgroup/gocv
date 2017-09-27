@@ -29,10 +29,14 @@ func main() {
 	// open display window
 	window := opencv3.NewWindow("PVL")
 
-	// prepare image matrix
+	// prepare input image matrix
 	img := opencv3.NewMat()
 	defer img.Close()
 
+	// prepare grayscale image matrix
+	imgGray := opencv3.NewMat()
+	defer imgGray.Close()
+	
 	// load PVL FaceDetector to recognize faces
 	fd := pvl.NewFaceDetector()
 	defer fd.Close()
@@ -50,11 +54,14 @@ func main() {
 			continue
 		}
 
+		// convert image to grayscale for detection
+		opencv3.CvtColor(img, imgGray, opencv3.ColorBGR2GRAY);
+	
 		// detect faces
-		faces := fd.DetectFaceRect(img)
-		fmt.Printf("found %d\n", len(faces))
+		faces := fd.DetectFaceRect(imgGray)
+		fmt.Printf("found %d faces\n", len(faces))
 
-		// draw a rectagle around each face
+		// draw a rectangle around each face on the original image
 		for _, face := range faces {
 			opencv3.Rectangle(img, face.Rect())	
 		}
