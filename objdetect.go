@@ -20,9 +20,9 @@ func NewCascadeClassifier() CascadeClassifier {
 	return CascadeClassifier{p: C.CascadeClassifier_New()}
 }
 
-// Delete CascadeClassifier's pointer.
-func (c *CascadeClassifier) Delete() {
-	C.CascadeClassifier_Delete(c.p)
+// Close deletes the CascadeClassifier's pointer.
+func (c *CascadeClassifier) Close() {
+	C.CascadeClassifier_Close(c.p)
 	c.p = nil
 }
 
@@ -37,7 +37,7 @@ func (c *CascadeClassifier) Load(name string) bool {
 // multi results addressed with rectangle.
 func (c *CascadeClassifier) DetectMultiScale(img Mat) []Rect {
 	ret := C.CascadeClassifier_DetectMultiScale(c.p, img.p)
-	defer C.Rects_Delete(ret)
+	defer C.Rects_Close(ret)
 
 	cArray := ret.rects
 	length := int(ret.length)
@@ -46,10 +46,10 @@ func (c *CascadeClassifier) DetectMultiScale(img Mat) []Rect {
 		Len:  length,
 		Cap:  length,
 	}
-	goSlice := *(*[]C.Rect)(unsafe.Pointer(&hdr))
+	s := *(*[]C.Rect)(unsafe.Pointer(&hdr))
 
 	rects := make([]Rect, length)
-	for i, r := range goSlice {
+	for i, r := range s {
 		rects[i] = Rect{
 			X:      int(r.x),
 			Y:      int(r.y),

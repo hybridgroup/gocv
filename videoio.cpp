@@ -5,7 +5,7 @@ VideoCapture VideoCapture_New() {
     return new cv::VideoCapture();
 }
   
-void VideoCapture_Delete(VideoCapture v) {
+void VideoCapture_Close(VideoCapture v) {
     delete v;
 }
   
@@ -44,7 +44,7 @@ VideoWriter VideoWriter_New() {
     return new cv::VideoWriter();
 }
   
-void VideoWriter_Delete(VideoWriter vw) {
+void VideoWriter_Close(VideoWriter vw) {
     delete vw;
 }
   

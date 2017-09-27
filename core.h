@@ -45,11 +45,11 @@ extern "C" {
   struct ByteArray toByteArray(const char* buf, int len);
   void ByteArray_Release(struct ByteArray buf);
   
-  void Rects_Delete(struct Rects rs);
+  void Rects_Close(struct Rects rs);
   void DrawRectsToImage(Mat img, struct Rects rects);
   
   Mat Mat_New();
-  void Mat_Delete(Mat m);
+  void Mat_Close(Mat m);
   int Mat_Empty(Mat m);
 
 #ifdef __cplusplus

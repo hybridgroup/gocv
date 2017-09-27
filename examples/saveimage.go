@@ -31,14 +31,14 @@ func main() {
 	saveFile := os.Args[2]
 
 	webcam := opencv3.NewVideoCapture()
-	defer webcam.Delete()
+	defer webcam.Close()
 
 	if ok := webcam.OpenDevice(deviceID); !ok {
 		fmt.Printf("error opening device: %v\n", deviceID)
 	}
 
 	img := opencv3.NewMat()
-	defer img.Delete()
+	defer img.Close()
 
 	if ok := webcam.Read(img); !ok {
 		fmt.Printf("cannot read device %d\n", deviceID)

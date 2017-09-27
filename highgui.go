@@ -24,12 +24,12 @@ func NewWindow(name string) *Window {
 	return &Window{name: name}
 }
 
-// Delete a specific Window
-func (w *Window) Delete() {
+// Close deletes a specific Window
+func (w *Window) Close() {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
-	C.Window_Delete(cName)
+	C.Window_Close(cName)
 }
 
 // IMShow takes an image Mat and displays it in the Window

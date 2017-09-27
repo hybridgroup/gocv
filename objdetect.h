@@ -16,7 +16,7 @@ typedef void* CascadeClassifier;
 
 // CascadeClassifier
 CascadeClassifier CascadeClassifier_New();
-void CascadeClassifier_Delete(CascadeClassifier cs);
+void CascadeClassifier_Close(CascadeClassifier cs);
 int CascadeClassifier_Load(CascadeClassifier cs, const char* name);
 struct Rects CascadeClassifier_DetectMultiScale(CascadeClassifier cs, Mat img);
 
