@@ -11,6 +11,19 @@ void Face_Delete(Face face)
     delete face;
 }
 
+void Face_CopyTo(Face src, Face dst)
+{
+    cv::Rect faceRect = src->get<cv::Rect>(cv::pvl::Face::FACE_RECT);
+    int ripAngle = src->get<int>(cv::pvl::Face::RIP_ANGLE);
+    int ropAngle = src->get<int>(cv::pvl::Face::ROP_ANGLE);
+    int confidence = src->get<int>(cv::pvl::Face::FACE_RECT_CONFIDENCE);
+    int trackingID = src->get<int>(cv::pvl::Face::TRACKING_ID);
+
+    dst->setFaceRectInfo(faceRect, ripAngle, ropAngle, confidence, trackingID);
+
+    // TODO: copy eye, mouth, blink, and smile info...
+}
+
 Rect Face_GetRect(Face face)
 {
     cv::Rect faceRect = face->get<cv::Rect>(cv::pvl::Face::FACE_RECT);
@@ -51,11 +64,8 @@ struct Faces FaceDetector_DetectFaceRect(FaceDetector fd, Mat img)
 
     Face* fs = new Face[faces.size()];
     for (size_t i = 0; i < faces.size(); ++i) {
-        cv::Rect faceRect = faces[i].get<cv::Rect>(cv::pvl::Face::FACE_RECT);
-
         Face f = Face_New();
-        f->setFaceRectInfo(faceRect);
-        // TODO: copy all the other face info...
+        Face_CopyTo(&faces[i], f);
 
         fs[i] = f;
     }
