@@ -5,6 +5,7 @@ package opencv3
 #include "imgproc.h"
 */
 import "C"
+import "unsafe"
 
 // CvtColor converts an image from one color space to another
 func CvtColor(src Mat, dst Mat, code int) {
@@ -12,7 +13,7 @@ func CvtColor(src Mat, dst Mat, code int) {
 }
 
 // Rectangle draws a rectangle using to target image Mat.
-func Rectangle(img Mat, r Rect) {
+func Rectangle(img Mat, r Rect, c Scalar) {
 	cRect := C.struct_Rect{
 		x:      C.int(r.X),
 		y:      C.int(r.Y),
@@ -20,5 +21,43 @@ func Rectangle(img Mat, r Rect) {
 		height: C.int(r.Height),
 	}
 
-	C.Rectangle(img.p, cRect)
+	sColor := C.struct_Scalar{
+		val1: C.double(c.Val1),
+		val2: C.double(c.Val2),
+		val3: C.double(c.Val3),
+		val4: C.double(c.Val4),
+	}
+
+	C.Rectangle(img.p, cRect, sColor)
+}
+
+// GetTextSize returns the size required to draw text using a specific font face,
+// scale, and thickness.
+func GetTextSize(text string, fontFace int, fontScale float64, thickness int) Size {
+	cText := C.CString(text)
+	defer C.free(unsafe.Pointer(cText))
+
+	sz := C.GetTextSize(cText, C.int(fontFace), C.double(fontScale), C.int(thickness))
+	return Size{Width: int(sz.width), Height: int(sz.height)}
+}
+
+// PutText renders the specified text string in the image.
+func PutText(img Mat, text string, org Point, fontFace int, fontScale float64, color Scalar, thickness int) {
+	cText := C.CString(text)
+	defer C.free(unsafe.Pointer(cText))
+
+	pOrg := C.struct_Point{
+		x: C.int(org.X),
+		y: C.int(org.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(color.Val1),
+		val2: C.double(color.Val2),
+		val3: C.double(color.Val3),
+		val4: C.double(color.Val4),
+	}
+
+	C.PutText(img.p, cText, pOrg, C.int(fontFace), C.double(fontScale), sColor, C.int(thickness))
+	return
 }

@@ -48,6 +48,9 @@ func main() {
 	img := opencv3.NewMat()
 	defer img.Close()
 
+	// color for the rect when faces detected
+	blue := opencv3.NewScalar(255, 0, 0, 0)
+
 	// load classifier to recognize faces
 	classifier := opencv3.NewCascadeClassifier()
 	defer classifier.Close()
@@ -70,7 +73,7 @@ func main() {
 
 		// draw a rectagle around each face
 		for _, r := range rects {
-			opencv3.Rectangle(img, r)	
+			opencv3.Rectangle(img, r, blue)	
 		}
 
 		// show the image in the window, and wait 1 millisecond

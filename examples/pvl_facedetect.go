@@ -52,6 +52,9 @@ func main() {
 	imgGray := opencv3.NewMat()
 	defer imgGray.Close()
 	
+	// color to draw the rect for detected faces
+	blue := opencv3.NewScalar(255, 0, 0, 0)
+
 	// load PVL FaceDetector to recognize faces
 	fd := pvl.NewFaceDetector()
 	defer fd.Close()
@@ -78,7 +81,7 @@ func main() {
 
 		// draw a rectangle around each face on the original image
 		for _, face := range faces {
-			opencv3.Rectangle(img, face.Rect())	
+			opencv3.Rectangle(img, face.Rect(), blue)
 		}
 
 		// show the image in the window, and wait 1 millisecond
