@@ -1,13 +1,15 @@
 // What it does:
 //
-// This example uses the Intel CV SDK PVL FaceDetect class to detect faces,
-// and draw a rectangle around each of them, before displaying them within a Window.
+// This example uses the Intel CV SDK PVL FaceDetect class to detect smiles!
+// It first detects faces, then detects the smiles on each. Based on if the person is
+// smiling, it draws a green or blue rectangle around each of them, 
+// before displaying them within a Window.
 //
 // How to run:
 //
-// pvl_facedetect [camera ID]
+// smiledetect [camera ID]
 //
-// 		go run ./examples/pvl_facedetect.go 0
+// 		go run ./examples/pvl/smiledetect.go 0
 //
 // +build example
 
@@ -18,8 +20,8 @@ import (
 	"os"
 	"strconv"
 
-	opencv3 ".."
-	pvl "../pvl"
+	opencv3 "../.."
+	pvl "../../pvl"
 )
 
 func main() {

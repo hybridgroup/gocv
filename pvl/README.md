@@ -73,6 +73,8 @@ func main() {
 }
 ```
 
+The PVL examples are in the [examples/pvl directory](../examples/pvl) of this repo.
+
 ## How to install the Intel CV SDK
 
 You can download the Intel CV SDK from here:
