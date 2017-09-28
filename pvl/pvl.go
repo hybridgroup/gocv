@@ -43,6 +43,34 @@ func (f *Face) Rect() opencv3.Rect {
 		Height: int(rect.height)}
 }
 
+// RIPAngle of Face
+func (f *Face) RIPAngle() int {
+	return int(C.Face_RIPAngle(f.p))
+}
+
+// ROPAngle of Face
+func (f *Face) ROPAngle() int {
+	return int(C.Face_ROPAngle(f.p))
+}
+
+// LeftEyePosition of Face
+func (f *Face) LeftEyePosition() opencv3.Point {
+	pt := C.Face_LeftEyePosition(f.p)
+	return opencv3.Point{
+		X: int(pt.y),
+		Y: int(pt.y),
+	}
+}
+
+// RightEyePosition of Face
+func (f *Face) RightEyePosition() opencv3.Point {
+	pt := C.Face_RightEyePosition(f.p)
+	return opencv3.Point{
+		X: int(pt.y),
+		Y: int(pt.y),
+	}
+}
+
 // IsSmiling Face? :)
 // You must call FaceDetector's DetectEye() and DetectSmile() with this Face
 // first, or this function will throw an exception
@@ -91,14 +119,26 @@ func (f *FaceDetector) DetectFaceRect(img opencv3.Mat) []Face {
 	return faces
 }
 
-// DetectEyes uses PVL FaceDetector to detect eyes on a Face
+// DetectEye uses PVL FaceDetector to detect eyes on a Face
 func (f *FaceDetector) DetectEye(img opencv3.Mat, face Face) {
 	C.FaceDetector_DetectEye(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
 	return
 }
 
-// DetectSmile uses PVL FaceDetector to detect eyes on a Face
+// DetectMouth uses PVL FaceDetector to detect mouth on a Face
+func (f *FaceDetector) DetectMouth(img opencv3.Mat, face Face) {
+	C.FaceDetector_DetectMouth(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
+	return
+}
+
+// DetectSmile uses PVL FaceDetector to detect smile on a Face
 func (f *FaceDetector) DetectSmile(img opencv3.Mat, face Face) {
 	C.FaceDetector_DetectSmile(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
+	return
+}
+
+// DetectBlink uses PVL FaceDetector to detect blink on a Face
+func (f *FaceDetector) DetectBlink(img opencv3.Mat, face Face) {
+	C.FaceDetector_DetectBlink(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
 	return
 }
