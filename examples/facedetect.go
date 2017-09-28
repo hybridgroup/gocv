@@ -71,9 +71,17 @@ func main() {
 		rects := classifier.DetectMultiScale(img)
 		fmt.Printf("found %d faces\n", len(rects))
 
-		// draw a rectagle around each face
+		// draw a rectangle around each face on the original image,
+		// along with text identifing as "Human"
 		for _, r := range rects {
-			opencv3.Rectangle(img, r, blue)	
+			opencv3.Rectangle(img, r, blue)
+
+			size := opencv3.GetTextSize("Human", opencv3.FontHersheyPlain, 1.2, 2)
+			pt := opencv3.Point{
+				X: r.X + (r.Width / 2) - (size.Width / 2),
+				Y: r.Y - 2,
+			}
+			opencv3.PutText(img, "Human", pt, opencv3.FontHersheyPlain, 1.2, blue, 2)
 		}
 
 		// show the image in the window, and wait 1 millisecond
