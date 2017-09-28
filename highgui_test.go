@@ -16,4 +16,11 @@ func TestWindow(t *testing.T) {
 	if val != -1 {
 		t.Error("Invalid WaitKey")
 	}
+	if !window.IsOpen() {
+		t.Error("Window should have been open")
+	}
+	window.Close()
+	if window.IsOpen() {
+		t.Error("Window should have been closed")
+	}
 }
