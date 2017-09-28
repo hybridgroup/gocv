@@ -33,7 +33,10 @@ Rect Face_GetRect(Face f);
 int Face_RIPAngle(Face f);
 int Face_ROPAngle(Face f);
 Point Face_LeftEyePosition(Face f);
+bool Face_LeftEyeClosed(Face f);
 Point Face_RightEyePosition(Face f);
+bool Face_RightEyeClosed(Face f);
+Point Face_MouthPosition(Face f);
 bool Face_IsSmiling(Face f);
 
 // FaceDetector
