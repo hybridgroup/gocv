@@ -11,7 +11,11 @@ extern "C" {
 #include "core.h"
 
 void CvtColor(Mat src, Mat dst, int code);
-void Rectangle(Mat img, Rect rect);
+void Rectangle(Mat img, Rect rect, Scalar color);
+struct Size GetTextSize(const char* text, int fontFace, double fontScale, int thickness);
+void PutText(Mat img, const char* text, Point org, int fontFace, double fontScale, 
+             Scalar color, int thickness);
+
 
 #ifdef __cplusplus
 }

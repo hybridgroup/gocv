@@ -21,6 +21,12 @@ extern "C" {
     int height;
     struct ByteArray data;
   } RawData;
+
+  // Wrapper for an individual cv::cvPoint
+  typedef struct Point {
+    int x;
+    int y;
+  } Point;
   
   // Wrapper for an individual cv::cvRect
   typedef struct Rect {
@@ -35,6 +41,20 @@ extern "C" {
     Rect* rects;
     int length;
   } Rects;
+
+  // Wrapper for an individual cv::cvSize
+  typedef struct Size {
+    int width;
+    int height;
+  } Size;
+
+  // Wrapper for an individual cv::cvScalar
+  typedef struct Scalar {
+    double val1;
+    double val2;
+    double val3;
+    double val4;
+  } Scalar;
   
   #ifdef __cplusplus
   typedef cv::Mat* Mat;

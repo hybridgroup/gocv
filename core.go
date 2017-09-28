@@ -6,15 +6,6 @@ package opencv3
 */
 import "C"
 
-const (
-	// CvCapPropFrameWidth is OpenCV parameter of Frame Width
-	CvCapPropFrameWidth = 3
-	// CvCapPropFrameHeight is OpenCV parameter of Frame Height
-	CvCapPropFrameHeight = 4
-	// CvCapPropFps is OpenCV parameter of FPS
-	CvCapPropFps = 5
-)
-
 // CMat is an alias for C pointer.
 type CMat C.Mat
 
@@ -45,10 +36,36 @@ func (m *Mat) Empty() bool {
 	return isEmpty != 0
 }
 
+// Point represents a single point with X and Y coordinates.
+type Point struct {
+	X int
+	Y int
+}
+
 // Rect represents rectangle. X and Y is a start point of Width and Height.
 type Rect struct {
 	X      int
 	Y      int
 	Width  int
 	Height int
+}
+
+// Size represents a size of something with Width and Height.
+type Size struct {
+	Width  int
+	Height int
+}
+
+// Scalar represents a Scalar set of 4 float64 values.
+type Scalar struct {
+	Val1 float64
+	Val2 float64
+	Val3 float64
+	Val4 float64
+}
+
+// NewScalar returns a new Scalar. These are usually colors typically being in BGR order.
+func NewScalar(v1 float64, v2 float64, v3 float64, v4 float64) Scalar {
+	s := Scalar{Val1: v1, Val2: v2, Val3: v3, Val4: v4}
+	return s
 }
