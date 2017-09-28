@@ -11,6 +11,7 @@ void Face_Close(Face face)
     delete face;
 }
 
+// Face_CopyTo only copies the Face Rect data.
 void Face_CopyTo(Face src, Face dst)
 {
     cv::Rect faceRect = src->get<cv::Rect>(cv::pvl::Face::FACE_RECT);
@@ -18,10 +19,7 @@ void Face_CopyTo(Face src, Face dst)
     int ropAngle = src->get<int>(cv::pvl::Face::ROP_ANGLE);
     int confidence = src->get<int>(cv::pvl::Face::FACE_RECT_CONFIDENCE);
     int trackingID = src->get<int>(cv::pvl::Face::TRACKING_ID);
-
     dst->setFaceRectInfo(faceRect, ripAngle, ropAngle, confidence, trackingID);
-
-    // TODO: copy eye, mouth, blink, and smile info...
 }
 
 Rect Face_GetRect(Face face)
@@ -31,6 +29,12 @@ Rect Face_GetRect(Face face)
     Rect r = {faceRect.x, faceRect.y, faceRect.width, faceRect.height};
     return r;
 }
+
+bool Face_IsSmiling(Face face)
+{
+    return face->get<bool>(cv::pvl::Face::SMILING);
+}
+
 
 // FaceDetector
 FaceDetector FaceDetector_New() 
@@ -63,4 +67,16 @@ struct Faces FaceDetector_DetectFaceRect(FaceDetector fd, Mat img)
     }
     Faces ret = {fs, (int)faces.size()};
     return ret;
+}
+
+void FaceDetector_DetectEye(FaceDetector f, Mat img, Face face)
+{
+    f->detectEye(*img, *face);
+    return;
+}
+
+void FaceDetector_DetectSmile(FaceDetector f, Mat img, Face face)
+{
+    f->detectSmile(*img, *face);
+    return;
 }

@@ -53,6 +53,7 @@ func main() {
 	defer imgGray.Close()
 	
 	// color to draw the rect for detected faces
+	blue := opencv3.NewScalar(255, 0, 0, 0)
 	green := opencv3.NewScalar(0, 255, 0, 0)
 
 	// load PVL FaceDetector to recognize faces
@@ -82,14 +83,24 @@ func main() {
 		// draw a rectangle around each face on the original image,
 		// along with text identifing as "Human"
 		for _, face := range faces {
-			opencv3.Rectangle(img, face.Rect(), green)
+			// detect smile
+			fd.DetectEye(imgGray, face)
+			fd.DetectSmile(imgGray, face)
+
+			// set the color of the box based on if the human is smiling
+			color := blue
+			if face.IsSmiling() {
+				color = green
+			}
+
+			opencv3.Rectangle(img, face.Rect(), color)
 
 			size := opencv3.GetTextSize("Human", opencv3.FontHersheyPlain, 1.2, 2)
 			pt := opencv3.Point{
 				X: face.Rect().X + (face.Rect().Width / 2) - (size.Width / 2),
 				Y: face.Rect().Y - 2,
 			}
-			opencv3.PutText(img, "Human", pt, opencv3.FontHersheyPlain, 1.2, green, 2)
+			opencv3.PutText(img, "Human", pt, opencv3.FontHersheyPlain, 1.2, color, 2)
 		}
 
 		// show the image in the window, and wait 1 millisecond
