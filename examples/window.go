@@ -20,7 +20,7 @@ import (
 func main() {
 	filename := os.Args[1]
 	window := opencv3.NewWindow("Hello")
-	img := opencv3.IMRead(filename, 1)
+	img := opencv3.IMRead(filename, opencv3.IMReadColor)
 
 	for {
 		window.IMShow(img)
