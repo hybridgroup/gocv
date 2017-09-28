@@ -30,11 +30,34 @@ Rect Face_GetRect(Face face)
     return r;
 }
 
+int Face_RIPAngle(Face face)
+{
+    return face->get<int>(cv::pvl::Face::RIP_ANGLE);
+}
+
+int Face_ROPAngle(Face face)
+{
+    return face->get<int>(cv::pvl::Face::ROP_ANGLE);
+}
+
+Point Face_LeftEyePosition(Face face)
+{
+    cv::Point pt = face->get<cv::Point>(cv::pvl::Face::LEFT_EYE_POS);
+    Point p = {pt.x, pt.y};
+    return p;
+}
+
+Point Face_RightEyePosition(Face face)
+{
+    cv::Point pt = face->get<cv::Point>(cv::pvl::Face::RIGHT_EYE_POS);
+    Point p = {pt.x, pt.y};
+    return p;
+}
+
 bool Face_IsSmiling(Face face)
 {
     return face->get<bool>(cv::pvl::Face::SMILING);
 }
-
 
 // FaceDetector
 FaceDetector FaceDetector_New() 
@@ -75,8 +98,20 @@ void FaceDetector_DetectEye(FaceDetector f, Mat img, Face face)
     return;
 }
 
+void FaceDetector_DetectMouth(FaceDetector f, Mat img, Face face)
+{
+    f->detectMouth(*img, *face);
+    return;
+}
+
 void FaceDetector_DetectSmile(FaceDetector f, Mat img, Face face)
 {
     f->detectSmile(*img, *face);
+    return;
+}
+
+void FaceDetector_DetectBlink(FaceDetector f, Mat img, Face face)
+{
+    f->detectBlink(*img, *face);
     return;
 }
