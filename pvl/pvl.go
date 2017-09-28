@@ -29,6 +29,11 @@ func (f *Face) Close() {
 	f.p = nil
 }
 
+// Ptr returns the Face's underlying object pointer.
+func (f *Face) Ptr() C.Face {
+	return f.p
+}
+
 // Rect returns the Rect for this Face
 func (f *Face) Rect() opencv3.Rect {
 	rect := C.Face_GetRect(f.p)
@@ -36,6 +41,13 @@ func (f *Face) Rect() opencv3.Rect {
 		Y:      int(rect.y),
 		Width:  int(rect.width),
 		Height: int(rect.height)}
+}
+
+// IsSmiling Face? :)
+// You must call FaceDetector's DetectEye() and DetectSmile() with this Face
+// first, or this function will throw an exception
+func (f *Face) IsSmiling() bool {
+	return bool(C.Face_IsSmiling(f.p))
 }
 
 // FaceDetector is a bind of `cv::pvl::FaceDetector`.
@@ -77,4 +89,16 @@ func (f *FaceDetector) DetectFaceRect(img opencv3.Mat) []Face {
 		faces[i] = Face{p: r}
 	}
 	return faces
+}
+
+// DetectEyes uses PVL FaceDetector to detect eyes on a Face
+func (f *FaceDetector) DetectEye(img opencv3.Mat, face Face) {
+	C.FaceDetector_DetectEye(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
+	return
+}
+
+// DetectSmile uses PVL FaceDetector to detect eyes on a Face
+func (f *FaceDetector) DetectSmile(img opencv3.Mat, face Face) {
+	C.FaceDetector_DetectSmile(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
+	return
 }
