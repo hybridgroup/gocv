@@ -1,0 +1,79 @@
+package pvl
+
+/*
+#include <stdlib.h>
+#include "face_detector.h"
+*/
+import "C"
+
+import (
+	"reflect"
+	"unsafe"
+
+	opencv3 ".."
+)
+
+// FaceDetector is a bind of `cv::pvl::FaceDetector`.
+type FaceDetector struct {
+	p C.FaceDetector
+}
+
+// NewFaceDetector returns a new PVL FaceDetector.
+func NewFaceDetector() FaceDetector {
+	return FaceDetector{p: C.FaceDetector_New()}
+}
+
+// Close FaceDetector.
+func (f *FaceDetector) Close() {
+	C.FaceDetector_Close(f.p)
+	f.p = nil
+}
+
+// SetTrackingModeEnabled sets if the PVL FaceDetector tracking mode is enabled.
+func (f *FaceDetector) SetTrackingModeEnabled(enabled bool) {
+	C.FaceDetector_SetTrackingModeEnabled(f.p, C.bool(enabled))
+}
+
+// DetectFaceRect tries to detect Faces from the image Mat passed in as the param.
+// The Mat must be a grayed image that has only one channel and 8-bit depth.
+func (f *FaceDetector) DetectFaceRect(img opencv3.Mat) []Face {
+	ret := C.FaceDetector_DetectFaceRect(f.p, C.Mat(img.Ptr()))
+	fArray := ret.faces
+	length := int(ret.length)
+	hdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(fArray)),
+		Len:  length,
+		Cap:  length,
+	}
+	s := *(*[]C.Face)(unsafe.Pointer(&hdr))
+
+	faces := make([]Face, length)
+	for i, r := range s {
+		faces[i] = Face{p: r}
+	}
+	return faces
+}
+
+// DetectEye uses PVL FaceDetector to detect eyes on a Face
+func (f *FaceDetector) DetectEye(img opencv3.Mat, face Face) {
+	C.FaceDetector_DetectEye(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
+	return
+}
+
+// DetectMouth uses PVL FaceDetector to detect mouth on a Face
+func (f *FaceDetector) DetectMouth(img opencv3.Mat, face Face) {
+	C.FaceDetector_DetectMouth(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
+	return
+}
+
+// DetectSmile uses PVL FaceDetector to detect smile on a Face
+func (f *FaceDetector) DetectSmile(img opencv3.Mat, face Face) {
+	C.FaceDetector_DetectSmile(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
+	return
+}
+
+// DetectBlink uses PVL FaceDetector to detect blink on a Face
+func (f *FaceDetector) DetectBlink(img opencv3.Mat, face Face) {
+	C.FaceDetector_DetectBlink(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
+	return
+}
