@@ -47,9 +47,26 @@ Point Face_LeftEyePosition(Face face)
     return p;
 }
 
+bool Face_LeftEyeClosed(Face face)
+{
+    return face->get<bool>(cv::pvl::Face::CLOSING_LEFT_EYE);
+}
+
 Point Face_RightEyePosition(Face face)
 {
     cv::Point pt = face->get<cv::Point>(cv::pvl::Face::RIGHT_EYE_POS);
+    Point p = {pt.x, pt.y};
+    return p;
+}
+
+bool Face_RightEyeClosed(Face face)
+{
+    return face->get<bool>(cv::pvl::Face::CLOSING_RIGHT_EYE);
+}
+
+Point Face_MouthPosition(Face face)
+{
+    cv::Point pt = face->get<cv::Point>(cv::pvl::Face::MOUTH_POS);
     Point p = {pt.x, pt.y};
     return p;
 }

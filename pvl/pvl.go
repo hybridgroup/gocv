@@ -62,6 +62,11 @@ func (f *Face) LeftEyePosition() opencv3.Point {
 	}
 }
 
+// IsLeftEyeClosed checks if the right sys is closed or not
+func (f *Face) IsLeftEyeClosed() bool {
+	return bool(C.Face_LeftEyeClosed(f.p))
+}
+
 // RightEyePosition of Face
 func (f *Face) RightEyePosition() opencv3.Point {
 	pt := C.Face_RightEyePosition(f.p)
@@ -71,11 +76,25 @@ func (f *Face) RightEyePosition() opencv3.Point {
 	}
 }
 
+// IsRightEyeClosed checks if the right sys is closed or not
+func (f *Face) IsRightEyeClosed() bool {
+	return bool(C.Face_RightEyeClosed(f.p))
+}
+
 // IsSmiling Face? :)
 // You must call FaceDetector's DetectEye() and DetectSmile() with this Face
 // first, or this function will throw an exception
 func (f *Face) IsSmiling() bool {
 	return bool(C.Face_IsSmiling(f.p))
+}
+
+// MouthPosition of Face
+func (f *Face) MouthPosition() opencv3.Point {
+	pt := C.Face_MouthPosition(f.p)
+	return opencv3.Point{
+		X: int(pt.y),
+		Y: int(pt.y),
+	}
 }
 
 // FaceDetector is a bind of `cv::pvl::FaceDetector`.
