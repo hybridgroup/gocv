@@ -70,6 +70,7 @@ extern "C" {
   Mat Mat_New();
   void Mat_Close(Mat m);
   int Mat_Empty(Mat m);
+  Mat Mat_Region(Mat m, Rect r);
 
 #ifdef __cplusplus
 }

@@ -1,15 +1,13 @@
 // What it does:
 //
-// This example uses the Intel CV SDK PVL FaceDetect class to detect smiles!
-// It first detects faces, then detects the smiles on each. Based on if the person is
-// smiling, it draws a green or blue rectangle around each of them, 
-// before displaying them within a Window.
+// This example uses the Intel CV SDK PVL FaceDetect class to faces, then blurs them
+// using a Gaussian blur
 //
 // How to run:
 //
-// smiledetect [camera ID]
+// faceblur [camera ID]
 //
-// 		go run ./examples/pvl/smiledetect.go 0
+// 		go run ./examples/pvl/faceblur.go 0
 //
 // +build example
 
@@ -26,7 +24,7 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("How to run:\n\tsmiledetect [camera ID]")
+		fmt.Println("How to run:\n\tfaceblur [camera ID]")
 		return
 	}
 
@@ -43,7 +41,7 @@ func main() {
 	}
 
 	// open display window
-	window := opencv3.NewWindow("PVL Smile Detect")
+	window := opencv3.NewWindow("PVL Faceblur")
 	defer window.Close()
 	
 	// prepare input image matrix
@@ -54,10 +52,6 @@ func main() {
 	imgGray := opencv3.NewMat()
 	defer imgGray.Close()
 	
-	// color to draw the rect for detected faces
-	blue := opencv3.NewScalar(255, 0, 0, 0)
-	green := opencv3.NewScalar(0, 255, 0, 0)
-
 	// load PVL FaceDetector to recognize faces
 	fd := pvl.NewFaceDetector()
 	defer fd.Close()
@@ -82,31 +76,17 @@ func main() {
 		faces := fd.DetectFaceRect(imgGray)
 		fmt.Printf("found %d faces\n", len(faces))
 
-		// draw a rectangle around each face on the original image,
-		// along with text identifing as "Human"
+		// blur each face on the original image
 		for _, face := range faces {
-			// detect smile
-			fd.DetectEye(imgGray, face)
-			fd.DetectSmile(imgGray, face)
-
-			// set the color of the box based on if the human is smiling
-			color := blue
-			if face.IsSmiling() {
-				color = green
-			}
-
-			opencv3.Rectangle(img, face.Rect(), color)
-
-			size := opencv3.GetTextSize("Human", opencv3.FontHersheyPlain, 1.2, 2)
-			pt := opencv3.Point{
-				X: face.Rect().X + (face.Rect().Width / 2) - (size.Width / 2),
-				Y: face.Rect().Y - 2,
-			}
-			opencv3.PutText(img, "Human", pt, opencv3.FontHersheyPlain, 1.2, color, 2)
+			imgFace := img.Region(face.Rect())
+			defer imgFace.Close()
+		
+			// blur face
+			opencv3.GaussianBlur(imgFace, imgFace, opencv3.Size{Width:23, Height:23}, 30, 50, 4)
 		}
 
 		// show the image in the window, and wait 1 millisecond
 		window.IMShow(img)
-		opencv3.WaitKey(1)
+		opencv3.WaitKey(100)
 	}
 }

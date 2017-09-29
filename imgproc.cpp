@@ -7,7 +7,8 @@ void CvtColor(Mat src, Mat dst, int code)
 
 void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt)
 {
-    cv:GaussianBlur(src, dst, ps, sX, sY, bt);
+    cv::Size sz(ps.width, ps.height);
+    cv:GaussianBlur(*src, *dst, sz, sX, sY, bt);
 }
 
 void Rectangle(Mat img, Rect r, Scalar color) {

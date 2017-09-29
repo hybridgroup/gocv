@@ -36,6 +36,18 @@ func (m *Mat) Empty() bool {
 	return isEmpty != 0
 }
 
+// Region returns a new Mat of a region of this Mat.
+func (m *Mat) Region(reg Rect) Mat {
+	cRect := C.struct_Rect{
+		x:      C.int(reg.X),
+		y:      C.int(reg.Y),
+		width:  C.int(reg.Width),
+		height: C.int(reg.Height),
+	}
+
+	return Mat{p: C.Mat_Region(m.p, cRect)}
+}
+
 // Point represents a single point with X and Y coordinates.
 type Point struct {
 	X int
