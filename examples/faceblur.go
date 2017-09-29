@@ -1,13 +1,13 @@
 // What it does:
 //
-// This example uses the Intel CV SDK PVL FaceDetect to detect faces, 
+// This example uses the CascadeClassifier to detect faces, 
 // then blurs them using a Gaussian blur before displaying in a window.
 //
 // How to run:
 //
-// faceblur [camera ID]
+// faceblur [camera ID] [classifier XML file]
 //
-// 		go run ./examples/pvl/faceblur.go 0
+// 		go run ./examples/faceblur.go 0 data/haarcascade_frontalface_default.xml
 //
 // +build example
 
@@ -18,18 +18,18 @@ import (
 	"os"
 	"strconv"
 
-	opencv3 "../.."
-	pvl "../../pvl"
+	opencv3 ".."
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("How to run:\n\tfaceblur [camera ID]")
+	if len(os.Args) < 3 {
+		fmt.Println("How to run:\n\tfaceblur [camera ID] [classifier XML file]")
 		return
 	}
 
 	// parse args
 	deviceID, _ := strconv.Atoi(os.Args[1])
+	xmlFile := os.Args[2]
 
 	// open webcam
 	webcam := opencv3.NewVideoCapture()
@@ -41,23 +41,18 @@ func main() {
 	}
 
 	// open display window
-	window := opencv3.NewWindow("PVL Faceblur")
+	window := opencv3.NewWindow("Face Detect")
 	defer window.Close()
-	
-	// prepare input image matrix
+
+	// prepare image matrix
 	img := opencv3.NewMat()
 	defer img.Close()
 
-	// prepare grayscale image matrix
-	imgGray := opencv3.NewMat()
-	defer imgGray.Close()
+	// load classifier to recognize faces
+	classifier := opencv3.NewCascadeClassifier()
+	defer classifier.Close()
 	
-	// load PVL FaceDetector to recognize faces
-	fd := pvl.NewFaceDetector()
-	defer fd.Close()
-
-	// enable tracking mode for more efficient tracking of video source
-	fd.SetTrackingModeEnabled(true)
+	classifier.Load(xmlFile)
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
@@ -69,16 +64,14 @@ func main() {
 			continue
 		}
 
-		// convert image to grayscale for detection
-		opencv3.CvtColor(img, imgGray, opencv3.ColorBGR2GRAY);
-	
 		// detect faces
-		faces := fd.DetectFaceRect(imgGray)
-		fmt.Printf("found %d faces\n", len(faces))
+		rects := classifier.DetectMultiScale(img)
+		fmt.Printf("found %d faces\n", len(rects))
 
-		// blur each face on the original image
-		for _, face := range faces {
-			imgFace := img.Region(face.Rect())
+		// draw a rectangle around each face on the original image,
+		// along with text identifing as "Human"
+		for _, r := range rects {
+			imgFace := img.Region(r)
 			defer imgFace.Close()
 		
 			// blur face
@@ -87,6 +80,6 @@ func main() {
 
 		// show the image in the window, and wait 1 millisecond
 		window.IMShow(img)
-		opencv3.WaitKey(100)
+		opencv3.WaitKey(1)
 	}
 }
