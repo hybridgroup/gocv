@@ -5,6 +5,11 @@ void CvtColor(Mat src, Mat dst, int code)
     cv::cvtColor(*src, *dst, code);
 }
 
+void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt)
+{
+    cv:GaussianBlur(src, dst, ps, sX, sY, bt);
+}
+
 void Rectangle(Mat img, Rect r, Scalar color) {
     cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
     cv::rectangle(*img, cv::Point(r.x, r.y), cv::Point(r.x+r.width, r.y+r.height),

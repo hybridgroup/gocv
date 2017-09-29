@@ -12,6 +12,16 @@ func CvtColor(src Mat, dst Mat, code int) {
 	C.CvtColor(src.p, dst.p, C.int(code))
 }
 
+// GaussianBlur blurs an image using a Gaussian filter.
+func GaussianBlur(src Mat, dst Mat, ksize Size, sigmaX float64, sigmaY float64, borderType int) {
+	pSize := C.struct_Size{
+		height: C.int(ksize.Height),
+		width:  C.int(ksize.Width),
+	}
+
+	C.GaussianBlur(src.p, dst.p, pSize, C.double(sigmaX), C.double(sigmaY), C.int(borderType))
+}
+
 // Rectangle draws a rectangle using to target image Mat.
 func Rectangle(img Mat, r Rect, c Scalar) {
 	cRect := C.struct_Rect{
