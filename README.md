@@ -28,20 +28,26 @@ func main() {
 	webcam := opencv3.NewVideoCapture()
 	defer webcam.Close()
 
-	if ok := webcam.OpenDevice(int(deviceID)); !ok {
+	if ok := webcam.OpenDevice(deviceID); !ok {
 		fmt.Printf("error opening device: %v\n", deviceID)
 		return
 	}
 
 	// open display window
-	window := opencv3.NewWindow("Capture")
+	window := opencv3.NewWindow("Face Detect")
+	defer window.Close()
 
 	// prepare image matrix
 	img := opencv3.NewMat()
 	defer img.Close()
 
+	// color for the rect when faces detected
+	blue := opencv3.NewScalar(255, 0, 0, 0)
+
 	// load classifier to recognize faces
 	classifier := opencv3.NewCascadeClassifier()
+	defer classifier.Close()
+	
 	classifier.Load("data/haarcascade_frontalface_default.xml")
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
@@ -56,11 +62,11 @@ func main() {
 
 		// detect faces
 		rects := classifier.DetectMultiScale(img)
-		fmt.Printf("found %d\n", len(rects))
-		
-		// draw a rectagle around each face
+		fmt.Printf("found %d faces\n", len(rects))
+
+		// draw a rectangle around each face on the original image
 		for _, r := range rects {
-			opencv3.Rectangle(img, r)	
+			opencv3.Rectangle(img, r, blue)
 		}
 
 		// show the image in the window, and wait 1 millisecond
