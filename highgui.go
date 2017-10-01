@@ -26,12 +26,13 @@ func NewWindow(name string) *Window {
 }
 
 // Close deletes a specific Window
-func (w *Window) Close() {
+func (w *Window) Close() error {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
 	C.Window_Close(cName)
 	w.open = false
+	return nil
 }
 
 // IsOpen checks to see if the Window seems to be open.

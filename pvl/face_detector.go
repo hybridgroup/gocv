@@ -24,9 +24,10 @@ func NewFaceDetector() FaceDetector {
 }
 
 // Close FaceDetector.
-func (f *FaceDetector) Close() {
+func (f *FaceDetector) Close() error {
 	C.FaceDetector_Close(f.p)
 	f.p = nil
+	return nil
 }
 
 // SetTrackingModeEnabled sets if the PVL FaceDetector tracking mode is enabled.

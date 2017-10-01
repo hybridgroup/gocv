@@ -21,9 +21,10 @@ func NewCascadeClassifier() CascadeClassifier {
 }
 
 // Close deletes the CascadeClassifier's pointer.
-func (c *CascadeClassifier) Close() {
+func (c *CascadeClassifier) Close() error {
 	C.CascadeClassifier_Close(c.p)
 	c.p = nil
+	return nil
 }
 
 // Load cascade configuration file to classifier.

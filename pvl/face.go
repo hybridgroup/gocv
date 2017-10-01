@@ -21,9 +21,10 @@ func NewFace() Face {
 }
 
 // Close Face.
-func (f *Face) Close() {
+func (f *Face) Close() error {
 	C.Face_Close(f.p)
 	f.p = nil
+	return nil
 }
 
 // Ptr returns the Face's underlying object pointer.
