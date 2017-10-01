@@ -16,6 +16,7 @@
 package main
 
 import (
+	"color"
 	"fmt"
 	"image"
 	"os"
@@ -54,9 +55,9 @@ func main() {
 	imgGray := opencv3.NewMat()
 	defer imgGray.Close()
 	
-	// color to draw the rect for detected faces
-	blue := opencv3.NewScalar(255, 0, 0, 0)
-	green := opencv3.NewScalar(0, 255, 0, 0)
+	// colors to draw the rect for detected faces
+	blue := color.RGBA(0, 255, 255, 0)
+	green := color.RGBA(0, 255, 0, 0)
 
 	// load PVL FaceDetector to recognize faces
 	fd := pvl.NewFaceDetector()
@@ -75,7 +76,7 @@ func main() {
 			continue
 		}
 
-		// convert image to grayscale for detection
+		// convert image Mat to grayscale Mat for detection
 		opencv3.CvtColor(img, imgGray, opencv3.ColorBGR2GRAY);
 	
 		// detect faces
