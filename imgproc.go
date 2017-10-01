@@ -5,8 +5,11 @@ package opencv3
 #include "imgproc.h"
 */
 import "C"
-import "unsafe"
-import "image"
+import (
+	"image"
+	"image/color"
+	"unsafe"
+)
 
 // CvtColor converts an image from one color space to another
 func CvtColor(src Mat, dst Mat, code int) {
@@ -24,7 +27,7 @@ func GaussianBlur(src Mat, dst Mat, ksize image.Point, sigmaX float64, sigmaY fl
 }
 
 // Rectangle draws a rectangle using to target image Mat.
-func Rectangle(img Mat, r image.Rectangle, c Scalar) {
+func Rectangle(img Mat, r image.Rectangle, c color.RGBA) {
 	cRect := C.struct_Rect{
 		x:      C.int(r.Min.X),
 		y:      C.int(r.Min.Y),
@@ -33,10 +36,10 @@ func Rectangle(img Mat, r image.Rectangle, c Scalar) {
 	}
 
 	sColor := C.struct_Scalar{
-		val1: C.double(c.Val1),
-		val2: C.double(c.Val2),
-		val3: C.double(c.Val3),
-		val4: C.double(c.Val4),
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
 	}
 
 	C.Rectangle(img.p, cRect, sColor)
@@ -68,7 +71,7 @@ func GetTextSize(text string, fontFace int, fontScale float64, thickness int) im
 }
 
 // PutText renders the specified text string in the image.
-func PutText(img Mat, text string, org image.Point, fontFace int, fontScale float64, color Scalar, thickness int) {
+func PutText(img Mat, text string, org image.Point, fontFace int, fontScale float64, c color.RGBA, thickness int) {
 	cText := C.CString(text)
 	defer C.free(unsafe.Pointer(cText))
 
@@ -78,10 +81,10 @@ func PutText(img Mat, text string, org image.Point, fontFace int, fontScale floa
 	}
 
 	sColor := C.struct_Scalar{
-		val1: C.double(color.Val1),
-		val2: C.double(color.Val2),
-		val3: C.double(color.Val3),
-		val4: C.double(color.Val4),
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
 	}
 
 	C.PutText(img.p, cText, pOrg, C.int(fontFace), C.double(fontScale), sColor, C.int(thickness))
