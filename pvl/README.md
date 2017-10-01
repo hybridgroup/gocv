@@ -8,6 +8,7 @@ The Intel [Photography Vision Library (PVL)](https://software.intel.com/en-us/cv
 package main
 
 import (
+	"color"
 	"fmt"
 
 	opencv3 ".."
@@ -36,6 +37,9 @@ func main() {
 	imgGray := opencv3.NewMat()
 	defer imgGray.Close()
 	
+	// color to draw the rect for detected faces
+	blue := color.RGBA(0, 255, 255, 0)
+
 	// load PVL FaceDetector to recognize faces
 	fd := pvl.NewFaceDetector()
 	defer fd.Close()
@@ -62,7 +66,7 @@ func main() {
 
 		// draw a rectangle around each face on the original image
 		for _, face := range faces {
-			opencv3.Rectangle(img, face.Rectangle())
+			opencv3.Rectangle(img, face.Rectangle(), blue)
 		}
 
 		// show the image in the window, and wait 1 millisecond
