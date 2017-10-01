@@ -16,7 +16,7 @@
 package main
 
 import (
-	"color"
+	"image/color"
 	"fmt"
 	"image"
 	"os"
@@ -56,8 +56,8 @@ func main() {
 	defer imgGray.Close()
 	
 	// colors to draw the rect for detected faces
-	blue := color.RGBA(0, 255, 255, 0)
-	green := color.RGBA(0, 255, 0, 0)
+	blue := color.RGBA{0, 0, 255, 0}
+	green := color.RGBA{0, 255, 0, 0}
 
 	// load PVL FaceDetector to recognize faces
 	fd := pvl.NewFaceDetector()
