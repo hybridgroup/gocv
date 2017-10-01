@@ -20,9 +20,10 @@ func NewMat() Mat {
 }
 
 // Close the Mat object.
-func (m *Mat) Close() {
+func (m *Mat) Close() error {
 	C.Mat_Close(m.p)
 	m.p = nil
+	return nil
 }
 
 // Ptr returns the Mat's underlying object pointer.

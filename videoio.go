@@ -21,9 +21,10 @@ func NewVideoCapture() VideoCapture {
 }
 
 // Close VideoCapture object.
-func (v *VideoCapture) Close() {
+func (v *VideoCapture) Close() error {
 	C.VideoCapture_Close(v.p)
 	v.p = nil
+	return nil
 }
 
 // Open a video data and prepares to start capturing.
@@ -77,9 +78,10 @@ func NewVideoWriter() VideoWriter {
 }
 
 // Close VideoWriter object.
-func (vw *VideoWriter) Close() {
+func (vw *VideoWriter) Close() error {
 	C.VideoWriter_Close(vw.p)
 	vw.p = nil
+	return nil
 }
 
 // Open a VideoWriter with a specific output file.
