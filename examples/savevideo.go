@@ -30,15 +30,12 @@ func main() {
 	deviceID, _ := strconv.Atoi(os.Args[1])
 	saveFile := os.Args[2]
 	
-	webcam := opencv3.NewVideoCapture()
+	webcam, err := opencv3.VideoCaptureDevice(int(deviceID))
+	if err != nil {
+		fmt.Printf("error opening video capture device: %v\n", deviceID)
+		return
+	}	
 	defer webcam.Close()
-
-	writer := opencv3.NewVideoWriter()
-	defer writer.Close()
-
-	if ok := webcam.OpenDevice(deviceID); !ok {
-		fmt.Printf("error opening device: %v\n", deviceID)
-	}
 
 	img := opencv3.NewMat()
 	defer img.Close()
@@ -48,7 +45,12 @@ func main() {
 		return
 	}
 
-	writer.OpenWithMat(saveFile, 25, img)
+	writer, err := opencv3.VideoWriterFileMat(saveFile, 25, img)
+	if err != nil {
+		fmt.Printf("error opening video writer device: %v\n", saveFile)
+		return
+	}		
+	defer writer.Close()
 
 	for i := 0; i < 100; i++ {
 		if ok := webcam.Read(img); !ok {

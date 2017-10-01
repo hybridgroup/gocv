@@ -33,13 +33,12 @@ func main() {
 	xmlFile := os.Args[2]
 
 	// open webcam
-	webcam := opencv3.NewVideoCapture()
-	defer webcam.Close()
-
-	if ok := webcam.OpenDevice(deviceID); !ok {
-		fmt.Printf("error opening device: %v\n", deviceID)
+	webcam, err := opencv3.VideoCaptureDevice(int(deviceID))
+	if err != nil {
+		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
-	}
+	}	
+	defer webcam.Close()
 
 	// open display window
 	window := opencv3.NewWindow("Face Detect")
@@ -78,10 +77,7 @@ func main() {
 			opencv3.Rectangle(img, r, blue)
 
 			size := opencv3.GetTextSize("Human", opencv3.FontHersheyPlain, 1.2, 2)
-			pt := image.Point{
-				X: r.X + (r.Width / 2) - (size.X / 2),
-				Y: r.Y - 2,
-			}
+			pt := image.Pt(r.Min.X + (r.Min.X / 2) - (size.X / 2), r.Min.Y - 2)
 			opencv3.PutText(img, "Human", pt, opencv3.FontHersheyPlain, 1.2, blue, 2)
 		}
 
