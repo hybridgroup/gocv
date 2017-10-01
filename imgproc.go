@@ -6,6 +6,7 @@ package opencv3
 */
 import "C"
 import "unsafe"
+import "image"
 
 // CvtColor converts an image from one color space to another
 func CvtColor(src Mat, dst Mat, code int) {
@@ -13,22 +14,22 @@ func CvtColor(src Mat, dst Mat, code int) {
 }
 
 // GaussianBlur blurs an image using a Gaussian filter.
-func GaussianBlur(src Mat, dst Mat, ksize Size, sigmaX float64, sigmaY float64, borderType int) {
+func GaussianBlur(src Mat, dst Mat, ksize image.Point, sigmaX float64, sigmaY float64, borderType int) {
 	pSize := C.struct_Size{
-		height: C.int(ksize.Height),
-		width:  C.int(ksize.Width),
+		height: C.int(ksize.X),
+		width:  C.int(ksize.Y),
 	}
 
 	C.GaussianBlur(src.p, dst.p, pSize, C.double(sigmaX), C.double(sigmaY), C.int(borderType))
 }
 
 // Rectangle draws a rectangle using to target image Mat.
-func Rectangle(img Mat, r Rect, c Scalar) {
+func Rectangle(img Mat, r image.Rectangle, c Scalar) {
 	cRect := C.struct_Rect{
-		x:      C.int(r.X),
-		y:      C.int(r.Y),
-		width:  C.int(r.Width),
-		height: C.int(r.Height),
+		x:      C.int(r.Min.X),
+		y:      C.int(r.Min.Y),
+		width:  C.int(r.Size().X),
+		height: C.int(r.Size().Y),
 	}
 
 	sColor := C.struct_Scalar{
@@ -56,18 +57,18 @@ const (
 	FontItalic               = 16 //!< flag for italic font
 )
 
-// GetTextSize returns the size required to draw text using a specific font face,
-// scale, and thickness.
-func GetTextSize(text string, fontFace int, fontScale float64, thickness int) Size {
+// GetTextSize returns an image.Point with the  size required to draw text using
+// a specific font face, scale, and thickness.
+func GetTextSize(text string, fontFace int, fontScale float64, thickness int) image.Point {
 	cText := C.CString(text)
 	defer C.free(unsafe.Pointer(cText))
 
 	sz := C.GetTextSize(cText, C.int(fontFace), C.double(fontScale), C.int(thickness))
-	return Size{Width: int(sz.width), Height: int(sz.height)}
+	return image.Pt(int(sz.width), int(sz.height))
 }
 
 // PutText renders the specified text string in the image.
-func PutText(img Mat, text string, org Point, fontFace int, fontScale float64, color Scalar, thickness int) {
+func PutText(img Mat, text string, org image.Point, fontFace int, fontScale float64, color Scalar, thickness int) {
 	cText := C.CString(text)
 	defer C.free(unsafe.Pointer(cText))
 

@@ -17,6 +17,7 @@ package main
 
 import (
 	"fmt"
+	"image"
 	"os"
 	"strconv"
 
@@ -95,13 +96,11 @@ func main() {
 				color = green
 			}
 
-			opencv3.Rectangle(img, face.Rect(), color)
+			rect := face.Rectangle()
+			opencv3.Rectangle(img, rect, color)
 
 			size := opencv3.GetTextSize("Human", opencv3.FontHersheyPlain, 1.2, 2)
-			pt := opencv3.Point{
-				X: face.Rect().X + (face.Rect().Width / 2) - (size.Width / 2),
-				Y: face.Rect().Y - 2,
-			}
+			pt := image.Pt(rect.Min.X + (rect.Min.X / 2) - (size.X / 2), rect.Min.Y - 2)
 			opencv3.PutText(img, "Human", pt, opencv3.FontHersheyPlain, 1.2, color, 2)
 		}
 

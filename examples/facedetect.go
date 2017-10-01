@@ -15,6 +15,7 @@ package main
 
 import (
 	"fmt"
+	"image"
 	"os"
 	"strconv"
 
@@ -77,8 +78,8 @@ func main() {
 			opencv3.Rectangle(img, r, blue)
 
 			size := opencv3.GetTextSize("Human", opencv3.FontHersheyPlain, 1.2, 2)
-			pt := opencv3.Point{
-				X: r.X + (r.Width / 2) - (size.Width / 2),
+			pt := image.Point{
+				X: r.X + (r.Width / 2) - (size.X / 2),
 				Y: r.Y - 2,
 			}
 			opencv3.PutText(img, "Human", pt, opencv3.FontHersheyPlain, 1.2, blue, 2)

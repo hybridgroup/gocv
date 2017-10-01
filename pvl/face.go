@@ -7,7 +7,7 @@ package pvl
 import "C"
 
 import (
-	opencv3 ".."
+	"image"
 )
 
 // Face is a wrapper around `cv::pvl::Face`.
@@ -32,13 +32,10 @@ func (f *Face) Ptr() C.Face {
 	return f.p
 }
 
-// Rect returns the Rect for this Face
-func (f *Face) Rect() opencv3.Rect {
-	rect := C.Face_GetRect(f.p)
-	return opencv3.Rect{X: int(rect.x),
-		Y:      int(rect.y),
-		Width:  int(rect.width),
-		Height: int(rect.height)}
+// Rect returns the image.Rectangle for this Face
+func (f *Face) Rectangle() image.Rectangle {
+	r := C.Face_GetRect(f.p)
+	return image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
 }
 
 // RIPAngle of Face
@@ -52,12 +49,9 @@ func (f *Face) ROPAngle() int {
 }
 
 // LeftEyePosition of Face
-func (f *Face) LeftEyePosition() opencv3.Point {
+func (f *Face) LeftEyePosition() image.Point {
 	pt := C.Face_LeftEyePosition(f.p)
-	return opencv3.Point{
-		X: int(pt.y),
-		Y: int(pt.y),
-	}
+	return image.Pt(int(pt.y), int(pt.y))
 }
 
 // IsLeftEyeClosed checks if the right sys is closed or not
@@ -66,12 +60,9 @@ func (f *Face) IsLeftEyeClosed() bool {
 }
 
 // RightEyePosition of Face
-func (f *Face) RightEyePosition() opencv3.Point {
+func (f *Face) RightEyePosition() image.Point {
 	pt := C.Face_RightEyePosition(f.p)
-	return opencv3.Point{
-		X: int(pt.y),
-		Y: int(pt.y),
-	}
+	return image.Pt(int(pt.y), int(pt.y))
 }
 
 // IsRightEyeClosed checks if the right sys is closed or not
@@ -87,10 +78,7 @@ func (f *Face) IsSmiling() bool {
 }
 
 // MouthPosition of Face
-func (f *Face) MouthPosition() opencv3.Point {
+func (f *Face) MouthPosition() image.Point {
 	pt := C.Face_MouthPosition(f.p)
-	return opencv3.Point{
-		X: int(pt.y),
-		Y: int(pt.y),
-	}
+	return image.Pt(int(pt.y), int(pt.y))
 }

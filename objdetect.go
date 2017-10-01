@@ -6,6 +6,7 @@ package opencv3
 */
 import "C"
 import (
+	"image"
 	"reflect"
 	"unsafe"
 )
@@ -36,7 +37,7 @@ func (c *CascadeClassifier) Load(name string) bool {
 
 // DetectMultiScale detects something which is decided by loaded file. Returns
 // multi results addressed with rectangle.
-func (c *CascadeClassifier) DetectMultiScale(img Mat) []Rect {
+func (c *CascadeClassifier) DetectMultiScale(img Mat) []image.Rectangle {
 	ret := C.CascadeClassifier_DetectMultiScale(c.p, img.p)
 	defer C.Rects_Close(ret)
 
@@ -49,14 +50,9 @@ func (c *CascadeClassifier) DetectMultiScale(img Mat) []Rect {
 	}
 	s := *(*[]C.Rect)(unsafe.Pointer(&hdr))
 
-	rects := make([]Rect, length)
+	rects := make([]image.Rectangle, length)
 	for i, r := range s {
-		rects[i] = Rect{
-			X:      int(r.x),
-			Y:      int(r.y),
-			Width:  int(r.width),
-			Height: int(r.height),
-		}
+		rects[i] = image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
 	}
 	return rects
 }
