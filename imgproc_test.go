@@ -9,11 +9,11 @@ func TestRect(t *testing.T) {
 }
 func TestGetTextSize(t *testing.T) {
 	size := GetTextSize("test", FontHersheySimplex, 1.2, 1)
-	if size.Width != 72 {
+	if size.X != 72 {
 		t.Error("Invalid text size width")
 	}
 
-	if size.Height != 26 {
+	if size.Y != 26 {
 		t.Error("Invalid text size height")
 	}
 }

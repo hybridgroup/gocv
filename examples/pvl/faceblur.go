@@ -15,6 +15,7 @@ package main
 
 import (
 	"fmt"
+	"image"
 	"os"
 	"strconv"
 
@@ -78,11 +79,11 @@ func main() {
 
 		// blur each face on the original image
 		for _, face := range faces {
-			imgFace := img.Region(face.Rect())
+			imgFace := img.Region(face.Rectangle())
 			defer imgFace.Close()
 		
 			// blur face
-			opencv3.GaussianBlur(imgFace, imgFace, opencv3.Size{Width:23, Height:23}, 30, 50, 4)
+			opencv3.GaussianBlur(imgFace, imgFace, image.Pt(23, 23), 30, 50, 4)
 		}
 
 		// show the image in the window, and wait 1 millisecond

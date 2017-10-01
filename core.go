@@ -5,6 +5,7 @@ package opencv3
 #include "core.h"
 */
 import "C"
+import "image"
 
 // CMat is an alias for C pointer.
 type CMat C.Mat
@@ -38,38 +39,19 @@ func (m *Mat) Empty() bool {
 }
 
 // Region returns a new Mat of a region of this Mat.
-func (m *Mat) Region(reg Rect) Mat {
+func (m *Mat) Region(rio image.Rectangle) Mat {
 	cRect := C.struct_Rect{
-		x:      C.int(reg.X),
-		y:      C.int(reg.Y),
-		width:  C.int(reg.Width),
-		height: C.int(reg.Height),
+		x:      C.int(rio.Min.X),
+		y:      C.int(rio.Min.Y),
+		width:  C.int(rio.Size().X),
+		height: C.int(rio.Size().Y),
 	}
 
 	return Mat{p: C.Mat_Region(m.p, cRect)}
 }
 
-// Point represents a single point with X and Y coordinates.
-type Point struct {
-	X int
-	Y int
-}
-
-// Rect represents rectangle. X and Y is a start point of Width and Height.
-type Rect struct {
-	X      int
-	Y      int
-	Width  int
-	Height int
-}
-
-// Size represents a size of something with Width and Height.
-type Size struct {
-	Width  int
-	Height int
-}
-
-// Scalar represents a Scalar set of 4 float64 values.
+// Scalar represents a Scalar set of 4 float64 values. Usually used to represent a
+// BGRA color value in OpenCV.
 type Scalar struct {
 	Val1 float64
 	Val2 float64
