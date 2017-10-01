@@ -42,7 +42,7 @@ func main() {
 	defer img.Close()
 
 	// color for the rect when faces detected
-	blue := color.RGBA{0, 255, 0, 0}
+	blue := color.RGBA{0, 0, 255, 0}
 
 	// load classifier to recognize faces
 	classifier := opencv3.NewCascadeClassifier()
