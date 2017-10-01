@@ -40,11 +40,6 @@ func (v *VideoCapture) Close() error {
 	return nil
 }
 
-// Release video capture object.
-func (v *VideoCapture) Release() {
-	C.VideoCapture_Release(v.p)
-}
-
 // Set parameter with property (=key).
 func (v *VideoCapture) Set(prop int, param int) {
 	C.VideoCapture_Set(v.p, C.int(prop), C.int(param))
