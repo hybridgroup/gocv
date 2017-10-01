@@ -10,14 +10,27 @@ import (
 	"unsafe"
 )
 
-// VideoCapture is a bind of `cv::VideoCapture`.
+// VideoCapture is a wrapper around the cv::VideoCapture class.
 type VideoCapture struct {
 	p C.VideoCapture
 }
 
-// NewVideoCapture returns a new video capture.
-func NewVideoCapture() VideoCapture {
-	return VideoCapture{p: C.VideoCapture_New()}
+// VideoCaptureFile opens a VideoCapture from a file and prepares to start capturing
+func VideoCaptureFile(uri string) (vc VideoCapture, err error) {
+	vc = VideoCapture{p: C.VideoCapture_New()}
+
+	cURI := C.CString(uri)
+	defer C.free(unsafe.Pointer(cURI))
+
+	C.VideoCapture_Open(vc.p, cURI)
+	return vc, nil
+}
+
+// VideoCaptureDevice opens a VideoCapture from a device and prepares to start capturing
+func VideoCaptureDevice(device int) (vc VideoCapture, err error) {
+	vc = VideoCapture{p: C.VideoCapture_New()}
+	C.VideoCapture_OpenDevice(vc.p, C.int(device))
+	return vc, nil
 }
 
 // Close VideoCapture object.
@@ -25,18 +38,6 @@ func (v *VideoCapture) Close() error {
 	C.VideoCapture_Close(v.p)
 	v.p = nil
 	return nil
-}
-
-// Open a video data and prepares to start capturing.
-func (v *VideoCapture) Open(uri string) bool {
-	cURI := C.CString(uri)
-	defer C.free(unsafe.Pointer(cURI))
-	return C.VideoCapture_Open(v.p, cURI) != 0
-}
-
-// OpenDevice opens a video device and prepares to start capturing.
-func (v *VideoCapture) OpenDevice(device int) bool {
-	return C.VideoCapture_OpenDevice(v.p, C.int(device)) != 0
 }
 
 // Release video capture object.
@@ -72,9 +73,25 @@ type VideoWriter struct {
 	p  C.VideoWriter
 }
 
-// NewVideoWriter returns a new video writer.
-func NewVideoWriter() VideoWriter {
-	return VideoWriter{p: C.VideoWriter_New()}
+// VideoWriterFile opens a VideoWriter with a specific output file.
+func VideoWriterFile(name string, fps float64, width int, height int) (vw VideoWriter, err error) {
+	vw = VideoWriter{p: C.VideoWriter_New()}
+
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	C.VideoWriter_Open(vw.p, cName, C.double(fps), C.int(width), C.int(height))
+	return vw, nil
+}
+
+// VideoWriterFileMat opens a VideoWriter with a specific output file,
+// using the dimensions from a specific Mat.
+func VideoWriterFileMat(name string, fps float64, img Mat) (vw VideoWriter, err error) {
+	vw = VideoWriter{p: C.VideoWriter_New()}
+
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	C.VideoWriter_OpenWithMat(vw.p, cName, C.double(fps), img.p)
+	return vw, nil
 }
 
 // Close VideoWriter object.
@@ -84,21 +101,6 @@ func (vw *VideoWriter) Close() error {
 	return nil
 }
 
-// Open a VideoWriter with a specific output file.
-func (vw *VideoWriter) Open(name string, fps float64, width int, height int) {
-	cName := C.CString(name)
-	defer C.free(unsafe.Pointer(cName))
-	C.VideoWriter_Open(vw.p, cName, C.double(fps), C.int(width), C.int(height))
-}
-
-// OpenWithMat opens a VideoWriter with a specific output file
-// using the dimensions from a specific Mat.
-func (vw *VideoWriter) OpenWithMat(name string, fps float64, img Mat) {
-	cName := C.CString(name)
-	defer C.free(unsafe.Pointer(cName))
-	C.VideoWriter_OpenWithMat(vw.p, cName, C.double(fps), img.p)
-}
-
 // IsOpened checks if the VideoWriter is open and ready to be written to.
 func (vw *VideoWriter) IsOpened() bool {
 	isOpend := C.VideoWriter_IsOpened(vw.p)
@@ -106,8 +108,9 @@ func (vw *VideoWriter) IsOpened() bool {
 }
 
 // Write a single Mat image to the open VideoWriter.
-func (vw *VideoWriter) Write(img Mat) {
+func (vw *VideoWriter) Write(img Mat) error {
 	vw.mu.Lock()
 	defer vw.mu.Unlock()
 	C.VideoWriter_Write(vw.p, img.p)
+	return nil
 }

@@ -19,13 +19,12 @@ import (
 
 func main() {
 	deviceID := 0
-	webcam := opencv3.NewVideoCapture()
-	defer webcam.Close()
-
-	if ok := webcam.OpenDevice(int(deviceID)); !ok {
-		fmt.Printf("error opening device: %v\n", deviceID)
+	webcam, err := opencv3.VideoCaptureDevice(int(deviceID))
+	if err != nil {
+		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
 	}
+	defer webcam.Close()
 
 	window := opencv3.NewWindow("Capture")
 	defer window.Close()

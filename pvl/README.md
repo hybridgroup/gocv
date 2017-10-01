@@ -18,13 +18,12 @@ func main() {
 	deviceID := 0
 
 	// open webcam
-	webcam := opencv3.NewVideoCapture()
-	defer webcam.Close()
-
-	if ok := webcam.OpenDevice(deviceID); !ok {
-		fmt.Printf("error opening device: %v\n", deviceID)
+	webcam, err := opencv3.VideoCaptureDevice(int(deviceID))
+	if err != nil {
+		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
-	}
+	}	
+	defer webcam.Close()
 
 	// open display window
 	window := opencv3.NewWindow("PVL")
