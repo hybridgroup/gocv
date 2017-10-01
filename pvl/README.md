@@ -8,8 +8,8 @@ The Intel [Photography Vision Library (PVL)](https://software.intel.com/en-us/cv
 package main
 
 import (
-	"color"
 	"fmt"
+	"image/color"
 
 	opencv3 ".."
 	pvl "../pvl"
