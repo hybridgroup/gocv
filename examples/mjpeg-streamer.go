@@ -1,8 +1,9 @@
 // What it does:
 //
 // This example opens a video capture device, then streams MJPEG from it.
-// Once running point your browser to http://localhost:8080/webcam 
-// and you should see the live stream.
+// Once running point your browser to the hostname/port you passed in the
+// command line (for example http://localhost:8080) and you should see 
+// the live video stream.
 //
 // How to run:
 //
@@ -78,6 +79,6 @@ func main() {
 	go capture()
 
 	// start http server
-	http.Handle("/webcam", stream)
+	http.Handle("/", stream)
 	log.Fatal(http.ListenAndServe(host, nil))
 }
