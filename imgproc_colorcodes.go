@@ -1,290 +1,214 @@
 package opencv3
 
 // ColorConversionCode is a color conversion code used on Mat.
+//
 // For further details, please see:
 // http://docs.opencv.org/3.3.0/d7/d1b/group__imgproc__misc.html#ga4e0972be5de079fed4e3a10e24ef5ef0
 //
 type ColorConversionCode int
 
 const (
-	// add alpha channel to RGB or BGR image
-	ColorBGR2BGRA ColorConversionCode = 0
-	ColorRGB2RGBA                     = ColorBGR2BGRA
+	// ColorBGRToBGRA add alpha channel to RGB or BGR image
+	ColorBGRToBGRA ColorConversionCode = 0
 
-	// ColorBGRA2BGR removes alpha channel from RGB or BGR image
-	ColorBGRA2BGR = 1
-	ColorRGBA2RGB = ColorBGRA2BGR
+	// ColorBGRAToBGR removes alpha channel from RGB or BGR image
+	ColorBGRAToBGR = 1
 
 	// convert between RGB and BGR color spaces (with or without alpha channel)
-	ColorBGR2RGBA = 2
-	ColorRGB2BGRA = ColorBGR2RGBA
+	ColorBGRToRGBA = 2
 
-	ColorRGBA2BGR = 3
-	ColorBGRA2RGB = ColorRGBA2BGR
+	ColorRGBAToBGR = 3
 
-	ColorBGR2RGB = 4
-	ColorRGB2BGR = ColorBGR2RGB
+	ColorBGRToRGB = 4
 
-	ColorBGRA2RGBA = 5
-	ColorRGBA2BGRA = ColorBGRA2RGBA
+	ColorBGRAToRGBA = 5
 
 	// convert between RGB/BGR and grayscale
-	ColorBGR2GRAY  = 6
-	ColorRGB2GRAY  = 7
-	ColorGRAY2BGR  = 8
-	ColorGRAY2RGB  = ColorGRAY2BGR
-	ColorGRAY2BGRA = 9
-	ColorGRAY2RGBA = ColorGRAY2BGRA
-	ColorBGRA2GRAY = 10
-	ColorRGBA2GRAY = 11
+	ColorBGRToGray  = 6
+	ColorRGBToGray  = 7
+	ColorGrayToBGR  = 8
+	ColorGrayToBGRA = 9
+	ColorBGRAToGray = 10
+	ColorRGBAToGray = 11
 
 	// convert between RGB/BGR and BGR565 (16-bit images)
-	ColorBGR2BGR565  = 12
-	ColorRGB2BGR565  = 13
-	ColorBGR5652BGR  = 14
-	ColorBGR5652RGB  = 15
-	ColorBGRA2BGR565 = 16
-	ColorRGBA2BGR565 = 17
-	ColorBGR5652BGRA = 18
-	ColorBGR5652RGBA = 19
+	ColorBGRToBGR565  = 12
+	ColorRGBToBGR565  = 13
+	ColorBGR565ToBGR  = 14
+	ColorBGR565ToRGB  = 15
+	ColorBGRAToBGR565 = 16
+	ColorRGBAToBGR565 = 17
+	ColorBGR565ToBGRA = 18
+	ColorBGR565ToRGBA = 19
 
 	// convert between grayscale to BGR565 (16-bit images)
-	ColorGRAY2BGR565 = 20
-	ColorBGR5652GRAY = 21
+	ColorGrayToBGR565 = 20
+	ColorBGR565ToGray = 21
 
 	// convert between RGB/BGR and BGR555 (16-bit images)
-	ColorBGR2BGR555  = 22
-	ColorRGB2BGR555  = 23
-	ColorBGR5552BGR  = 24
-	ColorBGR5552RGB  = 25
-	ColorBGRA2BGR555 = 26
-	ColorRGBA2BGR555 = 27
-	ColorBGR5552BGRA = 28
-	ColorBGR5552RGBA = 29
+	ColorBGRToBGR555  = 22
+	ColorRGBToBGR555  = 23
+	ColorBGR555ToBGR  = 24
+	ColorBGR555ToRGB  = 25
+	ColorBGRAToBGR555 = 26
+	ColorRGBAToBGR555 = 27
+	ColorBGR555ToBGRA = 28
+	ColorBGR555ToRGBA = 29
 
 	// convert between grayscale and BGR555 (16-bit images)
-	ColorGRAY2BGR555 = 30
-	ColorBGR5552GRAY = 31
+	ColorGrayToBGR555 = 30
+	ColorBGR555ToGRAY = 31
 
 	// convert RGB/BGR to CIE XYZ
-	ColorBGR2XYZ = 32
-	ColorRGB2XYZ = 33
-	ColorXYZ2BGR = 34
-	ColorXYZ2RGB = 35
+	ColorBGRToXYZ = 32
+	ColorRGBToXYZ = 33
+	ColorXYZToBGR = 34
+	ColorXYZToRGB = 35
 
 	// convert RGB/BGR to luma-chroma (aka YCC)
-	ColorBGR2YCrCb = 36
-	ColorRGB2YCrCb = 37
-	ColorYCrCb2BGR = 38
-	ColorYCrCb2RGB = 39
+	ColorBGRToYCrCb = 36
+	ColorRGBToYCrCb = 37
+	ColorYCrCbToBGR = 38
+	ColorYCrCbToRGB = 39
 
 	// convert RGB/BGR to HSV (hue saturation value)
-	ColorBGR2HSV = 40
-	ColorRGB2HSV = 41
+	ColorBGRToHSV = 40
+	ColorRGBToHSV = 41
 
 	// convert RGB/BGR to CIE Lab
-	ColorBGR2Lab = 44
-	ColorRGB2Lab = 45
+	ColorBGRToLab = 44
+	ColorRGBToLab = 45
 
 	// convert RGB/BGR to CIE Luv
-	ColorBGR2Luv = 50
-	ColorRGB2Luv = 51
+	ColorBGRToLuv = 50
+	ColorRGBToLuv = 51
 	// convert RGB/BGR to HLS (hue lightness saturation)
-	ColorBGR2HLS = 52
-	ColorRGB2HLS = 53
+	ColorBGRToHLS = 52
+	ColorRGBToHLS = 53
 
 	// backward conversions to RGB/BGR
-	ColorHSV2BGR = 54
-	ColorHSV2RGB = 55
+	ColorHSVToBGR = 54
+	ColorHSVToRGB = 55
 
-	ColorLab2BGR = 56
-	ColorLab2RGB = 57
-	ColorLuv2BGR = 58
-	ColorLuv2RGB = 59
-	ColorHLS2BGR = 60
-	ColorHLS2RGB = 61
+	ColorLabToBGR = 56
+	ColorLabToRGB = 57
+	ColorLuvToBGR = 58
+	ColorLuvToRGB = 59
+	ColorHLSToBGR = 60
+	ColorHLSToRGB = 61
 
-	ColorBGR2HSV_FULL = 66
-	ColorRGB2HSV_FULL = 67
-	ColorBGR2HLS_FULL = 68
-	ColorRGB2HLS_FULL = 69
+	ColorBGRToHSV_FULL = 66
+	ColorRGBToHSV_FULL = 67
+	ColorBGRToHLS_FULL = 68
+	ColorRGBToHLS_FULL = 69
 
-	ColorHSV2BGR_FULL = 70
-	ColorHSV2RGB_FULL = 71
-	ColorHLS2BGR_FULL = 72
-	ColorHLS2RGB_FULL = 73
+	ColorHSVToBGR_FULL = 70
+	ColorHSVToRGB_FULL = 71
+	ColorHLSToBGR_FULL = 72
+	ColorHLSToRGB_FULL = 73
 
-	ColorLBGR2Lab = 74
-	ColorLRGB2Lab = 75
-	ColorLBGR2Luv = 76
-	ColorLRGB2Luv = 77
+	ColorLBGRToLab = 74
+	ColorLRGBToLab = 75
+	ColorLBGRToLuv = 76
+	ColorLRGBToLuv = 77
 
-	ColorLab2LBGR = 78
-	ColorLab2LRGB = 79
-	ColorLuv2LBGR = 80
-	ColorLuv2LRGB = 81
+	ColorLabToLBGR = 78
+	ColorLabToLRGB = 79
+	ColorLuvToLBGR = 80
+	ColorLuvToLRGB = 81
 
 	// convert between RGB/BGR and YUV
-	ColorBGR2YUV = 82
-	ColorRGB2YUV = 83
-	ColorYUV2BGR = 84
-	ColorYUV2RGB = 85
+	ColorBGRToYUV = 82
+	ColorRGBToYUV = 83
+	ColorYUVToBGR = 84
+	ColorYUVToRGB = 85
 
 	// YUV 4:2:0 family to RGB
-	ColorYUV2RGB_NV12 = 90
-	ColorYUV2BGR_NV12 = 91
-	ColorYUV2RGB_NV21 = 92
-	ColorYUV2BGR_NV21 = 93
-	ColorYUV420sp2RGB = ColorYUV2RGB_NV21
-	ColorYUV420sp2BGR = ColorYUV2BGR_NV21
+	ColorYUVToRGBNV12 = 90
+	ColorYUVToBGRNV12 = 91
+	ColorYUVToRGBNV21 = 92
+	ColorYUVToBGRNV21 = 93
 
-	ColorYUV2RGBA_NV12 = 94
-	ColorYUV2BGRA_NV12 = 95
-	ColorYUV2RGBA_NV21 = 96
-	ColorYUV2BGRA_NV21 = 97
-	ColorYUV420sp2RGBA = ColorYUV2RGBA_NV21
-	ColorYUV420sp2BGRA = ColorYUV2BGRA_NV21
+	ColorYUVToRGBANV12 = 94
+	ColorYUVToBGRANV12 = 95
+	ColorYUVToRGBANV21 = 96
+	ColorYUVToBGRANV21 = 97
 
-	ColorYUV2RGB_YV12 = 98
-	ColorYUV2BGR_YV12 = 99
-	ColorYUV2RGB_IYUV = 100
-	ColorYUV2BGR_IYUV = 101
-	ColorYUV2RGB_I420 = ColorYUV2RGB_IYUV
-	ColorYUV2BGR_I420 = ColorYUV2BGR_IYUV
-	ColorYUV420p2RGB  = ColorYUV2RGB_YV12
-	ColorYUV420p2BGR  = ColorYUV2BGR_YV12
+	ColorYUVToRGBYV12 = 98
+	ColorYUVToBGRYV12 = 99
+	ColorYUVToRGBIYUV = 100
+	ColorYUVToBGRIYUV = 101
 
-	ColorYUV2RGBA_YV12 = 102
-	ColorYUV2BGRA_YV12 = 103
-	ColorYUV2RGBA_IYUV = 104
-	ColorYUV2BGRA_IYUV = 105
-	ColorYUV2RGBA_I420 = ColorYUV2RGBA_IYUV
-	ColorYUV2BGRA_I420 = ColorYUV2BGRA_IYUV
-	ColorYUV420p2RGBA  = ColorYUV2RGBA_YV12
-	ColorYUV420p2BGRA  = ColorYUV2BGRA_YV12
+	ColorYUVToRGBAYV12 = 102
+	ColorYUVToBGRAYV12 = 103
+	ColorYUVToRGBAIYUV = 104
+	ColorYUVToBGRAIYUV = 105
 
-	ColorYUV2GRAY_420  = 106
-	ColorYUV2GRAY_NV21 = ColorYUV2GRAY_420
-	ColorYUV2GRAY_NV12 = ColorYUV2GRAY_420
-	ColorYUV2GRAY_YV12 = ColorYUV2GRAY_420
-	ColorYUV2GRAY_IYUV = ColorYUV2GRAY_420
-	ColorYUV2GRAY_I420 = ColorYUV2GRAY_420
-	ColorYUV420sp2GRAY = ColorYUV2GRAY_420
-	ColorYUV420p2GRAY  = ColorYUV2GRAY_420
+	ColorYUVToGRAY420 = 106
 
 	// YUV 4:2:2 family to RGB
-	ColorYUV2RGB_UYVY = 107
-	ColorYUV2BGR_UYVY = 108
-	//ColorYUV2RGB_VYUY = 109,
-	//ColorYUV2BGR_VYUY = 110,
-	ColorYUV2RGB_Y422 = ColorYUV2RGB_UYVY
-	ColorYUV2BGR_Y422 = ColorYUV2BGR_UYVY
-	ColorYUV2RGB_UYNV = ColorYUV2RGB_UYVY
-	ColorYUV2BGR_UYNV = ColorYUV2BGR_UYVY
+	ColorYUVToRGBUYVY = 107
+	ColorYUVToBGRUYVY = 108
 
-	ColorYUV2RGBA_UYVY = 111
-	ColorYUV2BGRA_UYVY = 112
-	//ColorYUV2RGBA_VYUY = 113,
-	//ColorYUV2BGRA_VYUY = 114,
-	ColorYUV2RGBA_Y422 = ColorYUV2RGBA_UYVY
-	ColorYUV2BGRA_Y422 = ColorYUV2BGRA_UYVY
-	ColorYUV2RGBA_UYNV = ColorYUV2RGBA_UYVY
-	ColorYUV2BGRA_UYNV = ColorYUV2BGRA_UYVY
+	ColorYUVToRGBAUYVY = 111
+	ColorYUVToBGRAUYVY = 112
 
-	ColorYUV2RGB_YUY2 = 115
-	ColorYUV2BGR_YUY2 = 116
-	ColorYUV2RGB_YVYU = 117
-	ColorYUV2BGR_YVYU = 118
-	ColorYUV2RGB_YUYV = ColorYUV2RGB_YUY2
-	ColorYUV2BGR_YUYV = ColorYUV2BGR_YUY2
-	ColorYUV2RGB_YUNV = ColorYUV2RGB_YUY2
-	ColorYUV2BGR_YUNV = ColorYUV2BGR_YUY2
+	ColorYUVToRGBYUY2 = 115
+	ColorYUVToBGRYUY2 = 116
+	ColorYUVToRGBYVYU = 117
+	ColorYUVToBGRYVYU = 118
 
-	ColorYUV2RGBA_YUY2 = 119
-	ColorYUV2BGRA_YUY2 = 120
-	ColorYUV2RGBA_YVYU = 121
-	ColorYUV2BGRA_YVYU = 122
-	ColorYUV2RGBA_YUYV = ColorYUV2RGBA_YUY2
-	ColorYUV2BGRA_YUYV = ColorYUV2BGRA_YUY2
-	ColorYUV2RGBA_YUNV = ColorYUV2RGBA_YUY2
-	ColorYUV2BGRA_YUNV = ColorYUV2BGRA_YUY2
+	ColorYUVToRGBAYUY2 = 119
+	ColorYUVToBGRAYUY2 = 120
+	ColorYUVToRGBAYVYU = 121
+	ColorYUVToBGRAYVYU = 122
 
-	ColorYUV2GRAY_UYVY = 123
-	ColorYUV2GRAY_YUY2 = 124
-	//CV_YUV2GRAY_VYUY    = CV_YUV2GRAY_UYVY,
-	ColorYUV2GRAY_Y422 = ColorYUV2GRAY_UYVY
-	ColorYUV2GRAY_UYNV = ColorYUV2GRAY_UYVY
-	ColorYUV2GRAY_YVYU = ColorYUV2GRAY_YUY2
-	ColorYUV2GRAY_YUYV = ColorYUV2GRAY_YUY2
-	ColorYUV2GRAY_YUNV = ColorYUV2GRAY_YUY2
+	ColorYUVToGRAYUYVY = 123
+	ColorYUVToGRAYYUY2 = 124
 
 	// alpha premultiplication
-	ColorRGBA2mRGBA = 125
-	ColormRGBA2RGBA = 126
+	ColorRGBATomRGBA = 125
+	ColormRGBAToRGBA = 126
 
 	// RGB to YUV 4:2:0 family
-	ColorRGB2YUV_I420 = 127
-	ColorBGR2YUV_I420 = 128
-	ColorRGB2YUV_IYUV = ColorRGB2YUV_I420
-	ColorBGR2YUV_IYUV = ColorBGR2YUV_I420
+	ColorRGBToYUVI420 = 127
+	ColorBGRToYUVI420 = 128
 
-	ColorRGBA2YUV_I420 = 129
-	ColorBGRA2YUV_I420 = 130
-	ColorRGBA2YUV_IYUV = ColorRGBA2YUV_I420
-	ColorBGRA2YUV_IYUV = ColorBGRA2YUV_I420
-	ColorRGB2YUV_YV12  = 131
-	ColorBGR2YUV_YV12  = 132
-	ColorRGBA2YUV_YV12 = 133
-	ColorBGRA2YUV_YV12 = 134
+	ColorRGBAToYUVI420 = 129
+	ColorBGRAToYUVI420 = 130
+	ColorRGBToYUVYV12  = 131
+	ColorBGRToYUVYV12  = 132
+	ColorRGBAToYUVYV12 = 133
+	ColorBGRAToYUVYV12 = 134
 
 	// Demosaicing
-	ColorBayerBG2BGR = 46
-	ColorBayerGB2BGR = 47
-	ColorBayerRG2BGR = 48
-	ColorBayerGR2BGR = 49
+	ColorBayerBGToBGR = 46
+	ColorBayerGBToBGR = 47
+	ColorBayerRGToBGR = 48
+	ColorBayerGRToBGR = 49
 
-	ColorBayerBG2RGB = ColorBayerRG2BGR
-	ColorBayerGB2RGB = ColorBayerGR2BGR
-	ColorBayerRG2RGB = ColorBayerBG2BGR
-	ColorBayerGR2RGB = ColorBayerGB2BGR
-
-	ColorBayerBG2GRAY = 86
-	ColorBayerGB2GRAY = 87
-	ColorBayerRG2GRAY = 88
-	ColorBayerGR2GRAY = 89
+	ColorBayerBGToGRAY = 86
+	ColorBayerGBToGRAY = 87
+	ColorBayerRGToGRAY = 88
+	ColorBayerGRToGRAY = 89
 
 	// Demosaicing using Variable Number of Gradients
-	ColorBayerBG2BGR_VNG = 62
-	ColorBayerGB2BGR_VNG = 63
-	ColorBayerRG2BGR_VNG = 64
-	ColorBayerGR2BGR_VNG = 65
-
-	ColorBayerBG2RGB_VNG = ColorBayerRG2BGR_VNG
-	ColorBayerGB2RGB_VNG = ColorBayerGR2BGR_VNG
-	ColorBayerRG2RGB_VNG = ColorBayerBG2BGR_VNG
-	ColorBayerGR2RGB_VNG = ColorBayerGB2BGR_VNG
+	ColorBayerBGToBGRVNG = 62
+	ColorBayerGBToBGRVNG = 63
+	ColorBayerRGToBGRVNG = 64
+	ColorBayerGRToBGRVNG = 65
 
 	// Edge-Aware Demosaicing
-	ColorBayerBG2BGR_EA = 135
-	ColorBayerGB2BGR_EA = 136
-	ColorBayerRG2BGR_EA = 137
-	ColorBayerGR2BGR_EA = 138
-
-	ColorBayerBG2RGB_EA = ColorBayerRG2BGR_EA
-	ColorBayerGB2RGB_EA = ColorBayerGR2BGR_EA
-	ColorBayerRG2RGB_EA = ColorBayerBG2BGR_EA
-	ColorBayerGR2RGB_EA = ColorBayerGB2BGR_EA
+	ColorBayerBGToBGREA = 135
+	ColorBayerGBToBGREA = 136
+	ColorBayerRGToBGREA = 137
+	ColorBayerGRToBGREA = 138
 
 	// Demosaicing with alpha channel
-	ColorBayerBG2BGRA = 139
-	ColorBayerGB2BGRA = 140
-	ColorBayerRG2BGRA = 141
-	ColorBayerGR2BGRA = 142
+	ColorBayerBGToBGRA = 139
+	ColorBayerGBToBGRA = 140
+	ColorBayerRGToBGRA = 141
+	ColorBayerGRToBGRA = 142
 
-	ColorBayerBG2RGBA = ColorBayerRG2BGRA
-	ColorBayerGB2RGBA = ColorBayerGR2BGRA
-	ColorBayerRG2RGBA = ColorBayerBG2BGRA
-	ColorBayerGR2RGBA = ColorBayerGB2BGRA
-
-	ColorCOLORCVT_MAX = 143
+	ColorCOLORCVTMAX = 143
 )
