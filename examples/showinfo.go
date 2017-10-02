@@ -13,10 +13,10 @@ package main
 import (
 	"fmt"
 
-	opencv3 ".."
+	gocv ".."
 )
 
 func main() {
-	fmt.Printf("go-opencv3 version: %s\n", opencv3.Version())
-	fmt.Printf("opencv lib version: %s\n", opencv3.OpenCVVersion())
+	fmt.Printf("go-gocv version: %s\n", gocv.Version())
+	fmt.Printf("opencv lib version: %s\n", gocv.OpenCVVersion())
 }

@@ -22,15 +22,15 @@ import (
 	"os"
 	"strconv"
 
-	opencv3 ".."
+	gocv ".."
 	"github.com/saljam/mjpeg"
 )
 
 var (
 	deviceID int
 	err      error
-	webcam   opencv3.VideoCapture
-	img      opencv3.Mat
+	webcam   gocv.VideoCapture
+	img      gocv.Mat
 
 	stream *mjpeg.Stream
 )
@@ -45,7 +45,7 @@ func capture() {
 			continue
 		}
 
-		buf, _ := opencv3.IMEncode(".jpg", img)
+		buf, _ := gocv.IMEncode(".jpg", img)
 		stream.UpdateJPEG(buf)
 	}
 }
@@ -61,7 +61,7 @@ func main() {
 	host := os.Args[2]
 
 	// open webcam
-	webcam, err = opencv3.VideoCaptureDevice(int(deviceID))
+	webcam, err = gocv.VideoCaptureDevice(int(deviceID))
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
@@ -69,7 +69,7 @@ func main() {
 	defer webcam.Close()
 
 	// prepare image matrix
-	img = opencv3.NewMat()
+	img = gocv.NewMat()
 	defer img.Close()
 
 	// create the mjpeg stream

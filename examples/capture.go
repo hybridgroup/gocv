@@ -13,12 +13,12 @@ package main
 import (
 	"fmt"
 
-	opencv3 ".."
+	gocv ".."
 )
 
 func main() {
 	deviceID := 0
-	webcam, err := opencv3.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
@@ -26,7 +26,7 @@ func main() {
 	defer webcam.Close()
 
 	// streaming, capture from webcam
-	buf := opencv3.NewMat()
+	buf := gocv.NewMat()
 	defer buf.Close()
 	
 	fmt.Printf("start reading camera device: %v\n", deviceID)

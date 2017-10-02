@@ -14,16 +14,16 @@ package main
 import (
 	"os"
 
-	opencv3 ".."
+	gocv ".."
 )
 
 func main() {
 	filename := os.Args[1]
-	window := opencv3.NewWindow("Hello")
-	img := opencv3.IMRead(filename, opencv3.IMReadColor)
+	window := gocv.NewWindow("Hello")
+	img := gocv.IMRead(filename, gocv.IMReadColor)
 
 	for {
 		window.IMShow(img)
-		opencv3.WaitKey(1)
+		gocv.WaitKey(1)
 	}
 }

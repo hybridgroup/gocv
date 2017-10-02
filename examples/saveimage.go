@@ -18,7 +18,7 @@ import (
 	"os"
 	"strconv"
 
-	opencv3 ".."
+	gocv ".."
 )
 
 func main() {
@@ -30,14 +30,14 @@ func main() {
 	deviceID, _ := strconv.Atoi(os.Args[1])
 	saveFile := os.Args[2]
 
-	webcam, err := opencv3.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
 	}	
 	defer webcam.Close()
 
-	img := opencv3.NewMat()
+	img := gocv.NewMat()
 	defer img.Close()
 
 	if ok := webcam.Read(img); !ok {
@@ -49,5 +49,5 @@ func main() {
 		return
 	}
 
-	opencv3.IMWrite(saveFile, img)
+	gocv.IMWrite(saveFile, img)
 }

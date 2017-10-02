@@ -19,7 +19,7 @@ import (
 	"os"
 	"strconv"
 
-	opencv3 ".."
+	gocv ".."
 )
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 	xmlFile := os.Args[2]
 
 	// open webcam
-	webcam, err := opencv3.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
@@ -41,15 +41,15 @@ func main() {
 	defer webcam.Close()
 
 	// open display window
-	window := opencv3.NewWindow("Face Detect")
+	window := gocv.NewWindow("Face Detect")
 	defer window.Close()
 
 	// prepare image matrix
-	img := opencv3.NewMat()
+	img := gocv.NewMat()
 	defer img.Close()
 
 	// load classifier to recognize faces
-	classifier := opencv3.NewCascadeClassifier()
+	classifier := gocv.NewCascadeClassifier()
 	defer classifier.Close()
 	
 	classifier.Load(xmlFile)
@@ -75,11 +75,11 @@ func main() {
 			defer imgFace.Close()
 		
 			// blur face
-			opencv3.GaussianBlur(imgFace, imgFace, image.Pt(23, 23), 30, 50, 4)
+			gocv.GaussianBlur(imgFace, imgFace, image.Pt(23, 23), 30, 50, 4)
 		}
 
 		// show the image in the window, and wait 1 millisecond
 		window.IMShow(img)
-		opencv3.WaitKey(1)
+		gocv.WaitKey(1)
 	}
 }

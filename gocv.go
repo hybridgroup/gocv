@@ -1,4 +1,4 @@
-// Package opencv3 is a wrapper around the OpenCV 3.x computer vision library.
+// Package gocv is a wrapper around the OpenCV 3.x computer vision library.
 // It provides a Go language interface to the latest version of OpenCV.
 //
 // OpenCV (Open Source Computer Vision Library: http://opencv.org) is an
@@ -8,4 +8,4 @@
 // For further details, please see:
 // http://docs.opencv.org/3.3.0/d1/dfb/intro.html
 //
-package opencv3
+package gocv
