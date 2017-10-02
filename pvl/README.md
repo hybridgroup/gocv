@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"image/color"
 
-	opencv3 ".."
+	gocv ".."
 	pvl "../pvl"
 )
 
@@ -19,7 +19,7 @@ func main() {
 	deviceID := 0
 
 	// open webcam
-	webcam, err := opencv3.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
@@ -27,14 +27,14 @@ func main() {
 	defer webcam.Close()
 
 	// open display window
-	window := opencv3.NewWindow("PVL")
+	window := gocv.NewWindow("PVL")
 
 	// prepare input image matrix
-	img := opencv3.NewMat()
+	img := gocv.NewMat()
 	defer img.Close()
 
 	// prepare grayscale image matrix
-	imgGray := opencv3.NewMat()
+	imgGray := gocv.NewMat()
 	defer imgGray.Close()
 	
 	// color to draw the rect for detected faces
@@ -58,7 +58,7 @@ func main() {
 		}
 
 		// convert image to grayscale for detection
-		opencv3.CvtColor(img, imgGray, opencv3.ColorBGR2GRAY);
+		gocv.CvtColor(img, imgGray, gocv.ColorBGR2GRAY);
 	
 		// detect faces
 		faces := fd.DetectFaceRect(imgGray)
@@ -66,12 +66,12 @@ func main() {
 
 		// draw a rectangle around each face on the original image
 		for _, face := range faces {
-			opencv3.Rectangle(img, face.Rectangle(), blue, 3)
+			gocv.Rectangle(img, face.Rectangle(), blue, 3)
 		}
 
 		// show the image in the window, and wait 1 millisecond
 		window.IMShow(img)
-		opencv3.WaitKey(1)
+		gocv.WaitKey(1)
 	}
 }
 ```
@@ -102,6 +102,6 @@ Run the `showinfo.go` example to make sure you are compiling/linking against the
 
 ```
 $ go run ./examples/showinfo.go 
-go-opencv3 version: 0.0.1
+go-gocv version: 0.0.1
 opencv lib version: 3.3.0-cvsdk.604
 ```
