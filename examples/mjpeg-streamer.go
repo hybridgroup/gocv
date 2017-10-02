@@ -6,9 +6,9 @@
 //
 // How to run:
 //
-// mjpeg-streamer [camera ID]
+// mjpeg-streamer [camera ID] [host:port]
 //
-// 		go run ./examples/mjpeg-streamer.go 1
+// 		go run ./examples/mjpeg-streamer.go 1 0.0.0.0:8080
 //
 // +build example
 
@@ -50,13 +50,14 @@ func capture() {
 }
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("How to run:\n\tmjpeg-streamer [camera ID]")
+	if len(os.Args) < 3 {
+		fmt.Println("How to run:\n\tmjpeg-streamer [camera ID] [host:port]")
 		return
 	}
 
 	// parse args
 	deviceID, _ = strconv.Atoi(os.Args[1])
+	host := os.Args[2]
 
 	// open webcam
 	webcam, err = opencv3.VideoCaptureDevice(int(deviceID))
@@ -78,5 +79,5 @@ func main() {
 
 	// start http server
 	http.Handle("/webcam", stream)
-	log.Fatal(http.ListenAndServe("0.0.0.0:8080", nil))
+	log.Fatal(http.ListenAndServe(host, nil))
 }
