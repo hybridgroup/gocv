@@ -7,10 +7,14 @@ package opencv3
 import "C"
 import "image"
 
-// CMat is an alias for C pointer.
-type CMat C.Mat
-
-// Mat is a bind of `cv::Mat
+// Mat represents an n-dimensional dense numerical single-channel
+// or multi-channel array. It can be used to store real or complex-valued
+// vectors and matrices, grayscale or color images, voxel volumes,
+// vector fields, point clouds, tensors, and histograms.
+//
+// For further details, please see:
+// http://docs.opencv.org/3.3.0/d3/d63/classcv_1_1Mat.html
+//
 type Mat struct {
 	p C.Mat
 }
@@ -38,7 +42,9 @@ func (m *Mat) Empty() bool {
 	return isEmpty != 0
 }
 
-// Region returns a new Mat of a region of this Mat.
+// Region returns a new Mat that points to a region of this Mat. Changes made to the
+// region Mat will affect the original Mat, sinec they are pointers to the underlying
+// OpenCV Mat object.
 func (m *Mat) Region(rio image.Rectangle) Mat {
 	cRect := C.struct_Rect{
 		x:      C.int(rio.Min.X),
@@ -50,8 +56,11 @@ func (m *Mat) Region(rio image.Rectangle) Mat {
 	return Mat{p: C.Mat_Region(m.p, cRect)}
 }
 
-// Scalar represents a Scalar set of 4 float64 values. Usually used to represent a
-// BGRA color value in OpenCV.
+// Scalar is a 4-element vector widely used in OpenCV to pass pixel values.
+//
+// For further details, please see:
+// http://docs.opencv.org/3.3.0/d1/da0/classcv_1_1Scalar__.html
+//
 type Scalar struct {
 	Val1 float64
 	Val2 float64
