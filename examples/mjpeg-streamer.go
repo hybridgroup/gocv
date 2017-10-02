@@ -1,6 +1,8 @@
 // What it does:
 //
 // This example opens a video capture device, then streams MJPEG from it.
+// Once running point your browser to http://localhost:8080/webcam 
+// and you should see the live stream.
 //
 // How to run:
 //
@@ -13,10 +15,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
-
-	"fmt"
 	"os"
 	"strconv"
 
