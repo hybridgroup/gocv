@@ -11,7 +11,11 @@ import (
 	"unsafe"
 )
 
-// CascadeClassifier is a bind of `cv::CascadeClassifier`
+// CascadeClassifier is a cascade classifier class for object detection.
+//
+// For further details, please see:
+// http://docs.opencv.org/3.3.0/d1/de5/classcv_1_1CascadeClassifier.html
+//
 type CascadeClassifier struct {
 	p C.CascadeClassifier
 }
@@ -28,15 +32,23 @@ func (c *CascadeClassifier) Close() error {
 	return nil
 }
 
-// Load cascade configuration file to classifier.
+// Load cascade classifier from a file.
+//
+// For further details, please see:
+// http://docs.opencv.org/3.3.0/d1/de5/classcv_1_1CascadeClassifier.html#a1a5884c8cc749422f9eb77c2471958bc
+//
 func (c *CascadeClassifier) Load(name string) bool {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	return C.CascadeClassifier_Load(c.p, cName) != 0
 }
 
-// DetectMultiScale detects something which is decided by loaded file. Returns
-// multi results addressed with rectangle.
+// DetectMultiScale detects objects of different sizes in the input Mat image.
+// The detected objects are returned as a slice of image.Rectangle structs.
+//
+// For further details, please see:
+// http://docs.opencv.org/3.3.0/d1/de5/classcv_1_1CascadeClassifier.html#aaf8181cb63968136476ec4204ffca498
+//
 func (c *CascadeClassifier) DetectMultiScale(img Mat) []image.Rectangle {
 	ret := C.CascadeClassifier_DetectMultiScale(c.p, img.p)
 	defer C.Rects_Close(ret)
