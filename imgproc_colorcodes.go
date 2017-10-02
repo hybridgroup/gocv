@@ -1,15 +1,22 @@
 package opencv3
 
-// imgproc color conversion codes
-const (
-	// ColorBGR2BGRA add alpha channel to RGB or BGR image
-	ColorBGR2BGRA = 0
-	ColorRGB2RGBA = ColorBGR2BGRA
+// ColorConversionCode is a color conversion code used on Mat.
+// For further details, please see:
+// http://docs.opencv.org/3.3.0/d7/d1b/group__imgproc__misc.html#ga4e0972be5de079fed4e3a10e24ef5ef0
+//
+type ColorConversionCode int
 
-	ColorBGRA2BGR = 1 //!< remove alpha channel from RGB or BGR image
+const (
+	// add alpha channel to RGB or BGR image
+	ColorBGR2BGRA ColorConversionCode = 0
+	ColorRGB2RGBA                     = ColorBGR2BGRA
+
+	// ColorBGRA2BGR removes alpha channel from RGB or BGR image
+	ColorBGRA2BGR = 1
 	ColorRGBA2RGB = ColorBGRA2BGR
 
-	ColorBGR2RGBA = 2 //!< convert between RGB and BGR color spaces (with or without alpha channel)
+	// convert between RGB and BGR color spaces (with or without alpha channel)
+	ColorBGR2RGBA = 2
 	ColorRGB2BGRA = ColorBGR2RGBA
 
 	ColorRGBA2BGR = 3
@@ -21,7 +28,8 @@ const (
 	ColorBGRA2RGBA = 5
 	ColorRGBA2BGRA = ColorBGRA2RGBA
 
-	ColorBGR2GRAY  = 6 //!< convert between RGB/BGR and grayscale, @ref Colorconvert_rgb_gray "color conversions"
+	// convert between RGB/BGR and grayscale
+	ColorBGR2GRAY  = 6
 	ColorRGB2GRAY  = 7
 	ColorGRAY2BGR  = 8
 	ColorGRAY2RGB  = ColorGRAY2BGR
@@ -30,7 +38,8 @@ const (
 	ColorBGRA2GRAY = 10
 	ColorRGBA2GRAY = 11
 
-	ColorBGR2BGR565  = 12 //!< convert between RGB/BGR and BGR565 (16-bit images)
+	// convert between RGB/BGR and BGR565 (16-bit images)
+	ColorBGR2BGR565  = 12
 	ColorRGB2BGR565  = 13
 	ColorBGR5652BGR  = 14
 	ColorBGR5652RGB  = 15
@@ -39,10 +48,12 @@ const (
 	ColorBGR5652BGRA = 18
 	ColorBGR5652RGBA = 19
 
-	ColorGRAY2BGR565 = 20 //!< convert between grayscale to BGR565 (16-bit images)
+	// convert between grayscale to BGR565 (16-bit images)
+	ColorGRAY2BGR565 = 20
 	ColorBGR5652GRAY = 21
 
-	ColorBGR2BGR555  = 22 //!< convert between RGB/BGR and BGR555 (16-bit images)
+	// convert between RGB/BGR and BGR555 (16-bit images)
+	ColorBGR2BGR555  = 22
 	ColorRGB2BGR555  = 23
 	ColorBGR5552BGR  = 24
 	ColorBGR5552RGB  = 25
@@ -51,31 +62,39 @@ const (
 	ColorBGR5552BGRA = 28
 	ColorBGR5552RGBA = 29
 
-	ColorGRAY2BGR555 = 30 //!< convert between grayscale and BGR555 (16-bit images)
+	// convert between grayscale and BGR555 (16-bit images)
+	ColorGRAY2BGR555 = 30
 	ColorBGR5552GRAY = 31
 
-	ColorBGR2XYZ = 32 //!< convert RGB/BGR to CIE XYZ, @ref Colorconvert_rgb_xyz "color conversions"
+	// convert RGB/BGR to CIE XYZ
+	ColorBGR2XYZ = 32
 	ColorRGB2XYZ = 33
 	ColorXYZ2BGR = 34
 	ColorXYZ2RGB = 35
 
-	ColorBGR2YCrCb = 36 //!< convert RGB/BGR to luma-chroma (aka YCC), @ref Colorconvert_rgb_ycrcb "color conversions"
+	// convert RGB/BGR to luma-chroma (aka YCC)
+	ColorBGR2YCrCb = 36
 	ColorRGB2YCrCb = 37
 	ColorYCrCb2BGR = 38
 	ColorYCrCb2RGB = 39
 
-	ColorBGR2HSV = 40 //!< convert RGB/BGR to HSV (hue saturation value), @ref Colorconvert_rgb_hsv "color conversions"
+	// convert RGB/BGR to HSV (hue saturation value)
+	ColorBGR2HSV = 40
 	ColorRGB2HSV = 41
 
-	ColorBGR2Lab = 44 //!< convert RGB/BGR to CIE Lab, @ref Colorconvert_rgb_lab "color conversions"
+	// convert RGB/BGR to CIE Lab
+	ColorBGR2Lab = 44
 	ColorRGB2Lab = 45
 
-	ColorBGR2Luv = 50 //!< convert RGB/BGR to CIE Luv, @ref Colorconvert_rgb_luv "color conversions"
+	// convert RGB/BGR to CIE Luv
+	ColorBGR2Luv = 50
 	ColorRGB2Luv = 51
-	ColorBGR2HLS = 52 //!< convert RGB/BGR to HLS (hue lightness saturation), @ref Colorconvert_rgb_hls "color conversions"
+	// convert RGB/BGR to HLS (hue lightness saturation)
+	ColorBGR2HLS = 52
 	ColorRGB2HLS = 53
 
-	ColorHSV2BGR = 54 //!< backward conversions to RGB/BGR
+	// backward conversions to RGB/BGR
+	ColorHSV2BGR = 54
 	ColorHSV2RGB = 55
 
 	ColorLab2BGR = 56
@@ -85,7 +104,7 @@ const (
 	ColorHLS2BGR = 60
 	ColorHLS2RGB = 61
 
-	ColorBGR2HSV_FULL = 66 //!<
+	ColorBGR2HSV_FULL = 66
 	ColorRGB2HSV_FULL = 67
 	ColorBGR2HLS_FULL = 68
 	ColorRGB2HLS_FULL = 69
@@ -105,12 +124,13 @@ const (
 	ColorLuv2LBGR = 80
 	ColorLuv2LRGB = 81
 
-	ColorBGR2YUV = 82 //!< convert between RGB/BGR and YUV
+	// convert between RGB/BGR and YUV
+	ColorBGR2YUV = 82
 	ColorRGB2YUV = 83
 	ColorYUV2BGR = 84
 	ColorYUV2RGB = 85
 
-	//! YUV 4:2:0 family to RGB
+	// YUV 4:2:0 family to RGB
 	ColorYUV2RGB_NV12 = 90
 	ColorYUV2BGR_NV12 = 91
 	ColorYUV2RGB_NV21 = 92
@@ -152,7 +172,7 @@ const (
 	ColorYUV420sp2GRAY = ColorYUV2GRAY_420
 	ColorYUV420p2GRAY  = ColorYUV2GRAY_420
 
-	//! YUV 4:2:2 family to RGB
+	// YUV 4:2:2 family to RGB
 	ColorYUV2RGB_UYVY = 107
 	ColorYUV2BGR_UYVY = 108
 	//ColorYUV2RGB_VYUY = 109,
@@ -198,11 +218,11 @@ const (
 	ColorYUV2GRAY_YUYV = ColorYUV2GRAY_YUY2
 	ColorYUV2GRAY_YUNV = ColorYUV2GRAY_YUY2
 
-	//! alpha premultiplication
+	// alpha premultiplication
 	ColorRGBA2mRGBA = 125
 	ColormRGBA2RGBA = 126
 
-	//! RGB to YUV 4:2:0 family
+	// RGB to YUV 4:2:0 family
 	ColorRGB2YUV_I420 = 127
 	ColorBGR2YUV_I420 = 128
 	ColorRGB2YUV_IYUV = ColorRGB2YUV_I420
@@ -217,7 +237,7 @@ const (
 	ColorRGBA2YUV_YV12 = 133
 	ColorBGRA2YUV_YV12 = 134
 
-	//! Demosaicing
+	// Demosaicing
 	ColorBayerBG2BGR = 46
 	ColorBayerGB2BGR = 47
 	ColorBayerRG2BGR = 48
@@ -233,7 +253,7 @@ const (
 	ColorBayerRG2GRAY = 88
 	ColorBayerGR2GRAY = 89
 
-	//! Demosaicing using Variable Number of Gradients
+	// Demosaicing using Variable Number of Gradients
 	ColorBayerBG2BGR_VNG = 62
 	ColorBayerGB2BGR_VNG = 63
 	ColorBayerRG2BGR_VNG = 64
@@ -244,7 +264,7 @@ const (
 	ColorBayerRG2RGB_VNG = ColorBayerBG2BGR_VNG
 	ColorBayerGR2RGB_VNG = ColorBayerGB2BGR_VNG
 
-	//! Edge-Aware Demosaicing
+	// Edge-Aware Demosaicing
 	ColorBayerBG2BGR_EA = 135
 	ColorBayerGB2BGR_EA = 136
 	ColorBayerRG2BGR_EA = 137
@@ -255,7 +275,7 @@ const (
 	ColorBayerRG2RGB_EA = ColorBayerBG2BGR_EA
 	ColorBayerGR2RGB_EA = ColorBayerGB2BGR_EA
 
-	//! Demosaicing with alpha channel
+	// Demosaicing with alpha channel
 	ColorBayerBG2BGRA = 139
 	ColorBayerGB2BGRA = 140
 	ColorBayerRG2BGRA = 141
