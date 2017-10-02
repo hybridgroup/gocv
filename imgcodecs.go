@@ -1,4 +1,4 @@
-package opencv3
+package gocv
 
 /*
 #include <stdlib.h>

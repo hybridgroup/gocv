@@ -1,4 +1,4 @@
-package opencv3
+package gocv
 
 // ColorConversionCode is a color conversion code used on Mat.
 //

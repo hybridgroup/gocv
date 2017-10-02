@@ -19,7 +19,7 @@ import (
 	"os"
 	"strconv"
 
-	opencv3 "../.."
+	gocv "../.."
 	pvl "../../pvl"
 )
 
@@ -33,7 +33,7 @@ func main() {
 	deviceID, _ := strconv.Atoi(os.Args[1])
 
 	// open webcam
-	webcam, err := opencv3.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
@@ -41,15 +41,15 @@ func main() {
 	defer webcam.Close()
 
 	// open display window
-	window := opencv3.NewWindow("PVL Faceblur")
+	window := gocv.NewWindow("PVL Faceblur")
 	defer window.Close()
 	
 	// prepare input image matrix
-	img := opencv3.NewMat()
+	img := gocv.NewMat()
 	defer img.Close()
 
 	// prepare grayscale image matrix
-	imgGray := opencv3.NewMat()
+	imgGray := gocv.NewMat()
 	defer imgGray.Close()
 	
 	// load PVL FaceDetector to recognize faces
@@ -70,7 +70,7 @@ func main() {
 		}
 
 		// convert image to grayscale for detection
-		opencv3.CvtColor(img, imgGray, opencv3.ColorBGR2GRAY);
+		gocv.CvtColor(img, imgGray, gocv.ColorBGR2GRAY);
 	
 		// detect faces
 		faces := fd.DetectFaceRect(imgGray)
@@ -82,11 +82,11 @@ func main() {
 			defer imgFace.Close()
 		
 			// blur face
-			opencv3.GaussianBlur(imgFace, imgFace, image.Pt(23, 23), 30, 50, 4)
+			gocv.GaussianBlur(imgFace, imgFace, image.Pt(23, 23), 30, 50, 4)
 		}
 
 		// show the image in the window, and wait 1 millisecond
 		window.IMShow(img)
-		opencv3.WaitKey(100)
+		gocv.WaitKey(100)
 	}
 }

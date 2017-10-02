@@ -22,7 +22,7 @@ import (
 	"os"
 	"strconv"
 
-	opencv3 "../.."
+	gocv "../.."
 	pvl "../../pvl"
 )
 
@@ -36,7 +36,7 @@ func main() {
 	deviceID, _ := strconv.Atoi(os.Args[1])
 
 	// open webcam
-	webcam, err := opencv3.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
@@ -44,15 +44,15 @@ func main() {
 	defer webcam.Close()
 
 	// open display window
-	window := opencv3.NewWindow("PVL Smile Detect")
+	window := gocv.NewWindow("PVL Smile Detect")
 	defer window.Close()
 	
 	// prepare input image matrix
-	img := opencv3.NewMat()
+	img := gocv.NewMat()
 	defer img.Close()
 
 	// prepare grayscale image matrix
-	imgGray := opencv3.NewMat()
+	imgGray := gocv.NewMat()
 	defer imgGray.Close()
 	
 	// colors to draw the rect for detected faces
@@ -77,7 +77,7 @@ func main() {
 		}
 
 		// convert image Mat to grayscale Mat for detection
-		opencv3.CvtColor(img, imgGray, opencv3.ColorBGR2GRAY);
+		gocv.CvtColor(img, imgGray, gocv.ColorBGR2GRAY);
 	
 		// detect faces
 		faces := fd.DetectFaceRect(imgGray)
@@ -97,15 +97,15 @@ func main() {
 			}
 
 			rect := face.Rectangle()
-			opencv3.Rectangle(img, rect, color, 3)
+			gocv.Rectangle(img, rect, color, 3)
 
-			size := opencv3.GetTextSize("Human", opencv3.FontHersheyPlain, 1.2, 2)
+			size := gocv.GetTextSize("Human", gocv.FontHersheyPlain, 1.2, 2)
 			pt := image.Pt(rect.Min.X + (rect.Min.X / 2) - (size.X / 2), rect.Min.Y - 2)
-			opencv3.PutText(img, "Human", pt, opencv3.FontHersheyPlain, 1.2, color, 2)
+			gocv.PutText(img, "Human", pt, gocv.FontHersheyPlain, 1.2, color, 2)
 		}
 
 		// show the image in the window, and wait 1 millisecond
 		window.IMShow(img)
-		opencv3.WaitKey(1)
+		gocv.WaitKey(1)
 	}
 }
