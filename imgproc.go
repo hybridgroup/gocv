@@ -63,29 +63,34 @@ func Rectangle(img Mat, r image.Rectangle, c color.RGBA, thickness int) {
 	C.Rectangle(img.p, cRect, sColor, C.int(thickness))
 }
 
-// HersheyFont is based on the enum HersheyFonts
-// Only a subset of the available Hershey fonts
-// <http://sources.isc.org/utils/misc/hershey-font.txt> are supported
+// HersheyFont are the font libraries included in OpenCV.
+// Only a subset of the available Hershey fonts are supported by OpenCV.
+//
+// For more information, see:
+// http://sources.isc.org/utils/misc/hershey-font.txt
+//
 type HersheyFont int
 
 const (
-	// normal size sans-serif font
+	// FontHersheySimplex is normal size sans-serif font.
 	FontHersheySimplex HersheyFont = 0
-	// small size sans-serif font
+	// FontHersheyPlain issmall size sans-serif font.
 	FontHersheyPlain = 1
-	// normal size sans-serif font (more complex than FontHersheySIMPLEX)
+	// FontHersheyDuplex normal size sans-serif font
+	// (more complex than FontHersheySIMPLEX).
 	FontHersheyDuplex = 2
-	// normal size serif font
+	// FontHersheyComplex i a normal size serif font.
 	FontHersheyComplex = 3
-	// normal size serif font (more complex than FontHersheyCOMPLEX)
+	// FontHersheyTriplex is a normal size serif font
+	// (more complex than FontHersheyCOMPLEX).
 	FontHersheyTriplex = 4
-	// smaller version of FontHersheyCOMPLEX
+	// FontHersheyComplexSmall is a smaller version of FontHersheyCOMPLEX.
 	FontHersheyComplexSmall = 5
-	// hand-writing style font
+	// FontHersheyScriptSimplex is a hand-writing style font.
 	FontHersheyScriptSimplex = 6
-	// more complex variant of FontHersheySCRIPT_SIMPLEX
+	// FontHersheyScriptComplex is a more complex variant of FontHersheyScriptSimplex.
 	FontHersheyScriptComplex = 7
-	// flag for italic font
+	// FontItalic is the flag for italic font.
 	FontItalic = 16
 )
 
