@@ -75,13 +75,16 @@ func (v *VideoCapture) Grab(skip int) {
 // http://docs.opencv.org/3.3.0/dd/d9e/classcv_1_1VideoWriter.html
 //
 type VideoWriter struct {
-	mu sync.RWMutex
+	mu *sync.RWMutex
 	p  C.VideoWriter
 }
 
 // VideoWriterFile opens a VideoWriter with a specific output file.
 func VideoWriterFile(name string, fps float64, width int, height int) (vw VideoWriter, err error) {
-	vw = VideoWriter{p: C.VideoWriter_New()}
+	vw = VideoWriter{
+		p:  C.VideoWriter_New(),
+		mu: &sync.RWMutex{},
+	}
 
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
@@ -92,7 +95,10 @@ func VideoWriterFile(name string, fps float64, width int, height int) (vw VideoW
 // VideoWriterFileMat opens a VideoWriter with a specific output file,
 // using the dimensions from a specific Mat.
 func VideoWriterFileMat(name string, fps float64, img Mat) (vw VideoWriter, err error) {
-	vw = VideoWriter{p: C.VideoWriter_New()}
+	vw = VideoWriter{
+		p:  C.VideoWriter_New(),
+		mu: &sync.RWMutex{},
+	}
 
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
