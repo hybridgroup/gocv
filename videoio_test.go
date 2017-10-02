@@ -4,6 +4,9 @@ import (
 	"testing"
 )
 
-func TestVideoio(t *testing.T) {
-	t.Skip("Tests needed")
+func TestVideoWriterFile(t *testing.T) {
+	vw, _ := VideoWriterFile("/tmp/test.mp4", 25, 800, 600)
+	if !vw.IsOpened() {
+		t.Error("Unable to open VideoWriterFile")
+	}
 }
