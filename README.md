@@ -8,7 +8,7 @@ It also supports the [Intel Computer Vision SDK](https://software.intel.com/en-u
 
 ## How to use
 
-![GoCV](https://raw.githubusercontent.com/hybridgroup/go-opencv3/master/images/face-detect.png)
+![GoCV](https://raw.githubusercontent.com/hybridgroup/go-gocv/master/images/face-detect.png)
 
 This example opens a video capture device using device "0". It also uses the CascadeClassifier class to load an external data file containing the classifier data. The program grabs each frame from the video, then uses the classifier to detect faces. If any faces are found, it draws a green rectangle around each one, then displays the image in an output window:
 
@@ -71,7 +71,7 @@ func main() {
 
 		// show the image in the window, and wait 1 millisecond
 		window.IMShow(img)
-		opencv3.WaitKey(1)
+		gocv.WaitKey(1)
 	}
 }
 ```
@@ -124,7 +124,7 @@ Instructions needed...
 
 ### Ubuntu/Linux
 
-In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your OpenCV3 installation.
+In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your gocv installation.
 
 One time per session, you must run the script:
 
@@ -136,7 +136,7 @@ Now you should be able to build or run any of the examples:
 
 The showinfo.go program should output the following:
 
-		go-opencv3 version: 0.0.1
+		go-gocv version: 0.0.1
 		opencv lib version: 3.3.0
 
 ### Other Linux installations
@@ -160,7 +160,7 @@ Please note that you will need to run these 2 lines of code one time in your cur
 
 ### OS X
 
-In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your OpenCV3 installation. If you have used Homebrew to install OpenCV 3.3, the following instructions should work.
+In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your gocv installation. If you have used Homebrew to install OpenCV 3.3, the following instructions should work.
 
 One time per session, you must run the script:
 
@@ -172,7 +172,7 @@ Now you should be able to build or run any of the examples:
 
 The showinfo.go program should output the following:
 
-		go-opencv3 version: 0.0.1
+		go-gocv version: 0.0.1
 		opencv lib version: 3.3.0
 
 ### Windows
