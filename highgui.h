@@ -14,7 +14,6 @@ void Window_Close(const char* winname);
 void Window_IMShow(const char* winname, Mat mat);
 int Window_WaitKey(int);
 
-
 #ifdef __cplusplus
 }
 #endif

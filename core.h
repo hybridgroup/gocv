@@ -16,61 +16,61 @@ typedef struct ByteArray{
 extern "C" {
 #endif
 
-  typedef struct RawData {
-    int width;
-    int height;
-    struct ByteArray data;
-  } RawData;
+typedef struct RawData {
+  int width;
+  int height;
+  struct ByteArray data;
+} RawData;
 
-  // Wrapper for an individual cv::cvPoint
-  typedef struct Point {
-    int x;
-    int y;
-  } Point;
-  
-  // Wrapper for an individual cv::cvRect
-  typedef struct Rect {
-    int x;
-    int y;
-    int width;
-    int height;
-  } Rect;
-  
-  // Wrapper for the vector of Rect struct aka std::vector<Rect>
-  typedef struct Rects {
-    Rect* rects;
-    int length;
-  } Rects;
+// Wrapper for an individual cv::cvPoint
+typedef struct Point {
+  int x;
+  int y;
+} Point;
 
-  // Wrapper for an individual cv::cvSize
-  typedef struct Size {
-    int width;
-    int height;
-  } Size;
+// Wrapper for an individual cv::cvRect
+typedef struct Rect {
+  int x;
+  int y;
+  int width;
+  int height;
+} Rect;
 
-  // Wrapper for an individual cv::cvScalar
-  typedef struct Scalar {
-    double val1;
-    double val2;
-    double val3;
-    double val4;
-  } Scalar;
+// Wrapper for the vector of Rect struct aka std::vector<Rect>
+typedef struct Rects {
+  Rect* rects;
+  int length;
+} Rects;
+
+// Wrapper for an individual cv::cvSize
+typedef struct Size {
+  int width;
+  int height;
+} Size;
+
+// Wrapper for an individual cv::cvScalar
+typedef struct Scalar {
+  double val1;
+  double val2;
+  double val3;
+  double val4;
+} Scalar;
   
-  #ifdef __cplusplus
-  typedef cv::Mat* Mat;
-  #else
-  typedef void* Mat;
-  #endif
+#ifdef __cplusplus
+typedef cv::Mat* Mat;
+#else
+typedef void* Mat;
+#endif
   
-  struct ByteArray toByteArray(const char* buf, int len);
-  void ByteArray_Release(struct ByteArray buf);
-  
-  void Rects_Close(struct Rects rs);
-  
-  Mat Mat_New();
-  void Mat_Close(Mat m);
-  int Mat_Empty(Mat m);
-  Mat Mat_Region(Mat m, Rect r);
+struct ByteArray toByteArray(const char* buf, int len);
+void ByteArray_Release(struct ByteArray buf);
+
+void Rects_Close(struct Rects rs);
+
+Mat Mat_New();
+void Mat_Close(Mat m);
+int Mat_Empty(Mat m);
+Mat Mat_Region(Mat m, Rect r);
 
 #ifdef __cplusplus
 }
