@@ -97,7 +97,7 @@ func main() {
 			}
 
 			rect := face.Rectangle()
-			opencv3.Rectangle(img, rect, color)
+			opencv3.Rectangle(img, rect, color, 3)
 
 			size := opencv3.GetTextSize("Human", opencv3.FontHersheyPlain, 1.2, 2)
 			pt := image.Pt(rect.Min.X + (rect.Min.X / 2) - (size.X / 2), rect.Min.Y - 2)

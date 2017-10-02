@@ -12,7 +12,7 @@ extern "C" {
 
 void CvtColor(Mat src, Mat dst, int code);
 void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt);
-void Rectangle(Mat img, Rect rect, Scalar color);
+void Rectangle(Mat img, Rect rect, Scalar color, int thickness);
 struct Size GetTextSize(const char* text, int fontFace, double fontScale, int thickness);
 void PutText(Mat img, const char* text, Point org, int fontFace, double fontScale, 
              Scalar color, int thickness);
