@@ -45,7 +45,7 @@ func GaussianBlur(src Mat, dst Mat, ksize image.Point, sigmaX float64,
 // For further details, please see:
 // http://docs.opencv.org/3.3.0/d6/d6e/group__imgproc__draw.html#ga346ac30b5c74e9b5137576c9ee9e0e8c
 //
-func Rectangle(img Mat, r image.Rectangle, c color.RGBA) {
+func Rectangle(img Mat, r image.Rectangle, c color.RGBA, thickness int) {
 	cRect := C.struct_Rect{
 		x:      C.int(r.Min.X),
 		y:      C.int(r.Min.Y),
@@ -60,7 +60,7 @@ func Rectangle(img Mat, r image.Rectangle, c color.RGBA) {
 		val4: C.double(c.A),
 	}
 
-	C.Rectangle(img.p, cRect, sColor)
+	C.Rectangle(img.p, cRect, sColor, C.int(thickness))
 }
 
 // HersheyFont is based on the enum HersheyFonts

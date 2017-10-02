@@ -75,7 +75,7 @@ func main() {
 		// draw a rectangle around each face on the original image,
 		// along with text identifing as "Human"
 		for _, r := range rects {
-			opencv3.Rectangle(img, r, blue)
+			opencv3.Rectangle(img, r, blue, 3)
 
 			size := opencv3.GetTextSize("Human", opencv3.FontHersheyPlain, 1.2, 2)
 			pt := image.Pt(r.Min.X + (r.Min.X / 2) - (size.X / 2), r.Min.Y - 2)
