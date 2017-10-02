@@ -66,7 +66,7 @@ func main() {
 
 		// draw a rectangle around each face on the original image
 		for _, r := range rects {
-			opencv3.Rectangle(img, r, blue)
+			opencv3.Rectangle(img, r, blue, 3)
 		}
 
 		// show the image in the window, and wait 1 millisecond
