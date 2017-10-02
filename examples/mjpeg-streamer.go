@@ -6,9 +6,9 @@
 //
 // How to run:
 //
-// mjoeg-streamer [camera ID]
+// mjpeg-streamer [camera ID]
 //
-// 		go run ./examples/mjoeg-streamer.go 1
+// 		go run ./examples/mjpeg-streamer.go 1
 //
 // +build example
 
