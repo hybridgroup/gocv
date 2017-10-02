@@ -5,7 +5,10 @@ package opencv3
 #include "core.h"
 */
 import "C"
-import "image"
+import (
+	"image"
+	"unsafe"
+)
 
 // Mat represents an n-dimensional dense numerical single-channel
 // or multi-channel array. It can be used to store real or complex-valued
@@ -72,4 +75,16 @@ type Scalar struct {
 func NewScalar(v1 float64, v2 float64, v3 float64, v4 float64) Scalar {
 	s := Scalar{Val1: v1, Val2: v2, Val3: v3, Val4: v4}
 	return s
+}
+
+func ToByteArray(b []byte) C.struct_ByteArray {
+	return C.struct_ByteArray{
+		data:   (*C.char)(unsafe.Pointer(&b[0])),
+		length: C.int(len(b)),
+	}
+}
+
+// toGoBytes returns binary data. Serializing is depends on C/C++ implementation.
+func ToGoBytes(b C.struct_ByteArray) []byte {
+	return C.GoBytes(unsafe.Pointer(b.data), b.length)
 }
