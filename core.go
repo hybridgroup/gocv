@@ -77,14 +77,13 @@ func NewScalar(v1 float64, v2 float64, v3 float64, v4 float64) Scalar {
 	return s
 }
 
-func ToByteArray(b []byte) C.struct_ByteArray {
+func toByteArray(b []byte) C.struct_ByteArray {
 	return C.struct_ByteArray{
 		data:   (*C.char)(unsafe.Pointer(&b[0])),
 		length: C.int(len(b)),
 	}
 }
 
-// toGoBytes returns binary data. Serializing is depends on C/C++ implementation.
-func ToGoBytes(b C.struct_ByteArray) []byte {
+func toGoBytes(b C.struct_ByteArray) []byte {
 	return C.GoBytes(unsafe.Pointer(b.data), b.length)
 }
