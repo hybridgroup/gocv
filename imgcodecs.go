@@ -88,3 +88,17 @@ func IMWrite(name string, img Mat) bool {
 
 	return bool(C.Image_IMWrite(cName, img.p))
 }
+
+// IMEncode encodes a Mat to a buffer in a specific image file format.
+//
+// For further details, please see:
+// ...
+//
+func IMEncode(fileExt string, img Mat) (buf []byte, err error) {
+	cfileExt := C.CString(fileExt)
+	defer C.free(unsafe.Pointer(cfileExt))
+
+	b := C.Image_IMEncode(cfileExt, img.Ptr())
+	defer C.ByteArray_Release(b)
+	return ToGoBytes(b), nil
+}
