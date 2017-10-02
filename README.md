@@ -1,4 +1,4 @@
-# Go OpenCV3
+# GoCV
 
 This Go package provides bindings for the [OpenCV 3](http://opencv.org/) computer vision library.
 
@@ -8,7 +8,7 @@ It also supports the [Intel Computer Vision SDK](https://software.intel.com/en-u
 
 ## How to use
 
-![Go OpenCV3](https://raw.githubusercontent.com/hybridgroup/go-opencv3/master/images/face-detect.png)
+![GoCV](https://raw.githubusercontent.com/hybridgroup/go-opencv3/master/images/face-detect.png)
 
 This example opens a video capture device using device "0". It also uses the CascadeClassifier class to load an external data file containing the classifier data. The program grabs each frame from the video, then uses the classifier to detect faces. If any faces are found, it draws a green rectangle around each one, then displays the image in an output window:
 
@@ -19,14 +19,14 @@ import (
 	"fmt"
 	"image/color"
 
-	opencv3 "github.com/hybridgroup/go-opencv3"
+	"github.com/hybridgroup/gocv"
 )
 
 func main() {
 	deviceID := 0
 
 	// open webcam
-	webcam, err := opencv3.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
@@ -34,18 +34,18 @@ func main() {
 	defer webcam.Close()
 
 	// open display window
-	window := opencv3.NewWindow("Face Detect")
+	window := gocv.NewWindow("Face Detect")
 	defer window.Close()
 
 	// prepare image matrix
-	img := opencv3.NewMat()
+	img := gocv.NewMat()
 	defer img.Close()
 
 	// color for the rect when faces detected
 	blue := color.RGBA{0, 0, 255, 0}
 
 	// load classifier to recognize faces
-	classifier := opencv3.NewCascadeClassifier()
+	classifier := gocv.NewCascadeClassifier()
 	defer classifier.Close()
 	
 	classifier.Load("data/haarcascade_frontalface_default.xml")
@@ -66,7 +66,7 @@ func main() {
 
 		// draw a rectangle around each face on the original image
 		for _, r := range rects {
-			opencv3.Rectangle(img, r, blue, 3)
+			gocv.Rectangle(img, r, blue, 3)
 		}
 
 		// show the image in the window, and wait 1 millisecond
@@ -205,7 +205,7 @@ The [https://github.com/go-opencv/go-opencv](https://github.com/go-opencv/go-ope
 
 This package uses a C-style wrapper around the OpenCV 3 C++ classes to avoid having to deal with applying SWIG to a huge existing codebase.
 
-The go-opencv3 mappings are intended to match as close as possible to the original OpenCV project structure, to make it easier to find where to add further support.
+The GoCV mappings are intended to match as close as possible to the original OpenCV project structure, to make it easier to find where to add further support.
 
 For example, the [OpenCV `videoio` module](https://github.com/opencv/opencv/tree/master/modules/videoio) wrappers can be found in this project in the `videoio.*` files.
 
