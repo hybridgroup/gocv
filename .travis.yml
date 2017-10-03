@@ -2,7 +2,6 @@
 sudo: required
 dist: trusty
 
-# Choose a lightweight base image; we provide our own build tools.
 language: go
 
 addons:
@@ -25,11 +24,6 @@ addons:
     - libjasper-dev
     - libdc1394-22-dev
     - xvfb
-
-# The different configurations we want to test. You could also do things like
-# change flags or use --stack-yaml to point to a different file.
-# env:
-# - ARGS="--jobs 2 --resolver lts-8.9" CACHE_NAME=LTS_8_9_CV_3_2_0
 
 before_install:
   # Install OpenCV 3
