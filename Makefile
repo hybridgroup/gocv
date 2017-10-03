@@ -1,15 +1,8 @@
 .ONESHELL:
-.PHONY: test examples deps download build clean
+.PHONY: test deps download build clean
 
 test:
 	go test .
-
-EXAMPLES := $(shell ls examples/*.go | sed -e 's/examples\///')
-
-examples:
-	for example in $(EXAMPLES) ; do \
-		go build -o /tmp/$$example examples/$$example ; \
-	done ; \
 
 deps:
 	sudo apt-get update
