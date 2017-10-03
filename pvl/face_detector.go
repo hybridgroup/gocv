@@ -13,7 +13,7 @@ import (
 	"github.com/hybridgroup/gocv"
 )
 
-// FaceDetector is a bind of `cv::pvl::FaceDetector`.
+// FaceDetector is a wrapper around the cv::pvl::FaceDetector.
 type FaceDetector struct {
 	p C.FaceDetector
 }
@@ -55,25 +55,25 @@ func (f *FaceDetector) DetectFaceRect(img gocv.Mat) []Face {
 	return faces
 }
 
-// DetectEye uses PVL FaceDetector to detect eyes on a Face
+// DetectEye uses PVL FaceDetector to detect eyes on a Face.
 func (f *FaceDetector) DetectEye(img gocv.Mat, face Face) {
 	C.FaceDetector_DetectEye(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
 	return
 }
 
-// DetectMouth uses PVL FaceDetector to detect mouth on a Face
+// DetectMouth uses PVL FaceDetector to detect mouth on a Face.
 func (f *FaceDetector) DetectMouth(img gocv.Mat, face Face) {
 	C.FaceDetector_DetectMouth(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
 	return
 }
 
-// DetectSmile uses PVL FaceDetector to detect smile on a Face
+// DetectSmile uses PVL FaceDetector to detect smile on a Face.
 func (f *FaceDetector) DetectSmile(img gocv.Mat, face Face) {
 	C.FaceDetector_DetectSmile(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
 	return
 }
 
-// DetectBlink uses PVL FaceDetector to detect blink on a Face
+// DetectBlink uses PVL FaceDetector to detect blink on a Face.
 func (f *FaceDetector) DetectBlink(img gocv.Mat, face Face) {
 	C.FaceDetector_DetectBlink(f.p, C.Mat(img.Ptr()), C.Face(face.Ptr()))
 	return
