@@ -16,27 +16,16 @@ This example opens a video capture device using device "0", reads frames, and sh
 package main
 
 import (
-	"fmt"
-
 	"github.com/hybridgroup/gocv"
 )
 
 func main() {
-	webcam, err := gocv.VideoCaptureDevice(0)
-	if err != nil {
-		fmt.Println("Error opening video capture device")
-		return
-	}
-
+	webcam, _ := gocv.VideoCaptureDevice(0)
 	window := gocv.NewWindow("Hello")	
 	img := gocv.NewMat()
 
 	for {
-		if ok := webcam.Read(img); !ok {
-			fmt.Println("Error cannot read capture device")
-			return
-		}
-
+		webcam.Read(img)
 		window.IMShow(img)
 		gocv.WaitKey(1)
 	}
@@ -47,7 +36,7 @@ func main() {
 
 ![GoCV](https://raw.githubusercontent.com/hybridgroup/gocv/master/images/face-detect.jpg)
 
-This example opens a video capture device using device "0". It also uses the CascadeClassifier class to load an external data file containing the classifier data. The program grabs each frame from the video, then uses the classifier to detect faces. If any faces are found, it draws a green rectangle around each one, then displays the video in an output window:
+This is a more complete example that opens a video capture device using device "0". It also uses the CascadeClassifier class to load an external data file containing the classifier data. The program grabs each frame from the video, then uses the classifier to detect faces. If any faces are found, it draws a green rectangle around each one, then displays the video in an output window:
 
 ```go
 package main
