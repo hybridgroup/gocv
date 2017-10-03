@@ -76,7 +76,7 @@ func main() {
 }
 ```
 
-The PVL examples are in the [examples/pvl directory](../examples/pvl) of this repo.
+Some PVL examples are in the [cmd/pvl directory](../cmd/pvl) of this repo, in the form of some useful commands such as the [smile detector](../cmd/pvl/smiledetector).
 
 ## How to install the Intel CV SDK
 

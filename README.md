@@ -75,7 +75,7 @@ func main() {
 }
 ```
 
-There are more examples in the [examples directory](./examples) of this repo.
+There are examples in the [cmd directory](./cmd) of this repo in the form of various useful command line utilities, such as [capturing an image file](./cmd/saveimage) and [streaming mjpeg video](./cmd/mjpeg-streamer).
 
 ## How to install OpenCV 3.x
 
