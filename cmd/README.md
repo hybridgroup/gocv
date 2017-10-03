@@ -18,7 +18,7 @@ Captures video from a connected camera, then uses the CascadeClassifier to detec
 
 Captures video from a connected camera, then uses the CascadeClassifier to detect faces, and draw a rectangle around each of them, before displaying them within a Window
 
-## MPEG-Streamer
+## MJPEG-Streamer
 
 Opens a video capture device, then streams MJPEG from it that you can view in any browser.
 
