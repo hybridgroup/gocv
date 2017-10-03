@@ -6,6 +6,8 @@ GoCV supports the latest release of OpenCV (v3.3) on Linux, OS X, and (soon) Win
 
 It also supports the [Intel Computer Vision SDK](https://software.intel.com/en-us/cvsdk-devguide) using the Photography Vision Library (PVL). Check out the [PVL README](./pvl/README.md) for more info on how to use GoCV with the Intel CV SDK.
 
+[![Build Status](https://travis-ci.org/hybridgroup/gocv.svg?branch=dev)](https://travis-ci.org/hybridgroup/gocv)
+
 ## How to use
 
 ### Hello, video
