@@ -1,12 +1,49 @@
 # GoCV
 
-The GoCV package provides bindings for the [OpenCV 3](http://opencv.org/) computer vision library.
+The GoCV package provides Go language bindings for the [OpenCV 3](http://opencv.org/) computer vision library.
 
 GoCV supports the latest release of OpenCV (v3.3) on Linux, OS X, and (soon) Windows.
 
 It also supports the [Intel Computer Vision SDK](https://software.intel.com/en-us/cvsdk-devguide) using the Photography Vision Library (PVL). Check out the [PVL README](./pvl/README.md) for more info on how to use GoCV with the Intel CV SDK.
 
 ## How to use
+
+### Hello, video
+
+This example opens a video capture device using device "0", reads frames, and shows the video in a GUI window:
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/hybridgroup/gocv"
+)
+
+func main() {
+	webcam, err := gocv.VideoCaptureDevice(0)
+	if err != nil {
+		fmt.Println("Error opening video capture device")
+		return
+	}
+
+	window := gocv.NewWindow("Hello")	
+	img := gocv.NewMat()
+
+	for {
+		if ok := webcam.Read(img); !ok {
+			fmt.Println("Error cannot read capture device")
+			return
+		}
+
+		window.IMShow(img)
+		gocv.WaitKey(1)
+	}
+}
+```
+
+### Face detect
 
 ![GoCV](https://raw.githubusercontent.com/hybridgroup/gocv/master/images/face-detect.jpg)
 
