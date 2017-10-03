@@ -68,8 +68,7 @@ func main() {
 		rects := classifier.DetectMultiScale(img)
 		fmt.Printf("found %d faces\n", len(rects))
 
-		// draw a rectangle around each face on the original image,
-		// along with text identifing as "Human"
+		// blur each face on the original image
 		for _, r := range rects {
 			imgFace := img.Region(r)
 			defer imgFace.Close()
