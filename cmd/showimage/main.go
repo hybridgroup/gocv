@@ -5,7 +5,7 @@
 //
 // How to run:
 //
-// 		go run ./examples/window.go /home/ron/Pictures/mcp23017.jpg
+// 		go run ./cmd/showimage/main.go /home/ron/Pictures/mcp23017.jpg
 //
 // +build example
 
@@ -14,7 +14,7 @@ package main
 import (
 	"os"
 
-	gocv ".."
+	"github.com/hybridgroup/gocv"
 )
 
 func main() {

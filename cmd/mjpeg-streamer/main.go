@@ -9,7 +9,7 @@
 //
 // mjpeg-streamer [camera ID] [host:port]
 //
-// 		go run ./examples/mjpeg-streamer.go 1 0.0.0.0:8080
+// 		go run ./cmd/mjpeg-streamer/main.go 1 0.0.0.0:8080
 //
 // +build example
 
@@ -22,7 +22,7 @@ import (
 	"os"
 	"strconv"
 
-	gocv ".."
+	"github.com/hybridgroup/gocv"
 	"github.com/saljam/mjpeg"
 )
 

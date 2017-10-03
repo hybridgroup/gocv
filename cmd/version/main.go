@@ -4,7 +4,7 @@
 //
 // How to run:
 //
-// 		go run ./examples/showinfo.go
+// 		go run ./cmd/version/main.go
 //
 // +build example
 
@@ -13,10 +13,10 @@ package main
 import (
 	"fmt"
 
-	gocv ".."
+	"github.com/hybridgroup/gocv"
 )
 
 func main() {
-	fmt.Printf("go-gocv version: %s\n", gocv.Version())
+	fmt.Printf("gocv version: %s\n", gocv.Version())
 	fmt.Printf("opencv lib version: %s\n", gocv.OpenCVVersion())
 }

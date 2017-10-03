@@ -1,13 +1,14 @@
 // What it does:
 //
-// This example uses the CascadeClassifier to detect faces, 
-// then blurs them using a Gaussian blur before displaying in a window.
+// This example captures video from a connected camera, 
+// then uses the CascadeClassifier to detect faces, blurs them
+// using a Gaussian blur, then displays the blurred video in a window.
 //
 // How to run:
 //
 // faceblur [camera ID] [classifier XML file]
 //
-// 		go run ./examples/faceblur.go 0 data/haarcascade_frontalface_default.xml
+// 		go run ./cmd/faceblur/main.go 0 data/haarcascade_frontalface_default.xml
 //
 // +build example
 
@@ -19,7 +20,7 @@ import (
 	"os"
 	"strconv"
 
-	gocv ".."
+	"github.com/hybridgroup/gocv"
 )
 
 func main() {

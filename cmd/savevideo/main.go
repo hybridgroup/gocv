@@ -1,13 +1,13 @@
 // What it does:
 //
 // This example uses the VideoCapture class to capture video from a connected webcam,
-// and save it to a video file on disk
+// then saves 100 frames to a video file on disk.
 //
 // How to run:
 //
 // savevideo [camera ID] [video file]
 //
-// 		go run ./examples/savevideo.go 0 testvideo.mp4
+// 		go run ./cmd/savevideo/main.go 0 testvideo.mp4
 //
 // +build example
 
@@ -18,7 +18,7 @@ import (
 	"os"
 	"strconv"
 
-	gocv ".."
+	"github.com/hybridgroup/gocv"
 )
 
 func main() {

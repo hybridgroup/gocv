@@ -9,7 +9,7 @@
 //
 // smiledetect [camera ID]
 //
-// 		go run ./examples/pvl/smiledetect.go 0
+// 		go run ./cmd/pvl/smiledetect/main.go 0
 //
 // +build example
 
@@ -22,8 +22,8 @@ import (
 	"os"
 	"strconv"
 
-	gocv "../.."
-	pvl "../../pvl"
+	"github.com/hybridgroup/gocv"
+	"github.com/hybridgroup/gocv/pvl"
 )
 
 func main() {
@@ -77,7 +77,7 @@ func main() {
 		}
 
 		// convert image Mat to grayscale Mat for detection
-		gocv.CvtColor(img, imgGray, gocv.ColorBGR2GRAY);
+		gocv.CvtColor(img, imgGray, gocv.ColorBGRToGray);
 	
 		// detect faces
 		faces := fd.DetectFaceRect(imgGray)

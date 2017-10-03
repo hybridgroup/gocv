@@ -7,7 +7,7 @@
 //
 // facedetect [camera ID] [classifier XML file]
 //
-// 		go run ./examples/facedetect.go 0 data/haarcascade_frontalface_default.xml
+// 		go run ./cmd/facedetect/main.go 0 data/haarcascade_frontalface_default.xml
 //
 // +build example
 
@@ -20,7 +20,7 @@ import (
 	"os"
 	"strconv"
 
-	gocv ".."
+	"github.com/hybridgroup/gocv"
 )
 
 func main() {

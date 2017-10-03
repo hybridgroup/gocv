@@ -7,7 +7,7 @@
 //
 // faceblur [camera ID]
 //
-// 		go run ./examples/pvl/faceblur.go 0
+// 		go run ./cmd/pvl/faceblur/main.go 0
 //
 // +build example
 
@@ -19,8 +19,8 @@ import (
 	"os"
 	"strconv"
 
-	gocv "../.."
-	pvl "../../pvl"
+	"github.com/hybridgroup/gocv"
+	"github.com/hybridgroup/gocv/pvl"
 )
 
 func main() {
@@ -70,7 +70,7 @@ func main() {
 		}
 
 		// convert image to grayscale for detection
-		gocv.CvtColor(img, imgGray, gocv.ColorBGR2GRAY);
+		gocv.CvtColor(img, imgGray, gocv.ColorBGRAToGray);
 	
 		// detect faces
 		faces := fd.DetectFaceRect(imgGray)
