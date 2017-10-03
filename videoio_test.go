@@ -5,7 +5,7 @@ import (
 )
 
 func TestVideoWriterFile(t *testing.T) {
-	vw, _ := VideoWriterFile("/tmp/test.mp4", 25, 800, 600)
+	vw, _ := VideoWriterFile("/tmp/test.avi", 25, 800, 600)
 	if !vw.IsOpened() {
 		t.Error("Unable to open VideoWriterFile")
 	}
