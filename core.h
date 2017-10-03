@@ -71,6 +71,8 @@ Mat Mat_New();
 void Mat_Close(Mat m);
 int Mat_Empty(Mat m);
 Mat Mat_Region(Mat m, Rect r);
+int Mat_Rows(Mat m);
+int Mat_Cols(Mat m);
 
 #ifdef __cplusplus
 }

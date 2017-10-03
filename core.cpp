@@ -21,6 +21,16 @@ Mat Mat_Region(Mat m, Rect r) {
     return new cv::Mat(*m, cv::Rect(r.x, r.y, r.width, r.height));
 }
 
+// Mat_Rows returns how many rows in this Mat.
+int Mat_Rows(Mat m) {
+    return m->rows;
+}
+
+// Mat_Cols returns how many columns in this Mat.
+int Mat_Cols(Mat m) {
+    return m->cols;
+}
+
 void Rects_Close(struct Rects rs) {
     delete rs.rects;
 }

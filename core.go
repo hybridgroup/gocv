@@ -59,6 +59,16 @@ func (m *Mat) Region(rio image.Rectangle) Mat {
 	return Mat{p: C.Mat_Region(m.p, cRect)}
 }
 
+// Rows returns the number of rows for this Mat.
+func (m *Mat) Rows() int {
+	return int(C.Mat_Rows(m.p))
+}
+
+// Cols returns the number of columns for this Mat.
+func (m *Mat) Cols() int {
+	return int(C.Mat_Cols(m.p))
+}
+
 // Scalar is a 4-element vector widely used in OpenCV to pass pixel values.
 //
 // For further details, please see:
