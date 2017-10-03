@@ -2,6 +2,8 @@
 
 The Intel [Photography Vision Library (PVL)](https://software.intel.com/en-us/cvsdk-devguide-advanced-face-capabilities-in-intels-opencv) is a set of extensions to OpenCV that is installed with the Intel CV SDK. It uses computer vision and imaging algorithms developed at Intel.
 
+GoCV support for the PVL can be found here in the "github.com/hybridgroup/gocv/pvl" package.
+
 ## How to use
 
 ```go
@@ -11,8 +13,8 @@ import (
 	"fmt"
 	"image/color"
 
-	gocv ".."
-	pvl "../pvl"
+	"github.com/hybridgroup/gocv"
+	"github.com/hybridgroup/gocv/pvl"
 )
 
 func main() {

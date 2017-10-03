@@ -1,16 +1,16 @@
 # GoCV
 
-This Go package provides bindings for the [OpenCV 3](http://opencv.org/) computer vision library.
+The GoCV package provides bindings for the [OpenCV 3](http://opencv.org/) computer vision library.
 
-Supports the latest release of OpenCV (v3.3) on Linux, OS X, and (soon) Windows.
+GoCV supports the latest release of OpenCV (v3.3) on Linux, OS X, and (soon) Windows.
 
-It also supports the [Intel Computer Vision SDK](https://software.intel.com/en-us/cvsdk-devguide) using the Photography Vision Library (PVL). Check out the [PVL README](./pvl/README.md) for more info.
+It also supports the [Intel Computer Vision SDK](https://software.intel.com/en-us/cvsdk-devguide) using the Photography Vision Library (PVL). Check out the [PVL README](./pvl/README.md) for more info on how to use GoCV with the Intel CV SDK.
 
 ## How to use
 
 ![GoCV](https://raw.githubusercontent.com/hybridgroup/gocv/master/images/face-detect.jpg)
 
-This example opens a video capture device using device "0". It also uses the CascadeClassifier class to load an external data file containing the classifier data. The program grabs each frame from the video, then uses the classifier to detect faces. If any faces are found, it draws a green rectangle around each one, then displays the image in an output window:
+This example opens a video capture device using device "0". It also uses the CascadeClassifier class to load an external data file containing the classifier data. The program grabs each frame from the video, then uses the classifier to detect faces. If any faces are found, it draws a green rectangle around each one, then displays the video in an output window:
 
 ```go
 package main
