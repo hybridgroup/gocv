@@ -217,7 +217,7 @@ Instructions here...
 - [X] Code example to use VideoWriter
 - [X] Intel CV SDK PVL FaceTracker support
 - [X] imgproc Image processing
-- [ ] Travis CI build
+- [X] Travis CI build
 - [ ] More tests
 - [ ] Installation/usage instructions for Windows
 - [ ] Appveyor build
