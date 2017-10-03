@@ -28,16 +28,17 @@ addons:
 
 before_install:
   # Install OpenCV 3
-  - make deps
-  - make download
-  - make build
-  - source ./env.sh
+  - ./travis_build_opencv.sh
 
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
+before_cache:
+  - rm -f $HOME/fresh-cache
+
 script:
+  - source ./env.sh
   - go test
 
 # Caching so the next build will be fast as possible.
