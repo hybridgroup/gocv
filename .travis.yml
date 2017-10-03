@@ -1,0 +1,64 @@
+# Use new container infrastructure to enable caching
+sudo: required
+dist: trusty
+
+# Choose a lightweight base image; we provide our own build tools.
+language: go
+
+addons:
+  apt:
+    packages:
+    - libgmp-dev
+    - build-essential
+    - cmake
+    - git
+    - libgtk2.0-dev
+    - pkg-config
+    - libavcodec-dev
+    - libavformat-dev
+    - libswscale-dev
+    - libtbb2
+    - libtbb-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libtiff-dev
+    - libjasper-dev
+    - libdc1394-22-dev
+    - xvfb
+
+# The different configurations we want to test. You could also do things like
+# change flags or use --stack-yaml to point to a different file.
+# env:
+# - ARGS="--jobs 2 --resolver lts-8.9" CACHE_NAME=LTS_8_9_CV_3_2_0
+
+before_install:
+  # Install OpenCV 3
+  - make deps
+  - make download
+  - make build
+  - source ./env.sh
+
+# Download and unpack the stack executable
+# - mkdir -p ~/.local/bin
+# - export PATH=$HOME/.local/bin:$PATH
+# - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+
+# This line does all of the work: installs GHC if necessary, build the library,
+# executables, and test suites, and runs the test suites. --no-terminal works
+# around some quirks in Travis's terminal implementation.
+
+# before_cache:
+# - rm -f $HOME/fresh-cache
+
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+script:
+  - go test .
+
+# Caching so the next build will be fast too.
+cache:
+  timeout: 1000
+  directories:
+    - $HOME/usr
