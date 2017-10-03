@@ -18,6 +18,15 @@ func TestCvtColor(t *testing.T) {
 		t.Error("Invalid convert in CvtColor test")
 	}
 }
+
+func TestGaussianBlur(t *testing.T) {
+	t.Skip("Test needed")
+}
+
+func TestRectangle(t *testing.T) {
+	t.Skip("Test needed")
+}
+
 func TestGetTextSize(t *testing.T) {
 	size := GetTextSize("test", FontHersheySimplex, 1.2, 1)
 	if size.X != 72 {
