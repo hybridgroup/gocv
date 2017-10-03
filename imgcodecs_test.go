@@ -5,7 +5,7 @@ import (
 )
 
 func TestIMRead(t *testing.T) {
-	img := IMRead("images/face-detect.png", IMReadColor)
+	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
 		t.Error("Invalid Mat in IMRead")
 	}
