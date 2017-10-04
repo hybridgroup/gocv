@@ -8,41 +8,77 @@ package gocv
 type ColorConversionCode int
 
 const (
-	// ColorBGRToBGRA add alpha channel to RGB or BGR image
+	// ColorBGRToBGRA adds alpha channel to BGR image.
 	ColorBGRToBGRA ColorConversionCode = 0
 
-	// ColorBGRAToBGR removes alpha channel from RGB or BGR image
+	// ColorBGRAToBGR removes alpha channel from BGR image.
 	ColorBGRAToBGR = 1
 
-	// convert between RGB and BGR color spaces (with or without alpha channel)
+	// ColorBGRToRGBA converts from BGR to RGB with alpha channel.
 	ColorBGRToRGBA = 2
 
+	// ColorRGBAToBGR converts from RGB with alpha to BGR color space.
 	ColorRGBAToBGR = 3
 
+	// ColorBGRToRGB converts from BGR to RGB without alpha channel.
 	ColorBGRToRGB = 4
 
+	// ColorBGRAToRGBA converts from BGR with alpha channel
+	// to RGB with alpha channel.
 	ColorBGRAToRGBA = 5
 
-	// convert between RGB/BGR and grayscale
-	ColorBGRToGray  = 6
-	ColorRGBToGray  = 7
-	ColorGrayToBGR  = 8
+	// ColorBGRToGray converts from BGR to grayscale.
+	ColorBGRToGray = 6
+
+	// ColorRGBToGray converts from RGB to grayscale.
+	ColorRGBToGray = 7
+
+	// ColorGrayToBGR converts from grayscale to BGR.
+	ColorGrayToBGR = 8
+
+	// ColorGrayToBGRA converts from grayscale to BGR with alpha channel.
 	ColorGrayToBGRA = 9
+
+	// ColorBGRAToGray converts from BGR with alpha channel to grayscale.
 	ColorBGRAToGray = 10
+
+	// ColorRGBAToGray converts from RGB with alpha channel to grayscale.
 	ColorRGBAToGray = 11
 
-	// convert between RGB/BGR and BGR565 (16-bit images)
-	ColorBGRToBGR565  = 12
-	ColorRGBToBGR565  = 13
-	ColorBGR565ToBGR  = 14
-	ColorBGR565ToRGB  = 15
+	// ColorBGRToBGR565 converts from BGR to BGR565 (16-bit images).
+	ColorBGRToBGR565 = 12
+
+	// ColorRGBToBGR565 converts from RGB to BGR565 (16-bit images).
+	ColorRGBToBGR565 = 13
+
+	// ColorBGR565ToBGR converts from BGR565 (16-bit images) to BGR.
+	ColorBGR565ToBGR = 14
+
+	// ColorBGR565ToRGB converts from BGR565 (16-bit images) to RGB.
+	ColorBGR565ToRGB = 15
+
+	// ColorBGRAToBGR565 converts from BGRA (with alpha channel)
+	// to BGR565 (16-bit images).
 	ColorBGRAToBGR565 = 16
+
+	// ColorRGBAToBGR565 converts from RGBA (with alpha channel)
+	// to BGR565 (16-bit images).
 	ColorRGBAToBGR565 = 17
+
+	// ColorBGR565ToBGRA converts from BGR565 (16-bit images)
+	// to BGRA (with alpha channel).
 	ColorBGR565ToBGRA = 18
+
+	// ColorBGR565ToRGBA converts from BGR565 (16-bit images)
+	// to RGBA (with alpha channel).
 	ColorBGR565ToRGBA = 19
 
-	// convert between grayscale to BGR565 (16-bit images)
+	// ColorGrayToBGR565 converts from grayscale
+	// to BGR565 (16-bit images).
 	ColorGrayToBGR565 = 20
+
+	// ColorBGR565ToGray converts from BGR565 (16-bit images)
+	// to grayscale.
 	ColorBGR565ToGray = 21
 
 	// convert between RGB/BGR and BGR555 (16-bit images)
@@ -97,15 +133,15 @@ const (
 	ColorHLSToBGR = 60
 	ColorHLSToRGB = 61
 
-	ColorBGRToHSV_FULL = 66
-	ColorRGBToHSV_FULL = 67
-	ColorBGRToHLS_FULL = 68
-	ColorRGBToHLS_FULL = 69
+	ColorBGRToHSVFull = 66
+	ColorRGBToHSVFull = 67
+	ColorBGRToHLSFull = 68
+	ColorRGBToHLSFull = 69
 
-	ColorHSVToBGR_FULL = 70
-	ColorHSVToRGB_FULL = 71
-	ColorHLSToBGR_FULL = 72
-	ColorHLSToRGB_FULL = 73
+	ColorHSVToBGRFull = 70
+	ColorHSVToRGBFull = 71
+	ColorHLSToBGRFull = 72
+	ColorHLSToRGBFull = 73
 
 	ColorLBGRToLab = 74
 	ColorLRGBToLab = 75
