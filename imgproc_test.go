@@ -1,6 +1,8 @@
 package gocv
 
 import (
+	"image"
+	"image/color"
 	"testing"
 )
 
@@ -9,6 +11,7 @@ func TestCvtColor(t *testing.T) {
 	if img.Empty() {
 		t.Error("Invalid read of Mat in CvtColor test")
 	}
+	defer img.Close()
 
 	dest := NewMat()
 	defer dest.Close()
@@ -38,5 +41,16 @@ func TestGetTextSize(t *testing.T) {
 	}
 }
 func TestPutText(t *testing.T) {
-	t.Skip("Test needed")
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in IMRead")
+	}
+	defer img.Close()
+
+	pt := image.Pt(10, 10)
+	PutText(img, "Testing", pt, FontHersheyPlain, 1.2, color.RGBA{255, 255, 255, 0}, 2)
+
+	if img.Empty() {
+		t.Error("Error in PutText test")
+	}
 }

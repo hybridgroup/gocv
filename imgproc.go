@@ -101,8 +101,7 @@ const (
 // For further details, please see:
 // http://docs.opencv.org/3.3.0/d6/d6e/group__imgproc__draw.html#ga3d2abfcb995fd2db908c8288199dba82
 //
-func GetTextSize(text string, fontFace HersheyFont, fontScale float64,
-	thickness int) image.Point {
+func GetTextSize(text string, fontFace HersheyFont, fontScale float64, thickness int) image.Point {
 	cText := C.CString(text)
 	defer C.free(unsafe.Pointer(cText))
 
@@ -118,8 +117,7 @@ func GetTextSize(text string, fontFace HersheyFont, fontScale float64,
 // For further details, please see:
 // http://docs.opencv.org/3.3.0/d6/d6e/group__imgproc__draw.html#ga5126f47f883d730f633d74f07456c576
 //
-func PutText(img Mat, text string, org image.Point, fontFace HersheyFont,
-	fontScale float64, c color.RGBA, thickness int) {
+func PutText(img Mat, text string, org image.Point, fontFace HersheyFont, fontScale float64, c color.RGBA, thickness int) {
 	cText := C.CString(text)
 	defer C.free(unsafe.Pointer(cText))
 
