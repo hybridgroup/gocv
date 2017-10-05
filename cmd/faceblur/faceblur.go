@@ -1,44 +1,22 @@
-// What it does:
-//
-// This example captures video from a connected camera, 
+// Package faceblur captures video from a connected camera,
 // then uses the CascadeClassifier to detect faces, blurs them
 // using a Gaussian blur, then displays the blurred video in a window.
-//
-// How to run:
-//
-// faceblur [camera ID] [classifier XML file]
-//
-// 		go run ./cmd/faceblur/main.go 0 data/haarcascade_frontalface_default.xml
-//
-// +build example
-
-package main
+package faceblur
 
 import (
 	"fmt"
 	"image"
-	"os"
-	"strconv"
 
 	"github.com/hybridgroup/gocv"
 )
 
-func main() {
-	if len(os.Args) < 3 {
-		fmt.Println("How to run:\n\tfaceblur [camera ID] [classifier XML file]")
-		return
-	}
-
-	// parse args
-	deviceID, _ := strconv.Atoi(os.Args[1])
-	xmlFile := os.Args[2]
-
+func Run(deviceID int, xmlFile string) {
 	// open webcam
-	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.VideoCaptureDevice(deviceID)
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
-	}	
+	}
 	defer webcam.Close()
 
 	// open display window
@@ -52,7 +30,7 @@ func main() {
 	// load classifier to recognize faces
 	classifier := gocv.NewCascadeClassifier()
 	defer classifier.Close()
-	
+
 	classifier.Load(xmlFile)
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
@@ -73,7 +51,7 @@ func main() {
 		for _, r := range rects {
 			imgFace := img.Region(r)
 			defer imgFace.Close()
-		
+
 			// blur face
 			gocv.GaussianBlur(imgFace, imgFace, image.Pt(23, 23), 30, 50, 4)
 		}

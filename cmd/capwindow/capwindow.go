@@ -1,34 +1,15 @@
-// What it does:
-//
-// This example uses the VideoCapture class to capture frames from a connected webcam,
+// Package capwindow uses the VideoCapture class to capture frames from a connected webcam,
 // and displays the video in a Window class.
-//
-// How to run:
-//
-// 		go run ./cmd/capwindow/main.go
-//
-// +build example
-
-package main
+package capwindow
 
 import (
 	"fmt"
-	"os"
-	"strconv"
 
 	"github.com/hybridgroup/gocv"
 )
 
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("How to run:\n\tcapwindow [camera ID]")
-		return
-	}
-
-	// parse args
-	deviceID, _ := strconv.Atoi(os.Args[1])
-
-	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
+func Run(deviceID int) {
+	webcam, err := gocv.VideoCaptureDevice(deviceID)
 	if err != nil {
 		fmt.Printf("Error opening video capture device: %v\n", deviceID)
 		return
@@ -37,7 +18,7 @@ func main() {
 
 	window := gocv.NewWindow("Capture Window")
 	defer window.Close()
-	
+
 	img := gocv.NewMat()
 	defer img.Close()
 
