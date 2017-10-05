@@ -221,7 +221,7 @@ Instructions here...
 - [X] Intel CV SDK PVL FaceTracker support
 - [X] imgproc Image processing
 - [X] Travis CI build
-- [ ] More tests
+- [X] AT least minimal test coverage for each OpenCV class
 - [ ] Installation/usage instructions for Windows
 - [ ] Appveyor build
 - [ ] calib3d Camera Calibration and 3D Reconstruction
