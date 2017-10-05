@@ -163,9 +163,9 @@ One time per session, you must run the script:
 
 Now you should be able to build or run any of the examples:
 
-		go run ./examples/showinfo.go
+		go run ./cmd/version/main.go
 
-The showinfo.go program should output the following:
+The version program should output the following:
 
 		gocv version: 0.0.1
 		opencv lib version: 3.3.0
@@ -197,11 +197,11 @@ One time per session, you must run the script:
 
 		source ./env.sh
 
-Now you should be able to build or run any of the examples:
+Now you should be able to build or run any of the command examples:
 
-		go run ./examples/showinfo.go
+		go run ./cmd/version/main.go
 
-The showinfo.go program should output the following:
+The version program should output the following:
 
 		gocv version: 0.0.1
 		opencv lib version: 3.3.0
