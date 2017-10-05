@@ -22,7 +22,43 @@ func TestCvtColor(t *testing.T) {
 	}
 }
 
+func TestBlur(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in GaussianBlur test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	Blur(img, dest, image.Pt(3, 3))
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid Blur test")
+	}
+}
+
 func TestGaussianBlur(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in GaussianBlur test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	GaussianBlur(img, dest, image.Pt(23, 23), 30, 50, 4)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid Blur test")
+	}
+}
+
+func TestHoughLines(t *testing.T) {
+	t.Skip("Test needed")
+}
+
+func TestHoughLinesP(t *testing.T) {
 	t.Skip("Test needed")
 }
 

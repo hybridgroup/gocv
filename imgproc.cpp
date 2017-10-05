@@ -4,9 +4,26 @@ void CvtColor(Mat src, Mat dst, int code) {
     cv::cvtColor(*src, *dst, code);
 }
 
+void Blur(Mat src, Mat dst, Size ps) {
+    cv::Size sz(ps.width, ps.height);
+    cv::blur(*src, *dst, sz);    
+}
+
 void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt) {
     cv::Size sz(ps.width, ps.height);
-    cv:GaussianBlur(*src, *dst, sz, sX, sY, bt);
+    cv::GaussianBlur(*src, *dst, sz, sX, sY, bt);
+}
+
+void Canny(Mat src, Mat edges, double t1, double t2) {
+    cv::Canny(*src, *edges, t1, t2);
+}
+
+void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold) {
+    cv::HoughLines(*src, *lines, rho, theta, threshold);
+}
+
+void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold) {
+    cv::HoughLinesP(*src, *lines, rho, theta, threshold);
 }
 
 void Rectangle(Mat img, Rect r, Scalar color, int thickness) {

@@ -22,6 +22,22 @@ func CvtColor(src Mat, dst Mat, code ColorConversionCode) {
 	C.CvtColor(src.p, dst.p, C.int(code))
 }
 
+// Blur blurs an image Mat using a box filter.
+// The function convolves the src Mat image into the dst Mat using
+// the specified Gaussian kernel params.
+//
+// For further details, please see:
+// http://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#gaabe8c836e97159a9193fb0b11ac52cf1
+//
+func Blur(src Mat, dst Mat, ksize image.Point) {
+	pSize := C.struct_Size{
+		height: C.int(ksize.X),
+		width:  C.int(ksize.Y),
+	}
+
+	C.Blur(src.p, dst.p, pSize)
+}
+
 // GaussianBlur blurs an image Mat using a Gaussian filter.
 // The function convolves the src Mat image into the dst Mat using
 // the specified Gaussian kernel params.
@@ -37,6 +53,43 @@ func GaussianBlur(src Mat, dst Mat, ksize image.Point, sigmaX float64,
 	}
 
 	C.GaussianBlur(src.p, dst.p, pSize, C.double(sigmaX), C.double(sigmaY), C.int(borderType))
+}
+
+// Canny finds edges in an image using the Canny algorithm.
+// The function finds edges in the input image image and marks
+// them in the output map edges using the Canny algorithm.
+// The smallest value between threshold1 and threshold2 is used
+// for edge linking. The largest value is used to
+// find initial segments of strong edges.
+// See http://en.wikipedia.org/wiki/Canny_edge_detector
+//
+// For further details, please see:
+// http://docs.opencv.org/3.3.0/dd/d1a/group__imgproc__feature.html#ga04723e007ed888ddf11d9ba04e2232de
+//
+func Canny(src Mat, edges Mat, t1 float32, t2 float32) {
+	C.Canny(src.p, edges.p, C.double(t1), C.double(t2))
+}
+
+// HoughLines implements the standard or standard multi-scale Hough transform
+// algorithm for line detection. For a good explanation of Hough transform, see:
+// http://homepages.inf.ed.ac.uk/rbf/HIPR2/hough.htm
+//
+// For further details, please see:
+// http://docs.opencv.org/3.3.0/dd/d1a/group__imgproc__feature.html#ga46b4e588934f6c8dfd509cc6e0e4545a
+//
+func HoughLines(src Mat, lines Mat, rho float32, theta float32, threshold int) {
+	C.HoughLines(src.p, lines.p, C.double(rho), C.double(theta), C.int(threshold))
+}
+
+// HoughLinesP implements the probabilistic Hough transform
+// algorithm for line detection. For a good explanation of Hough transform, see:
+// http://homepages.inf.ed.ac.uk/rbf/HIPR2/hough.htm
+//
+// For further details, please see:
+// http://docs.opencv.org/3.3.0/dd/d1a/group__imgproc__feature.html#ga8618180a5948286384e3b7ca02f6feeb
+//
+func HoughLinesP(src Mat, lines Mat, rho float32, theta float32, threshold int) {
+	C.HoughLinesP(src.p, lines.p, C.double(rho), C.double(theta), C.int(threshold))
 }
 
 // Rectangle draws a simple, thick, or filled up-right rectangle.

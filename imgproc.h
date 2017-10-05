@@ -11,7 +11,12 @@ extern "C" {
 #include "core.h"
 
 void CvtColor(Mat src, Mat dst, int code);
+void Blur(Mat src, Mat dst, Size ps);
 void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt);
+void Canny(Mat src, Mat edges, double t1, double t2);
+void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold);
+void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold);
+
 void Rectangle(Mat img, Rect rect, Scalar color, int thickness);
 struct Size GetTextSize(const char* text, int fontFace, double fontScale, int thickness);
 void PutText(Mat img, const char* text, Point org, int fontFace, double fontScale, 
