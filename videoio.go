@@ -21,22 +21,22 @@ type VideoCapture struct {
 
 // VideoCaptureFile opens a VideoCapture from a file and prepares
 // to start capturing.
-func VideoCaptureFile(uri string) (vc VideoCapture, err error) {
-	vc = VideoCapture{p: C.VideoCapture_New()}
+func VideoCaptureFile(uri string) (vc *VideoCapture, err error) {
+	vc = &VideoCapture{p: C.VideoCapture_New()}
 
 	cURI := C.CString(uri)
 	defer C.free(unsafe.Pointer(cURI))
 
 	C.VideoCapture_Open(vc.p, cURI)
-	return vc, nil
+	return
 }
 
 // VideoCaptureDevice opens a VideoCapture from a device and prepares
 // to start capturing.
-func VideoCaptureDevice(device int) (vc VideoCapture, err error) {
-	vc = VideoCapture{p: C.VideoCapture_New()}
+func VideoCaptureDevice(device int) (vc *VideoCapture, err error) {
+	vc = &VideoCapture{p: C.VideoCapture_New()}
 	C.VideoCapture_OpenDevice(vc.p, C.int(device))
-	return vc, nil
+	return
 }
 
 // Close VideoCapture object.
@@ -80,8 +80,8 @@ type VideoWriter struct {
 }
 
 // VideoWriterFile opens a VideoWriter with a specific output file.
-func VideoWriterFile(name string, fps float64, width int, height int) (vw VideoWriter, err error) {
-	vw = VideoWriter{
+func VideoWriterFile(name string, fps float64, width int, height int) (vw *VideoWriter, err error) {
+	vw = &VideoWriter{
 		p:  C.VideoWriter_New(),
 		mu: &sync.RWMutex{},
 	}
@@ -89,13 +89,13 @@ func VideoWriterFile(name string, fps float64, width int, height int) (vw VideoW
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	C.VideoWriter_Open(vw.p, cName, C.double(fps), C.int(width), C.int(height))
-	return vw, nil
+	return
 }
 
 // VideoWriterFileMat opens a VideoWriter with a specific output file,
 // using the dimensions from a specific Mat.
-func VideoWriterFileMat(name string, fps float64, img Mat) (vw VideoWriter, err error) {
-	vw = VideoWriter{
+func VideoWriterFileMat(name string, fps float64, img Mat) (vw *VideoWriter, err error) {
+	vw = &VideoWriter{
 		p:  C.VideoWriter_New(),
 		mu: &sync.RWMutex{},
 	}
@@ -103,7 +103,7 @@ func VideoWriterFileMat(name string, fps float64, img Mat) (vw VideoWriter, err 
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	C.VideoWriter_OpenWithMat(vw.p, cName, C.double(fps), img.p)
-	return vw, nil
+	return
 }
 
 // Close VideoWriter object.
