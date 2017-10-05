@@ -230,6 +230,22 @@ Instructions here...
 - [ ] Intel CV SDK PVL FaceRecognizer
 - [ ] Your favorite OpenCV module!
 
+## How to contribute
+
+We would like your help to make this project better, so we appreciate any contributions.
+
+The `master` branch of this repo will always have the latest released version of GoCV. All of the active development work for the next release will take place in the `dev` branch. GoCV will use semantic versioning and will create a tag/release for each release.
+
+Here is how to contribute back some code or documentation:
+
+- Fork repo
+- Create a feature branch off of the `dev` branch
+- Make some useful change
+- Submit a pull request against the `dev` branch.
+- Be kind
+
+Thank you!
+
 ## Why this project exists
 
 The [https://github.com/go-opencv/go-opencv](https://github.com/go-opencv/go-opencv) package for Go and OpenCV does not support any version above OpenCV 2.x, and work on adding support for OpenCV 3 has stalled for over a year, mostly due to the complexity of SWIG.
