@@ -29,12 +29,12 @@ func main() {
 
 	deviceID, _ := strconv.Atoi(os.Args[1])
 	saveFile := os.Args[2]
-	
+
 	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
-	}	
+	}
 	defer webcam.Close()
 
 	img := gocv.NewMat()
@@ -49,7 +49,7 @@ func main() {
 	if err != nil {
 		fmt.Printf("error opening video writer device: %v\n", saveFile)
 		return
-	}		
+	}
 	defer writer.Close()
 
 	for i := 0; i < 100; i++ {

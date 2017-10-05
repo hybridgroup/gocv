@@ -27,7 +27,7 @@ func main() {
 
 	// parse args
 	deviceID, _ := strconv.Atoi(os.Args[1])
-	
+
 	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
 	if err != nil {
 		fmt.Printf("Error opening video capture device: %v\n", deviceID)
@@ -38,7 +38,7 @@ func main() {
 	// streaming, capture from webcam
 	buf := gocv.NewMat()
 	defer buf.Close()
-	
+
 	fmt.Printf("Start reading camera device: %v\n", deviceID)
 	for i := 0; i < 100; i++ {
 		if ok := webcam.Read(buf); !ok {

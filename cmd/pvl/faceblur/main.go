@@ -1,6 +1,6 @@
 // What it does:
 //
-// This example uses the Intel CV SDK PVL FaceDetect to detect faces, 
+// This example uses the Intel CV SDK PVL FaceDetect to detect faces,
 // then blurs them using a Gaussian blur before displaying in a window.
 //
 // How to run:
@@ -37,13 +37,13 @@ func main() {
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
-	}	
+	}
 	defer webcam.Close()
 
 	// open display window
 	window := gocv.NewWindow("PVL Faceblur")
 	defer window.Close()
-	
+
 	// prepare input image matrix
 	img := gocv.NewMat()
 	defer img.Close()
@@ -51,7 +51,7 @@ func main() {
 	// prepare grayscale image matrix
 	imgGray := gocv.NewMat()
 	defer imgGray.Close()
-	
+
 	// load PVL FaceDetector to recognize faces
 	fd := pvl.NewFaceDetector()
 	defer fd.Close()
@@ -70,8 +70,8 @@ func main() {
 		}
 
 		// convert image to grayscale for detection
-		gocv.CvtColor(img, imgGray, gocv.ColorBGRAToGray);
-	
+		gocv.CvtColor(img, imgGray, gocv.ColorBGRAToGray)
+
 		// detect faces
 		faces := fd.DetectFaceRect(imgGray)
 		fmt.Printf("found %d faces\n", len(faces))
@@ -80,7 +80,7 @@ func main() {
 		for _, face := range faces {
 			imgFace := img.Region(face.Rectangle())
 			defer imgFace.Close()
-		
+
 			// blur face
 			gocv.GaussianBlur(imgFace, imgFace, image.Pt(23, 23), 30, 50, 4)
 		}

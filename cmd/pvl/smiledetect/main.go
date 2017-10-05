@@ -2,7 +2,7 @@
 //
 // This example uses the Intel CV SDK PVL FaceDetect class to detect smiles!
 // It first detects faces, then detects the smiles on each. Based on if the person is
-// smiling, it draws a green or blue rectangle around each of them, 
+// smiling, it draws a green or blue rectangle around each of them,
 // before displaying them within a Window.
 //
 // How to run:
@@ -16,9 +16,9 @@
 package main
 
 import (
-	"image/color"
 	"fmt"
 	"image"
+	"image/color"
 	"os"
 	"strconv"
 
@@ -40,13 +40,13 @@ func main() {
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
-	}	
+	}
 	defer webcam.Close()
 
 	// open display window
 	window := gocv.NewWindow("PVL Smile Detect")
 	defer window.Close()
-	
+
 	// prepare input image matrix
 	img := gocv.NewMat()
 	defer img.Close()
@@ -54,7 +54,7 @@ func main() {
 	// prepare grayscale image matrix
 	imgGray := gocv.NewMat()
 	defer imgGray.Close()
-	
+
 	// colors to draw the rect for detected faces
 	blue := color.RGBA{0, 0, 255, 0}
 	green := color.RGBA{0, 255, 0, 0}
@@ -77,8 +77,8 @@ func main() {
 		}
 
 		// convert image Mat to grayscale Mat for detection
-		gocv.CvtColor(img, imgGray, gocv.ColorBGRToGray);
-	
+		gocv.CvtColor(img, imgGray, gocv.ColorBGRToGray)
+
 		// detect faces
 		faces := fd.DetectFaceRect(imgGray)
 		fmt.Printf("found %d faces\n", len(faces))
@@ -100,7 +100,7 @@ func main() {
 			gocv.Rectangle(img, rect, color, 3)
 
 			size := gocv.GetTextSize("Human", gocv.FontHersheyPlain, 1.2, 2)
-			pt := image.Pt(rect.Min.X + (rect.Min.X / 2) - (size.X / 2), rect.Min.Y - 2)
+			pt := image.Pt(rect.Min.X+(rect.Min.X/2)-(size.X/2), rect.Min.Y-2)
 			gocv.PutText(img, "Human", pt, gocv.FontHersheyPlain, 1.2, color, 2)
 		}
 

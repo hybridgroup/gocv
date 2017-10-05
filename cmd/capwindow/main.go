@@ -37,7 +37,7 @@ func main() {
 
 	window := gocv.NewWindow("Capture Window")
 	defer window.Close()
-	
+
 	img := gocv.NewMat()
 	defer img.Close()
 

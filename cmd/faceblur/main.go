@@ -1,6 +1,6 @@
 // What it does:
 //
-// This example captures video from a connected camera, 
+// This example captures video from a connected camera,
 // then uses the CascadeClassifier to detect faces, blurs them
 // using a Gaussian blur, then displays the blurred video in a window.
 //
@@ -38,7 +38,7 @@ func main() {
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
-	}	
+	}
 	defer webcam.Close()
 
 	// open display window
@@ -52,7 +52,7 @@ func main() {
 	// load classifier to recognize faces
 	classifier := gocv.NewCascadeClassifier()
 	defer classifier.Close()
-	
+
 	classifier.Load(xmlFile)
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
@@ -73,7 +73,7 @@ func main() {
 		for _, r := range rects {
 			imgFace := img.Region(r)
 			defer imgFace.Close()
-		
+
 			// blur face
 			gocv.GaussianBlur(imgFace, imgFace, image.Pt(23, 23), 30, 50, 4)
 		}
