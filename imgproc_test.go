@@ -41,7 +41,7 @@ func TestGetTextSize(t *testing.T) {
 	}
 }
 func TestPutText(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
+	img := NewMatWithSize(150, 150, MatTypeCV8U)
 	if img.Empty() {
 		t.Error("Invalid Mat in IMRead")
 	}

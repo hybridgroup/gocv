@@ -27,6 +27,11 @@ func NewMat() Mat {
 	return Mat{p: C.Mat_New()}
 }
 
+// NewMatWithSize returns a new Mat with a specific size.
+func NewMatWithSize(rows int, cols int, mt MatType) Mat {
+	return Mat{p: C.Mat_NewWithSize(C.int(rows), C.int(cols), C.int(mt))}
+}
+
 // Close the Mat object.
 func (m *Mat) Close() error {
 	C.Mat_Close(m.p)
@@ -68,6 +73,18 @@ func (m *Mat) Rows() int {
 func (m *Mat) Cols() int {
 	return int(C.Mat_Cols(m.p))
 }
+
+type MatType int
+
+const (
+	MatTypeCV8U  MatType = 0
+	MatTypeCV8S          = 1
+	MatTypeCV16U         = 2
+	MatTypeCV16S         = 3
+	MatTypeCV32S         = 4
+	MatTypeCV32F         = 5
+	MatTypeCV64F         = 6
+)
 
 // Scalar is a 4-element vector widely used in OpenCV to pass pixel values.
 //

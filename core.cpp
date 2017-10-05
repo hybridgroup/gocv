@@ -6,6 +6,11 @@ Mat Mat_New() {
     return new cv::Mat();
 }
 
+// Mat_NewWithSize creates a new Mat with a specific size dimension and number of channels.
+Mat Mat_NewWithSize(int rows, int cols, int type) {
+    return new cv::Mat(rows, cols, type);
+}
+
 // Mat_Close deletes an existing Mat
 void Mat_Close(Mat m) {
     delete m;

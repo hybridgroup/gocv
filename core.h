@@ -68,6 +68,7 @@ void ByteArray_Release(struct ByteArray buf);
 void Rects_Close(struct Rects rs);
 
 Mat Mat_New();
+Mat Mat_NewWithSize(int rows, int cols, int type);
 void Mat_Close(Mat m);
 int Mat_Empty(Mat m);
 Mat Mat_Region(Mat m, Rect r);
