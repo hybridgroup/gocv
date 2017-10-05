@@ -9,6 +9,7 @@ It also supports the [Intel Computer Vision SDK](https://software.intel.com/en-u
 [![GoDoc](https://godoc.org/github.com/hybridgroup/gocv?status.svg)](https://godoc.org/github.com/hybridgroup/gocv)
 [![Build Status](https://travis-ci.org/hybridgroup/gocv.svg?branch=dev)](https://travis-ci.org/hybridgroup/gocv)
 [![codecov](https://codecov.io/gh/hybridgroup/gocv/branch/dev/graph/badge.svg)](https://codecov.io/gh/hybridgroup/gocv)
+[![Go Report Card](https://goreportcard.com/badge/github.com/hybridgroup/gocv)](https://goreportcard.com/report/github.com/hybridgroup/gocv)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/hybridgroup/gocv/blob/master/LICENSE.txt)
 
 ## How to use
