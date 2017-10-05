@@ -71,6 +71,7 @@ Mat Mat_New();
 Mat Mat_NewWithSize(int rows, int cols, int type);
 void Mat_Close(Mat m);
 int Mat_Empty(Mat m);
+Mat Mat_Clone(Mat m);
 Mat Mat_Region(Mat m, Rect r);
 int Mat_Rows(Mat m);
 int Mat_Cols(Mat m);

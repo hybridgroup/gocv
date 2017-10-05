@@ -50,6 +50,11 @@ func (m *Mat) Empty() bool {
 	return isEmpty != 0
 }
 
+// Clone returns a cloned full copy of the Mat.
+func (m *Mat) Clone() Mat {
+	return Mat{p: C.Mat_Clone(m.p)}
+}
+
 // Region returns a new Mat that points to a region of this Mat. Changes made to the
 // region Mat will affect the original Mat, sinec they are pointers to the underlying
 // OpenCV Mat object.

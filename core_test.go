@@ -25,3 +25,15 @@ func TestMatWithSize(t *testing.T) {
 		t.Errorf("NewMatWithSize incorrect col count: %v\n", mat.Cols())
 	}
 }
+
+func TestMatClone(t *testing.T) {
+	mat := NewMatWithSize(101, 102, MatTypeCV8U)
+	clone := mat.Clone()
+	if clone.Rows() != 101 {
+		t.Errorf("Mat clone incorrect row count: %v\n", mat.Rows())
+	}
+
+	if clone.Cols() != 102 {
+		t.Errorf("Mat clone incorrect col count: %v\n", mat.Cols())
+	}
+}

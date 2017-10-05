@@ -21,6 +21,11 @@ int Mat_Empty(Mat m) {
     return m->empty();
 }
 
+// Mat_Clone returns a clone of this Mat
+Mat Mat_Clone(Mat m) {
+    return new cv::Mat(m->clone());
+}
+
 // Mat_Region returns a Mat of a region of another Mat
 Mat Mat_Region(Mat m, Rect r) {
     return new cv::Mat(*m, cv::Rect(r.x, r.y, r.width, r.height));
