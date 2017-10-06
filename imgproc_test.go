@@ -122,7 +122,17 @@ func TestHoughLinesP(t *testing.T) {
 }
 
 func TestRectangle(t *testing.T) {
-	t.Skip("Test needed")
+	img := NewMatWithSize(150, 150, MatTypeCV8U)
+	if img.Empty() {
+		t.Error("Invalid Mat in Rectangle")
+	}
+	defer img.Close()
+
+	Rectangle(img, image.Rect(50, 50, 75, 75), color.RGBA{0, 0, 255, 0}, 3)
+
+	if img.Empty() {
+		t.Error("Error in Rectangle test")
+	}
 }
 
 func TestGetTextSize(t *testing.T) {
