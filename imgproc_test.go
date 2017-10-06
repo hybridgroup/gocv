@@ -54,6 +54,28 @@ func TestGaussianBlur(t *testing.T) {
 	}
 }
 
+func TestCanny(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in HoughLines test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	Canny(img, dest, 50, 150)
+	if dest.Empty() {
+		t.Error("Empty Canny test")
+	}
+	if img.Rows() != dest.Rows() {
+		t.Error("Invalid Canny test rows")
+	}
+	if img.Cols() != dest.Cols() {
+		t.Error("Invalid Canny test cols")
+	}
+}
+
 func TestHoughLines(t *testing.T) {
 	t.Skip("Test needed")
 }
