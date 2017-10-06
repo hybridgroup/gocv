@@ -81,34 +81,70 @@ const (
 	// to grayscale.
 	ColorBGR565ToGray = 21
 
-	// convert between RGB/BGR and BGR555 (16-bit images)
-	ColorBGRToBGR555  = 22
-	ColorRGBToBGR555  = 23
-	ColorBGR555ToBGR  = 24
-	ColorBGR555ToRGB  = 25
+	// ColorBGRToBGR555 converts from BGR to BGR555 (16-bit images).
+	ColorBGRToBGR555 = 22
+
+	// ColorRGBToBGR555 converts from RGB to BGR555 (16-bit images).
+	ColorRGBToBGR555 = 23
+
+	// ColorBGR555ToBGR converts from BGR555 (16-bit images) to BGR.
+	ColorBGR555ToBGR = 24
+
+	// ColorBGR555ToRGB converts from BGR555 (16-bit images) to RGB.
+	ColorBGR555ToRGB = 25
+
+	// ColorBGRAToBGR555 converts from BGRA (with alpha channel)
+	// to BGR555 (16-bit images).
 	ColorBGRAToBGR555 = 26
+
+	// ColorRGBAToBGR555 converts from RGBA (with alpha channel)
+	// to BGR555 (16-bit images).
 	ColorRGBAToBGR555 = 27
+
+	// ColorBGR555ToBGRA converts from BGR555 (16-bit images)
+	// to BGRA (with alpha channel).
 	ColorBGR555ToBGRA = 28
+
+	// ColorBGR555ToRGBA converts from BGR555 (16-bit images)
+	// to RGBA (with alpha channel).
 	ColorBGR555ToRGBA = 29
 
-	// convert between grayscale and BGR555 (16-bit images)
+	// ColorGrayToBGR555 converts from grayscale to BGR555 (16-bit images).
 	ColorGrayToBGR555 = 30
+
+	// ColorGrayToBGR555 converts from BGR555 (16-bit images) to grayscale.
 	ColorBGR555ToGRAY = 31
 
 	// convert RGB/BGR to CIE XYZ
+
+	// ColorBGRToXYZ converts from BGR to CIE XYZ.
 	ColorBGRToXYZ = 32
+
+	// ColorRGBToXYZ converts from RGB to CIE XYZ.
 	ColorRGBToXYZ = 33
+
+	// ColorXYZToBGR converts from CIE XYZ to BGR.
 	ColorXYZToBGR = 34
+
+	// ColorXYZToRGB converts from CIE XYZ to RGB.
 	ColorXYZToRGB = 35
 
-	// convert RGB/BGR to luma-chroma (aka YCC)
+	// ColorBGRToYCrCb converts from BGR to luma-chroma (aka YCC).
 	ColorBGRToYCrCb = 36
+
+	// ColorRGBToYCrCb converts from RGB to luma-chroma (aka YCC).
 	ColorRGBToYCrCb = 37
+
+	// ColorYCrCbToBGR converts from luma-chroma (aka YCC) to BGR.
 	ColorYCrCbToBGR = 38
+
+	// ColorYCrCbToRGB converts from luma-chroma (aka YCC) to RGB.
 	ColorYCrCbToRGB = 39
 
-	// convert RGB/BGR to HSV (hue saturation value)
+	// ColorBGRToHSV converts from BGR to HSV (hue saturation value).
 	ColorBGRToHSV = 40
+
+	// ColorRGBToHSV converts from RGB to HSV (hue saturation value).
 	ColorRGBToHSV = 41
 
 	// convert RGB/BGR to CIE Lab
