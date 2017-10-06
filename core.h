@@ -1,6 +1,8 @@
 #ifndef _OPENCV3_CORE_H_
 #define _OPENCV3_CORE_H_
 
+#include <stdint.h>
+
 typedef struct String {
   const char* str;
   int length;
@@ -75,6 +77,12 @@ Mat Mat_Clone(Mat m);
 Mat Mat_Region(Mat m, Rect r);
 int Mat_Rows(Mat m);
 int Mat_Cols(Mat m);
+uint8_t Mat_GetUChar(Mat m, int row, int col);
+int8_t Mat_GetSChar(Mat m, int row, int col);
+int16_t Mat_GetShort(Mat m, int row, int col);
+int32_t Mat_GetInt(Mat m, int row, int col);
+float Mat_GetFloat(Mat m, int row, int col);
+double Mat_GetDouble(Mat m, int row, int col);
 
 #ifdef __cplusplus
 }

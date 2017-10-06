@@ -41,6 +41,42 @@ int Mat_Cols(Mat m) {
     return m->cols;
 }
 
+// Mat_GetUChar returns a specific row/col value from this Mat expecting
+// each element to contain a schar aka CV_8U.
+uint8_t Mat_GetUChar(Mat m, int row, int col) {
+    return m->at<uchar>(row, col);
+}
+
+// Mat_GetSChar returns a specific row/col value from this Mat expecting
+// each element to contain a schar aka CV_8S.
+int8_t Mat_GetSChar(Mat m, int row, int col) {
+    return m->at<schar>(row, col);
+}
+
+// Mat_GetShort returns a specific row/col value from this Mat expecting
+// each element to contain a short aka CV_16S.
+int16_t Mat_GetShort(Mat m, int row, int col) {
+    return m->at<short>(row, col);
+}
+
+// Mat_GetInt returns a specific row/col value from this Mat expecting
+// each element to contain an int aka CV_32S.
+int32_t Mat_GetInt(Mat m, int row, int col) {
+    return m->at<int>(row, col);
+}
+
+// Mat_GetFloat returns a specific row/col value from this Mat expecting
+// each element to contain a float aka CV_32F.
+float Mat_GetFloat(Mat m, int row, int col) {
+    return m->at<float>(row, col);
+}
+
+// Mat_GetDouble returns a specific row/col value from this Mat expecting
+// each element to contain a double aka CV_64F.
+double Mat_GetDouble(Mat m, int row, int col) {
+    return m->at<double>(row, col);
+}
+
 void Rects_Close(struct Rects rs) {
     delete rs.rects;
 }

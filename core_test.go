@@ -50,3 +50,41 @@ func TestMatRegion(t *testing.T) {
 		t.Errorf("Mat region incorrect col count: %v\n", region.Cols())
 	}
 }
+
+func TestMatAccessors(t *testing.T) {
+	mat := NewMatWithSize(101, 102, MatTypeCV8U)
+	if mat.GetUCharAt(50, 50) != 0 {
+		t.Errorf("GetUCharAt incorrect value: %v\n", mat.GetUCharAt(50, 50))
+	}
+	mat.Close()
+
+	mat = NewMatWithSize(101, 102, MatTypeCV8S)
+	if mat.GetSCharAt(50, 50) != 0 {
+		t.Errorf("GetSCharAt incorrect value: %v\n", mat.GetSCharAt(50, 50))
+	}
+	mat.Close()
+
+	mat = NewMatWithSize(101, 102, MatTypeCV16S)
+	if mat.GetShortAt(50, 50) != 0 {
+		t.Errorf("GetShortAt incorrect value: %v\n", mat.GetShortAt(50, 50))
+	}
+	mat.Close()
+
+	mat = NewMatWithSize(101, 102, MatTypeCV32S)
+	if mat.GetIntAt(50, 50) != 0 {
+		t.Errorf("GetIntAt incorrect value: %v\n", mat.GetIntAt(50, 50))
+	}
+	mat.Close()
+
+	mat = NewMatWithSize(101, 102, MatTypeCV32F)
+	if mat.GetFloatAt(50, 50) != 0 {
+		t.Errorf("GetFloatAt incorrect value: %v\n", mat.GetFloatAt(50, 50))
+	}
+	mat.Close()
+
+	mat = NewMatWithSize(101, 102, MatTypeCV64F)
+	if mat.GetDoubleAt(50, 50) != 0 {
+		t.Errorf("GetDoubleAt incorrect value: %v\n", mat.GetDoubleAt(50, 50))
+	}
+	mat.Close()
+}
