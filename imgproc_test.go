@@ -3,6 +3,7 @@ package gocv
 import (
 	"image"
 	"image/color"
+	"math"
 	"testing"
 )
 
@@ -77,11 +78,47 @@ func TestCanny(t *testing.T) {
 }
 
 func TestHoughLines(t *testing.T) {
-	t.Skip("Test needed")
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in HoughLines test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	HoughLines(img, dest, math.Pi/180, 1, 1)
+	if dest.Empty() {
+		t.Error("Empty HoughLines test")
+	}
+	if dest.Rows() != 10411 {
+		t.Errorf("Invalid HoughLines test rows: %v", dest.Rows())
+	}
+	if dest.Cols() != 1 {
+		t.Errorf("Invalid HoughLines test cols: %v", dest.Cols())
+	}
 }
 
 func TestHoughLinesP(t *testing.T) {
-	t.Skip("Test needed")
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in HoughLines test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	HoughLinesP(img, dest, math.Pi/180, 1, 1)
+	if dest.Empty() {
+		t.Error("Empty HoughLinesP test")
+	}
+	if dest.Rows() != 435 {
+		t.Errorf("Invalid HoughLinesP test rows: %v", dest.Rows())
+	}
+	if dest.Cols() != 1 {
+		t.Errorf("Invalid HoughLinesP test cols: %v", dest.Cols())
+	}
 }
 
 func TestRectangle(t *testing.T) {
