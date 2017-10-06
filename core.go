@@ -79,16 +79,30 @@ func (m *Mat) Cols() int {
 	return int(C.Mat_Cols(m.p))
 }
 
+// MatType is the type for the various different kinds of Mat you can create.
 type MatType int
 
 const (
-	MatTypeCV8U  MatType = 0
-	MatTypeCV8S          = 1
-	MatTypeCV16U         = 2
-	MatTypeCV16S         = 3
-	MatTypeCV32S         = 4
-	MatTypeCV32F         = 5
-	MatTypeCV64F         = 6
+	// MatTypeCV8U is a Mat of 8-bit unsigned int
+	MatTypeCV8U MatType = 0
+
+	// MatTypeCV8S is a Mat of 8-bit signed int
+	MatTypeCV8S = 1
+
+	// MatTypeCV16U is a Mat of 16-bit unsigned int
+	MatTypeCV16U = 2
+
+	// MatTypeCV16S is a Mat of 16-bit signed int
+	MatTypeCV16S = 3
+
+	// MatTypeCV32S is a Mat of 32-bit signed int
+	MatTypeCV32S = 4
+
+	// MatTypeCV32F is a Mat of 32-bit float
+	MatTypeCV32F = 5
+
+	// MatTypeCV64F is a Mat of 64-bit float
+	MatTypeCV64F = 6
 )
 
 // Scalar is a 4-element vector widely used in OpenCV to pass pixel values.
