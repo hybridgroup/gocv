@@ -1,6 +1,7 @@
 package gocv
 
 import (
+	"image"
 	"testing"
 )
 
@@ -35,5 +36,17 @@ func TestMatClone(t *testing.T) {
 
 	if clone.Cols() != 102 {
 		t.Errorf("Mat clone incorrect col count: %v\n", mat.Cols())
+	}
+}
+
+func TestMatRegion(t *testing.T) {
+	mat := NewMatWithSize(100, 100, MatTypeCV8U)
+	region := mat.Region(image.Rect(20, 25, 80, 75))
+	if region.Rows() != 50 {
+		t.Errorf("Mat region incorrect row count: %v\n", region.Rows())
+	}
+
+	if region.Cols() != 60 {
+		t.Errorf("Mat region incorrect col count: %v\n", region.Cols())
 	}
 }
