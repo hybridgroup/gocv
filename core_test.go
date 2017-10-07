@@ -77,13 +77,13 @@ func TestMatAccessors(t *testing.T) {
 	mat.Close()
 
 	mat = NewMatWithSize(101, 102, MatTypeCV32F)
-	if mat.GetFloatAt(50, 50) != 0 {
+	if mat.GetFloatAt(50, 50) != 0.0 {
 		t.Errorf("GetFloatAt incorrect value: %v\n", mat.GetFloatAt(50, 50))
 	}
 	mat.Close()
 
 	mat = NewMatWithSize(101, 102, MatTypeCV64F)
-	if mat.GetDoubleAt(50, 50) != 0 {
+	if mat.GetDoubleAt(50, 50) != 0.0 {
 		t.Errorf("GetDoubleAt incorrect value: %v\n", mat.GetDoubleAt(50, 50))
 	}
 	mat.Close()
