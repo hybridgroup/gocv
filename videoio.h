@@ -31,8 +31,6 @@ VideoWriter VideoWriter_New();
 void VideoWriter_Close(VideoWriter vw);
 void VideoWriter_Open(VideoWriter vw, const char* name, double fps, int width,
   int height);
-void VideoWriter_OpenWithMat(VideoWriter vw, const char* name, double fps,
-  Mat img);
 int VideoWriter_IsOpened(VideoWriter vw);
 void VideoWriter_Write(VideoWriter vw, Mat img);
 

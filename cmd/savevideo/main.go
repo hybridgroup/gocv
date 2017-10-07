@@ -45,7 +45,7 @@ func main() {
 		return
 	}
 
-	writer, err := gocv.VideoWriterFileMat(saveFile, 25, img)
+	writer, err := gocv.VideoWriterFile(saveFile, 25, img.Cols(), img.Rows())
 	if err != nil {
 		fmt.Printf("error opening video writer device: %v\n", saveFile)
 		return

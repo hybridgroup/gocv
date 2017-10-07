@@ -92,20 +92,6 @@ func VideoWriterFile(name string, fps float64, width int, height int) (vw *Video
 	return
 }
 
-// VideoWriterFileMat opens a VideoWriter with a specific output file,
-// using the dimensions from a specific Mat.
-func VideoWriterFileMat(name string, fps float64, img Mat) (vw *VideoWriter, err error) {
-	vw = &VideoWriter{
-		p:  C.VideoWriter_New(),
-		mu: &sync.RWMutex{},
-	}
-
-	cName := C.CString(name)
-	defer C.free(unsafe.Pointer(cName))
-	C.VideoWriter_OpenWithMat(vw.p, cName, C.double(fps), img.p)
-	return
-}
-
 // Close VideoWriter object.
 func (vw *VideoWriter) Close() error {
 	C.VideoWriter_Close(vw.p)
