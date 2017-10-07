@@ -8,7 +8,7 @@ Mat Mat_New() {
 
 // Mat_NewWithSize creates a new Mat with a specific size dimension and number of channels.
 Mat Mat_NewWithSize(int rows, int cols, int type) {
-    return new cv::Mat(rows, cols, type);
+    return new cv::Mat(rows, cols, type, 0.0);
 }
 
 // Mat_Close deletes an existing Mat
