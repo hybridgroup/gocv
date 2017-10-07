@@ -4,6 +4,25 @@ import (
 	"testing"
 )
 
+func TestVideoCaptureFile(t *testing.T) {
+	vc, _ := VideoCaptureFile("images/small.mp4")
+	defer vc.Close()
+
+	if !vc.IsOpened() {
+		t.Error("Unable to open VideoCaptureFile")
+	}
+
+	vc.Grab(10)
+
+	img := NewMat()
+	defer img.Close()
+
+	vc.Read(img)
+	if img.Empty() {
+		t.Error("Unable to read VideoCaptureFile")
+	}
+}
+
 func TestVideoWriterFile(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
