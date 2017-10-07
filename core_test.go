@@ -88,3 +88,10 @@ func TestMatAccessors(t *testing.T) {
 	}
 	mat.Close()
 }
+
+func TestScalar(t *testing.T) {
+	s := NewScalar(127.0, 255.0, 64.0, 0.0)
+	if s.Val1 != 127.0 || s.Val2 != 255.0 || s.Val3 != 64.0 || s.Val4 != 0.0 {
+		t.Error("Scalar has invalid value")
+	}
+}

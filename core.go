@@ -159,14 +159,6 @@ func NewScalar(v1 float64, v2 float64, v3 float64, v4 float64) Scalar {
 	return s
 }
 
-func toIntArray(ints []int) *C.int {
-	result := make([]C.int, len(ints))
-	for i, r := range ints {
-		result[i] = C.int(r)
-	}
-	return (*C.int)(unsafe.Pointer(&result[0]))
-}
-
 func toByteArray(b []byte) C.struct_ByteArray {
 	return C.struct_ByteArray{
 		data:   (*C.char)(unsafe.Pointer(&b[0])),
