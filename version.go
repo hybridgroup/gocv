@@ -6,7 +6,7 @@ package gocv
 */
 import "C"
 
-// Version of this package, for display purposes.
+// GoCVVersion of this package, for display purposes.
 const GoCVVersion = "0.0.1"
 
 // Version returns the current golang package version

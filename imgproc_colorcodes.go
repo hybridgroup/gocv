@@ -147,30 +147,54 @@ const (
 	// ColorRGBToHSV converts from RGB to HSV (hue saturation value).
 	ColorRGBToHSV = 41
 
-	// convert RGB/BGR to CIE Lab
+	// ColorBGRToLab converts from BGR to CIE Lab.
 	ColorBGRToLab = 44
+
+	// ColorRGBToLab converts from RGB to CIE Lab.
 	ColorRGBToLab = 45
 
-	// convert RGB/BGR to CIE Luv
+	// ColorBGRToLuv converts from BGR to CIE Luv.
 	ColorBGRToLuv = 50
+
+	// ColorRGBToLuv converts from RGB to CIE Luv.
 	ColorRGBToLuv = 51
-	// convert RGB/BGR to HLS (hue lightness saturation)
+
+	// ColorBGRToHLS converts from BGR to HLS (hue lightness saturation).
 	ColorBGRToHLS = 52
+
+	// ColorRGBToHLS converts from RGB to HLS (hue lightness saturation).
 	ColorRGBToHLS = 53
 
-	// backward conversions to RGB/BGR
+	// ColorHSVToBGR converts from HSV (hue saturation value) to BGR.
 	ColorHSVToBGR = 54
+
+	// ColorHSVToRGB converts from HSV (hue saturation value) to RGB.
 	ColorHSVToRGB = 55
 
+	// ColorLabToBGR converts from CIE Lab to BGR.
 	ColorLabToBGR = 56
+
+	// ColorLabToRGB converts from CIE Lab to RGB.
 	ColorLabToRGB = 57
+
+	// ColorLuvToBGR converts from CIE Luv to BGR.
 	ColorLuvToBGR = 58
+
+	// ColorLuvToRGB converts from CIE Luv to RGB.
 	ColorLuvToRGB = 59
+
+	// ColorHLSToBGR converts from HLS (hue lightness saturation) to BGR.
 	ColorHLSToBGR = 60
+
+	// ColorHLSToRGB converts from HLS (hue lightness saturation) to RGB.
 	ColorHLSToRGB = 61
 
+	// ColorBGRToHSVFull converts from BGR to HSV (hue saturation value) full.
 	ColorBGRToHSVFull = 66
+
+	// ColorRGBToHSVFull converts from RGB to HSV (hue saturation value) full.
 	ColorRGBToHSVFull = 67
+
 	ColorBGRToHLSFull = 68
 	ColorRGBToHLSFull = 69
 
