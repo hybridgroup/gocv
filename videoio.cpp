@@ -44,9 +44,10 @@ void VideoWriter_Close(VideoWriter vw) {
     delete vw;
 }
   
-void VideoWriter_Open(VideoWriter vw, const char* name, double fps, int width,
+void VideoWriter_Open(VideoWriter vw, const char* name, const char* codec, double fps, int width,
       int height) {
-    vw->open(name, CV_FOURCC('M', 'J', 'P', 'G'), fps, cv::Size(width, height), true);
+    int codecCode = cv::VideoWriter::fourcc(codec[0], codec[1], codec[2], codec[3]);
+    vw->open(name, codecCode, fps, cv::Size(width, height), true);
 }
 
 int VideoWriter_IsOpened(VideoWriter vw) {

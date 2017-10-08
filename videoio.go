@@ -219,7 +219,13 @@ type VideoWriter struct {
 }
 
 // VideoWriterFile opens a VideoWriter with a specific output file.
-func VideoWriterFile(name string, fps float64, width int, height int) (vw *VideoWriter, err error) {
+// The "codec" param should be the four-letter code for the desired output
+// codec, for example "MJPG".
+//
+// For further details, please see:
+// http://docs.opencv.org/3.3.0/dd/d9e/classcv_1_1VideoWriter.html#a0901c353cd5ea05bba455317dab81130
+//
+func VideoWriterFile(name string, codec string, fps float64, width int, height int) (vw *VideoWriter, err error) {
 	vw = &VideoWriter{
 		p:  C.VideoWriter_New(),
 		mu: &sync.RWMutex{},
@@ -227,7 +233,11 @@ func VideoWriterFile(name string, fps float64, width int, height int) (vw *Video
 
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
-	C.VideoWriter_Open(vw.p, cName, C.double(fps), C.int(width), C.int(height))
+
+	cCodec := C.CString(codec)
+	defer C.free(unsafe.Pointer(cCodec))
+
+	C.VideoWriter_Open(vw.p, cName, cCodec, C.double(fps), C.int(width), C.int(height))
 	return
 }
 

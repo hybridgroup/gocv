@@ -31,7 +31,7 @@ func TestVideoWriterFile(t *testing.T) {
 	}
 	defer img.Close()
 
-	vw, _ := VideoWriterFile("/tmp/test.avi", 25, img.Cols(), img.Rows())
+	vw, _ := VideoWriterFile("/tmp/test.avi", "MJPG", 25, img.Cols(), img.Rows())
 	defer vw.Close()
 
 	if !vw.IsOpened() {
