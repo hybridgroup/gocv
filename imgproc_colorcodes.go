@@ -112,10 +112,8 @@ const (
 	// ColorGrayToBGR555 converts from grayscale to BGR555 (16-bit images).
 	ColorGrayToBGR555 = 30
 
-	// ColorGrayToBGR555 converts from BGR555 (16-bit images) to grayscale.
+	// ColorBGR555ToGRAY converts from BGR555 (16-bit images) to grayscale.
 	ColorBGR555ToGRAY = 31
-
-	// convert RGB/BGR to CIE XYZ
 
 	// ColorBGRToXYZ converts from BGR to CIE XYZ.
 	ColorBGRToXYZ = 32
@@ -195,12 +193,22 @@ const (
 	// ColorRGBToHSVFull converts from RGB to HSV (hue saturation value) full.
 	ColorRGBToHSVFull = 67
 
+	// ColorBGRToHLSFull converts from BGR to HLS (hue lightness saturation) full.
 	ColorBGRToHLSFull = 68
+
+	// ColorRGBToHLSFull converts from RGB to HLS (hue lightness saturation) full.
 	ColorRGBToHLSFull = 69
 
+	// ColorHSVToBGRFull converts from HSV (hue saturation value) to BGR full.
 	ColorHSVToBGRFull = 70
+
+	// ColorHSVToRGBFull converts from HSV (hue saturation value) to RGB full.
 	ColorHSVToRGBFull = 71
+
+	// ColorHLSToBGRFull converts from HLS (hue lightness saturation) to BGR full.
 	ColorHLSToBGRFull = 72
+
+	// ColorHLSToRGBFull converts from HLS (hue lightness saturation) to RGB full.
 	ColorHLSToRGBFull = 73
 
 	ColorLBGRToLab = 74
