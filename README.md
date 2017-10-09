@@ -110,6 +110,8 @@ func main() {
 }
 ```
 
+### More examples
+
 There are examples in the [cmd directory](./cmd) of this repo in the form of various useful command line utilities, such as [capturing an image file](./cmd/saveimage) and [streaming mjpeg video](./cmd/mjpeg-streamer).
 
 ## How to install OpenCV 3.x
@@ -158,7 +160,7 @@ Instructions needed...
 
 ### Ubuntu/Linux
 
-In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for yogocv installation.
+In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your gocv installation.
 
 One time per session, you must run the script:
 
@@ -194,7 +196,7 @@ Please note that you will need to run these 2 lines of code one time in your cur
 
 ### OS X
 
-In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for yogocv installation. If you have used Homebrew to install OpenCV 3.3, the following instructions should work.
+In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your gocv installation. If you have used Homebrew to install OpenCV 3.3, the following instructions should work.
 
 One time per session, you must run the script:
 
@@ -253,9 +255,7 @@ Thank you!
 
 The [https://github.com/go-opencv/go-opencv](https://github.com/go-opencv/go-opencv) package for Go and OpenCV does not support any version above OpenCV 2.x, and work on adding support for OpenCV 3 has stalled for over a year, mostly due to the complexity of [SWIG](http://swig.org/).
 
-The GoCV package uses a C-style wrapper around the OpenCV 3 C++ classes to avoid having to deal with applying SWIG to a huge existing codebase.
-
-The GoCV mappings are intended to match as close as possible to the original OpenCV project structure, to make it easier to find where to add further support.
+The GoCV package uses a C-style wrapper around the OpenCV 3 C++ classes to avoid having to deal with applying SWIG to a huge existing codebase. The mappings are intended to match as close as possible to the original OpenCV project structure, to make it easier to find where to add further support.
 
 For example, the [OpenCV `videoio` module](https://github.com/opencv/opencv/tree/master/modules/videoio) wrappers can be found in this project in the `videoio.*` files.
 
