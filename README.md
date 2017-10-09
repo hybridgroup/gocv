@@ -2,17 +2,17 @@
 
 [![GoCV](https://raw.githubusercontent.com/hybridgroup/gocv/master/images/gocvlogo.jpg)](http://gocv.io/)
 
-The GoCV package provides Go language bindings for the [OpenCV 3](http://opencv.org/) computer vision library.
-
-GoCV supports the latest release of OpenCV (v3.3) on Linux, OS X, and (soon) Windows. We hope to make the Go programming language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
-
-GoCV also supports the [Intel Computer Vision SDK](https://software.intel.com/en-us/cvsdk-devguide) using the Photography Vision Library (PVL). Check out the [PVL README](./pvl/README.md) for more info on how to use GoCV with the Intel CV SDK.
-
 [![GoDoc](https://godoc.org/github.com/hybridgroup/gocv?status.svg)](https://godoc.org/github.com/hybridgroup/gocv)
 [![Build Status](https://travis-ci.org/hybridgroup/gocv.svg?branch=dev)](https://travis-ci.org/hybridgroup/gocv)
 [![codecov](https://codecov.io/gh/hybridgroup/gocv/branch/dev/graph/badge.svg)](https://codecov.io/gh/hybridgroup/gocv)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hybridgroup/gocv)](https://goreportcard.com/report/github.com/hybridgroup/gocv)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/hybridgroup/gocv/blob/master/LICENSE.txt)
+
+The GoCV package provides Go language bindings for the [OpenCV 3](http://opencv.org/) computer vision library.
+
+GoCV supports the latest release of OpenCV (v3.3) on Linux, OS X, and (soon) Windows. We hope to make the Go programming language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
+
+GoCV also supports the [Intel Computer Vision SDK](https://software.intel.com/en-us/cvsdk-devguide) using the Photography Vision Library (PVL). Check out the [PVL README](./pvl/README.md) for more info on how to use GoCV with the Intel CV SDK.
 
 ## How to use
 
