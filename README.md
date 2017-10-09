@@ -4,9 +4,9 @@
 
 The GoCV package provides Go language bindings for the [OpenCV 3](http://opencv.org/) computer vision library.
 
-GoCV supports the latest release of OpenCV (v3.3) on Linux, OS X, and (soon) Windows.
+GoCV supports the latest release of OpenCV (v3.3) on Linux, OS X, and (soon) Windows. We hope to make the Go programming language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
 
-It also supports the [Intel Computer Vision SDK](https://software.intel.com/en-us/cvsdk-devguide) using the Photography Vision Library (PVL). Check out the [PVL README](./pvl/README.md) for more info on how to use GoCV with the Intel CV SDK.
+GoCV also supports the [Intel Computer Vision SDK](https://software.intel.com/en-us/cvsdk-devguide) using the Photography Vision Library (PVL). Check out the [PVL README](./pvl/README.md) for more info on how to use GoCV with the Intel CV SDK.
 
 [![GoDoc](https://godoc.org/github.com/hybridgroup/gocv?status.svg)](https://godoc.org/github.com/hybridgroup/gocv)
 [![Build Status](https://travis-ci.org/hybridgroup/gocv.svg?branch=dev)](https://travis-ci.org/hybridgroup/gocv)
@@ -253,13 +253,11 @@ Thank you!
 
 The [https://github.com/go-opencv/go-opencv](https://github.com/go-opencv/go-opencv) package for Go and OpenCV does not support any version above OpenCV 2.x, and work on adding support for OpenCV 3 has stalled for over a year, mostly due to the complexity of SWIG.
 
-This package uses a C-style wrapper around the OpenCV 3 C++ classes to avoid having to deal with applying SWIG to a huge existing codebase.
+The GoCV package uses a C-style wrapper around the OpenCV 3 C++ classes to avoid having to deal with applying SWIG to a huge existing codebase.
 
 The GoCV mappings are intended to match as close as possible to the original OpenCV project structure, to make it easier to find where to add further support.
 
 For example, the [OpenCV `videoio` module](https://github.com/opencv/opencv/tree/master/modules/videoio) wrappers can be found in this project in the `videoio.*` files.
-
-We hope to make the Go programming language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
 
 This package was inspired by the original https://github.com/go-opencv/go-opencv project, the blog post https://medium.com/@peterleyssens/using-opencv-3-from-golang-5510c312a3c and the repo at https://github.com/sensorbee/opencv thank you all!
 
