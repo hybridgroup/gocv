@@ -211,31 +211,64 @@ const (
 	// ColorHLSToRGBFull converts from HLS (hue lightness saturation) to RGB full.
 	ColorHLSToRGBFull = 73
 
+	// ColorLBGRToLab converts from LBGR to CIE Lab.
 	ColorLBGRToLab = 74
+
+	// ColorLRGBToLab converts from LRGB to CIE Lab.
 	ColorLRGBToLab = 75
+
+	// ColorLBGRToLuv converts from LBGR to CIE Luv.
 	ColorLBGRToLuv = 76
+
+	// ColorLRGBToLuv converts from LRGB to CIE Luv.
 	ColorLRGBToLuv = 77
 
+	// ColorLabToLBGR converts from CIE Lab to LBGR.
 	ColorLabToLBGR = 78
+
+	// ColorLabToLRGB converts from CIE Lab to LRGB.
 	ColorLabToLRGB = 79
+
+	// ColorLuvToLBGR converts from CIE Luv to LBGR.
 	ColorLuvToLBGR = 80
+
+	// ColorLuvToLRGB converts from CIE Luv to LRGB.
 	ColorLuvToLRGB = 81
 
-	// convert between RGB/BGR and YUV
+	// ColorBGRToYUV converts from BGR to YUV.
 	ColorBGRToYUV = 82
+
+	// ColorRGBToYUV converts from RGB to YUV.
 	ColorRGBToYUV = 83
+
+	// ColorYUVToBGR converts from YUV to BGR.
 	ColorYUVToBGR = 84
+
+	// ColorYUVToRGB converts from YUV to RGB.
 	ColorYUVToRGB = 85
 
-	// YUV 4:2:0 family to RGB
+	// ColorYUVToRGBNV12 converts from YUV 4:2:0 to RGB NV12.
 	ColorYUVToRGBNV12 = 90
+
+	// ColorYUVToBGRNV12 converts from YUV 4:2:0 to BGR NV12.
 	ColorYUVToBGRNV12 = 91
+
+	// ColorYUVToRGBNV21 converts from YUV 4:2:0 to RGB NV21.
 	ColorYUVToRGBNV21 = 92
+
+	// ColorYUVToBGRNV21 converts from YUV 4:2:0 to BGR NV21.
 	ColorYUVToBGRNV21 = 93
 
+	// ColorYUVToRGBANV12 converts from YUV 4:2:0 to RGBA NV12.
 	ColorYUVToRGBANV12 = 94
+
+	// ColorYUVToBGRANV12 converts from YUV 4:2:0 to BGRA NV12.
 	ColorYUVToBGRANV12 = 95
+
+	// ColorYUVToRGBANV21 converts from YUV 4:2:0 to RGBA NV21.
 	ColorYUVToRGBANV21 = 96
+
+	// ColorYUVToBGRANV21 converts from YUV 4:2:0 to BGRA NV21.
 	ColorYUVToBGRANV21 = 97
 
 	ColorYUVToRGBYV12 = 98
