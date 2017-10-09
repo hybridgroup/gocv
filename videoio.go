@@ -186,8 +186,8 @@ func (v *VideoCapture) Close() error {
 }
 
 // Set parameter with property (=key).
-func (v *VideoCapture) Set(prop int, param VideoCaptureProperties) {
-	C.VideoCapture_Set(v.p, C.int(prop), C.int(param))
+func (v *VideoCapture) Set(prop VideoCaptureProperties, param float64) {
+	C.VideoCapture_Set(v.p, C.int(prop), C.double(param))
 }
 
 // IsOpened returns if the VideoCapture has been opened to read from

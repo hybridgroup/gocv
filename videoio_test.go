@@ -12,7 +12,7 @@ func TestVideoCaptureFile(t *testing.T) {
 		t.Error("Unable to open VideoCaptureFile")
 	}
 
-	vc.Set(VideoCaptureBrightness, 100)
+	vc.Set(VideoCaptureBrightness, 100.0)
 	vc.Grab(10)
 
 	img := NewMat()

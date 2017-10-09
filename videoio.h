@@ -21,7 +21,7 @@ VideoCapture VideoCapture_New();
 void VideoCapture_Close(VideoCapture v);
 int VideoCapture_Open(VideoCapture v, const char* uri);
 int VideoCapture_OpenDevice(VideoCapture v, int device);
-void VideoCapture_Set(VideoCapture v, int prop, int param);
+void VideoCapture_Set(VideoCapture v, int prop, double param);
 int VideoCapture_IsOpened(VideoCapture v);
 int VideoCapture_Read(VideoCapture v, Mat buf);
 void VideoCapture_Grab(VideoCapture v, int skip);
