@@ -132,7 +132,7 @@ You can use `make` to install OpenCV 3.3 with the handy `Makefile` included with
 
 First, you need to change the current directory to the location of the GoCV repo, so you can access the `Makefile`:
 
-		cd $GOPATH/src/github.com/hybridgroup.com/gocv
+		cd $GOPATH/src/github.com/hybridgroup/gocv
 
 Next, you need to update the system, and install any required packages:
 
@@ -193,7 +193,7 @@ You might want to copy the `env.sh` script into your own projects, to make it ea
 
 ### Other Linux installations
 
-One way to find out thelocations for your includes and libs is to use the `pkg-config` tool like this:
+One way to find out the locations for your includes and libs is to use the `pkg-config` tool like this:
 
 		pkg-config --cflags opencv
 
