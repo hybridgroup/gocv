@@ -114,9 +114,15 @@ func main() {
 
 There are examples in the [cmd directory](./cmd) of this repo in the form of various useful command line utilities, such as [capturing an image file](./cmd/saveimage) and [streaming mjpeg video](./cmd/mjpeg-streamer).
 
-## How to install OpenCV 3.x
+## How to install
 
-To use this Golang package, you must have installed OpenCV 3.3 on your system already. Here are instructions for Ubuntu, OS X, and Windows.
+To install GoCV, run the following command:
+
+```
+go get -u -d github.com/hybridgroup/gocv
+```
+
+To run code that uses the GoCV package, you must also install OpenCV 3.3 on your system. Here are instructions for Ubuntu, OS X, and Windows.
 
 ### Ubuntu/Linux
 
@@ -124,13 +130,17 @@ You can use `make` to install OpenCV 3.3 with the handy `Makefile` included with
 
 #### Install required packages
 
-First, you need to update the system, and install any required packages:
+First, you need to change the current directory to the location of the GoCV repo, so you can access the `Makefile`:
+
+		cd $GOPATH/src/github.com/hybridgroup.com/gocv
+
+Next, you need to update the system, and install any required packages:
 
 		make deps
 
 #### Download source
 
-Next, download the OpenCV 3.3 and OpenCV Contrib source code:
+Now, download the OpenCV 3.3 and OpenCV Contrib source code:
 
 		make download
 
@@ -162,6 +172,10 @@ Instructions needed...
 
 In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your gocv installation.
 
+First, change the current directory to the location of the GoCV repo:
+
+		cd $GOPATH/src/github.com/hybridgroup.com/gocv
+
 One time per session, you must run the script:
 
 		source ./env.sh
@@ -172,17 +186,27 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-		gocv version: 0.0.1
+		gocv version: 0.1.0
 		opencv lib version: 3.3.0
+
+You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
 
 ### Other Linux installations
 
 One way to find out thelocations for your includes and libs is to use the `pkg-config` tool like this:
 
-		pkg-config --cflags opencv                                            
+		pkg-config --cflags opencv
+
+Should output the `include` flags:
+
 		-I/usr/local/include/opencv -I/usr/local/include
 
+Then this command:
+
 		pkg-config --libs opencv
+
+Should output the `lib` flags:
+
 		-L/usr/local/lib -lopencv_stitching -lopencv_superres -lopencv_videostab -lopencv_photo -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dpm -lopencv_face -lopencv_freetype -lopencv_fuzzy -lopencv_img_hash -lopencv_line_descriptor -lopencv_optflow -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_text -lopencv_dnn -lopencv_plot -lopencv_ml -lopencv_xfeatures2d -lopencv_shape -lopencv_video -lopencv_ximgproc -lopencv_calib3d -lopencv_features2d -lopencv_highgui -lopencv_videoio -lopencv_flann -lopencv_xobjdetect -lopencv_imgcodecs -lopencv_objdetect -lopencv_xphoto -lopencv_imgproc -lopencv_core
 
 Once you have this info, you can build or run the Go code that consumes it by populating the needed `CGO_CPPFLAGS` and `CGO_LDFLAGS` ENV vars.
@@ -198,6 +222,10 @@ Please note that you will need to run these 2 lines of code one time in your cur
 
 In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your gocv installation. If you have used Homebrew to install OpenCV 3.3, the following instructions should work.
 
+First, you need to change the current directory to the location of the GoCV repo:
+
+		cd $GOPATH/src/github.com/hybridgroup.com/gocv
+
 One time per session, you must run the script:
 
 		source ./env.sh
@@ -208,8 +236,10 @@ Now you should be able to build or run any of the command examples:
 
 The version program should output the following:
 
-		gocv version: 0.0.1
+		gocv version: 0.1.0
 		opencv lib version: 3.3.0
+
+You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
 
 ### Windows
 
