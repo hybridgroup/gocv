@@ -174,7 +174,7 @@ In order to build/run Go code that uses this package, you will need to specify t
 
 First, change the current directory to the location of the GoCV repo:
 
-		cd $GOPATH/src/github.com/hybridgroup.com/gocv
+		cd $GOPATH/src/github.com/hybridgroup/gocv
 
 One time per session, you must run the script:
 
@@ -224,7 +224,7 @@ In order to build/run Go code that uses this package, you will need to specify t
 
 First, you need to change the current directory to the location of the GoCV repo:
 
-		cd $GOPATH/src/github.com/hybridgroup.com/gocv
+		cd $GOPATH/src/github.com/hybridgroup/gocv
 
 One time per session, you must run the script:
 
