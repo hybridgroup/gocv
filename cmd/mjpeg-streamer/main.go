@@ -29,7 +29,7 @@ import (
 var (
 	deviceID int
 	err      error
-	webcam   gocv.VideoCapture
+	webcam   *gocv.VideoCapture
 	img      gocv.Mat
 
 	stream *mjpeg.Stream
