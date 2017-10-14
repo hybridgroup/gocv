@@ -104,6 +104,6 @@ Run the version command example to make sure you are compiling/linking against t
 
 ```
 $ go run ./cmd/showinfo/main.go 
-go-gocv version: 0.0.1
+go-gocv version: 0.2.0
 opencv lib version: 3.3.0-cvsdk.604
 ```

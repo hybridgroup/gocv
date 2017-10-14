@@ -242,7 +242,7 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-		gocv version: 0.1.0
+		gocv version: 0.2.0
 		opencv lib version: 3.3.0
 
 You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
@@ -292,7 +292,7 @@ Now you should be able to build or run any of the command examples:
 
 The version program should output the following:
 
-		gocv version: 0.1.0
+		gocv version: 0.2.0
 		opencv lib version: 3.3.0
 
 You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
@@ -310,7 +310,7 @@ Now you should be able to build or run any of the command examples:
 
 The version program should output the following:
 
-		gocv version: 0.1.3
+		gocv version: 0.2.0
 		opencv lib version: 3.3.0-dev
 
 ## What works and to work on next
