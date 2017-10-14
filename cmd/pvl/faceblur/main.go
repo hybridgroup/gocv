@@ -19,8 +19,8 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/hybridgroup/gocv"
-	"github.com/hybridgroup/gocv/pvl"
+	"gocv.io/x/gocv"
+	"gocv.io/x/gocv/pvl"
 )
 
 func main() {

@@ -20,7 +20,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/hybridgroup/gocv"
+	"gocv.io/x/gocv"
 )
 
 func main() {

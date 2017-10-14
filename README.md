@@ -2,7 +2,7 @@
 
 [![GoCV](https://raw.githubusercontent.com/hybridgroup/gocv/master/images/gocvlogo.jpg)](http://gocv.io/)
 
-[![GoDoc](https://godoc.org/github.com/hybridgroup/gocv?status.svg)](https://godoc.org/github.com/hybridgroup/gocv)
+[![GoDoc](https://godoc.org/gocv.io/x/gocv?status.svg)](https://godoc.org/github.com/hybridgroup/gocv)
 [![Build Status](https://travis-ci.org/hybridgroup/gocv.svg?branch=dev)](https://travis-ci.org/hybridgroup/gocv)
 [![codecov](https://codecov.io/gh/hybridgroup/gocv/branch/dev/graph/badge.svg)](https://codecov.io/gh/hybridgroup/gocv)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hybridgroup/gocv)](https://goreportcard.com/report/github.com/hybridgroup/gocv)
@@ -24,7 +24,7 @@ This example opens a video capture device using device "0", reads frames, and sh
 package main
 
 import (
-	"github.com/hybridgroup/gocv"
+	"gocv.io/x/gocv"
 )
 
 func main() {
@@ -53,7 +53,7 @@ import (
 	"fmt"
 	"image/color"
 
-	"github.com/hybridgroup/gocv"
+	"gocv.io/x/gocv"
 )
 
 func main() {
@@ -119,7 +119,7 @@ There are examples in the [cmd directory](./cmd) of this repo in the form of var
 To install GoCV, run the following command:
 
 ```
-go get -u -d github.com/hybridgroup/gocv
+go get -u -d gocv.io/x/gocv
 ```
 
 To run code that uses the GoCV package, you must also install OpenCV 3.3 on your system. Here are instructions for Ubuntu, OS X, and Windows.
@@ -132,7 +132,7 @@ You can use `make` to install OpenCV 3.3 with the handy `Makefile` included with
 
 First, you need to change the current directory to the location of the GoCV repo, so you can access the `Makefile`:
 
-		cd $GOPATH/src/github.com/hybridgroup/gocv
+		cd $GOPATH/src/gocv.io/x/gocv
 
 Next, you need to update the system, and install any required packages:
 
@@ -230,7 +230,7 @@ In order to build/run Go code that uses this package, you will need to specify t
 
 First, change the current directory to the location of the GoCV repo:
 
-		cd $GOPATH/src/github.com/hybridgroup/gocv
+		cd $GOPATH/src/gocv.io/x/gocv
 
 One time per session, you must run the script:
 
@@ -280,7 +280,7 @@ In order to build/run Go code that uses this package, you will need to specify t
 
 First, you need to change the current directory to the location of the GoCV repo:
 
-		cd $GOPATH/src/github.com/hybridgroup/gocv
+		cd $GOPATH/src/gocv.io/x/gocv
 
 One time per session, you must run the script:
 

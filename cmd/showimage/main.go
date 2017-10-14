@@ -14,7 +14,7 @@ package main
 import (
 	"os"
 
-	"github.com/hybridgroup/gocv"
+	"gocv.io/x/gocv"
 )
 
 func main() {

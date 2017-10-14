@@ -22,7 +22,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/hybridgroup/gocv"
+	"gocv.io/x/gocv"
 	"github.com/saljam/mjpeg"
 )
 
