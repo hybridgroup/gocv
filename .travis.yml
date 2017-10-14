@@ -4,6 +4,7 @@ dist: trusty
 
 # language is go
 language: go
+go_import_path: gocv.io/x/gocv
 
 addons:
   apt:
