@@ -77,6 +77,28 @@ func TestCanny(t *testing.T) {
 	}
 }
 
+func TestHoughCircles(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in HoughCircles test")
+	}
+	defer img.Close()
+
+	circles := NewMat()
+	defer circles.Close()
+
+	HoughLines(img, circles, 3, 5.0, 5.0)
+	if circles.Empty() {
+		t.Error("Empty HoughCircles test")
+	}
+	if circles.Rows() != 8 {
+		t.Errorf("Invalid HoughCircles test rows: %v", circles.Rows())
+	}
+	if circles.Cols() != 1 {
+		t.Errorf("Invalid HoughCircles test cols: %v", circles.Cols())
+	}
+}
+
 func TestHoughLines(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {

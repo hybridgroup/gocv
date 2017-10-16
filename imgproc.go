@@ -70,6 +70,15 @@ func Canny(src Mat, edges Mat, t1 float32, t2 float32) {
 	C.Canny(src.p, edges.p, C.double(t1), C.double(t2))
 }
 
+// HoughCircles finds circles in a grayscale image using the Hough transform.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d
+//
+func HoughCircles(src Mat, circles Mat, method int, dp float64, minDist float64) {
+	C.HoughCircles(src.p, circles.p, C.int(method), C.double(dp), C.double(minDist))
+}
+
 // HoughLines implements the standard or standard multi-scale Hough transform
 // algorithm for line detection. For a good explanation of Hough transform, see:
 // http://homepages.inf.ed.ac.uk/rbf/HIPR2/hough.htm
@@ -140,7 +149,7 @@ func Circle(img Mat, center image.Point, radius int, c color.RGBA, thickness int
 	C.Circle(img.p, pc, C.int(radius), sColor, C.int(thickness))
 }
 
-// Line draws a arrow segment connecting two points.
+// Line draws a line segment connecting two points.
 //
 // For further details, please see:
 // https://docs.opencv.org/3.3.0/d6/d6e/group__imgproc__draw.html#ga7078a9fae8c7e7d13d24dac2520ae4a2

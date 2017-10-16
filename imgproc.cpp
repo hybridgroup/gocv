@@ -18,6 +18,10 @@ void Canny(Mat src, Mat edges, double t1, double t2) {
     cv::Canny(*src, *edges, t1, t2);
 }
 
+void HoughCircles(Mat src, Mat circles, int method, double dp, double minDist) {
+    cv::HoughCircles(*src, *circles, method, dp, minDist);
+}
+
 void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold) {
     cv::HoughLines(*src, *lines, rho, theta, threshold);
 }
