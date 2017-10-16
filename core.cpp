@@ -11,6 +11,13 @@ Mat Mat_NewWithSize(int rows, int cols, int type) {
     return new cv::Mat(rows, cols, type, 0.0);
 }
 
+// Mat_NewFromScalar creates a new Mat from a Scalar. Intended to be used
+// for Mat comparison operation such as InRange.
+Mat Mat_NewFromScalar(Scalar ar, int type) {
+    cv::Scalar c = cv::Scalar(ar.val1, ar.val2, ar.val3, ar.val4);
+    return new cv::Mat(1, 1, type, c);
+}
+
 // Mat_Close deletes an existing Mat
 void Mat_Close(Mat m) {
     delete m;
@@ -75,6 +82,38 @@ float Mat_GetFloat(Mat m, int row, int col) {
 // each element to contain a double aka CV_64F.
 double Mat_GetDouble(Mat m, int row, int col) {
     return m->at<double>(row, col);
+}
+
+void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
+    cv::absdiff(*src1, *src2, *dst);
+}
+
+void Mat_Add(Mat src1, Mat src2, Mat dst) {
+    cv::add(*src1, *src2, *dst);
+}
+
+void Mat_AddWeighted(Mat src1, double alpha, Mat src2, double beta, double gamma, Mat dst) {
+    cv::addWeighted(*src1, alpha, *src2, beta, gamma, *dst);
+}
+
+void Mat_BitwiseAnd(Mat src1, Mat src2, Mat dst) {
+    cv::bitwise_and(*src1, *src2, *dst);
+}
+
+void Mat_BitwiseNot(Mat src1, Mat dst) {
+    cv::bitwise_not(*src1, *dst);
+}
+
+void Mat_BitwiseOr(Mat src1, Mat src2, Mat dst) {
+    cv::bitwise_or(*src1, *src2, *dst);
+}
+
+void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst) {
+    cv::bitwise_xor(*src1, *src2, *dst);
+}
+
+void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst) {
+    cv::inRange(*src, *lowerb, *upperb, *dst);
 }
 
 void Rects_Close(struct Rects rs) {

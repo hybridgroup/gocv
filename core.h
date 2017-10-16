@@ -71,6 +71,7 @@ void Rects_Close(struct Rects rs);
 
 Mat Mat_New();
 Mat Mat_NewWithSize(int rows, int cols, int type);
+Mat Mat_NewFromScalar(const Scalar ar, int type);
 void Mat_Close(Mat m);
 int Mat_Empty(Mat m);
 Mat Mat_Clone(Mat m);
@@ -83,6 +84,15 @@ int16_t Mat_GetShort(Mat m, int row, int col);
 int32_t Mat_GetInt(Mat m, int row, int col);
 float Mat_GetFloat(Mat m, int row, int col);
 double Mat_GetDouble(Mat m, int row, int col);
+
+void Mat_AbsDiff(Mat src1, Mat src2, Mat dst);
+void Mat_Add(Mat src1, Mat src2, Mat dst);
+void Mat_AddWeighted(Mat src1, double alpha, Mat src2, double beta, double gamma, Mat dst);
+void Mat_BitwiseAnd(Mat src1, Mat src2, Mat dst);
+void Mat_BitwiseNot(Mat src1, Mat dst);
+void Mat_BitwiseOr(Mat src1, Mat src2, Mat dst);
+void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst);
+void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst);
 
 #ifdef __cplusplus
 }

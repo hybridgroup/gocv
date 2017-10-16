@@ -89,6 +89,73 @@ func TestMatAccessors(t *testing.T) {
 	mat.Close()
 }
 
+func TestMatAbsDiff(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat3 := NewMat()
+	AbsDiff(mat1, mat2, mat3)
+	if mat3.Empty() {
+		t.Error("TestMatAbsDiff dest mat3 should not be empty.")
+	}
+}
+
+func TestMatAdd(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat3 := NewMat()
+	Add(mat1, mat2, mat3)
+	if mat3.Empty() {
+		t.Error("TestMatAdd dest mat3 should not be empty.")
+	}
+}
+
+func TestMatAddWeighted(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat3 := NewMat()
+	AddWeighted(mat1, 2.0, mat2, 3.0, 4.0, mat3)
+	if mat3.Empty() {
+		t.Error("TestMatAddWeighted dest mat3 should not be empty.")
+	}
+}
+
+func TestMatBitwiseOperations(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat3 := NewMat()
+	BitwiseAnd(mat1, mat2, mat3)
+	if mat3.Empty() {
+		t.Error("TestMatBitwiseAnd dest mat3 should not be empty.")
+	}
+
+	BitwiseOr(mat1, mat2, mat3)
+	if mat3.Empty() {
+		t.Error("TestMatBitwiseOr dest mat3 should not be empty.")
+	}
+
+	BitwiseXor(mat1, mat2, mat3)
+	if mat3.Empty() {
+		t.Error("TestMatBitwiseXor dest mat3 should not be empty.")
+	}
+
+	BitwiseNot(mat1, mat3)
+	if mat3.Empty() {
+		t.Error("TestMatBitwiseNot dest mat3 should not be empty.")
+	}
+
+}
+
+func TestMatInRange(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	lb := NewFromScalar(NewScalar(20.0, 100.0, 100.0, 0.0), MatTypeCV8U)
+	ub := NewFromScalar(NewScalar(20.0, 100.0, 100.0, 0.0), MatTypeCV8U)
+	dst := NewMat()
+	InRange(mat1, lb, ub, dst)
+	if dst.Empty() {
+		t.Error("TestMatAddWeighted dest mat3 should not be empty.")
+	}
+}
+
 func TestScalar(t *testing.T) {
 	s := NewScalar(127.0, 255.0, 64.0, 0.0)
 	if s.Val1 != 127.0 || s.Val2 != 255.0 || s.Val3 != 64.0 || s.Val4 != 0.0 {

@@ -58,6 +58,18 @@ func NewMatWithSize(rows int, cols int, mt MatType) Mat {
 	return Mat{p: C.Mat_NewWithSize(C.int(rows), C.int(cols), C.int(mt))}
 }
 
+// NewFromScalar returns a new Mat for a specific Scalar value
+func NewFromScalar(s Scalar, mt MatType) Mat {
+	sVal := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
+	}
+
+	return Mat{p: C.Mat_NewFromScalar(sVal, C.int(mt))}
+}
+
 // Close the Mat object.
 func (m *Mat) Close() error {
 	C.Mat_Close(m.p)
@@ -139,6 +151,84 @@ func (m *Mat) GetFloatAt(row int, col int) float32 {
 // be of type double aka CV_64F.
 func (m *Mat) GetDoubleAt(row int, col int) float64 {
 	return float64(C.Mat_GetDouble(m.p, C.int(row), C.int(col)))
+}
+
+// AbsDiff calculates the per-element absolute difference between two arrays
+// or between an array and a scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d2/de8/group__core__array.html#ga6fef31bc8c4071cbc114a758a2b79c14
+//
+func AbsDiff(src1 Mat, src2 Mat, dst Mat) {
+	C.Mat_AbsDiff(src1.p, src2.p, dst.p)
+}
+
+// Add calculates the per-element sum of two arrays or an array and a scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d2/de8/group__core__array.html#ga10ac1bfb180e2cfda1701d06c24fdbd6
+//
+func Add(src1 Mat, src2 Mat, dst Mat) {
+	C.Mat_Add(src1.p, src2.p, dst.p)
+}
+
+// AddWeighted calculates the weighted sum of two arrays.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d2/de8/group__core__array.html#gafafb2513349db3bcff51f54ee5592a19
+//
+func AddWeighted(src1 Mat, alpha float64, src2 Mat, beta float64, gamma float64, dst Mat) {
+	C.Mat_AddWeighted(src1.p, C.double(alpha),
+		src2.p, C.double(beta), C.double(gamma), dst.p)
+}
+
+// BitwiseAnd computes bitwise conjunction of the two arrays (dst = src1 & src2).
+// Calculates the per-element bit-wise conjunction of two arrays
+// or an array and a scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d2/de8/group__core__array.html#ga60b4d04b251ba5eb1392c34425497e14
+//
+func BitwiseAnd(src1 Mat, src2 Mat, dst Mat) {
+	C.Mat_BitwiseAnd(src1.p, src2.p, dst.p)
+}
+
+// BitwiseNot inverts every bit of an array.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d2/de8/group__core__array.html#ga0002cf8b418479f4cb49a75442baee2f
+//
+func BitwiseNot(src1 Mat, dst Mat) {
+	C.Mat_BitwiseNot(src1.p, dst.p)
+}
+
+// BitwiseOr calculates the per-element bit-wise disjunction of two arrays
+// or an array and a scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d2/de8/group__core__array.html#gab85523db362a4e26ff0c703793a719b4
+//
+func BitwiseOr(src1 Mat, src2 Mat, dst Mat) {
+	C.Mat_BitwiseOr(src1.p, src2.p, dst.p)
+}
+
+// BitwiseXor calculates the per-element bit-wise "exclusive or" operation
+// on two arrays or an array and a scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d2/de8/group__core__array.html#ga84b2d8188ce506593dcc3f8cd00e8e2c
+//
+func BitwiseXor(src1 Mat, src2 Mat, dst Mat) {
+	C.Mat_BitwiseXor(src1.p, src2.p, dst.p)
+}
+
+// InRange checks if array elements lie between the elements of two Mat arrays.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d2/de8/group__core__array.html#ga48af0ab51e36436c5d04340e036ce981
+//
+func InRange(src Mat, lb Mat, ub Mat, dst Mat) {
+	C.Mat_InRange(src.p, lb.p, ub.p, dst.p)
 }
 
 // Scalar is a 4-element vector widely used in OpenCV to pass pixel values.
