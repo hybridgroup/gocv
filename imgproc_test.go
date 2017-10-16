@@ -121,14 +121,17 @@ func TestHoughLinesP(t *testing.T) {
 	}
 }
 
-func TestRectangle(t *testing.T) {
+func TestDrawing(t *testing.T) {
 	img := NewMatWithSize(150, 150, MatTypeCV8U)
 	if img.Empty() {
 		t.Error("Invalid Mat in Rectangle")
 	}
 	defer img.Close()
 
+	ArrowedLine(img, image.Pt(50, 50), image.Pt(75, 75), color.RGBA{0, 0, 255, 0}, 3)
+	Circle(img, image.Pt(60, 60), 20, color.RGBA{0, 0, 255, 0}, 3)
 	Rectangle(img, image.Rect(50, 50, 75, 75), color.RGBA{0, 0, 255, 0}, 3)
+	Line(img, image.Pt(50, 50), image.Pt(75, 75), color.RGBA{0, 0, 255, 0}, 3)
 
 	if img.Empty() {
 		t.Error("Error in Rectangle test")

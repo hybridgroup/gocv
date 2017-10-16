@@ -92,6 +92,80 @@ func HoughLinesP(src Mat, lines Mat, rho float32, theta float32, threshold int) 
 	C.HoughLinesP(src.p, lines.p, C.double(rho), C.double(theta), C.int(threshold))
 }
 
+// ArrowedLine draws a arrow segment pointing from the first point
+// to the second one.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d6/d6e/group__imgproc__draw.html#ga0a165a3ca093fd488ac709fdf10c05b2
+//
+func ArrowedLine(img Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness int) {
+	sp1 := C.struct_Point{
+		x: C.int(pt1.X),
+		y: C.int(pt1.Y),
+	}
+
+	sp2 := C.struct_Point{
+		x: C.int(pt2.X),
+		y: C.int(pt2.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.ArrowedLine(img.p, sp1, sp2, sColor, C.int(thickness))
+}
+
+// Circle draws a circle.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d6/d6e/group__imgproc__draw.html#gaf10604b069374903dbd0f0488cb43670
+//
+func Circle(img Mat, center image.Point, radius int, c color.RGBA, thickness int) {
+	pc := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.Circle(img.p, pc, C.int(radius), sColor, C.int(thickness))
+}
+
+// Line draws a arrow segment connecting two points.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d6/d6e/group__imgproc__draw.html#ga7078a9fae8c7e7d13d24dac2520ae4a2
+//
+func Line(img Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness int) {
+	sp1 := C.struct_Point{
+		x: C.int(pt1.X),
+		y: C.int(pt1.Y),
+	}
+
+	sp2 := C.struct_Point{
+		x: C.int(pt2.X),
+		y: C.int(pt2.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.Line(img.p, sp1, sp2, sColor, C.int(thickness))
+}
+
 // Rectangle draws a simple, thick, or filled up-right rectangle.
 // It renders a rectangle with the desired characteristics to the target Mat image.
 //

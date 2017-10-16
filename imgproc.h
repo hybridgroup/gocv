@@ -17,6 +17,9 @@ void Canny(Mat src, Mat edges, double t1, double t2);
 void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold);
 void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold);
 
+void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness);
+void Circle(Mat img, Point center, int radius, Scalar color, int thickness);
+void Line(Mat img, Point pt1, Point pt2, Scalar color, int thickness);
 void Rectangle(Mat img, Rect rect, Scalar color, int thickness);
 struct Size GetTextSize(const char* text, int fontFace, double fontScale, int thickness);
 void PutText(Mat img, const char* text, Point org, int fontFace, double fontScale, 

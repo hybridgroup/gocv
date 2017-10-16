@@ -26,6 +26,29 @@ void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold) {
     cv::HoughLinesP(*src, *lines, rho, theta, threshold);
 }
 
+void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
+    cv::Point p1(pt1.x, pt1.y);
+    cv::Point p2(pt2.x, pt2.y);
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::arrowedLine(*img, p1, p2, c, thickness);
+}
+
+void Circle(Mat img, Point center, int radius, Scalar color, int thickness) {
+    cv::Point p1(center.x, center.y);
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::circle(*img, p1, radius, c, thickness);
+}
+
+void Line(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
+    cv::Point p1(pt1.x, pt1.y);
+    cv::Point p2(pt2.x, pt2.y);
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::line(*img, p1, p2, c, thickness);
+}
+
 void Rectangle(Mat img, Rect r, Scalar color, int thickness) {
     cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
     cv::rectangle(*img, cv::Point(r.x, r.y), cv::Point(r.x+r.width, r.y+r.height),
