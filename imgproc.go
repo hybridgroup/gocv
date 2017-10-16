@@ -71,6 +71,7 @@ func Canny(src Mat, edges Mat, t1 float32, t2 float32) {
 }
 
 // HoughCircles finds circles in a grayscale image using the Hough transform.
+// The only "method" currently supported is HOUGH_GRADIENT = 3.
 //
 // For further details, please see:
 // https://docs.opencv.org/3.3.0/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d
