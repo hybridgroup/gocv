@@ -147,8 +147,8 @@ func TestMatBitwiseOperations(t *testing.T) {
 
 func TestMatInRange(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
-	lb := NewFromScalar(NewScalar(20.0, 100.0, 100.0, 0.0), MatTypeCV8U)
-	ub := NewFromScalar(NewScalar(20.0, 100.0, 100.0, 0.0), MatTypeCV8U)
+	lb := NewMatFromScalar(NewScalar(20.0, 100.0, 100.0, 0.0), MatTypeCV8U)
+	ub := NewMatFromScalar(NewScalar(20.0, 100.0, 100.0, 0.0), MatTypeCV8U)
 	dst := NewMat()
 	InRange(mat1, lb, ub, dst)
 	if dst.Empty() {

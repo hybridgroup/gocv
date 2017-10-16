@@ -58,8 +58,8 @@ func NewMatWithSize(rows int, cols int, mt MatType) Mat {
 	return Mat{p: C.Mat_NewWithSize(C.int(rows), C.int(cols), C.int(mt))}
 }
 
-// NewFromScalar returns a new Mat for a specific Scalar value
-func NewFromScalar(s Scalar, mt MatType) Mat {
+// NewMatFromScalar returns a new Mat for a specific Scalar value
+func NewMatFromScalar(s Scalar, mt MatType) Mat {
 	sVal := C.struct_Scalar{
 		val1: C.double(s.Val1),
 		val2: C.double(s.Val2),
