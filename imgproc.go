@@ -22,6 +22,19 @@ func CvtColor(src Mat, dst Mat, code ColorConversionCode) {
 	C.CvtColor(src.p, dst.p, C.int(code))
 }
 
+// BilateralFilter applies the bilateral filter to an image.
+// The function applies bilateral filtering to the input image, as described in
+// http://www.dai.ed.ac.uk/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.html
+// bilateralFilter can reduce unwanted noise very well while keeping edges
+// fairly sharp. However, it is very slow compared to most filters.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#ga9d7064d478c95d60003cf839430737ed
+//
+func BilateralFilter(src Mat, dst Mat, d int, sigmaColor float64, sigmaSpace float64) {
+	C.BilateralFilter(src.p, dst.p, C.int(d), C.double(sigmaColor), C.double(sigmaSpace))
+}
+
 // Blur blurs an image Mat using a box filter.
 // The function convolves the src Mat image into the dst Mat using
 // the specified Gaussian kernel params.
@@ -53,6 +66,15 @@ func GaussianBlur(src Mat, dst Mat, ksize image.Point, sigmaX float64,
 	}
 
 	C.GaussianBlur(src.p, dst.p, pSize, C.double(sigmaX), C.double(sigmaY), C.int(borderType))
+}
+
+// MedianBlur blurs an image using the median filter.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#ga564869aa33e58769b4469101aac458f9
+//
+func MedianBlur(src Mat, dst Mat, ksize int) {
+	C.MedianBlur(src.p, dst.p, C.int(ksize))
 }
 
 // Canny finds edges in an image using the Canny algorithm.

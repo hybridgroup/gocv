@@ -23,6 +23,22 @@ func TestCvtColor(t *testing.T) {
 	}
 }
 
+func TestBilateralFilter(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in BilateralFilter test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	BilateralFilter(img, dest, 1, 2.0, 3.0)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid BilateralFilter test")
+	}
+}
+
 func TestBlur(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
@@ -52,6 +68,22 @@ func TestGaussianBlur(t *testing.T) {
 	GaussianBlur(img, dest, image.Pt(23, 23), 30, 50, 4)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid Blur test")
+	}
+}
+
+func TestMedianBlur(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in MedianBlur test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	MedianBlur(img, dest, 1)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid MedianBlur test")
 	}
 }
 

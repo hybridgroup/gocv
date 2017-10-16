@@ -4,14 +4,22 @@ void CvtColor(Mat src, Mat dst, int code) {
     cv::cvtColor(*src, *dst, code);
 }
 
+void BilateralFilter(Mat src, Mat dst, int d, double sc, double ss) {
+    cv::bilateralFilter(*src, *dst, d, sc, ss);
+}
+
 void Blur(Mat src, Mat dst, Size ps) {
     cv::Size sz(ps.width, ps.height);
-    cv::blur(*src, *dst, sz);    
+    cv::blur(*src, *dst, sz);
 }
 
 void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt) {
     cv::Size sz(ps.width, ps.height);
     cv::GaussianBlur(*src, *dst, sz, sX, sY, bt);
+}
+
+void MedianBlur(Mat src, Mat dst, int ksize) {
+    cv::medianBlur(*src, *dst, ksize);
 }
 
 void Canny(Mat src, Mat edges, double t1, double t2) {
