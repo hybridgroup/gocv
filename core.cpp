@@ -33,6 +33,11 @@ Mat Mat_Clone(Mat m) {
     return new cv::Mat(m->clone());
 }
 
+// Mat_CopyTo copies this Mat to another Mat.
+void Mat_CopyTo(Mat m, Mat dst) {
+    m->copyTo(*dst);
+}
+
 // Mat_Region returns a Mat of a region of another Mat
 Mat Mat_Region(Mat m, Rect r) {
     return new cv::Mat(*m, cv::Rect(r.x, r.y, r.width, r.height));
@@ -114,6 +119,10 @@ void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst) {
 
 void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst) {
     cv::inRange(*src, *lowerb, *upperb, *dst);
+}
+
+void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
+    cv:normalize(*src, *dst, alpha, beta, typ);
 }
 
 void Rects_Close(struct Rects rs) {

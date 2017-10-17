@@ -31,11 +31,24 @@ func TestMatClone(t *testing.T) {
 	mat := NewMatWithSize(101, 102, MatTypeCV8U)
 	clone := mat.Clone()
 	if clone.Rows() != 101 {
-		t.Errorf("Mat clone incorrect row count: %v\n", mat.Rows())
+		t.Errorf("Mat clone incorrect row count: %v\n", clone.Rows())
 	}
 
 	if clone.Cols() != 102 {
-		t.Errorf("Mat clone incorrect col count: %v\n", mat.Cols())
+		t.Errorf("Mat clone incorrect col count: %v\n", clone.Cols())
+	}
+}
+
+func TestMatCopyTo(t *testing.T) {
+	mat := NewMatWithSize(101, 102, MatTypeCV8U)
+	copy := NewMat()
+	mat.CopyTo(copy)
+	if copy.Rows() != 101 {
+		t.Errorf("Mat copy incorrect row count: %v\n", copy.Rows())
+	}
+
+	if copy.Cols() != 102 {
+		t.Errorf("Mat copy incorrect col count: %v\n", copy.Cols())
 	}
 }
 
@@ -153,6 +166,15 @@ func TestMatInRange(t *testing.T) {
 	InRange(mat1, lb, ub, dst)
 	if dst.Empty() {
 		t.Error("TestMatAddWeighted dest mat3 should not be empty.")
+	}
+}
+
+func TestMatNormalize(t *testing.T) {
+	src := NewMatWithSize(101, 102, MatTypeCV8U)
+	dst := NewMat()
+	Normalize(src, dst, 0.0, 255.0, NormMixMax)
+	if dst.Empty() {
+		t.Error("TestMatNormalize dst should not be empty.")
 	}
 }
 

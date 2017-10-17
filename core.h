@@ -75,6 +75,7 @@ Mat Mat_NewFromScalar(const Scalar ar, int type);
 void Mat_Close(Mat m);
 int Mat_Empty(Mat m);
 Mat Mat_Clone(Mat m);
+void Mat_CopyTo(Mat m, Mat dst);
 Mat Mat_Region(Mat m, Rect r);
 int Mat_Rows(Mat m);
 int Mat_Cols(Mat m);
@@ -93,6 +94,7 @@ void Mat_BitwiseNot(Mat src1, Mat dst);
 void Mat_BitwiseOr(Mat src1, Mat src2, Mat dst);
 void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst);
 void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst);
+void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ);
 
 #ifdef __cplusplus
 }

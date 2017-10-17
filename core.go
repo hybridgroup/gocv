@@ -93,6 +93,12 @@ func (m *Mat) Clone() Mat {
 	return Mat{p: C.Mat_Clone(m.p)}
 }
 
+// CopyTo copies Mat into destination Mat.
+func (m *Mat) CopyTo(dst Mat) {
+	C.Mat_CopyTo(m.p, dst.p)
+	return
+}
+
 // Region returns a new Mat that points to a region of this Mat. Changes made to the
 // region Mat will affect the original Mat, sinec they are pointers to the underlying
 // OpenCV Mat object.
@@ -229,6 +235,34 @@ func BitwiseXor(src1 Mat, src2 Mat, dst Mat) {
 //
 func InRange(src Mat, lb Mat, ub Mat, dst Mat) {
 	C.Mat_InRange(src.p, lb.p, ub.p, dst.p)
+}
+
+// NormType for normalization operations.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d2/de8/group__core__array.html#gad12cefbcb5291cf958a85b4b67b6149f
+//
+type NormType int
+
+const (
+	NormInf      NormType = 1
+	NormL1                = 2
+	NormL2                = 4
+	NormL2Sqr             = 5
+	NormHamming           = 6
+	NormHamming2          = 7
+	NormTypeMask          = 7
+	NormRelative          = 8
+	NormMixMax            = 32
+)
+
+// Normalize normalizes the norm or value range of an array.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d2/de8/group__core__array.html#ga87eef7ee3970f86906d69a92cbf064bd
+//
+func Normalize(src Mat, dst Mat, alpha float64, beta float64, typ NormType) {
+	C.Mat_Normalize(src.p, dst.p, C.double(alpha), C.double(beta), C.int(typ))
 }
 
 // Scalar is a 4-element vector widely used in OpenCV to pass pixel values.
