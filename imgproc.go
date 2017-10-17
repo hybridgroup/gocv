@@ -51,6 +51,91 @@ func Blur(src Mat, dst Mat, ksize image.Point) {
 	C.Blur(src.p, dst.p, pSize)
 }
 
+// Dilate dilates an image by using a specific structuring element.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#ga4ff0f3318642c4f469d0e11f242f3b6c
+//
+func Dilate(src Mat, dst Mat, kernel Mat) {
+	C.Dilate(src.p, dst.p, kernel.p)
+}
+
+// Erode erodes an image by using a specific structuring element.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#gaeb1e0c1033e3f6b891a25d0511362aeb
+//
+func Erode(src Mat, dst Mat, kernel Mat) {
+	C.Erode(src.p, dst.p, kernel.p)
+}
+
+// MorphologyEx performs advanced morphological transformations.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#ga67493776e3ad1a3df63883829375201f
+//
+func MorphologyEx(src Mat, dst Mat, op MorphType, kernel Mat) {
+	C.MorphologyEx(src.p, dst.p, C.int(op), kernel.p)
+}
+
+// MorphShape is the shape of the structuring element used for Morphing operations.
+type MorphShape int
+
+const (
+	// MorphRect is the rectangular morph shape.
+	MorphRect MorphShape = 0
+
+	// MorphCross is the cross morph shape.
+	MorphCross = 1
+
+	// MorphElipse is the elipse morph shape.
+	MorphElipse = 2
+)
+
+// GetStructuringElement returns a structuring element of the specified size
+// and shape for morphological operations.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#gac342a1bb6eabf6f55c803b09268e36dc
+//
+func GetStructuringElement(shape MorphShape, ksize image.Point) Mat {
+	sz := C.struct_Size{
+		height: C.int(ksize.X),
+		width:  C.int(ksize.Y),
+	}
+
+	return Mat{p: C.GetStructuringElement(C.int(shape), sz)}
+}
+
+// MorphType type of morphological operation.
+type MorphType int
+
+const (
+	// MorphErode operation
+	MorphErode MorphType = 0
+
+	// MorphDilate operation
+	MorphDilate = 1
+
+	// MorphOpen operation
+	MorphOpen = 2
+
+	// MorphClose operation
+	MorphClose = 3
+
+	// MorphGradient operation
+	MorphGradient = 4
+
+	// MorphTophat operation
+	MorphTophat = 5
+
+	// MorphBlackhat operation
+	MorphBlackhat = 6
+
+	// MorphHitmiss operation
+	MorphHitmiss = 7
+)
+
 // GaussianBlur blurs an image Mat using a Gaussian filter.
 // The function convolves the src Mat image into the dst Mat using
 // the specified Gaussian kernel params.

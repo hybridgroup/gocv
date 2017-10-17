@@ -13,6 +13,23 @@ void Blur(Mat src, Mat dst, Size ps) {
     cv::blur(*src, *dst, sz);
 }
 
+void Dilate(Mat src, Mat dst, Mat kernel) {
+    cv::dilate(*src, *dst, *kernel);
+}
+
+void Erode(Mat src, Mat dst, Mat kernel) {
+    cv::erode(*src, *dst, *kernel);
+}
+
+Mat GetStructuringElement(int shape, Size ksize) {
+    cv::Size sz(ksize.width, ksize.height);
+    return new cv::Mat(cv::getStructuringElement(shape, sz));
+}
+
+void MorphologyEx(Mat src, Mat dst, int op, Mat kernel) {
+    cv::morphologyEx(*src, *dst, op, *kernel);
+}
+
 void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt) {
     cv::Size sz(ps.width, ps.height);
     cv::GaussianBlur(*src, *dst, sz, sX, sY, bt);

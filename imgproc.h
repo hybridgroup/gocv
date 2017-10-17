@@ -13,9 +13,12 @@ extern "C" {
 void CvtColor(Mat src, Mat dst, int code);
 void BilateralFilter(Mat src, Mat dst, int d, double sc, double ss);
 void Blur(Mat src, Mat dst, Size ps);
+void Dilate(Mat src, Mat dst, Mat kernel);
+void Erode(Mat src, Mat dst, Mat kernel);
 void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt);
+Mat GetStructuringElement(int shape, Size ksize);
+void MorphologyEx(Mat src, Mat dst, int op, Mat kernel);
 void MedianBlur(Mat src, Mat dst, int ksize);
-
 void Canny(Mat src, Mat edges, double t1, double t2);
 void HoughCircles(Mat src, Mat circles, int method, double dp, double minDist);
 void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold);
