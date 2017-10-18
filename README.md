@@ -270,7 +270,7 @@ Once you have this info, you can build or run the Go code that consumes it by po
 For example:
 
 		export CGO_CPPFLAGS="-I/usr/local/include" 
-		export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_calib3d"
+		export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_calib3d -lopencv_video"
 
 Please note that you will need to run these 2 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables.
 
@@ -302,7 +302,7 @@ You might want to copy the `env.sh` script into your own projects, to make it ea
 Run these commands to configure Go to know about the include and lib directories:
 
 		set CGO_CPPFLAGS=-IC:\opencv\build\install\include
-		set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core330 -lopencv_videoio330 -lopencv_imgproc330 -lopencv_highgui330 -lopencv_imgcodecs330 -lopencv_objdetect330 -lopencv_calib3d330
+		set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core330 -lopencv_videoio330 -lopencv_imgproc330 -lopencv_highgui330 -lopencv_imgcodecs330 -lopencv_objdetect330 -lopencv_calib3d330 -lopencv_video330
 
 Now you should be able to build or run any of the command examples:
 
