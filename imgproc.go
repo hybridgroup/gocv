@@ -88,8 +88,8 @@ const (
 	// MorphCross is the cross morph shape.
 	MorphCross = 1
 
-	// MorphElipse is the elipse morph shape.
-	MorphElipse = 2
+	// MorphEllipse is the ellipse morph shape.
+	MorphEllipse = 2
 )
 
 // GetStructuringElement returns a structuring element of the specified size
