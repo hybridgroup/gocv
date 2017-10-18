@@ -15,6 +15,7 @@ typedef void* BackgroundSubtractor;
 #endif
 
 BackgroundSubtractor BackgroundSubtractor_CreateMOG2();
+BackgroundSubtractor BackgroundSubtractor_CreateKNN();
 void BackgroundSubtractor_Close(BackgroundSubtractor b);
 void BackgroundSubtractor_Apply(BackgroundSubtractor b, Mat src, Mat dst);
 

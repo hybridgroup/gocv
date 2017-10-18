@@ -22,6 +22,17 @@ func NewBackgroundSubtractorMOG2() BackgroundSubtractor {
 	return BackgroundSubtractor{p: C.BackgroundSubtractor_CreateMOG2()}
 }
 
+// NewBackgroundSubtractorKNN returns a new BackgroundSubtractor algorithm
+// of type KNN. K-Nearest Neighbors (KNN) uses a Background/Foreground
+// Segmentation Algorithm
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/db/d88/classcv_1_1BackgroundSubtractorKNN.html
+//
+func NewBackgroundSubtractorKNN() BackgroundSubtractor {
+	return BackgroundSubtractor{p: C.BackgroundSubtractor_CreateKNN()}
+}
+
 // Close BackgroundSubtractor.
 func (b *BackgroundSubtractor) Close() error {
 	C.BackgroundSubtractor_Close(b.p)
