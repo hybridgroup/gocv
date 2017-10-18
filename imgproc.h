@@ -29,8 +29,9 @@ void Circle(Mat img, Point center, int radius, Scalar color, int thickness);
 void Line(Mat img, Point pt1, Point pt2, Scalar color, int thickness);
 void Rectangle(Mat img, Rect rect, Scalar color, int thickness);
 struct Size GetTextSize(const char* text, int fontFace, double fontScale, int thickness);
-void PutText(Mat img, const char* text, Point org, int fontFace, double fontScale, 
+void PutText(Mat img, const char* text, Point org, int fontFace, double fontScale,
              Scalar color, int thickness);
+void Resize(Mat src, Mat dst, Size sz, double fx, double fy, int interp);
 
 
 #ifdef __cplusplus

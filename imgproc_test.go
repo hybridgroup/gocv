@@ -270,3 +270,24 @@ func TestPutText(t *testing.T) {
 		t.Error("Error in PutText test")
 	}
 }
+
+func TestResize(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadColor)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in GaussianBlur test")
+	}
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	Resize(src, dst, image.Point{}, 0.5, 0.5, InterpolationDefault)
+	if dst.Cols() != 200 || dst.Rows() != 172 {
+		t.Errorf("Expected dst size of 200x172 got %dx%d", dst.Cols(), dst.Rows())
+	}
+
+	Resize(src, dst, image.Pt(440, 377), 0, 0, InterpolationCubic)
+	if dst.Cols() != 440 || dst.Rows() != 377 {
+		t.Errorf("Expected dst size of 440x377 got %dx%d", dst.Cols(), dst.Rows())
+	}
+}
