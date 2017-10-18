@@ -190,6 +190,11 @@ func (v *VideoCapture) Set(prop VideoCaptureProperties, param float64) {
 	C.VideoCapture_Set(v.p, C.int(prop), C.double(param))
 }
 
+// Get parameter with property (=key).
+func (v VideoCapture) Get(prop VideoCaptureProperties) float64 {
+	return float64(C.VideoCapture_Get(v.p, C.int(prop)))
+}
+
 // IsOpened returns if the VideoCapture has been opened to read from
 // a file or capture device.
 func (v *VideoCapture) IsOpened() bool {
