@@ -14,6 +14,13 @@ void Window_Close(const char* winname);
 void Window_IMShow(const char* winname, Mat mat);
 int Window_WaitKey(int);
 
+// Trackbar
+void Trackbar_Create(const char* winname, const char* trackname, int max);
+int Trackbar_GetPos(const char* winname, const char* trackname);
+void Trackbar_SetPos(const char* winname, const char* trackname, int pos);
+void Trackbar_SetMin(const char* winname, const char* trackname, int pos);
+void Trackbar_SetMax(const char* winname, const char* trackname, int pos);
+
 #ifdef __cplusplus
 }
 #endif

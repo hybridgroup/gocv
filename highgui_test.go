@@ -37,7 +37,7 @@ func TestIMShow(t *testing.T) {
 	}
 	defer img.Close()
 
-	// TODO: some way to detetermine if the call succeeded
+	// TODO: some way to determine if the call succeeded
 	window.IMShow(img)
 
 	val := WaitKey(1)
@@ -48,5 +48,23 @@ func TestIMShow(t *testing.T) {
 	window.Close()
 	if window.IsOpen() {
 		t.Error("IMShow window should have been closed")
+	}
+}
+
+func TestTrackbar(t *testing.T) {
+	window := NewWindow("trackbar")
+	defer window.Close()
+
+	tracker := window.CreateTrackbar("trackme", 100)
+	if tracker.GetPos() != 0 {
+		t.Error("Trackbar pos should have been 0")
+	}
+
+	tracker.SetMin(10)
+	tracker.SetMax(150)
+	tracker.SetPos(50)
+
+	if tracker.GetPos() != 50 {
+		t.Error("Trackbar pos should have been 50")
 	}
 }

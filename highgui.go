@@ -81,3 +81,85 @@ func (w *Window) IMShow(img Mat) {
 func WaitKey(delay int) int {
 	return int(C.Window_WaitKey(C.int(delay)))
 }
+
+// Trackbar is a wrapper around OpenCV's "HighGUI" window Trackbars.
+type Trackbar struct {
+	name   string
+	parent *Window
+}
+
+// CreateTrackbar creates a trackbar and attaches it to the specified window.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d7/dfc/group__highgui.html#gaf78d2155d30b728fc413803745b67a9b
+//
+func (w *Window) CreateTrackbar(name string, max int) *Trackbar {
+	cName := C.CString(w.name)
+	defer C.free(unsafe.Pointer(cName))
+
+	tName := C.CString(name)
+	defer C.free(unsafe.Pointer(tName))
+
+	C.Trackbar_Create(cName, tName, C.int(max))
+	return &Trackbar{name: name, parent: w}
+}
+
+// GetPos returns the trackbar position.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d7/dfc/group__highgui.html#ga122632e9e91b9ec06943472c55d9cda8
+//
+func (t *Trackbar) GetPos() int {
+	cName := C.CString(t.parent.name)
+	defer C.free(unsafe.Pointer(cName))
+
+	tName := C.CString(t.name)
+	defer C.free(unsafe.Pointer(tName))
+
+	return int(C.Trackbar_GetPos(cName, tName))
+}
+
+// SetPos sets the trackbar position.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d7/dfc/group__highgui.html#ga67d73c4c9430f13481fd58410d01bd8d
+//
+func (t *Trackbar) SetPos(pos int) {
+	cName := C.CString(t.parent.name)
+	defer C.free(unsafe.Pointer(cName))
+
+	tName := C.CString(t.name)
+	defer C.free(unsafe.Pointer(tName))
+
+	C.Trackbar_SetPos(cName, tName, C.int(pos))
+}
+
+// SetMin sets the trackbar minimum position.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d7/dfc/group__highgui.html#gabe26ffe8d2b60cc678895595a581b7aa
+//
+func (t *Trackbar) SetMin(pos int) {
+	cName := C.CString(t.parent.name)
+	defer C.free(unsafe.Pointer(cName))
+
+	tName := C.CString(t.name)
+	defer C.free(unsafe.Pointer(tName))
+
+	C.Trackbar_SetMin(cName, tName, C.int(pos))
+}
+
+// SetMax sets the trackbar maximum position.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d7/dfc/group__highgui.html#ga7e5437ccba37f1154b65210902fc4480
+//
+func (t *Trackbar) SetMax(pos int) {
+	cName := C.CString(t.parent.name)
+	defer C.free(unsafe.Pointer(cName))
+
+	tName := C.CString(t.name)
+	defer C.free(unsafe.Pointer(tName))
+
+	C.Trackbar_SetMax(cName, tName, C.int(pos))
+}
