@@ -12,7 +12,15 @@ func TestVideoCaptureFile(t *testing.T) {
 		t.Error("Unable to open VideoCaptureFile")
 	}
 
+	if fw := vc.Get(VideoCaptureFrameWidth); int(fw) != 560 {
+		t.Errorf("Expected frame width property of 560.0 got %f", fw)
+	}
+	if fh := vc.Get(VideoCaptureFrameHeight); int(fh) != 320 {
+		t.Errorf("Expected frame height property of 320.0 got %f", fh)
+	}
+
 	vc.Set(VideoCaptureBrightness, 100.0)
+
 	vc.Grab(10)
 
 	img := NewMat()
