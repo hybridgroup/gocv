@@ -1,7 +1,6 @@
 #include "video.h"
 
 BackgroundSubtractor BackgroundSubtractor_CreateMOG2() {
-    cv::ocl::setUseOpenCL(false);
     return cv::createBackgroundSubtractorMOG2();
 }
 

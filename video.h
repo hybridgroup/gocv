@@ -3,15 +3,13 @@
 
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
-#include <opencv2/core/ocl.hpp>
-#include <opencv2/bgsegm.hpp>
 extern "C" {
 #endif
 
 #include "core.h"
 
 #ifdef __cplusplus
-typedef cv::BackgroundSubtractor* BackgroundSubtractor;
+typedef cv::Ptr<cv::BackgroundSubtractor> BackgroundSubtractor;
 #else
 typedef void* BackgroundSubtractor;
 #endif
