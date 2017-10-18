@@ -100,7 +100,7 @@ func (m *Mat) CopyTo(dst Mat) {
 }
 
 // Region returns a new Mat that points to a region of this Mat. Changes made to the
-// region Mat will affect the original Mat, sinec they are pointers to the underlying
+// region Mat will affect the original Mat, since they are pointers to the underlying
 // OpenCV Mat object.
 func (m *Mat) Region(rio image.Rectangle) Mat {
 	cRect := C.struct_Rect{
@@ -235,6 +235,35 @@ func BitwiseXor(src1 Mat, src2 Mat, dst Mat) {
 //
 func InRange(src Mat, lb Mat, ub Mat, dst Mat) {
 	C.Mat_InRange(src.p, lb.p, ub.p, dst.p)
+}
+
+// GetOptimalDFTSize returns the optimal Discrete Fourier Transform (DFT) size
+// for a given vector size.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d2/de8/group__core__array.html#ga6577a2e59968936ae02eb2edde5de299
+//
+func GetOptimalDFTSize(vecsize int) int {
+	return int(C.Mat_GetOptimalDFTSize(C.int(vecsize)))
+}
+
+// DFT performs a forward or inverse Discrete Fourier Transform (DFT)
+// of a 1D or 2D floating-point array.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d2/de8/group__core__array.html#gadd6cf9baf2b8b704a11b5f04aaf4f39d
+//
+func DFT(src Mat, dst Mat) {
+	C.Mat_DFT(src.p, dst.p)
+}
+
+// Merge creates one multi-channel array out of several single-channel ones.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d2/de8/group__core__array.html#ga7d7b4d6c6ee504b30a20b1680029c7b4
+//
+func Merge(src Mat, count int, dst Mat) {
+	C.Mat_Merge(src.p, C.size_t(count), dst.p)
 }
 
 // NormType for normalization operations.

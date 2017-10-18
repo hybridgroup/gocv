@@ -121,6 +121,18 @@ void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst) {
     cv::inRange(*src, *lowerb, *upperb, *dst);
 }
 
+int Mat_GetOptimalDFTSize(int vecsize) {
+    return cv::getOptimalDFTSize(vecsize);
+}
+
+void Mat_DFT(Mat m, Mat dst) {
+    cv::dft(*m, *dst);
+}
+
+void Mat_Merge(Mat m, size_t count, Mat dst) {
+    cv::merge(m, count, *dst);
+}
+
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
     cv:normalize(*src, *dst, alpha, beta, typ);
 }

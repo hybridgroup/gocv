@@ -169,6 +169,34 @@ func TestMatInRange(t *testing.T) {
 	}
 }
 
+func TestMatDFT(t *testing.T) {
+	src := NewMatWithSize(101, 102, MatTypeCV32F)
+	dst := NewMat()
+
+	m := GetOptimalDFTSize(101)
+	n := GetOptimalDFTSize(102)
+	if m != 108 {
+		t.Errorf("TestMatOptimalDFT dst error: %d", m)
+	}
+
+	if n != 108 {
+		t.Errorf("TestMatOptimalDFT dst error: %d", n)
+	}
+
+	DFT(src, dst)
+	if dst.Empty() {
+		t.Error("TestMatDFT dst should not be empty.")
+	}
+}
+
+func TestMatMerge(t *testing.T) {
+	src := NewMatWithSize(101, 102, MatTypeCV8U)
+	dst := NewMat()
+	Merge(src, 1, dst)
+	if dst.Empty() {
+		t.Error("TestMatMerge dst should not be empty.")
+	}
+}
 func TestMatNormalize(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
 	dst := NewMat()
