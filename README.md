@@ -313,41 +313,13 @@ The version program should output the following:
 		gocv version: 0.2.0
 		opencv lib version: 3.3.0-dev
 
-## What works and to work on next
+## What to work on next
 
-- [X] Video capture
-- [X] GUI Window to display video
-- [X] Image load/save
-- [X] CascadeClassifier for object detection/face tracking/etc.
-- [X] Installation instructions for Ubuntu
-- [X] Installation instructions for OS X
-- [X] Code example to use VideoWriter
-- [X] Intel CV SDK PVL FaceTracker support
-- [X] imgproc Image processing
-- [X] Travis CI build
-- [X] At least minimal test coverage for each OpenCV class
-- [X] Implement more of imgproc Image processing
-- [X] Installation/usage instructions for Windows
-- [ ] Appveyor build
-- [ ] calib3d Camera Calibration and 3D Reconstruction
-- [ ] Intel CV SDK PVL FaceRecognizer
-- [ ] Your favorite OpenCV module!
+Check out our [ROADMAP.md](./ROADMAP.md) document.
 
 ## How to contribute
 
-We would like your help to make this project better, so we appreciate any contributions.
-
-The `master` branch of this repo will always have the latest released version of GoCV. All of the active development work for the next release will take place in the `dev` branch. GoCV will use semantic versioning and will create a tag/release for each release.
-
-Here is how to contribute back some code or documentation:
-
-- Fork repo
-- Create a feature branch off of the `dev` branch
-- Make some useful change
-- Submit a pull request against the `dev` branch.
-- Be kind
-
-Thank you!
+Please take a look at our [CONTRIBUTING.md](./CONTRIBUTING.md) document.
 
 ## Why this project exists
 
