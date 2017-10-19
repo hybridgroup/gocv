@@ -186,7 +186,7 @@ Download the source code for OpenCV Contrib master branch from [https://github.c
 
 Create the directory `C:\opencv\build` as the build directory.
 
-Now launch the `cmake-gui` program, and set the "Where is the source code" to `C:\opencv\opencv-3.3.0`, and the "Where to build the binaries" to `C:\opencv3\build`.
+Now launch the `cmake-gui` program, and set the "Where is the source code" to `C:\opencv\opencv-3.3.0`, and the "Where to build the binaries" to `C:\opencv\build`.
 
 Click on "Configure" and select "MinGW MakeFile" from the window, then click on the  "Next" button.
 
