@@ -9,6 +9,7 @@
 //
 // mjpeg-streamer [camera ID] [host:port]
 //
+//		go get -u github.com/saljam/mjpeg
 // 		go run ./cmd/mjpeg-streamer/main.go 1 0.0.0.0:8080
 //
 // +build example
