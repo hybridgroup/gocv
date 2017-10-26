@@ -113,6 +113,13 @@ func (m *Mat) Region(rio image.Rectangle) Mat {
 	return Mat{p: C.Mat_Region(m.p, cRect)}
 }
 
+// Mean calculates the mean value M of array elements, independently for each channel, and return it as Scalar
+// TODO pass second paramter with mask
+func (m *Mat) Mean() Scalar {
+	s := C.Mat_Mean(m.p)
+	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
+}
+
 // Rows returns the number of rows for this Mat.
 func (m *Mat) Rows() int {
 	return int(C.Mat_Rows(m.p))

@@ -77,6 +77,7 @@ int Mat_Empty(Mat m);
 Mat Mat_Clone(Mat m);
 void Mat_CopyTo(Mat m, Mat dst);
 Mat Mat_Region(Mat m, Rect r);
+Scalar Mat_Mean(Mat m);
 int Mat_Rows(Mat m);
 int Mat_Cols(Mat m);
 uint8_t Mat_GetUChar(Mat m, int row, int col);
