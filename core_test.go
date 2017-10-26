@@ -64,6 +64,14 @@ func TestMatRegion(t *testing.T) {
 	}
 }
 
+func TestMatMean(t *testing.T) {
+	mat := NewMatWithSize(100, 100, MatTypeCV8U)
+	mean := mat.Mean()
+	if mean.Val1 != 0 {
+		t.Errorf("Mat Mean incorrect Val1")
+	}
+}
+
 func TestMatAccessors(t *testing.T) {
 	mat := NewMatWithSize(101, 102, MatTypeCV8U)
 	if mat.GetUCharAt(50, 50) != 0 {
