@@ -8,7 +8,7 @@ import (
 func TestVersions(t *testing.T) {
 	ocvv := OpenCVVersion()
 
-	if !strings.Contains(ocvv, "3.3.0") {
+	if !strings.Contains(ocvv, "3.3.1") {
 		t.Error("Wrong version of OpenCV")
 	}
 

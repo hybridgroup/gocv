@@ -16,7 +16,7 @@ type BackgroundSubtractor struct {
 // Segmentation Algorithm.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d7/d7b/classcv_1_1BackgroundSubtractorMOG2.html
+// https://docs.opencv.org/3.3.1/d7/d7b/classcv_1_1BackgroundSubtractorMOG2.html
 //
 func NewBackgroundSubtractorMOG2() BackgroundSubtractor {
 	return BackgroundSubtractor{p: C.BackgroundSubtractor_CreateMOG2()}
@@ -27,7 +27,7 @@ func NewBackgroundSubtractorMOG2() BackgroundSubtractor {
 // Segmentation Algorithm
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/db/d88/classcv_1_1BackgroundSubtractorKNN.html
+// https://docs.opencv.org/3.3.1/db/d88/classcv_1_1BackgroundSubtractorKNN.html
 //
 func NewBackgroundSubtractorKNN() BackgroundSubtractor {
 	return BackgroundSubtractor{p: C.BackgroundSubtractor_CreateKNN()}
@@ -43,7 +43,7 @@ func (b *BackgroundSubtractor) Close() error {
 // Apply computes a foreground mask using the current BackgroundSubtractor.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d7/df6/classcv_1_1BackgroundSubtractor.html#aa735e76f7069b3fa9c3f32395f9ccd21
+// https://docs.opencv.org/3.3.1/d7/df6/classcv_1_1BackgroundSubtractor.html#aa735e76f7069b3fa9c3f32395f9ccd21
 //
 func (b *BackgroundSubtractor) Apply(src Mat, dst Mat) {
 	C.BackgroundSubtractor_Apply(b.p, src.p, dst.p)

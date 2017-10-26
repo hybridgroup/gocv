@@ -16,7 +16,7 @@ import (
 // code param containing the desired ColorConversionCode color space.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.0/d7/d1b/group__imgproc__misc.html#ga4e0972be5de079fed4e3a10e24ef5ef0
+// http://docs.opencv.org/3.3.1/d7/d1b/group__imgproc__misc.html#ga4e0972be5de079fed4e3a10e24ef5ef0
 //
 func CvtColor(src Mat, dst Mat, code ColorConversionCode) {
 	C.CvtColor(src.p, dst.p, C.int(code))
@@ -29,7 +29,7 @@ func CvtColor(src Mat, dst Mat, code ColorConversionCode) {
 // fairly sharp. However, it is very slow compared to most filters.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#ga9d7064d478c95d60003cf839430737ed
+// https://docs.opencv.org/3.3.1/d4/d86/group__imgproc__filter.html#ga9d7064d478c95d60003cf839430737ed
 //
 func BilateralFilter(src Mat, dst Mat, d int, sigmaColor float64, sigmaSpace float64) {
 	C.BilateralFilter(src.p, dst.p, C.int(d), C.double(sigmaColor), C.double(sigmaSpace))
@@ -40,7 +40,7 @@ func BilateralFilter(src Mat, dst Mat, d int, sigmaColor float64, sigmaSpace flo
 // the specified Gaussian kernel params.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#gaabe8c836e97159a9193fb0b11ac52cf1
+// http://docs.opencv.org/3.3.1/d4/d86/group__imgproc__filter.html#gaabe8c836e97159a9193fb0b11ac52cf1
 //
 func Blur(src Mat, dst Mat, ksize image.Point) {
 	pSize := C.struct_Size{
@@ -54,7 +54,7 @@ func Blur(src Mat, dst Mat, ksize image.Point) {
 // Dilate dilates an image by using a specific structuring element.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#ga4ff0f3318642c4f469d0e11f242f3b6c
+// https://docs.opencv.org/3.3.1/d4/d86/group__imgproc__filter.html#ga4ff0f3318642c4f469d0e11f242f3b6c
 //
 func Dilate(src Mat, dst Mat, kernel Mat) {
 	C.Dilate(src.p, dst.p, kernel.p)
@@ -63,7 +63,7 @@ func Dilate(src Mat, dst Mat, kernel Mat) {
 // Erode erodes an image by using a specific structuring element.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#gaeb1e0c1033e3f6b891a25d0511362aeb
+// https://docs.opencv.org/3.3.1/d4/d86/group__imgproc__filter.html#gaeb1e0c1033e3f6b891a25d0511362aeb
 //
 func Erode(src Mat, dst Mat, kernel Mat) {
 	C.Erode(src.p, dst.p, kernel.p)
@@ -72,7 +72,7 @@ func Erode(src Mat, dst Mat, kernel Mat) {
 // MorphologyEx performs advanced morphological transformations.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#ga67493776e3ad1a3df63883829375201f
+// https://docs.opencv.org/3.3.1/d4/d86/group__imgproc__filter.html#ga67493776e3ad1a3df63883829375201f
 //
 func MorphologyEx(src Mat, dst Mat, op MorphType, kernel Mat) {
 	C.MorphologyEx(src.p, dst.p, C.int(op), kernel.p)
@@ -96,7 +96,7 @@ const (
 // and shape for morphological operations.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#gac342a1bb6eabf6f55c803b09268e36dc
+// https://docs.opencv.org/3.3.1/d4/d86/group__imgproc__filter.html#gac342a1bb6eabf6f55c803b09268e36dc
 //
 func GetStructuringElement(shape MorphShape, ksize image.Point) Mat {
 	sz := C.struct_Size{
@@ -141,7 +141,7 @@ const (
 // the specified Gaussian kernel params.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#gaabe8c836e97159a9193fb0b11ac52cf1
+// http://docs.opencv.org/3.3.1/d4/d86/group__imgproc__filter.html#gaabe8c836e97159a9193fb0b11ac52cf1
 //
 func GaussianBlur(src Mat, dst Mat, ksize image.Point, sigmaX float64,
 	sigmaY float64, borderType int) {
@@ -156,7 +156,7 @@ func GaussianBlur(src Mat, dst Mat, ksize image.Point, sigmaX float64,
 // MedianBlur blurs an image using the median filter.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d4/d86/group__imgproc__filter.html#ga564869aa33e58769b4469101aac458f9
+// https://docs.opencv.org/3.3.1/d4/d86/group__imgproc__filter.html#ga564869aa33e58769b4469101aac458f9
 //
 func MedianBlur(src Mat, dst Mat, ksize int) {
 	C.MedianBlur(src.p, dst.p, C.int(ksize))
@@ -171,7 +171,7 @@ func MedianBlur(src Mat, dst Mat, ksize int) {
 // See http://en.wikipedia.org/wiki/Canny_edge_detector
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.0/dd/d1a/group__imgproc__feature.html#ga04723e007ed888ddf11d9ba04e2232de
+// http://docs.opencv.org/3.3.1/dd/d1a/group__imgproc__feature.html#ga04723e007ed888ddf11d9ba04e2232de
 //
 func Canny(src Mat, edges Mat, t1 float32, t2 float32) {
 	C.Canny(src.p, edges.p, C.double(t1), C.double(t2))
@@ -181,7 +181,7 @@ func Canny(src Mat, edges Mat, t1 float32, t2 float32) {
 // The only "method" currently supported is HOUGH_GRADIENT = 3.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d
+// https://docs.opencv.org/3.3.1/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d
 //
 func HoughCircles(src Mat, circles Mat, method int, dp float64, minDist float64) {
 	C.HoughCircles(src.p, circles.p, C.int(method), C.double(dp), C.double(minDist))
@@ -192,7 +192,7 @@ func HoughCircles(src Mat, circles Mat, method int, dp float64, minDist float64)
 // http://homepages.inf.ed.ac.uk/rbf/HIPR2/hough.htm
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.0/dd/d1a/group__imgproc__feature.html#ga46b4e588934f6c8dfd509cc6e0e4545a
+// http://docs.opencv.org/3.3.1/dd/d1a/group__imgproc__feature.html#ga46b4e588934f6c8dfd509cc6e0e4545a
 //
 func HoughLines(src Mat, lines Mat, rho float32, theta float32, threshold int) {
 	C.HoughLines(src.p, lines.p, C.double(rho), C.double(theta), C.int(threshold))
@@ -203,7 +203,7 @@ func HoughLines(src Mat, lines Mat, rho float32, theta float32, threshold int) {
 // http://homepages.inf.ed.ac.uk/rbf/HIPR2/hough.htm
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.0/dd/d1a/group__imgproc__feature.html#ga8618180a5948286384e3b7ca02f6feeb
+// http://docs.opencv.org/3.3.1/dd/d1a/group__imgproc__feature.html#ga8618180a5948286384e3b7ca02f6feeb
 //
 func HoughLinesP(src Mat, lines Mat, rho float32, theta float32, threshold int) {
 	C.HoughLinesP(src.p, lines.p, C.double(rho), C.double(theta), C.int(threshold))
@@ -213,7 +213,7 @@ func HoughLinesP(src Mat, lines Mat, rho float32, theta float32, threshold int) 
 // to the second one.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d6/d6e/group__imgproc__draw.html#ga0a165a3ca093fd488ac709fdf10c05b2
+// https://docs.opencv.org/3.3.1/d6/d6e/group__imgproc__draw.html#ga0a165a3ca093fd488ac709fdf10c05b2
 //
 func ArrowedLine(img Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness int) {
 	sp1 := C.struct_Point{
@@ -239,7 +239,7 @@ func ArrowedLine(img Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickn
 // Circle draws a circle.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d6/d6e/group__imgproc__draw.html#gaf10604b069374903dbd0f0488cb43670
+// https://docs.opencv.org/3.3.1/d6/d6e/group__imgproc__draw.html#gaf10604b069374903dbd0f0488cb43670
 //
 func Circle(img Mat, center image.Point, radius int, c color.RGBA, thickness int) {
 	pc := C.struct_Point{
@@ -260,7 +260,7 @@ func Circle(img Mat, center image.Point, radius int, c color.RGBA, thickness int
 // Line draws a line segment connecting two points.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d6/d6e/group__imgproc__draw.html#ga7078a9fae8c7e7d13d24dac2520ae4a2
+// https://docs.opencv.org/3.3.1/d6/d6e/group__imgproc__draw.html#ga7078a9fae8c7e7d13d24dac2520ae4a2
 //
 func Line(img Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness int) {
 	sp1 := C.struct_Point{
@@ -287,7 +287,7 @@ func Line(img Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness int
 // It renders a rectangle with the desired characteristics to the target Mat image.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.0/d6/d6e/group__imgproc__draw.html#ga346ac30b5c74e9b5137576c9ee9e0e8c
+// http://docs.opencv.org/3.3.1/d6/d6e/group__imgproc__draw.html#ga346ac30b5c74e9b5137576c9ee9e0e8c
 //
 func Rectangle(img Mat, r image.Rectangle, c color.RGBA, thickness int) {
 	cRect := C.struct_Rect{
@@ -343,7 +343,7 @@ const (
 // a specific font face, scale, and thickness.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.0/d6/d6e/group__imgproc__draw.html#ga3d2abfcb995fd2db908c8288199dba82
+// http://docs.opencv.org/3.3.1/d6/d6e/group__imgproc__draw.html#ga3d2abfcb995fd2db908c8288199dba82
 //
 func GetTextSize(text string, fontFace HersheyFont, fontScale float64, thickness int) image.Point {
 	cText := C.CString(text)
@@ -359,7 +359,7 @@ func GetTextSize(text string, fontFace HersheyFont, fontScale float64, thickness
 // color, and line thinkness.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.0/d6/d6e/group__imgproc__draw.html#ga5126f47f883d730f633d74f07456c576
+// http://docs.opencv.org/3.3.1/d6/d6e/group__imgproc__draw.html#ga5126f47f883d730f633d74f07456c576
 //
 func PutText(img Mat, text string, org image.Point, fontFace HersheyFont, fontScale float64, c color.RGBA, thickness int) {
 	cText := C.CString(text)
@@ -417,7 +417,7 @@ const (
 // zero for both fx and fy.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/da/d54/group__imgproc__transform.html#ga47a974309e9102f5f08231edc7e7529d
+// https://docs.opencv.org/3.3.1/da/d54/group__imgproc__transform.html#ga47a974309e9102f5f08231edc7e7529d
 func Resize(src, dst Mat, sz image.Point, fx, fy float64, interp InterpolationFlags) {
 	pSize := C.struct_Size{
 		width:  C.int(sz.X),
