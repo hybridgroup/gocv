@@ -1,3 +1,8 @@
+0.3.1
+---
+* **overall**
+    * Update to use OpenCV 3.3.1
+
 0.3.0
 ---
 * **docs** 
