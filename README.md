@@ -180,9 +180,9 @@ Download and install CMake [https://cmake.org/download/](https://cmake.org/downl
 
 #### Download OpenCV 3.3 and OpenCV Contrib Modules
 
-Download the source code for OpenCV's master branch from [https://github.com/opencv/opencv](https://github.com/opencv/opencv) and extract it to the directory `C:\opencv\opencv-3.3.1`
+Download the source code for the latest OpenCV release from [https://github.com/opencv/opencv/archive/3.3.1.zip](https://github.com/opencv/opencv/archive/3.3.1.zip) and extract it to the directory `C:\opencv\opencv-3.3.1`
 
-Download the source code for OpenCV Contrib master branch from [https://github.com/opencv/opencv_contrib](https://github.com/opencv/opencv_contrib) and extract it to the directory `C:\opencv\opencv_contrib-3.3.1`
+Download the source code for the latest OpenCV Contrib release from [https://github.com/opencv/opencv_contrib/archive/3.3.1.zip](https://github.com/opencv/opencv_contrib/archive/3.3.1.zip) and extract it to the directory `C:\opencv\opencv_contrib-3.3.1`
 
 Create the directory `C:\opencv\build` as the build directory.
 
@@ -302,7 +302,7 @@ You might want to copy the `env.sh` script into your own projects, to make it ea
 Run these commands to configure Go to know about the include and lib directories:
 
 		set CGO_CPPFLAGS=-IC:\opencv\build\install\include
-		set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core330 -lopencv_videoio330 -lopencv_imgproc330 -lopencv_highgui330 -lopencv_imgcodecs330 -lopencv_objdetect330 -lopencv_calib3d330 -lopencv_video330
+		set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core331 -lopencv_videoio331 -lopencv_imgproc331 -lopencv_highgui331 -lopencv_imgcodecs331 -lopencv_objdetect331 -lopencv_calib3d331 -lopencv_video331
 
 Now you should be able to build or run any of the command examples:
 
@@ -311,7 +311,7 @@ Now you should be able to build or run any of the command examples:
 The version program should output the following:
 
 		gocv version: 0.2.0
-		opencv lib version: 3.3.1-dev
+		opencv lib version: 3.3.1
 
 ## What to work on next
 
