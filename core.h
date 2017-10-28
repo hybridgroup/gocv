@@ -13,6 +13,12 @@ typedef struct ByteArray{
   int length;
 } ByteArray;
 
+// Wrapper for std::vector<int>
+typedef struct IntVector {
+  int *val;
+  int length;
+} IntVector;
+
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
 extern "C" {

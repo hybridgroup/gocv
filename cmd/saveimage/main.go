@@ -49,5 +49,5 @@ func main() {
 		return
 	}
 
-	gocv.IMWrite(saveFile, img)
+	gocv.IMWrite(saveFile, img, []int{})
 }
