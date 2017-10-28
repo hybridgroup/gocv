@@ -17,7 +17,7 @@ func TestIMWrite(t *testing.T) {
 		t.Error("Invalid read of Mat in IMWrite test")
 	}
 
-	result := IMWrite("/tmp/test.jpg", img)
+	result := IMWrite("/tmp/test.jpg", img, []int{ImwriteJpegQuality, 60})
 	if !result {
 		t.Error("Invalid write of Mat in IMWrite test")
 	}

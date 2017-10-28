@@ -6,8 +6,12 @@ Mat Image_IMRead(const char* filename, int flags) {
     return new cv::Mat(img);
 }
 
-bool Image_IMWrite(const char* filename, Mat img) {
-    return cv::imwrite(filename, *img);
+bool Image_IMWrite(const char* filename, Mat img, IntVector params) {
+    std::vector<int> compression_params;
+    for(int* i = params.val; *i; ++i) {
+        compression_params.push_back(*i);
+    }
+    return cv::imwrite(filename, *img, compression_params);
 }
 
 struct ByteArray Image_IMEncode(const char* fileExt, Mat img) {
