@@ -138,7 +138,20 @@ func IMRead(name string, flags IMReadFlag) Mat {
 // For further details, please see:
 // http://docs.opencv.org/3.3.1/d4/da8/group__imgcodecs.html#gabbc7ef1aa2edfaa87772f1202d67e0ce
 //
-func IMWrite(name string, img Mat, params []int) bool {
+func IMWrite(name string, img Mat) bool {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+
+	return bool(C.Image_IMWrite(cName, img.p))
+}
+
+// IMWrite writes a Mat to an image file.
+// With that func you can pass compression parameters
+//
+// For further details, please see:
+// http://docs.opencv.org/3.3.1/d4/da8/group__imgcodecs.html#gabbc7ef1aa2edfaa87772f1202d67e0ce
+//
+func IMWriteWithParams(name string, img Mat, params []int) bool {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 
@@ -151,7 +164,7 @@ func IMWrite(name string, img Mat, params []int) bool {
 	paramsVector := C.struct_IntVector{}
 	paramsVector.val = (*C.int)(&cparams[0])
 
-	return bool(C.Image_IMWrite(cName, img.p, paramsVector))
+	return bool(C.Image_IMWrite_WithParams(cName, img.p, paramsVector))
 }
 
 // IMEncode encodes an image Mat into a memory buffer.
