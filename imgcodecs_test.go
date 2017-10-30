@@ -17,7 +17,19 @@ func TestIMWrite(t *testing.T) {
 		t.Error("Invalid read of Mat in IMWrite test")
 	}
 
-	result := IMWrite("/tmp/test.jpg", img, []int{ImwriteJpegQuality, 60})
+	result := IMWrite("/tmp/test.jpg", img)
+	if !result {
+		t.Error("Invalid write of Mat in IMWrite test")
+	}
+}
+
+func TestIMWriteWithParams(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in IMWrite test")
+	}
+
+	result := IMWriteWithParams("/tmp/test.jpg", img, []int{ImwriteJpegQuality, 60})
 	if !result {
 		t.Error("Invalid write of Mat in IMWrite test")
 	}
