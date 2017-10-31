@@ -13,8 +13,8 @@ bool Image_IMWrite(const char* filename, Mat img) {
 
 bool Image_IMWrite_WithParams(const char* filename, Mat img, IntVector params) {
     std::vector<int> compression_params;
-    for(int* i = params.val; *i; ++i) {
-        compression_params.push_back(*i);
+    for(int i = 0, *v = params.val; i < params.length; ++v, ++i) {
+        compression_params.push_back(*v);
     }
     return cv::imwrite(filename, *img, compression_params);
 }
