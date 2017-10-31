@@ -163,6 +163,7 @@ func IMWriteWithParams(name string, img Mat, params []int) bool {
 
 	paramsVector := C.struct_IntVector{}
 	paramsVector.val = (*C.int)(&cparams[0])
+	paramsVector.length = (C.int)(len(cparams))
 
 	return bool(C.Image_IMWrite_WithParams(cName, img.p, paramsVector))
 }
