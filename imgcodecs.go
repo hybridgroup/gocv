@@ -60,6 +60,62 @@ const (
 
 	// IMReadIgnoreOrientation do not rotate the image according to EXIF's orientation flag.
 	IMReadIgnoreOrientation = 128
+
+	// For JPEG, it can be a quality from 0 to 100 (the higher is the better). Default value is 95.
+	ImwriteJpegQuality = 1
+
+	// Enable JPEG features, 0 or 1, default is False.
+	ImwriteJpegProgressive = 2
+
+	// Enable JPEG features, 0 or 1, default is False.
+	ImwriteJpegOptimize = 3
+
+	// JPEG restart interval, 0 - 65535, default is 0 - no restart.
+	ImwriteJpegRstInterval = 4
+
+	// Separate luma quality level, 0 - 100, default is 0 - don't use.
+	ImwriteJpegLumaQuality = 5
+
+	// Separate chroma quality level, 0 - 100, default is 0 - don't use.
+	ImwriteJpegChromaQuality = 6
+
+	// For PNG, it can be the compression level from 0 to 9. A higher value means a smaller size and longer compression time.
+	// If specified, strategy is changed to IMWRITE_PNG_STRATEGY_DEFAULT (Z_DEFAULT_STRATEGY).
+	// Default value is 1 (best speed setting).
+	ImwritePngCompression = 16
+
+	// One of cv::ImwritePNGFlags, default is IMWRITE_PNG_STRATEGY_RLE.
+	ImwritePngStrategy = 17
+
+	// Binary level PNG, 0 or 1, default is 0.
+	ImwritePngBilevel = 18
+
+	// For PPM, PGM, or PBM, it can be a binary format flag, 0 or 1. Default value is 1.
+	ImwritePxmBinary = 32
+
+	// For WEBP, it can be a quality from 1 to 100 (the higher is the better).
+	// By default (without any parameter) and for quality above 100 the lossless compression is used.
+	ImwriteWebpQuality = 64
+
+	// For PAM, sets the TUPLETYPE field to the corresponding string value that is defined for the format.
+	ImwritePamTupletype = 128
+
+	// Use this value for normal data.
+	ImwritePngStrategyDefault = 0
+
+	// Use this value for data produced by a filter (or predictor).
+	// Filtered data consists mostly of small values with a somewhat random distribution.
+	// In this case, the compression algorithm is tuned to compress them better.
+	ImwritePngStrategyFiltered = 1
+
+	// Use this value to force Huffman encoding only (no string match).
+	ImwritePngStrategyHuffmanOnly = 2
+
+	// Use this value to limit match distances to one (run-length encoding).
+	ImwritePngStrategyRle = 3
+
+	// Using this value prevents the use of dynamic Huffman codes, allowing for a simpler decoder for special applications.
+	ImwritePngStrategyFixed = 4
 )
 
 // IMRead reads an image from a file into a Mat.
@@ -87,6 +143,28 @@ func IMWrite(name string, img Mat) bool {
 	defer C.free(unsafe.Pointer(cName))
 
 	return bool(C.Image_IMWrite(cName, img.p))
+}
+
+// IMWrite writes a Mat to an image file.
+// With that func you can pass compression parameters
+//
+// For further details, please see:
+// http://docs.opencv.org/3.3.1/d4/da8/group__imgcodecs.html#gabbc7ef1aa2edfaa87772f1202d67e0ce
+//
+func IMWriteWithParams(name string, img Mat, params []int) bool {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+
+	cparams := []C.int{}
+
+	for _, v := range params {
+		cparams = append(cparams, C.int(v))
+	}
+
+	paramsVector := C.struct_IntVector{}
+	paramsVector.val = (*C.int)(&cparams[0])
+
+	return bool(C.Image_IMWrite_WithParams(cName, img.p, paramsVector))
 }
 
 // IMEncode encodes an image Mat into a memory buffer.

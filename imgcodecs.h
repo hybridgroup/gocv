@@ -12,6 +12,7 @@ extern "C" {
 
 Mat Image_IMRead(const char* filename, int flags);
 bool Image_IMWrite(const char* filename, Mat img);
+bool Image_IMWrite_WithParams(const char* filename, Mat img, IntVector params);
 struct ByteArray Image_IMEncode(const char* fileExt, Mat img);
 
 #ifdef __cplusplus
