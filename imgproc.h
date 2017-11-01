@@ -23,6 +23,7 @@ void Canny(Mat src, Mat edges, double t1, double t2);
 void HoughCircles(Mat src, Mat circles, int method, double dp, double minDist);
 void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold);
 void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold);
+void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ);
 
 void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness);
 void Circle(Mat img, Point center, int radius, Scalar color, int thickness);

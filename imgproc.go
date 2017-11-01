@@ -209,6 +209,44 @@ func HoughLinesP(src Mat, lines Mat, rho float32, theta float32, threshold int) 
 	C.HoughLinesP(src.p, lines.p, C.double(rho), C.double(theta), C.int(threshold))
 }
 
+// ThresholdType type of threshold operation.
+type ThresholdType int
+
+const (
+	// ThresholdBinary threshold type
+	ThresholdBinary ThresholdType = 0
+
+	// ThresholdBinaryInv threshold type
+	ThresholdBinaryInv = 1
+
+	// ThresholdTrunc threshold type
+	ThresholdTrunc = 2
+
+	// ThresholdToZero threshold type
+	ThresholdToZero = 3
+
+	// ThresholdToZeroInv threshold type
+	ThresholdToZeroInv = 4
+
+	// ThresholdMask threshold type
+	ThresholdMask = 7
+
+	// ThresholdOtsu threshold type
+	ThresholdOtsu = 8
+
+	// ThresholdTriangle threshold type
+	ThresholdTriangle = 16
+)
+
+// Threshold applies a fixed-level threshold to each array element.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d7/d1b/group__imgproc__misc.html#gae8a4a146d1ca78c626a53577199e9c57
+//
+func Threshold(src Mat, dst Mat, thresh float32, maxvalue float32, typ ThresholdType) {
+	C.Threshold(src.p, dst.p, C.double(thresh), C.double(maxvalue), C.int(typ))
+}
+
 // ArrowedLine draws a arrow segment pointing from the first point
 // to the second one.
 //

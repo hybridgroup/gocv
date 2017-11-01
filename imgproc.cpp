@@ -55,6 +55,10 @@ void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold) {
     cv::HoughLinesP(*src, *lines, rho, theta, threshold);
 }
 
+void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ) {
+    cv:threshold(*src, *dst, thresh, maxvalue, typ);
+}
+
 void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
     cv::Point p1(pt1.x, pt1.y);
     cv::Point p2(pt2.x, pt2.y);
