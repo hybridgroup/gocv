@@ -209,6 +209,44 @@ func FindContours(src Mat, mode RetrievalMode, method ContourApproximationMode) 
 	return contours
 }
 
+// Moments calculates all of the moments up to the third order of a polygon
+// or rasterized shape.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d3/dc0/group__imgproc__shape.html#ga556a180f43cab22649c23ada36a8a139
+//
+func Moments(src Mat, binaryImage bool) map[string]float64 {
+	r := C.Moments(src.p, C.bool(binaryImage))
+
+	result := make(map[string]float64)
+	result["m00"] = float64(r.m00)
+	result["m10"] = float64(r.m10)
+	result["m01"] = float64(r.m01)
+	result["m20"] = float64(r.m20)
+	result["m11"] = float64(r.m11)
+	result["m02"] = float64(r.m02)
+	result["m30"] = float64(r.m30)
+	result["m21"] = float64(r.m21)
+	result["m12"] = float64(r.m12)
+	result["m03"] = float64(r.m03)
+	result["mu20"] = float64(r.mu20)
+	result["mu11"] = float64(r.mu11)
+	result["mu02"] = float64(r.mu02)
+	result["mu30"] = float64(r.mu30)
+	result["mu21"] = float64(r.mu21)
+	result["mu12"] = float64(r.mu12)
+	result["mu03"] = float64(r.mu03)
+	result["nu20"] = float64(r.nu20)
+	result["nu11"] = float64(r.nu11)
+	result["nu02"] = float64(r.nu02)
+	result["nu30"] = float64(r.nu30)
+	result["nu21"] = float64(r.nu21)
+	result["nu12"] = float64(r.nu12)
+	result["nu03"] = float64(r.nu03)
+
+	return result
+}
+
 // MorphologyEx performs advanced morphological transformations.
 //
 // For further details, please see:

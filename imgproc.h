@@ -15,6 +15,7 @@ void BilateralFilter(Mat src, Mat dst, int d, double sc, double ss);
 void Blur(Mat src, Mat dst, Size ps);
 void Dilate(Mat src, Mat dst, Mat kernel);
 void Erode(Mat src, Mat dst, Mat kernel);
+struct Moment Moments(Mat src, bool binaryImage);
 struct Rect BoundingRect(Contour con);
 double ContourArea(Contour con);
 struct Contours FindContours(Mat src, int mode, int method);

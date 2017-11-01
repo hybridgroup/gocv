@@ -1,6 +1,7 @@
 package gocv
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"math"
@@ -70,6 +71,20 @@ func TestDilate(t *testing.T) {
 	Dilate(img, dest, kernel)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid Dilate test")
+	}
+}
+
+func TestMoments(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in Moments test")
+	}
+	defer img.Close()
+
+	result := Moments(img, true)
+	fmt.Println(result)
+	if len(result) < 1 {
+		t.Errorf("Invalid Moments test: %v", result)
 	}
 }
 
