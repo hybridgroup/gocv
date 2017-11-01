@@ -21,6 +21,24 @@ void Erode(Mat src, Mat dst, Mat kernel) {
     cv::erode(*src, *dst, *kernel);
 }
 
+struct Contours FindContours(Mat src, int mode, int method) {
+    std::vector<std::vector<cv::Point> > contours;
+    cv::findContours(*src, contours, mode, method);
+
+    Contour* points = new Contour[contours.size()];
+    for (size_t i = 0; i < contours.size(); i++) {
+        Point *pts = new Point[contours[i].size()];
+        for (size_t j = 0; j < contours[i].size(); j++) {
+            Point pt = {contours[i][j].x, contours[i][j].y};
+            pts[j] = pt;
+        }
+        points[i] = Contour{pts, (int)contours[i].size()};
+    }
+
+    Contours cons = {points, (int)contours.size()};
+    return cons;
+}
+
 Mat GetStructuringElement(int shape, Size ksize) {
     cv::Size sz(ksize.width, ksize.height);
     return new cv::Mat(cv::getStructuringElement(shape, sz));

@@ -36,6 +36,21 @@ typedef struct Point {
   int y;
 } Point;
 
+// Wrapper for the vector of Point structs aka std::vector<Point>
+typedef struct Points {
+  Point* points;
+  int length;
+} Points;
+
+// Contour is alias for Points
+typedef Points Contour;
+
+// Wrapper for the vector of Points vectors aka std::vector< std::vector<Point> >
+typedef struct Contours {
+  Contour* contours;
+  int length;
+} Contours;
+
 // Wrapper for an individual cv::cvRect
 typedef struct Rect {
   int x;
@@ -73,6 +88,7 @@ typedef void* Mat;
 struct ByteArray toByteArray(const char* buf, int len);
 void ByteArray_Release(struct ByteArray buf);
 
+void Contours_Close(struct Contours cs);
 void Rects_Close(struct Rects rs);
 
 Mat Mat_New();

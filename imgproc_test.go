@@ -73,6 +73,19 @@ func TestDilate(t *testing.T) {
 	}
 }
 
+func TestFindContours(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in FindContours test")
+	}
+	defer img.Close()
+
+	res := FindContours(img, RetrievalExternal, ChainApproxSimple)
+	if len(res) < 1 {
+		t.Error("Invalid FindContours test")
+	}
+}
+
 func TestErode(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {

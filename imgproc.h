@@ -15,6 +15,7 @@ void BilateralFilter(Mat src, Mat dst, int d, double sc, double ss);
 void Blur(Mat src, Mat dst, Size ps);
 void Dilate(Mat src, Mat dst, Mat kernel);
 void Erode(Mat src, Mat dst, Mat kernel);
+struct Contours FindContours(Mat src, int mode, int method);
 void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt);
 Mat GetStructuringElement(int shape, Size ksize);
 void MorphologyEx(Mat src, Mat dst, int op, Mat kernel);

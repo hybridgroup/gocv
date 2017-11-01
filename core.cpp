@@ -149,6 +149,10 @@ void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
     cv:normalize(*src, *dst, alpha, beta, typ);
 }
 
+void Contours_Close(struct Contours cs) {
+    delete cs.contours;
+}
+
 void Rects_Close(struct Rects rs) {
     delete rs.rects;
 }

@@ -8,6 +8,7 @@ import "C"
 import (
 	"image"
 	"image/color"
+	"reflect"
 	"unsafe"
 )
 
@@ -67,6 +68,96 @@ func Dilate(src Mat, dst Mat, kernel Mat) {
 //
 func Erode(src Mat, dst Mat, kernel Mat) {
 	C.Erode(src.p, dst.p, kernel.p)
+}
+
+// RetrievalMode is the mode of the contour retrieval algorithm.
+type RetrievalMode int
+
+const (
+	// RetrievalExternal retrieves only the extreme outer contours.
+	// It sets `hierarchy[i][2]=hierarchy[i][3]=-1` for all the contours.
+	RetrievalExternal RetrievalMode = 0
+
+	// RetrievalList retrieves all of the contours without establishing
+	// any hierarchical relationships.
+	RetrievalList = 1
+
+	// RetrievalCComp retrieves all of the contours and organizes them into
+	// a two-level hierarchy. At the top level, there are external boundaries
+	// of the components. At the second level, there are boundaries of the holes.
+	// If there is another contour inside a hole of a connected component, it
+	// is still put at the top level.
+	RetrievalCComp = 2
+
+	// RetrievalTree retrieves all of the contours and reconstructs a full
+	// hierarchy of nested contours.
+	RetrievalTree = 3
+
+	// RetrievalFloodfill lacks a description in the original header.
+	RetrievalFloodfill = 4
+)
+
+// ContourApproximationMode is the mode of the contour approximation algorithm.
+type ContourApproximationMode int
+
+const (
+	// ChainApproxNone stores absolutely all the contour points. That is,
+	// any 2 subsequent points (x1,y1) and (x2,y2) of the contour will be
+	// either horizontal, vertical or diagonal neighbors, that is,
+	// max(abs(x1-x2),abs(y2-y1))==1.
+	ChainApproxNone ContourApproximationMode = 1
+
+	// ChainApproxSimple compresses horizontal, vertical, and diagonal segments
+	// and leaves only their end points.
+	// For example, an up-right rectangular contour is encoded with 4 points.
+	ChainApproxSimple = 2
+
+	// ChainApproxTC89L1 applies one of the flavors of the Teh-Chin chain
+	// approximation algorithms.
+	ChainApproxTC89L1 = 3
+
+	// ChainApproxTC89KCOS applies one of the flavors of the Teh-Chin chain
+	// approximation algorithms.
+	ChainApproxTC89KCOS = 4
+)
+
+// FindContours finds contours in a binary image.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga17ed9f5d79ae97bd4c7cf18403e1689a
+//
+func FindContours(src Mat, mode RetrievalMode, method ContourApproximationMode) [][]image.Point {
+	ret := C.FindContours(src.p, C.int(mode), C.int(method))
+	defer C.Contours_Close(ret)
+
+	cArray := ret.contours
+	cLength := int(ret.length)
+	cHdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cArray)),
+		Len:  cLength,
+		Cap:  cLength,
+	}
+	sContours := *(*[]C.Points)(unsafe.Pointer(&cHdr))
+
+	contours := make([][]image.Point, cLength)
+	for i, pts := range sContours {
+		pArray := pts.points
+		pLength := int(pts.length)
+		pHdr := reflect.SliceHeader{
+			Data: uintptr(unsafe.Pointer(pArray)),
+			Len:  pLength,
+			Cap:  pLength,
+		}
+		sPoints := *(*[]C.Point)(unsafe.Pointer(&pHdr))
+
+		points := make([]image.Point, pLength)
+		for j, pt := range sPoints {
+			points[j] = image.Pt(int(pt.x), int(pt.y))
+		}
+		contours[i] = points
+	}
+
+	return contours
 }
 
 // MorphologyEx performs advanced morphological transformations.
