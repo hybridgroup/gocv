@@ -121,6 +121,30 @@ const (
 	ChainApproxTC89KCOS = 4
 )
 
+// ContourArea calculates a contour area.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga2c759ed9f497d4a618048a2f56dc97f1
+//
+func ContourArea(contour []image.Point) float64 {
+	cPointArray := make([]C.struct_Point, len(contour))
+	for i, r := range contour {
+		cPoint := C.struct_Point{
+			x: C.int(r.X),
+			y: C.int(r.Y),
+		}
+		cPointArray[i] = cPoint
+	}
+
+	cContour := C.struct_Points{
+		points: (*C.Point)(&cPointArray[0]),
+		length: C.int(len(contour)),
+	}
+
+	result := C.ContourArea(cContour)
+	return float64(result)
+}
+
 // FindContours finds contours in a binary image.
 //
 // For further details, please see:

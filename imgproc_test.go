@@ -84,6 +84,11 @@ func TestFindContours(t *testing.T) {
 	if len(res) < 1 {
 		t.Error("Invalid FindContours test")
 	}
+
+	area := ContourArea(res[0])
+	if area != 127280.0 {
+		t.Errorf("Invalid ContourArea test: %f", area)
+	}
 }
 
 func TestErode(t *testing.T) {
