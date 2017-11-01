@@ -89,6 +89,11 @@ func TestFindContours(t *testing.T) {
 	if area != 127280.0 {
 		t.Errorf("Invalid ContourArea test: %f", area)
 	}
+
+	r := BoundingRect(res[0])
+	if r.Min.X != 0 || r.Max.Y != 320 {
+		t.Errorf("Invalid BoundingRect test: %v", r)
+	}
 }
 
 func TestErode(t *testing.T) {

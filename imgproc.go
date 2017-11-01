@@ -121,6 +121,31 @@ const (
 	ChainApproxTC89KCOS = 4
 )
 
+// BoundingRect calculates the up-right bounding rectangle of a point set.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#gacb413ddce8e48ff3ca61ed7cf626a366
+//
+func BoundingRect(contour []image.Point) image.Rectangle {
+	cPointArray := make([]C.struct_Point, len(contour))
+	for i, r := range contour {
+		cPoint := C.struct_Point{
+			x: C.int(r.X),
+			y: C.int(r.Y),
+		}
+		cPointArray[i] = cPoint
+	}
+
+	cContour := C.struct_Points{
+		points: (*C.Point)(&cPointArray[0]),
+		length: C.int(len(contour)),
+	}
+
+	r := C.BoundingRect(cContour)
+	rect := image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
+	return rect
+}
+
 // ContourArea calculates a contour area.
 //
 // For further details, please see:

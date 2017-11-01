@@ -21,6 +21,16 @@ void Erode(Mat src, Mat dst, Mat kernel) {
     cv::erode(*src, *dst, *kernel);
 }
 
+struct Rect BoundingRect(Contour con) {
+    std::vector<cv::Point> pts;
+    for (size_t i = 0; i < con.length; i++) {
+        pts.push_back(cv::Point(con.points[i].x, con.points[i].y));
+    }
+    cv::Rect bRect = cv::boundingRect(pts);
+    Rect r = {bRect.x, bRect.y, bRect.width, bRect.height};
+    return r;
+}
+
 double ContourArea(Contour con) {
     std::vector<cv::Point> pts;
     for (size_t i = 0; i < con.length; i++) {
