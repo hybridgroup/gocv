@@ -1,7 +1,6 @@
 package gocv
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 	"math"
@@ -82,7 +81,6 @@ func TestMoments(t *testing.T) {
 	defer img.Close()
 
 	result := Moments(img, true)
-	fmt.Println(result)
 	if len(result) < 1 {
 		t.Errorf("Invalid Moments test: %v", result)
 	}

@@ -314,6 +314,32 @@ const (
 	MorphHitmiss = 7
 )
 
+// BorderType type of border.
+type BorderType int
+
+const (
+	// BorderConstant border type
+	BorderConstant BorderType = 0
+
+	// BorderReplicate border type
+	BorderReplicate = 1
+
+	// BorderReflect border type
+	BorderReflect = 2
+
+	// BorderWrap border type
+	BorderWrap = 3
+
+	// BorderReflect101 border type
+	BorderReflect101 = 4
+
+	// BorderTransparent border type
+	BorderTransparent = 5
+
+	// BorderDefault border type
+	BorderDefault = BorderReflect101
+)
+
 // GaussianBlur blurs an image Mat using a Gaussian filter.
 // The function convolves the src Mat image into the dst Mat using
 // the specified Gaussian kernel params.
@@ -322,7 +348,7 @@ const (
 // http://docs.opencv.org/3.3.1/d4/d86/group__imgproc__filter.html#gaabe8c836e97159a9193fb0b11ac52cf1
 //
 func GaussianBlur(src Mat, dst Mat, ksize image.Point, sigmaX float64,
-	sigmaY float64, borderType int) {
+	sigmaY float64, borderType BorderType) {
 	pSize := C.struct_Size{
 		height: C.int(ksize.X),
 		width:  C.int(ksize.Y),
