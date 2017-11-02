@@ -112,7 +112,7 @@ func main() {
 
 ### More examples
 
-There are examples in the [cmd directory](./cmd) of this repo in the form of various useful command line utilities, such as [capturing an image file](./cmd/saveimage) and [streaming mjpeg video](./cmd/mjpeg-streamer).
+There are examples in the [cmd directory](./cmd) of this repo in the form of various useful command line utilities, such as [capturing an image file](./cmd/saveimage), [streaming mjpeg video](./cmd/mjpeg-streamer), and [counting objects that cross a line](./cmd/counter).
 
 ## How to install
 

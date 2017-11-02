@@ -10,6 +10,10 @@ Tests to verify you can capture video from a connected webcam.
 
 Capture video from a connected webcam and display the video in a Window.
 
+## Counter
+
+Capture video from a pre-recorded file, and then count the number of detected objects that cross a user-definable vertical or horizontal line.
+
 ## Faceblur
 
 Captures video from a connected camera, then uses the CascadeClassifier to detect faces, blurs them using a Gaussian blur, then displays the blurred video in a window.
