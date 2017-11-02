@@ -1,17 +1,15 @@
 // What it does:
 //
-// This example tracks discrete objects such as cars or people
-// passing across a horizontal or vertical line by using the Moments method.
-// This algorithm is not that accurate for counting multiple objects,
-// however is execution efficient.
-//
-// Very loosely based on code located at:
-// http://www.femb.com.mx/category/people-counter/
+// This example tracks objects such as cars or people passing across
+// a horizontal or vertical line by using the Moments method.
+// The Moments algorithm is not that accurate for counting multiple objects,
+// however it is execution efficient.
 //
 // How to run:
 //
 // 		go run ./counter/main.go /path/to/video.avi 400 y 10
 //
+// +build example
 
 package main
 
