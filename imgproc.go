@@ -357,6 +357,26 @@ func GaussianBlur(src Mat, dst Mat, ksize image.Point, sigmaX float64,
 	C.GaussianBlur(src.p, dst.p, pSize, C.double(sigmaX), C.double(sigmaY), C.int(borderType))
 }
 
+// Laplacian calculates the Laplacian of an image.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d4/d86/group__imgproc__filter.html#gad78703e4c8fe703d479c1860d76429e6
+//
+func Laplacian(src Mat, dst Mat, dDepth int, kSize int, scale float64,
+	delta float64, borderType BorderType) {
+	C.Laplacian(src.p, dst.p, C.int(dDepth), C.int(kSize), C.double(scale), C.double(delta), C.int(borderType))
+}
+
+// Scharr calculates the first x- or y- image derivative using Scharr operator.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d4/d86/group__imgproc__filter.html#gaa13106761eedf14798f37aa2d60404c9
+//
+func Scharr(src Mat, dst Mat, dDepth int, dx int, dy int, scale float64,
+	delta float64, borderType BorderType) {
+	C.Scharr(src.p, dst.p, C.int(dDepth), C.int(dx), C.int(dy), C.double(scale), C.double(delta), C.int(borderType))
+}
+
 // MedianBlur blurs an image using the median filter.
 //
 // For further details, please see:

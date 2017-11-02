@@ -161,6 +161,38 @@ func TestGaussianBlur(t *testing.T) {
 	}
 }
 
+func TestLaplacian(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in Laplacian test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	Laplacian(img, dest, MatTypeCV16S, 1, 1, 0, BorderDefault)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid Laplacian test")
+	}
+}
+
+func TestScharr(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in Scharr test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	Scharr(img, dest, MatTypeCV16S, 1, 0, 0, 0, BorderDefault)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid Scharr test")
+	}
+}
+
 func TestMedianBlur(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {

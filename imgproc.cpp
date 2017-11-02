@@ -79,6 +79,14 @@ void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt) {
     cv::GaussianBlur(*src, *dst, sz, sX, sY, bt);
 }
 
+void Laplacian(Mat src, Mat dst, int dDepth, int kSize, double scale, double delta, int borderType) {
+    cv::Laplacian(*src, *dst, dDepth, kSize, scale, delta, borderType);
+}
+
+void Scharr(Mat src, Mat dst, int dDepth, int dx, int dy, double scale, double delta, int borderType) {
+    cv::Scharr(*src, *dst, dDepth, dx, dy, scale, delta, borderType);
+}
+
 void MedianBlur(Mat src, Mat dst, int ksize) {
     cv::medianBlur(*src, *dst, ksize);
 }
