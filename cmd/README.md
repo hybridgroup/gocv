@@ -26,6 +26,10 @@ Captures video from a connected camera, then uses the CascadeClassifier to detec
 
 Opens a video capture device, then streams MJPEG from it that you can view in any browser.
 
+## Motion-detect
+
+Opens a video capture device, then processes it looking for motion, human or otherwise.
+
 ## Saveimage
 
 Capture a single frame from a connected webcam, then save it to an image file on disk.
