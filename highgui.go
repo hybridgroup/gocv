@@ -32,7 +32,7 @@ func NewWindow(name string) *Window {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 
-	C.Window_New(cName, 1)
+	C.Window_New(cName, 2)
 
 	return &Window{name: name, open: true}
 }
@@ -54,6 +54,52 @@ func (w *Window) Close() error {
 // IsOpen checks to see if the Window seems to be open.
 func (w *Window) IsOpen() bool {
 	return w.open
+}
+
+// WindowFlag value for SetWindowProperty / GetWindowProperty.
+type WindowFlag float32
+
+const (
+	WindowNormal     WindowFlag = 0
+	WindowFullscreen            = 1
+	WindowAutosize              = 1
+	WindowFreeRatio             = 0x00000100
+	WindowKeepRatio             = 0
+)
+
+// WindowPropertyFlag flags for SetWindowProperty / GetWindowProperty.
+type WindowPropertyFlag int
+
+const (
+	// WindowPropertyFullscreen fullscreen property
+	// (can be WINDOW_NORMAL or WINDOW_FULLSCREEN).
+	WindowPropertyFullscreen WindowPropertyFlag = 0
+
+	// WindowPropertyAutosize is autosize property
+	// (can be WINDOW_NORMAL or WINDOW_AUTOSIZE).
+	WindowPropertyAutosize = 1
+
+	// WindowPropertyAspectRatio window's aspect ration
+	// (can be set to WINDOW_FREERATIO or WINDOW_KEEPRATIO).
+	WindowPropertyAspectRatio = 2
+
+	// WindowPropertyOpenGL opengl support.
+	WindowPropertyOpenGL = 3
+
+	// WindowPropertyVisible or not.
+	WindowPropertyVisible = 4
+)
+
+// SetWindowProperty changes parameters of a window dynamically.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d7/dfc/group__highgui.html#ga66e4a6db4d4e06148bcdfe0d70a5df27
+//
+func (w *Window) SetWindowProperty(flag WindowPropertyFlag, value WindowFlag) {
+	cName := C.CString(w.name)
+	defer C.free(unsafe.Pointer(cName))
+
+	C.Window_SetWindowProperty(cName, C.int(flag), C.double(value))
 }
 
 // IMShow displays an image Mat in the specified window.
