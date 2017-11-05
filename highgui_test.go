@@ -19,6 +19,9 @@ func TestWindow(t *testing.T) {
 	if !window.IsOpen() {
 		t.Error("Window should have been open")
 	}
+
+	window.SetWindowProperty(WindowPropertyFullscreen, WindowFullscreen)
+
 	window.Close()
 	if window.IsOpen() {
 		t.Error("Window should have been closed")

@@ -3,7 +3,7 @@
 // This example detects motion using a delta threshold from the first frame,
 // and then finds contours to determine where the object is located.
 //
-// Based on Adrian Rosebrock code located at:
+// Very loosely based on Adrian Rosebrock code located at:
 // http://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/
 //
 // How to run:
@@ -41,6 +41,7 @@ func main() {
 	defer webcam.Close()
 
 	window := gocv.NewWindow("Motion Window")
+	window.SetWindowProperty(gocv.WindowPropertyFullscreen, gocv.WindowFullscreen)
 	defer window.Close()
 
 	img := gocv.NewMat()
@@ -58,6 +59,11 @@ func main() {
 	imgThresh := gocv.NewMat()
 	defer imgThresh.Close()
 
+	mog2 := gocv.NewBackgroundSubtractorMOG2()
+	defer mog2.Close()
+
+	status := "Ready"
+
 	fmt.Printf("Start reading camera device: %v\n", deviceID)
 	for {
 		if ok := webcam.Read(img); !ok {
@@ -68,20 +74,11 @@ func main() {
 			continue
 		}
 
-		status := "Unoccupied"
+		status = "Ready"
 		statusColor := color.RGBA{0, 255, 0, 0}
 
-		// first phase of cleaning up image
-		gocv.CvtColor(img, imgGrey, gocv.ColorBGRAToGray)
-		gocv.GaussianBlur(imgGrey, imgGrey, image.Pt(21, 21), 0, 0, gocv.BorderDefault)
-
-		// save the first image to use as reference for changes
-		if firstImg.Empty() {
-			imgGrey.CopyTo(firstImg)
-		}
-
-		// calculate delta before first image and the current image
-		gocv.AbsDiff(firstImg, imgGrey, imgDelta)
+		// first phase of cleaning up image, obtain foreground only
+		mog2.Apply(img, imgDelta)
 
 		// remaining cleanup of the image to use for finding contours
 		gocv.Threshold(imgDelta, imgThresh, 25, 255, gocv.ThresholdBinary)
@@ -95,7 +92,7 @@ func main() {
 				continue
 			}
 
-			status = "Occupied"
+			status = "Motion detected"
 			statusColor = color.RGBA{255, 0, 0, 0}
 			rect := gocv.BoundingRect(c)
 			gocv.Rectangle(img, rect, color.RGBA{255, 0, 0, 0}, 2)

@@ -12,6 +12,7 @@ extern "C" {
 void Window_New(const char* winname, int flags);
 void Window_Close(const char* winname);
 void Window_IMShow(const char* winname, Mat mat);
+void Window_SetWindowProperty(const char* winname, int flag, double value);
 int Window_WaitKey(int);
 
 // Trackbar

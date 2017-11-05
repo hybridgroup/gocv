@@ -13,6 +13,10 @@ void Window_IMShow(const char* winname, Mat mat) {
     cv::imshow(winname, *mat);
 }
 
+void Window_SetWindowProperty(const char* winname, int flag, double value) {
+    cv::setWindowProperty(winname, flag, value);
+}
+
 int Window_WaitKey(int delay = 0) {
     return cv::waitKey(delay);
 }
