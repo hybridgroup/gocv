@@ -41,6 +41,7 @@ func main() {
 	defer webcam.Close()
 
 	window := gocv.NewWindow("Motion Window")
+	window.SetWindowProperty(gocv.WindowPropertyFullscreen, gocv.WindowFullscreen)
 	defer window.Close()
 
 	img := gocv.NewMat()
