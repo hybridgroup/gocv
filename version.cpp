@@ -1,5 +1,5 @@
 #include "version.h"
 
-char *openCVVersion() {
+const char *openCVVersion() {
     return CV_VERSION;
 }
