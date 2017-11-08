@@ -43,6 +43,7 @@ func main() {
 	defer video.Close()
 
 	window := gocv.NewWindow("Track Window")
+	window.SetWindowProperty(gocv.WindowPropertyFullscreen, gocv.WindowFullscreen)
 	defer window.Close()
 
 	img := gocv.NewMat()

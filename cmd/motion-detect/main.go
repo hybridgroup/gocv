@@ -24,6 +24,8 @@ import (
 	"gocv.io/x/gocv"
 )
 
+const MinimumArea = 3000
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("How to run:\n\tmotion-detect [camera ID]")
@@ -46,12 +48,6 @@ func main() {
 
 	img := gocv.NewMat()
 	defer img.Close()
-
-	firstImg := gocv.NewMat()
-	defer firstImg.Close()
-
-	imgGrey := gocv.NewMat()
-	defer imgGrey.Close()
 
 	imgDelta := gocv.NewMat()
 	defer imgDelta.Close()
@@ -88,7 +84,7 @@ func main() {
 		contours := gocv.FindContours(imgThresh, gocv.RetrievalExternal, gocv.ChainApproxSimple)
 		for _, c := range contours {
 			area := gocv.ContourArea(c)
-			if area < 5000 {
+			if area < MinimumArea {
 				continue
 			}
 
