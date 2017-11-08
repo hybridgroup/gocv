@@ -7,7 +7,7 @@ package gocv
 import "C"
 
 // GoCVVersion of this package, for display purposes.
-const GoCVVersion = "0.4.0"
+const GoCVVersion = "0.4.2"
 
 // Version returns the current golang package version
 func Version() string {
