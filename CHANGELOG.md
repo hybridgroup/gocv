@@ -1,3 +1,35 @@
+0.4.0
+---
+* **core**
+    * Added cv::mean binding with single argument
+    * fix the write-strings warning
+    * return temp pointer fix
+* **examples**
+    * add counter example
+    * add motion-detect command
+    * correct counter
+    * remove redundant cast and other small cleanup
+    * set motion detect example to fullscreen
+    * use MOG2 for continous motion detection, instead of simplistic first frame only
+* **highgui**
+    * ability to better control the fullscreen window
+* **imgproc**
+    * add BorderType param type for GaussianBlur
+    * add BoundingRect() function
+    * add ContourArea() function
+    * add FindContours() function along with associated data types
+    * add Laplacian and Scharr functions
+    * add Moments() function
+    * add Threshold function
+* **pvl**
+    * add needed lib for linker missing in README
+* **test**
+    * slightly more permissive version test
+* **videoio**
+    * Add image compression flags for gocv.IMWrite
+    * Fixed possible looping out of compression parameters length
+    * Make dedicated function to run cv::imwrite with compression parameters
+
 0.3.1
 ---
 * **overall**
