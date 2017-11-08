@@ -36,7 +36,7 @@ func main() {
 	deviceID, _ := strconv.Atoi(os.Args[1])
 
 	// open webcam
-	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.VideoCaptureDevice(deviceID)
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
