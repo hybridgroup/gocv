@@ -1,0 +1,20 @@
+version: "{build}"
+
+clone_folder: c:\gopath\src\gocv.io\x\gocv
+
+environment:
+  GOPATH: c:\gopath
+  GOROOT: c:\go
+
+install:
+  - echo %PATH%
+  - echo %GOPATH%
+  - go version
+  - go env
+  - go get -d ./...
+
+build_script:
+- appveyor_build.cmd
+
+script:
+ - go test -v -cpu=2 .
