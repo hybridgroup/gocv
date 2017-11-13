@@ -1,6 +1,7 @@
 package gocv
 
 import (
+	"runtime"
 	"testing"
 )
 
@@ -25,6 +26,7 @@ import (
 // }
 
 func TestKNN(t *testing.T) {
+	runtime.LockOSThread()
 	img := IMRead("images/face.jpg", IMReadColor)
 	if img.Empty() {
 		t.Error("Invalid Mat in KNN test")
@@ -37,9 +39,9 @@ func TestKNN(t *testing.T) {
 	knn := NewBackgroundSubtractorKNN()
 	defer knn.Close()
 
-	//knn.Apply(img, dst)
+	knn.Apply(img, dst)
 
-	// if dst.Empty() {
-	// 	t.Error("Error in TestKNN test")
-	// }
+	if dst.Empty() {
+		t.Error("Error in TestKNN test")
+	}
 }
