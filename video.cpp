@@ -1,17 +1,25 @@
 #include "video.h"
 
-BackgroundSubtractor BackgroundSubtractor_CreateMOG2() {
+BackgroundSubtractorMOG2 BackgroundSubtractorMOG2_Create() {
     return cv::createBackgroundSubtractorMOG2();
 }
 
-BackgroundSubtractor BackgroundSubtractor_CreateKNN() {
+BackgroundSubtractorKNN BackgroundSubtractorKNN_Create() {
     return cv::createBackgroundSubtractorKNN();
 }
 
-void BackgroundSubtractor_Close(BackgroundSubtractor b) {
+void BackgroundSubtractorMOG2_Close(BackgroundSubtractorMOG2 b) {
     delete b;
 }
 
-void BackgroundSubtractor_Apply(BackgroundSubtractor b, Mat src, Mat dst) {
+void BackgroundSubtractorMOG2_Apply(BackgroundSubtractorMOG2 b, Mat src, Mat dst) {
     b->apply(*src, *dst);
+}
+
+void BackgroundSubtractorKNN_Close(BackgroundSubtractorKNN k) {
+    delete k;
+}
+
+void BackgroundSubtractorKNN_Apply(BackgroundSubtractorKNN k, Mat src, Mat dst) {
+    k->apply(*src, *dst);
 }
