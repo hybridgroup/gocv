@@ -50,6 +50,19 @@ func (b *BackgroundSubtractor) Apply(src Mat, dst Mat) {
 	return
 }
 
+// CalcOpticalFlowFarneback computes a dense optical flow using
+// Gunnar Farneback's algorithm.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/dc/d6b/group__video__track.html#ga5d10ebbd59fe09c5f650289ec0ece5af
+//
+func CalcOpticalFlowFarneback(prevImg Mat, nextImg Mat, flow Mat, pyrScale float64, levels int, winsize int,
+	iterations int, polyN int, polySigma float64, flags int) {
+	C.CalcOpticalFlowFarneback(prevImg.p, nextImg.p, flow.p, C.double(pyrScale), C.int(levels), C.int(winsize),
+		C.int(iterations), C.int(polyN), C.double(polySigma), C.int(flags))
+	return
+}
+
 // CalcOpticalFlowPyrLK calculates an optical flow for a sparse feature set using
 // the iterative Lucas-Kanade method with pyramids.
 //

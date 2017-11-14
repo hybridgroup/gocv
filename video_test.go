@@ -47,6 +47,36 @@ func TestKNN(t *testing.T) {
 	}
 }
 
+func TestCalcOpticalFlowFarneback(t *testing.T) {
+	img1 := IMRead("images/face.jpg", IMReadColor)
+	if img1.Empty() {
+		t.Error("Invalid Mat in CalcOpticalFlowFarneback test")
+	}
+	defer img1.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	CvtColor(img1, dest, ColorBGRAToGray)
+
+	img2 := dest.Clone()
+
+	flow := NewMat()
+	defer flow.Close()
+
+	CalcOpticalFlowFarneback(dest, img2, flow, 0.4, 1, 12, 2, 8, 1.2, 0)
+
+	if flow.Empty() {
+		t.Error("Error in CalcOpticalFlowFarneback test")
+	}
+	if flow.Rows() != 480 {
+		t.Errorf("Invalid CalcOpticalFlowFarneback test rows: %v", flow.Rows())
+	}
+	if flow.Cols() != 640 {
+		t.Errorf("Invalid CalcOpticalFlowFarneback test cols: %v", flow.Cols())
+	}
+}
+
 func TestCalcOpticalFlowPyrLK(t *testing.T) {
 	img1 := IMRead("images/face.jpg", IMReadColor)
 	if img1.Empty() {
