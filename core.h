@@ -111,8 +111,10 @@ typedef struct Moment {
 
 #ifdef __cplusplus
 typedef cv::Mat* Mat;
+typedef cv::TermCriteria* TermCriteria;
 #else
 typedef void* Mat;
+typedef void* TermCriteria;
 #endif
   
 struct ByteArray toByteArray(const char* buf, int len);
@@ -151,6 +153,8 @@ int Mat_GetOptimalDFTSize(int vecsize);
 void Mat_DFT(Mat m, Mat dst);
 void Mat_Merge(Mat m, size_t count, Mat dst);
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ);
+
+TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon);
 
 #ifdef __cplusplus
 }

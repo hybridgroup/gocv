@@ -214,6 +214,13 @@ func TestMatNormalize(t *testing.T) {
 	}
 }
 
+func TestTermCriteria(t *testing.T) {
+	tc := NewTermCriteria(Count, 50, 2.0)
+	if tc.p == nil {
+		t.Error("TermCriteria has invalid value")
+	}
+}
+
 func TestScalar(t *testing.T) {
 	s := NewScalar(127.0, 255.0, 64.0, 0.0)
 	if s.Val1 != 127.0 || s.Val2 != 255.0 || s.Val3 != 64.0 || s.Val4 != 0.0 {
