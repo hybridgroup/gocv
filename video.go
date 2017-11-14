@@ -49,3 +49,14 @@ func (b *BackgroundSubtractor) Apply(src Mat, dst Mat) {
 	C.BackgroundSubtractor_Apply(b.p, src.p, dst.p)
 	return
 }
+
+// CalcOpticalFlowPyrLK calculates an optical flow for a sparse feature set using
+// the iterative Lucas-Kanade method with pyramids.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/dc/d6b/group__video__track.html#ga473e4b886d0bcc6b65831eb88ed93323
+//
+func CalcOpticalFlowPyrLK(prevImg Mat, nextImg Mat, prevPts Mat, nextPts Mat, status Mat, err Mat) {
+	C.CalcOpticalFlowPyrLK(prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p, err.p)
+	return
+}

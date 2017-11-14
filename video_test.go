@@ -3,6 +3,7 @@
 package gocv
 
 import (
+	"image"
 	"testing"
 )
 
@@ -43,5 +44,51 @@ func TestKNN(t *testing.T) {
 
 	if dst.Empty() {
 		t.Error("Error in TestKNN test")
+	}
+}
+
+func TestCalcOpticalFlowPyrLK(t *testing.T) {
+	img1 := IMRead("images/face.jpg", IMReadColor)
+	if img1.Empty() {
+		t.Error("Invalid Mat in CalcOpticalFlowPyrLK test")
+	}
+	defer img1.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	CvtColor(img1, dest, ColorBGRAToGray)
+
+	img2 := dest.Clone()
+
+	prevPts := NewMat()
+	defer prevPts.Close()
+
+	nextPts := NewMat()
+	defer nextPts.Close()
+
+	status := NewMat()
+	defer status.Close()
+
+	err := NewMat()
+	defer err.Close()
+
+	corners := NewMat()
+	defer corners.Close()
+
+	GoodFeaturesToTrack(dest, corners, 500, 0.01, 10)
+	tc := NewTermCriteria(Count|EPS, 20, 0.03)
+	CornerSubPix(dest, corners, image.Pt(10, 10), image.Pt(-1, -1), tc)
+
+	CalcOpticalFlowPyrLK(dest, img2, corners, nextPts, status, err)
+
+	if status.Empty() {
+		t.Error("Error in CalcOpticalFlowPyrLK test")
+	}
+	if status.Rows() != 323 {
+		t.Errorf("Invalid CalcOpticalFlowPyrLK test rows: %v", status.Rows())
+	}
+	if status.Cols() != 1 {
+		t.Errorf("Invalid CalcOpticalFlowPyrLK test cols: %v", status.Cols())
 	}
 }

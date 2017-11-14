@@ -19,6 +19,7 @@ BackgroundSubtractor BackgroundSubtractor_CreateKNN();
 void BackgroundSubtractor_Close(BackgroundSubtractor b);
 void BackgroundSubtractor_Apply(BackgroundSubtractor b, Mat src, Mat dst);
 
+void CalcOpticalFlowPyrLK(Mat prevImg, Mat nextImg, Mat prevPts, Mat nextPts, Mat status, Mat err);
 #ifdef __cplusplus
 }
 #endif
