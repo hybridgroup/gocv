@@ -25,7 +25,10 @@ void Scharr(Mat src, Mat dst, int dDepth, int dx, int dy, double scale, double d
 Mat GetStructuringElement(int shape, Size ksize);
 void MorphologyEx(Mat src, Mat dst, int op, Mat kernel);
 void MedianBlur(Mat src, Mat dst, int ksize);
+
 void Canny(Mat src, Mat edges, double t1, double t2);
+void CornerSubPix(Mat img, Mat corners, Size winSize, Size zeroZone, TermCriteria criteria);
+void GoodFeaturesToTrack(Mat img, Mat corners, int maxCorners, double quality, double minDist);
 void HoughCircles(Mat src, Mat circles, int method, double dp, double minDist);
 void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold);
 void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold);
