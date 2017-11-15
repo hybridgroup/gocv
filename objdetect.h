@@ -21,6 +21,8 @@ CascadeClassifier CascadeClassifier_New();
 void CascadeClassifier_Close(CascadeClassifier cs);
 int CascadeClassifier_Load(CascadeClassifier cs, const char* name);
 struct Rects CascadeClassifier_DetectMultiScale(CascadeClassifier cs, Mat img);
+struct Rects CascadeClassifier_DetectMultiScaleWithParams(CascadeClassifier cs, Mat img,
+    double scale, int minNeighbors, int flags, Size minSize, Size maxSize);
 
 HOGDescriptor HOGDescriptor_New();
 void HOGDescriptor_Close(HOGDescriptor hog);

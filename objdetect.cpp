@@ -16,7 +16,24 @@ int CascadeClassifier_Load(CascadeClassifier cs, const char* name) {
   
 struct Rects CascadeClassifier_DetectMultiScale(CascadeClassifier cs, Mat img) {
     std::vector<cv::Rect> detected;
-    cs->detectMultiScale(*img, detected); // TODO control default parameter
+    cs->detectMultiScale(*img, detected); // uses all default parameters
+    Rect* rects = new Rect[detected.size()];
+    for (size_t i = 0; i < detected.size(); ++i) {
+      Rect r = {detected[i].x, detected[i].y, detected[i].width, detected[i].height};
+      rects[i] = r;
+    }
+    Rects ret = {rects, (int)detected.size()};
+    return ret;
+}
+
+struct Rects CascadeClassifier_DetectMultiScaleWithParams(CascadeClassifier cs, Mat img,
+    double scale, int minNeighbors, int flags, Size minSize, Size maxSize) {
+
+    cv::Size minSz(minSize.width, minSize.height);
+    cv::Size maxSz(maxSize.width, maxSize.height);
+
+    std::vector<cv::Rect> detected;
+    cs->detectMultiScale(*img, detected, scale, minNeighbors, flags, minSz, maxSz);
     Rect* rects = new Rect[detected.size()];
     for (size_t i = 0; i < detected.size(); ++i) {
       Rect r = {detected[i].x, detected[i].y, detected[i].width, detected[i].height};

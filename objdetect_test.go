@@ -1,6 +1,7 @@
 package gocv
 
 import (
+	"image"
 	"testing"
 )
 
@@ -20,6 +21,25 @@ func TestCascadeClassifier(t *testing.T) {
 	rects := classifier.DetectMultiScale(img)
 	if len(rects) != 1 {
 		t.Error("Error in TestCascadeClassifier test")
+	}
+}
+
+func TestCascadeClassifierWithParams(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in CascadeClassifierWithParams test")
+	}
+	defer img.Close()
+
+	// load classifier to recognize faces
+	classifier := NewCascadeClassifier()
+	defer classifier.Close()
+
+	classifier.Load("data/haarcascade_frontalface_default.xml")
+
+	rects := classifier.DetectMultiScaleWithParams(img, 1.1, 3, 0, image.Pt(0, 0), image.Pt(0, 0))
+	if len(rects) != 1 {
+		t.Errorf("Error in CascadeClassifierWithParams test: %v", len(rects))
 	}
 }
 
