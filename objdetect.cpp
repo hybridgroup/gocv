@@ -59,7 +59,25 @@ int HOGDescriptor_Load(HOGDescriptor hog, const char* name) {
 
 struct Rects HOGDescriptor_DetectMultiScale(HOGDescriptor hog, Mat img) {
     std::vector<cv::Rect> detected;
-    hog->detectMultiScale(*img, detected); // TODO control default parameter
+    hog->detectMultiScale(*img, detected);
+    Rect* rects = new Rect[detected.size()];
+    for (size_t i = 0; i < detected.size(); ++i) {
+      Rect r = {detected[i].x, detected[i].y, detected[i].width, detected[i].height};
+      rects[i] = r;
+    }
+    Rects ret = {rects, (int)detected.size()};
+    return ret;
+}
+
+struct Rects HOGDescriptor_DetectMultiScaleWithParams(HOGDescriptor hog, Mat img,
+    double hitThresh, Size winStride, Size padding, double scale, double finalThresh, 
+    bool useMeanshiftGrouping) {
+
+    cv::Size wSz(winStride.width, winStride.height);
+    cv::Size pSz(padding.width, padding.height);
+
+    std::vector<cv::Rect> detected;
+    hog->detectMultiScale(*img, detected, hitThresh, wSz, pSz, scale, finalThresh, useMeanshiftGrouping);
     Rect* rects = new Rect[detected.size()];
     for (size_t i = 0; i < detected.size(); ++i) {
       Rect r = {detected[i].x, detected[i].y, detected[i].width, detected[i].height};

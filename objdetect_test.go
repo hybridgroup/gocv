@@ -61,3 +61,23 @@ func TestHOGDescriptor(t *testing.T) {
 		t.Errorf("Error in TestHOGDescriptor test: %d", len(rects))
 	}
 }
+
+func TestHOGDescriptorWithParams(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in HOGDescriptorWithParams test")
+	}
+	defer img.Close()
+
+	// load HOGDescriptor to recognize people
+	hog := NewHOGDescriptor()
+	defer hog.Close()
+
+	hog.SetSVMDetector(HOGDefaultPeopleDetector())
+
+	rects := hog.DetectMultiScaleWithParams(img, 0, image.Pt(0, 0), image.Pt(0, 0),
+		1.05, 2.0, false)
+	if len(rects) != 1 {
+		t.Errorf("Error in TestHOGDescriptorWithParams test: %d", len(rects))
+	}
+}

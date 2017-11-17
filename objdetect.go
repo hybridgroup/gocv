@@ -155,6 +155,44 @@ func (h *HOGDescriptor) DetectMultiScale(img Mat) []image.Rectangle {
 	return rects
 }
 
+// DetectMultiScaleWithParams calls DetectMultiScale but allows setting parameters
+// to values other than just the defaults.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d5/d33/structcv_1_1HOGDescriptor.html#a660e5cd036fd5ddf0f5767b352acd948
+//
+func (h *HOGDescriptor) DetectMultiScaleWithParams(img Mat, hitThresh float64,
+	winStride, padding image.Point, scale, finalThreshold float64, useMeanshiftGrouping bool) []image.Rectangle {
+	wSz := C.struct_Size{
+		height: C.int(winStride.X),
+		width:  C.int(winStride.Y),
+	}
+
+	pSz := C.struct_Size{
+		height: C.int(padding.X),
+		width:  C.int(padding.Y),
+	}
+
+	ret := C.HOGDescriptor_DetectMultiScaleWithParams(h.p, img.p, C.double(hitThresh),
+		wSz, pSz, C.double(scale), C.double(finalThreshold), C.bool(useMeanshiftGrouping))
+	defer C.Rects_Close(ret)
+
+	cArray := ret.rects
+	length := int(ret.length)
+	hdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cArray)),
+		Len:  length,
+		Cap:  length,
+	}
+	s := *(*[]C.Rect)(unsafe.Pointer(&hdr))
+
+	rects := make([]image.Rectangle, length)
+	for i, r := range s {
+		rects[i] = image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
+	}
+	return rects
+}
+
 // HOGDefaultPeopleDetector returns a new Mat with the HOG DefaultPeopleDetector.
 //
 // For further details, please see:

@@ -1,6 +1,8 @@
 #ifndef _OPENCV3_OBJDETECT_H_
 #define _OPENCV3_OBJDETECT_H_
 
+#include <stdbool.h>
+
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
 extern "C" {
@@ -28,6 +30,8 @@ HOGDescriptor HOGDescriptor_New();
 void HOGDescriptor_Close(HOGDescriptor hog);
 int HOGDescriptor_Load(HOGDescriptor hog, const char* name);
 struct Rects HOGDescriptor_DetectMultiScale(HOGDescriptor hog, Mat img);
+struct Rects HOGDescriptor_DetectMultiScaleWithParams(HOGDescriptor hog, Mat img,
+    double hitThresh, Size winStride, Size padding, double scale, double finalThreshold, bool useMeanshiftGrouping);
 Mat HOG_GetDefaultPeopleDetector();
 void HOGDescriptor_SetSVMDetector(HOGDescriptor hog, Mat det);
 
