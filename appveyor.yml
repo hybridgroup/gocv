@@ -10,7 +10,6 @@ environment:
   GOROOT: c:\go
   GOVERSION: 1.9.2
   TEST_EXTERNAL: 1
-  appveyor_build_worker_cloud: pro-lw
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
 cache:
