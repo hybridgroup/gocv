@@ -11,9 +11,7 @@ environment:
   GOVERSION: 1.9.2
   TEST_EXTERNAL: 1
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
-
-cache:
-  - C:\opencv -> appveyor_build_opencv.cmd
+  appveyor_build_worker_cloud: pro-rs
 
 install:
   - if not exist "C:\opencv" appveyor_build_opencv.cmd
