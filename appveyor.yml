@@ -10,7 +10,11 @@ environment:
   GOROOT: c:\go
   GOVERSION: 1.9.2
   TEST_EXTERNAL: 1
+  APPVEYOR_SAVE_CACHE_ON_ERROR: true
   appveyor_build_worker_cloud: pro-rs
+
+cache:
+  - C:\opencv -> appveyor_build_opencv.cmd
 
 install:
   - if not exist "C:\opencv" appveyor_build_opencv.cmd
