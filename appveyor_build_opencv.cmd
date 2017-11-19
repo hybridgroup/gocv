@@ -1,11 +1,11 @@
 if not exist "C:\opencv" mkdir "C:\opencv"
 if not exist "C:\opencv\build" mkdir "C:\opencv\build"
 
-powershell "wget 'https://github.com/opencv/opencv/archive/3.3.1.zip' -outfile c:\opencv\opencv-3.3.1.zip"
-powershell "unzip c:\opencv\opencv-3.3.1.zip -d c:\opencv"
+appveyor DownloadFile https://github.com/opencv/opencv/archive/3.3.1.zip -FileName c:\opencv\opencv-3.3.1.zip
+7z x c:\opencv\opencv-3.3.1.zip -oc:\opencv\opencv-3.3.1
 del c:\opencv\opencv-3.3.1.zip /q
-powershell "wget 'https://github.com/opencv/opencv_contrib/archive/3.3.1.zip' -outfile c:\opencv\opencv_contrib-3.3.1.zip"
-powershell "unzip c:\opencv\opencv_contrib-3.3.1.zip -d c:\opencv"
+appveyor DownloadFile https://github.com/opencv/opencv_contrib/archive/3.3.1.zip -FileName c:\opencv\opencv_contrib-3.3.1.zip
+7z x c:\opencv\opencv_contrib-3.3.1.zip -oc:\opencv\opencv_contrib-3.3.1
 del c:\opencv\opencv_contrib-3.3.1.zip /q
 cd C:\opencv\build
 set PATH=C:\Perl\site\bin;C:\Perl\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\7-Zip;C:\Program Files\Microsoft\Web Platform Installer\;C:\Tools\PsTools;C:\Program Files (x86)\CMake\bin;C:\go\bin;C:\Tools\NuGet;C:\Program Files\LLVM\bin;C:\Tools\curl\bin;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\Yarn\bin;C:\Users\appveyor\AppData\Local\Yarn\bin;C:\Program Files\AppVeyor\BuildAgent\
