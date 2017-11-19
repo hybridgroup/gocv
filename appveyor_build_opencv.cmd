@@ -3,6 +3,8 @@ if not exist "C:\opencv\build" mkdir "C:\opencv\build"
 
 appveyor DownloadFile https://github.com/opencv/opencv/archive/3.3.1.zip -FileName c:\opencv\opencv-3.3.1.zip
 7z x c:\opencv\opencv-3.3.1.zip -oc:\opencv\opencv-3.3.1
+dir c:\opencv
+dir c:\opencv\opencv-3.3.1
 del c:\opencv\opencv-3.3.1.zip /q
 appveyor DownloadFile https://github.com/opencv/opencv_contrib/archive/3.3.1.zip -FileName c:\opencv\opencv_contrib-3.3.1.zip
 7z x c:\opencv\opencv_contrib-3.3.1.zip -oc:\opencv\opencv_contrib-3.3.1
