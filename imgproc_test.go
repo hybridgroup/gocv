@@ -231,6 +231,41 @@ func TestCanny(t *testing.T) {
 	}
 }
 
+func TestGoodFeaturesToTrackAndCornerSubPix(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in GoodFeaturesToTrack test")
+	}
+	defer img.Close()
+
+	corners := NewMat()
+	defer corners.Close()
+
+	GoodFeaturesToTrack(img, corners, 500, 0.01, 10)
+	if corners.Empty() {
+		t.Error("Empty GoodFeaturesToTrack test")
+	}
+	if corners.Rows() != 205 {
+		t.Errorf("Invalid GoodFeaturesToTrack test rows: %v", corners.Rows())
+	}
+	if corners.Cols() != 1 {
+		t.Errorf("Invalid GoodFeaturesToTrack test cols: %v", corners.Cols())
+	}
+
+	tc := NewTermCriteria(Count|EPS, 20, 0.03)
+
+	CornerSubPix(img, corners, image.Pt(10, 10), image.Pt(-1, -1), tc)
+	if corners.Empty() {
+		t.Error("Empty CornerSubPix test")
+	}
+	if corners.Rows() != 205 {
+		t.Errorf("Invalid CornerSubPix test rows: %v", corners.Rows())
+	}
+	if corners.Cols() != 1 {
+		t.Errorf("Invalid CornerSubPix test cols: %v", corners.Cols())
+	}
+}
+
 func TestHoughCircles(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {

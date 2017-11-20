@@ -1,3 +1,22 @@
+0.5.0
+---
+* **core**
+    * add TermCriteria for iterative algorithms
+* **imgproc**
+    * add CornerSubPix() and GoodFeaturesToTrack() for corner detection
+* **objdetect**
+    * add DetectMultiScaleWithParams() for HOGDescriptor
+    * add DetectMultiScaleWithParams() to allow override of defaults for CascadeClassifier
+* **video**
+    * add CalcOpticalFlowFarneback() for Farneback optical flow calculations
+    * add CalcOpticalFlowPyrLK() for Lucas-Kanade optical flow calculations
+* **videoio**
+    * use temp directory for Windows test compat.
+* **build**
+    * enable Appveyor build w/cache
+* **osx**
+    * update env path to always match installed OpenCV from Homebrew
+
 0.4.0
 ---
 * **core**

@@ -95,6 +95,16 @@ void Canny(Mat src, Mat edges, double t1, double t2) {
     cv::Canny(*src, *edges, t1, t2);
 }
 
+void CornerSubPix(Mat img, Mat corners, Size winSize, Size zeroZone, TermCriteria criteria) {
+    cv::Size wsz(winSize.width, winSize.height);
+    cv::Size zsz(zeroZone.width, zeroZone.height);
+    cv::cornerSubPix(*img, *corners, wsz, zsz, *criteria);
+}
+
+void GoodFeaturesToTrack(Mat img, Mat corners, int maxCorners, double quality, double minDist) {
+    cv::goodFeaturesToTrack(*img, *corners, maxCorners, quality, minDist);
+}
+
 void HoughCircles(Mat src, Mat circles, int method, double dp, double minDist) {
     cv::HoughCircles(*src, *circles, method, dp, minDist);
 }

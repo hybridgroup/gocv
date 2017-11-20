@@ -401,6 +401,37 @@ func Canny(src Mat, edges Mat, t1 float32, t2 float32) {
 	C.Canny(src.p, edges.p, C.double(t1), C.double(t2))
 }
 
+// CornerSubPix Refines the corner locations. The function iterates to find
+// the sub-pixel accurate location of corners or radial saddle points.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/dd/d1a/group__imgproc__feature.html#ga354e0d7c86d0d9da75de9b9701a9a87e
+//
+func CornerSubPix(img Mat, corners Mat, winSize image.Point, zeroZone image.Point, criteria TermCriteria) {
+	winSz := C.struct_Size{
+		height: C.int(winSize.X),
+		width:  C.int(winSize.Y),
+	}
+
+	zeroSz := C.struct_Size{
+		height: C.int(zeroZone.X),
+		width:  C.int(zeroZone.Y),
+	}
+
+	C.CornerSubPix(img.p, corners.p, winSz, zeroSz, criteria.p)
+	return
+}
+
+// GoodFeaturesToTrack determines strong corners on an image. The function
+// finds the most prominent corners in the image or in the specified image region.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/dd/d1a/group__imgproc__feature.html#ga1d6bb77486c8f92d79c8793ad995d541
+//
+func GoodFeaturesToTrack(img Mat, corners Mat, maxCorners int, quality float64, minDist float64) {
+	C.GoodFeaturesToTrack(img.p, corners.p, C.int(maxCorners), C.double(quality), C.double(minDist))
+}
+
 // HoughCircles finds circles in a grayscale image using the Hough transform.
 // The only "method" currently supported is HOUGH_GRADIENT = 3.
 //

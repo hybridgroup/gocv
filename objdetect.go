@@ -69,6 +69,45 @@ func (c *CascadeClassifier) DetectMultiScale(img Mat) []image.Rectangle {
 	return rects
 }
 
+// DetectMultiScaleWithParams calls DetectMultiScale but allows setting parameters
+// to values other than just the defaults.
+//
+// For further details, please see:
+// http://docs.opencv.org/3.3.1/d1/de5/classcv_1_1CascadeClassifier.html#aaf8181cb63968136476ec4204ffca498
+//
+func (c *CascadeClassifier) DetectMultiScaleWithParams(img Mat, scale float64,
+	minNeighbors, flags int, minSize, maxSize image.Point) []image.Rectangle {
+
+	minSz := C.struct_Size{
+		height: C.int(minSize.X),
+		width:  C.int(minSize.Y),
+	}
+
+	maxSz := C.struct_Size{
+		height: C.int(maxSize.X),
+		width:  C.int(maxSize.Y),
+	}
+
+	ret := C.CascadeClassifier_DetectMultiScaleWithParams(c.p, img.p, C.double(scale),
+		C.int(minNeighbors), C.int(flags), minSz, maxSz)
+	defer C.Rects_Close(ret)
+
+	cArray := ret.rects
+	length := int(ret.length)
+	hdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cArray)),
+		Len:  length,
+		Cap:  length,
+	}
+	s := *(*[]C.Rect)(unsafe.Pointer(&hdr))
+
+	rects := make([]image.Rectangle, length)
+	for i, r := range s {
+		rects[i] = image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
+	}
+	return rects
+}
+
 // HOGDescriptor is a Histogram Of Gradiants (HOG) for object detection.
 //
 // For further details, please see:
@@ -98,6 +137,44 @@ func (h *HOGDescriptor) Close() error {
 //
 func (h *HOGDescriptor) DetectMultiScale(img Mat) []image.Rectangle {
 	ret := C.HOGDescriptor_DetectMultiScale(h.p, img.p)
+	defer C.Rects_Close(ret)
+
+	cArray := ret.rects
+	length := int(ret.length)
+	hdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cArray)),
+		Len:  length,
+		Cap:  length,
+	}
+	s := *(*[]C.Rect)(unsafe.Pointer(&hdr))
+
+	rects := make([]image.Rectangle, length)
+	for i, r := range s {
+		rects[i] = image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
+	}
+	return rects
+}
+
+// DetectMultiScaleWithParams calls DetectMultiScale but allows setting parameters
+// to values other than just the defaults.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d5/d33/structcv_1_1HOGDescriptor.html#a660e5cd036fd5ddf0f5767b352acd948
+//
+func (h *HOGDescriptor) DetectMultiScaleWithParams(img Mat, hitThresh float64,
+	winStride, padding image.Point, scale, finalThreshold float64, useMeanshiftGrouping bool) []image.Rectangle {
+	wSz := C.struct_Size{
+		height: C.int(winStride.X),
+		width:  C.int(winStride.Y),
+	}
+
+	pSz := C.struct_Size{
+		height: C.int(padding.X),
+		width:  C.int(padding.Y),
+	}
+
+	ret := C.HOGDescriptor_DetectMultiScaleWithParams(h.p, img.p, C.double(hitThresh),
+		wSz, pSz, C.double(scale), C.double(finalThreshold), C.bool(useMeanshiftGrouping))
 	defer C.Rects_Close(ret)
 
 	cArray := ret.rects
