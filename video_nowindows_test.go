@@ -1,7 +1,3 @@
-// +build !windows
-// These tests are not currently able to run on Windows. They pass on both
-// Linux and OS X, however.
-
 package gocv
 
 import (
