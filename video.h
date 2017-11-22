@@ -9,8 +9,8 @@ extern "C" {
 #include "core.h"
 
 #ifdef __cplusplus
-typedef cv::Ptr<cv::BackgroundSubtractorMOG2> BackgroundSubtractorMOG2;
-typedef cv::Ptr<cv::BackgroundSubtractorKNN> BackgroundSubtractorKNN;
+typedef cv::Ptr<cv::BackgroundSubtractorMOG2>* BackgroundSubtractorMOG2;
+typedef cv::Ptr<cv::BackgroundSubtractorKNN>* BackgroundSubtractorKNN;
 #else
 typedef void* BackgroundSubtractorMOG2;
 typedef void* BackgroundSubtractorKNN;
