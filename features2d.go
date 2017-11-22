@@ -57,3 +57,51 @@ func (b *SimpleBlobDetector) Detect(src Mat) []KeyPoint {
 	}
 	return keys
 }
+
+// AgastFeatureDetector is a wrapper around the cv::AgastFeatureDetector.
+type AgastFeatureDetector struct {
+	// C.AgastFeatureDetector
+	p unsafe.Pointer
+}
+
+// NewAgastFeatureDetector returns a new AgastFeatureDetector algorithm
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d7/d19/classcv_1_1AgastFeatureDetector.html
+//
+func NewAgastFeatureDetector() AgastFeatureDetector {
+	return AgastFeatureDetector{p: unsafe.Pointer(C.AgastFeatureDetector_Create())}
+}
+
+// Close AgastFeatureDetector.
+func (a *AgastFeatureDetector) Close() error {
+	C.AgastFeatureDetector_Close((C.AgastFeatureDetector)(a.p))
+	a.p = nil
+	return nil
+}
+
+// Detect keypoints in an image using AgastFeatureDetector.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
+//
+func (a *AgastFeatureDetector) Detect(src Mat) []KeyPoint {
+	ret := C.AgastFeatureDetector_Detect((C.AgastFeatureDetector)(a.p), src.p)
+	defer C.KeyPoints_Close(ret)
+
+	cArray := ret.keypoints
+	length := int(ret.length)
+	hdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cArray)),
+		Len:  length,
+		Cap:  length,
+	}
+	s := *(*[]C.KeyPoint)(unsafe.Pointer(&hdr))
+
+	keys := make([]KeyPoint, length)
+	for i, r := range s {
+		keys[i] = KeyPoint{float64(r.x), float64(r.y), float64(r.size), float64(r.angle), float64(r.response),
+			int(r.octave), int(r.classID)}
+	}
+	return keys
+}
