@@ -9,14 +9,14 @@ extern "C" {
 #include "core.h"
 
 #ifdef __cplusplus
-typedef cv::Ptr<cv::SimpleBlobDetector> SimpleBlobDetector;
+typedef cv::Ptr<cv::SimpleBlobDetector>* SimpleBlobDetector;
 #else
 typedef void* SimpleBlobDetector;
 #endif
 
 SimpleBlobDetector SimpleBlobDetector_Create();
 void SimpleBlobDetector_Close(SimpleBlobDetector b);
-void SimpleBlobDetector_Detect(SimpleBlobDetector b, Mat src);
+struct KeyPoints SimpleBlobDetector_Detect(SimpleBlobDetector b, Mat src);
 
 #ifdef __cplusplus
 }

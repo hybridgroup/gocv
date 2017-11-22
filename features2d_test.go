@@ -17,5 +17,8 @@ func TestSimpleBlobDetector(t *testing.T) {
 	bd := NewSimpleBlobDetector()
 	defer bd.Close()
 
-	bd.Detect(img)
+	kp := bd.Detect(img)
+	if len(kp) != 2 {
+		t.Errorf("Invalid KeyPoint array in SimpleBlobDetector test: %d", len(kp))
+	}
 }
