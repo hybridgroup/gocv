@@ -10,10 +10,12 @@ extern "C" {
 
 #ifdef __cplusplus
 typedef cv::Ptr<cv::AgastFeatureDetector>* AgastFeatureDetector;
+typedef cv::Ptr<cv::FastFeatureDetector>* FastFeatureDetector;
 typedef cv::Ptr<cv::ORB>* ORB;
 typedef cv::Ptr<cv::SimpleBlobDetector>* SimpleBlobDetector;
 #else
 typedef void* AgastFeatureDetector;
+typedef void* FastFeatureDetector;
 typedef void* ORB;
 typedef void* SimpleBlobDetector;
 #endif
@@ -21,6 +23,10 @@ typedef void* SimpleBlobDetector;
 AgastFeatureDetector AgastFeatureDetector_Create();
 void AgastFeatureDetector_Close(AgastFeatureDetector a);
 struct KeyPoints AgastFeatureDetector_Detect(AgastFeatureDetector a, Mat src);
+
+FastFeatureDetector FastFeatureDetector_Create();
+void FastFeatureDetector_Close(FastFeatureDetector f);
+struct KeyPoints FastFeatureDetector_Detect(FastFeatureDetector f, Mat src);
 
 ORB ORB_Create();
 void ORB_Close(ORB o);

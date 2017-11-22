@@ -23,6 +23,25 @@ func TestAgastFeatureDetector(t *testing.T) {
 	}
 }
 
+func TestFastFeatureDetector(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in FastFeatureDetector test")
+	}
+	defer img.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	fd := NewFastFeatureDetector()
+	defer fd.Close()
+
+	kp := fd.Detect(img)
+	if len(kp) < 2690 {
+		t.Errorf("Invalid KeyPoint array in FastFeatureDetector test: %d", len(kp))
+	}
+}
+
 func TestORB(t *testing.T) {
 	img := IMRead("images/face.jpg", IMReadColor)
 	if img.Empty() {
