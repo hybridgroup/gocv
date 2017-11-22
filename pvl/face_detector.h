@@ -13,7 +13,7 @@ extern "C" {
 #include "face.h"
 
 #ifdef __cplusplus
-typedef cv::Ptr<cv::pvl::FaceDetector> FaceDetector;
+typedef cv::Ptr<cv::pvl::FaceDetector>* FaceDetector;
 #else
 typedef void* FaceDetector;
 #endif

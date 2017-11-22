@@ -3,7 +3,7 @@
 // FaceDetector
 FaceDetector FaceDetector_New() 
 {
-    return cv::pvl::FaceDetector::create();
+    return new cv::Ptr<cv::pvl::FaceDetector>(cv::pvl::FaceDetector::create());
 }
 
 void FaceDetector_Close(FaceDetector f) 
@@ -13,14 +13,14 @@ void FaceDetector_Close(FaceDetector f)
 
 void FaceDetector_SetTrackingModeEnabled(FaceDetector f, bool enabled)
 {
-    f->setTrackingModeEnabled(enabled);
+    (*f)->setTrackingModeEnabled(enabled);
     return;
 }
 
 struct Faces FaceDetector_DetectFaceRect(FaceDetector fd, Mat img)
 {
     std::vector<cv::pvl::Face> faces;
-    fd->detectFaceRect(*img, faces);
+    (*fd)->detectFaceRect(*img, faces);
 
     Face* fs = new Face[faces.size()];
     for (size_t i = 0; i < faces.size(); ++i) {
@@ -35,24 +35,24 @@ struct Faces FaceDetector_DetectFaceRect(FaceDetector fd, Mat img)
 
 void FaceDetector_DetectEye(FaceDetector f, Mat img, Face face)
 {
-    f->detectEye(*img, *face);
+    (*f)->detectEye(*img, *face);
     return;
 }
 
 void FaceDetector_DetectMouth(FaceDetector f, Mat img, Face face)
 {
-    f->detectMouth(*img, *face);
+    (*f)->detectMouth(*img, *face);
     return;
 }
 
 void FaceDetector_DetectSmile(FaceDetector f, Mat img, Face face)
 {
-    f->detectSmile(*img, *face);
+    (*f)->detectSmile(*img, *face);
     return;
 }
 
 void FaceDetector_DetectBlink(FaceDetector f, Mat img, Face face)
 {
-    f->detectBlink(*img, *face);
+    (*f)->detectBlink(*img, *face);
     return;
 }

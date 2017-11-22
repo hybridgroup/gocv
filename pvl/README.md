@@ -103,7 +103,7 @@ export CGO_CPPFLAGS="-I${INTEL_CVSDK_DIR}/opencv/include" CGO_LDFLAGS="-L${INTEL
 Run the version command example to make sure you are compiling/linking against the Intel CV SDK:
 
 ```
-$ go run ./cmd/showinfo/main.go 
-go-gocv version: 0.2.0
+$ go run ./cmd/version/main.go 
+go-gocv version: 0.5.0
 opencv lib version: 3.3.0-cvsdk.604
 ```
