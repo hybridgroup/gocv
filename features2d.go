@@ -41,21 +41,7 @@ func (a *AgastFeatureDetector) Detect(src Mat) []KeyPoint {
 	ret := C.AgastFeatureDetector_Detect((C.AgastFeatureDetector)(a.p), src.p)
 	defer C.KeyPoints_Close(ret)
 
-	cArray := ret.keypoints
-	length := int(ret.length)
-	hdr := reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(cArray)),
-		Len:  length,
-		Cap:  length,
-	}
-	s := *(*[]C.KeyPoint)(unsafe.Pointer(&hdr))
-
-	keys := make([]KeyPoint, length)
-	for i, r := range s {
-		keys[i] = KeyPoint{float64(r.x), float64(r.y), float64(r.size), float64(r.angle), float64(r.response),
-			int(r.octave), int(r.classID)}
-	}
-	return keys
+	return getKeyPoints(ret)
 }
 
 // FastFeatureDetector is a wrapper around the cv::FastFeatureDetector.
@@ -89,21 +75,7 @@ func (f *FastFeatureDetector) Detect(src Mat) []KeyPoint {
 	ret := C.FastFeatureDetector_Detect((C.FastFeatureDetector)(f.p), src.p)
 	defer C.KeyPoints_Close(ret)
 
-	cArray := ret.keypoints
-	length := int(ret.length)
-	hdr := reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(cArray)),
-		Len:  length,
-		Cap:  length,
-	}
-	s := *(*[]C.KeyPoint)(unsafe.Pointer(&hdr))
-
-	keys := make([]KeyPoint, length)
-	for i, r := range s {
-		keys[i] = KeyPoint{float64(r.x), float64(r.y), float64(r.size), float64(r.angle), float64(r.response),
-			int(r.octave), int(r.classID)}
-	}
-	return keys
+	return getKeyPoints(ret)
 }
 
 // ORB is a wrapper around the cv::ORB.
@@ -137,21 +109,7 @@ func (o *ORB) Detect(src Mat) []KeyPoint {
 	ret := C.ORB_Detect((C.ORB)(o.p), src.p)
 	defer C.KeyPoints_Close(ret)
 
-	cArray := ret.keypoints
-	length := int(ret.length)
-	hdr := reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(cArray)),
-		Len:  length,
-		Cap:  length,
-	}
-	s := *(*[]C.KeyPoint)(unsafe.Pointer(&hdr))
-
-	keys := make([]KeyPoint, length)
-	for i, r := range s {
-		keys[i] = KeyPoint{float64(r.x), float64(r.y), float64(r.size), float64(r.angle), float64(r.response),
-			int(r.octave), int(r.classID)}
-	}
-	return keys
+	return getKeyPoints(ret)
 }
 
 // SimpleBlobDetector is a wrapper around the cv::SimpleBlobDetector.
@@ -185,6 +143,10 @@ func (b *SimpleBlobDetector) Detect(src Mat) []KeyPoint {
 	ret := C.SimpleBlobDetector_Detect((C.SimpleBlobDetector)(b.p), src.p)
 	defer C.KeyPoints_Close(ret)
 
+	return getKeyPoints(ret)
+}
+
+func getKeyPoints(ret C.KeyPoints) []KeyPoint {
 	cArray := ret.keypoints
 	length := int(ret.length)
 	hdr := reflect.SliceHeader{
