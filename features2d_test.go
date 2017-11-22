@@ -18,7 +18,7 @@ func TestAgastFeatureDetector(t *testing.T) {
 	defer ad.Close()
 
 	kp := ad.Detect(img)
-	if len(kp) != 2800 {
+	if len(kp) < 2800 {
 		t.Errorf("Invalid KeyPoint array in AgastFeatureDetector test: %d", len(kp))
 	}
 }
