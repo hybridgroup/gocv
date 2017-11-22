@@ -23,6 +23,25 @@ func TestAgastFeatureDetector(t *testing.T) {
 	}
 }
 
+func TestORB(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in AgastFeatureDetector test")
+	}
+	defer img.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	od := NewORB()
+	defer od.Close()
+
+	kp := od.Detect(img)
+	if len(kp) != 500 {
+		t.Errorf("Invalid KeyPoint array in ORB test: %d", len(kp))
+	}
+}
+
 func TestSimpleBlobDetector(t *testing.T) {
 	img := IMRead("images/face.jpg", IMReadColor)
 	if img.Empty() {
