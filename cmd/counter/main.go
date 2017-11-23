@@ -97,6 +97,6 @@ func main() {
 			gocv.FontHersheyPlain, 1.2, color.RGBA{0, 255, 0, 0}, 2)
 
 		window.IMShow(img)
-		gocv.WaitKey(1)
+		window.WaitKey(1)
 	}
 }

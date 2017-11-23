@@ -84,6 +84,6 @@ func main() {
 
 		// show the image in the window, and wait 1 millisecond
 		window.IMShow(img)
-		gocv.WaitKey(1)
+		window.WaitKey(1)
 	}
 }

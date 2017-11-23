@@ -52,6 +52,6 @@ func main() {
 		}
 
 		window.IMShow(img)
-		gocv.WaitKey(1)
+		window.WaitKey(1)
 	}
 }
