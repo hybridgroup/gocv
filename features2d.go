@@ -112,6 +112,19 @@ func (o *ORB) Detect(src Mat) []KeyPoint {
 	return getKeyPoints(ret)
 }
 
+// Detect keypoints and compute in an image using ORB.
+//
+// For further details, please see:
+//
+//
+func (o *ORB) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
+	desc := NewMat()
+	ret := C.ORB_DetectAndCompute((C.ORB)(o.p), src.p, mask.p, desc.p)
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret), desc
+}
+
 // SimpleBlobDetector is a wrapper around the cv::SimpleBlobDetector.
 type SimpleBlobDetector struct {
 	// C.SimpleBlobDetector

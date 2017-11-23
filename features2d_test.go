@@ -59,6 +59,18 @@ func TestORB(t *testing.T) {
 	if len(kp) != 500 {
 		t.Errorf("Invalid KeyPoint array in ORB test: %d", len(kp))
 	}
+
+	mask := NewMat()
+	defer mask.Close()
+
+	kp2, desc := od.DetectAndCompute(img, mask)
+	if len(kp2) != 500 {
+		t.Errorf("Invalid KeyPoint array in ORB DetectAndCompute: %d", len(kp2))
+	}
+
+	if desc.Empty() {
+		t.Error("Invalid Mat desc in ORB DetectAndCompute")
+	}
 }
 
 func TestSimpleBlobDetector(t *testing.T) {

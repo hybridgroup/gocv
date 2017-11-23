@@ -31,6 +31,7 @@ struct KeyPoints FastFeatureDetector_Detect(FastFeatureDetector f, Mat src);
 ORB ORB_Create();
 void ORB_Close(ORB o);
 struct KeyPoints ORB_Detect(ORB o, Mat src);
+struct KeyPoints ORB_DetectAndCompute(ORB o, Mat src, Mat mask, Mat desc);
 
 SimpleBlobDetector SimpleBlobDetector_Create();
 void SimpleBlobDetector_Close(SimpleBlobDetector b);

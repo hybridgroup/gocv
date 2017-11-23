@@ -69,6 +69,20 @@ struct KeyPoints ORB_Detect(ORB o, Mat src) {
     return ret;
 }
 
+struct KeyPoints ORB_DetectAndCompute(ORB o, Mat src, Mat mask, Mat desc) {
+    std::vector<cv::KeyPoint> detected;
+    (*o)->detectAndCompute(*src, *mask, detected, *desc);
+
+    KeyPoint* kps = new KeyPoint[detected.size()];
+    for (size_t i = 0; i < detected.size(); ++i) {
+      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+        detected[i].response, detected[i].octave, detected[i].class_id};
+      kps[i] = k;
+    }
+    KeyPoints ret = {kps, (int)detected.size()};
+    return ret;
+}
+
 SimpleBlobDetector SimpleBlobDetector_Create() {
     // TODO: params
     return new cv::Ptr<cv::SimpleBlobDetector>(cv::SimpleBlobDetector::create());
