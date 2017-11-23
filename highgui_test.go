@@ -12,7 +12,7 @@ func TestWindow(t *testing.T) {
 	if window.name != "test" {
 		t.Error("Invalid Window name")
 	}
-	val := WaitKey(1)
+	val := window.WaitKey(1)
 	if val != -1 {
 		t.Error("Invalid WaitKey")
 	}
@@ -43,7 +43,7 @@ func TestIMShow(t *testing.T) {
 	// TODO: some way to determine if the call succeeded
 	window.IMShow(img)
 
-	val := WaitKey(1)
+	val := window.WaitKey(1)
 	if val != -1 {
 		t.Error("Invalid for IMShow")
 	}
