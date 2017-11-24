@@ -18,7 +18,7 @@ func TestAKAZE(t *testing.T) {
 	defer ak.Close()
 
 	kp := ak.Detect(img)
-	if len(kp) < 513 {
+	if len(kp) < 512 {
 		t.Errorf("Invalid KeyPoint array in AKAZE test: %d", len(kp))
 	}
 
@@ -26,7 +26,7 @@ func TestAKAZE(t *testing.T) {
 	defer mask.Close()
 
 	kp2, desc := ak.DetectAndCompute(img, mask)
-	if len(kp2) < 513 {
+	if len(kp2) < 512 {
 		t.Errorf("Invalid KeyPoint array in AKAZE DetectAndCompute: %d", len(kp2))
 	}
 
