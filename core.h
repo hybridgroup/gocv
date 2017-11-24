@@ -158,6 +158,7 @@ int16_t Mat_GetShort(Mat m, int row, int col);
 int32_t Mat_GetInt(Mat m, int row, int col);
 float Mat_GetFloat(Mat m, int row, int col);
 double Mat_GetDouble(Mat m, int row, int col);
+void LUT(Mat src, Mat lut, Mat dst);
 
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst);
 void Mat_Add(Mat src1, Mat src2, Mat dst);

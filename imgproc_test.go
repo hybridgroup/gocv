@@ -410,25 +410,3 @@ func TestResize(t *testing.T) {
 		t.Errorf("Expected dst size of 440x377 got %dx%d", dst.Cols(), dst.Rows())
 	}
 }
-
-func TestLUT(t *testing.T) {
-	src := IMRead("images/gocvlogo.jpg", IMReadColor)
-	if src.Empty() {
-		t.Error("Invalid read of Source Mat in LUT test")
-	}
-	defer src.Close()
-
-	lut := IMRead("images/lut.png", IMReadColor)
-	if lut.Empty() {
-		t.Error("Invalid read of LUT Mat in LUT test")
-	}
-	defer lut.Close()
-
-	dst := NewMat()
-	defer dst.Close()
-
-	LUT(src, lut, dst)
-	if dst.Cols() != 400 || dst.Rows() != 343 {
-		t.Errorf("Expected dst size of 200x172 got %dx%d", dst.Cols(), dst.Rows())
-	}
-}
