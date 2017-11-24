@@ -55,6 +55,10 @@ Scalar Mat_Mean(Mat m) {
     return scal;
 }
 
+void LUT(Mat src, Mat lut, Mat dst) {
+  cv::LUT(*src, *lut, *dst);
+}
+
 // Mat_Rows returns how many rows in this Mat.
 int Mat_Rows(Mat m) {
     return m->rows;

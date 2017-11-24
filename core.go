@@ -120,6 +120,17 @@ func (m *Mat) Mean() Scalar {
 	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
 }
 
+// Performs a look-up table transform of an array.
+//
+// The function LUT fills the output array with values from the look-up table.
+// Indices of the entries are taken from the input array.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#gab55b8d062b7f5587720ede032d34156f
+func LUT(src, wbLUT, dst Mat) {
+	C.LUT(src.p, wbLUT.p, dst.p)
+}
+
 // Rows returns the number of rows for this Mat.
 func (m *Mat) Rows() int {
 	return int(C.Mat_Rows(m.p))

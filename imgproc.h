@@ -43,7 +43,6 @@ void PutText(Mat img, const char* text, Point org, int fontFace, double fontScal
              Scalar color, int thickness);
 void Resize(Mat src, Mat dst, Size sz, double fx, double fy, int interp);
 
-
 #ifdef __cplusplus
 }
 #endif

@@ -393,7 +393,7 @@ func TestPutText(t *testing.T) {
 func TestResize(t *testing.T) {
 	src := IMRead("images/gocvlogo.jpg", IMReadColor)
 	if src.Empty() {
-		t.Error("Invalid read of Mat in GaussianBlur test")
+		t.Error("Invalid read of Mat in Resize test")
 	}
 	defer src.Close()
 
