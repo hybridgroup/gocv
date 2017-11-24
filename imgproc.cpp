@@ -21,6 +21,50 @@ void Erode(Mat src, Mat dst, Mat kernel) {
     cv::erode(*src, *dst, *kernel);
 }
 
+struct Moment Moments(Mat src, bool binaryImage) {
+    cv::Moments m = cv::moments(*src, binaryImage);
+    Moment mom = {m.m00, m.m10, m.m01, m.m20, m.m11, m.m02, m.m30, m.m21, m.m12, m.m03,
+        m.mu20, m.mu11, m.mu02, m.mu30, m.mu21, m.mu12, m.mu03,
+        m.nu20, m.nu11, m.nu02, m.nu30, m.nu21, m.nu12, m.nu03};
+    return mom;
+}
+
+struct Rect BoundingRect(Contour con) {
+    std::vector<cv::Point> pts;
+    for (size_t i = 0; i < con.length; i++) {
+        pts.push_back(cv::Point(con.points[i].x, con.points[i].y));
+    }
+    cv::Rect bRect = cv::boundingRect(pts);
+    Rect r = {bRect.x, bRect.y, bRect.width, bRect.height};
+    return r;
+}
+
+double ContourArea(Contour con) {
+    std::vector<cv::Point> pts;
+    for (size_t i = 0; i < con.length; i++) {
+        pts.push_back(cv::Point(con.points[i].x, con.points[i].y));
+    }
+    return cv::contourArea(pts);
+}
+
+struct Contours FindContours(Mat src, int mode, int method) {
+    std::vector<std::vector<cv::Point> > contours;
+    cv::findContours(*src, contours, mode, method);
+
+    Contour* points = new Contour[contours.size()];
+    for (size_t i = 0; i < contours.size(); i++) {
+        Point *pts = new Point[contours[i].size()];
+        for (size_t j = 0; j < contours[i].size(); j++) {
+            Point pt = {contours[i][j].x, contours[i][j].y};
+            pts[j] = pt;
+        }
+        points[i] = Contour{pts, (int)contours[i].size()};
+    }
+
+    Contours cons = {points, (int)contours.size()};
+    return cons;
+}
+
 Mat GetStructuringElement(int shape, Size ksize) {
     cv::Size sz(ksize.width, ksize.height);
     return new cv::Mat(cv::getStructuringElement(shape, sz));
@@ -35,12 +79,30 @@ void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt) {
     cv::GaussianBlur(*src, *dst, sz, sX, sY, bt);
 }
 
+void Laplacian(Mat src, Mat dst, int dDepth, int kSize, double scale, double delta, int borderType) {
+    cv::Laplacian(*src, *dst, dDepth, kSize, scale, delta, borderType);
+}
+
+void Scharr(Mat src, Mat dst, int dDepth, int dx, int dy, double scale, double delta, int borderType) {
+    cv::Scharr(*src, *dst, dDepth, dx, dy, scale, delta, borderType);
+}
+
 void MedianBlur(Mat src, Mat dst, int ksize) {
     cv::medianBlur(*src, *dst, ksize);
 }
 
 void Canny(Mat src, Mat edges, double t1, double t2) {
     cv::Canny(*src, *edges, t1, t2);
+}
+
+void CornerSubPix(Mat img, Mat corners, Size winSize, Size zeroZone, TermCriteria criteria) {
+    cv::Size wsz(winSize.width, winSize.height);
+    cv::Size zsz(zeroZone.width, zeroZone.height);
+    cv::cornerSubPix(*img, *corners, wsz, zsz, *criteria);
+}
+
+void GoodFeaturesToTrack(Mat img, Mat corners, int maxCorners, double quality, double minDist) {
+    cv::goodFeaturesToTrack(*img, *corners, maxCorners, quality, minDist);
 }
 
 void HoughCircles(Mat src, Mat circles, int method, double dp, double minDist) {
@@ -53,6 +115,10 @@ void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold) {
 
 void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold) {
     cv::HoughLinesP(*src, *lines, rho, theta, threshold);
+}
+
+void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ) {
+    cv:threshold(*src, *dst, thresh, maxvalue, typ);
 }
 
 void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {

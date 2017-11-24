@@ -149,6 +149,15 @@ void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
     cv:normalize(*src, *dst, alpha, beta, typ);
 }
 
+// TermCriteria_New creates a new TermCriteria
+TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon) {
+    return new cv::TermCriteria(typ, maxCount, epsilon);
+}
+
+void Contours_Close(struct Contours cs) {
+    delete cs.contours;
+}
+
 void Rects_Close(struct Rects rs) {
     delete rs.rects;
 }

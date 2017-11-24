@@ -73,6 +73,42 @@ func TestDilate(t *testing.T) {
 	}
 }
 
+func TestMoments(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in Moments test")
+	}
+	defer img.Close()
+
+	result := Moments(img, true)
+	if len(result) < 1 {
+		t.Errorf("Invalid Moments test: %v", result)
+	}
+}
+
+func TestFindContours(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in FindContours test")
+	}
+	defer img.Close()
+
+	res := FindContours(img, RetrievalExternal, ChainApproxSimple)
+	if len(res) < 1 {
+		t.Error("Invalid FindContours test")
+	}
+
+	area := ContourArea(res[0])
+	if area != 127280.0 {
+		t.Errorf("Invalid ContourArea test: %f", area)
+	}
+
+	r := BoundingRect(res[0])
+	if r.Min.X != 0 || r.Max.Y != 320 {
+		t.Errorf("Invalid BoundingRect test: %v", r)
+	}
+}
+
 func TestErode(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
@@ -125,6 +161,38 @@ func TestGaussianBlur(t *testing.T) {
 	}
 }
 
+func TestLaplacian(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in Laplacian test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	Laplacian(img, dest, MatTypeCV16S, 1, 1, 0, BorderDefault)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid Laplacian test")
+	}
+}
+
+func TestScharr(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in Scharr test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	Scharr(img, dest, MatTypeCV16S, 1, 0, 0, 0, BorderDefault)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid Scharr test")
+	}
+}
+
 func TestMedianBlur(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
@@ -160,6 +228,41 @@ func TestCanny(t *testing.T) {
 	}
 	if img.Cols() != dest.Cols() {
 		t.Error("Invalid Canny test cols")
+	}
+}
+
+func TestGoodFeaturesToTrackAndCornerSubPix(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in GoodFeaturesToTrack test")
+	}
+	defer img.Close()
+
+	corners := NewMat()
+	defer corners.Close()
+
+	GoodFeaturesToTrack(img, corners, 500, 0.01, 10)
+	if corners.Empty() {
+		t.Error("Empty GoodFeaturesToTrack test")
+	}
+	if corners.Rows() != 205 {
+		t.Errorf("Invalid GoodFeaturesToTrack test rows: %v", corners.Rows())
+	}
+	if corners.Cols() != 1 {
+		t.Errorf("Invalid GoodFeaturesToTrack test cols: %v", corners.Cols())
+	}
+
+	tc := NewTermCriteria(Count|EPS, 20, 0.03)
+
+	CornerSubPix(img, corners, image.Pt(10, 10), image.Pt(-1, -1), tc)
+	if corners.Empty() {
+		t.Error("Empty CornerSubPix test")
+	}
+	if corners.Rows() != 205 {
+		t.Errorf("Invalid CornerSubPix test rows: %v", corners.Rows())
+	}
+	if corners.Cols() != 1 {
+		t.Errorf("Invalid CornerSubPix test cols: %v", corners.Cols())
 	}
 }
 
@@ -226,6 +329,22 @@ func TestHoughLinesP(t *testing.T) {
 	}
 	if dest.Cols() != 1 {
 		t.Errorf("Invalid HoughLinesP test cols: %v", dest.Cols())
+	}
+}
+
+func TestThreshold(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in Erode test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	Threshold(img, dest, 25, 255, ThresholdBinary)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid Threshold test")
 	}
 }
 

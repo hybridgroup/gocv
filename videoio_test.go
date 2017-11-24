@@ -1,6 +1,8 @@
 package gocv
 
 import (
+	"io/ioutil"
+	"path/filepath"
 	"testing"
 )
 
@@ -33,13 +35,16 @@ func TestVideoCaptureFile(t *testing.T) {
 }
 
 func TestVideoWriterFile(t *testing.T) {
+	dir, _ := ioutil.TempDir("", "gocvtests")
+	tmpfn := filepath.Join(dir, "test.avi")
+
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
 		t.Error("Invalid read of Mat in VideoWriterFile test")
 	}
 	defer img.Close()
 
-	vw, _ := VideoWriterFile("/tmp/test.avi", "MJPG", 25, img.Cols(), img.Rows())
+	vw, _ := VideoWriterFile(tmpfn, "MJPG", 25, img.Cols(), img.Rows())
 	defer vw.Close()
 
 	if !vw.IsOpened() {

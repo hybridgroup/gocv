@@ -1,6 +1,8 @@
 package gocv
 
 import (
+	"io/ioutil"
+	"path/filepath"
 	"testing"
 )
 
@@ -12,24 +14,30 @@ func TestIMRead(t *testing.T) {
 }
 
 func TestIMWrite(t *testing.T) {
+	dir, _ := ioutil.TempDir("", "gocvtests")
+	tmpfn := filepath.Join(dir, "test.jpg")
+
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
 		t.Error("Invalid read of Mat in IMWrite test")
 	}
 
-	result := IMWrite("/tmp/test.jpg", img)
+	result := IMWrite(tmpfn, img)
 	if !result {
 		t.Error("Invalid write of Mat in IMWrite test")
 	}
 }
 
 func TestIMWriteWithParams(t *testing.T) {
+	dir, _ := ioutil.TempDir("", "gocvtests")
+	tmpfn := filepath.Join(dir, "test.jpg")
+
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
 		t.Error("Invalid read of Mat in IMWrite test")
 	}
 
-	result := IMWriteWithParams("/tmp/test.jpg", img, []int{ImwriteJpegQuality, 60})
+	result := IMWriteWithParams(tmpfn, img, []int{ImwriteJpegQuality, 60})
 	if !result {
 		t.Error("Invalid write of Mat in IMWrite test")
 	}
