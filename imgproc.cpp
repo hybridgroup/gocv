@@ -167,3 +167,7 @@ void Resize(Mat src, Mat dst, Size dsize, double fx, double fy, int interp) {
   cv::Size sz(dsize.width, dsize.height);
   cv::resize(*src, *dst, sz, fx, fy, interp);
 }
+
+void LUT(Mat src, Mat lut, Mat dst) {
+  cv::LUT(*src, *lut, *dst);
+}
