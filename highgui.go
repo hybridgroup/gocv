@@ -6,6 +6,7 @@ package gocv
 */
 import "C"
 import (
+	"runtime"
 	"unsafe"
 )
 
@@ -29,6 +30,8 @@ type Window struct {
 // http://docs.opencv.org/3.3.1/d7/dfc/group__highgui.html#ga5afdf8410934fd099df85c75b2e0888b
 //
 func NewWindow(name string) *Window {
+	runtime.LockOSThread()
+
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 
@@ -48,6 +51,8 @@ func (w *Window) Close() error {
 
 	C.Window_Close(cName)
 	w.open = false
+
+	runtime.UnlockOSThread()
 	return nil
 }
 
@@ -123,6 +128,13 @@ func (w *Window) IMShow(img Mat) {
 //
 // For further details, please see:
 // http://docs.opencv.org/3.3.1/d7/dfc/group__highgui.html#ga5628525ad33f52eab17feebcfba38bd7
+//
+func (w *Window) WaitKey(delay int) int {
+	return int(C.Window_WaitKey(C.int(delay)))
+}
+
+// Deprecated: WaitKey that is not attached to a specific Window is deprecated.
+// Please use Window.WaitKey() instead.
 //
 func WaitKey(delay int) int {
 	return int(C.Window_WaitKey(C.int(delay)))

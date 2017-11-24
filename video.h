@@ -9,15 +9,20 @@ extern "C" {
 #include "core.h"
 
 #ifdef __cplusplus
-typedef cv::Ptr<cv::BackgroundSubtractor> BackgroundSubtractor;
+typedef cv::Ptr<cv::BackgroundSubtractorMOG2>* BackgroundSubtractorMOG2;
+typedef cv::Ptr<cv::BackgroundSubtractorKNN>* BackgroundSubtractorKNN;
 #else
-typedef void* BackgroundSubtractor;
+typedef void* BackgroundSubtractorMOG2;
+typedef void* BackgroundSubtractorKNN;
 #endif
 
-BackgroundSubtractor BackgroundSubtractor_CreateMOG2();
-BackgroundSubtractor BackgroundSubtractor_CreateKNN();
-void BackgroundSubtractor_Close(BackgroundSubtractor b);
-void BackgroundSubtractor_Apply(BackgroundSubtractor b, Mat src, Mat dst);
+BackgroundSubtractorMOG2 BackgroundSubtractorMOG2_Create();
+void BackgroundSubtractorMOG2_Close(BackgroundSubtractorMOG2 b);
+void BackgroundSubtractorMOG2_Apply(BackgroundSubtractorMOG2 b, Mat src, Mat dst);
+
+BackgroundSubtractorKNN BackgroundSubtractorKNN_Create();
+void BackgroundSubtractorKNN_Close(BackgroundSubtractorKNN b);
+void BackgroundSubtractorKNN_Apply(BackgroundSubtractorKNN b, Mat src, Mat dst);
 
 void CalcOpticalFlowPyrLK(Mat prevImg, Mat nextImg, Mat prevPts, Mat nextPts, Mat status, Mat err);
 void CalcOpticalFlowFarneback(Mat prevImg, Mat nextImg, Mat flow, double pyrScale, int levels, int winsize,

@@ -43,7 +43,6 @@ func main() {
 	defer video.Close()
 
 	window := gocv.NewWindow("Track Window")
-	window.SetWindowProperty(gocv.WindowPropertyFullscreen, gocv.WindowFullscreen)
 	defer window.Close()
 
 	img := gocv.NewMat()
@@ -98,6 +97,6 @@ func main() {
 			gocv.FontHersheyPlain, 1.2, color.RGBA{0, 255, 0, 0}, 2)
 
 		window.IMShow(img)
-		gocv.WaitKey(1)
+		window.WaitKey(1)
 	}
 }

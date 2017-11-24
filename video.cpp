@@ -1,19 +1,27 @@
 #include "video.h"
 
-BackgroundSubtractor BackgroundSubtractor_CreateMOG2() {
-    return cv::createBackgroundSubtractorMOG2();
+BackgroundSubtractorMOG2 BackgroundSubtractorMOG2_Create() {
+    return new cv::Ptr<cv::BackgroundSubtractorMOG2>(cv::createBackgroundSubtractorMOG2());
 }
 
-BackgroundSubtractor BackgroundSubtractor_CreateKNN() {
-    return cv::createBackgroundSubtractorKNN();
+BackgroundSubtractorKNN BackgroundSubtractorKNN_Create() {
+    return new cv::Ptr<cv::BackgroundSubtractorKNN>(cv::createBackgroundSubtractorKNN());
 }
 
-void BackgroundSubtractor_Close(BackgroundSubtractor b) {
+void BackgroundSubtractorMOG2_Close(BackgroundSubtractorMOG2 b) {
     delete b;
 }
 
-void BackgroundSubtractor_Apply(BackgroundSubtractor b, Mat src, Mat dst) {
-    b->apply(*src, *dst);
+void BackgroundSubtractorMOG2_Apply(BackgroundSubtractorMOG2 b, Mat src, Mat dst) {
+    (*b)->apply(*src, *dst);
+}
+
+void BackgroundSubtractorKNN_Close(BackgroundSubtractorKNN k) {
+    delete k;
+}
+
+void BackgroundSubtractorKNN_Apply(BackgroundSubtractorKNN k, Mat src, Mat dst) {
+    (*k)->apply(*src, *dst);
 }
 
 void CalcOpticalFlowFarneback(Mat prevImg, Mat nextImg, Mat flow, double scale, int levels, int winsize,

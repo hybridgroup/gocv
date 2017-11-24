@@ -352,6 +352,17 @@ func NewScalar(v1 float64, v2 float64, v3 float64, v4 float64) Scalar {
 	return s
 }
 
+// KeyPoint is data structure for salient point detectors.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d2/d29/classcv_1_1KeyPoint.html
+//
+type KeyPoint struct {
+	X, Y                  float64
+	Size, Angle, Response float64
+	Octave, ClassID       int
+}
+
 func toGoBytes(b C.struct_ByteArray) []byte {
 	return C.GoBytes(unsafe.Pointer(b.data), b.length)
 }

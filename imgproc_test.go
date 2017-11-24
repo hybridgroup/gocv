@@ -276,14 +276,14 @@ func TestHoughCircles(t *testing.T) {
 	circles := NewMat()
 	defer circles.Close()
 
-	HoughLines(img, circles, 3, 5.0, 5.0)
+	HoughCircles(img, circles, 3, 5.0, 5.0)
 	if circles.Empty() {
 		t.Error("Empty HoughCircles test")
 	}
-	if circles.Rows() != 8 {
+	if circles.Rows() != 1 {
 		t.Errorf("Invalid HoughCircles test rows: %v", circles.Rows())
 	}
-	if circles.Cols() != 1 {
+	if circles.Cols() < 330 || circles.Cols() > 334 {
 		t.Errorf("Invalid HoughCircles test cols: %v", circles.Cols())
 	}
 }

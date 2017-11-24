@@ -43,7 +43,6 @@ func main() {
 	defer webcam.Close()
 
 	window := gocv.NewWindow("Motion Window")
-	window.SetWindowProperty(gocv.WindowPropertyFullscreen, gocv.WindowFullscreen)
 	defer window.Close()
 
 	img := gocv.NewMat()
@@ -97,6 +96,6 @@ func main() {
 		gocv.PutText(img, status, image.Pt(10, 20), gocv.FontHersheyPlain, 1.2, statusColor, 2)
 
 		window.IMShow(img)
-		gocv.WaitKey(1)
+		window.WaitKey(1)
 	}
 }

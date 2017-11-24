@@ -158,6 +158,10 @@ void Contours_Close(struct Contours cs) {
     delete cs.contours;
 }
 
+void KeyPoints_Close(struct KeyPoints ks) {
+    delete ks.keypoints;
+}
+
 void Rects_Close(struct Rects rs) {
     delete rs.rects;
 }
