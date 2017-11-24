@@ -283,7 +283,7 @@ func TestHoughCircles(t *testing.T) {
 	if circles.Rows() != 1 {
 		t.Errorf("Invalid HoughCircles test rows: %v", circles.Rows())
 	}
-	if circles.Cols() != 330 {
+	if circles.Cols() < 330 || circles.Cols() > 334 {
 		t.Errorf("Invalid HoughCircles test cols: %v", circles.Cols())
 	}
 }
