@@ -1,3 +1,30 @@
+0.6.0
+---
+* **core**
+    * Add cv::LUT binding
+* **examples** 
+    * do not try to go fullscreen, since does not work on OSX
+* **features2d** 
+    * add AKAZE algorithm
+    * add BRISK algorithm
+    * add FastFeatureDetector algorithm
+    * implement AgastFeatureDetector algorithm
+    * implement ORB algorithm
+    * implement SimpleBlobDetector algorithm
+* **osx**
+    * Fix to get the OpenCV path with "brew info".
+* **highgui** 
+    * use new Window with thread lock, and deprecate WaitKey() in favor of Window.WaitKey()
+    * use Window.WaitKey() in tests
+* **imgproc** 
+    * add tests for HoughCircles
+* **pvl**
+    * use correct Ptr referencing
+* **video** 
+    * use smart Ptr for Algorithms thanks to @alalek
+    * use unsafe.Pointer for Algorithm    
+    * move tests to single file now that they all pass
+
 0.5.0
 ---
 * **core**
