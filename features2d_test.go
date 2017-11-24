@@ -4,6 +4,37 @@ import (
 	"testing"
 )
 
+func TestAKAZE(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in AKAZE test")
+	}
+	defer img.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	ak := NewAKAZE()
+	defer ak.Close()
+
+	kp := ak.Detect(img)
+	if len(kp) < 513 {
+		t.Errorf("Invalid KeyPoint array in AKAZE test: %d", len(kp))
+	}
+
+	mask := NewMat()
+	defer mask.Close()
+
+	kp2, desc := ak.DetectAndCompute(img, mask)
+	if len(kp2) != 513 {
+		t.Errorf("Invalid KeyPoint array in AKAZE DetectAndCompute: %d", len(kp2))
+	}
+
+	if desc.Empty() {
+		t.Error("Invalid Mat desc in AKAZE DetectAndCompute")
+	}
+}
+
 func TestAgastFeatureDetector(t *testing.T) {
 	img := IMRead("images/face.jpg", IMReadColor)
 	if img.Empty() {
@@ -20,6 +51,37 @@ func TestAgastFeatureDetector(t *testing.T) {
 	kp := ad.Detect(img)
 	if len(kp) < 2800 {
 		t.Errorf("Invalid KeyPoint array in AgastFeatureDetector test: %d", len(kp))
+	}
+}
+
+func TestBRISK(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in BRISK test")
+	}
+	defer img.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	br := NewBRISK()
+	defer br.Close()
+
+	kp := br.Detect(img)
+	if len(kp) < 513 {
+		t.Errorf("Invalid KeyPoint array in BRISK Detect: %d", len(kp))
+	}
+
+	mask := NewMat()
+	defer mask.Close()
+
+	kp2, desc := br.DetectAndCompute(img, mask)
+	if len(kp2) != 1105 {
+		t.Errorf("Invalid KeyPoint array in BRISK DetectAndCompute: %d", len(kp2))
+	}
+
+	if desc.Empty() {
+		t.Error("Invalid Mat desc in AKAZE DetectAndCompute")
 	}
 }
 

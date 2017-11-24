@@ -9,20 +9,34 @@ extern "C" {
 #include "core.h"
 
 #ifdef __cplusplus
+typedef cv::Ptr<cv::AKAZE>* AKAZE;
 typedef cv::Ptr<cv::AgastFeatureDetector>* AgastFeatureDetector;
+typedef cv::Ptr<cv::BRISK>* BRISK;
 typedef cv::Ptr<cv::FastFeatureDetector>* FastFeatureDetector;
 typedef cv::Ptr<cv::ORB>* ORB;
 typedef cv::Ptr<cv::SimpleBlobDetector>* SimpleBlobDetector;
 #else
+typedef void* AKAZE;
 typedef void* AgastFeatureDetector;
+typedef void* BRISK;
 typedef void* FastFeatureDetector;
 typedef void* ORB;
 typedef void* SimpleBlobDetector;
 #endif
 
+AKAZE AKAZE_Create();
+void AKAZE_Close(AKAZE a);
+struct KeyPoints AKAZE_Detect(AKAZE a, Mat src);
+struct KeyPoints AKAZE_DetectAndCompute(AKAZE a, Mat src, Mat mask, Mat desc);
+
 AgastFeatureDetector AgastFeatureDetector_Create();
 void AgastFeatureDetector_Close(AgastFeatureDetector a);
 struct KeyPoints AgastFeatureDetector_Detect(AgastFeatureDetector a, Mat src);
+
+BRISK BRISK_Create();
+void BRISK_Close(BRISK b);
+struct KeyPoints BRISK_Detect(BRISK b, Mat src);
+struct KeyPoints BRISK_DetectAndCompute(BRISK b, Mat src, Mat mask, Mat desc);
 
 FastFeatureDetector FastFeatureDetector_Create();
 void FastFeatureDetector_Close(FastFeatureDetector f);

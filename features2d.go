@@ -10,6 +10,53 @@ import (
 	"unsafe"
 )
 
+// AKAZE is a wrapper around the cv::AKAZE algorithm.
+type AKAZE struct {
+	// C.AKAZE
+	p unsafe.Pointer
+}
+
+// NewAKAZE returns a new AKAZE algorithm
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d8/d30/classcv_1_1AKAZE.html
+//
+func NewAKAZE() AKAZE {
+	return AKAZE{p: unsafe.Pointer(C.AKAZE_Create())}
+}
+
+// Close AKAZE.
+func (a *AKAZE) Close() error {
+	C.AKAZE_Close((C.AKAZE)(a.p))
+	a.p = nil
+	return nil
+}
+
+// Detect keypoints in an image using AKAZE.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
+//
+func (a *AKAZE) Detect(src Mat) []KeyPoint {
+	ret := C.AKAZE_Detect((C.AKAZE)(a.p), src.p)
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret)
+}
+
+// Detect keypoints and compute in an image using AKAZE.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
+//
+func (a *AKAZE) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
+	desc := NewMat()
+	ret := C.AKAZE_DetectAndCompute((C.AKAZE)(a.p), src.p, mask.p, desc.p)
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret), desc
+}
+
 // AgastFeatureDetector is a wrapper around the cv::AgastFeatureDetector.
 type AgastFeatureDetector struct {
 	// C.AgastFeatureDetector
@@ -42,6 +89,53 @@ func (a *AgastFeatureDetector) Detect(src Mat) []KeyPoint {
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
+}
+
+// BRISK is a wrapper around the cv::BRISK algorithm.
+type BRISK struct {
+	// C.BRISK
+	p unsafe.Pointer
+}
+
+// NewBRISK returns a new BRISK algorithm
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d8/d30/classcv_1_1AKAZE.html
+//
+func NewBRISK() BRISK {
+	return BRISK{p: unsafe.Pointer(C.BRISK_Create())}
+}
+
+// Close BRISK.
+func (b *BRISK) Close() error {
+	C.BRISK_Close((C.BRISK)(b.p))
+	b.p = nil
+	return nil
+}
+
+// Detect keypoints in an image using BRISK.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
+//
+func (b *BRISK) Detect(src Mat) []KeyPoint {
+	ret := C.BRISK_Detect((C.BRISK)(b.p), src.p)
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret)
+}
+
+// Detect keypoints and compute in an image using BRISK.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
+//
+func (b *BRISK) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
+	desc := NewMat()
+	ret := C.BRISK_DetectAndCompute((C.BRISK)(b.p), src.p, mask.p, desc.p)
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret), desc
 }
 
 // FastFeatureDetector is a wrapper around the cv::FastFeatureDetector.
@@ -115,7 +209,7 @@ func (o *ORB) Detect(src Mat) []KeyPoint {
 // Detect keypoints and compute in an image using ORB.
 //
 // For further details, please see:
-//
+// https://docs.opencv.org/3.3.1/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
 //
 func (o *ORB) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
 	desc := NewMat()
