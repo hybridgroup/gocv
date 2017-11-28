@@ -31,3 +31,4 @@ install:
 
 build_script:
   - go test -v .
+  - go test -v ./contrib

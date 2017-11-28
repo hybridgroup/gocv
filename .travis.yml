@@ -44,6 +44,7 @@ script:
   - export CGO_LDFLAGS="-L${HOME}/usr/lib -lopencv_core -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_features2d -lopencv_video -lopencv_xfeatures2d"
   - echo "Ensuring code is well formatted"; ! gofmt -s -d . | read
   - go test -coverprofile=coverage.txt -covermode=atomic
+  - go test ./contrib -coverprofile=contrib.txt -covermode=atomic; cat contrib.txt >> coverage.txt; rm contrib.txt;
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
