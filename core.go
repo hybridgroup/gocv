@@ -374,6 +374,13 @@ type KeyPoint struct {
 	Octave, ClassID       int
 }
 
+func toByteArray(b []byte) C.struct_ByteArray {
+	return C.struct_ByteArray{
+		data:   (*C.char)(unsafe.Pointer(&b[0])),
+		length: C.int(len(b)),
+	}
+}
+
 func toGoBytes(b C.struct_ByteArray) []byte {
 	return C.GoBytes(unsafe.Pointer(b.data), b.length)
 }

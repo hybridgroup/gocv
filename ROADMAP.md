@@ -4,13 +4,13 @@ This is a list of all of the functionality areas within OpenCV, and OpenCV Contr
 
 Any section listed with an "X" means that all of the relevant OpenCV functionality has been wrapped for use within GoCV.
 
-Any area listed with "STARTED BUT INCOMPLETE" indicates that some work has been done, but not all functionality in that module has been completed. Your pull request would be greatly appreciated!
+Any area listed with **STARTED BUT INCOMPLETE** indicates that some work has been done, but not all functionality in that module has been completed. Your pull request would be greatly appreciated!
 
 ## Modules list
 
 - [ ] core. Core functionality
-    - [ ] Basic structures - STARTED BUT INCOMPLETE
-    - [ ] Operations on arrays - STARTED BUT INCOMPLETE
+    - [ ] Basic structures - **STARTED BUT INCOMPLETE**
+    - [ ] Operations on arrays - **STARTED BUT INCOMPLETE**
     - [ ] XML/YAML Persistence
     - [ ] Clustering
     - [ ] Utility and system functions and macros
@@ -24,25 +24,25 @@ Any area listed with "STARTED BUT INCOMPLETE" indicates that some work has been 
     - [ ] Hardware Acceleration Layer
 
 - [ ] imgproc. Image processing
-    - [ ] Image Filtering - STARTED BUT INCOMPLETE
-    - [ ] Geometric Image Transformations - STARTED BUT INCOMPLETE
-    - [ ] Miscellaneous Image Transformations - STARTED BUT INCOMPLETE
-    - [ ] Drawing Functions - STARTED BUT INCOMPLETE
+    - [ ] Image Filtering - **STARTED BUT INCOMPLETE**
+    - [ ] Geometric Image Transformations - **STARTED BUT INCOMPLETE**
+    - [ ] Miscellaneous Image Transformations - **STARTED BUT INCOMPLETE**
+    - [ ] Drawing Functions - **STARTED BUT INCOMPLETE**
     - [ ] ColorMaps in OpenCV
     - [ ] Planar Subdivision
     - [ ] Histograms
     - [ ] Structural Analysis and Shape Descriptors
-    - [ ] Motion Analysis and Object Tracking - STARTED BUT INCOMPLETE
-    - [ ] Feature Detection - STARTED BUT INCOMPLETE
-    - [ ] Object Detection - STARTED BUT INCOMPLETE
+    - [ ] Motion Analysis and Object Tracking - **STARTED BUT INCOMPLETE**
+    - [ ] Feature Detection - **STARTED BUT INCOMPLETE**
+    - [ ] Object Detection - **STARTED BUT INCOMPLETE**
 
-- [ ] imgcodecs. Image file reading and writing. - STARTED BUT INCOMPLETE
-- [X] videoio. Video I/O
-- [ ] highgui. High-level GUI - STARTED BUT INCOMPLETE
-- [ ] video. Video Analysis - STARTED BUT INCOMPLETE
+- [X] **imgcodecs. Image file reading and writing.**
+- [X] **videoio. Video I/O**
+- [ ] highgui. High-level GUI - **STARTED BUT INCOMPLETE**
+- [ ] video. Video Analysis - **STARTED BUT INCOMPLETE**
 - [ ] calib3d. Camera Calibration and 3D Reconstruction
-- [ ] features2d. 2D Features Framework - STARTED BUT INCOMPLETE
-- [ ] objdetect. Object Detection - STARTED BUT INCOMPLETE
+- [ ] features2d. 2D Features Framework - **STARTED BUT INCOMPLETE**
+- [ ] objdetect. Object Detection - **STARTED BUT INCOMPLETE**
 - [ ] dnn. Deep Neural Network module
 - [ ] ml. Machine Learning
 - [ ] flann. Clustering and Search in Multi-Dimensional Spaces
@@ -95,7 +95,7 @@ Any area listed with "STARTED BUT INCOMPLETE" indicates that some work has been 
 - [ ] surface_matching. Surface Matching
 - [ ] text. Scene Text Detection and Recognition
 - [ ] tracking. Tracking API
-- [ ] xfeatures2d. Extra 2D Features Framework
-- [ ] ximgproc. Extended Image Processing - STARTED BUT INCOMPLETE
+- [ ] xfeatures2d. Extra 2D Features Framework - **STARTED BUT INCOMPLETE**
+- [ ] ximgproc. Extended Image Processing
 - [ ] xobjdetect. Extended object detection
 - [ ] xphoto. Additional photo processing algorithms

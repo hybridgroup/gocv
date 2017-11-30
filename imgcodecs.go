@@ -183,3 +183,16 @@ func IMEncode(fileExt string, img Mat) (buf []byte, err error) {
 	defer C.ByteArray_Release(b)
 	return toGoBytes(b), nil
 }
+
+// IMDecode reads an image from a buffer in memory.
+// The function IMDecode reads an image from the specified buffer in memory.
+// If the buffer is too short or contains invalid data, the function
+// returns an empty matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d4/da8/group__imgcodecs.html#ga26a67788faa58ade337f8d28ba0eb19e
+//
+func IMDecode(buf []byte, flags IMReadFlag) Mat {
+	data := toByteArray(buf)
+	return Mat{p: C.Image_IMDecode(data, C.int(flags))}
+}

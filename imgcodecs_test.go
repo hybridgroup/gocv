@@ -57,3 +57,15 @@ func TestIMEncode(t *testing.T) {
 		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", len(buf))
 	}
 }
+
+func TestIMDecode(t *testing.T) {
+	content, err := ioutil.ReadFile("images/face-detect.jpg")
+	if err != nil {
+		t.Error("Invalid ReadFile in IMDecode")
+	}
+
+	dec := IMDecode(content, IMReadColor)
+	if dec.Empty() {
+		t.Error("Invalid Mat in IMDecode")
+	}
+}
