@@ -133,13 +133,20 @@ typedef cv::TermCriteria* TermCriteria;
 typedef void* Mat;
 typedef void* TermCriteria;
 #endif
-  
+
+// Wrapper for the vector of Mat aka std::vector<Mat>
+typedef struct Mats {
+  Mat* mats;
+  int length;
+} Mats;
+
 struct ByteArray toByteArray(const char* buf, int len);
 void ByteArray_Release(struct ByteArray buf);
 
 void Contours_Close(struct Contours cs);
 void KeyPoints_Close(struct KeyPoints ks);
 void Rects_Close(struct Rects rs);
+void Mats_Close(struct Mats mats);
 
 Mat Mat_New();
 Mat Mat_NewWithSize(int rows, int cols, int type);
@@ -170,7 +177,7 @@ void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst);
 void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst);
 int Mat_GetOptimalDFTSize(int vecsize);
 void Mat_DFT(Mat m, Mat dst);
-void Mat_Merge(Mat m, size_t count, Mat dst);
+void Mat_Merge(struct Mats mats, Mat dst);
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ);
 
 TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon);

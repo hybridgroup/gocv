@@ -145,8 +145,12 @@ void Mat_DFT(Mat m, Mat dst) {
     cv::dft(*m, *dst);
 }
 
-void Mat_Merge(Mat m, size_t count, Mat dst) {
-    cv::merge(m, count, *dst);
+void Mat_Merge(struct Mats mats, Mat dst) {
+    std::vector<cv::Mat> images;
+    for (int i = 0; i < mats.length; ++i) {
+        images.push_back(*mats.mats[i]);
+    }
+    cv::merge(images, *dst);
 }
 
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
@@ -168,6 +172,10 @@ void KeyPoints_Close(struct KeyPoints ks) {
 
 void Rects_Close(struct Rects rs) {
     delete rs.rects;
+}
+
+void Mats_Close(struct Mats mats) {
+    delete mats.mats;
 }
 
 void ByteArray_Release(struct ByteArray buf) {

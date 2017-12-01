@@ -221,12 +221,15 @@ func TestMatDFT(t *testing.T) {
 
 func TestMatMerge(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
+	src2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	src3 := NewMatWithSize(101, 102, MatTypeCV8U)
 	dst := NewMat()
-	Merge(src, 1, dst)
+	Merge([]Mat{src, src2, src3}, dst)
 	if dst.Empty() {
 		t.Error("TestMatMerge dst should not be empty.")
 	}
 }
+
 func TestMatNormalize(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
 	dst := NewMat()

@@ -10,6 +10,20 @@ import (
 	"unsafe"
 )
 
+const (
+	// MatChannels1 is a single channel Mat.
+	MatChannels1 = 0
+
+	// MatChannels2 is 2 channel Mat.
+	MatChannels2 = 8
+
+	// MatChannels3 is 3 channel Mat.
+	MatChannels3 = 16
+
+	// MatChannels4 is 4 channel Mat.
+	MatChannels4 = 24
+)
+
 // MatType is the type for the various different kinds of Mat you can create.
 type MatType int
 
@@ -34,6 +48,18 @@ const (
 
 	// MatTypeCV64F is a Mat of 64-bit float
 	MatTypeCV64F = 6
+
+	// MatTypeCV8UC1 is a Mat of 8-bit unsigned int with a single channel
+	MatTypeCV8UC1 = MatTypeCV8U + MatChannels1
+
+	// MatTypeCV8UC2 is a Mat of 8-bit unsigned int with 2 channels
+	MatTypeCV8UC2 = MatTypeCV8U + MatChannels2
+
+	// MatTypeCV8UC3 is a Mat of 8-bit unsigned int with 3 channels
+	MatTypeCV8UC3 = MatTypeCV8U + MatChannels3
+
+	// MatTypeCV8UC4 is a Mat of 8-bit unsigned int with 4 channels
+	MatTypeCV8UC4 = MatTypeCV8U + MatChannels4
 )
 
 // Mat represents an n-dimensional dense numerical single-channel
@@ -280,8 +306,17 @@ func DFT(src Mat, dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#ga7d7b4d6c6ee504b30a20b1680029c7b4
 //
-func Merge(src Mat, count int, dst Mat) {
-	C.Mat_Merge(src.p, C.size_t(count), dst.p)
+func Merge(mv []Mat, dst Mat) {
+	cMatArray := make([]C.Mat, len(mv))
+	for i, r := range mv {
+		cMatArray[i] = r.p
+	}
+	cMats := C.struct_Mats{
+		mats:   (*C.Mat)(&cMatArray[0]),
+		length: C.int(len(mv)),
+	}
+
+	C.Mat_Merge(cMats, dst.p)
 }
 
 // NormType for normalization operations.
