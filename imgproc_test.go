@@ -308,6 +308,22 @@ func TestHoughLines(t *testing.T) {
 	if dest.Cols() != 1 {
 		t.Errorf("Invalid HoughLines test cols: %v", dest.Cols())
 	}
+
+	if dest.GetFloatAt(0, 0) != 0 && dest.GetFloatAt(0, 1) != 0 {
+		t.Errorf("Invalid HoughLines first test element: %v, %v", dest.GetFloatAt(0, 0), dest.GetFloatAt(0, 1))
+	}
+
+	if dest.GetFloatAt(1, 0) != 0.99483764 && dest.GetFloatAt(1, 1) != 0 {
+		t.Errorf("Invalid HoughLines second test element: %v, %v", dest.GetFloatAt(1, 0), dest.GetFloatAt(1, 1))
+	}
+
+	if dest.GetFloatAt(10409, 0) != -118.246056 && dest.GetFloatAt(10409, 1) != 2 {
+		t.Errorf("Invalid HoughLines penultimate test element: %v, %v", dest.GetFloatAt(10409, 0), dest.GetFloatAt(10409, 1))
+	}
+
+	if dest.GetFloatAt(10410, 0) != -118.246056 && dest.GetFloatAt(10410, 1) != 2 {
+		t.Errorf("Invalid HoughLines last test element: %v, %v", dest.GetFloatAt(10410, 0), dest.GetFloatAt(10410, 1))
+	}
 }
 
 func TestHoughLinesP(t *testing.T) {
