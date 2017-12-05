@@ -347,20 +347,20 @@ func TestHoughLinesP(t *testing.T) {
 		t.Errorf("Invalid HoughLinesP test cols: %v", dest.Cols())
 	}
 
-	if dest.GetIntAt(0, 0) != 197 && dest.GetIntAt(0, 1) != 319 {
-		t.Errorf("Invalid HoughLinesP first test element: %v, %v", dest.GetIntAt(0, 0), dest.GetIntAt(0, 1))
+	if dest.GetIntAt(0, 0) != 197 && dest.GetIntAt(0, 1) != 319 && dest.GetIntAt(0, 2) != 197 && dest.GetIntAt(0, 3) != 197 {
+		t.Errorf("Invalid HoughLinesP first test element: %v, %v, %v, %v", dest.GetIntAt(0, 0), dest.GetIntAt(0, 1), dest.GetIntAt(0, 2), dest.GetIntAt(0, 3))
 	}
 
-	if dest.GetIntAt(1, 0) != 62 && dest.GetIntAt(1, 1) != 319 {
-		t.Errorf("Invalid HoughLinesP second test element: %v, %v", dest.GetIntAt(1, 0), dest.GetIntAt(1, 1))
+	if dest.GetIntAt(1, 0) != 62 && dest.GetIntAt(1, 1) != 319 && dest.GetIntAt(1, 2) != 197 && dest.GetIntAt(1, 3) != 197 {
+		t.Errorf("Invalid HoughLinesP second test element: %v, %v, %v, %v", dest.GetIntAt(1, 0), dest.GetIntAt(1, 1), dest.GetIntAt(1, 2), dest.GetIntAt(1, 3))
 	}
 
-	if dest.GetIntAt(433, 0) != 357 && dest.GetIntAt(433, 1) != 316 {
-		t.Errorf("Invalid HoughLinesP penultimate test element: %v, %v", dest.GetIntAt(433, 0), dest.GetIntAt(433, 1))
+	if dest.GetIntAt(433, 0) != 357 && dest.GetIntAt(433, 1) != 316 && dest.GetIntAt(433, 2) != 357 && dest.GetIntAt(433, 3) != 316 {
+		t.Errorf("Invalid HoughLinesP penultimate test element: %v, %v, %v, %v", dest.GetIntAt(433, 0), dest.GetIntAt(433, 1), dest.GetIntAt(433, 2), dest.GetIntAt(433, 3))
 	}
 
-	if dest.GetIntAt(434, 0) != 43 && dest.GetIntAt(434, 1) != 316 {
-		t.Errorf("Invalid HoughLinesP last test element: %v, %v", dest.GetIntAt(434, 0), dest.GetIntAt(434, 1))
+	if dest.GetIntAt(434, 0) != 43 && dest.GetIntAt(434, 1) != 316 && dest.GetIntAt(434, 2) != 43 && dest.GetIntAt(434, 3) != 316 {
+		t.Errorf("Invalid HoughLinesP last test element: %v, %v, %v, %v", dest.GetIntAt(434, 0), dest.GetIntAt(434, 1), dest.GetIntAt(434, 2), dest.GetIntAt(434, 3))
 	}
 }
 
