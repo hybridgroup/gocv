@@ -346,6 +346,22 @@ func TestHoughLinesP(t *testing.T) {
 	if dest.Cols() != 1 {
 		t.Errorf("Invalid HoughLinesP test cols: %v", dest.Cols())
 	}
+
+	if dest.GetIntAt(0, 0) != 197 && dest.GetIntAt(0, 1) != 319 {
+		t.Errorf("Invalid HoughLinesP first test element: %v, %v", dest.GetIntAt(0, 0), dest.GetIntAt(0, 1))
+	}
+
+	if dest.GetIntAt(1, 0) != 62 && dest.GetIntAt(1, 1) != 319 {
+		t.Errorf("Invalid HoughLinesP second test element: %v, %v", dest.GetIntAt(1, 0), dest.GetIntAt(1, 1))
+	}
+
+	if dest.GetIntAt(433, 0) != 357 && dest.GetIntAt(433, 1) != 316 {
+		t.Errorf("Invalid HoughLinesP penultimate test element: %v, %v", dest.GetIntAt(433, 0), dest.GetIntAt(433, 1))
+	}
+
+	if dest.GetIntAt(434, 0) != 43 && dest.GetIntAt(434, 1) != 316 {
+		t.Errorf("Invalid HoughLinesP last test element: %v, %v", dest.GetIntAt(434, 0), dest.GetIntAt(434, 1))
+	}
 }
 
 func TestThreshold(t *testing.T) {
