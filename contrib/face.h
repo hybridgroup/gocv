@@ -31,6 +31,7 @@ void LBPHFaceRecognizer_SetRadius(LBPHFaceRecognizer fr, int radius);
 void LBPHFaceRecognizer_SetNeighbors(LBPHFaceRecognizer fr, int neighbors);
 void LBPHFaceRecognizer_SaveFile(LBPHFaceRecognizer fr, const char*  filename);
 void LBPHFaceRecognizer_LoadFile(LBPHFaceRecognizer fr, const char*  filename);
+int LBPHFaceRecognizer_GetNeighbors(LBPHFaceRecognizer fr);
 
 #ifdef __cplusplus
 }

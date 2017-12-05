@@ -38,8 +38,6 @@ void LBPHFaceRecognizer_Update(LBPHFaceRecognizer fr, Mats mats, IntVector label
 
 int LBPHFaceRecognizer_Predict(LBPHFaceRecognizer fr, Mat sample) {
     int label;
-    double confidence;
-
     label = (*fr)->predict(*sample);
 
     return label;
@@ -71,20 +69,30 @@ void LBPHFaceRecognizer_SetRadius(LBPHFaceRecognizer fr, int radius) {
 }
 
 void LBPHFaceRecognizer_SetNeighbors(LBPHFaceRecognizer fr, int neighbors) {
-  (*fr)->setNeighbors(neighbors);
+    (*fr)->setNeighbors(neighbors);
 
-  return;
+    return;
+}
+
+
+int LBPHFaceRecognizer_GetNeighbors(LBPHFaceRecognizer fr) {
+    int n;
+
+    n = (*fr)->getNeighbors();
+
+    return n;
 }
 
 void LBPHFaceRecognizer_SaveFile(LBPHFaceRecognizer fr, const char*  filename) {
-  (*fr)->write(filename);
+    (*fr)->write(filename);
 
-  return;
+    return;
 }
 
 void LBPHFaceRecognizer_LoadFile(LBPHFaceRecognizer fr, const char*  filename) {
-  (*fr)->read(filename);
+    (*fr)->read(filename);
 
-  return;
+    return;
 }
+
 

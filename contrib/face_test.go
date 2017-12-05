@@ -3,6 +3,7 @@ package contrib
 import (
 	"gocv.io/x/gocv"
 	"testing"
+	"math"
 )
 
 func TestLBPHFaceRecognizer_Methods(t *testing.T) {
@@ -27,7 +28,7 @@ func TestLBPHFaceRecognizer_Methods(t *testing.T) {
 	sample := gocv.IMRead("./att_faces/s2/5.pgm", gocv.IMReadGrayScale)
 	label := model.Predict(sample)
 	if label != 2 {
-		t.Errorf("Invalid simple predict! label: %s", label)
+		t.Errorf("Invalid simple predict! label: %d", label)
 	}
 	resp := model.PredictExtendedResponse(sample)
 	if resp.Label != 2 {
@@ -38,20 +39,31 @@ func TestLBPHFaceRecognizer_Methods(t *testing.T) {
 	model.SetThreshold(0.0)
 	label = model.Predict(sample)
 	if label != -1 {
-		t.Errorf("Invalid set wrong threshold! label: %s", label)
+		t.Errorf("Invalid set wrong threshold! label: %d", label)
 	}
 
+	//// set good threshold
+	model.SetThreshold(math.MaxFloat32)
 	// set wrong radius
-	model.SetThreshold(123.0)
 	model.SetRadius(0)
 	label = model.Predict(sample)
-	if label != -1 {
-		t.Errorf("Invalid set wrong radius! label: %s", label)
+	if label == 2 {
+		t.Errorf("Invalid set wrong radius! label: %d", label)
+	}
+
+	neighbors := model.GetNeighbors()
+	if neighbors == 0 {
+		t.Errorf("Invalid get neighbors! n: %d", neighbors)
+	}
+
+	model.SetRadius(1)
+	model.SetNeighbors(8)
+	label = model.Predict(sample)
+	if label != 2 {
+		t.Errorf("Invalid set neighbors! label: %d", label)
 	}
 
 	// add new data
-	model.SetRadius(1)
-	model.SetThreshold(123.0)
 	sample = gocv.IMRead("./att_faces/s3/10.pgm", gocv.IMReadGrayScale)
 	newLabels := []int{3, 3, 3, 3, 3, 3}
 	newImages := []gocv.Mat{
@@ -65,7 +77,7 @@ func TestLBPHFaceRecognizer_Methods(t *testing.T) {
 	model.Update(newImages, newLabels)
 	label = model.Predict(sample)
 	if label != 3 {
-		t.Errorf("Invalid new data update: %s", label)
+		t.Errorf("Invalid new data update: %d", label)
 	}
 
 	// test save and load
@@ -75,6 +87,6 @@ func TestLBPHFaceRecognizer_Methods(t *testing.T) {
 	modelNew.LoadFile(fName)
 	label = modelNew.Predict(sample)
 	if label != 3 {
-		t.Errorf("Invalid loaded data: %s", label)
+		t.Errorf("Invalid loaded data: %d", label)
 	}
 }

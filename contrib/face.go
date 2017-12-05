@@ -112,9 +112,20 @@ func (fr *LBPHFaceRecognizer) SetThreshold(threshold float32) {
 // set Neighbors
 //
 // see https://docs.opencv.org/3.3.1/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#ab225f7bf353ce8697a506eda10124a92
+// wrong neighbors can raise opencv exception!
 //
 func (fr *LBPHFaceRecognizer) SetNeighbors(neighbors int) {
 	C.LBPHFaceRecognizer_SetNeighbors(fr.p, (C.int)(neighbors))
+}
+
+// get Neighbors
+//
+// see https://docs.opencv.org/3.3.1/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#a50a3e2ca6e8464166e153c9df84b0a77
+//
+func (fr *LBPHFaceRecognizer) GetNeighbors() int {
+	n := C.LBPHFaceRecognizer_GetNeighbors(fr.p)
+
+	return int(n)
 }
 
 // set Radius
