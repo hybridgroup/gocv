@@ -1,8 +1,8 @@
 package contrib
 
 import (
-	"testing"
 	"gocv.io/x/gocv"
+	"testing"
 )
 
 func TestLBPHFaceRecognizer_Methods(t *testing.T) {
@@ -11,7 +11,7 @@ func TestLBPHFaceRecognizer_Methods(t *testing.T) {
 		t.Errorf("Invalid NewLBPHFaceRecognizer call %v", model)
 	}
 
-	labels := []int{1,1,1,1,2,2,2,2}
+	labels := []int{1, 1, 1, 1, 2, 2, 2, 2}
 	images := []gocv.Mat{
 		gocv.IMRead("./att_faces/s1/1.pgm", gocv.IMReadGrayScale),
 		gocv.IMRead("./att_faces/s1/2.pgm", gocv.IMReadGrayScale),
@@ -21,7 +21,6 @@ func TestLBPHFaceRecognizer_Methods(t *testing.T) {
 		gocv.IMRead("./att_faces/s2/2.pgm", gocv.IMReadGrayScale),
 		gocv.IMRead("./att_faces/s2/3.pgm", gocv.IMReadGrayScale),
 		gocv.IMRead("./att_faces/s2/4.pgm", gocv.IMReadGrayScale),
-
 	}
 	model.Train(images, labels)
 
@@ -50,12 +49,11 @@ func TestLBPHFaceRecognizer_Methods(t *testing.T) {
 		t.Errorf("Invalid set wrong radius! label: %s", label)
 	}
 
-
 	// add new data
 	model.SetRadius(1)
 	model.SetThreshold(123.0)
 	sample = gocv.IMRead("./att_faces/s3/10.pgm", gocv.IMReadGrayScale)
-	newLabels := []int{3,3,3,3,3,3}
+	newLabels := []int{3, 3, 3, 3, 3, 3}
 	newImages := []gocv.Mat{
 		gocv.IMRead("./att_faces/s3/1.pgm", gocv.IMReadGrayScale),
 		gocv.IMRead("./att_faces/s3/2.pgm", gocv.IMReadGrayScale),
@@ -63,7 +61,6 @@ func TestLBPHFaceRecognizer_Methods(t *testing.T) {
 		gocv.IMRead("./att_faces/s3/4.pgm", gocv.IMReadGrayScale),
 		gocv.IMRead("./att_faces/s3/5.pgm", gocv.IMReadGrayScale),
 		gocv.IMRead("./att_faces/s3/6.pgm", gocv.IMReadGrayScale),
-
 	}
 	model.Update(newImages, newLabels)
 	label = model.Predict(sample)

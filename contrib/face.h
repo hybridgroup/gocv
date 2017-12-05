@@ -1,5 +1,5 @@
-#ifndef _OPENCV3_FACE_H2_
-#define _OPENCV3_FACE_H2_
+#ifndef _OPENCV3_FACE_H_
+#define _OPENCV3_FACE_H_
 
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
@@ -36,4 +36,4 @@ void LBPHFaceRecognizer_LoadFile(LBPHFaceRecognizer fr, const char*  filename);
 }
 #endif
 
-#endif //_OPENCV3_FACE_H2_
+#endif //_OPENCV3_FACE_H_

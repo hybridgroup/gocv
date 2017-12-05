@@ -1,6 +1,4 @@
 #include "face.h"
-using namespace std;
-
 
 LBPHFaceRecognizer CreateLBPHFaceRecognizer() {
         return new cv::Ptr<cv::face::LBPHFaceRecognizer>(cv::face::LBPHFaceRecognizer::create());

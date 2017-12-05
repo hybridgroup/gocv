@@ -1,7 +1,7 @@
 package contrib
 
 /*
-#cgo pkg-config: opencv
+#cgo LDFLAGS: -lopencv_face
 #include <stdlib.h>
 #include "face.h"
 */
