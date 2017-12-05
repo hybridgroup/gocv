@@ -1,7 +1,6 @@
 package contrib
 
 /*
-#cgo LDFLAGS: -lopencv_face
 #include <stdlib.h>
 #include "face.h"
 */
