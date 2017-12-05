@@ -76,7 +76,7 @@ Any area listed with **INCOMPLETE** indicates that some work has been done, but 
 - [ ] datasets. Framework for working with different datasets
 - [ ] dnn_modern. Deep Learning Modern Module
 - [ ] dpm. Deformable Part-based Models
-- [ ] face. Face Recognition
+- [ ] face. Face Recognition - **INCOMPLETE**
 - [ ] freetype. Drawing UTF-8 strings with freetype/harfbuzz
 - [ ] fuzzy. Image processing based on fuzzy mathematics
 - [ ] hdf. Hierarchical Data Format I/O routines
