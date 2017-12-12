@@ -35,6 +35,8 @@ struct Rects HOGDescriptor_DetectMultiScaleWithParams(HOGDescriptor hog, Mat img
 Mat HOG_GetDefaultPeopleDetector();
 void HOGDescriptor_SetSVMDetector(HOGDescriptor hog, Mat det);
 
+struct Rects GroupRectangles(struct Rects rects, int groupThreshold, double eps);
+
 #ifdef __cplusplus
 }
 #endif

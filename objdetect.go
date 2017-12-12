@@ -211,3 +211,42 @@ func (h *HOGDescriptor) SetSVMDetector(det Mat) error {
 	C.HOGDescriptor_SetSVMDetector(h.p, det.p)
 	return nil
 }
+
+// GroupRectangles groups the object candidate rectangles.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d5/d54/group__objdetect.html#ga3dba897ade8aa8227edda66508e16ab9
+//
+func GroupRectangles(rects []image.Rectangle, groupThreshold int, eps float64) []image.Rectangle {
+	cRectArray := make([]C.struct_Rect, len(rects))
+	for i, r := range rects {
+		cRect := C.struct_Rect{
+			x:      C.int(r.Min.X),
+			y:      C.int(r.Min.Y),
+			width:  C.int(r.Size().X),
+			height: C.int(r.Size().Y),
+		}
+		cRectArray[i] = cRect
+	}
+	cRects := C.struct_Rects{
+		rects:  (*C.Rect)(&cRectArray[0]),
+		length: C.int(len(rects)),
+	}
+
+	ret := C.GroupRectangles(cRects, C.int(groupThreshold), C.double(eps))
+
+	cArray := ret.rects
+	length := int(ret.length)
+	hdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cArray)),
+		Len:  length,
+		Cap:  length,
+	}
+	s := *(*[]C.Rect)(unsafe.Pointer(&hdr))
+
+	results := make([]image.Rectangle, length)
+	for i, r := range s {
+		results[i] = image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
+	}
+	return results
+}

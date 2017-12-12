@@ -94,3 +94,21 @@ Mat HOG_GetDefaultPeopleDetector() {
 void HOGDescriptor_SetSVMDetector(HOGDescriptor hog, Mat det) {
     hog->setSVMDetector(*det);
 }
+
+struct Rects GroupRectangles(struct Rects rects, int groupThreshold, double eps) {
+    std::vector<cv::Rect> vRect;
+    for (int i = 0; i < rects.length; ++i) {
+        cv::Rect r = cv::Rect(rects.rects[i].x, rects.rects[i].y, rects.rects[i].width, rects.rects[i].height);
+        vRect.push_back(r);
+    }
+
+    cv::groupRectangles(vRect, groupThreshold, eps);
+
+    Rect* results = new Rect[vRect.size()];
+    for (size_t i = 0; i < vRect.size(); ++i) {
+      Rect r = {vRect[i].x, vRect[i].y, vRect[i].width, vRect[i].height};
+      results[i] = r;
+    }
+    Rects ret = {results, (int)vRect.size()};
+    return ret;
+}

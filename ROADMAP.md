@@ -38,7 +38,7 @@ Any area listed with **INCOMPLETE** indicates that some work has been done, but 
 - [ ] video. Video Analysis - **INCOMPLETE**
 - [ ] calib3d. Camera Calibration and 3D Reconstruction
 - [ ] features2d. 2D Features Framework - **INCOMPLETE**
-- [ ] objdetect. Object Detection - **INCOMPLETE**
+- [X] **objdetect. Object Detection**
 - [ ] dnn. Deep Neural Network module
 - [ ] ml. Machine Learning
 - [ ] flann. Clustering and Search in Multi-Dimensional Spaces

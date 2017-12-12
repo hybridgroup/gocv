@@ -81,3 +81,33 @@ func TestHOGDescriptorWithParams(t *testing.T) {
 		t.Errorf("Error in TestHOGDescriptorWithParams test: %d", len(rects))
 	}
 }
+
+func TestGroupRectangles(t *testing.T) {
+	rects := []image.Rectangle{
+		image.Rect(10, 10, 30, 30),
+		image.Rect(10, 10, 30, 30),
+		image.Rect(10, 10, 30, 30),
+		image.Rect(10, 10, 30, 30),
+		image.Rect(10, 10, 30, 30),
+		image.Rect(10, 10, 30, 30),
+		image.Rect(10, 10, 30, 30),
+		image.Rect(10, 10, 30, 30),
+		image.Rect(10, 10, 30, 30),
+		image.Rect(10, 10, 30, 30),
+		image.Rect(10, 10, 35, 35),
+		image.Rect(10, 10, 35, 35),
+		image.Rect(10, 10, 35, 35),
+		image.Rect(10, 10, 35, 35),
+		image.Rect(10, 10, 35, 35),
+		image.Rect(10, 10, 35, 35),
+		image.Rect(10, 10, 35, 35),
+		image.Rect(10, 10, 35, 35),
+		image.Rect(10, 10, 35, 35),
+		image.Rect(10, 10, 35, 35),
+	}
+
+	results := GroupRectangles(rects, 1, 0.2)
+	if len(results) != 2 {
+		t.Errorf("Error in TestGroupRectangles test: %d", len(results))
+	}
+}
