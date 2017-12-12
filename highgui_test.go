@@ -22,6 +22,17 @@ func TestWindow(t *testing.T) {
 
 	window.SetWindowProperty(WindowPropertyFullscreen, WindowFullscreen)
 
+	prop := int(window.GetWindowProperty(WindowPropertyFullscreen))
+	if prop != WindowFullscreen {
+		t.Error("Window property should have been fullscreen")
+	}
+
+	window.SetWindowTitle("My new title")
+
+	window.MoveWindow(100, 100)
+
+	window.ResizeWindow(100, 100)
+
 	window.Close()
 	if window.IsOpen() {
 		t.Error("Window should have been closed")
@@ -52,6 +63,14 @@ func TestIMShow(t *testing.T) {
 	if window.IsOpen() {
 		t.Error("IMShow window should have been closed")
 	}
+}
+
+func TestSelectROI(t *testing.T) {
+	t.Skip("TODO: figure out how to implement a test that can exercise the GUI")
+}
+
+func TestSelectROIs(t *testing.T) {
+	t.Skip("TODO: figure out how to implement a test that can exercise the GUI")
 }
 
 func TestTrackbar(t *testing.T) {

@@ -17,11 +17,7 @@ Any area listed with **INCOMPLETE** indicates that some work has been done, but 
     - [ ] OpenGL interoperability
     - [ ] Intel IPP Asynchronous C/C++ Converters
     - [ ] Optimization Algorithms
-    - [ ] DirectX interoperability
-    - [ ] Eigen support
     - [ ] OpenCL support 
-    - [ ] Intel VA-API/OpenCL (CL-VA) interoperability
-    - [ ] Hardware Acceleration Layer
 
 - [ ] imgproc. Image processing
     - [ ] Image Filtering - **INCOMPLETE**
@@ -38,7 +34,7 @@ Any area listed with **INCOMPLETE** indicates that some work has been done, but 
 
 - [X] **imgcodecs. Image file reading and writing.**
 - [X] **videoio. Video I/O**
-- [ ] highgui. High-level GUI - **INCOMPLETE**
+- [X] **highgui. High-level GUI**
 - [ ] video. Video Analysis - **INCOMPLETE**
 - [ ] calib3d. Camera Calibration and 3D Reconstruction
 - [ ] features2d. 2D Features Framework - **INCOMPLETE**

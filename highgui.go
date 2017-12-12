@@ -6,6 +6,8 @@ package gocv
 */
 import "C"
 import (
+	"image"
+	"reflect"
 	"runtime"
 	"unsafe"
 )
@@ -95,6 +97,18 @@ const (
 	WindowPropertyVisible = 4
 )
 
+// GetWindowProperty returns properties of a window.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d7/dfc/group__highgui.html#gaaf9504b8f9cf19024d9d44a14e461656
+//
+func (w *Window) GetWindowProperty(flag WindowPropertyFlag) float64 {
+	cName := C.CString(w.name)
+	defer C.free(unsafe.Pointer(cName))
+
+	return float64(C.Window_GetProperty(cName, C.int(flag)))
+}
+
 // SetWindowProperty changes parameters of a window dynamically.
 //
 // For further details, please see:
@@ -104,7 +118,22 @@ func (w *Window) SetWindowProperty(flag WindowPropertyFlag, value WindowFlag) {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
-	C.Window_SetWindowProperty(cName, C.int(flag), C.double(value))
+	C.Window_SetProperty(cName, C.int(flag), C.double(value))
+}
+
+// SetWindowTitle updates window title.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d7/dfc/group__highgui.html#ga56f8849295fd10d0c319724ddb773d96
+//
+func (w *Window) SetWindowTitle(title string) {
+	cName := C.CString(w.name)
+	defer C.free(unsafe.Pointer(cName))
+
+	cTitle := C.CString(title)
+	defer C.free(unsafe.Pointer(cTitle))
+
+	C.Window_SetTitle(cName, cTitle)
 }
 
 // IMShow displays an image Mat in the specified window.
@@ -131,6 +160,82 @@ func (w *Window) IMShow(img Mat) {
 //
 func (w *Window) WaitKey(delay int) int {
 	return int(C.Window_WaitKey(C.int(delay)))
+}
+
+// MoveWindow moves window to the specified position.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d7/dfc/group__highgui.html#ga8d86b207f7211250dbe6e28f76307ffb
+//
+func (w *Window) MoveWindow(x, y int) {
+	cName := C.CString(w.name)
+	defer C.free(unsafe.Pointer(cName))
+
+	C.Window_Move(cName, C.int(x), C.int(y))
+}
+
+// ResizeWindow resizes window to the specified size.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d7/dfc/group__highgui.html#ga9e80e080f7ef33f897e415358aee7f7e
+//
+func (w *Window) ResizeWindow(width, height int) {
+	cName := C.CString(w.name)
+	defer C.free(unsafe.Pointer(cName))
+
+	C.Window_Resize(cName, C.int(width), C.int(height))
+}
+
+// SelectROI selects a Region Of Interest (ROI) on the given image.
+// It creates a window and allows user to select a ROI using mouse.
+//
+// Controls:
+// use space or enter to finish selection,
+// use key c to cancel selection (function will return a zero Rect).
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d7/dfc/group__highgui.html#ga8daf4730d3adf7035b6de9be4c469af5
+//
+func SelectROI(name string, img Mat) image.Rectangle {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+
+	r := C.Window_SelectROI(cName, img.p)
+	rect := image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
+	return rect
+}
+
+// SelectROIs selects multiple Regions Of Interest (ROI) on the given image.
+// It creates a window and allows user to select ROIs using mouse.
+//
+// Controls:
+// use space or enter to finish current selection and start a new one
+// use esc to terminate multiple ROI selection process
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d7/dfc/group__highgui.html#ga0f11fad74a6432b8055fb21621a0f893
+//
+func SelectROIs(name string, img Mat) []image.Rectangle {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+
+	ret := C.Window_SelectROIs(cName, img.p)
+	defer C.Rects_Close(ret)
+
+	cArray := ret.rects
+	length := int(ret.length)
+	hdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cArray)),
+		Len:  length,
+		Cap:  length,
+	}
+	s := *(*[]C.Rect)(unsafe.Pointer(&hdr))
+
+	rects := make([]image.Rectangle, length)
+	for i, r := range s {
+		rects[i] = image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
+	}
+	return rects
 }
 
 // Deprecated: WaitKey that is not attached to a specific Window is deprecated.

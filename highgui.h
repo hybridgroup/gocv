@@ -12,8 +12,14 @@ extern "C" {
 void Window_New(const char* winname, int flags);
 void Window_Close(const char* winname);
 void Window_IMShow(const char* winname, Mat mat);
-void Window_SetWindowProperty(const char* winname, int flag, double value);
+double Window_GetProperty(const char* winname, int flag);
+void Window_SetProperty(const char* winname, int flag, double value);
+void Window_SetTitle(const char* winname, const char* title);
 int Window_WaitKey(int);
+void Window_Move(const char* winname, int x, int y);
+void Window_Resize(const char* winname, int width, int height);
+struct Rect Window_SelectROI(const char* winname, Mat img);
+struct Rects Window_SelectROIs(const char* winname, Mat img);
 
 // Trackbar
 void Trackbar_Create(const char* winname, const char* trackname, int max);
