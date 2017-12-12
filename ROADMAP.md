@@ -4,13 +4,17 @@ This is a list of all of the functionality areas within OpenCV, and OpenCV Contr
 
 Any section listed with an "X" means that all of the relevant OpenCV functionality has been wrapped for use within GoCV.
 
-Any area listed with **INCOMPLETE** indicates that some work has been done, but not all functionality in that module has been completed. Your pull request would be greatly appreciated!
+Any section listed with **WORK STARTED** indicates that some work has been done, but not all functionality in that module has been completed. 
+
+And any section that is simply listed, indicates that so far, no work has been done on that module.
+
+Your pull requests will be greatly appreciated!
 
 ## Modules list
 
 - [ ] core. Core functionality
-    - [ ] Basic structures - **INCOMPLETE**
-    - [ ] Operations on arrays - **INCOMPLETE**
+    - [ ] **Basic structures - WORK STARTED**
+    - [ ] **Operations on arrays - WORK STARTED**
     - [ ] XML/YAML Persistence
     - [ ] Clustering
     - [ ] Utility and system functions and macros
@@ -20,24 +24,24 @@ Any area listed with **INCOMPLETE** indicates that some work has been done, but 
     - [ ] OpenCL support 
 
 - [ ] imgproc. Image processing
-    - [ ] Image Filtering - **INCOMPLETE**
-    - [ ] Geometric Image Transformations - **INCOMPLETE**
-    - [ ] Miscellaneous Image Transformations - **INCOMPLETE**
-    - [ ] Drawing Functions - **INCOMPLETE**
+    - [ ] **Image Filtering - WORK STARTED**
+    - [ ] **Geometric Image Transformations - WORK STARTED**
+    - [ ] **Miscellaneous Image Transformations - WORK STARTED**
+    - [ ] **Drawing Functions - WORK STARTED**
     - [ ] ColorMaps in OpenCV
     - [ ] Planar Subdivision
     - [ ] Histograms
     - [ ] Structural Analysis and Shape Descriptors
-    - [ ] Motion Analysis and Object Tracking - **INCOMPLETE**
-    - [ ] Feature Detection - **INCOMPLETE**
-    - [ ] Object Detection - **INCOMPLETE**
+    - [ ] **Motion Analysis and Object Tracking - WORK STARTED**
+    - [ ] **Feature Detection - WORK STARTED**
+    - [ ] **Object Detection - WORK STARTED**
 
 - [X] **imgcodecs. Image file reading and writing.**
 - [X] **videoio. Video I/O**
 - [X] **highgui. High-level GUI**
-- [ ] video. Video Analysis - **INCOMPLETE**
+- [ ] **video. Video Analysis - WORK STARTED**
 - [ ] calib3d. Camera Calibration and 3D Reconstruction
-- [ ] features2d. 2D Features Framework - **INCOMPLETE**
+- [ ] **features2d. 2D Features Framework - WORK STARTED**
 - [X] **objdetect. Object Detection**
 - [ ] dnn. Deep Neural Network module
 - [ ] ml. Machine Learning
@@ -72,7 +76,7 @@ Any area listed with **INCOMPLETE** indicates that some work has been done, but 
 - [ ] datasets. Framework for working with different datasets
 - [ ] dnn_modern. Deep Learning Modern Module
 - [ ] dpm. Deformable Part-based Models
-- [ ] face. Face Recognition - **INCOMPLETE**
+- [ ] **face. Face Recognition - WORK STARTED**
 - [ ] freetype. Drawing UTF-8 strings with freetype/harfbuzz
 - [ ] fuzzy. Image processing based on fuzzy mathematics
 - [ ] hdf. Hierarchical Data Format I/O routines
@@ -91,7 +95,7 @@ Any area listed with **INCOMPLETE** indicates that some work has been done, but 
 - [ ] surface_matching. Surface Matching
 - [ ] text. Scene Text Detection and Recognition
 - [ ] tracking. Tracking API
-- [ ] xfeatures2d. Extra 2D Features Framework - **INCOMPLETE**
+- [ ] **xfeatures2d. Extra 2D Features Framework - WORK STARTED**
 - [ ] ximgproc. Extended Image Processing
 - [ ] xobjdetect. Extended object detection
 - [ ] xphoto. Additional photo processing algorithms
