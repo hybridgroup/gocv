@@ -125,7 +125,9 @@ go get -u -d gocv.io/x/gocv
 
 To run code that uses the GoCV package, you must also install OpenCV 3.3 on your system. Here are instructions for Ubuntu, OS X, and Windows.
 
-### Ubuntu/Linux
+## Ubuntu/Linux
+
+### Installation
 
 You can use `make` to install OpenCV 3.3 with the handy `Makefile` included with this repo. If you already have installed OpenCV, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options such as Python or Java wrappers if you have already installed OpenCV some other way.
 
@@ -157,13 +159,90 @@ After the installation is complete, you can remove the extra files and folders:
 
 		make clean
 
-### OS X
+### How to go build/go run your code
+
+In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your GoCV installation.
+
+First, change the current directory to the location of the GoCV repo:
+
+		cd $GOPATH/src/gocv.io/x/gocv
+
+One time per session, you must run the script:
+
+		source ./env.sh
+
+Now you should be able to build or run any of the examples:
+
+		go run ./cmd/version/main.go
+
+The version program should output the following:
+
+		gocv version: 0.2.0
+		opencv lib version: 3.3.1
+
+You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
+
+### Other Linux installations
+
+One way to find out the locations for your includes and libs is to use the `pkg-config` tool like this:
+
+		pkg-config --cflags opencv
+
+Should output the `include` flags:
+
+		-I/usr/local/include/opencv -I/usr/local/include
+
+Then this command:
+
+		pkg-config --libs opencv
+
+Should output the `lib` flags:
+
+		-L/usr/local/lib -lopencv_stitching -lopencv_superres -lopencv_videostab -lopencv_photo -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dpm -lopencv_face -lopencv_freetype -lopencv_fuzzy -lopencv_img_hash -lopencv_line_descriptor -lopencv_optflow -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_text -lopencv_dnn -lopencv_plot -lopencv_ml -lopencv_xfeatures2d -lopencv_shape -lopencv_video -lopencv_ximgproc -lopencv_calib3d -lopencv_features2d -lopencv_highgui -lopencv_videoio -lopencv_flann -lopencv_xobjdetect -lopencv_imgcodecs -lopencv_objdetect -lopencv_xphoto -lopencv_imgproc -lopencv_core
+
+Once you have this info, you can build or run the Go code that consumes it by populating the needed `CGO_CPPFLAGS` and `CGO_LDFLAGS` ENV vars.
+
+For example:
+
+		export CGO_CPPFLAGS="-I/usr/local/include" 
+		export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_calib3d -lopencv_video"
+
+Please note that you will need to run these 2 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables.
+
+## OS X
+
+### Installation
 
 You can install OpenCV 3.3 using Homebrew:
 
 		brew install opencv
 
-### Windows
+### How to go build/go run your code
+
+In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your gocv installation. If you have used Homebrew to install OpenCV 3.3, the following instructions should work.
+
+First, you need to change the current directory to the location of the GoCV repo:
+
+		cd $GOPATH/src/gocv.io/x/gocv
+
+One time per session, you must run the script:
+
+		source ./env.sh
+
+Now you should be able to build or run any of the command examples:
+
+		go run ./cmd/version/main.go
+
+The version program should output the following:
+
+		gocv version: 0.2.0
+		opencv lib version: 3.3.1
+
+You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
+
+## Windows
+
+### Installation
 
 The following assumes that you are running a 64-bit version of Windows 10.
 
@@ -223,82 +302,7 @@ Last, add `C:\opencv\build\install\x64\mingw\bin` to your System Path.
 
 You should now have OpenCV 3.3 installed on your Windows 10 machine.
 
-## How to build/run code
-
-### Ubuntu/Linux
-
-In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your gocv installation.
-
-First, change the current directory to the location of the GoCV repo:
-
-		cd $GOPATH/src/gocv.io/x/gocv
-
-One time per session, you must run the script:
-
-		source ./env.sh
-
-Now you should be able to build or run any of the examples:
-
-		go run ./cmd/version/main.go
-
-The version program should output the following:
-
-		gocv version: 0.2.0
-		opencv lib version: 3.3.1
-
-You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
-
-### Other Linux installations
-
-One way to find out the locations for your includes and libs is to use the `pkg-config` tool like this:
-
-		pkg-config --cflags opencv
-
-Should output the `include` flags:
-
-		-I/usr/local/include/opencv -I/usr/local/include
-
-Then this command:
-
-		pkg-config --libs opencv
-
-Should output the `lib` flags:
-
-		-L/usr/local/lib -lopencv_stitching -lopencv_superres -lopencv_videostab -lopencv_photo -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dpm -lopencv_face -lopencv_freetype -lopencv_fuzzy -lopencv_img_hash -lopencv_line_descriptor -lopencv_optflow -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_text -lopencv_dnn -lopencv_plot -lopencv_ml -lopencv_xfeatures2d -lopencv_shape -lopencv_video -lopencv_ximgproc -lopencv_calib3d -lopencv_features2d -lopencv_highgui -lopencv_videoio -lopencv_flann -lopencv_xobjdetect -lopencv_imgcodecs -lopencv_objdetect -lopencv_xphoto -lopencv_imgproc -lopencv_core
-
-Once you have this info, you can build or run the Go code that consumes it by populating the needed `CGO_CPPFLAGS` and `CGO_LDFLAGS` ENV vars.
-
-For example:
-
-		export CGO_CPPFLAGS="-I/usr/local/include" 
-		export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_calib3d -lopencv_video"
-
-Please note that you will need to run these 2 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables.
-
-### OS X
-
-In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your gocv installation. If you have used Homebrew to install OpenCV 3.3, the following instructions should work.
-
-First, you need to change the current directory to the location of the GoCV repo:
-
-		cd $GOPATH/src/gocv.io/x/gocv
-
-One time per session, you must run the script:
-
-		source ./env.sh
-
-Now you should be able to build or run any of the command examples:
-
-		go run ./cmd/version/main.go
-
-The version program should output the following:
-
-		gocv version: 0.2.0
-		opencv lib version: 3.3.1
-
-You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
-
-### Windows
+### How to go build/go run your code
 
 Run these commands to configure Go to know about the include and lib directories:
 
@@ -314,13 +318,11 @@ The version program should output the following:
 		gocv version: 0.2.0
 		opencv lib version: 3.3.1
 
-## What to work on next
-
-Check out our [ROADMAP.md](./ROADMAP.md) document.
-
 ## How to contribute
 
-Please take a look at our [CONTRIBUTING.md](./CONTRIBUTING.md) document.
+Please take a look at our [CONTRIBUTING.md](./CONTRIBUTING.md) document to understand our contribution guidelines.
+
+Then check out our [ROADMAP.md](./ROADMAP.md) document to know what to work on next.
 
 ## Why this project exists
 
