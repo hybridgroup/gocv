@@ -205,7 +205,7 @@ Once you have this info, you can build or run the Go code that consumes it by po
 For example:
 
 		export CGO_CPPFLAGS="-I/usr/local/include" 
-		export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_calib3d -lopencv_video"
+		export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_calib3d -lopencv_video -lopencv_xfeatures2d -lopencv_face"
 
 Please note that you will need to run these 2 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables.
 
@@ -307,7 +307,7 @@ You should now have OpenCV 3.3 installed on your Windows 10 machine.
 Run these commands to configure Go to know about the include and lib directories:
 
 		set CGO_CPPFLAGS=-IC:\opencv\build\install\include
-		set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core331 -lopencv_videoio331 -lopencv_imgproc331 -lopencv_highgui331 -lopencv_imgcodecs331 -lopencv_objdetect331 -lopencv_calib3d331 -lopencv_video331
+		set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core331 -lopencv_videoio331 -lopencv_imgproc331 -lopencv_highgui331 -lopencv_imgcodecs331 -lopencv_objdetect331 -lopencv_calib3d331 -lopencv_video331 -lopencv_xfeatures2d331 -lopencv_face331
 
 Now you should be able to build or run any of the command examples:
 

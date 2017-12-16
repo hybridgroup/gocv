@@ -1,3 +1,27 @@
+0.7.0
+---
+* **core**
+    * correct Merge implementation
+* **docs**
+    * change wording and formatting for roadmap
+    * update roadmap for a more complete list of OpenCV functionality
+    * sequence docs in README in same way as the web site, aka by OS
+    * show in README that some work was done on contrib face module
+* **face**
+    * LBPH facerecognizer bindings
+* **highgui**
+    * complete implementation for remaining API functions
+* **imgcodecs**
+    * add IMDecode function
+* **imgproc**
+    * elaborate on HoughLines & HoughLinesP tests to fetch a few individual results
+* **objdetect**
+    * add GroupRectangles function
+* **xfeatures2d**
+    * add SIFT and SURF algorithms from OpenCV contrib
+    * improve description for OpenCV contrib
+    * run tests from OpenCV contrib
+
 0.6.0
 ---
 * **core**

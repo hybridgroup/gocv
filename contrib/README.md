@@ -12,6 +12,18 @@ https://github.com/opencv/opencv_contrib
 
 If you have followed the installation instructions from the main README, then the OpenCV contrib modules have already been compiled and installed.
 
+First, you must include the `contrib` subpackage:
+
 ```go
-// code example here...
+import (
+    "gocv.io/x/gocv"
+    "gocv.io/x/gocv/contrib"
+)
+```
+
+Then you will be able to use the functions within the `contrib` subpackage. For example, this uses the `SIFT` feature identitification algorithm that is within the `xfeatures2d` module of OpenCV:
+
+```go
+si := contrib.NewSIFT()
+kp := si.Detect(img)
 ```
