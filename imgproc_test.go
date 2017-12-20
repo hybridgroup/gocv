@@ -442,3 +442,142 @@ func TestResize(t *testing.T) {
 		t.Errorf("Expected dst size of 440x377 got %dx%d", dst.Cols(), dst.Rows())
 	}
 }
+
+func TestGetRotationMatrix2D(t *testing.T) {
+	type args struct {
+		center image.Point
+		angle  float64
+		scale  float64
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]float64
+	}{
+		{
+			name: "90",
+			args: args{image.Point{0, 0}, 90.0, 1.0},
+			want: [][]float64{
+				[]float64{6.123233995736766e-17, 1, 0},
+				[]float64{-1, 6.123233995736766e-17, 0},
+			},
+		},
+		{
+			name: "45",
+			args: args{image.Point{0, 0}, 45.0, 1.0},
+			want: [][]float64{
+				[]float64{0.7071067811865476, 0.7071067811865475, 0},
+				[]float64{-0.7071067811865475, 0.7071067811865476, 0},
+			},
+		},
+		{
+			name: "0",
+			args: args{image.Point{0, 0}, 0.0, 1.0},
+			want: [][]float64{
+				[]float64{1, 0, 0},
+				[]float64{-0, 1, 0},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := GetRotationMatrix2D(tt.args.center, tt.args.angle, tt.args.scale)
+			for row := 0; row < got.Rows(); row++ {
+				for col := 0; col < got.Cols(); col++ {
+					if got.GetDoubleAt(row, col) != tt.want[row][col] {
+						t.Errorf("GetRotationMatrix2D() = %v, want %v at row:%v col:%v", got.GetDoubleAt(row, col), tt.want[row][col], row, col)
+					}
+				}
+			}
+		})
+	}
+}
+
+func TestWarpAffine(t *testing.T) {
+	type args struct {
+		testPoint image.Point
+		angle     float64
+		scale     float64
+	}
+	tests := []struct {
+		name string
+		args args
+		want float32
+	}{
+		{
+			name: "300:200/45.0:1.0",
+			args: args{image.Point{300, 200}, 45.0, 1.0},
+			want: -8.407664e+21,
+		},
+		{
+			name: "100:400/30.0:2.0",
+			args: args{image.Point{100, 400}, 30.0, 2.0},
+			want: -9.377235e-28,
+		},
+		{
+			name: "500:150/120.0:1.0",
+			args: args{image.Point{500, 150}, 120.0, 1.0},
+			want: -3.5142978e-30,
+		},
+	}
+	src := IMRead("images/face.jpg", IMReadGrayScale)
+	if src.Empty() {
+		panic("Invalid read of Mat in WarpAffine test")
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mat := src.Clone()
+			rot := GetRotationMatrix2D(image.Point{320, 240}, tt.args.angle, tt.args.scale)
+			WarpAffine(mat, mat, rot, image.Point{640, 480})
+			got := mat.GetFloatAt(tt.args.testPoint.X, tt.args.testPoint.Y)
+			if got != tt.want {
+				t.Errorf("WarpAffine() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestWarpAffineWithParams(t *testing.T) {
+	type args struct {
+		testPoint image.Point
+		angle     float64
+		scale     float64
+	}
+	tests := []struct {
+		name string
+		args args
+		want float32
+	}{
+		{
+			name: "300:200/45.0:1.0",
+			args: args{image.Point{300, 200}, 45.0, 1.0},
+			want: -8.407664e+21,
+		},
+		{
+			name: "100:400/30.0:2.0",
+			args: args{image.Point{100, 400}, 30.0, 2.0},
+			want: -9.377235e-28,
+		},
+		{
+			name: "500:150/120.0:1.0",
+			args: args{image.Point{500, 150}, 120.0, 1.0},
+			want: -3.5142978e-30,
+		},
+	}
+	src := IMRead("images/face.jpg", IMReadGrayScale)
+	if src.Empty() {
+		panic("Invalid read of Mat in WarpAffine test")
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mat := src.Clone()
+			rot := GetRotationMatrix2D(image.Point{320, 240}, tt.args.angle, tt.args.scale)
+			WarpAffineWithParams(mat, mat, rot, image.Point{640, 480}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
+			got := mat.GetFloatAt(tt.args.testPoint.X, tt.args.testPoint.Y)
+			if got != tt.want {
+				t.Errorf("WarpAffineWithParams() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

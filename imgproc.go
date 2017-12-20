@@ -720,3 +720,46 @@ func Resize(src, dst Mat, sz image.Point, fx, fy float64, interp InterpolationFl
 	C.Resize(src.p, dst.p, pSize, C.double(fx), C.double(fy), C.int(interp))
 	return
 }
+
+// GetRotationMatrix2D calculates an affine matrix of 2D rotation.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/da/d54/group__imgproc__transform.html#gafbbc470ce83812914a70abfb604f4326
+func GetRotationMatrix2D(center image.Point, angle, scale float64) Mat {
+	pc := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+	return Mat{p: C.GetRotationMatrix2D(pc, C.double(angle), C.double(scale))}
+}
+
+// WarpAffine Applies an affine transformation to an image.
+//
+// For further details, please see:
+//https://docs.opencv.org/3.3.1/da/d54/group__imgproc__transform.html#ga0203d9ee5fcd28d40dbc4a1ea4451983
+func WarpAffine(source, dst, m Mat, sz image.Point) {
+	pSize := C.struct_Size{
+		width:  C.int(sz.X),
+		height: C.int(sz.Y),
+	}
+
+	C.WarpAffine(source.p, dst.p, m.p, pSize)
+}
+
+// WarpAffineWithParams Applies an affine transformation to an image.
+//
+// For further details, please see:
+//https://docs.opencv.org/3.3.1/da/d54/group__imgproc__transform.html#ga0203d9ee5fcd28d40dbc4a1ea4451983
+func WarpAffineWithParams(source, dst, m Mat, sz image.Point, flags InterpolationFlags, borderType BorderType, borderValue color.RGBA) {
+	pSize := C.struct_Size{
+		width:  C.int(sz.X),
+		height: C.int(sz.Y),
+	}
+	bv := C.struct_Scalar{
+		val1: C.double(borderValue.B),
+		val2: C.double(borderValue.G),
+		val3: C.double(borderValue.R),
+		val4: C.double(borderValue.A),
+	}
+	C.WarpAffineWithParams(source.p, dst.p, m.p, pSize, C.int(flags), C.int(borderType), bv)
+}
