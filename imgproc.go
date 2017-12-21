@@ -733,7 +733,7 @@ func GetRotationMatrix2D(center image.Point, angle, scale float64) Mat {
 	return Mat{p: C.GetRotationMatrix2D(pc, C.double(angle), C.double(scale))}
 }
 
-// WarpAffine Applies an affine transformation to an image.
+// WarpAffine Applies an affine transformation to an image. For more parameters please check WarpAffineWithParams
 //
 // For further details, please see:
 //https://docs.opencv.org/3.3.1/da/d54/group__imgproc__transform.html#ga0203d9ee5fcd28d40dbc4a1ea4451983
