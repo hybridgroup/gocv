@@ -485,7 +485,7 @@ func TestGetRotationMatrix2D(t *testing.T) {
 			got := GetRotationMatrix2D(tt.args.center, tt.args.angle, tt.args.scale)
 			for row := 0; row < got.Rows(); row++ {
 				for col := 0; col < got.Cols(); col++ {
-					if got.GetDoubleAt(row, col) != tt.want[row][col] {
+					if !floatEquals(got.GetDoubleAt(row, col), tt.want[row][col]) {
 						t.Errorf("GetRotationMatrix2D() = %v, want %v at row:%v col:%v", got.GetDoubleAt(row, col), tt.want[row][col], row, col)
 					}
 				}
@@ -520,7 +520,7 @@ func TestWarpAffineWithParams(t *testing.T) {
 
 	WarpAffineWithParams(src, dst, rot, image.Point{256, 256}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
 	result := Norm(dst, 1)
-	if result != 0.0 {
+	if !floatEquals(result, 0.0) {
 		t.Errorf("WarpAffineWithParams() = %v, want %v", result, 0.0)
 	}
 
@@ -528,7 +528,7 @@ func TestWarpAffineWithParams(t *testing.T) {
 	dst = src.Clone()
 	WarpAffineWithParams(src, dst, rot, image.Point{343, 400}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
 	result = Norm(dst, 1)
-	if result != 255.0 {
+	if !floatEquals(result, 255.0) {
 		t.Errorf("WarpAffineWithParams() = %v, want %v", result, 255.0)
 	}
 }
