@@ -347,6 +347,15 @@ func Normalize(src Mat, dst Mat, alpha float64, beta float64, typ NormType) {
 	C.Mat_Normalize(src.p, dst.p, C.double(alpha), C.double(beta), C.int(typ))
 }
 
+// Norm calculates the absolute norm of an array.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#ga7c331fb8dd951707e184ef4e3f21dd33
+//
+func Norm(src1 Mat, normType int) float64 {
+	return float64(C.Norm(src1.p, C.int(normType)))
+}
+
 // TermCriteriaType for TermCriteria.
 //
 // For further details, please see:

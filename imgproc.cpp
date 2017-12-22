@@ -167,3 +167,19 @@ void Resize(Mat src, Mat dst, Size dsize, double fx, double fy, int interp) {
   cv::Size sz(dsize.width, dsize.height);
   cv::resize(*src, *dst, sz, fx, fy, interp);
 }
+
+Mat GetRotationMatrix2D(Point center, double angle, double scale) {
+  cv::Point pt(center.x, center.y);
+  return new  cv::Mat(cv::getRotationMatrix2D( pt, angle, scale));
+}
+
+void WarpAffine(Mat source, Mat dst, Mat m, Size dsize) {
+  cv::Size sz(dsize.width, dsize.height);
+  cv::warpAffine(*source, *dst, *m, sz);
+}
+
+void WarpAffineWithParams(Mat source, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode, Scalar borderValue) {
+  cv::Size sz(dsize.width, dsize.height);
+  cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
+  cv::warpAffine(*source, *dst, *rot_mat, sz, flags, borderMode, c);
+}

@@ -442,3 +442,93 @@ func TestResize(t *testing.T) {
 		t.Errorf("Expected dst size of 440x377 got %dx%d", dst.Cols(), dst.Rows())
 	}
 }
+
+func TestGetRotationMatrix2D(t *testing.T) {
+	type args struct {
+		center image.Point
+		angle  float64
+		scale  float64
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]float64
+	}{
+		{
+			name: "90",
+			args: args{image.Point{0, 0}, 90.0, 1.0},
+			want: [][]float64{
+				{6.123233995736766e-17, 1, 0},
+				{-1, 6.123233995736766e-17, 0},
+			},
+		},
+		{
+			name: "45",
+			args: args{image.Point{0, 0}, 45.0, 1.0},
+			want: [][]float64{
+				{0.7071067811865476, 0.7071067811865475, 0},
+				{-0.7071067811865475, 0.7071067811865476, 0},
+			},
+		},
+		{
+			name: "0",
+			args: args{image.Point{0, 0}, 0.0, 1.0},
+			want: [][]float64{
+				{1, 0, 0},
+				{-0, 1, 0},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := GetRotationMatrix2D(tt.args.center, tt.args.angle, tt.args.scale)
+			for row := 0; row < got.Rows(); row++ {
+				for col := 0; col < got.Cols(); col++ {
+					if !floatEquals(got.GetDoubleAt(row, col), tt.want[row][col]) {
+						t.Errorf("GetRotationMatrix2D() = %v, want %v at row:%v col:%v", got.GetDoubleAt(row, col), tt.want[row][col], row, col)
+					}
+				}
+			}
+		})
+	}
+}
+
+func TestWarpAffine(t *testing.T) {
+	src := NewMatWithSize(256, 256, MatTypeCV8UC1)
+	rot := GetRotationMatrix2D(image.Point{0, 0}, 1.0, 1.0)
+	dst := src.Clone()
+
+	WarpAffine(src, dst, rot, image.Point{256, 256})
+	result := Norm(dst, 1)
+	if result != 0.0 {
+		t.Errorf("WarpAffine() = %v, want %v", result, 0.0)
+	}
+	src = IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	dst = src.Clone()
+	WarpAffine(src, dst, rot, image.Point{343, 400})
+	result = Norm(dst, 1)
+	if result != 255.0 {
+		t.Errorf("WarpAffine() = %v, want %v", result, 255.0)
+	}
+}
+
+func TestWarpAffineWithParams(t *testing.T) {
+	src := NewMatWithSize(256, 256, MatTypeCV8UC1)
+	rot := GetRotationMatrix2D(image.Point{0, 0}, 1.0, 1.0)
+	dst := src.Clone()
+
+	WarpAffineWithParams(src, dst, rot, image.Point{256, 256}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
+	result := Norm(dst, 1)
+	if !floatEquals(result, 0.0) {
+		t.Errorf("WarpAffineWithParams() = %v, want %v", result, 0.0)
+	}
+
+	src = IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	dst = src.Clone()
+	WarpAffineWithParams(src, dst, rot, image.Point{343, 400}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
+	result = Norm(dst, 1)
+	if !floatEquals(result, 255.0) {
+		t.Errorf("WarpAffineWithParams() = %v, want %v", result, 255.0)
+	}
+}
