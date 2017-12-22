@@ -106,6 +106,8 @@ func main() {
 
 		// show the image in the window, and wait 1 millisecond
 		window.IMShow(img)
-		window.WaitKey(1)
+		if (window.WaitKey(1) >= 0) {
+			break
+		}
 	}
 }
