@@ -43,9 +43,10 @@ void PutText(Mat img, const char* text, Point org, int fontFace, double fontScal
              Scalar color, int thickness);
 void Resize(Mat src, Mat dst, Size sz, double fx, double fy, int interp);
 Mat GetRotationMatrix2D(Point center, double angle, double scale);
-void WarpAffine(Mat source, Mat dst, Mat rot_mat, Size dsize);
-void WarpAffineWithParams(Mat source, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode, Scalar borderValue);
-
+void WarpAffine(Mat src, Mat dst, Mat rot_mat, Size dsize);
+void WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode, Scalar borderValue);
+void ApplyColorMap(Mat src, Mat dst, int colormap);
+void ApplyCustomColorMap(Mat src, Mat dst, Mat colormap);
 #ifdef __cplusplus
 }
 #endif

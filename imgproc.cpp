@@ -173,13 +173,21 @@ Mat GetRotationMatrix2D(Point center, double angle, double scale) {
   return new  cv::Mat(cv::getRotationMatrix2D( pt, angle, scale));
 }
 
-void WarpAffine(Mat source, Mat dst, Mat m, Size dsize) {
+void WarpAffine(Mat src, Mat dst, Mat m, Size dsize) {
   cv::Size sz(dsize.width, dsize.height);
-  cv::warpAffine(*source, *dst, *m, sz);
+  cv::warpAffine(*src, *dst, *m, sz);
 }
 
-void WarpAffineWithParams(Mat source, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode, Scalar borderValue) {
+void WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode, Scalar borderValue) {
   cv::Size sz(dsize.width, dsize.height);
   cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
-  cv::warpAffine(*source, *dst, *rot_mat, sz, flags, borderMode, c);
+  cv::warpAffine(*src, *dst, *rot_mat, sz, flags, borderMode, c);
+}
+
+void ApplyColorMap(Mat src, Mat dst, int colormap) {
+  cv::applyColorMap(*src, *dst, colormap);
+}
+
+void ApplyCustomColorMap(Mat src, Mat dst, Mat colormap) {
+  cv::applyColorMap(*src, *dst, *colormap);
 }
