@@ -42,6 +42,7 @@ struct Size GetTextSize(const char* text, int fontFace, double fontScale, int th
 void PutText(Mat img, const char* text, Point org, int fontFace, double fontScale,
              Scalar color, int thickness);
 void Resize(Mat src, Mat dst, Size sz, double fx, double fy, int interp);
+void MatchTemplate(Mat src, Mat tpl, Mat dst, int method);
 
 #ifdef __cplusplus
 }

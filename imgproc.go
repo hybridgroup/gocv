@@ -720,3 +720,33 @@ func Resize(src, dst Mat, sz image.Point, fx, fy float64, interp InterpolationFl
 	C.Resize(src.p, dst.p, pSize, C.double(fx), C.double(fy), C.int(interp))
 	return
 }
+
+type TemplateMatchingMethod int
+
+// CV_TM_SQDIFF
+// CV_TM_SQDIFF_NORMED
+// CV_TM_CCORR
+// CV_TM_CCORR_NORMED
+// CV_TM_CCOEFF
+// CV_TM_CCOEFF_NORMED
+
+const (
+	TemplateMatchingSQDiff TemplateMatchingMethod = 0
+
+	TemplateMatchingSQDiffNormed = 1
+
+	TemplateMatchingCCorr = 2
+
+	TemplateMatchingCCorrNormed = 3
+
+	TemplateMatchingCCoeff = 4
+
+	TemplateMatchingCCoeffNormed = 5
+)
+
+// Match a template in an image
+// https://github.com/opencv/opencv/blob/master/modules/imgproc/include/opencv2/imgproc.hpp#L3744
+func MatchTemplate(src, tpl, dst Mat, method TemplateMatchingMethod) {
+	C.MatchTemplate(src.p, tpl.p, dst.p, C.int(method))
+	return
+}
