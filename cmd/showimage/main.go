@@ -24,7 +24,7 @@ func main() {
 
 	for {
 		window.IMShow(img)
-		if (window.WaitKey(1) >= 0) {
+		if window.WaitKey(1) >= 0 {
 			break
 		}
 	}
