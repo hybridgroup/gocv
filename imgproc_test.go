@@ -532,3 +532,52 @@ func TestWarpAffineWithParams(t *testing.T) {
 		t.Errorf("WarpAffineWithParams() = %v, want %v", result, 255.0)
 	}
 }
+
+func TestApplyColorMap(t *testing.T) {
+	type args struct {
+		colormapType ColormapTypes
+		want         float64
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		{name: "COLORMAP_AUTUMN", args: args{colormapType: ColormapAutumn, want: 118090.29593069873}},
+		{name: "COLORMAP_BONE", args: args{colormapType: ColormapBone, want: 122067.44213343704}},
+		{name: "COLORMAP_JET", args: args{colormapType: ColormapJet, want: 98220.64722857409}},
+		{name: "COLORMAP_WINTER", args: args{colormapType: ColormapWinter, want: 94279.52859449394}},
+		{name: "COLORMAP_RAINBOW", args: args{colormapType: ColormapRainbow, want: 92591.40608069411}},
+		{name: "COLORMAP_OCEAN", args: args{colormapType: ColormapOcean, want: 106444.16919681415}},
+		{name: "COLORMAP_SUMMER", args: args{colormapType: ColormapSummer, want: 114434.44957703952}},
+		{name: "COLORMAP_SPRING", args: args{colormapType: ColormapSpring, want: 123557.60209715953}},
+		{name: "COLORMAP_COOL", args: args{colormapType: ColormapCool, want: 123557.60209715953}},
+		{name: "COLORMAP_HSV", args: args{colormapType: ColormapHsv, want: 107679.25179903508}},
+		{name: "COLORMAP_PINK", args: args{colormapType: ColormapPink, want: 136043.97287274434}},
+		{name: "COLORMAP_HOT", args: args{colormapType: ColormapHot, want: 124941.02475968412}},
+		{name: "COLORMAP_PARULA", args: args{colormapType: ColormapParula, want: 111483.33555738274}},
+	}
+	src := IMRead("images/gocvlogo.jpg", IMReadGrayScale)
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			dst := src.Clone()
+			ApplyColorMap(src, dst, tt.args.colormapType)
+			result := Norm(dst, NormL2)
+			if !floatEquals(result, tt.args.want) {
+				t.Errorf("TestApplyColorMap() = %v, want %v", result, tt.args.want)
+			}
+		})
+	}
+}
+
+func TestApplyCustomColorMap(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadGrayScale)
+	customColorMap := NewMatWithSize(256, 1, MatTypeCV8UC1)
+
+	dst := src.Clone()
+	ApplyCustomColorMap(src, dst, customColorMap)
+	result := Norm(dst, NormL2)
+	if !floatEquals(result, 0.0) {
+		t.Errorf("TestApplyCustomColorMap() = %v, want %v", result, 0.0)
+	}
+}

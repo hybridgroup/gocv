@@ -733,24 +733,24 @@ func GetRotationMatrix2D(center image.Point, angle, scale float64) Mat {
 	return Mat{p: C.GetRotationMatrix2D(pc, C.double(angle), C.double(scale))}
 }
 
-// WarpAffine Applies an affine transformation to an image. For more parameters please check WarpAffineWithParams
+// WarpAffine applies an affine transformation to an image. For more parameters please check WarpAffineWithParams
 //
 // For further details, please see:
-//https://docs.opencv.org/3.3.1/da/d54/group__imgproc__transform.html#ga0203d9ee5fcd28d40dbc4a1ea4451983
-func WarpAffine(source, dst, m Mat, sz image.Point) {
+// https://docs.opencv.org/3.3.1/da/d54/group__imgproc__transform.html#ga0203d9ee5fcd28d40dbc4a1ea4451983
+func WarpAffine(src, dst, m Mat, sz image.Point) {
 	pSize := C.struct_Size{
 		width:  C.int(sz.X),
 		height: C.int(sz.Y),
 	}
 
-	C.WarpAffine(source.p, dst.p, m.p, pSize)
+	C.WarpAffine(src.p, dst.p, m.p, pSize)
 }
 
-// WarpAffineWithParams Applies an affine transformation to an image.
+// WarpAffineWithParams applies an affine transformation to an image.
 //
 // For further details, please see:
-//https://docs.opencv.org/3.3.1/da/d54/group__imgproc__transform.html#ga0203d9ee5fcd28d40dbc4a1ea4451983
-func WarpAffineWithParams(source, dst, m Mat, sz image.Point, flags InterpolationFlags, borderType BorderType, borderValue color.RGBA) {
+// https://docs.opencv.org/3.3.1/da/d54/group__imgproc__transform.html#ga0203d9ee5fcd28d40dbc4a1ea4451983
+func WarpAffineWithParams(src, dst, m Mat, sz image.Point, flags InterpolationFlags, borderType BorderType, borderValue color.RGBA) {
 	pSize := C.struct_Size{
 		width:  C.int(sz.X),
 		height: C.int(sz.Y),
@@ -761,5 +761,47 @@ func WarpAffineWithParams(source, dst, m Mat, sz image.Point, flags Interpolatio
 		val3: C.double(borderValue.R),
 		val4: C.double(borderValue.A),
 	}
-	C.WarpAffineWithParams(source.p, dst.p, m.p, pSize, C.int(flags), C.int(borderType), bv)
+	C.WarpAffineWithParams(src.p, dst.p, m.p, pSize, C.int(flags), C.int(borderType), bv)
+}
+
+// ColormapTypes are the 12 GNU Octave/MATLAB equivalent colormaps.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d3/d50/group__imgproc__colormap.html
+type ColormapTypes int
+
+// List of the available color maps
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d3/d50/group__imgproc__colormap.html#ga9a805d8262bcbe273f16be9ea2055a65
+const (
+	ColormapAutumn  ColormapTypes = 0
+	ColormapBone                  = 1
+	ColormapJet                   = 2
+	ColormapWinter                = 3
+	ColormapRainbow               = 4
+	ColormapOcean                 = 5
+	ColormapSummer                = 6
+	ColormapSpring                = 7
+	ColormapCool                  = 8
+	ColormapHsv                   = 9
+	ColormapPink                  = 10
+	ColormapHot                   = 11
+	ColormapParula                = 12
+)
+
+// ApplyColorMap applies a GNU Octave/MATLAB equivalent colormap on a given image.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d3/d50/group__imgproc__colormap.html#gadf478a5e5ff49d8aa24e726ea6f65d15
+func ApplyColorMap(src, dst Mat, colormapType ColormapTypes) {
+	C.ApplyColorMap(src.p, dst.p, C.int(colormapType))
+}
+
+// ApplyCustomColorMap applies a custom defined colormap on a given image.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d3/d50/group__imgproc__colormap.html#gacb22288ddccc55f9bd9e6d492b409cae
+func ApplyCustomColorMap(src, dst, customColormap Mat) {
+	C.ApplyCustomColorMap(src.p, dst.p, customColormap.p)
 }
