@@ -97,6 +97,8 @@ func main() {
 			gocv.FontHersheyPlain, 1.2, color.RGBA{0, 255, 0, 0}, 2)
 
 		window.IMShow(img)
-		window.WaitKey(1)
+		if window.WaitKey(1) >= 0 {
+			break
+		}
 	}
 }
