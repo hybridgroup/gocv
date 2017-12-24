@@ -209,6 +209,12 @@ func (m *Mat) SetUCharAt(row int, col int, val int8) {
 	C.Mat_SetUChar(m.p, C.int(row), C.int(col), C.uint8_t(val))
 }
 
+// SetSCharAt set a value from a specific row/col in this Mat expecting it to
+// be of type schar aka CV_8S.
+func (m *Mat) SetSCharAt(row int, col int, val int8) {
+	C.Mat_SetSChar(m.p, C.int(row), C.int(col), C.int8_t(val))
+}
+
 // AbsDiff calculates the per-element absolute difference between two arrays
 // or between an array and a scalar.
 //

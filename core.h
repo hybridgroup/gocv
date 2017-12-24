@@ -167,6 +167,7 @@ float Mat_GetFloat(Mat m, int row, int col);
 double Mat_GetDouble(Mat m, int row, int col);
 
 void Mat_SetUChar(Mat m, int row, int col, uint8_t val);
+void Mat_SetSChar(Mat m, int row, int col, int8_t val);
 
 void LUT(Mat src, Mat lut, Mat dst);
 

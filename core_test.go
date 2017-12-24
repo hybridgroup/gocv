@@ -141,6 +141,14 @@ func TestMatMutators(t *testing.T) {
 		}
 		mat.Close()
 	})
+	t.Run("SetSCharAt", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV8S)
+		mat.SetSCharAt(50, 50, 25)
+		if mat.GetSCharAt(50, 50) != 25 {
+			t.Errorf("SetSCharAt incorrect value: %v\n", mat.GetSCharAt(50, 50))
+		}
+		mat.Close()
+	})
 }
 
 func TestMatAbsDiff(t *testing.T) {
