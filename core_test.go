@@ -165,6 +165,14 @@ func TestMatMutators(t *testing.T) {
 		}
 		mat.Close()
 	})
+	t.Run("SetFloatAt", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV32F)
+		mat.SetFloatAt(50, 50, 25)
+		if mat.GetFloatAt(50, 50) != 25 {
+			t.Errorf("SetFloatAt incorrect value: %v\n", mat.GetFloatAt(50, 50))
+		}
+		mat.Close()
+	})
 }
 
 func TestMatAbsDiff(t *testing.T) {

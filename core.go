@@ -227,6 +227,12 @@ func (m *Mat) SetIntAt(row int, col int, val int32) {
 	C.Mat_SetInt(m.p, C.int(row), C.int(col), C.int32_t(val))
 }
 
+// SetFloatAt set a value from a specific row/col in this Mat expecting it to
+// be of type float aka CV_32F.
+func (m *Mat) SetFloatAt(row int, col int, val float32) {
+	C.Mat_SetFloat(m.p, C.int(row), C.int(col), C.float(val))
+}
+
 // AbsDiff calculates the per-element absolute difference between two arrays
 // or between an array and a scalar.
 //

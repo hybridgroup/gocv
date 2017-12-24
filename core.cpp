@@ -129,6 +129,12 @@ void Mat_SetInt(Mat m, int row, int col, int32_t val) {
     m->at<int>(row, col) = val;
 }
 
+// Mat_SetFloat set a specific row/col value from this Mat expecting
+// each element to contain a float aka CV_32F.
+void Mat_SetFloat(Mat m, int row, int col, float val) {
+    m->at<float>(row, col) = val;
+}
+
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
     cv::absdiff(*src1, *src2, *dst);
 }
