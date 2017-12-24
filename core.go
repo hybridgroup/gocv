@@ -203,6 +203,12 @@ func (m *Mat) GetDoubleAt(row int, col int) float64 {
 	return float64(C.Mat_GetDouble(m.p, C.int(row), C.int(col)))
 }
 
+// SetUCharAt set a value from a specific row/col in this Mat expecting it to
+// be of type uchar aka CV_8U.
+func (m *Mat) SetUCharAt(row int, col int, val int8) {
+	C.Mat_SetUChar(m.p, C.int(row), C.int(col), C.uint8_t(val))
+}
+
 // AbsDiff calculates the per-element absolute difference between two arrays
 // or between an array and a scalar.
 //

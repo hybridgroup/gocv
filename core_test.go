@@ -132,6 +132,17 @@ func TestMatAccessors(t *testing.T) {
 	mat.Close()
 }
 
+func TestMatMutators(t *testing.T) {
+	t.Run("SetUCharAt", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV8U)
+		mat.SetUCharAt(50, 50, 25)
+		if mat.GetUCharAt(50, 50) != 25 {
+			t.Errorf("SetUCharAt incorrect value: %v\n", mat.GetUCharAt(50, 50))
+		}
+		mat.Close()
+	})
+}
+
 func TestMatAbsDiff(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
 	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)

@@ -105,6 +105,12 @@ double Mat_GetDouble(Mat m, int row, int col) {
     return m->at<double>(row, col);
 }
 
+// Mat_GetUChar set a specific row/col value from this Mat expecting
+// each element to contain a schar aka CV_8U.
+void Mat_SetUChar(Mat m, int row, int col, uint8_t val) {
+    m->at<uchar>(row, col) = val;
+}
+
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
     cv::absdiff(*src1, *src2, *dst);
 }
