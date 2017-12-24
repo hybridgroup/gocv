@@ -171,6 +171,7 @@ void Mat_SetSChar(Mat m, int row, int col, int8_t val);
 void Mat_SetShort(Mat m, int row, int col, int16_t val);
 void Mat_SetInt(Mat m, int row, int col, int32_t val);
 void Mat_SetFloat(Mat m, int row, int col, float val);
+void Mat_SetDouble(Mat m, int row, int col, double val);
 
 void LUT(Mat src, Mat lut, Mat dst);
 

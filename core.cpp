@@ -135,6 +135,12 @@ void Mat_SetFloat(Mat m, int row, int col, float val) {
     m->at<float>(row, col) = val;
 }
 
+// Mat_SetDouble set a specific row/col value from this Mat expecting
+// each element to contain a double aka CV_64F.
+void Mat_SetDouble(Mat m, int row, int col, double val) {
+    m->at<double>(row, col) = val;
+}
+
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
     cv::absdiff(*src1, *src2, *dst);
 }

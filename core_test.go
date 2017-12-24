@@ -173,6 +173,14 @@ func TestMatMutators(t *testing.T) {
 		}
 		mat.Close()
 	})
+	t.Run("SetDoubleAt", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV64F)
+		mat.SetDoubleAt(50, 50, 25)
+		if mat.GetDoubleAt(50, 50) != 25 {
+			t.Errorf("SetDoubleAt incorrect value: %v\n", mat.GetDoubleAt(50, 50))
+		}
+		mat.Close()
+	})
 }
 
 func TestMatAbsDiff(t *testing.T) {

@@ -233,6 +233,12 @@ func (m *Mat) SetFloatAt(row int, col int, val float32) {
 	C.Mat_SetFloat(m.p, C.int(row), C.int(col), C.float(val))
 }
 
+// SetDoubleAt set a value from a specific row/col in this Mat expecting it to
+// be of type double aka CV_64F.
+func (m *Mat) SetDoubleAt(row int, col int, val float64) {
+	C.Mat_SetDouble(m.p, C.int(row), C.int(col), C.double(val))
+}
+
 // AbsDiff calculates the per-element absolute difference between two arrays
 // or between an array and a scalar.
 //
