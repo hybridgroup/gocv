@@ -105,6 +105,42 @@ double Mat_GetDouble(Mat m, int row, int col) {
     return m->at<double>(row, col);
 }
 
+// Mat_SetUChar set a specific row/col value from this Mat expecting
+// each element to contain a schar aka CV_8U.
+void Mat_SetUChar(Mat m, int row, int col, uint8_t val) {
+    m->at<uchar>(row, col) = val;
+}
+
+// Mat_SetSChar set a specific row/col value from this Mat expecting
+// each element to contain a schar aka CV_8S.
+void Mat_SetSChar(Mat m, int row, int col, int8_t val) {
+  m->at<schar>(row, col) = val;
+}
+
+// Mat_SetShort set a specific row/col value from this Mat expecting
+// each element to contain a short aka CV_16S.
+void Mat_SetShort(Mat m, int row, int col, int16_t val) {
+    m->at<short>(row, col) = val;
+}
+
+// Mat_SetInt set a specific row/col value from this Mat expecting
+// each element to contain an int aka CV_32S.
+void Mat_SetInt(Mat m, int row, int col, int32_t val) {
+    m->at<int>(row, col) = val;
+}
+
+// Mat_SetFloat set a specific row/col value from this Mat expecting
+// each element to contain a float aka CV_32F.
+void Mat_SetFloat(Mat m, int row, int col, float val) {
+    m->at<float>(row, col) = val;
+}
+
+// Mat_SetDouble set a specific row/col value from this Mat expecting
+// each element to contain a double aka CV_64F.
+void Mat_SetDouble(Mat m, int row, int col, double val) {
+    m->at<double>(row, col) = val;
+}
+
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
     cv::absdiff(*src1, *src2, *dst);
 }

@@ -203,6 +203,42 @@ func (m *Mat) GetDoubleAt(row int, col int) float64 {
 	return float64(C.Mat_GetDouble(m.p, C.int(row), C.int(col)))
 }
 
+// SetUCharAt set a value from a specific row/col in this Mat expecting it to
+// be of type uchar aka CV_8U.
+func (m *Mat) SetUCharAt(row int, col int, val int8) {
+	C.Mat_SetUChar(m.p, C.int(row), C.int(col), C.uint8_t(val))
+}
+
+// SetSCharAt set a value from a specific row/col in this Mat expecting it to
+// be of type schar aka CV_8S.
+func (m *Mat) SetSCharAt(row int, col int, val int8) {
+	C.Mat_SetSChar(m.p, C.int(row), C.int(col), C.int8_t(val))
+}
+
+// SetShortAt set a value from a specific row/col in this Mat expecting it to
+// be of type short aka CV_16S.
+func (m *Mat) SetShortAt(row int, col int, val int16) {
+	C.Mat_SetShort(m.p, C.int(row), C.int(col), C.int16_t(val))
+}
+
+// SetIntAt set a value from a specific row/col in this Mat expecting it to
+// be of type int aka CV_32S.
+func (m *Mat) SetIntAt(row int, col int, val int32) {
+	C.Mat_SetInt(m.p, C.int(row), C.int(col), C.int32_t(val))
+}
+
+// SetFloatAt set a value from a specific row/col in this Mat expecting it to
+// be of type float aka CV_32F.
+func (m *Mat) SetFloatAt(row int, col int, val float32) {
+	C.Mat_SetFloat(m.p, C.int(row), C.int(col), C.float(val))
+}
+
+// SetDoubleAt set a value from a specific row/col in this Mat expecting it to
+// be of type double aka CV_64F.
+func (m *Mat) SetDoubleAt(row int, col int, val float64) {
+	C.Mat_SetDouble(m.p, C.int(row), C.int(col), C.double(val))
+}
+
 // AbsDiff calculates the per-element absolute difference between two arrays
 // or between an array and a scalar.
 //
