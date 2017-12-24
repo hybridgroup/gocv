@@ -221,6 +221,12 @@ func (m *Mat) SetShortAt(row int, col int, val int16) {
 	C.Mat_SetShort(m.p, C.int(row), C.int(col), C.int16_t(val))
 }
 
+// SetIntAt set a value from a specific row/col in this Mat expecting it to
+// be of type int aka CV_32S.
+func (m *Mat) SetIntAt(row int, col int, val int32) {
+	C.Mat_SetInt(m.p, C.int(row), C.int(col), C.int32_t(val))
+}
+
 // AbsDiff calculates the per-element absolute difference between two arrays
 // or between an array and a scalar.
 //
