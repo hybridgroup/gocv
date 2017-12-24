@@ -117,6 +117,13 @@ void Mat_SetSChar(Mat m, int row, int col, int8_t val) {
   m->at<schar>(row, col) = val;
 }
 
+
+// Mat_SetShort set a specific row/col value from this Mat expecting
+// each element to contain a short aka CV_16S.
+void Mat_SetShort(Mat m, int row, int col, int16_t val) {
+    m->at<short>(row, col) = val;
+}
+
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
     cv::absdiff(*src1, *src2, *dst);
 }

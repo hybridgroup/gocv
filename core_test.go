@@ -149,6 +149,14 @@ func TestMatMutators(t *testing.T) {
 		}
 		mat.Close()
 	})
+	t.Run("SetShortAt", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV16S)
+		mat.SetShortAt(50, 50, 25)
+		if mat.GetShortAt(50, 50) != 25 {
+			t.Errorf("SetShortAt incorrect value: %v\n", mat.GetShortAt(50, 50))
+		}
+		mat.Close()
+	})
 }
 
 func TestMatAbsDiff(t *testing.T) {
