@@ -68,7 +68,7 @@ const (
 // vector fields, point clouds, tensors, and histograms.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.1/d3/d63/classcv_1_1Mat.html
+// http://docs.opencv.org/3.4.0/d3/d63/classcv_1_1Mat.html
 //
 type Mat struct {
 	p C.Mat
@@ -152,7 +152,7 @@ func (m *Mat) Mean() Scalar {
 // Indices of the entries are taken from the input array.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#gab55b8d062b7f5587720ede032d34156f
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gab55b8d062b7f5587720ede032d34156f
 func LUT(src, wbLUT, dst Mat) {
 	C.LUT(src.p, wbLUT.p, dst.p)
 }
@@ -243,7 +243,7 @@ func (m *Mat) SetDoubleAt(row int, col int, val float64) {
 // or between an array and a scalar.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#ga6fef31bc8c4071cbc114a758a2b79c14
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga6fef31bc8c4071cbc114a758a2b79c14
 //
 func AbsDiff(src1 Mat, src2 Mat, dst Mat) {
 	C.Mat_AbsDiff(src1.p, src2.p, dst.p)
@@ -252,7 +252,7 @@ func AbsDiff(src1 Mat, src2 Mat, dst Mat) {
 // Add calculates the per-element sum of two arrays or an array and a scalar.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#ga10ac1bfb180e2cfda1701d06c24fdbd6
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga10ac1bfb180e2cfda1701d06c24fdbd6
 //
 func Add(src1 Mat, src2 Mat, dst Mat) {
 	C.Mat_Add(src1.p, src2.p, dst.p)
@@ -261,7 +261,7 @@ func Add(src1 Mat, src2 Mat, dst Mat) {
 // AddWeighted calculates the weighted sum of two arrays.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#gafafb2513349db3bcff51f54ee5592a19
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gafafb2513349db3bcff51f54ee5592a19
 //
 func AddWeighted(src1 Mat, alpha float64, src2 Mat, beta float64, gamma float64, dst Mat) {
 	C.Mat_AddWeighted(src1.p, C.double(alpha),
@@ -273,7 +273,7 @@ func AddWeighted(src1 Mat, alpha float64, src2 Mat, beta float64, gamma float64,
 // or an array and a scalar.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#ga60b4d04b251ba5eb1392c34425497e14
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga60b4d04b251ba5eb1392c34425497e14
 //
 func BitwiseAnd(src1 Mat, src2 Mat, dst Mat) {
 	C.Mat_BitwiseAnd(src1.p, src2.p, dst.p)
@@ -282,7 +282,7 @@ func BitwiseAnd(src1 Mat, src2 Mat, dst Mat) {
 // BitwiseNot inverts every bit of an array.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#ga0002cf8b418479f4cb49a75442baee2f
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga0002cf8b418479f4cb49a75442baee2f
 //
 func BitwiseNot(src1 Mat, dst Mat) {
 	C.Mat_BitwiseNot(src1.p, dst.p)
@@ -292,7 +292,7 @@ func BitwiseNot(src1 Mat, dst Mat) {
 // or an array and a scalar.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#gab85523db362a4e26ff0c703793a719b4
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gab85523db362a4e26ff0c703793a719b4
 //
 func BitwiseOr(src1 Mat, src2 Mat, dst Mat) {
 	C.Mat_BitwiseOr(src1.p, src2.p, dst.p)
@@ -302,7 +302,7 @@ func BitwiseOr(src1 Mat, src2 Mat, dst Mat) {
 // on two arrays or an array and a scalar.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#ga84b2d8188ce506593dcc3f8cd00e8e2c
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga84b2d8188ce506593dcc3f8cd00e8e2c
 //
 func BitwiseXor(src1 Mat, src2 Mat, dst Mat) {
 	C.Mat_BitwiseXor(src1.p, src2.p, dst.p)
@@ -311,7 +311,7 @@ func BitwiseXor(src1 Mat, src2 Mat, dst Mat) {
 // InRange checks if array elements lie between the elements of two Mat arrays.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#ga48af0ab51e36436c5d04340e036ce981
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga48af0ab51e36436c5d04340e036ce981
 //
 func InRange(src Mat, lb Mat, ub Mat, dst Mat) {
 	C.Mat_InRange(src.p, lb.p, ub.p, dst.p)
@@ -321,7 +321,7 @@ func InRange(src Mat, lb Mat, ub Mat, dst Mat) {
 // for a given vector size.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#ga6577a2e59968936ae02eb2edde5de299
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga6577a2e59968936ae02eb2edde5de299
 //
 func GetOptimalDFTSize(vecsize int) int {
 	return int(C.Mat_GetOptimalDFTSize(C.int(vecsize)))
@@ -331,7 +331,7 @@ func GetOptimalDFTSize(vecsize int) int {
 // of a 1D or 2D floating-point array.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#gadd6cf9baf2b8b704a11b5f04aaf4f39d
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gadd6cf9baf2b8b704a11b5f04aaf4f39d
 //
 func DFT(src Mat, dst Mat) {
 	C.Mat_DFT(src.p, dst.p)
@@ -340,7 +340,7 @@ func DFT(src Mat, dst Mat) {
 // Merge creates one multi-channel array out of several single-channel ones.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#ga7d7b4d6c6ee504b30a20b1680029c7b4
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga7d7b4d6c6ee504b30a20b1680029c7b4
 //
 func Merge(mv []Mat, dst Mat) {
 	cMatArray := make([]C.Mat, len(mv))
@@ -358,7 +358,7 @@ func Merge(mv []Mat, dst Mat) {
 // NormType for normalization operations.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#gad12cefbcb5291cf958a85b4b67b6149f
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gad12cefbcb5291cf958a85b4b67b6149f
 //
 type NormType int
 
@@ -377,7 +377,7 @@ const (
 // Normalize normalizes the norm or value range of an array.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#ga87eef7ee3970f86906d69a92cbf064bd
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga87eef7ee3970f86906d69a92cbf064bd
 //
 func Normalize(src Mat, dst Mat, alpha float64, beta float64, typ NormType) {
 	C.Mat_Normalize(src.p, dst.p, C.double(alpha), C.double(beta), C.int(typ))
@@ -386,7 +386,7 @@ func Normalize(src Mat, dst Mat, alpha float64, beta float64, typ NormType) {
 // Norm calculates the absolute norm of an array.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/de8/group__core__array.html#ga7c331fb8dd951707e184ef4e3f21dd33
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga7c331fb8dd951707e184ef4e3f21dd33
 //
 func Norm(src1 Mat, normType NormType) float64 {
 	return float64(C.Norm(src1.p, C.int(normType)))
@@ -395,7 +395,7 @@ func Norm(src1 Mat, normType NormType) float64 {
 // TermCriteriaType for TermCriteria.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d9/d5d/classcv_1_1TermCriteria.html#a56fecdc291ccaba8aad27d67ccf72c57
+// https://docs.opencv.org/3.4.0/d9/d5d/classcv_1_1TermCriteria.html#a56fecdc291ccaba8aad27d67ccf72c57
 //
 type TermCriteriaType int
 
@@ -414,7 +414,7 @@ const (
 // TermCriteria is the criteria for iterative algorithms.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d9/d5d/classcv_1_1TermCriteria.html
+// https://docs.opencv.org/3.4.0/d9/d5d/classcv_1_1TermCriteria.html
 //
 type TermCriteria struct {
 	p C.TermCriteria
@@ -428,7 +428,7 @@ func NewTermCriteria(typ TermCriteriaType, maxCount int, epsilon float64) TermCr
 // Scalar is a 4-element vector widely used in OpenCV to pass pixel values.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.1/d1/da0/classcv_1_1Scalar__.html
+// http://docs.opencv.org/3.4.0/d1/da0/classcv_1_1Scalar__.html
 //
 type Scalar struct {
 	Val1 float64
@@ -446,7 +446,7 @@ func NewScalar(v1 float64, v2 float64, v3 float64, v4 float64) Scalar {
 // KeyPoint is data structure for salient point detectors.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d2/d29/classcv_1_1KeyPoint.html
+// https://docs.opencv.org/3.4.0/d2/d29/classcv_1_1KeyPoint.html
 //
 type KeyPoint struct {
 	X, Y                  float64

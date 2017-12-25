@@ -6,6 +6,6 @@
 // computer vision algorithms.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.1/d1/dfb/intro.html
+// http://docs.opencv.org/3.4.0/d1/dfb/intro.html
 //
 package gocv // import "gocv.io/x/gocv"

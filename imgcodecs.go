@@ -124,7 +124,7 @@ const (
 // unsupported or invalid format), the function returns an empty Mat.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.1/d4/da8/group__imgcodecs.html#ga288b8b3da0892bd651fce07b3bbd3a56
+// http://docs.opencv.org/3.4.0/d4/da8/group__imgcodecs.html#ga288b8b3da0892bd651fce07b3bbd3a56
 //
 func IMRead(name string, flags IMReadFlag) Mat {
 	cName := C.CString(name)
@@ -136,7 +136,7 @@ func IMRead(name string, flags IMReadFlag) Mat {
 // IMWrite writes a Mat to an image file.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.1/d4/da8/group__imgcodecs.html#gabbc7ef1aa2edfaa87772f1202d67e0ce
+// http://docs.opencv.org/3.4.0/d4/da8/group__imgcodecs.html#gabbc7ef1aa2edfaa87772f1202d67e0ce
 //
 func IMWrite(name string, img Mat) bool {
 	cName := C.CString(name)
@@ -149,7 +149,7 @@ func IMWrite(name string, img Mat) bool {
 // With that func you can pass compression parameters
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.1/d4/da8/group__imgcodecs.html#gabbc7ef1aa2edfaa87772f1202d67e0ce
+// http://docs.opencv.org/3.4.0/d4/da8/group__imgcodecs.html#gabbc7ef1aa2edfaa87772f1202d67e0ce
 //
 func IMWriteWithParams(name string, img Mat, params []int) bool {
 	cName := C.CString(name)
@@ -173,7 +173,7 @@ func IMWriteWithParams(name string, img Mat, params []int) bool {
 // using the image format passed in in the form of a file extension string.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.3.1/d4/da8/group__imgcodecs.html#ga461f9ac09887e47797a54567df3b8b63
+// http://docs.opencv.org/3.4.0/d4/da8/group__imgcodecs.html#ga461f9ac09887e47797a54567df3b8b63
 //
 func IMEncode(fileExt string, img Mat) (buf []byte, err error) {
 	cfileExt := C.CString(fileExt)
@@ -190,7 +190,7 @@ func IMEncode(fileExt string, img Mat) (buf []byte, err error) {
 // returns an empty matrix.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d4/da8/group__imgcodecs.html#ga26a67788faa58ade337f8d28ba0eb19e
+// https://docs.opencv.org/3.4.0/d4/da8/group__imgcodecs.html#ga26a67788faa58ade337f8d28ba0eb19e
 //
 func IMDecode(buf []byte, flags IMReadFlag) Mat {
 	data := toByteArray(buf)

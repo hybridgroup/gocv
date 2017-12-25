@@ -178,7 +178,7 @@ Now you should be able to build or run any of the examples:
 The version program should output the following:
 
 		gocv version: 0.2.0
-		opencv lib version: 3.3.1
+		opencv lib version: 3.4.0
 
 You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
 
@@ -236,7 +236,7 @@ Now you should be able to build or run any of the command examples:
 The version program should output the following:
 
 		gocv version: 0.2.0
-		opencv lib version: 3.3.1
+		opencv lib version: 3.4.0
 
 You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
 
@@ -260,13 +260,13 @@ Download and install CMake [https://cmake.org/download/](https://cmake.org/downl
 
 #### Download OpenCV 3.3 and OpenCV Contrib Modules
 
-Download the source code for the latest OpenCV release from [https://github.com/opencv/opencv/archive/3.3.1.zip](https://github.com/opencv/opencv/archive/3.3.1.zip) and extract it to the directory `C:\opencv\opencv-3.3.1`
+Download the source code for the latest OpenCV release from [https://github.com/opencv/opencv/archive/3.4.0.zip](https://github.com/opencv/opencv/archive/3.4.0.zip) and extract it to the directory `C:\opencv\opencv-3.4.0`
 
-Download the source code for the latest OpenCV Contrib release from [https://github.com/opencv/opencv_contrib/archive/3.3.1.zip](https://github.com/opencv/opencv_contrib/archive/3.3.1.zip) and extract it to the directory `C:\opencv\opencv_contrib-3.3.1`
+Download the source code for the latest OpenCV Contrib release from [https://github.com/opencv/opencv_contrib/archive/3.4.0.zip](https://github.com/opencv/opencv_contrib/archive/3.4.0.zip) and extract it to the directory `C:\opencv\opencv_contrib-3.4.0`
 
 Create the directory `C:\opencv\build` as the build directory.
 
-Now launch the `cmake-gui` program, and set the "Where is the source code" to `C:\opencv\opencv-3.3.1`, and the "Where to build the binaries" to `C:\opencv\build`.
+Now launch the `cmake-gui` program, and set the "Where is the source code" to `C:\opencv\opencv-3.4.0`, and the "Where to build the binaries" to `C:\opencv\build`.
 
 Click on "Configure" and select "MinGW MakeFile" from the window, then click on the  "Next" button.
 
@@ -278,7 +278,7 @@ Now, scroll down the list and change the following settings as follows:
 - `BUILD_PERF_TESTS` should be unchecked (aka disabled).
 - `ENABLE_PRECOMPILED_HEADERS` should be unchecked.
 - `ENABLE_CXX11` should be checked.
-- `OPENCV_EXTRA_MODULES_PATH` should be set to `C:\opencv\opencv_contrib-3.3.1\modules`
+- `OPENCV_EXTRA_MODULES_PATH` should be set to `C:\opencv\opencv_contrib-3.4.0\modules`
 
 Click on the "Configure" button again, and wait for the configuration step.
 
@@ -307,7 +307,7 @@ You should now have OpenCV 3.3 installed on your Windows 10 machine.
 Run these commands to configure Go to know about the include and lib directories:
 
 		set CGO_CPPFLAGS=-IC:\opencv\build\install\include
-		set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core331 -lopencv_videoio331 -lopencv_imgproc331 -lopencv_highgui331 -lopencv_imgcodecs331 -lopencv_objdetect331 -lopencv_calib3d331 -lopencv_video331 -lopencv_xfeatures2d331 -lopencv_face331
+		set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core340 -lopencv_videoio340 -lopencv_imgproc340 -lopencv_highgui340 -lopencv_imgcodecs340 -lopencv_objdetect340 -lopencv_calib3d340 -lopencv_video340 -lopencv_xfeatures2d340 -lopencv_face340
 
 Now you should be able to build or run any of the command examples:
 
@@ -316,7 +316,7 @@ Now you should be able to build or run any of the command examples:
 The version program should output the following:
 
 		gocv version: 0.2.0
-		opencv lib version: 3.3.1
+		opencv lib version: 3.4.0
 
 ## How to contribute
 

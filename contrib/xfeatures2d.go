@@ -22,7 +22,7 @@ type SIFT struct {
 // NewSIFT returns a new SIFT algorithm.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d5/d3c/classcv_1_1xfeatures2d_1_1SIFT.html
+// https://docs.opencv.org/3.4.0/d5/d3c/classcv_1_1xfeatures2d_1_1SIFT.html
 //
 func NewSIFT() SIFT {
 	return SIFT{p: unsafe.Pointer(C.SIFT_Create())}
@@ -38,7 +38,7 @@ func (d *SIFT) Close() error {
 // Detect keypoints in an image using SIFT.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
+// https://docs.opencv.org/3.4.0/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 //
 func (d *SIFT) Detect(src gocv.Mat) []gocv.KeyPoint {
 	ret := C.SIFT_Detect((C.SIFT)(d.p), C.Mat(src.Ptr()))
@@ -50,7 +50,7 @@ func (d *SIFT) Detect(src gocv.Mat) []gocv.KeyPoint {
 // DetectAndCompute detects and computes keypoints in an image using SIFT.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
+// https://docs.opencv.org/3.4.0/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
 //
 func (d *SIFT) DetectAndCompute(src gocv.Mat, mask gocv.Mat) ([]gocv.KeyPoint, gocv.Mat) {
 	desc := gocv.NewMat()
@@ -70,7 +70,7 @@ type SURF struct {
 // NewSURF returns a new SURF algorithm.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d5/df7/classcv_1_1xfeatures2d_1_1SURF.html
+// https://docs.opencv.org/3.4.0/d5/df7/classcv_1_1xfeatures2d_1_1SURF.html
 //
 func NewSURF() SURF {
 	return SURF{p: unsafe.Pointer(C.SURF_Create())}
@@ -86,7 +86,7 @@ func (d *SURF) Close() error {
 // Detect keypoints in an image using SURF.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
+// https://docs.opencv.org/3.4.0/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 //
 func (d *SURF) Detect(src gocv.Mat) []gocv.KeyPoint {
 	ret := C.SURF_Detect((C.SURF)(d.p), C.Mat(src.Ptr()))
@@ -98,7 +98,7 @@ func (d *SURF) Detect(src gocv.Mat) []gocv.KeyPoint {
 // DetectAndCompute detects and computes keypoints in an image using SURF.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
+// https://docs.opencv.org/3.4.0/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
 //
 func (d *SURF) DetectAndCompute(src gocv.Mat, mask gocv.Mat) ([]gocv.KeyPoint, gocv.Mat) {
 	desc := gocv.NewMat()
