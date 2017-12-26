@@ -172,6 +172,121 @@ func (f *FastFeatureDetector) Detect(src Mat) []KeyPoint {
 	return getKeyPoints(ret)
 }
 
+// GFTTDetector is a wrapper around the cv::GFTTDetector algorithm.
+type GFTTDetector struct {
+	// C.GFTTDetector
+	p unsafe.Pointer
+}
+
+// NewGFTTDetector returns a new GFTTDetector algorithm
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/df/d21/classcv_1_1GFTTDetector.html
+//
+func NewGFTTDetector() GFTTDetector {
+	return GFTTDetector{p: unsafe.Pointer(C.GFTTDetector_Create())}
+}
+
+// Close GFTTDetector.
+func (a *GFTTDetector) Close() error {
+	C.GFTTDetector_Close((C.GFTTDetector)(a.p))
+	a.p = nil
+	return nil
+}
+
+// Detect keypoints in an image using GFTTDetector.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
+//
+func (a *GFTTDetector) Detect(src Mat) []KeyPoint {
+	ret := C.GFTTDetector_Detect((C.GFTTDetector)(a.p), src.p)
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret)
+}
+
+// KAZE is a wrapper around the cv::KAZE algorithm.
+type KAZE struct {
+	// C.KAZE
+	p unsafe.Pointer
+}
+
+// NewKAZE returns a new KAZE algorithm
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d3/d61/classcv_1_1KAZE.html
+//
+func NewKAZE() KAZE {
+	return KAZE{p: unsafe.Pointer(C.KAZE_Create())}
+}
+
+// Close KAZE.
+func (a *KAZE) Close() error {
+	C.KAZE_Close((C.KAZE)(a.p))
+	a.p = nil
+	return nil
+}
+
+// Detect keypoints in an image using KAZE.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
+//
+func (a *KAZE) Detect(src Mat) []KeyPoint {
+	ret := C.KAZE_Detect((C.KAZE)(a.p), src.p)
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret)
+}
+
+// Detect keypoints and compute in an image using KAZE.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
+//
+func (a *KAZE) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
+	desc := NewMat()
+	ret := C.KAZE_DetectAndCompute((C.KAZE)(a.p), src.p, mask.p, desc.p)
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret), desc
+}
+
+// MSER is a wrapper around the cv::MSER algorithm.
+type MSER struct {
+	// C.MSER
+	p unsafe.Pointer
+}
+
+// NewMSER returns a new MSER algorithm
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d3/d28/classcv_1_1MSER.html
+//
+func NewMSER() MSER {
+	return MSER{p: unsafe.Pointer(C.MSER_Create())}
+}
+
+// Close MSER.
+func (a *MSER) Close() error {
+	C.MSER_Close((C.MSER)(a.p))
+	a.p = nil
+	return nil
+}
+
+// Detect keypoints in an image using MSER.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
+//
+func (a *MSER) Detect(src Mat) []KeyPoint {
+	ret := C.MSER_Detect((C.MSER)(a.p), src.p)
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret)
+}
+
 // ORB is a wrapper around the cv::ORB.
 type ORB struct {
 	// C.ORB

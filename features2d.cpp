@@ -97,6 +97,89 @@ struct KeyPoints BRISK_DetectAndCompute(BRISK b, Mat src, Mat mask, Mat desc) {
     return ret;
 }
 
+GFTTDetector GFTTDetector_Create() {
+    // TODO: params
+    return new cv::Ptr<cv::GFTTDetector>(cv::GFTTDetector::create());
+}
+
+void GFTTDetector_Close(GFTTDetector a) {
+    delete a;
+}
+
+struct KeyPoints GFTTDetector_Detect(GFTTDetector a, Mat src) {
+    std::vector<cv::KeyPoint> detected;
+    (*a)->detect(*src, detected);
+
+    KeyPoint* kps = new KeyPoint[detected.size()];
+    for (size_t i = 0; i < detected.size(); ++i) {
+      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+        detected[i].response, detected[i].octave, detected[i].class_id};
+      kps[i] = k;
+    }
+    KeyPoints ret = {kps, (int)detected.size()};
+    return ret;
+}
+
+KAZE KAZE_Create() {
+    // TODO: params
+    return new cv::Ptr<cv::KAZE>(cv::KAZE::create());
+}
+
+void KAZE_Close(KAZE a) {
+    delete a;
+}
+
+struct KeyPoints KAZE_Detect(KAZE a, Mat src) {
+    std::vector<cv::KeyPoint> detected;
+    (*a)->detect(*src, detected);
+
+    KeyPoint* kps = new KeyPoint[detected.size()];
+    for (size_t i = 0; i < detected.size(); ++i) {
+      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+        detected[i].response, detected[i].octave, detected[i].class_id};
+      kps[i] = k;
+    }
+    KeyPoints ret = {kps, (int)detected.size()};
+    return ret;
+}
+
+struct KeyPoints KAZE_DetectAndCompute(KAZE a, Mat src, Mat mask, Mat desc) {
+    std::vector<cv::KeyPoint> detected;
+    (*a)->detectAndCompute(*src, *mask, detected, *desc);
+
+    KeyPoint* kps = new KeyPoint[detected.size()];
+    for (size_t i = 0; i < detected.size(); ++i) {
+      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+        detected[i].response, detected[i].octave, detected[i].class_id};
+      kps[i] = k;
+    }
+    KeyPoints ret = {kps, (int)detected.size()};
+    return ret;
+}
+
+MSER MSER_Create() {
+    // TODO: params
+    return new cv::Ptr<cv::MSER>(cv::MSER::create());
+}
+
+void MSER_Close(MSER a) {
+    delete a;
+}
+
+struct KeyPoints MSER_Detect(MSER a, Mat src) {
+    std::vector<cv::KeyPoint> detected;
+    (*a)->detect(*src, detected);
+
+    KeyPoint* kps = new KeyPoint[detected.size()];
+    for (size_t i = 0; i < detected.size(); ++i) {
+      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+        detected[i].response, detected[i].octave, detected[i].class_id};
+      kps[i] = k;
+    }
+    KeyPoints ret = {kps, (int)detected.size()};
+    return ret;
+}
+
 FastFeatureDetector FastFeatureDetector_Create() {
     // TODO: params
     return new cv::Ptr<cv::FastFeatureDetector>(cv::FastFeatureDetector::create());

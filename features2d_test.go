@@ -104,6 +104,75 @@ func TestFastFeatureDetector(t *testing.T) {
 	}
 }
 
+func TestGFTTDetector(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in GFTTDetector test")
+	}
+	defer img.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	gft := NewGFTTDetector()
+	defer gft.Close()
+
+	kp := gft.Detect(img)
+	if len(kp) < 512 {
+		t.Errorf("Invalid KeyPoint array in GFTTDetector test: %d", len(kp))
+	}
+}
+
+func TestKAZE(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in KAZE test")
+	}
+	defer img.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	k := NewKAZE()
+	defer k.Close()
+
+	kp := k.Detect(img)
+	if len(kp) < 512 {
+		t.Errorf("Invalid KeyPoint array in KAZE test: %d", len(kp))
+	}
+
+	mask := NewMat()
+	defer mask.Close()
+
+	kp2, desc := k.DetectAndCompute(img, mask)
+	if len(kp2) < 512 {
+		t.Errorf("Invalid KeyPoint array in KAZE DetectAndCompute: %d", len(kp2))
+	}
+
+	if desc.Empty() {
+		t.Error("Invalid Mat desc in KAZE DetectAndCompute")
+	}
+}
+
+func TestMSER(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in MSER test")
+	}
+	defer img.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	mser := NewMSER()
+	defer mser.Close()
+
+	kp := mser.Detect(img)
+	if len(kp) != 234 {
+		t.Errorf("Invalid KeyPoint array in MSER test: %d", len(kp))
+	}
+}
+
 func TestORB(t *testing.T) {
 	img := IMRead("images/face.jpg", IMReadColor)
 	if img.Empty() {

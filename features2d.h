@@ -13,6 +13,9 @@ typedef cv::Ptr<cv::AKAZE>* AKAZE;
 typedef cv::Ptr<cv::AgastFeatureDetector>* AgastFeatureDetector;
 typedef cv::Ptr<cv::BRISK>* BRISK;
 typedef cv::Ptr<cv::FastFeatureDetector>* FastFeatureDetector;
+typedef cv::Ptr<cv::GFTTDetector>* GFTTDetector;
+typedef cv::Ptr<cv::KAZE>* KAZE;
+typedef cv::Ptr<cv::MSER>* MSER;
 typedef cv::Ptr<cv::ORB>* ORB;
 typedef cv::Ptr<cv::SimpleBlobDetector>* SimpleBlobDetector;
 #else
@@ -20,6 +23,9 @@ typedef void* AKAZE;
 typedef void* AgastFeatureDetector;
 typedef void* BRISK;
 typedef void* FastFeatureDetector;
+typedef void* GFTTDetector;
+typedef void* KAZE;
+typedef void* MSER;
 typedef void* ORB;
 typedef void* SimpleBlobDetector;
 #endif
@@ -41,6 +47,19 @@ struct KeyPoints BRISK_DetectAndCompute(BRISK b, Mat src, Mat mask, Mat desc);
 FastFeatureDetector FastFeatureDetector_Create();
 void FastFeatureDetector_Close(FastFeatureDetector f);
 struct KeyPoints FastFeatureDetector_Detect(FastFeatureDetector f, Mat src);
+
+GFTTDetector GFTTDetector_Create();
+void GFTTDetector_Close(GFTTDetector a);
+struct KeyPoints GFTTDetector_Detect(GFTTDetector a, Mat src);
+
+KAZE KAZE_Create();
+void KAZE_Close(KAZE a);
+struct KeyPoints KAZE_Detect(KAZE a, Mat src);
+struct KeyPoints KAZE_DetectAndCompute(KAZE a, Mat src, Mat mask, Mat desc);
+
+MSER MSER_Create();
+void MSER_Close(MSER a);
+struct KeyPoints MSER_Detect(MSER a, Mat src);
 
 ORB ORB_Create();
 void ORB_Close(ORB o);
