@@ -10,3 +10,7 @@ func floatEquals(a, b float64) bool {
 	}
 	return false
 }
+
+func round(x, unit float64) float64 {
+	return float64(int64(x/unit+0.5)) * unit
+}

@@ -508,8 +508,9 @@ func TestWarpAffine(t *testing.T) {
 	dst = src.Clone()
 	WarpAffine(src, dst, rot, image.Point{343, 400})
 	result = Norm(dst, NormL2)
-	if result != 111111.05612854195 {
-		t.Errorf("WarpAffine() = %v, want %v", result, 111111.05612854195)
+
+	if !floatEquals(round(result, 0.05), round(111111.05, 0.05)) {
+		t.Errorf("WarpAffine() = %v, want %v", round(result, 0.05), round(111111.05, 0.05))
 	}
 }
 
@@ -528,8 +529,8 @@ func TestWarpAffineWithParams(t *testing.T) {
 	dst = src.Clone()
 	WarpAffineWithParams(src, dst, rot, image.Point{343, 400}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
 	result = Norm(dst, NormL2)
-	if !floatEquals(result, 111111.05612854195) {
-		t.Errorf("WarpAffineWithParams() = %v, want %v", result, 111111.05612854195)
+	if !floatEquals(round(result, 0.05), round(111111.05, 0.05)) {
+		t.Errorf("WarpAffine() = %v, want %v", round(result, 0.05), round(111111.05, 0.05))
 	}
 }
 
