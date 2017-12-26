@@ -117,10 +117,7 @@ Your pull requests will be greatly appreciated!
 
 - [ ] calib3d. Camera Calibration and 3D Reconstruction
 - [ ] **features2d. 2D Features Framework - WORK STARTED**
-    - [ ] **Feature Detection and Description - WORK STARTED** The following functions still need implementation:
-        - [ ] [GFTTDetector](https://docs.opencv.org/3.4.0/df/d21/classcv_1_1GFTTDetector.html)
-        - [ ] [KAZE](https://docs.opencv.org/3.4.0/d3/d61/classcv_1_1KAZE.html)
-        - [ ] [MSER](https://docs.opencv.org/3.4.0/d3/d28/classcv_1_1MSER.html)
+    - [X] **Feature Detection and Description**
     - [ ] Descriptor Matchers (https://docs.opencv.org/3.4.0/d8/d9b/group__features2d__match.html)
     - [ ] Drawing Function of Keypoints and Matches (https://docs.opencv.org/3.4.0/d4/d5d/group__features2d__draw.html)
     - [ ] Object Categorization (https://docs.opencv.org/3.4.0/de/d24/group__features2d__category.html)
