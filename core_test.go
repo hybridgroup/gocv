@@ -64,6 +64,20 @@ func TestMatRegion(t *testing.T) {
 	}
 }
 
+func TestMatReshape(t *testing.T) {
+	mat := NewMatWithSize(100, 100, MatTypeCV8UC4)
+	defer mat.Close()
+
+	r := mat.Reshape(1, 1)
+	if r.Rows() != 1 {
+		t.Errorf("Mat reshape incorrect row count: %v\n", r.Rows())
+	}
+
+	if r.Cols() != 40000 {
+		t.Errorf("Mat reshape incorrect col count: %v\n", r.Cols())
+	}
+}
+
 func TestMatMean(t *testing.T) {
 	mat := NewMatWithSize(100, 100, MatTypeCV8U)
 	mean := mat.Mean()

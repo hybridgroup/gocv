@@ -139,6 +139,15 @@ func (m *Mat) Region(rio image.Rectangle) Mat {
 	return Mat{p: C.Mat_Region(m.p, cRect)}
 }
 
+// Reshape changes the shape and/or the number of channels of a 2D matrix without copying the data.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d3/d63/classcv_1_1Mat.html#a4eb96e3251417fa88b78e2abd6cfd7d8
+//
+func (m *Mat) Reshape(cn int, rows int) Mat {
+	return Mat{p: C.Mat_Reshape(m.p, C.int(cn), C.int(rows))}
+}
+
 // Mean calculates the mean value M of array elements, independently for each channel, and return it as Scalar
 // TODO pass second paramter with mask
 func (m *Mat) Mean() Scalar {
@@ -353,6 +362,25 @@ func Merge(mv []Mat, dst Mat) {
 	}
 
 	C.Mat_Merge(cMats, dst.p)
+}
+
+// MinMaxLoc finds the global minimum and maximum in an array.
+//
+// For further details, please see:
+// https://docs.opencv.org/trunk/d2/de8/group__core__array.html#gab473bf2eb6d14ff97e89b355dac20707
+//
+func MinMaxLoc(input Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
+	var cMinVal C.double
+	var cMaxVal C.double
+	var cMinLoc C.struct_Point
+	var cMaxLoc C.struct_Point
+
+	C.Mat_MinMaxLoc(input.p, &cMinVal, &cMaxVal, &cMinLoc, &cMaxLoc)
+
+	minLoc = image.Pt(int(cMinLoc.x), int(cMinLoc.y))
+	maxLoc = image.Pt(int(cMaxLoc.x), int(cMaxLoc.y))
+
+	return float32(cMinVal), float32(cMaxVal), minLoc, maxLoc
 }
 
 // NormType for normalization operations.

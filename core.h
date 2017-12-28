@@ -156,6 +156,7 @@ int Mat_Empty(Mat m);
 Mat Mat_Clone(Mat m);
 void Mat_CopyTo(Mat m, Mat dst);
 Mat Mat_Region(Mat m, Rect r);
+Mat Mat_Reshape(Mat m, int cn, int rows);
 Scalar Mat_Mean(Mat m);
 int Mat_Rows(Mat m);
 int Mat_Cols(Mat m);
@@ -186,6 +187,7 @@ void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst);
 int Mat_GetOptimalDFTSize(int vecsize);
 void Mat_DFT(Mat m, Mat dst);
 void Mat_Merge(struct Mats mats, Mat dst);
+void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc);
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ);
 double Norm(Mat src1, int normType);
 

@@ -43,6 +43,10 @@ Mat Mat_Region(Mat m, Rect r) {
     return new cv::Mat(*m, cv::Rect(r.x, r.y, r.width, r.height));
 }
 
+Mat Mat_Reshape(Mat m, int cn, int rows) {
+    return new cv::Mat(m->reshape(cn, rows));
+}
+
 // Mat_Mean calculates the mean value M of array elements, independently for each channel, and return it as Scalar vector
 // TODO pass second paramter with mask
 Scalar Mat_Mean(Mat m) {
@@ -187,6 +191,17 @@ void Mat_Merge(struct Mats mats, Mat dst) {
         images.push_back(*mats.mats[i]);
     }
     cv::merge(images, *dst);
+}
+
+void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc) {
+    cv::Point cMinLoc;
+    cv::Point cMaxLoc;
+    cv::minMaxLoc(*m, minVal, maxVal, &cMinLoc, &cMaxLoc);
+
+    minLoc->x = cMinLoc.x;
+    minLoc->y = cMinLoc.y;
+    maxLoc->x = cMaxLoc.x;
+    maxLoc->y = cMaxLoc.y;
 }
 
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
