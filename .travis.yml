@@ -51,8 +51,8 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 # Caching so the next build will be fast as possible.
-# cache:
-#   timeout: 1000
-#   directories:
-#     - $HOME/usr
-#     - $HOME/testdata
+cache:
+  timeout: 1000
+  directories:
+    - $HOME/usr
+    - $HOME/testdata
