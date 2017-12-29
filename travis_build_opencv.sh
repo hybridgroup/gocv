@@ -57,7 +57,13 @@ make install && touch $HOME/usr/installed-${OPENCV_VERSION}
 # caffe test data
 if [[ ! -d "${HOME}/testdata" ]]; then
   mkdir ${HOME}/testdata
+fi
+
+if [[ ! -f "${HOME}/testdata/bvlc_googlenet.prototxt" ]]; then
   cp ../../opencv-${OPENCV_VERSION}/samples/data/dnn/bvlc_googlenet.prototxt ${HOME}/testdata/bvlc_googlenet.prototxt
+fi
+
+if [[ ! -f "${HOME}/testdata/bvlc_googlenet.caffemodel" ]]; then
   curl -sL http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel > ${HOME}/testdata/bvlc_googlenet.caffemodel
 fi
 
