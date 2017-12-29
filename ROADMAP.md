@@ -48,7 +48,6 @@ Your pull requests will be greatly appreciated!
         - [ ] [meanStdDev](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga846c858f4004d59493d7c6a4354b301d)
         - [ ] [min](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga9af368f182ee76d0463d0d8d5330b764)
         - [ ] [minMaxIdx](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga7622c466c628a75d9ed008b42250a73f)
-        - [ ] [minMaxLoc](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gab473bf2eb6d14ff97e89b355dac20707)
         - [ ] [mixChannels](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga51d768c270a1cdd3497255017c4504be)
         - [ ] [mulSpectrums](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga3ab38646463c59bf0ce962a9d51db64f)
         - [ ] [multiply](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga979d898a58d7f61c53003e162e7ad89f)
@@ -123,7 +122,7 @@ Your pull requests will be greatly appreciated!
     - [ ] Object Categorization (https://docs.opencv.org/3.4.0/de/d24/group__features2d__category.html)
 
 - [X] **objdetect. Object Detection**
-- [ ] dnn. Deep Neural Network module
+- [ ] **dnn. Deep Neural Network module - WORK STARTED**
 - [ ] ml. Machine Learning
 - [ ] flann. Clustering and Search in Multi-Dimensional Spaces
 - [ ] photo. Computational Photography

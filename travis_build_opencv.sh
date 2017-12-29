@@ -53,6 +53,14 @@ cmake -D WITH_IPP=${GRAPHICAL} \
       -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules ..
 make -j8
 make install && touch $HOME/usr/installed-${OPENCV_VERSION}
+
+# caffe test data
+if [[ ! -e "${HOME}/usr/testdata" ]]; then
+  mkdir ${HOME}/usr/testdata
+  cp ../../opencv-${OPENCV_VERSION}/samples/data/dnn/bvlc_googlenet.prototxt ${HOME}/usr/testdata/bvlc_googlenet.prototxt
+  curl -sL http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel > ${HOME}/usr/testdata/bvlc_googlenet.caffemodel
+fi
+
 cd ../..
 touch $HOME/fresh-cache
 fi
