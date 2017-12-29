@@ -38,8 +38,8 @@ func TestCaffe(t *testing.T) {
 	probMat := prob.Reshape(1, 1)
 	_, maxVal, minLoc, maxLoc := MinMaxLoc(probMat)
 
-	if maxVal != 0.999905 {
-		t.Errorf("Caffe maxVal incorrect: %v\n", maxVal)
+	if round(float64(maxVal), 0.00005) != 0.9999 {
+		t.Errorf("Caffe maxVal incorrect: %v\n", round(float64(maxVal), 0.00005))
 	}
 
 	if minLoc.X != 793 || minLoc.Y != 0 {
