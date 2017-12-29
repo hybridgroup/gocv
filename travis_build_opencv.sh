@@ -55,10 +55,10 @@ make -j8
 make install && touch $HOME/usr/installed-${OPENCV_VERSION}
 
 # caffe test data
-if [[ ! -e "${HOME}/usr/testdata" ]]; then
-  mkdir ${HOME}/usr/testdata
-  cp ../../opencv-${OPENCV_VERSION}/samples/data/dnn/bvlc_googlenet.prototxt ${HOME}/usr/testdata/bvlc_googlenet.prototxt
-  curl -sL http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel > ${HOME}/usr/testdata/bvlc_googlenet.caffemodel
+if [[ ! -d "${HOME}/testdata" ]]; then
+  mkdir ${HOME}/testdata
+  cp ../../opencv-${OPENCV_VERSION}/samples/data/dnn/bvlc_googlenet.prototxt ${HOME}/testdata/bvlc_googlenet.prototxt
+  curl -sL http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel > ${HOME}/testdata/bvlc_googlenet.caffemodel
 fi
 
 cd ../..
