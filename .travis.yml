@@ -55,3 +55,4 @@ cache:
   timeout: 1000
   directories:
     - $HOME/usr
+    - $HOME/usr/testdata
