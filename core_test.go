@@ -1,6 +1,7 @@
 package gocv
 
 import (
+	"bytes"
 	"image"
 	"testing"
 )
@@ -49,6 +50,29 @@ func TestMatCopyTo(t *testing.T) {
 
 	if copy.Cols() != 102 {
 		t.Errorf("Mat copy incorrect col count: %v\n", copy.Cols())
+	}
+}
+
+func TestMatToBytes(t *testing.T) {
+	mat := NewMatWithSize(101, 102, MatTypeCV8U)
+	b := mat.ToBytes()
+	if len(b) != 101*102 {
+		t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+	}
+
+	mat = NewMatWithSize(101, 102, MatTypeCV16S)
+	b = mat.ToBytes()
+	if len(b) != 101*102*2 {
+		t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+	}
+
+	mat = NewMatFromScalar(NewScalar(255.0, 105.0, 180.0, 0.0), MatTypeCV8UC3)
+	b = mat.ToBytes()
+	if len(b) != 3 {
+		t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+	}
+	if bytes.Compare(b, []byte{255, 105, 180}) != 0 {
+		t.Errorf("Mat bytes unexpected values: %v\n", b)
 	}
 }
 
