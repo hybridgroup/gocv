@@ -125,6 +125,16 @@ func (m *Mat) CopyTo(dst Mat) {
 	return
 }
 
+// ToBytes copies the underlying Mat data to a byte array.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d3/d63/classcv_1_1Mat.html#a4d33bed1c850265370d2af0ff02e1564
+func (m *Mat) ToBytes() []byte {
+	b := C.Mat_ToBytes(m.p)
+	defer C.ByteArray_Release(b)
+	return toGoBytes(b)
+}
+
 // Region returns a new Mat that points to a region of this Mat. Changes made to the
 // region Mat will affect the original Mat, since they are pointers to the underlying
 // OpenCV Mat object.

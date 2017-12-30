@@ -155,6 +155,7 @@ void Mat_Close(Mat m);
 int Mat_Empty(Mat m);
 Mat Mat_Clone(Mat m);
 void Mat_CopyTo(Mat m, Mat dst);
+struct ByteArray Mat_ToBytes(Mat m);
 Mat Mat_Region(Mat m, Rect r);
 Mat Mat_Reshape(Mat m, int cn, int rows);
 Scalar Mat_Mean(Mat m);
