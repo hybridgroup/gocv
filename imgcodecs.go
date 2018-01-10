@@ -168,6 +168,14 @@ func IMWriteWithParams(name string, img Mat, params []int) bool {
 	return bool(C.Image_IMWrite_WithParams(cName, img.p, paramsVector))
 }
 
+type FileExt string
+
+const (
+	PNGFileExt  FileExt = ".png"
+	JPEGFileExt FileExt = ".jpg"
+	GIFFileExt  FileExt = ".gif"
+)
+
 // IMEncode encodes an image Mat into a memory buffer.
 // This function compresses the image and stores it in the returned memory buffer,
 // using the image format passed in in the form of a file extension string.
@@ -175,8 +183,8 @@ func IMWriteWithParams(name string, img Mat, params []int) bool {
 // For further details, please see:
 // http://docs.opencv.org/3.3.1/d4/da8/group__imgcodecs.html#ga461f9ac09887e47797a54567df3b8b63
 //
-func IMEncode(fileExt string, img Mat) (buf []byte, err error) {
-	cfileExt := C.CString(fileExt)
+func IMEncode(fileExt FileExt, img Mat) (buf []byte, err error) {
+	cfileExt := C.CString(string(fileExt))
 	defer C.free(unsafe.Pointer(cfileExt))
 
 	b := C.Image_IMEncode(cfileExt, img.Ptr())
