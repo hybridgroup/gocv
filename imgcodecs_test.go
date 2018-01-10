@@ -49,7 +49,7 @@ func TestIMEncode(t *testing.T) {
 		t.Error("Invalid Mat in IMEncode test")
 	}
 
-	buf, err := IMEncode(".jpg", img)
+	buf, err := IMEncode(PNGFileExt, img)
 	if err != nil {
 		t.Error(err)
 	}
