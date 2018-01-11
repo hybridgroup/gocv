@@ -12,6 +12,9 @@ import (
 	"gocv.io/x/gocv"
 )
 
+// UnknownFace is when the FaceRecognizer cannot identify a Face.
+const UnknownFace = -10000
+
 // FaceRecognizer is a wrapper around the cv::pvl::FaceRecognizer.
 type FaceRecognizer struct {
 	// C.FaceRecognizer
@@ -69,7 +72,7 @@ func (f *FaceRecognizer) Recognize(img gocv.Mat, faces []Face) (personIDs, confi
 	pids := C.IntVector{}
 	confs := C.IntVector{}
 
-	C.FaceRecognizer_Recognize((C.FaceRecognizer)(f.p), C.Mat(img.Ptr()), cFaces, pids, confs)
+	C.FaceRecognizer_Recognize((C.FaceRecognizer)(f.p), C.Mat(img.Ptr()), cFaces, &pids, &confs)
 
 	aPids := (*[1 << 30]C.int)(unsafe.Pointer(pids.val))
 	for i := 0; i < int(pids.length); i++ {
@@ -99,12 +102,12 @@ func (f *FaceRecognizer) DeregisterPerson(personID int) {
 	C.FaceRecognizer_DeregisterPerson((C.FaceRecognizer)(f.p), C.int(personID))
 }
 
-// Read FaceRecognizer data from file.
-func (f *FaceRecognizer) Read(name string) {
+// LoadFaceRecognizer loads data from file and returns a FaceRecognizer.
+func LoadFaceRecognizer(name string) FaceRecognizer {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 
-	C.FaceRecognizer_Read((C.FaceRecognizer)(f.p), cName)
+	return FaceRecognizer{p: unsafe.Pointer(C.FaceRecognizer_Load(cName))}
 }
 
 // Save FaceRecognizer data to file.
