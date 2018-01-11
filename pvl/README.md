@@ -82,13 +82,45 @@ Some PVL examples are in the [cmd/pvl directory](../cmd/pvl) of this repo, in th
 
 ## How to install the Intel CV SDK
 
-You will need to install libgstreamer, beforeyou will be able to run the Intel CV SDK installer:
+You will need to install various dependencies before you will be able to run the Intel CV SDK installer:
 
 ```
-sudo apt-get install libgstreamer0.10-dev
+sudo apt-get update
+sudo apt-get install build-essential ffmpeg cmake checkinstall pkg-config yasm libjpeg-dev curl imagemagick gedit mplayer unzip libpng12-dev libcairo2-dev libpango1.0-dev libgtk2.0-dev libgstreamer0.10-dev libswscale.dev libavcodec-dev libavformat-dev
 ```
 
-You can download the latest Intel CV SDK from here, currently Beta R3:
+### Installing OpenCL Support
+
+If you also want to use the OpenCL support for GPU-based hardware acceleration, you must install the OpenCL runtime. First, install the dependencies:
+
+```
+sudo apt-get update
+sudo apt-get install build-essential ffmpeg cmake checkinstall pkg-config yasm libjpeg-dev curl imagemagick gedit mplayer unzip libpng12-dev libcairo2-dev libpango1.0-dev libgtk2.0-dev libgstreamer0.10-dev libswscale.dev libavcodec-dev libavformat-dev
+```
+
+Next, obtain the OpenCL runtime package:
+
+```
+wget http://registrationcenter-download.intel.com/akdlm/irc_nas/11396/SRB5.0_linux64.zip
+unzip SRB5.0_linux64.zip -d SRB5.0_linux64
+cd SRB5.0_linux64
+```
+
+Last, install the OpenCL runtime:
+
+```
+sudo apt-get install xz-utils
+mkdir intel-opencl
+tar -C intel-opencl -Jxf intel-opencl-r5.0-63503.x86_64.tar.xz
+tar -C intel-opencl -Jxf intel-opencl-devel-r5.0-63503.x86_64.tar.xz
+tar -C intel-opencl -Jxf intel-opencl-cpu-r5.0-63503.x86_64.tar.xz
+sudo cp -R intel-opencl/* /
+sudo ldconfig
+```
+
+### Installing Intel CV SDK
+
+The most recent version of the Intel CV SDK is currently Beta R3. You can obtain it from here:
 
 https://software.intel.com/en-us/computer-vision-sdk
 
