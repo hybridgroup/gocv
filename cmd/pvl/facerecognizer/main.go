@@ -30,6 +30,11 @@ import (
 	"gocv.io/x/gocv/pvl"
 )
 
+const (
+	T_KEY   = 116
+	ESC_KEY = 27
+)
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("How to run:\n\facerecognizer [camera ID] [face data file]")
@@ -93,6 +98,7 @@ func main() {
 	var personIDs []int
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
+MainLoop:
 	for {
 		if ok := webcam.Read(img); !ok {
 			fmt.Printf("cannot read device %d\n", deviceID)
@@ -110,11 +116,10 @@ func main() {
 		if len(faces) > 0 {
 			fmt.Println("found faces")
 
-			// draw a rectangle the face on the original image,
-			// along with text identifing if recognized
+			// try to recognize the face
 			personIDs, _ = fr.Recognize(imgGray, faces)
 
-			// set the color of the box based on if the human is recognized
+			// set the color of the box based on if the face is recognized
 			color := blue
 			msg := "Unknown"
 			if len(personIDs) > 0 && personIDs[0] != pvl.UnknownFace {
@@ -122,6 +127,8 @@ func main() {
 				msg = strconv.Itoa(personIDs[0])
 			}
 
+			// draw a rectangle the face on the original image,
+			// along with text identifing if recognized
 			rect := faces[0].Rectangle()
 			gocv.Rectangle(img, rect, color, 3)
 
@@ -133,15 +140,16 @@ func main() {
 		// show the image in the window, and wait 1 millisecond
 		window.IMShow(img)
 		key := window.WaitKey(1)
-		if key == 116 {
+		switch key {
+		case T_KEY:
 			// train
 			if len(faces) > 0 && len(personIDs) > 0 && personIDs[0] == pvl.UnknownFace {
 				pid := fr.CreateNewPersonID()
 				fr.RegisterFace(imgGray, faces[0], pid, true)
 				fr.Save(fileName)
 			}
-		} else if key == 27 {
-			break
+		case ESC_KEY:
+			break MainLoop
 		}
 	}
 }
