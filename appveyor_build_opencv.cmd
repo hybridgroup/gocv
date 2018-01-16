@@ -16,5 +16,7 @@ mingw32-make
 mingw32-make install
 copy c:\opencv\opencv-3.4.0\samples\data\dnn\bvlc_googlenet.prototxt C:\opencv\testdata\bvlc_googlenet.prototxt
 appveyor DownloadFile http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel -FileName C:\opencv\testdata\bvlc_googlenet.caffemodel
+appveyor DownloadFile https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip -FileName C:\opencv\testdata\inception5h.zip
+7z x C:\opencv\testdata\inception5h.zip -oC:\opencv\testdata tensorflow_inception_graph.pb -y
 rmdir c:\opencv\opencv-3.4.0 /s /q
 rmdir c:\opencv\opencv_contrib-3.4.0 /s /q

@@ -5,6 +5,11 @@ Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel) {
     return n;
 }
 
+Net Net_ReadNetFromTensorflow(const char* model) {
+    Net n = new cv::dnn::Net(cv::dnn::readNetFromTensorflow(model));
+    return n;    
+}
+
 bool Net_Empty(Net net) {
     return net->empty();
 }
