@@ -67,6 +67,17 @@ func ReadNetFromCaffe(prototxt string, caffeModel string) Net {
 	return Net{p: unsafe.Pointer(C.Net_ReadNetFromCaffe(cprototxt, cmodel))}
 }
 
+// ReadNetFromTensorflow reads a network model stored in Tensorflow framework's format.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d6/d0f/group__dnn.html#gad820b280978d06773234ba6841e77e8d
+//
+func ReadNetFromTensorflow(model string) Net {
+	cmodel := C.CString(model)
+	defer C.free(unsafe.Pointer(cmodel))
+	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTensorflow(cmodel))}
+}
+
 // BlobFromImage creates 4-dimensional blob from image. Optionally resizes and crops
 // image from center, subtract mean values, scales values by scalefactor,
 // swap Blue and Red channels.
