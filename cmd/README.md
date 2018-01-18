@@ -2,6 +2,10 @@
 
 GoCV comes with various useful command line utilities, that are also examples of how to use the package.
 
+## Caffe Classifier
+
+Capture video from a connected webcam, then use the Caffe deep learning framework to classify whatever is in front of the camera.
+
 ## Captest
 
 Tests to verify you can capture video from a connected webcam.
