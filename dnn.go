@@ -20,6 +20,13 @@ type Net struct {
 	p unsafe.Pointer
 }
 
+// Close Net
+func (net *Net) Close() error {
+	C.Net_Close((C.Net)(net.p))
+	net.p = nil
+	return nil
+}
+
 // Empty returns true if there are no layers in the network.
 //
 // For further details, please see:

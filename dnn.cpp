@@ -10,6 +10,10 @@ Net Net_ReadNetFromTensorflow(const char* model) {
     return n;    
 }
 
+void Net_Close(Net net) {
+    delete net;
+}
+
 bool Net_Empty(Net net) {
     return net->empty();
 }

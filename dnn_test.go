@@ -16,6 +16,7 @@ func TestCaffe(t *testing.T) {
 	if net.Empty() {
 		t.Errorf("Unable to load Caffe model")
 	}
+	defer net.Close()
 
 	img := IMRead("images/space_shuttle.jpg", IMReadColor)
 	if img.Empty() {
@@ -61,6 +62,7 @@ func TestTensorflow(t *testing.T) {
 	if net.Empty() {
 		t.Errorf("Unable to load Tensorflow model")
 	}
+	defer net.Close()
 
 	img := IMRead("images/space_shuttle.jpg", IMReadColor)
 	if img.Empty() {
