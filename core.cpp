@@ -223,6 +223,11 @@ TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon) {
 }
 
 void Contours_Close(struct Contours cs) {
+    Contour *cnt = cs.contours;
+    for (int i = 0; i < cs.length; ++i, cnt++)
+    {
+        delete[] cnt->points;
+    }
     delete[] cs.contours;
 }
 
