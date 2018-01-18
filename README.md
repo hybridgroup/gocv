@@ -182,6 +182,10 @@ The version program should output the following:
 
 You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
 
+If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times (`env.sh` must have been executed as described above):
+
+        go install gocv.io/x/gocv
+
 ### Other Linux installations
 
 One way to find out the locations for your includes and libs is to use the `pkg-config` tool like this:
@@ -239,6 +243,10 @@ The version program should output the following:
 		opencv lib version: 3.4.0
 
 You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
+
+If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times (`env.sh` must have been executed as described above):
+
+        go install gocv.io/x/gocv
 
 ## Windows
 
@@ -317,6 +325,10 @@ The version program should output the following:
 
 		gocv version: 0.2.0
 		opencv lib version: 3.4.0
+
+If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times (`CGO_CPPFLAGS` and `CGO_LDFLAGS` must have been set as described above):
+
+        go install gocv.io/x/gocv
 
 ## How to contribute
 
