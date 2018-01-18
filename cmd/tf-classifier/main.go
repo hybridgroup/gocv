@@ -101,7 +101,7 @@ func main() {
 		_, maxVal, _, maxLoc := gocv.MinMaxLoc(probMat)
 
 		desc := "Unknown"
-		if maxLoc.X < 1001 {
+		if maxLoc.X < 1000 {
 			desc = descriptions[maxLoc.X]
 		}
 		status = fmt.Sprintf("description: %v, maxVal: %v\n", desc, maxVal)
