@@ -1,20 +1,20 @@
 // What it does:
 //
-// This example uses the Caffe (http://caffe.berkeleyvision.org/) deep learning framework
+// This example uses the Tensorflow (https://www.tensorflow.org/) deep learning framework
 // to classify whatever is in front of the camera.
 //
-// Download the Caffe model file from:
-// http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel
+// Download the Tensorflow "Inception" model and descriptions file from:
+// https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip
 //
-// Also, you will need the prototxt file:
-// https://raw.githubusercontent.com/opencv/opencv/master/samples/data/dnn/bvlc_googlenet.prototxt
+// You will need the model file:
+// tensorflow_inception_graph.pb
 //
 // And the words text file with the descriptions:
-// https://raw.githubusercontent.com/opencv/opencv/master/samples/data/dnn/synset_words.txt
+// imagenet_comp_graph_label_strings.txt
 //
 // How to run:
 //
-// 		go run ./cmd/caffe-classifier/main.go 0 [protofile] [modelfile] [descriptionsfile]
+// 		go run ./cmd/tf-classifier/main.go 0 [modelfile] [descriptionsfile]
 //
 // +build example
 
@@ -50,15 +50,14 @@ func readLines(path string) ([]string, error) {
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("How to run:\ncaffe-classifier [camera ID] [protofile] [modelfile] [descriptionsfile]")
+		fmt.Println("How to run:\ntf-classifier [camera ID] [modelfile] [descriptionsfile]")
 		return
 	}
 
 	// parse args
 	deviceID, _ := strconv.Atoi(os.Args[1])
-	proto := os.Args[2]
-	model := os.Args[3]
-	descriptions, _ := readLines(os.Args[4])
+	model := os.Args[2]
+	descriptions, _ := readLines(os.Args[3])
 
 	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
 	if err != nil {
@@ -67,13 +66,13 @@ func main() {
 	}
 	defer webcam.Close()
 
-	window := gocv.NewWindow("Caffe Classifier")
+	window := gocv.NewWindow("Tensorflow Classifier")
 	defer window.Close()
 
 	img := gocv.NewMat()
 	defer img.Close()
 
-	net := gocv.ReadNetFromCaffe(proto, model)
+	net := gocv.ReadNetFromTensorflow(model)
 	defer net.Close()
 
 	status := "Ready"
@@ -89,11 +88,11 @@ func main() {
 			continue
 		}
 
-		blob := gocv.BlobFromImage(img, 1.0, image.Pt(224, 244), gocv.NewScalar(104, 117, 123, 0), false, false)
+		blob := gocv.BlobFromImage(img, 1.0, image.Pt(224, 244), gocv.NewScalar(0, 0, 0, 0), true, false)
 		defer blob.Close()
 
-		net.SetInput(blob, "data")
-		prob := net.Forward("prob")
+		net.SetInput(blob, "input")
+		prob := net.Forward("softmax2")
 		defer prob.Close()
 
 		probMat := prob.Reshape(1, 1)
@@ -101,7 +100,11 @@ func main() {
 
 		_, maxVal, _, maxLoc := gocv.MinMaxLoc(probMat)
 
-		status = fmt.Sprintf("description: %v, maxVal: %v\n", descriptions[maxLoc.X], maxVal)
+		desc := "Unknown"
+		if maxLoc.X < 1001 {
+			desc = descriptions[maxLoc.X]
+		}
+		status = fmt.Sprintf("description: %v, maxVal: %v\n", desc, maxVal)
 
 		gocv.PutText(img, status, image.Pt(10, 20), gocv.FontHersheyPlain, 1.2, statusColor, 2)
 

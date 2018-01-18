@@ -46,6 +46,10 @@ Capture video from a connected camera, and save 100 frames worth to a video file
 
 Open an image file from disk, then display it in a window.
 
+## TF Classifier
+
+Capture video from a connected webcam, then use the Tensorflow machine learning framework to classify whatever is in front of the camera.
+
 ## Version
 
 Displays the current version of OpenCV that is being used by GoCV.
