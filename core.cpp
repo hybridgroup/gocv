@@ -223,19 +223,19 @@ TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon) {
 }
 
 void Contours_Close(struct Contours cs) {
-    delete cs.contours;
+    delete[] cs.contours;
 }
 
 void KeyPoints_Close(struct KeyPoints ks) {
-    delete ks.keypoints;
+    delete[] ks.keypoints;
 }
 
 void Rects_Close(struct Rects rs) {
-    delete rs.rects;
+    delete[] rs.rects;
 }
 
 void Mats_Close(struct Mats mats) {
-    delete mats.mats;
+    delete[] mats.mats;
 }
 
 void ByteArray_Release(struct ByteArray buf) {
