@@ -238,8 +238,8 @@ func SelectROIs(name string, img Mat) []image.Rectangle {
 	return rects
 }
 
-// Deprecated: WaitKey that is not attached to a specific Window is deprecated.
-// Please use Window.WaitKey() instead.
+// WaitKey that is not attached to a specific Window.
+// Only use when no Window exists in your application, e.g. command line app.
 //
 func WaitKey(delay int) int {
 	return int(C.Window_WaitKey(C.int(delay)))
