@@ -6,11 +6,9 @@
 // Download the Tensorflow "Inception" model and descriptions file from:
 // https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip
 //
-// You will need the model file:
-// tensorflow_inception_graph.pb
+// Extract the tensorflow_inception_graph.pb model file from the .zip file.
 //
-// And the words text file with the descriptions:
-// imagenet_comp_graph_label_strings.txt
+// Also extract the imagenet_comp_graph_label_strings.txt file with the descriptions.
 //
 // How to run:
 //
@@ -31,9 +29,9 @@ import (
 	"gocv.io/x/gocv"
 )
 
-// readLines reads the descriptions from a file
+// readDescriptions reads the descriptions from a file
 // and returns a slice of its lines.
-func readLines(path string) ([]string, error) {
+func readDescriptions(path string) ([]string, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -49,7 +47,7 @@ func readLines(path string) ([]string, error) {
 }
 
 func main() {
-	if len(os.Args) < 2 {
+	if len(os.Args) < 4 {
 		fmt.Println("How to run:\ntf-classifier [camera ID] [modelfile] [descriptionsfile]")
 		return
 	}
@@ -57,9 +55,10 @@ func main() {
 	// parse args
 	deviceID, _ := strconv.Atoi(os.Args[1])
 	model := os.Args[2]
-	descriptions, _ := readLines(os.Args[3])
+	descriptions, _ := readDescriptions(os.Args[3])
 
-	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
+	// open capture device
+	webcam, err := gocv.VideoCaptureDevice(deviceID)
 	if err != nil {
 		fmt.Printf("Error opening video capture device: %v\n", deviceID)
 		return
@@ -72,13 +71,14 @@ func main() {
 	img := gocv.NewMat()
 	defer img.Close()
 
+	// open DNN classifier
 	net := gocv.ReadNetFromTensorflow(model)
 	defer net.Close()
 
 	status := "Ready"
 	statusColor := color.RGBA{0, 255, 0, 0}
-
 	fmt.Printf("Start reading camera device: %v\n", deviceID)
+
 	for {
 		if ok := webcam.Read(img); !ok {
 			fmt.Printf("Error cannot read device %d\n", deviceID)
@@ -88,24 +88,30 @@ func main() {
 			continue
 		}
 
+		// convert image Mat to 224x244 blob that the classifier can analyze
 		blob := gocv.BlobFromImage(img, 1.0, image.Pt(224, 244), gocv.NewScalar(0, 0, 0, 0), true, false)
 		defer blob.Close()
 
+		// feed the blob into the classifier
 		net.SetInput(blob, "input")
+
+		// run a forward pass thru the network
 		prob := net.Forward("softmax2")
 		defer prob.Close()
 
+		// reshape the results into a 1x1000 matrix
 		probMat := prob.Reshape(1, 1)
 		defer probMat.Close()
 
+		// determine the most probable classification
 		_, maxVal, _, maxLoc := gocv.MinMaxLoc(probMat)
 
+		// display classification
 		desc := "Unknown"
 		if maxLoc.X < 1000 {
 			desc = descriptions[maxLoc.X]
 		}
 		status = fmt.Sprintf("description: %v, maxVal: %v\n", desc, maxVal)
-
 		gocv.PutText(img, status, image.Pt(10, 20), gocv.FontHersheyPlain, 1.2, statusColor, 2)
 
 		window.IMShow(img)
