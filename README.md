@@ -209,7 +209,7 @@ Once you have this info, you can build or run the Go code that consumes it by po
 For example:
 
 		export CGO_CPPFLAGS="-I/usr/local/include" 
-		export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_calib3d -lopencv_video -lopencv_xfeatures2d -lopencv_face"
+		export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_face -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_features2d -lopencv_video -lopencv_dnn -lopencv_xfeatures2d"
 
 Please note that you will need to run these 2 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables.
 
@@ -217,13 +217,13 @@ Please note that you will need to run these 2 lines of code one time in your cur
 
 ### Installation
 
-You can install OpenCV 3.3 using Homebrew:
+You can install OpenCV 3.4 using Homebrew:
 
 		brew install opencv
 
 ### How to go build/go run your code
 
-In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your gocv installation. If you have used Homebrew to install OpenCV 3.3, the following instructions should work.
+In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your gocv installation. If you have used Homebrew to install OpenCV 3.4, the following instructions should work.
 
 First, you need to change the current directory to the location of the GoCV repo:
 
@@ -254,7 +254,7 @@ If you are not modifying gocv source, compile gocv to a static library, to signi
 
 The following assumes that you are running a 64-bit version of Windows 10.
 
-In order to build and install OpenCV 3.3 on Windows, you must first download and install MinGW-W64 and CMake, as follows.
+In order to build and install OpenCV 3.4 on Windows, you must first download and install MinGW-W64 and CMake, as follows.
 
 #### MinGW-W64
 
@@ -266,7 +266,7 @@ Add the `C:\Program Files\mingw-w64\x86_64-7.1.0-posix-seh-rt_v5-rev2\mingw64\bi
 
 Download and install CMake [https://cmake.org/download/](https://cmake.org/download/) to the default location. CMake installer will add CMake to your system path.
 
-#### Download OpenCV 3.3 and OpenCV Contrib Modules
+#### Download OpenCV 3.4 and OpenCV Contrib Modules
 
 Download the source code for the latest OpenCV release from [https://github.com/opencv/opencv/archive/3.4.0.zip](https://github.com/opencv/opencv/archive/3.4.0.zip) and extract it to the directory `C:\opencv\opencv-3.4.0`
 
@@ -308,14 +308,14 @@ The build should start. It will probably take a very long time. When it is finis
 
 Last, add `C:\opencv\build\install\x64\mingw\bin` to your System Path.
 
-You should now have OpenCV 3.3 installed on your Windows 10 machine.
+You should now have OpenCV 3.4 installed on your Windows 10 machine.
 
 ### How to go build/go run your code
 
 Run these commands to configure Go to know about the include and lib directories:
 
 		set CGO_CPPFLAGS=-IC:\opencv\build\install\include
-		set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core340 -lopencv_videoio340 -lopencv_imgproc340 -lopencv_highgui340 -lopencv_imgcodecs340 -lopencv_objdetect340 -lopencv_calib3d340 -lopencv_video340 -lopencv_xfeatures2d340 -lopencv_face340
+		set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core340 -lopencv_face340 -lopencv_videoio340 -lopencv_imgproc340 -lopencv_highgui340 -lopencv_imgcodecs340 -lopencv_objdetect340 -lopencv_features2d340 -lopencv_video340 -lopencv_dnn340 -lopencv_xfeatures2d340
 
 Now you should be able to build or run any of the command examples:
 
