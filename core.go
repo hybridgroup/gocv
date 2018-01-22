@@ -165,7 +165,7 @@ func (m *Mat) Mean() Scalar {
 	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
 }
 
-// Performs a look-up table transform of an array.
+// LUT performs a look-up table transform of an array.
 //
 // The function LUT fills the output array with values from the look-up table.
 // Indices of the entries are taken from the input array.
@@ -401,15 +401,32 @@ func MinMaxLoc(input Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
 type NormType int
 
 const (
-	NormInf      NormType = 1
-	NormL1                = 2
-	NormL2                = 4
-	NormL2Sqr             = 5
-	NormHamming           = 6
-	NormHamming2          = 7
-	NormTypeMask          = 7
-	NormRelative          = 8
-	NormMixMax            = 32
+	// NormInf indicates use infinite normalization.
+	NormInf NormType = 1
+
+	// NormL1 indicates use L1 normalization.
+	NormL1 = 2
+
+	// NormL2 indicates use L2 normalization.
+	NormL2 = 4
+
+	// NormL2Sqr indicates use L2 squared normalization.
+	NormL2Sqr = 5
+
+	// NormHamming indicates use Hamming normalization.
+	NormHamming = 6
+
+	// NormHamming2 indicates use Hamming 2-bit normalization.
+	NormHamming2 = 7
+
+	// NormTypeMask indicates use type mask for normalization.
+	NormTypeMask = 7
+
+	// NormRelative indicates use relative normalization.
+	NormRelative = 8
+
+	// NormMixMax indicates use min/max normalization.
+	NormMixMax = 32
 )
 
 // Normalize normalizes the norm or value range of an array.

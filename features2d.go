@@ -44,7 +44,7 @@ func (a *AKAZE) Detect(src Mat) []KeyPoint {
 	return getKeyPoints(ret)
 }
 
-// Detect keypoints and compute in an image using AKAZE.
+// DetectAndCompute keypoints and compute in an image using AKAZE.
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4.0/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
@@ -125,7 +125,7 @@ func (b *BRISK) Detect(src Mat) []KeyPoint {
 	return getKeyPoints(ret)
 }
 
-// Detect keypoints and compute in an image using BRISK.
+// DetectAndCompute keypoints and compute in an image using BRISK.
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4.0/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
@@ -240,7 +240,7 @@ func (a *KAZE) Detect(src Mat) []KeyPoint {
 	return getKeyPoints(ret)
 }
 
-// Detect keypoints and compute in an image using KAZE.
+// DetectAndCompute keypoints and compute in an image using KAZE.
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4.0/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
@@ -321,7 +321,7 @@ func (o *ORB) Detect(src Mat) []KeyPoint {
 	return getKeyPoints(ret)
 }
 
-// Detect keypoints and compute in an image using ORB.
+// DetectAndCompute detects keypoints and computes from an image using ORB.
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4.0/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677

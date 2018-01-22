@@ -121,8 +121,8 @@ func getKeyPoints(ret C.KeyPoints) []gocv.KeyPoint {
 
 	keys := make([]gocv.KeyPoint, length)
 	for i, r := range s {
-		keys[i] = gocv.KeyPoint{float64(r.x), float64(r.y), float64(r.size), float64(r.angle), float64(r.response),
-			int(r.octave), int(r.classID)}
+		keys[i] = gocv.KeyPoint{X: float64(r.x), Y: float64(r.y), Size: float64(r.size), Angle: float64(r.angle),
+			Response: float64(r.response), Octave: int(r.octave), ClassID: int(r.classID)}
 	}
 	return keys
 }

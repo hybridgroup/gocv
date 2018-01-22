@@ -362,9 +362,9 @@ func GaussianBlur(src Mat, dst Mat, ksize image.Point, sigmaX float64,
 // For further details, please see:
 // https://docs.opencv.org/3.4.0/d4/d86/group__imgproc__filter.html#gad78703e4c8fe703d479c1860d76429e6
 //
-func Laplacian(src Mat, dst Mat, dDepth int, kSize int, scale float64,
+func Laplacian(src Mat, dst Mat, dDepth int, size int, scale float64,
 	delta float64, borderType BorderType) {
-	C.Laplacian(src.p, dst.p, C.int(dDepth), C.int(kSize), C.double(scale), C.double(delta), C.int(borderType))
+	C.Laplacian(src.p, dst.p, C.int(dDepth), C.int(size), C.double(scale), C.double(delta), C.int(borderType))
 }
 
 // Scharr calculates the first x- or y- image derivative using Scharr operator.
@@ -698,7 +698,7 @@ const (
 	// InterpolationDefault is an alias for InterpolationLinear.
 	InterpolationDefault = InterpolationLinear
 
-	// Mask for interpolation codes.
+	// InterpolationMax indicates use maximum interpolation.
 	InterpolationMax = 7
 )
 
