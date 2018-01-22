@@ -11,7 +11,7 @@
 
 The GoCV package provides Go language bindings for the [OpenCV 3](http://opencv.org/) computer vision library.
 
-The GoCV package supports the latest releases of Go and OpenCV (v3.3) on Linux, OS X, and Windows. We intend to make the Go language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
+The GoCV package supports the latest releases of Go and OpenCV (v3.4) on Linux, OS X, and Windows. We intend to make the Go language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
 
 GoCV also supports the [Intel Computer Vision SDK](https://software.intel.com/en-us/cvsdk-devguide) using the Photography Vision Library (PVL). Check out the [PVL README](./pvl/README.md) for more info on how to use GoCV with the Intel CV SDK.
 
@@ -123,13 +123,13 @@ To install GoCV, run the following command:
 go get -u -d gocv.io/x/gocv
 ```
 
-To run code that uses the GoCV package, you must also install OpenCV 3.3 on your system. Here are instructions for Ubuntu, OS X, and Windows.
+To run code that uses the GoCV package, you must also install OpenCV 3.4 on your system. Here are instructions for Ubuntu, OS X, and Windows.
 
 ## Ubuntu/Linux
 
 ### Installation
 
-You can use `make` to install OpenCV 3.3 with the handy `Makefile` included with this repo. If you already have installed OpenCV, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options such as Python or Java wrappers if you have already installed OpenCV some other way.
+You can use `make` to install OpenCV 3.4 with the handy `Makefile` included with this repo. If you already have installed OpenCV, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options such as Python or Java wrappers if you have already installed OpenCV some other way.
 
 #### Install required packages
 
@@ -143,7 +143,7 @@ Next, you need to update the system, and install any required packages:
 
 #### Download source
 
-Now, download the OpenCV 3.3 and OpenCV Contrib source code:
+Now, download the OpenCV 3.4 and OpenCV Contrib source code:
 
 		make download
 
@@ -177,10 +177,10 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-		gocv version: 0.2.0
+		gocv version: 0.8.0
 		opencv lib version: 3.4.0
 
-You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
+You might want to copy the `env.sh` script into your own projects, to make it easier to setup these environment vars when building your own code.
 
 If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times (`env.sh` must have been executed as described above):
 
@@ -239,10 +239,10 @@ Now you should be able to build or run any of the command examples:
 
 The version program should output the following:
 
-		gocv version: 0.2.0
+		gocv version: 0.8.0
 		opencv lib version: 3.4.0
 
-You might want to copy the `env.sh` script into your own projects, to make it easier to setup these vars when building your own code.
+You might want to copy the `env.sh` script into your own projects, to make it easier to setup the needed environment vars when building your own code.
 
 If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times (`env.sh` must have been executed as described above):
 
@@ -312,10 +312,9 @@ You should now have OpenCV 3.4 installed on your Windows 10 machine.
 
 ### How to go build/go run your code
 
-Run these commands to configure Go to know about the include and lib directories:
+One time per session, you must run the script:
 
-		set CGO_CPPFLAGS=-IC:\opencv\build\install\include
-		set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core340 -lopencv_face340 -lopencv_videoio340 -lopencv_imgproc340 -lopencv_highgui340 -lopencv_imgcodecs340 -lopencv_objdetect340 -lopencv_features2d340 -lopencv_video340 -lopencv_dnn340 -lopencv_xfeatures2d340
+		env.cmd
 
 Now you should be able to build or run any of the command examples:
 
@@ -323,10 +322,12 @@ Now you should be able to build or run any of the command examples:
 
 The version program should output the following:
 
-		gocv version: 0.2.0
+		gocv version: 0.8.0
 		opencv lib version: 3.4.0
 
-If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times (`CGO_CPPFLAGS` and `CGO_LDFLAGS` must have been set as described above):
+You might want to copy the `env.cmd` script into your own projects, to make it easier to setup the needed environment vars when building your own code.
+
+If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times (`env.cmd` must have been executed as described above):
 
         go install gocv.io/x/gocv
 
