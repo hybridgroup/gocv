@@ -1,3 +1,64 @@
+0.8.0
+---
+* **core**
+    * add ColorMapFunctions and their test
+    * add Mat ToBytes
+    * add Reshape and MinMaxLoc functions
+    * also delete points
+    * fix mistake in the norm function by taking NormType instead of int as parameter
+    * SetDoubleAt func and his test
+    * SetFloatAt func and his test
+    * SetIntAt func and his test
+    * SetSCharAt func and his test
+    * SetShortAt func and his test
+    * SetUCharAt fun and his test
+    * use correct delete operator for array of new, eliminates a bunch of memory leaks
+* **dnn**
+    * add support for loading Tensorflow models
+    * adjust test for Caffe now that we are auto-cropping blob
+    * first pass at adding Caffe support
+    * go back to older function signature to avoid version conflicts with Intel CV SDK
+    * properly close DNN Net class
+    * use approx. value from test result to account forr windows precision differences
+* **features2d**
+    * implement GFTTDetector, KAZE, and MSER algorithms
+    * modify MSER test for Windows results
+* **highgui**
+    * un-deprecate WaitKey function needed for CLI apps
+* **imgcodec**
+    * add fileExt type
+* **imgproc**
+    * add the norm wrapper and use it in test for WarpAffine and WarpAffineWithParams
+    * GetRotationMatrix2D, WarpAffine and WarpAffineWithParams
+    * use NormL2 in wrap affine
+* **pvl**
+    * add support for FaceRecognizer
+    * complete wrappers for all missing FaceDetector functions
+    * update instructions to match R3 of Intel CV SDK
+* **docs**
+    * add more detail about exactly which functions are not yet implememented in the modules that are marked as 'Work Started'
+    * add refernece to Tensorflow example, and also suggest brew upgrade for MacOS
+    * improve ROADMAP to help would-be contributors know where to get started
+    * in the readme, explain compiling to a static library
+    * remove many godoc warnings by improving function descriptions
+    * update all OpenCV 3.3.1 references to v3.4.0
+    * update CGO_LDFLAGS references to match latest requirements
+    * update contribution guidelines to try to make it more inviting
+* **examples**
+    * add Caffe classifier example
+    * add Tensorflow classifier example
+    * fixed closing window in examples in infinite loop
+    * fixed format of the examples with gofmt
+* **test**
+    * add helper function for test : floatEquals
+    * add some attiribution from test function
+    * display OpenCV version in case that test fails
+    * add round function to allow for floating point accuracy differences due to GPU usage.
+* **build**
+    * improve search for already installed OpenCV on MacOS
+    * update Appveyor build to Opencv 3.4.0
+    * update to Opencv 3.4.0
+
 0.7.0
 ---
 * **core**
