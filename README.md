@@ -113,7 +113,7 @@ func main() {
 
 ### More examples
 
-There are examples in the [cmd directory](./cmd) of this repo in the form of various useful command line utilities, such as [capturing an image file](./cmd/saveimage), [streaming mjpeg video](./cmd/mjpeg-streamer), and [counting objects that cross a line](./cmd/counter).
+There are examples in the [cmd directory](./cmd) of this repo in the form of various useful command line utilities, such as [capturing an image file](./cmd/saveimage), [streaming mjpeg video](./cmd/mjpeg-streamer), [counting objects that cross a line](./cmd/counter), and [using OpenCV with Tensorflow for object classification](./cmd/tf-classifier).
 
 ## How to install
 
@@ -220,6 +220,10 @@ Please note that you will need to run these 2 lines of code one time in your cur
 You can install OpenCV 3.4 using Homebrew:
 
 		brew install opencv
+
+If you already have an earlier version of OpenCV installed, you should probably upgrade it to the latest version, instead of installing:
+
+		brew upgrade opencv
 
 ### How to go build/go run your code
 
