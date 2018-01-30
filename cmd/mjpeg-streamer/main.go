@@ -34,24 +34,6 @@ var (
 	stream   *mjpeg.Stream
 )
 
-func capture() {
-	img := gocv.NewMat()
-	defer img.Close()
-
-	for {
-		if ok := webcam.Read(img); !ok {
-			fmt.Printf("cannot read device %d\n", deviceID)
-			return
-		}
-		if img.Empty() {
-			continue
-		}
-
-		buf, _ := gocv.IMEncode(".jpg", img)
-		stream.UpdateJPEG(buf)
-	}
-}
-
 func main() {
 	if len(os.Args) < 3 {
 		fmt.Println("How to run:\n\tmjpeg-streamer [camera ID] [host:port]")
@@ -76,9 +58,27 @@ func main() {
 	// start capturing
 	go capture()
 
-	fmt.Println("Capturing...")
+	fmt.Println("Capturing. Point your browser to " + host)
 
 	// start http server
 	http.Handle("/", stream)
 	log.Fatal(http.ListenAndServe(host, nil))
+}
+
+func capture() {
+	img := gocv.NewMat()
+	defer img.Close()
+
+	for {
+		if ok := webcam.Read(img); !ok {
+			fmt.Printf("cannot read device %d\n", deviceID)
+			return
+		}
+		if img.Empty() {
+			continue
+		}
+
+		buf, _ := gocv.IMEncode(".jpg", img)
+		stream.UpdateJPEG(buf)
+	}
 }
