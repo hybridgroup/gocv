@@ -75,11 +75,16 @@ func main() {
 		// first phase of cleaning up image, obtain foreground only
 		mog2.Apply(img, imgDelta)
 
-		// remaining cleanup of the image to use for finding contours
+		// remaining cleanup of the image to use for finding contours.
+		// first use threshold
 		gocv.Threshold(imgDelta, imgThresh, 25, 255, gocv.ThresholdBinary)
+
+		// then dilate
 		kernel := gocv.GetStructuringElement(gocv.MorphRect, image.Pt(3, 3))
+		defer kernel.Close()
 		gocv.Dilate(imgThresh, imgThresh, kernel)
 
+		// now find contours
 		contours := gocv.FindContours(imgThresh, gocv.RetrievalExternal, gocv.ChainApproxSimple)
 		for _, c := range contours {
 			area := gocv.ContourArea(c)
