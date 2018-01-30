@@ -9,7 +9,7 @@
 //
 // mjpeg-streamer [camera ID] [host:port]
 //
-//		go get -u github.com/saljam/mjpeg
+//		go get -u github.com/hybridgroup/mjpeg
 // 		go run ./cmd/mjpeg-streamer/main.go 1 0.0.0.0:8080
 //
 // +build example
@@ -23,7 +23,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/saljam/mjpeg"
+	"github.com/hybridgroup/mjpeg"
 	"gocv.io/x/gocv"
 )
 
@@ -31,12 +31,13 @@ var (
 	deviceID int
 	err      error
 	webcam   *gocv.VideoCapture
-	img      gocv.Mat
-
-	stream *mjpeg.Stream
+	stream   *mjpeg.Stream
 )
 
 func capture() {
+	img := gocv.NewMat()
+	defer img.Close()
+
 	for {
 		if ok := webcam.Read(img); !ok {
 			fmt.Printf("cannot read device %d\n", deviceID)
@@ -69,15 +70,13 @@ func main() {
 	}
 	defer webcam.Close()
 
-	// prepare image matrix
-	img = gocv.NewMat()
-	defer img.Close()
-
 	// create the mjpeg stream
 	stream = mjpeg.NewStream()
 
 	// start capturing
 	go capture()
+
+	fmt.Println("Capturing...")
 
 	// start http server
 	http.Handle("/", stream)
