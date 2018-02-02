@@ -73,6 +73,27 @@ func TestDilate(t *testing.T) {
 	}
 }
 
+func TestMatchTemplate(t *testing.T) {
+	imgScene := IMRead("images/face.jpg", IMReadGrayScale)
+	if imgScene.Empty() {
+		t.Error("Invalid read of face.jpg in MatchTemplate test")
+	}
+	defer imgScene.Close()
+
+	imgTemplate := IMRead("images/toy.jpg", IMReadGrayScale)
+	if imgTemplate.Empty() {
+		t.Error("Invalid read of toy.jpg in MatchTemplate test")
+	}
+	defer imgTemplate.Close()
+
+	result := NewMat()
+	MatchTemplate(imgScene, imgTemplate, result, TmCcoeffNormed, NewMat())
+	_, maxConfidence, _, _ := MinMaxLoc(result)
+	if maxConfidence < 0.95 {
+		t.Errorf("Max confidence of %f is too low. MatchTemplate could not find template in scene.", maxConfidence)
+	}
+}
+
 func TestMoments(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
