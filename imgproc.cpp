@@ -22,7 +22,7 @@ void Erode(Mat src, Mat dst, Mat kernel) {
 }
 
 void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask) {
-    cv::matchTemplate(*image, *templ, *result, method, *mask)
+    cv::matchTemplate(*image, *templ, *result, method, *mask);
 }
 
 struct Moment Moments(Mat src, bool binaryImage) {
