@@ -21,6 +21,10 @@ void Erode(Mat src, Mat dst, Mat kernel) {
     cv::erode(*src, *dst, *kernel);
 }
 
+void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask) {
+    cv::matchTemplate(*image, *templ, *result, method, *mask);
+}
+
 struct Moment Moments(Mat src, bool binaryImage) {
     cv::Moments m = cv::moments(*src, binaryImage);
     Moment mom = {m.m00, m.m10, m.m01, m.m20, m.m11, m.m02, m.m30, m.m21, m.m12, m.m03,

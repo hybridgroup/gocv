@@ -209,6 +209,33 @@ func FindContours(src Mat, mode RetrievalMode, method ContourApproximationMode) 
 	return contours
 }
 
+// TemplateMatchMode is the type of the template matching operation.
+type TemplateMatchMode int
+
+const (
+	// TmSqdiff maps to TM_SQDIFF
+	TmSqdiff TemplateMatchMode = 0
+	// TmSqdiffNormed maps to TM_SQDIFF_NORMED
+	TmSqdiffNormed = 1
+	// TmCcorr maps to TM_CCORR
+	TmCcorr = 2
+	// TmCcorrNormed maps to TM_CCORR_NORMED
+	TmCcorrNormed = 3
+	// TmCcoeff maps to TM_CCOEFF
+	TmCcoeff = 4
+	// TmCcoeffNormed maps to TM_CCOEFF_NORMED
+	TmCcoeffNormed = 5
+)
+
+// MatchTemplate compares a template against overlapped image regions.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/df/dfb/group__imgproc__object.html#ga586ebfb0a7fb604b35a23d85391329be
+//
+func MatchTemplate(image Mat, templ Mat, result Mat, method TemplateMatchMode, mask Mat) {
+	C.MatchTemplate(image.p, templ.p, result.p, C.int(method), mask.p)
+}
+
 // Moments calculates all of the moments up to the third order of a polygon
 // or rasterized shape.
 //
