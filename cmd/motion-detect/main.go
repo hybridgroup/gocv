@@ -101,7 +101,7 @@ func main() {
 		gocv.PutText(img, status, image.Pt(10, 20), gocv.FontHersheyPlain, 1.2, statusColor, 2)
 
 		window.IMShow(img)
-		if window.WaitKey(1) >= 0 {
+		if window.WaitKey(1) == 27 {
 			break
 		}
 	}

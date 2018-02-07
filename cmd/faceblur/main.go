@@ -42,7 +42,7 @@ func main() {
 	defer webcam.Close()
 
 	// open display window
-	window := gocv.NewWindow("Face Detect")
+	window := gocv.NewWindow("Face Blur")
 	defer window.Close()
 
 	// prepare image matrix
@@ -75,7 +75,7 @@ func main() {
 			defer imgFace.Close()
 
 			// blur face
-			gocv.GaussianBlur(imgFace, imgFace, image.Pt(23, 23), 30, 50, 4)
+			gocv.GaussianBlur(imgFace, imgFace, image.Pt(75, 75), 0, 0, gocv.BorderDefault)
 		}
 
 		// show the image in the window, and wait 1 millisecond
