@@ -91,8 +91,8 @@ func main() {
 			continue
 		}
 
-		// convert image Mat to 224x244 blob that the classifier can analyze
-		blob := gocv.BlobFromImage(img, 1.0, image.Pt(224, 244), gocv.NewScalar(104, 117, 123, 0), false, false)
+		// convert image Mat to 224x224 blob that the classifier can analyze
+		blob := gocv.BlobFromImage(img, 1.0, image.Pt(224, 224), gocv.NewScalar(104, 117, 123, 0), false, false)
 		defer blob.Close()
 
 		// feed the blob into the classifier
