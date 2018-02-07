@@ -45,8 +45,8 @@ func BilateralFilter(src Mat, dst Mat, d int, sigmaColor float64, sigmaSpace flo
 //
 func Blur(src Mat, dst Mat, ksize image.Point) {
 	pSize := C.struct_Size{
-		height: C.int(ksize.X),
-		width:  C.int(ksize.Y),
+		width:  C.int(ksize.X),
+		height: C.int(ksize.Y),
 	}
 
 	C.Blur(src.p, dst.p, pSize)
@@ -305,8 +305,8 @@ const (
 //
 func GetStructuringElement(shape MorphShape, ksize image.Point) Mat {
 	sz := C.struct_Size{
-		height: C.int(ksize.X),
-		width:  C.int(ksize.Y),
+		width:  C.int(ksize.X),
+		height: C.int(ksize.Y),
 	}
 
 	return Mat{p: C.GetStructuringElement(C.int(shape), sz)}
@@ -377,8 +377,8 @@ const (
 func GaussianBlur(src Mat, dst Mat, ksize image.Point, sigmaX float64,
 	sigmaY float64, borderType BorderType) {
 	pSize := C.struct_Size{
-		height: C.int(ksize.X),
-		width:  C.int(ksize.Y),
+		width:  C.int(ksize.X),
+		height: C.int(ksize.Y),
 	}
 
 	C.GaussianBlur(src.p, dst.p, pSize, C.double(sigmaX), C.double(sigmaY), C.int(borderType))
@@ -436,13 +436,13 @@ func Canny(src Mat, edges Mat, t1 float32, t2 float32) {
 //
 func CornerSubPix(img Mat, corners Mat, winSize image.Point, zeroZone image.Point, criteria TermCriteria) {
 	winSz := C.struct_Size{
-		height: C.int(winSize.X),
-		width:  C.int(winSize.Y),
+		width:  C.int(winSize.X),
+		height: C.int(winSize.Y),
 	}
 
 	zeroSz := C.struct_Size{
-		height: C.int(zeroZone.X),
-		width:  C.int(zeroZone.Y),
+		width:  C.int(zeroZone.X),
+		height: C.int(zeroZone.Y),
 	}
 
 	C.CornerSubPix(img.p, corners.p, winSz, zeroSz, criteria.p)

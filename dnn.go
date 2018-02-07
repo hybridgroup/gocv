@@ -96,8 +96,8 @@ func BlobFromImage(img Mat, scaleFactor float64, size image.Point, mean Scalar,
 	swapRB bool, crop bool) Mat {
 
 	sz := C.struct_Size{
-		height: C.int(size.X),
-		width:  C.int(size.Y),
+		width:  C.int(size.X),
+		height: C.int(size.Y),
 	}
 
 	sMean := C.struct_Scalar{

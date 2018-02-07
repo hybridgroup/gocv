@@ -79,13 +79,13 @@ func (c *CascadeClassifier) DetectMultiScaleWithParams(img Mat, scale float64,
 	minNeighbors, flags int, minSize, maxSize image.Point) []image.Rectangle {
 
 	minSz := C.struct_Size{
-		height: C.int(minSize.X),
-		width:  C.int(minSize.Y),
+		width:  C.int(minSize.X),
+		height: C.int(minSize.Y),
 	}
 
 	maxSz := C.struct_Size{
-		height: C.int(maxSize.X),
-		width:  C.int(maxSize.Y),
+		width:  C.int(maxSize.X),
+		height: C.int(maxSize.Y),
 	}
 
 	ret := C.CascadeClassifier_DetectMultiScaleWithParams(c.p, img.p, C.double(scale),
@@ -164,13 +164,13 @@ func (h *HOGDescriptor) DetectMultiScale(img Mat) []image.Rectangle {
 func (h *HOGDescriptor) DetectMultiScaleWithParams(img Mat, hitThresh float64,
 	winStride, padding image.Point, scale, finalThreshold float64, useMeanshiftGrouping bool) []image.Rectangle {
 	wSz := C.struct_Size{
-		height: C.int(winStride.X),
-		width:  C.int(winStride.Y),
+		width:  C.int(winStride.X),
+		height: C.int(winStride.Y),
 	}
 
 	pSz := C.struct_Size{
-		height: C.int(padding.X),
-		width:  C.int(padding.Y),
+		width:  C.int(padding.X),
+		height: C.int(padding.Y),
 	}
 
 	ret := C.HOGDescriptor_DetectMultiScaleWithParams(h.p, img.p, C.double(hitThresh),
