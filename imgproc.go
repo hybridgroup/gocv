@@ -36,12 +36,10 @@ func BilateralFilter(src Mat, dst Mat, d int, sigmaColor float64, sigmaSpace flo
 	C.BilateralFilter(src.p, dst.p, C.int(d), C.double(sigmaColor), C.double(sigmaSpace))
 }
 
-// Blur blurs an image Mat using a box filter.
-// The function convolves the src Mat image into the dst Mat using
-// the specified Gaussian kernel params.
+// Blur blurs an image Mat using a normalized box filter.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.4.0/d4/d86/group__imgproc__filter.html#gaabe8c836e97159a9193fb0b11ac52cf1
+// https://docs.opencv.org/3.4.0/d4/d86/group__imgproc__filter.html#ga8c45db9afe636703801b0b2e440fce37
 //
 func Blur(src Mat, dst Mat, ksize image.Point) {
 	pSize := C.struct_Size{
