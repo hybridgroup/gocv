@@ -79,10 +79,10 @@ func main() {
 		// blur each face on the original image
 		for _, face := range faces {
 			imgFace := img.Region(face.Rectangle())
-			defer imgFace.Close()
 
 			// blur face
 			gocv.GaussianBlur(imgFace, imgFace, image.Pt(23, 23), 30, 50, 4)
+			imgFace.Close()
 		}
 
 		// show the image in the window, and wait 1 millisecond

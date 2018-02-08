@@ -90,18 +90,15 @@ func main() {
 
 		// convert image Mat to 224x224 blob that the classifier can analyze
 		blob := gocv.BlobFromImage(img, 1.0, image.Pt(224, 224), gocv.NewScalar(0, 0, 0, 0), true, false)
-		defer blob.Close()
 
 		// feed the blob into the classifier
 		net.SetInput(blob, "input")
 
 		// run a forward pass thru the network
 		prob := net.Forward("softmax2")
-		defer prob.Close()
 
 		// reshape the results into a 1x1000 matrix
 		probMat := prob.Reshape(1, 1)
-		defer probMat.Close()
 
 		// determine the most probable classification
 		_, maxVal, _, maxLoc := gocv.MinMaxLoc(probMat)
@@ -113,6 +110,10 @@ func main() {
 		}
 		status = fmt.Sprintf("description: %v, maxVal: %v\n", desc, maxVal)
 		gocv.PutText(img, status, image.Pt(10, 20), gocv.FontHersheyPlain, 1.2, statusColor, 2)
+
+		blob.Close()
+		prob.Close()
+		probMat.Close()
 
 		window.IMShow(img)
 		if window.WaitKey(1) >= 0 {
