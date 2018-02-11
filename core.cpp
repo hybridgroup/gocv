@@ -18,6 +18,10 @@ Mat Mat_NewFromScalar(Scalar ar, int type) {
     return new cv::Mat(1, 1, type, c);
 }
 
+Mat Mat_NewFromBytes(int rows, int cols, int type, struct ByteArray buf) {
+    return new cv::Mat(rows, cols, type, buf.data);
+}
+
 // Mat_Close deletes an existing Mat
 void Mat_Close(Mat m) {
     delete m;
@@ -36,6 +40,10 @@ Mat Mat_Clone(Mat m) {
 // Mat_CopyTo copies this Mat to another Mat.
 void Mat_CopyTo(Mat m, Mat dst) {
     m->copyTo(*dst);
+}
+
+void Mat_ConvertTo(Mat m, Mat dst, int type) {
+    m->convertTo(*dst, type);
 }
 
 // Mat_ToBytes returns the bytes representation of the underlying data.

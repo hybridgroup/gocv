@@ -60,6 +60,14 @@ func TestMatToBytes(t *testing.T) {
 		t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 	}
 
+	copy := NewMatFromBytes(101, 102, MatTypeCV8U, b)
+	if copy.Rows() != 101 {
+		t.Errorf("Mat from bytes incorrect row count: %v\n", copy.Rows())
+	}
+	if copy.Cols() != 102 {
+		t.Errorf("Mat region incorrect col count: %v\n", copy.Cols())
+	}
+
 	mat = NewMatWithSize(101, 102, MatTypeCV16S)
 	b = mat.ToBytes()
 	if len(b) != 101*102*2 {
@@ -99,6 +107,15 @@ func TestMatReshape(t *testing.T) {
 
 	if r.Cols() != 40000 {
 		t.Errorf("Mat reshape incorrect col count: %v\n", r.Cols())
+	}
+}
+
+func TestMatConvert(t *testing.T) {
+	src := NewMatWithSize(100, 100, MatTypeCV32F)
+	dst := NewMat()
+	src.ConvertTo(dst, MatTypeCV16S)
+	if dst.Empty() {
+		t.Error("TestConvert dst should not be empty.")
 	}
 }
 
