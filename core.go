@@ -158,6 +158,15 @@ func (m *Mat) Reshape(cn int, rows int) Mat {
 	return Mat{p: C.Mat_Reshape(m.p, C.int(cn), C.int(rows))}
 }
 
+// ConvertFp16 converts a Mat to half-precision floating point.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga9c25d9ef44a2a48ecc3774b30cb80082
+//
+func (m *Mat) ConvertFp16() Mat {
+	return Mat{p: C.Mat_ConvertFp16(m.p)}
+}
+
 // Mean calculates the mean value M of array elements, independently for each channel, and return it as Scalar
 // TODO pass second paramter with mask
 func (m *Mat) Mean() Scalar {

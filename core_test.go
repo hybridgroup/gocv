@@ -102,6 +102,14 @@ func TestMatReshape(t *testing.T) {
 	}
 }
 
+func TestMatConvertFp16(t *testing.T) {
+	src := NewMatWithSize(100, 100, MatTypeCV32F)
+	dst := src.ConvertFp16()
+	if dst.Empty() {
+		t.Error("TestConvertFp16 dst should not be empty.")
+	}
+}
+
 func TestMatMean(t *testing.T) {
 	mat := NewMatWithSize(100, 100, MatTypeCV8U)
 	mean := mat.Mean()

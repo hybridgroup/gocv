@@ -52,6 +52,12 @@ Mat Mat_Reshape(Mat m, int cn, int rows) {
     return new cv::Mat(m->reshape(cn, rows));
 }
 
+Mat Mat_ConvertFp16(Mat m) {
+    Mat dst = new cv::Mat();
+    cv::convertFp16(*m, *dst);
+    return dst;
+}
+
 // Mat_Mean calculates the mean value M of array elements, independently for each channel, and return it as Scalar vector
 // TODO pass second paramter with mask
 Scalar Mat_Mean(Mat m) {

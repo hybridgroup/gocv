@@ -158,6 +158,7 @@ void Mat_CopyTo(Mat m, Mat dst);
 struct ByteArray Mat_ToBytes(Mat m);
 Mat Mat_Region(Mat m, Rect r);
 Mat Mat_Reshape(Mat m, int cn, int rows);
+Mat Mat_ConvertFp16(Mat m);
 Scalar Mat_Mean(Mat m);
 int Mat_Rows(Mat m);
 int Mat_Cols(Mat m);

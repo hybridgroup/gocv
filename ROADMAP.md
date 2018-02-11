@@ -22,7 +22,6 @@ Your pull requests will be greatly appreciated!
         - [ ] [checkRange](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga2bd19d89cae59361416736f87e3c7a64)
         - [ ] [compare](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gae6ffa9354633f984246945d52823165d)
         - [ ] [completeSymm](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaa9d88dcd0e54b6d1af38d41f2a3e3d25)
-        - [ ] [convertFp16](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga9c25d9ef44a2a48ecc3774b30cb80082)
         - [ ] [convertScaleAbs](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga3460e9c9f37b563ab9dd550c4d8c4e7d)
         - [ ] [copyMakeBorder](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga3460e9c9f37b563ab9dd550c4d8c4e7d)
         - [ ] [countNonZero](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaa4b89393263bb4d604e0fe5986723914)
