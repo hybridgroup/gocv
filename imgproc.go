@@ -23,17 +23,19 @@ func CvtColor(src Mat, dst Mat, code ColorConversionCode) {
 	C.CvtColor(src.p, dst.p, C.int(code))
 }
 
-// BilateralFilter applies the bilateral filter to an image.
-// The function applies bilateral filtering to the input image, as described in
+// BilateralFilter applies a bilateral filter to an image.
+//
+// Bilateral filtering is described here:
 // http://www.dai.ed.ac.uk/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.html
-// bilateralFilter can reduce unwanted noise very well while keeping edges
+//
+// BilateralFilter can reduce unwanted noise very well while keeping edges
 // fairly sharp. However, it is very slow compared to most filters.
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4.0/d4/d86/group__imgproc__filter.html#ga9d7064d478c95d60003cf839430737ed
 //
-func BilateralFilter(src Mat, dst Mat, d int, sigmaColor float64, sigmaSpace float64) {
-	C.BilateralFilter(src.p, dst.p, C.int(d), C.double(sigmaColor), C.double(sigmaSpace))
+func BilateralFilter(src Mat, dst Mat, diameter int, sigmaColor float64, sigmaSpace float64) {
+	C.BilateralFilter(src.p, dst.p, C.int(diameter), C.double(sigmaColor), C.double(sigmaSpace))
 }
 
 // Blur blurs an image Mat using a normalized box filter.
