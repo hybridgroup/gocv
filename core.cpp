@@ -92,6 +92,11 @@ int Mat_Cols(Mat m) {
     return m->cols;
 }
 
+// Mat_Channels returns how many channels in this Mat.
+int Mat_Channels(Mat m) {
+    return m->channels();
+}
+
 // Mat_GetUChar returns a specific row/col value from this Mat expecting
 // each element to contain a schar aka CV_8U.
 uint8_t Mat_GetUChar(Mat m, int row, int col) {

@@ -26,6 +26,10 @@ func TestMatWithSize(t *testing.T) {
 	if mat.Cols() != 102 {
 		t.Errorf("NewMatWithSize incorrect col count: %v\n", mat.Cols())
 	}
+
+	if mat.Channels() != 1 {
+		t.Errorf("NewMatWithSize incorrect channels count: %v\n", mat.Channels())
+	}
 }
 
 func TestMatClone(t *testing.T) {
