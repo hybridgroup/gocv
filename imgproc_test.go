@@ -125,8 +125,18 @@ func TestFindContours(t *testing.T) {
 	}
 
 	r := BoundingRect(res[0])
-	if r.Min.X != 0 || r.Max.Y != 320 {
+	if !r.Eq(image.Rect(0, 0, 400, 320)) {
 		t.Errorf("Invalid BoundingRect test: %v", r)
+	}
+
+	length := ArcLength(res[0], true)
+	if int(length) != 1436 {
+		t.Errorf("Invalid ArcLength test: %f", length)
+	}
+
+	length = ArcLength(res[0], false)
+	if int(length) != 1037 {
+		t.Errorf("Invalid ArcLength test: %f", length)
 	}
 }
 

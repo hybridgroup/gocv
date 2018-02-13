@@ -1,5 +1,13 @@
 #include "imgproc.h"
 
+double ArcLength(Contour curve, bool is_closed) {
+    std::vector<cv::Point> pts;
+    for (size_t i = 0; i < curve.length; i++) {
+        pts.push_back(cv::Point(curve.points[i].x, curve.points[i].y));
+    }
+    return cv::arcLength(pts, is_closed);
+}
+
 void CvtColor(Mat src, Mat dst, int code) {
     cv::cvtColor(*src, *dst, code);
 }

@@ -12,6 +12,30 @@ import (
 	"unsafe"
 )
 
+// ArcLength calculates a contour perimeter or a curve length.
+//
+// For further details, please see:
+//
+// https://docs.opencv.org/3.4.0/d3/dc0/group__imgproc__shape.html#ga8d26483c636be6b35c3ec6335798a47c
+//
+func ArcLength(curve []image.Point, isClosed bool) float64 {
+	cPointSlice := make([]C.struct_Point, len(curve))
+	for i, point := range curve {
+		cPoint := C.struct_Point{
+			x: C.int(point.X),
+			y: C.int(point.Y),
+		}
+		cPointSlice[i] = cPoint
+	}
+
+	cPoints := C.struct_Points{
+		points: (*C.Point)(&cPointSlice[0]),
+		length: C.int(len(curve)),
+	}
+	arcLength := C.ArcLength(cPoints, C.bool(isClosed))
+	return float64(arcLength)
+}
+
 // CvtColor converts an image from one color space to another.
 // It converts the src Mat image to the dst Mat using the
 // code param containing the desired ColorConversionCode color space.

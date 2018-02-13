@@ -10,6 +10,7 @@ extern "C" {
 
 #include "core.h"
 
+double ArcLength(Contour curve, bool is_closed);
 void CvtColor(Mat src, Mat dst, int code);
 void BilateralFilter(Mat src, Mat dst, int d, double sc, double ss);
 void Blur(Mat src, Mat dst, Size ps);
