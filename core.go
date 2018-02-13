@@ -219,6 +219,11 @@ func (m *Mat) Channels() int {
 	return int(C.Mat_Channels(m.p))
 }
 
+// Type returns the type for this Mat.
+func (m *Mat) Type() int {
+	return int(C.Mat_Type(m.p))
+}
+
 // GetUCharAt returns a value from a specific row/col in this Mat expecting it to
 // be of type uchar aka CV_8U.
 func (m *Mat) GetUCharAt(row int, col int) int8 {

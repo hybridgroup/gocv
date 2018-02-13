@@ -165,6 +165,7 @@ Scalar Mat_Mean(Mat m);
 int Mat_Rows(Mat m);
 int Mat_Cols(Mat m);
 int Mat_Channels(Mat m);
+int Mat_Type(Mat m);
 uint8_t Mat_GetUChar(Mat m, int row, int col);
 int8_t Mat_GetSChar(Mat m, int row, int col);
 int16_t Mat_GetShort(Mat m, int row, int col);
