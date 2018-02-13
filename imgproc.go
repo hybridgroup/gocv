@@ -36,6 +36,33 @@ func ArcLength(curve []image.Point, isClosed bool) float64 {
 	return float64(arcLength)
 }
 
+// ApproxPolyDP approximates a polygonal curve(s) with the specified precision.
+//
+// For further details, please see:
+//
+// https://docs.opencv.org/3.4.0/d3/dc0/group__imgproc__shape.html#ga0012a5fdaea70b8a9970165d98722b4c
+//
+func ApproxPolyDP(curve []image.Point, epsilon float64, closed bool) (approxCurve []image.Point) {
+	cPointArray := make([]C.struct_Point, len(curve))
+	for i, r := range curve {
+		cPointArray[i] = C.struct_Point{x: C.int(r.X), y: C.int(r.Y)}
+	}
+	cCurve := C.struct_Points{
+		points: (*C.Point)(&cPointArray[0]),
+		length: C.int(len(curve)),
+	}
+
+	cApproxCurve := C.ApproxPolyDP(cCurve, C.double(epsilon), C.bool(closed))
+	defer C.Points_Close(cApproxCurve)
+	cApproxCurvePoints := (*[1 << 30]C.Point)(unsafe.Pointer(cApproxCurve.points))[:cApproxCurve.length:cApproxCurve.length]
+
+	approxCurve = make([]image.Point, cApproxCurve.length)
+	for i, cPoint := range cApproxCurvePoints {
+		approxCurve[i] = image.Pt(int(cPoint.x), int(cPoint.y))
+	}
+	return
+}
+
 // CvtColor converts an image from one color space to another.
 // It converts the src Mat image to the dst Mat using the
 // code param containing the desired ColorConversionCode color space.
