@@ -4,8 +4,38 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"reflect"
 	"testing"
 )
+
+func TestApproxPolyDP(t *testing.T) {
+	img := NewMatWithSize(100, 200, MatTypeCV8UC1)
+	defer img.Close()
+
+	white := color.RGBA{255, 255, 255, 255}
+	// Draw triangle
+	Line(img, image.Pt(25, 25), image.Pt(25, 75), white, 1)
+	Line(img, image.Pt(25, 75), image.Pt(75, 50), white, 1)
+	Line(img, image.Pt(75, 50), image.Pt(25, 25), white, 1)
+	// Draw rectangle
+	Rectangle(img, image.Rect(125, 25, 175, 75), white, 1)
+
+	contours := FindContours(img, RetrievalExternal, ChainApproxSimple)
+
+	trianglePerimeter := ArcLength(contours[0], true)
+	triangleContour := ApproxPolyDP(contours[0], 0.04*trianglePerimeter, true)
+	expectedTriangleContour := []image.Point{image.Pt(25, 25), image.Pt(25, 75), image.Pt(75, 50)}
+	if !reflect.DeepEqual(triangleContour, expectedTriangleContour) {
+		t.Errorf("Failed to approximate triangle.\nActual:%v\nExpect:%v", triangleContour, expectedTriangleContour)
+	}
+
+	rectPerimeter := ArcLength(contours[1], true)
+	rectContour := ApproxPolyDP(contours[1], 0.04*rectPerimeter, true)
+	expectedRectContour := []image.Point{image.Pt(125, 24), image.Pt(124, 75), image.Pt(175, 76), image.Pt(176, 25)}
+	if !reflect.DeepEqual(rectContour, expectedRectContour) {
+		t.Errorf("Failed to approximate rectangle.\nActual:%v\nExpect:%v", rectContour, expectedRectContour)
+	}
+}
 
 func TestCvtColor(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)

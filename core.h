@@ -147,6 +147,8 @@ void Contours_Close(struct Contours cs);
 void KeyPoints_Close(struct KeyPoints ks);
 void Rects_Close(struct Rects rs);
 void Mats_Close(struct Mats mats);
+void Point_Close(struct Point p);
+void Points_Close(struct Points ps);
 
 Mat Mat_New();
 Mat Mat_NewWithSize(int rows, int cols, int type);

@@ -8,6 +8,23 @@ double ArcLength(Contour curve, bool is_closed) {
     return cv::arcLength(pts, is_closed);
 }
 
+Contour ApproxPolyDP(Contour curve, double epsilon, bool closed) {
+    std::vector<cv::Point> curvePts;
+    for (size_t i = 0; i < curve.length; i++) {
+        curvePts.push_back(cv::Point(curve.points[i].x, curve.points[i].y));
+    }
+
+    std::vector<cv::Point> approxCurvePts;
+    cv::approxPolyDP(curvePts, approxCurvePts, epsilon, closed);
+
+    int length = approxCurvePts.size();
+    Point* points = new Point[length];
+    for (size_t i = 0; i < length; i++) {
+        points[i] = Point{approxCurvePts[i].x, approxCurvePts[i].y};
+    }
+    return Contour{points, length};
+}
+
 void CvtColor(Mat src, Mat dst, int code) {
     cv::cvtColor(*src, *dst, code);
 }
@@ -130,7 +147,7 @@ void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold) {
 }
 
 void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ) {
-    cv:threshold(*src, *dst, thresh, maxvalue, typ);
+    cv::threshold(*src, *dst, thresh, maxvalue, typ);
 }
 
 void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
