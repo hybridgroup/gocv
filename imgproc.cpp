@@ -147,7 +147,7 @@ void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold) {
 }
 
 void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ) {
-    cv:threshold(*src, *dst, thresh, maxvalue, typ);
+    cv::threshold(*src, *dst, thresh, maxvalue, typ);
 }
 
 void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {

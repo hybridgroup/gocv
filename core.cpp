@@ -234,7 +234,7 @@ void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* 
 }
 
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
-    cv:normalize(*src, *dst, alpha, beta, typ);
+    cv::normalize(*src, *dst, alpha, beta, typ);
 }
 
 double Norm(Mat src1, int normType) {
@@ -247,10 +247,8 @@ TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon) {
 }
 
 void Contours_Close(struct Contours cs) {
-    Contour *cnt = cs.contours;
-    for (int i = 0; i < cs.length; ++i, cnt++)
-    {
-        delete[] cnt->points;
+    for (int i = 0; i < cs.length; i++) {
+        Points_Close(cs.contours[i]);
     }
     delete[] cs.contours;
 }
@@ -258,6 +256,15 @@ void Contours_Close(struct Contours cs) {
 void KeyPoints_Close(struct KeyPoints ks) {
     delete[] ks.keypoints;
 }
+
+void Points_Close(Points ps) {
+    for (size_t i = 0; i < ps.length; i++) {
+        Point_Close(ps.points[i]);
+    }
+    delete[] ps.points;
+}
+
+void Point_Close(Point p) {}
 
 void Rects_Close(struct Rects rs) {
     delete[] rs.rects;
