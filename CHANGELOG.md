@@ -1,3 +1,31 @@
+0.9.0
+---
+* **bugfix** 
+    * correct several errors in size parameter ordering
+* **build**
+    * add missing opencv_face lib reference to env.sh
+    * Support for non-brew installs of opencv on Darwin
+* **core**
+    * add Channels() method to Mat
+    * add ConvertTo() and NewMatFromBytes() functions
+    * add Type() method to Mat
+    * implement ConvertFp16() function
+* **dnn** 
+    * use correct size for blob used for Caffe/Tensorflow tests
+* **docs** 
+    * Update copyright date and Apache 2.0 license to include full text
+* **examples** 
+    * cleanup mjpeg streamer code
+    * cleanup motion detector comments
+    * correct use of defer in loop
+    * use correct size for blob used for Caffe/Tensorflow examples
+* **imgproc**
+    * Add cv::approxPolyDP() bindings.
+    * Add cv::arcLength() bindings.
+    * Add cv::matchTemplate() bindings.
+    * correct comment and link for Blur function
+    * correct docs for BilateralFilter()
+
 0.8.0
 ---
 * **core**
