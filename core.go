@@ -134,6 +134,16 @@ func (m *Mat) CopyTo(dst Mat) {
 	return
 }
 
+// CopyToWithMask copies Mat into destination Mat after applying the mask Mat.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d3/d63/classcv_1_1Mat.html#a626fe5f96d02525e2604d2ad46dd574f
+//
+func (m *Mat) CopyToWithMask(dst Mat, mask Mat) {
+	C.Mat_CopyToWithMask(m.p, dst.p, mask.p)
+	return
+}
+
 // ConvertTo converts Mat into destination Mat.
 //
 // For further details, please see:
