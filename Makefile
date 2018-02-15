@@ -1,14 +1,39 @@
 .ONESHELL:
 .PHONY: test deps download build clean
 
+
+# Package list for each well-known Linux distribution
+RPMS=make cmake git gtk2-devel pkg-config libpng-devel libjpeg-devel libtiff-devel tbb tbb-devel libdc1394-devel jasper-libs jasper-devel
+DEBS=build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
+
+# Detect Linux distribution
+IS_FEDORA=$(shell which dnf 2>/dev/null)
+IS_DEB_UBUNTU=$(shell which apt-get 2>/dev/null)
+IS_RH_CENTOS=$(shell which yum 2>/dev/null)
+
 test:
 	go test .
 
 deps:
+ifneq ($(IS_FEDORA),'')
+	$(MAKE) deps_fedora
+else
+ifneq ($(IS_RH_CENTOS),'')
+	$(MAKE) deps_rh_centos
+else
+	$(MAKE) deps_debian
+endif
+endif
+
+deps_rh_centos:
+	sudo yum install $(RPMS)
+
+deps_fedora:
+	sudo dnf install $(RPMS)
+
+deps_debian:
 	sudo apt-get update
-	sudo apt-get install build-essential
-	sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
-	sudo apt-get install libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
+	sudo apt-get install $(DEBS)
 
 download:
 	mkdir /tmp/opencv
