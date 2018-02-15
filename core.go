@@ -226,8 +226,8 @@ func (m *Mat) Type() int {
 
 // GetUCharAt returns a value from a specific row/col in this Mat expecting it to
 // be of type uchar aka CV_8U.
-func (m *Mat) GetUCharAt(row int, col int) int8 {
-	return int8(C.Mat_GetUChar(m.p, C.int(row), C.int(col)))
+func (m *Mat) GetUCharAt(row int, col int) uint8 {
+	return uint8(C.Mat_GetUChar(m.p, C.int(row), C.int(col)))
 }
 
 // GetSCharAt returns a value from a specific row/col in this Mat expecting it to
@@ -262,7 +262,7 @@ func (m *Mat) GetDoubleAt(row int, col int) float64 {
 
 // SetUCharAt set a value from a specific row/col in this Mat expecting it to
 // be of type uchar aka CV_8U.
-func (m *Mat) SetUCharAt(row int, col int, val int8) {
+func (m *Mat) SetUCharAt(row int, col int, val uint8) {
 	C.Mat_SetUChar(m.p, C.int(row), C.int(col), C.uint8_t(val))
 }
 
