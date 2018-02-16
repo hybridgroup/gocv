@@ -42,6 +42,11 @@ void Mat_CopyTo(Mat m, Mat dst) {
     m->copyTo(*dst);
 }
 
+// Mat_CopyToWithMask copies this Mat to another Mat while applying the mask
+void Mat_CopyToWithMask(Mat m, Mat dst, Mat mask) {
+    m->copyTo(*dst, *mask);
+}
+
 void Mat_ConvertTo(Mat m, Mat dst, int type) {
     m->convertTo(*dst, type);
 }

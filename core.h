@@ -158,6 +158,7 @@ void Mat_Close(Mat m);
 int Mat_Empty(Mat m);
 Mat Mat_Clone(Mat m);
 void Mat_CopyTo(Mat m, Mat dst);
+void Mat_CopyToWithMask(Mat m, Mat dst, Mat mask);
 void Mat_ConvertTo(Mat m, Mat dst, int type);
 struct ByteArray Mat_ToBytes(Mat m);
 Mat Mat_Region(Mat m, Rect r);
