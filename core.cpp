@@ -113,10 +113,18 @@ uint8_t Mat_GetUChar(Mat m, int row, int col) {
     return m->at<uchar>(row, col);
 }
 
+uint8_t Mat_GetUCharChannel(Mat m, int row, int col, int channel) {
+    return m->at<uchar>(row, col, channel);
+}
+
 // Mat_GetSChar returns a specific row/col value from this Mat expecting
 // each element to contain a schar aka CV_8S.
 int8_t Mat_GetSChar(Mat m, int row, int col) {
     return m->at<schar>(row, col);
+}
+
+int8_t Mat_GetSCharChannel(Mat m, int row, int col, int channel) {
+    return m->at<schar>(row, col, channel);
 }
 
 // Mat_GetShort returns a specific row/col value from this Mat expecting
@@ -125,10 +133,18 @@ int16_t Mat_GetShort(Mat m, int row, int col) {
     return m->at<short>(row, col);
 }
 
+int16_t Mat_GetShortChannel(Mat m, int row, int col, int channel) {
+    return m->at<short>(row, col, channel);
+}
+
 // Mat_GetInt returns a specific row/col value from this Mat expecting
 // each element to contain an int aka CV_32S.
 int32_t Mat_GetInt(Mat m, int row, int col) {
     return m->at<int>(row, col);
+}
+
+int32_t Mat_GetIntChannel(Mat m, int row, int col, int channel) {
+    return m->at<int>(row, col, channel);
 }
 
 // Mat_GetFloat returns a specific row/col value from this Mat expecting
@@ -137,10 +153,18 @@ float Mat_GetFloat(Mat m, int row, int col) {
     return m->at<float>(row, col);
 }
 
+float Mat_GetFloatChannel(Mat m, int row, int col, int channel) {
+    return m->at<float>(row, col, channel);
+}
+
 // Mat_GetDouble returns a specific row/col value from this Mat expecting
 // each element to contain a double aka CV_64F.
 double Mat_GetDouble(Mat m, int row, int col) {
     return m->at<double>(row, col);
+}
+
+double Mat_GetDoubleChannel(Mat m, int row, int col, int channel) {
+    return m->at<double>(row, col, channel);
 }
 
 // Mat_SetUChar set a specific row/col value from this Mat expecting
@@ -149,10 +173,18 @@ void Mat_SetUChar(Mat m, int row, int col, uint8_t val) {
     m->at<uchar>(row, col) = val;
 }
 
+void Mat_SetUCharChannel(Mat m, int row, int col, int channel, uint8_t val) {
+    m->at<uchar>(row, col, channel) = val;
+}
+
 // Mat_SetSChar set a specific row/col value from this Mat expecting
 // each element to contain a schar aka CV_8S.
 void Mat_SetSChar(Mat m, int row, int col, int8_t val) {
   m->at<schar>(row, col) = val;
+}
+
+void Mat_SetSCharChannel(Mat m, int row, int col, int channel, int8_t val) {
+  m->at<schar>(row, col, channel) = val;
 }
 
 // Mat_SetShort set a specific row/col value from this Mat expecting
@@ -161,10 +193,18 @@ void Mat_SetShort(Mat m, int row, int col, int16_t val) {
     m->at<short>(row, col) = val;
 }
 
+void Mat_SetShortChannel(Mat m, int row, int col, int channel, int16_t val) {
+    m->at<short>(row, col, channel) = val;
+}
+
 // Mat_SetInt set a specific row/col value from this Mat expecting
 // each element to contain an int aka CV_32S.
 void Mat_SetInt(Mat m, int row, int col, int32_t val) {
     m->at<int>(row, col) = val;
+}
+
+void Mat_SetIntChannel(Mat m, int row, int col, int channel, int32_t val) {
+    m->at<int>(row, col, channel) = val;
 }
 
 // Mat_SetFloat set a specific row/col value from this Mat expecting
@@ -173,10 +213,18 @@ void Mat_SetFloat(Mat m, int row, int col, float val) {
     m->at<float>(row, col) = val;
 }
 
+void Mat_SetFloatChannel(Mat m, int row, int col, int channel, float val) {
+    m->at<float>(row, col, channel) = val;
+}
+
 // Mat_SetDouble set a specific row/col value from this Mat expecting
 // each element to contain a double aka CV_64F.
 void Mat_SetDouble(Mat m, int row, int col, double val) {
     m->at<double>(row, col) = val;
+}
+
+void Mat_SetDoubleChannel(Mat m, int row, int col, int channel, double val) {
+    m->at<double>(row, col, channel) = val;
 }
 
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
