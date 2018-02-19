@@ -137,6 +137,38 @@ func TestMoments(t *testing.T) {
 	}
 }
 
+func TestPyrDown(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in PyrDown test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	PyrDown(img, dest, image.Point{X: dest.Cols(), Y: dest.Rows()}, BorderDefault)
+	if dest.Empty() && math.Abs(float64(img.Cols()-2*dest.Cols())) < 2.0 && math.Abs(float64(img.Rows()-2*dest.Rows())) < 2.0 {
+		t.Error("Invalid PyrDown test")
+	}
+}
+
+func TestPyrUp(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in PyrUp test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	PyrUp(img, dest, image.Point{X: dest.Cols(), Y: dest.Rows()}, BorderDefault)
+	if dest.Empty() && math.Abs(float64(2*img.Cols()-dest.Cols())) < 2.0 && math.Abs(float64(2*img.Rows()-dest.Rows())) < 2.0 {
+		t.Error("Invalid PyrUp test")
+	}
+}
+
 func TestFindContours(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
