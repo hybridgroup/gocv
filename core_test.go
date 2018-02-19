@@ -387,6 +387,16 @@ func TestMatNormalize(t *testing.T) {
 	}
 }
 
+func TestMatSubtract(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat3 := NewMat()
+	Subtract(mat1, mat2, mat3)
+	if mat3.Empty() {
+		t.Error("TestMatSubtract dest mat3 should not be empty.")
+	}
+}
+
 func TestTermCriteria(t *testing.T) {
 	tc := NewTermCriteria(Count, 50, 2.0)
 	if tc.p == nil {

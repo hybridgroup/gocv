@@ -242,6 +242,10 @@ void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
     cv::normalize(*src, *dst, alpha, beta, typ);
 }
 
+void Mat_Subtract(Mat src1, Mat src2, Mat dst) {
+    cv::subtract(*src1, *src2, *dst);
+}
+
 double Norm(Mat src1, int normType) {
     return cv::norm(*src1, normType);
 }
