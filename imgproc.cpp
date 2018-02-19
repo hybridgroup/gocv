@@ -29,6 +29,24 @@ void CvtColor(Mat src, Mat dst, int code) {
     cv::cvtColor(*src, *dst, code);
 }
 
+void ConvexHull(Contour points, Mat hull, bool clockwise, bool returnPoints) {
+    std::vector<cv::Point> pts;
+    for (size_t i = 0; i < points.length; i++) {
+        pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
+    }
+
+    cv::convexHull(pts, *hull, clockwise, returnPoints);
+}
+
+void ConvexityDefects(Contour points, Mat hull, Mat result) {
+    std::vector<cv::Point> pts;
+    for (size_t i = 0; i < points.length; i++) {
+        pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
+    }
+
+    cv::convexityDefects(pts, *hull, *result);
+}
+
 void BilateralFilter(Mat src, Mat dst, int d, double sc, double ss) {
     cv::bilateralFilter(*src, *dst, d, sc, ss);
 }

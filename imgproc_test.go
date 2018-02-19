@@ -37,6 +37,40 @@ func TestApproxPolyDP(t *testing.T) {
 	}
 }
 
+func TestConvexity(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in FindContours test")
+	}
+	defer img.Close()
+
+	res := FindContours(img, RetrievalExternal, ChainApproxSimple)
+	if len(res) < 1 {
+		t.Error("Invalid FindContours test")
+	}
+
+	area := ContourArea(res[0])
+	if area != 127280.0 {
+		t.Errorf("Invalid ContourArea test: %f", area)
+	}
+
+	hull := NewMat()
+	defer hull.Close()
+
+	ConvexHull(res[0], hull, true, false)
+	if hull.Empty() {
+		t.Error("Invalid ConvexHull test")
+	}
+
+	defects := NewMat()
+	defer defects.Close()
+
+	ConvexityDefects(res[0], hull, defects)
+	if defects.Empty() {
+		t.Error("Invalid ConvexityDefects test")
+	}
+}
+
 func TestCvtColor(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {

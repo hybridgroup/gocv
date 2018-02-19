@@ -63,6 +63,42 @@ func ApproxPolyDP(curve []image.Point, epsilon float64, closed bool) (approxCurv
 	return
 }
 
+// ConvexHull finds the convex hull of a point set.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d3/dc0/group__imgproc__shape.html#ga014b28e56cb8854c0de4a211cb2be656
+//
+func ConvexHull(points []image.Point, hull Mat, clockwise bool, returnPoints bool) {
+	cPointArray := make([]C.struct_Point, len(points))
+	for i, r := range points {
+		cPointArray[i] = C.struct_Point{x: C.int(r.X), y: C.int(r.Y)}
+	}
+	cPoints := C.struct_Points{
+		points: (*C.Point)(&cPointArray[0]),
+		length: C.int(len(points)),
+	}
+
+	C.ConvexHull(cPoints, hull.p, C.bool(clockwise), C.bool(returnPoints))
+}
+
+// ConvexityDefects finds the convexity defects of a contour.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d3/dc0/group__imgproc__shape.html#gada4437098113fd8683c932e0567f47ba
+//
+func ConvexityDefects(contour []image.Point, hull Mat, result Mat) {
+	cPointArray := make([]C.struct_Point, len(contour))
+	for i, r := range contour {
+		cPointArray[i] = C.struct_Point{x: C.int(r.X), y: C.int(r.Y)}
+	}
+	cPoints := C.struct_Points{
+		points: (*C.Point)(&cPointArray[0]),
+		length: C.int(len(contour)),
+	}
+
+	C.ConvexityDefects(cPoints, hull.p, result.p)
+}
+
 // CvtColor converts an image from one color space to another.
 // It converts the src Mat image to the dst Mat using the
 // code param containing the desired ColorConversionCode color space.
