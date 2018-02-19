@@ -76,7 +76,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [sortIdx](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gadf35157cbf97f3cb85a545380e383506)
         - [ ] [split](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga0547c7fed86152d7e9d0096029c8518a)
         - [ ] [sqrt](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga186222c3919657890f88df5a1f64a7d7)
-        - [ ] [subtract](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaa0f00d98b4b5edeaeb7b8333b2de353b)
+        - [X] [subtract](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaa0f00d98b4b5edeaeb7b8333b2de353b)
         - [ ] [sum](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga716e10a2dd9e228e4d3c95818f106722)
         - [ ] [SVBackSubst](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gab4e620e6fc6c8a27bb2be3d50a840c0b)
         - [ ] [SVDecomp](https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gab477b5b7b39b370bb03e75b19d2d5109)
