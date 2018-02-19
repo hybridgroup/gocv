@@ -325,6 +325,32 @@ func Moments(src Mat, binaryImage bool) map[string]float64 {
 	return result
 }
 
+// PyrDown blurs an image and downsamples it.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d4/d86/group__imgproc__filter.html#gaf9bba239dfca11654cb7f50f889fc2ff
+//
+func PyrDown(src Mat, dst Mat, ksize image.Point, borderType BorderType) {
+	pSize := C.struct_Size{
+		height: C.int(ksize.X),
+		width:  C.int(ksize.Y),
+	}
+	C.PyrDown(src.p, dst.p, pSize, C.int(borderType))
+}
+
+// PyrUp upsamples an image and then blurs it.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d4/d86/group__imgproc__filter.html#gada75b59bdaaca411ed6fee10085eb784
+//
+func PyrUp(src Mat, dst Mat, ksize image.Point, borderType BorderType) {
+	pSize := C.struct_Size{
+		height: C.int(ksize.X),
+		width:  C.int(ksize.Y),
+	}
+	C.PyrUp(src.p, dst.p, pSize, C.int(borderType))
+}
+
 // MorphologyEx performs advanced morphological transformations.
 //
 // For further details, please see:

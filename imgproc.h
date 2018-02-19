@@ -19,6 +19,8 @@ void Dilate(Mat src, Mat dst, Mat kernel);
 void Erode(Mat src, Mat dst, Mat kernel);
 void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask);
 struct Moment Moments(Mat src, bool binaryImage);
+void PyrDown(Mat src, Mat dst, Size dstsize, int borderType);
+void PyrUp(Mat src, Mat dst, Size dstsize, int borderType);
 struct Rect BoundingRect(Contour con);
 double ContourArea(Contour con);
 struct Contours FindContours(Mat src, int mode, int method);
