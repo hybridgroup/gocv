@@ -171,30 +171,30 @@ int Mat_Channels(Mat m);
 int Mat_Type(Mat m);
 
 uint8_t Mat_GetUChar(Mat m, int row, int col);
-uint8_t Mat_GetUCharChannel(Mat m, int row, int col, int channel);
+uint8_t Mat_GetUChar3(Mat m, int x, int y, int z);
 int8_t Mat_GetSChar(Mat m, int row, int col);
-int8_t Mat_GetSCharChannel(Mat m, int row, int col, int channel);
+int8_t Mat_GetSChar3(Mat m, int x, int y, int z);
 int16_t Mat_GetShort(Mat m, int row, int col);
-int16_t Mat_GetShortChannel(Mat m, int row, int col, int channel);
+int16_t Mat_GetShort3(Mat m, int x, int y, int z);
 int32_t Mat_GetInt(Mat m, int row, int col);
-int32_t Mat_GetIntChannel(Mat m, int row, int col, int channel);
+int32_t Mat_GetInt3(Mat m, int x, int y, int z);
 float Mat_GetFloat(Mat m, int row, int col);
-float Mat_GetFloatChannel(Mat m, int row, int col, int channel);
+float Mat_GetFloat3(Mat m, int x, int y, int z);
 double Mat_GetDouble(Mat m, int row, int col);
-double Mat_GetDoubleChannel(Mat m, int row, int col, int channel);
+double Mat_GetDouble3(Mat m, int x, int y, int z);
 
 void Mat_SetUChar(Mat m, int row, int col, uint8_t val);
-void Mat_SetUCharChannel(Mat m, int row, int col, int channel, uint8_t val);
+void Mat_SetUChar3(Mat m, int x, int y, int z, uint8_t val);
 void Mat_SetSChar(Mat m, int row, int col, int8_t val);
-void Mat_SetSCharChannel(Mat m, int row, int col, int channel, int8_t val);
+void Mat_SetSChar3(Mat m, int x, int y, int z, int8_t val);
 void Mat_SetShort(Mat m, int row, int col, int16_t val);
-void Mat_SetShortChannel(Mat m, int row, int col, int channel, int16_t val);
+void Mat_SetShort3(Mat m, int x, int y, int z, int16_t val);
 void Mat_SetInt(Mat m, int row, int col, int32_t val);
-void Mat_SetIntChannel(Mat m, int row, int col, int channel, int32_t val);
+void Mat_SetInt3(Mat m, int x, int y, int z, int32_t val);
 void Mat_SetFloat(Mat m, int row, int col, float val);
-void Mat_SetFloatChannel(Mat m, int row, int col, int channel, float val);
+void Mat_SetFloat3(Mat m, int x, int y, int z, float val);
 void Mat_SetDouble(Mat m, int row, int col, double val);
-void Mat_SetDoubleChannel(Mat m, int row, int col, int channel, double val);
+void Mat_SetDouble3(Mat m, int x, int y, int z, double val);
 
 void LUT(Mat src, Mat lut, Mat dst);
 

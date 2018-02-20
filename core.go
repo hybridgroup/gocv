@@ -234,132 +234,148 @@ func (m *Mat) Type() int {
 	return int(C.Mat_Type(m.p))
 }
 
-// GetUCharAt returns a value from a specific row/col (and optionally channel)
+// GetUCharAt returns a value from a specific row/col
 // in this Mat expecting it to be of type uchar aka CV_8U.
-func (m *Mat) GetUCharAt(row int, col int, channel ...interface{}) uint8 {
-	if len(channel) > 0 {
-		return uint8(C.Mat_GetUCharChannel(m.p, C.int(row), C.int(col), C.int(channel[0].(int))))
-	}
+func (m *Mat) GetUCharAt(row int, col int) uint8 {
 	return uint8(C.Mat_GetUChar(m.p, C.int(row), C.int(col)))
 }
 
-// GetSCharAt returns a value from a specific row/col (and optionally channel)
+// GetUCharAt3 returns a value from a specific x, y, z coordinate location
+// in this Mat expecting it to be of type uchar aka CV_8U.
+func (m *Mat) GetUCharAt3(x, y, z int) uint8 {
+	return uint8(C.Mat_GetUChar3(m.p, C.int(x), C.int(y), C.int(z)))
+}
+
+// GetSCharAt returns a value from a specific row/col
 // in this Mat expecting it to be of type schar aka CV_8S.
-func (m *Mat) GetSCharAt(row int, col int, channel ...interface{}) int8 {
-	if len(channel) > 0 {
-		return int8(C.Mat_GetSCharChannel(m.p, C.int(row), C.int(col), C.int(channel[0].(int))))
-	}
+func (m *Mat) GetSCharAt(row int, col int) int8 {
 	return int8(C.Mat_GetSChar(m.p, C.int(row), C.int(col)))
 }
 
-// GetShortAt returns a value from a specific row/col (and optionally channel)
+// GetSCharAt3 returns a value from a specific x, y, z coordinate location
+// in this Mat expecting it to be of type schar aka CV_8S.
+func (m *Mat) GetSCharAt3(x, y, z int) int8 {
+	return int8(C.Mat_GetSChar3(m.p, C.int(x), C.int(y), C.int(z)))
+}
+
+// GetShortAt returns a value from a specific row/col
 // in this Mat expecting it to be of type short aka CV_16S.
-func (m *Mat) GetShortAt(row int, col int, channel ...interface{}) int16 {
-	if len(channel) > 0 {
-		return int16(C.Mat_GetShortChannel(m.p, C.int(row), C.int(col), C.int(channel[0].(int))))
-	}
+func (m *Mat) GetShortAt(row int, col int) int16 {
 	return int16(C.Mat_GetShort(m.p, C.int(row), C.int(col)))
 }
 
-// GetIntAt returns a value from a specific row/col (and optionally channel)
+// GetShortAt3 returns a value from a specific x, y, z coordinate location
+// in this Mat expecting it to be of type short aka CV_16S.
+func (m *Mat) GetShortAt3(x, y, z int) int16 {
+	return int16(C.Mat_GetShort3(m.p, C.int(x), C.int(y), C.int(z)))
+}
+
+// GetIntAt returns a value from a specific row/col
 // in this Mat expecting it to be of type int aka CV_32S.
-func (m *Mat) GetIntAt(row int, col int, channel ...interface{}) int32 {
-	if len(channel) > 0 {
-		return int32(C.Mat_GetIntChannel(m.p, C.int(row), C.int(col), C.int(channel[0].(int))))
-	}
+func (m *Mat) GetIntAt(row int, col int) int32 {
 	return int32(C.Mat_GetInt(m.p, C.int(row), C.int(col)))
 }
 
-// GetFloatAt returns a value from a specific row/col (and optionally channel)
+// GetIntAt3 returns a value from a specific x, y, z coordinate location
+// in this Mat expecting it to be of type int aka CV_32S.
+func (m *Mat) GetIntAt3(x, y, z int) int32 {
+	return int32(C.Mat_GetInt3(m.p, C.int(x), C.int(y), C.int(z)))
+}
+
+// GetFloatAt returns a value from a specific row/col
 // in this Mat expecting it to be of type float aka CV_32F.
-func (m *Mat) GetFloatAt(row int, col int, channel ...interface{}) float32 {
-	if len(channel) > 0 {
-		return float32(C.Mat_GetFloatChannel(m.p, C.int(row), C.int(col), C.int(channel[0].(int))))
-	}
+func (m *Mat) GetFloatAt(row int, col int) float32 {
 	return float32(C.Mat_GetFloat(m.p, C.int(row), C.int(col)))
 }
 
-// GetDoubleAt returns a value from a specific row/col (and optionally channel)
+// GetFloatAt3 returns a value from a specific x, y, z coordinate location
+// in this Mat expecting it to be of type float aka CV_32F.
+func (m *Mat) GetFloatAt3(x, y, z int) float32 {
+	return float32(C.Mat_GetFloat3(m.p, C.int(x), C.int(y), C.int(z)))
+}
+
+// GetDoubleAt returns a value from a specific row/col
 // in this Mat expecting it to be of type double aka CV_64F.
-func (m *Mat) GetDoubleAt(row int, col int, channel ...interface{}) float64 {
-	if len(channel) > 0 {
-		return float64(C.Mat_GetDoubleChannel(m.p, C.int(row), C.int(col), C.int(channel[0].(int))))
-	}
+func (m *Mat) GetDoubleAt(row int, col int) float64 {
 	return float64(C.Mat_GetDouble(m.p, C.int(row), C.int(col)))
 }
 
-// SetUCharAt sets a value from a specific row/col (and optionally channel)
+// GetDoubleAt3 returns a value from a specific x, y, z coordinate location
+// in this Mat expecting it to be of type double aka CV_64F.
+func (m *Mat) GetDoubleAt3(x, y, z int) float64 {
+	return float64(C.Mat_GetDouble3(m.p, C.int(x), C.int(y), C.int(z)))
+}
+
+// SetUCharAt sets a value at a specific row/col
 // in this Mat expecting it to be of type uchar aka CV_8U.
-func (m *Mat) SetUCharAt(row int, col int, args ...interface{}) {
-	if len(args) > 1 {
-		val := uint8(args[1].(int))
-		C.Mat_SetUCharChannel(m.p, C.int(row), C.int(col), C.int(args[0].(int)), C.uint8_t(val))
-		return
-	}
-	val := uint8(args[0].(int))
+func (m *Mat) SetUCharAt(row int, col int, val uint8) {
 	C.Mat_SetUChar(m.p, C.int(row), C.int(col), C.uint8_t(val))
 }
 
-// SetSCharAt sets a value from a specific row/col (and optionally channel)
+// SetUCharAt3 sets a value at a specific x, y, z coordinate location
+// in this Mat expecting it to be of type uchar aka CV_8U.
+func (m *Mat) SetUCharAt3(x, y, z int, val uint8) {
+	C.Mat_SetUChar3(m.p, C.int(x), C.int(y), C.int(z), C.uint8_t(val))
+}
+
+// SetSCharAt sets a value at a specific row/col
 // in this Mat expecting it to be of type schar aka CV_8S.
-func (m *Mat) SetSCharAt(row int, col int, args ...interface{}) {
-	if len(args) > 1 {
-		val := int8(args[1].(int))
-		C.Mat_SetSCharChannel(m.p, C.int(row), C.int(col), C.int(args[0].(int)), C.int8_t(val))
-		return
-	}
-	val := uint8(args[0].(int))
+func (m *Mat) SetSCharAt(row int, col int, val int8) {
 	C.Mat_SetSChar(m.p, C.int(row), C.int(col), C.int8_t(val))
 }
 
-// SetShortAt sets a value from a specific row/col (and optionally channel)
+// SetSCharAt3 sets a value at a specific x, y, z coordinate location
+// in this Mat expecting it to be of type schar aka CV_8S.
+func (m *Mat) SetSCharAt3(x, y, z int, val int8) {
+	C.Mat_SetSChar3(m.p, C.int(x), C.int(y), C.int(z), C.int8_t(val))
+}
+
+// SetShortAt sets a value at a specific row/col
 // in this Mat expecting it to be of type short aka CV_16S.
-func (m *Mat) SetShortAt(row int, col int, args ...interface{}) {
-	if len(args) > 1 {
-		val := int16(args[1].(int))
-		C.Mat_SetShortChannel(m.p, C.int(row), C.int(col), C.int(args[0].(int)), C.int16_t(val))
-		return
-	}
-	val := int16(args[0].(int))
+func (m *Mat) SetShortAt(row int, col int, val int16) {
 	C.Mat_SetShort(m.p, C.int(row), C.int(col), C.int16_t(val))
 }
 
-// SetIntAt sets a value from a specific row/col (and optionally channel)
+// SetShortAt3 sets a value at a specific x, y, z coordinate location
+// in this Mat expecting it to be of type short aka CV_16S.
+func (m *Mat) SetShortAt3(x, y, z int, val int16) {
+	C.Mat_SetShort3(m.p, C.int(x), C.int(y), C.int(z), C.int16_t(val))
+}
+
+// SetIntAt sets a value at a specific row/col
 // in this Mat expecting it to be of type int aka CV_32S.
-func (m *Mat) SetIntAt(row int, col int, args ...interface{}) {
-	if len(args) > 1 {
-		val := int32(args[1].(int))
-		C.Mat_SetIntChannel(m.p, C.int(row), C.int(col), C.int(args[0].(int)), C.int32_t(val))
-		return
-	}
-	val := int32(args[0].(int))
+func (m *Mat) SetIntAt(row int, col int, val int32) {
 	C.Mat_SetInt(m.p, C.int(row), C.int(col), C.int32_t(val))
 }
 
-// SetFloatAt sets a value from a specific row/col (and optionally channel)
+// SetIntAt3 sets a value at a specific x, y, z coordinate location
+// in this Mat expecting it to be of type int aka CV_32S.
+func (m *Mat) SetIntAt3(x, y, z int, val int32) {
+	C.Mat_SetInt3(m.p, C.int(x), C.int(y), C.int(z), C.int32_t(val))
+}
+
+// SetFloatAt sets a value at a specific row/col
 // in this Mat expecting it to be of type float aka CV_32F.
-func (m *Mat) SetFloatAt(row int, col int, args ...interface{}) {
-	var val float32
-	if len(args) > 1 {
-		val = toFloat32(args[1])
-		C.Mat_SetFloatChannel(m.p, C.int(row), C.int(col), C.int(args[0].(int)), C.float(val))
-		return
-	}
-	val = toFloat32(args[0])
+func (m *Mat) SetFloatAt(row int, col int, val float32) {
 	C.Mat_SetFloat(m.p, C.int(row), C.int(col), C.float(val))
 }
 
-// SetDoubleAt sets a value from a specific row/col (and optionally channel)
+// SetFloatAt3 sets a value at a specific x, y, z coordinate location
+// in this Mat expecting it to be of type float aka CV_32F.
+func (m *Mat) SetFloatAt3(x, y, z int, val float32) {
+	C.Mat_SetFloat3(m.p, C.int(x), C.int(y), C.int(z), C.float(val))
+}
+
+// SetDoubleAt sets a value at a specific row/col
 // in this Mat expecting it to be of type double aka CV_64F.
-func (m *Mat) SetDoubleAt(row int, col int, args ...interface{}) {
-	var val float64
-	if len(args) > 1 {
-		val = toFloat64(args[1])
-		C.Mat_SetDoubleChannel(m.p, C.int(row), C.int(col), C.int(args[0].(int)), C.double(val))
-		return
-	}
-	val = toFloat64(args[0])
+func (m *Mat) SetDoubleAt(row int, col int, val float64) {
 	C.Mat_SetDouble(m.p, C.int(row), C.int(col), C.double(val))
+}
+
+// SetDoubleAt3 sets a value at a specific x, y, z coordinate location
+// in this Mat expecting it to be of type double aka CV_64F.
+func (m *Mat) SetDoubleAt3(x, y, z int, val float64) {
+	C.Mat_SetDouble3(m.p, C.int(x), C.int(y), C.int(z), C.double(val))
 }
 
 // AbsDiff calculates the per-element absolute difference between two arrays
