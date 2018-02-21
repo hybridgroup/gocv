@@ -50,7 +50,10 @@ func TestMatClone(t *testing.T) {
 
 func TestMatCopyTo(t *testing.T) {
 	mat := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat.Close()
 	copy := NewMat()
+	defer copy.Close()
+
 	mat.CopyTo(copy)
 	if copy.Rows() != 101 {
 		t.Errorf("Mat copy incorrect row count: %v\n", copy.Rows())
@@ -63,7 +66,11 @@ func TestMatCopyTo(t *testing.T) {
 
 func TestMatCopyToWithMask(t *testing.T) {
 	mat := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat.Close()
 	mask := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mask.Close()
+	diff := NewMat()
+	defer diff.Close()
 
 	mat.SetUCharAt(0, 0, 255)
 	mat.SetUCharAt(0, 1, 255)
@@ -71,6 +78,7 @@ func TestMatCopyToWithMask(t *testing.T) {
 	mask.SetUCharAt(0, 0, 255)
 
 	copy := NewMat()
+	defer copy.Close()
 
 	mat.CopyToWithMask(copy, mask)
 	if copy.Rows() != 101 {
@@ -85,6 +93,10 @@ func TestMatCopyToWithMask(t *testing.T) {
 		t.Errorf("Mask failed to apply to source image")
 	}
 
+	Compare(mat, copy, diff, CompareEQ)
+	if CountNonZero(diff) == 0 {
+		t.Errorf("Mat CopyToWithMask incorrect diff: %v\n", CountNonZero(diff))
+	}
 }
 
 func TestMatToBytes(t *testing.T) {

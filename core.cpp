@@ -255,6 +255,14 @@ void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst) {
     cv::bitwise_xor(*src1, *src2, *dst);
 }
 
+void Mat_Compare(Mat src1, Mat src2, Mat dst, int ct) {
+    cv::compare(*src1, *src2, *dst, ct);
+}
+
+int Mat_CountNonZero(Mat src) {
+    return cv::countNonZero(*src);
+}
+
 void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst) {
     cv::inRange(*src, *lowerb, *upperb, *dst);
 }

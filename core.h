@@ -205,6 +205,8 @@ void Mat_BitwiseAnd(Mat src1, Mat src2, Mat dst);
 void Mat_BitwiseNot(Mat src1, Mat dst);
 void Mat_BitwiseOr(Mat src1, Mat src2, Mat dst);
 void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst);
+void Mat_Compare(Mat src1, Mat src2, Mat dst, int ct);
+int Mat_CountNonZero(Mat src);
 void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst);
 int Mat_GetOptimalDFTSize(int vecsize);
 void Mat_DFT(Mat m, Mat dst);

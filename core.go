@@ -62,6 +62,28 @@ const (
 	MatTypeCV8UC4 = MatTypeCV8U + MatChannels4
 )
 
+type CompareType int
+
+const (
+	// CompareEQ src1 is equal to src2.
+	CompareEQ CompareType = 0
+
+	// CompareGT src1 is greater than src2.
+	CompareGT = 1
+
+	// CompareGE src1 is greater than or equal to src2.
+	CompareGE = 2
+
+	// CompareLT src1 is less than src2.
+	CompareLT = 3
+
+	// CompareLE src1 is less than or equal to src2.
+	CompareLE = 4
+
+	// CompareNE src1 is unequal to src2.
+	CompareNE = 5
+)
+
 // Mat represents an n-dimensional dense numerical single-channel
 // or multi-channel array. It can be used to store real or complex-valued
 // vectors and matrices, grayscale or color images, voxel volumes,
@@ -445,6 +467,25 @@ func BitwiseOr(src1 Mat, src2 Mat, dst Mat) {
 //
 func BitwiseXor(src1 Mat, src2 Mat, dst Mat) {
 	C.Mat_BitwiseXor(src1.p, src2.p, dst.p)
+}
+
+// Compare performs the per-element comparison of two arrays
+// or an array and scalar value.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga303cfb72acf8cbb36d884650c09a3a97
+//
+func Compare(src1 Mat, src2 Mat, dst Mat, ct CompareType) {
+	C.Mat_Compare(src1.p, src2.p, dst.p, C.int(ct))
+}
+
+// CountNonZero counts non-zero array elements.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaa4b89393263bb4d604e0fe5986723914
+//
+func CountNonZero(src Mat) int {
+	return int(C.Mat_CountNonZero(src.p))
 }
 
 // InRange checks if array elements lie between the elements of two Mat arrays.
