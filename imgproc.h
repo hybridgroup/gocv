@@ -40,6 +40,7 @@ void HoughCircles(Mat src, Mat circles, int method, double dp, double minDist);
 void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold);
 void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold);
 void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ);
+void AdaptiveThreshold(Mat src, Mat dst, double maxValue, int adaptiveTyp, int typ, int blockSize, double c);
 
 void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness);
 void Circle(Mat img, Point center, int radius, Scalar color, int thickness);

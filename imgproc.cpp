@@ -178,6 +178,10 @@ void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ) {
     cv::threshold(*src, *dst, thresh, maxvalue, typ);
 }
 
+void AdaptiveThreshold(Mat src, Mat dst, double maxValue, int adaptiveMethod, int thresholdType, int blockSize, double c) {
+    cv::adaptiveThreshold(*src, *dst, maxValue, adaptiveMethod, thresholdType, blockSize, c);
+}
+
 void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
     cv::Point p1(pt1.x, pt1.y);
     cv::Point p2(pt2.x, pt2.y);
