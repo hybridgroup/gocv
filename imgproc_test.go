@@ -507,7 +507,7 @@ func TestThreshold(t *testing.T) {
 	}
 }
 func TestAdaptiveThreshold(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
 		t.Error("Invalid read of Mat in AdaptiveThreshold test")
 	}
