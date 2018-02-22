@@ -642,6 +642,26 @@ func Threshold(src Mat, dst Mat, thresh float32, maxvalue float32, typ Threshold
 	C.Threshold(src.p, dst.p, C.double(thresh), C.double(maxvalue), C.int(typ))
 }
 
+// AdaptiveThresholdType type of adaptive threshold operation.
+type AdaptiveThresholdType int
+
+const (
+	// AdaptiveThresholdMean threshold type
+	AdaptiveThresholdMean AdaptiveThresholdType = 0
+
+	// AdaptiveThresholdGaussian threshold type
+	AdaptiveThresholdGaussian = 1
+)
+
+// AdaptiveThreshold applies a fixed-level threshold to each array element.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d7/d1b/group__imgproc__misc.html#ga72b913f352e4a1b1b397736707afcde3
+//
+func AdaptiveThreshold(src Mat, dst Mat, maxValue float32, adaptiveTyp AdaptiveThresholdType, typ ThresholdType, blockSize int, c float32) {
+	C.AdaptiveThreshold(src.p, dst.p, C.double(maxValue), C.int(adaptiveTyp), C.int(typ), C.int(blockSize), C.double(c))
+}
+
 // ArrowedLine draws a arrow segment pointing from the first point
 // to the second one.
 //
