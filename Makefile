@@ -4,7 +4,7 @@
 
 # Package list for each well-known Linux distribution
 RPMS=make cmake git gtk2-devel pkg-config libpng-devel libjpeg-devel libtiff-devel tbb tbb-devel libdc1394-devel jasper-libs jasper-devel
-DEBS=build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
+DEBS=unzip build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
 
 # Detect Linux distribution
 IS_FEDORA=$(shell which dnf 2>/dev/null)
