@@ -13,12 +13,16 @@ extern "C" {
 double ArcLength(Contour curve, bool is_closed);
 Contour ApproxPolyDP(Contour curve, double epsilon, bool closed);
 void CvtColor(Mat src, Mat dst, int code);
+void ConvexHull(Contour points, Mat hull, bool clockwise, bool returnPoints);
+void ConvexityDefects(Contour points, Mat hull, Mat result);
 void BilateralFilter(Mat src, Mat dst, int d, double sc, double ss);
 void Blur(Mat src, Mat dst, Size ps);
 void Dilate(Mat src, Mat dst, Mat kernel);
 void Erode(Mat src, Mat dst, Mat kernel);
 void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask);
 struct Moment Moments(Mat src, bool binaryImage);
+void PyrDown(Mat src, Mat dst, Size dstsize, int borderType);
+void PyrUp(Mat src, Mat dst, Size dstsize, int borderType);
 struct Rect BoundingRect(Contour con);
 double ContourArea(Contour con);
 struct Contours FindContours(Mat src, int mode, int method);
@@ -36,6 +40,7 @@ void HoughCircles(Mat src, Mat circles, int method, double dp, double minDist);
 void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold);
 void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold);
 void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ);
+void AdaptiveThreshold(Mat src, Mat dst, double maxValue, int adaptiveTyp, int typ, int blockSize, double c);
 
 void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness);
 void Circle(Mat img, Point center, int radius, Scalar color, int thickness);

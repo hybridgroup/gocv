@@ -158,6 +158,7 @@ void Mat_Close(Mat m);
 int Mat_Empty(Mat m);
 Mat Mat_Clone(Mat m);
 void Mat_CopyTo(Mat m, Mat dst);
+void Mat_CopyToWithMask(Mat m, Mat dst, Mat mask);
 void Mat_ConvertTo(Mat m, Mat dst, int type);
 struct ByteArray Mat_ToBytes(Mat m);
 Mat Mat_Region(Mat m, Rect r);
@@ -168,19 +169,32 @@ int Mat_Rows(Mat m);
 int Mat_Cols(Mat m);
 int Mat_Channels(Mat m);
 int Mat_Type(Mat m);
+
 uint8_t Mat_GetUChar(Mat m, int row, int col);
+uint8_t Mat_GetUChar3(Mat m, int x, int y, int z);
 int8_t Mat_GetSChar(Mat m, int row, int col);
+int8_t Mat_GetSChar3(Mat m, int x, int y, int z);
 int16_t Mat_GetShort(Mat m, int row, int col);
+int16_t Mat_GetShort3(Mat m, int x, int y, int z);
 int32_t Mat_GetInt(Mat m, int row, int col);
+int32_t Mat_GetInt3(Mat m, int x, int y, int z);
 float Mat_GetFloat(Mat m, int row, int col);
+float Mat_GetFloat3(Mat m, int x, int y, int z);
 double Mat_GetDouble(Mat m, int row, int col);
+double Mat_GetDouble3(Mat m, int x, int y, int z);
 
 void Mat_SetUChar(Mat m, int row, int col, uint8_t val);
+void Mat_SetUChar3(Mat m, int x, int y, int z, uint8_t val);
 void Mat_SetSChar(Mat m, int row, int col, int8_t val);
+void Mat_SetSChar3(Mat m, int x, int y, int z, int8_t val);
 void Mat_SetShort(Mat m, int row, int col, int16_t val);
+void Mat_SetShort3(Mat m, int x, int y, int z, int16_t val);
 void Mat_SetInt(Mat m, int row, int col, int32_t val);
+void Mat_SetInt3(Mat m, int x, int y, int z, int32_t val);
 void Mat_SetFloat(Mat m, int row, int col, float val);
+void Mat_SetFloat3(Mat m, int x, int y, int z, float val);
 void Mat_SetDouble(Mat m, int row, int col, double val);
+void Mat_SetDouble3(Mat m, int x, int y, int z, double val);
 
 void LUT(Mat src, Mat lut, Mat dst);
 
@@ -191,11 +205,14 @@ void Mat_BitwiseAnd(Mat src1, Mat src2, Mat dst);
 void Mat_BitwiseNot(Mat src1, Mat dst);
 void Mat_BitwiseOr(Mat src1, Mat src2, Mat dst);
 void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst);
+void Mat_Compare(Mat src1, Mat src2, Mat dst, int ct);
+int Mat_CountNonZero(Mat src);
 void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst);
 int Mat_GetOptimalDFTSize(int vecsize);
 void Mat_DFT(Mat m, Mat dst);
 void Mat_Merge(struct Mats mats, Mat dst);
 void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc);
+void Mat_Subtract(Mat src1, Mat src2, Mat dst);
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ);
 double Norm(Mat src1, int normType);
 

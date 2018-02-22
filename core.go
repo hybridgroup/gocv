@@ -62,6 +62,28 @@ const (
 	MatTypeCV8UC4 = MatTypeCV8U + MatChannels4
 )
 
+type CompareType int
+
+const (
+	// CompareEQ src1 is equal to src2.
+	CompareEQ CompareType = 0
+
+	// CompareGT src1 is greater than src2.
+	CompareGT = 1
+
+	// CompareGE src1 is greater than or equal to src2.
+	CompareGE = 2
+
+	// CompareLT src1 is less than src2.
+	CompareLT = 3
+
+	// CompareLE src1 is less than or equal to src2.
+	CompareLE = 4
+
+	// CompareNE src1 is unequal to src2.
+	CompareNE = 5
+)
+
 // Mat represents an n-dimensional dense numerical single-channel
 // or multi-channel array. It can be used to store real or complex-valued
 // vectors and matrices, grayscale or color images, voxel volumes,
@@ -131,6 +153,16 @@ func (m *Mat) Clone() Mat {
 //
 func (m *Mat) CopyTo(dst Mat) {
 	C.Mat_CopyTo(m.p, dst.p)
+	return
+}
+
+// CopyToWithMask copies Mat into destination Mat after applying the mask Mat.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d3/d63/classcv_1_1Mat.html#a626fe5f96d02525e2604d2ad46dd574f
+//
+func (m *Mat) CopyToWithMask(dst Mat, mask Mat) {
+	C.Mat_CopyToWithMask(m.p, dst.p, mask.p)
 	return
 }
 
@@ -224,76 +256,148 @@ func (m *Mat) Type() int {
 	return int(C.Mat_Type(m.p))
 }
 
-// GetUCharAt returns a value from a specific row/col in this Mat expecting it to
-// be of type uchar aka CV_8U.
-func (m *Mat) GetUCharAt(row int, col int) int8 {
-	return int8(C.Mat_GetUChar(m.p, C.int(row), C.int(col)))
+// GetUCharAt returns a value from a specific row/col
+// in this Mat expecting it to be of type uchar aka CV_8U.
+func (m *Mat) GetUCharAt(row int, col int) uint8 {
+	return uint8(C.Mat_GetUChar(m.p, C.int(row), C.int(col)))
 }
 
-// GetSCharAt returns a value from a specific row/col in this Mat expecting it to
-// be of type schar aka CV_8S.
+// GetUCharAt3 returns a value from a specific x, y, z coordinate location
+// in this Mat expecting it to be of type uchar aka CV_8U.
+func (m *Mat) GetUCharAt3(x, y, z int) uint8 {
+	return uint8(C.Mat_GetUChar3(m.p, C.int(x), C.int(y), C.int(z)))
+}
+
+// GetSCharAt returns a value from a specific row/col
+// in this Mat expecting it to be of type schar aka CV_8S.
 func (m *Mat) GetSCharAt(row int, col int) int8 {
 	return int8(C.Mat_GetSChar(m.p, C.int(row), C.int(col)))
 }
 
-// GetShortAt returns a value from a specific row/col in this Mat expecting it to
-// be of type short aka CV_16S.
+// GetSCharAt3 returns a value from a specific x, y, z coordinate location
+// in this Mat expecting it to be of type schar aka CV_8S.
+func (m *Mat) GetSCharAt3(x, y, z int) int8 {
+	return int8(C.Mat_GetSChar3(m.p, C.int(x), C.int(y), C.int(z)))
+}
+
+// GetShortAt returns a value from a specific row/col
+// in this Mat expecting it to be of type short aka CV_16S.
 func (m *Mat) GetShortAt(row int, col int) int16 {
 	return int16(C.Mat_GetShort(m.p, C.int(row), C.int(col)))
 }
 
-// GetIntAt returns a value from a specific row/col in this Mat expecting it to
-// be of type int aka CV_32S.
+// GetShortAt3 returns a value from a specific x, y, z coordinate location
+// in this Mat expecting it to be of type short aka CV_16S.
+func (m *Mat) GetShortAt3(x, y, z int) int16 {
+	return int16(C.Mat_GetShort3(m.p, C.int(x), C.int(y), C.int(z)))
+}
+
+// GetIntAt returns a value from a specific row/col
+// in this Mat expecting it to be of type int aka CV_32S.
 func (m *Mat) GetIntAt(row int, col int) int32 {
 	return int32(C.Mat_GetInt(m.p, C.int(row), C.int(col)))
 }
 
-// GetFloatAt returns a value from a specific row/col in this Mat expecting it to
-// be of type float aka CV_32F.
+// GetIntAt3 returns a value from a specific x, y, z coordinate location
+// in this Mat expecting it to be of type int aka CV_32S.
+func (m *Mat) GetIntAt3(x, y, z int) int32 {
+	return int32(C.Mat_GetInt3(m.p, C.int(x), C.int(y), C.int(z)))
+}
+
+// GetFloatAt returns a value from a specific row/col
+// in this Mat expecting it to be of type float aka CV_32F.
 func (m *Mat) GetFloatAt(row int, col int) float32 {
 	return float32(C.Mat_GetFloat(m.p, C.int(row), C.int(col)))
 }
 
-// GetDoubleAt returns a value from a specific row/col in this Mat expecting it to
-// be of type double aka CV_64F.
+// GetFloatAt3 returns a value from a specific x, y, z coordinate location
+// in this Mat expecting it to be of type float aka CV_32F.
+func (m *Mat) GetFloatAt3(x, y, z int) float32 {
+	return float32(C.Mat_GetFloat3(m.p, C.int(x), C.int(y), C.int(z)))
+}
+
+// GetDoubleAt returns a value from a specific row/col
+// in this Mat expecting it to be of type double aka CV_64F.
 func (m *Mat) GetDoubleAt(row int, col int) float64 {
 	return float64(C.Mat_GetDouble(m.p, C.int(row), C.int(col)))
 }
 
-// SetUCharAt set a value from a specific row/col in this Mat expecting it to
-// be of type uchar aka CV_8U.
-func (m *Mat) SetUCharAt(row int, col int, val int8) {
+// GetDoubleAt3 returns a value from a specific x, y, z coordinate location
+// in this Mat expecting it to be of type double aka CV_64F.
+func (m *Mat) GetDoubleAt3(x, y, z int) float64 {
+	return float64(C.Mat_GetDouble3(m.p, C.int(x), C.int(y), C.int(z)))
+}
+
+// SetUCharAt sets a value at a specific row/col
+// in this Mat expecting it to be of type uchar aka CV_8U.
+func (m *Mat) SetUCharAt(row int, col int, val uint8) {
 	C.Mat_SetUChar(m.p, C.int(row), C.int(col), C.uint8_t(val))
 }
 
-// SetSCharAt set a value from a specific row/col in this Mat expecting it to
-// be of type schar aka CV_8S.
+// SetUCharAt3 sets a value at a specific x, y, z coordinate location
+// in this Mat expecting it to be of type uchar aka CV_8U.
+func (m *Mat) SetUCharAt3(x, y, z int, val uint8) {
+	C.Mat_SetUChar3(m.p, C.int(x), C.int(y), C.int(z), C.uint8_t(val))
+}
+
+// SetSCharAt sets a value at a specific row/col
+// in this Mat expecting it to be of type schar aka CV_8S.
 func (m *Mat) SetSCharAt(row int, col int, val int8) {
 	C.Mat_SetSChar(m.p, C.int(row), C.int(col), C.int8_t(val))
 }
 
-// SetShortAt set a value from a specific row/col in this Mat expecting it to
-// be of type short aka CV_16S.
+// SetSCharAt3 sets a value at a specific x, y, z coordinate location
+// in this Mat expecting it to be of type schar aka CV_8S.
+func (m *Mat) SetSCharAt3(x, y, z int, val int8) {
+	C.Mat_SetSChar3(m.p, C.int(x), C.int(y), C.int(z), C.int8_t(val))
+}
+
+// SetShortAt sets a value at a specific row/col
+// in this Mat expecting it to be of type short aka CV_16S.
 func (m *Mat) SetShortAt(row int, col int, val int16) {
 	C.Mat_SetShort(m.p, C.int(row), C.int(col), C.int16_t(val))
 }
 
-// SetIntAt set a value from a specific row/col in this Mat expecting it to
-// be of type int aka CV_32S.
+// SetShortAt3 sets a value at a specific x, y, z coordinate location
+// in this Mat expecting it to be of type short aka CV_16S.
+func (m *Mat) SetShortAt3(x, y, z int, val int16) {
+	C.Mat_SetShort3(m.p, C.int(x), C.int(y), C.int(z), C.int16_t(val))
+}
+
+// SetIntAt sets a value at a specific row/col
+// in this Mat expecting it to be of type int aka CV_32S.
 func (m *Mat) SetIntAt(row int, col int, val int32) {
 	C.Mat_SetInt(m.p, C.int(row), C.int(col), C.int32_t(val))
 }
 
-// SetFloatAt set a value from a specific row/col in this Mat expecting it to
-// be of type float aka CV_32F.
+// SetIntAt3 sets a value at a specific x, y, z coordinate location
+// in this Mat expecting it to be of type int aka CV_32S.
+func (m *Mat) SetIntAt3(x, y, z int, val int32) {
+	C.Mat_SetInt3(m.p, C.int(x), C.int(y), C.int(z), C.int32_t(val))
+}
+
+// SetFloatAt sets a value at a specific row/col
+// in this Mat expecting it to be of type float aka CV_32F.
 func (m *Mat) SetFloatAt(row int, col int, val float32) {
 	C.Mat_SetFloat(m.p, C.int(row), C.int(col), C.float(val))
 }
 
-// SetDoubleAt set a value from a specific row/col in this Mat expecting it to
-// be of type double aka CV_64F.
+// SetFloatAt3 sets a value at a specific x, y, z coordinate location
+// in this Mat expecting it to be of type float aka CV_32F.
+func (m *Mat) SetFloatAt3(x, y, z int, val float32) {
+	C.Mat_SetFloat3(m.p, C.int(x), C.int(y), C.int(z), C.float(val))
+}
+
+// SetDoubleAt sets a value at a specific row/col
+// in this Mat expecting it to be of type double aka CV_64F.
 func (m *Mat) SetDoubleAt(row int, col int, val float64) {
 	C.Mat_SetDouble(m.p, C.int(row), C.int(col), C.double(val))
+}
+
+// SetDoubleAt3 sets a value at a specific x, y, z coordinate location
+// in this Mat expecting it to be of type double aka CV_64F.
+func (m *Mat) SetDoubleAt3(x, y, z int, val float64) {
+	C.Mat_SetDouble3(m.p, C.int(x), C.int(y), C.int(z), C.double(val))
 }
 
 // AbsDiff calculates the per-element absolute difference between two arrays
@@ -365,6 +469,25 @@ func BitwiseXor(src1 Mat, src2 Mat, dst Mat) {
 	C.Mat_BitwiseXor(src1.p, src2.p, dst.p)
 }
 
+// Compare performs the per-element comparison of two arrays
+// or an array and scalar value.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga303cfb72acf8cbb36d884650c09a3a97
+//
+func Compare(src1 Mat, src2 Mat, dst Mat, ct CompareType) {
+	C.Mat_Compare(src1.p, src2.p, dst.p, C.int(ct))
+}
+
+// CountNonZero counts non-zero array elements.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaa4b89393263bb4d604e0fe5986723914
+//
+func CountNonZero(src Mat) int {
+	return int(C.Mat_CountNonZero(src.p))
+}
+
 // InRange checks if array elements lie between the elements of two Mat arrays.
 //
 // For further details, please see:
@@ -429,6 +552,15 @@ func MinMaxLoc(input Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
 	maxLoc = image.Pt(int(cMaxLoc.x), int(cMaxLoc.y))
 
 	return float32(cMinVal), float32(cMaxVal), minLoc, maxLoc
+}
+
+// Subtract Calculates the per-element difference between two arrays or array and a scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaa0f00d98b4b5edeaeb7b8333b2de353b
+//
+func Subtract(src1 Mat, src2 Mat, dst Mat) {
+	C.Mat_Subtract(src1.p, src2.p, dst.p)
 }
 
 // NormType for normalization operations.
@@ -556,4 +688,26 @@ func toByteArray(b []byte) C.struct_ByteArray {
 
 func toGoBytes(b C.struct_ByteArray) []byte {
 	return C.GoBytes(unsafe.Pointer(b.data), b.length)
+}
+
+func toFloat32(arg interface{}) float32 {
+	switch arg.(type) {
+	case int:
+		return float32(arg.(int))
+	case float64:
+		return float32(arg.(float64))
+	default:
+		return 0
+	}
+}
+
+func toFloat64(arg interface{}) float64 {
+	switch arg.(type) {
+	case int:
+		return float64(arg.(int))
+	case float64:
+		return float64(arg.(float64))
+	default:
+		return 0
+	}
 }

@@ -54,7 +54,7 @@ func TestIMShow(t *testing.T) {
 	// TODO: some way to determine if the call succeeded
 	window.IMShow(img)
 
-	val := window.WaitKey(1)
+	val := WaitKey(1)
 	if val != -1 {
 		t.Error("Invalid for IMShow")
 	}
