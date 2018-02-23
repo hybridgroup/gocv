@@ -226,6 +226,16 @@ func (m *Mat) Mean() Scalar {
 	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
 }
 
+// Sum calculates the per-channel pixel sum of an image.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga716e10a2dd9e228e4d3c95818f106722
+//
+func (m *Mat) Sum() Scalar {
+	s := C.Mat_Sum(m.p)
+	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
+}
+
 // LUT performs a look-up table transform of an array.
 //
 // The function LUT fills the output array with values from the look-up table.
@@ -555,15 +565,6 @@ func MinMaxLoc(input Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
 	return float32(cMinVal), float32(cMaxVal), minLoc, maxLoc
 }
 
-// Subtract Calculates the per-element difference between two arrays or array and a scalar.
-//
-// For further details, please see:
-// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaa0f00d98b4b5edeaeb7b8333b2de353b
-//
-func Subtract(src1 Mat, src2 Mat, dst Mat) {
-	C.Mat_Subtract(src1.p, src2.p, dst.p)
-}
-
 // NormType for normalization operations.
 //
 // For further details, please see:
@@ -636,6 +637,30 @@ const (
 	// iterative algorithm stops.
 	EPS = 2
 )
+
+// Split creates an array of single channel images from a multi-channel image
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga0547c7fed86152d7e9d0096029c8518a
+//
+func Split(src Mat) (mv []Mat) {
+	cMats := C.struct_Mats{}
+	C.Mat_Split(src.p, &(cMats))
+	mv = make([]Mat, cMats.length)
+	for i := C.int(0); i < cMats.length; i++ {
+		mv[i].p = C.Mats_get(cMats, i)
+	}
+	return
+}
+
+// Subtract calculates the per-element subtraction of two arrays or an array and a scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaa0f00d98b4b5edeaeb7b8333b2de353b
+//
+func Subtract(src1 Mat, src2 Mat, dst Mat) {
+	C.Mat_Subtract(src1.p, src2.p, dst.p)
+}
 
 // TermCriteria is the criteria for iterative algorithms.
 //
