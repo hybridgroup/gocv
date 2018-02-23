@@ -140,6 +140,8 @@ typedef struct Mats {
   int length;
 } Mats;
 
+Mat Mats_get(struct Mats mats, int i);
+
 struct ByteArray toByteArray(const char* buf, int len);
 void ByteArray_Release(struct ByteArray buf);
 
@@ -198,6 +200,9 @@ void Mat_Merge(struct Mats mats, Mat dst);
 void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc);
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ);
 double Norm(Mat src1, int normType);
+void Mat_Split(Mat src, struct Mats *mats);
+void Mat_Subtract(Mat src1, Mat src2, Mat dst);
+Scalar Mat_Sum(Mat src1);
 
 TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon);
 

@@ -241,6 +241,30 @@ double Norm(Mat src1, int normType) {
     return cv::norm(*src1, normType);
 }
 
+void Mat_Split(Mat src, struct Mats *mats) {
+    std::vector<cv::Mat> channels;
+    cv::split(*src, channels);
+    mats->mats = new Mat[channels.size()];
+    for (size_t i = 0; i < channels.size(); ++i) {
+        mats->mats[i] = new cv::Mat(channels[i]);
+    }
+    mats->length = (int)channels.size();
+}
+
+void Mat_Subtract(Mat src1, Mat src2, Mat dst) {
+    cv::subtract(*src1, *src2, *dst);
+}
+
+Scalar Mat_Sum(Mat src) {
+    cv::Scalar c = cv::sum(*src);
+    Scalar scal = Scalar();
+    scal.val1 = c.val[0];
+    scal.val2 = c.val[1];
+    scal.val3 = c.val[2];
+    scal.val4 = c.val[3];
+    return scal;
+}
+
 // TermCriteria_New creates a new TermCriteria
 TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon) {
     return new cv::TermCriteria(typ, maxCount, epsilon);
@@ -268,6 +292,11 @@ void Point_Close(Point p) {}
 
 void Rects_Close(struct Rects rs) {
     delete[] rs.rects;
+}
+
+// since it is next to impossible to iterate over mats.mats on the cgo side
+Mat Mats_get(struct Mats mats, int i) {
+    return mats.mats[i];
 }
 
 void Mats_Close(struct Mats mats) {

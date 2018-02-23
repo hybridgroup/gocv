@@ -361,6 +361,41 @@ func TestMatNormalize(t *testing.T) {
 	}
 }
 
+func TestMatSplit(t *testing.T) {
+	src   := IMRead("images/face.jpg", 1)
+	chans := Split(src)
+	if len(chans) != src.Channels() {
+		t.Error("Split Channel count differs")
+	}
+	dst   := NewMat();
+	Merge(chans, dst)
+	diff := NewMat();
+	AbsDiff(src, dst, diff)
+	sum := diff.Sum()
+	if sum.Val1 !=0 || sum.Val2 != 0 || sum.Val3 !=0 {
+		t.Error("Split/Merged images differ")
+	}
+}
+
+func TestMatSubtract(t *testing.T) {
+	src1 := IMRead("images/lut.png", 1)
+	src2 := IMRead("images/lut.png", 1)
+	dst  := NewMat();
+	Subtract(src1, src2, dst)
+	sum := dst.Sum()
+	if sum.Val1 !=0 || sum.Val2 != 0 || sum.Val3 !=0 {
+		t.Error("Sum of Subtracting equal images is not 0")
+	}
+}
+
+func TestMatSum(t *testing.T) {
+	src := NewMatFromScalar(NewScalar(1,2,3,4), MatTypeCV8UC4)
+	sum := src.Sum()
+	if sum.Val1 !=1 || sum.Val2 != 2 || sum.Val3 !=3 || sum.Val4 !=4 {
+		t.Error("Sum values do not match constructor")
+	}
+}
+
 func TestTermCriteria(t *testing.T) {
 	tc := NewTermCriteria(Count, 50, 2.0)
 	if tc.p == nil {
