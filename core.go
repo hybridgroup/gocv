@@ -565,15 +565,6 @@ func MinMaxLoc(input Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
 	return float32(cMinVal), float32(cMaxVal), minLoc, maxLoc
 }
 
-// Subtract Calculates the per-element difference between two arrays or array and a scalar.
-//
-// For further details, please see:
-// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaa0f00d98b4b5edeaeb7b8333b2de353b
-//
-func Subtract(src1 Mat, src2 Mat, dst Mat) {
-	C.Mat_Subtract(src1.p, src2.p, dst.p)
-}
-
 // NormType for normalization operations.
 //
 // For further details, please see:
@@ -652,11 +643,11 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga0547c7fed86152d7e9d0096029c8518a
 //
-func Split(src Mat)(mv []Mat) {
+func Split(src Mat) (mv []Mat) {
 	cMats := C.struct_Mats{}
 	C.Mat_Split(src.p, &(cMats))
 	mv = make([]Mat, cMats.length)
-	for i:=C.int(0); i<cMats.length; i++ {
+	for i := C.int(0); i < cMats.length; i++ {
 		mv[i].p = C.Mats_get(cMats, i)
 	}
 	return
@@ -670,7 +661,6 @@ func Split(src Mat)(mv []Mat) {
 func Subtract(src1 Mat, src2 Mat, dst Mat) {
 	C.Mat_Subtract(src1.p, src2.p, dst.p)
 }
-
 
 // TermCriteria is the criteria for iterative algorithms.
 //
