@@ -7,7 +7,6 @@ package gocv
 import "C"
 import (
 	"image"
-	"reflect"
 	"runtime"
 	"unsafe"
 )
@@ -231,20 +230,7 @@ func SelectROIs(name string, img Mat) []image.Rectangle {
 	ret := C.Window_SelectROIs(cName, img.p)
 	defer C.Rects_Close(ret)
 
-	cArray := ret.rects
-	length := int(ret.length)
-	hdr := reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(cArray)),
-		Len:  length,
-		Cap:  length,
-	}
-	s := *(*[]C.Rect)(unsafe.Pointer(&hdr))
-
-	rects := make([]image.Rectangle, length)
-	for i, r := range s {
-		rects[i] = image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
-	}
-	return rects
+	return toRectangles(ret)
 }
 
 // WaitKey that is not attached to a specific Window.

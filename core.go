@@ -7,6 +7,7 @@ package gocv
 import "C"
 import (
 	"image"
+	"reflect"
 	"unsafe"
 )
 
@@ -710,4 +711,21 @@ func toFloat64(arg interface{}) float64 {
 	default:
 		return 0
 	}
+}
+
+func toRectangles(ret C.Rects) []image.Rectangle {
+	cArray := ret.rects
+	length := int(ret.length)
+	hdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cArray)),
+		Len:  length,
+		Cap:  length,
+	}
+	s := *(*[]C.Rect)(unsafe.Pointer(&hdr))
+
+	rects := make([]image.Rectangle, length)
+	for i, r := range s {
+		rects[i] = image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
+	}
+	return rects
 }
