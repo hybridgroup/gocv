@@ -50,7 +50,10 @@ func TestMatClone(t *testing.T) {
 
 func TestMatCopyTo(t *testing.T) {
 	mat := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat.Close()
 	copy := NewMat()
+	defer copy.Close()
+
 	mat.CopyTo(copy)
 	if copy.Rows() != 101 {
 		t.Errorf("Mat copy incorrect row count: %v\n", copy.Rows())
@@ -58,6 +61,41 @@ func TestMatCopyTo(t *testing.T) {
 
 	if copy.Cols() != 102 {
 		t.Errorf("Mat copy incorrect col count: %v\n", copy.Cols())
+	}
+}
+
+func TestMatCopyToWithMask(t *testing.T) {
+	mat := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat.Close()
+	mask := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mask.Close()
+	diff := NewMat()
+	defer diff.Close()
+
+	mat.SetUCharAt(0, 0, 255)
+	mat.SetUCharAt(0, 1, 255)
+
+	mask.SetUCharAt(0, 0, 255)
+
+	copy := NewMat()
+	defer copy.Close()
+
+	mat.CopyToWithMask(copy, mask)
+	if copy.Rows() != 101 {
+		t.Errorf("Mat copy incorrect row count: %v\n", copy.Rows())
+	}
+
+	if copy.Cols() != 102 {
+		t.Errorf("Mat copy incorrect col count: %v\n", copy.Cols())
+	}
+
+	if copy.GetUCharAt(0, 0) != 255 || copy.GetUCharAt(0, 1) != 0 {
+		t.Errorf("Mask failed to apply to source image")
+	}
+
+	Compare(mat, copy, diff, CompareEQ)
+	if CountNonZero(diff) == 0 {
+		t.Errorf("Mat CopyToWithMask incorrect diff: %v\n", CountNonZero(diff))
 	}
 }
 
@@ -170,11 +208,17 @@ func TestMatAccessors(t *testing.T) {
 	if mat.GetUCharAt(50, 50) != 0 {
 		t.Errorf("GetUCharAt incorrect value: %v\n", mat.GetUCharAt(50, 50))
 	}
+	if mat.GetUCharAt3(50, 50, 0) != 0 {
+		t.Errorf("GetUCharAt3 incorrect value: %v\n", mat.GetUCharAt3(50, 50, 0))
+	}
 	mat.Close()
 
 	mat = NewMatWithSize(101, 102, MatTypeCV8S)
 	if mat.GetSCharAt(50, 50) != 0 {
 		t.Errorf("GetSCharAt incorrect value: %v\n", mat.GetSCharAt(50, 50))
+	}
+	if mat.GetSCharAt3(50, 50, 0) != 0 {
+		t.Errorf("GetSCharAt3 incorrect value: %v\n", mat.GetSCharAt3(50, 50, 0))
 	}
 	mat.Close()
 
@@ -182,11 +226,17 @@ func TestMatAccessors(t *testing.T) {
 	if mat.GetShortAt(50, 50) != 0 {
 		t.Errorf("GetShortAt incorrect value: %v\n", mat.GetShortAt(50, 50))
 	}
+	if mat.GetShortAt3(50, 50, 0) != 0 {
+		t.Errorf("GetShortAt3 incorrect value: %v\n", mat.GetShortAt3(50, 50, 0))
+	}
 	mat.Close()
 
 	mat = NewMatWithSize(101, 102, MatTypeCV32S)
 	if mat.GetIntAt(50, 50) != 0 {
 		t.Errorf("GetIntAt incorrect value: %v\n", mat.GetIntAt(50, 50))
+	}
+	if mat.GetIntAt3(50, 50, 0) != 0 {
+		t.Errorf("GetIntAt3 incorrect value: %v\n", mat.GetIntAt3(50, 50, 0))
 	}
 	mat.Close()
 
@@ -194,11 +244,17 @@ func TestMatAccessors(t *testing.T) {
 	if mat.GetFloatAt(50, 50) != 0.0 {
 		t.Errorf("GetFloatAt incorrect value: %v\n", mat.GetFloatAt(50, 50))
 	}
+	if mat.GetFloatAt3(50, 50, 0) != 0.0 {
+		t.Errorf("GetFloatAt3 incorrect value: %v\n", mat.GetFloatAt3(50, 50, 0))
+	}
 	mat.Close()
 
 	mat = NewMatWithSize(101, 102, MatTypeCV64F)
 	if mat.GetDoubleAt(50, 50) != 0.0 {
 		t.Errorf("GetDoubleAt incorrect value: %v\n", mat.GetDoubleAt(50, 50))
+	}
+	if mat.GetDoubleAt3(50, 50, 0) != 0.0 {
+		t.Errorf("GetDoubleAt3 incorrect value: %v\n", mat.GetDoubleAt3(50, 50, 0))
 	}
 	mat.Close()
 }
@@ -212,11 +268,27 @@ func TestMatMutators(t *testing.T) {
 		}
 		mat.Close()
 	})
+	t.Run("SetUCharAt3", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV8U)
+		mat.SetUCharAt3(50, 50, 0, 25)
+		if mat.GetUCharAt3(50, 50, 0) != 25 {
+			t.Errorf("SetUCharAt3 incorrect value: %v\n", mat.GetUCharAt3(50, 50, 0))
+		}
+		mat.Close()
+	})
 	t.Run("SetSCharAt", func(t *testing.T) {
 		mat := NewMatWithSize(101, 102, MatTypeCV8S)
 		mat.SetSCharAt(50, 50, 25)
 		if mat.GetSCharAt(50, 50) != 25 {
 			t.Errorf("SetSCharAt incorrect value: %v\n", mat.GetSCharAt(50, 50))
+		}
+		mat.Close()
+	})
+	t.Run("SetSCharAt3", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV8S)
+		mat.SetSCharAt3(50, 50, 0, 25)
+		if mat.GetSCharAt3(50, 50, 0) != 25 {
+			t.Errorf("SetSCharAt3 incorrect value: %v\n", mat.GetSCharAt3(50, 50, 0))
 		}
 		mat.Close()
 	})
@@ -228,6 +300,14 @@ func TestMatMutators(t *testing.T) {
 		}
 		mat.Close()
 	})
+	t.Run("SetShortAt3", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV16S)
+		mat.SetShortAt3(50, 50, 0, 25)
+		if mat.GetShortAt3(50, 50, 0) != 25 {
+			t.Errorf("SetShortAt3 incorrect value: %v\n", mat.GetShortAt3(50, 50, 0))
+		}
+		mat.Close()
+	})
 	t.Run("SetIntAt", func(t *testing.T) {
 		mat := NewMatWithSize(101, 102, MatTypeCV32S)
 		mat.SetIntAt(50, 50, 25)
@@ -236,19 +316,43 @@ func TestMatMutators(t *testing.T) {
 		}
 		mat.Close()
 	})
+	t.Run("SetIntAt3", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV32S)
+		mat.SetIntAt3(50, 50, 0, 25)
+		if mat.GetIntAt3(50, 50, 0) != 25 {
+			t.Errorf("SetIntAt3 incorrect value: %v\n", mat.GetIntAt3(50, 50, 0))
+		}
+		mat.Close()
+	})
 	t.Run("SetFloatAt", func(t *testing.T) {
 		mat := NewMatWithSize(101, 102, MatTypeCV32F)
-		mat.SetFloatAt(50, 50, 25)
+		mat.SetFloatAt(50, 50, 25.0)
 		if mat.GetFloatAt(50, 50) != 25 {
 			t.Errorf("SetFloatAt incorrect value: %v\n", mat.GetFloatAt(50, 50))
 		}
 		mat.Close()
 	})
+	t.Run("SetFloatAt3", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV32F)
+		mat.SetFloatAt3(50, 50, 0, 25.0)
+		if mat.GetFloatAt3(50, 50, 0) != 25 {
+			t.Errorf("SetFloatAt incorrect value: %v\n", mat.GetFloatAt3(50, 50, 0))
+		}
+		mat.Close()
+	})
 	t.Run("SetDoubleAt", func(t *testing.T) {
 		mat := NewMatWithSize(101, 102, MatTypeCV64F)
-		mat.SetDoubleAt(50, 50, 25)
-		if mat.GetDoubleAt(50, 50) != 25 {
+		mat.SetDoubleAt(50, 50, 25.0)
+		if mat.GetDoubleAt(50, 50) != 25.0 {
 			t.Errorf("SetDoubleAt incorrect value: %v\n", mat.GetDoubleAt(50, 50))
+		}
+		mat.Close()
+	})
+	t.Run("SetDoubleAt3", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV64F)
+		mat.SetDoubleAt3(50, 50, 0, 25.0)
+		if mat.GetDoubleAt3(50, 50, 0) != 25.0 {
+			t.Errorf("SetDoubleAt3 incorrect value: %v\n", mat.GetDoubleAt3(50, 50, 0))
 		}
 		mat.Close()
 	})

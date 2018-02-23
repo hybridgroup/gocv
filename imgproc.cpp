@@ -29,6 +29,24 @@ void CvtColor(Mat src, Mat dst, int code) {
     cv::cvtColor(*src, *dst, code);
 }
 
+void ConvexHull(Contour points, Mat hull, bool clockwise, bool returnPoints) {
+    std::vector<cv::Point> pts;
+    for (size_t i = 0; i < points.length; i++) {
+        pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
+    }
+
+    cv::convexHull(pts, *hull, clockwise, returnPoints);
+}
+
+void ConvexityDefects(Contour points, Mat hull, Mat result) {
+    std::vector<cv::Point> pts;
+    for (size_t i = 0; i < points.length; i++) {
+        pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
+    }
+
+    cv::convexityDefects(pts, *hull, *result);
+}
+
 void BilateralFilter(Mat src, Mat dst, int d, double sc, double ss) {
     cv::bilateralFilter(*src, *dst, d, sc, ss);
 }
@@ -56,6 +74,16 @@ struct Moment Moments(Mat src, bool binaryImage) {
         m.mu20, m.mu11, m.mu02, m.mu30, m.mu21, m.mu12, m.mu03,
         m.nu20, m.nu11, m.nu02, m.nu30, m.nu21, m.nu12, m.nu03};
     return mom;
+}
+
+void PyrDown(Mat src, Mat dst, Size size, int borderType) {
+    cv::Size cvSize(size.width, size.height);
+    cv::pyrDown(*src, *dst, cvSize, borderType);
+}
+
+void PyrUp(Mat src, Mat dst, Size size, int borderType) {
+    cv::Size cvSize(size.width, size.height);
+    cv::pyrUp(*src, *dst, cvSize, borderType);
 }
 
 struct Rect BoundingRect(Contour con) {
@@ -148,6 +176,10 @@ void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold) {
 
 void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ) {
     cv::threshold(*src, *dst, thresh, maxvalue, typ);
+}
+
+void AdaptiveThreshold(Mat src, Mat dst, double maxValue, int adaptiveMethod, int thresholdType, int blockSize, double c) {
+    cv::adaptiveThreshold(*src, *dst, maxValue, adaptiveMethod, thresholdType, blockSize, c);
 }
 
 void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {

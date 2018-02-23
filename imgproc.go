@@ -63,6 +63,42 @@ func ApproxPolyDP(curve []image.Point, epsilon float64, closed bool) (approxCurv
 	return
 }
 
+// ConvexHull finds the convex hull of a point set.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d3/dc0/group__imgproc__shape.html#ga014b28e56cb8854c0de4a211cb2be656
+//
+func ConvexHull(points []image.Point, hull Mat, clockwise bool, returnPoints bool) {
+	cPointArray := make([]C.struct_Point, len(points))
+	for i, r := range points {
+		cPointArray[i] = C.struct_Point{x: C.int(r.X), y: C.int(r.Y)}
+	}
+	cPoints := C.struct_Points{
+		points: (*C.Point)(&cPointArray[0]),
+		length: C.int(len(points)),
+	}
+
+	C.ConvexHull(cPoints, hull.p, C.bool(clockwise), C.bool(returnPoints))
+}
+
+// ConvexityDefects finds the convexity defects of a contour.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d3/dc0/group__imgproc__shape.html#gada4437098113fd8683c932e0567f47ba
+//
+func ConvexityDefects(contour []image.Point, hull Mat, result Mat) {
+	cPointArray := make([]C.struct_Point, len(contour))
+	for i, r := range contour {
+		cPointArray[i] = C.struct_Point{x: C.int(r.X), y: C.int(r.Y)}
+	}
+	cPoints := C.struct_Points{
+		points: (*C.Point)(&cPointArray[0]),
+		length: C.int(len(contour)),
+	}
+
+	C.ConvexityDefects(cPoints, hull.p, result.p)
+}
+
 // CvtColor converts an image from one color space to another.
 // It converts the src Mat image to the dst Mat using the
 // code param containing the desired ColorConversionCode color space.
@@ -325,6 +361,32 @@ func Moments(src Mat, binaryImage bool) map[string]float64 {
 	return result
 }
 
+// PyrDown blurs an image and downsamples it.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d4/d86/group__imgproc__filter.html#gaf9bba239dfca11654cb7f50f889fc2ff
+//
+func PyrDown(src Mat, dst Mat, ksize image.Point, borderType BorderType) {
+	pSize := C.struct_Size{
+		height: C.int(ksize.X),
+		width:  C.int(ksize.Y),
+	}
+	C.PyrDown(src.p, dst.p, pSize, C.int(borderType))
+}
+
+// PyrUp upsamples an image and then blurs it.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d4/d86/group__imgproc__filter.html#gada75b59bdaaca411ed6fee10085eb784
+//
+func PyrUp(src Mat, dst Mat, ksize image.Point, borderType BorderType) {
+	pSize := C.struct_Size{
+		height: C.int(ksize.X),
+		width:  C.int(ksize.Y),
+	}
+	C.PyrUp(src.p, dst.p, pSize, C.int(borderType))
+}
+
 // MorphologyEx performs advanced morphological transformations.
 //
 // For further details, please see:
@@ -578,6 +640,26 @@ const (
 //
 func Threshold(src Mat, dst Mat, thresh float32, maxvalue float32, typ ThresholdType) {
 	C.Threshold(src.p, dst.p, C.double(thresh), C.double(maxvalue), C.int(typ))
+}
+
+// AdaptiveThresholdType type of adaptive threshold operation.
+type AdaptiveThresholdType int
+
+const (
+	// AdaptiveThresholdMean threshold type
+	AdaptiveThresholdMean AdaptiveThresholdType = 0
+
+	// AdaptiveThresholdGaussian threshold type
+	AdaptiveThresholdGaussian = 1
+)
+
+// AdaptiveThreshold applies a fixed-level threshold to each array element.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d7/d1b/group__imgproc__misc.html#ga72b913f352e4a1b1b397736707afcde3
+//
+func AdaptiveThreshold(src Mat, dst Mat, maxValue float32, adaptiveTyp AdaptiveThresholdType, typ ThresholdType, blockSize int, c float32) {
+	C.AdaptiveThreshold(src.p, dst.p, C.double(maxValue), C.int(adaptiveTyp), C.int(typ), C.int(blockSize), C.double(c))
 }
 
 // ArrowedLine draws a arrow segment pointing from the first point
