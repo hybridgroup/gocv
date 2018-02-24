@@ -7,30 +7,9 @@ Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel) {
     return 0;
 }
 
-Net Net_ReadNetFromDarknet(const char* prototxt, const char* model) {
-    try {
-        return new cv::dnn::Net(cv::dnn::readNetFromDarknet(prototxt, model));
-    } catch(...) {}
-    return 0;
-}
-
 Net Net_ReadNetFromTensorflow(const char* model) {
     try {
         return new cv::dnn::Net(cv::dnn::readNetFromTensorflow(model));
-    } catch(...) {}
-    return 0;
-}
-
-Net Net_ReadNetFromTensorflowProto(const char* model, const char* prototxt) {
-    try {
-        return new cv::dnn::Net(cv::dnn::readNetFromTensorflow(model, prototxt));
-    } catch(...) {}
-    return 0;
-}
-
-Net Net_ReadNetFromTorch(const char* model) {
-    try {
-        return new cv::dnn::Net(cv::dnn::readNetFromTorch(model));
     } catch(...) {}
     return 0;
 }

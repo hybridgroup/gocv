@@ -34,7 +34,7 @@ func (net *Net) Close() error {
 //
 func (net *Net) Empty() bool {
 	if net.p == nil {
-		return true
+        return true
 	}
 	return bool(C.Net_Empty((C.Net)(net.p)))
 }
@@ -88,47 +88,6 @@ func ReadNetFromTensorflow(model string) Net {
 	cmodel := C.CString(model)
 	defer C.free(unsafe.Pointer(cmodel))
 	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTensorflow(cmodel))}
-}
-
-// ReadNetFromTensorflowProto reads a network model stored in Tensorflow framework's format, and a (tweakable) prototxt.
-//   check net.Empty() for read failure
-//
-// For further details, please see:
-// https://docs.opencv.org/3.4.0/d6/d0f/group__dnn.html#gad820b280978d06773234ba6841e77e8d
-//
-func ReadNetFromTensorflowProto(model string, prototxt string) Net {
-	cprototxt := C.CString(prototxt)
-	defer C.free(unsafe.Pointer(cprototxt))
-
-	cmodel := C.CString(model)
-	defer C.free(unsafe.Pointer(cmodel))
-	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTensorflowProto(cprototxt, cmodel))}
-}
-
-// ReadNetFromTorch reads a network model stored in Torch framework's format (t7).
-//   check net.Empty() for read failure
-//
-// For further details, please see:
-// https://docs.opencv.org/master/d6/d0f/group__dnn.html#gaaaed8c8530e9e92fe6647700c13d961e
-//
-func ReadNetFromTorch(model string) Net {
-	cmodel := C.CString(model)
-	defer C.free(unsafe.Pointer(cmodel))
-	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTorch(cmodel))}
-}
-
-// ReadNetFromDarknet reads a network model stored in Darknet framework's format.
-//   check net.Empty() for read failure
-//
-// For further details, please see:
-// https://docs.opencv.org/master/d6/d0f/group__dnn.html#gafde362956af949cce087f3f25c6aff0d
-//
-func ReadNetFromDarknet(prototxt string, model string) Net {
-	cproto := C.CString(model)
-	defer C.free(unsafe.Pointer(cproto))
-	cmodel := C.CString(model)
-	defer C.free(unsafe.Pointer(cmodel))
-	return Net{p: unsafe.Pointer(C.Net_ReadNetFromDarknet(cproto, cmodel))}
 }
 
 // BlobFromImage creates 4-dimensional blob from image. Optionally resizes and crops
