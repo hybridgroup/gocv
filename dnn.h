@@ -18,7 +18,10 @@ typedef void* Net;
 #endif
 
 Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel);
+Net Net_ReadNetFromDarknet(const char* prototxt, const char* model);
 Net Net_ReadNetFromTensorflow(const char* model);
+Net Net_ReadNetFromTensorflowProto(const char* model, const char* prototxt);
+Net Net_ReadNetFromTorch(const char* model);
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB, bool crop);
 void Net_Close(Net net);
 bool Net_Empty(Net net);
