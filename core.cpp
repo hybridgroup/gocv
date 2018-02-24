@@ -275,6 +275,10 @@ void Mat_DFT(Mat m, Mat dst) {
     cv::dft(*m, *dst);
 }
 
+void Mat_Divide(Mat src1, Mat src2, Mat dst) {
+    cv::divide(*src1, *src2, *dst);
+}
+
 void Mat_Merge(struct Mats mats, Mat dst) {
     std::vector<cv::Mat> images;
     for (int i = 0; i < mats.length; ++i) {
@@ -292,6 +296,10 @@ void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* 
     minLoc->y = cMinLoc.y;
     maxLoc->x = cMaxLoc.x;
     maxLoc->y = cMaxLoc.y;
+}
+
+void Mat_Multiply(Mat src1, Mat src2, Mat dst) {
+    cv::multiply(*src1, *src2, *dst);
 }
 
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {

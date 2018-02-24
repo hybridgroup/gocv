@@ -499,6 +499,16 @@ func CountNonZero(src Mat) int {
 	return int(C.Mat_CountNonZero(src.p))
 }
 
+// Divide performs the per-element division
+// on two arrays or an array and a scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6db555d30115642fedae0cda05604874
+//
+func Divide(src1 Mat, src2 Mat, dst Mat) {
+	C.Mat_Divide(src1.p, src2.p, dst.p)
+}
+
 // InRange checks if array elements lie between the elements of two Mat arrays.
 //
 // For further details, please see:
@@ -563,6 +573,16 @@ func MinMaxLoc(input Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
 	maxLoc = image.Pt(int(cMaxLoc.x), int(cMaxLoc.y))
 
 	return float32(cMinVal), float32(cMaxVal), minLoc, maxLoc
+}
+
+// Multiply performs the per-element multiplication
+// on two arrays or an array and a scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga979d898a58d7f61c53003e162e7ad89f
+//
+func Multiply(src1 Mat, src2 Mat, dst Mat) {
+	C.Mat_Multiply(src1.p, src2.p, dst.p)
 }
 
 // NormType for normalization operations.

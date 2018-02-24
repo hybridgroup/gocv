@@ -445,6 +445,16 @@ func TestMatDFT(t *testing.T) {
 	}
 }
 
+func TestMatDivide(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat3 := NewMat()
+	Divide(mat1, mat2, mat3)
+	if mat3.Empty() {
+		t.Error("TestMatDivide dest mat3 should not be empty.")
+	}
+}
+
 func TestMatMerge(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
 	src2 := NewMatWithSize(101, 102, MatTypeCV8U)
@@ -453,6 +463,16 @@ func TestMatMerge(t *testing.T) {
 	Merge([]Mat{src, src2, src3}, dst)
 	if dst.Empty() {
 		t.Error("TestMatMerge dst should not be empty.")
+	}
+}
+
+func TestMatMultiply(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat3 := NewMat()
+	Multiply(mat1, mat2, mat3)
+	if mat3.Empty() {
+		t.Error("TestMatMultiply dest mat3 should not be empty.")
 	}
 }
 
