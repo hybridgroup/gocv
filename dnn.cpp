@@ -1,13 +1,17 @@
 #include "dnn.h"
 
 Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel) {
-    Net n = new cv::dnn::Net(cv::dnn::readNetFromCaffe(prototxt, caffeModel));
-    return n;
+    try {
+        return new cv::dnn::Net(cv::dnn::readNetFromCaffe(prototxt, caffeModel));
+    } catch(...) {}
+    return 0;
 }
 
 Net Net_ReadNetFromTensorflow(const char* model) {
-    Net n = new cv::dnn::Net(cv::dnn::readNetFromTensorflow(model));
-    return n;    
+    try {
+        return new cv::dnn::Net(cv::dnn::readNetFromTensorflow(model));
+    } catch(...) {}
+    return 0;
 }
 
 void Net_Close(Net net) {

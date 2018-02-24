@@ -14,7 +14,7 @@
 //
 // How to run:
 //
-// 		go run ./cmd/caffe-classifier/main.go 0 [protofile] [modelfile] [descriptionsfile]
+//    go run ./cmd/caffe-classifier/main.go 0 [protofile] [modelfile] [descriptionsfile]
 //
 // +build example
 
@@ -58,7 +58,22 @@ func main() {
 	deviceID, _ := strconv.Atoi(os.Args[1])
 	proto := os.Args[2]
 	model := os.Args[3]
-	descriptions, _ := readDescriptions(os.Args[4])
+	desc := os.Args[4]
+
+	//  read the descriptions file (the classnames)
+	descriptions, err := readDescriptions(desc)
+	if err != nil {
+		fmt.Printf("Error reading the descriptions file : %v\n", desc)
+		return
+	}
+
+	// read DNN classifier
+	net := gocv.ReadNetFromCaffe(proto, model)
+	if net.Empty() {
+		fmt.Printf("Error loading network from : %v %v\n", proto, model)
+		return
+	}
+	defer net.Close()
 
 	// open capture device
 	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
@@ -73,10 +88,6 @@ func main() {
 
 	img := gocv.NewMat()
 	defer img.Close()
-
-	// open DNN classifier
-	net := gocv.ReadNetFromCaffe(proto, model)
-	defer net.Close()
 
 	status := "Ready"
 	statusColor := color.RGBA{0, 255, 0, 0}

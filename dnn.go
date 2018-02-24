@@ -33,6 +33,9 @@ func (net *Net) Close() error {
 // https://docs.opencv.org/3.4.0/db/d30/classcv_1_1dnn_1_1Net.html#a6a5778787d5b8770deab5eda6968e66c
 //
 func (net *Net) Empty() bool {
+	if net.p == nil {
+        return true
+	}
 	return bool(C.Net_Empty((C.Net)(net.p)))
 }
 
@@ -61,6 +64,7 @@ func (net *Net) Forward(outputName string) Mat {
 }
 
 // ReadNetFromCaffe reads a network model stored in Caffe framework's format.
+//   check net.Empty() for read failure
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4.0/d6/d0f/group__dnn.html#ga946b342af1355185a7107640f868b64a
@@ -75,6 +79,7 @@ func ReadNetFromCaffe(prototxt string, caffeModel string) Net {
 }
 
 // ReadNetFromTensorflow reads a network model stored in Tensorflow framework's format.
+//   check net.Empty() for read failure
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4.0/d6/d0f/group__dnn.html#gad820b280978d06773234ba6841e77e8d
