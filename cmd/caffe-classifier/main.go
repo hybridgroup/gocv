@@ -58,7 +58,12 @@ func main() {
 	deviceID, _ := strconv.Atoi(os.Args[1])
 	proto := os.Args[2]
 	model := os.Args[3]
-	descriptions, _ := readDescriptions(os.Args[4])
+	descr := os.Args[4]
+	descriptions, err := readDescriptions(descr)
+	if err != nil {
+		fmt.Printf("Error reading descriptions file: %v\n", descr)
+		return
+	}
 
 	// open capture device
 	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
@@ -76,6 +81,10 @@ func main() {
 
 	// open DNN classifier
 	net := gocv.ReadNetFromCaffe(proto, model)
+	if net.Empty() {
+		fmt.Printf("Error reading network model from : %v %v\n", proto, model)
+		return
+	}
 	defer net.Close()
 
 	status := "Ready"
