@@ -53,8 +53,10 @@ void Resize(Mat src, Mat dst, Size sz, double fx, double fy, int interp);
 Mat GetRotationMatrix2D(Point center, double angle, double scale);
 void WarpAffine(Mat src, Mat dst, Mat rot_mat, Size dsize);
 void WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode, Scalar borderValue);
+void WarpPerspective(Mat src, Mat dst, Mat m, Size dsize);
 void ApplyColorMap(Mat src, Mat dst, int colormap);
 void ApplyCustomColorMap(Mat src, Mat dst, Mat colormap);
+Mat GetPerspectiveTransform(Contour src, Contour dst);
 #ifdef __cplusplus
 }
 #endif

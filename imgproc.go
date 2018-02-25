@@ -924,6 +924,19 @@ func WarpAffineWithParams(src, dst, m Mat, sz image.Point, flags InterpolationFl
 	C.WarpAffineWithParams(src.p, dst.p, m.p, pSize, C.int(flags), C.int(borderType), bv)
 }
 
+// WarpPerspective applies a perspective transformation to an image.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/da/d54/group__imgproc__transform.html#gaf73673a7e8e18ec6963e3774e6a94b87
+func WarpPerspective(src, dst, m Mat, sz image.Point) {
+	pSize := C.struct_Size{
+		width:  C.int(sz.X),
+		height: C.int(sz.Y),
+	}
+
+	C.WarpPerspective(src.p, dst.p, m.p, pSize)
+}
+
 // ColormapTypes are the 12 GNU Octave/MATLAB equivalent colormaps.
 //
 // For further details, please see:
@@ -964,4 +977,40 @@ func ApplyColorMap(src, dst Mat, colormapType ColormapTypes) {
 // https://docs.opencv.org/3.4.0/d3/d50/group__imgproc__colormap.html#gacb22288ddccc55f9bd9e6d492b409cae
 func ApplyCustomColorMap(src, dst, customColormap Mat) {
 	C.ApplyCustomColorMap(src.p, dst.p, customColormap.p)
+}
+
+// GetPerspectiveTransform returns 3x3 perspective transformation for the
+// corresponding 4 point pairs.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/da/d54/group__imgproc__transform.html#ga8c1ae0e3589a9d77fffc962c49b22043
+func GetPerspectiveTransform(src, dst []image.Point) Mat {
+	srcPointSlice := make([]C.struct_Point, len(src))
+	dstPointSlice := make([]C.struct_Point, len(dst))
+
+	for i, point := range src {
+		cPoint := C.struct_Point{
+			x: C.int(point.X),
+			y: C.int(point.Y),
+		}
+		srcPointSlice[i] = cPoint
+	}
+	srcPoints := C.struct_Points{
+		points: (*C.Point)(&srcPointSlice[0]),
+		length: C.int(len(src)),
+	}
+
+	for i, point := range dst {
+		cPoint := C.struct_Point{
+			x: C.int(point.X),
+			y: C.int(point.Y),
+		}
+		dstPointSlice[i] = cPoint
+	}
+	dstPoints := C.struct_Points{
+		points: (*C.Point)(&dstPointSlice[0]),
+		length: C.int(len(dst)),
+	}
+
+	return Mat{p: C.GetPerspectiveTransform(srcPoints, dstPoints)}
 }

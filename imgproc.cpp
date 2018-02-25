@@ -245,10 +245,28 @@ void WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, 
   cv::warpAffine(*src, *dst, *rot_mat, sz, flags, borderMode, c);
 }
 
+void WarpPerspective(Mat src, Mat dst, Mat m, Size dsize) {
+  cv::Size sz(dsize.width, dsize.height);
+  cv::warpPerspective(*src, *dst, *m, sz);
+}
+
 void ApplyColorMap(Mat src, Mat dst, int colormap) {
   cv::applyColorMap(*src, *dst, colormap);
 }
 
 void ApplyCustomColorMap(Mat src, Mat dst, Mat colormap) {
   cv::applyColorMap(*src, *dst, *colormap);
+}
+
+Mat GetPerspectiveTransform(Contour src, Contour dst) {
+  std::vector<cv::Point2f> src_pts;
+  for (size_t i = 0; i < src.length; i++) {
+    src_pts.push_back(cv::Point2f(src.points[i].x, src.points[i].y));
+  }
+  std::vector<cv::Point2f> dst_pts;
+  for (size_t i = 0; i < dst.length; i++) {
+    dst_pts.push_back(cv::Point2f(dst.points[i].x, dst.points[i].y));
+  }
+
+  return new cv::Mat(cv::getPerspectiveTransform(src_pts, dst_pts));
 }

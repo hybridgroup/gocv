@@ -724,3 +724,62 @@ func TestApplyCustomColorMap(t *testing.T) {
 		t.Errorf("TestApplyCustomColorMap() = %v, want %v", result, 0.0)
 	}
 }
+
+func TestGetPerspectiveTransform(t *testing.T) {
+	src := []image.Point{
+		image.Pt(0, 0),
+		image.Pt(10, 5),
+		image.Pt(10, 10),
+		image.Pt(5, 10),
+	}
+	dst := []image.Point{
+		image.Pt(0, 0),
+		image.Pt(10, 0),
+		image.Pt(10, 10),
+		image.Pt(0, 10),
+	}
+
+	m := GetPerspectiveTransform(src, dst)
+
+	if m.Cols() != 3 {
+		t.Errorf("TestWarpPerspective(): unexpected cols = %v, want = %v", m.Cols(), 3)
+	}
+	if m.Rows() != 3 {
+		t.Errorf("TestWarpPerspective(): unexpected rows = %v, want = %v", m.Rows(), 3)
+	}
+}
+
+func TestWarpPerspective(t *testing.T) {
+	img := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer img.Close()
+
+	w := img.Cols()
+	h := img.Rows()
+
+	s := []image.Point{
+		image.Pt(0, 0),
+		image.Pt(10, 5),
+		image.Pt(10, 10),
+		image.Pt(5, 10),
+	}
+	d := []image.Point{
+		image.Pt(0, 0),
+		image.Pt(10, 0),
+		image.Pt(10, 10),
+		image.Pt(0, 10),
+	}
+	m := GetPerspectiveTransform(s, d)
+
+	dst := NewMat()
+	defer dst.Close()
+
+	WarpPerspective(img, dst, m, image.Pt(w, h))
+
+	if dst.Cols() != w {
+		t.Errorf("TestWarpPerspective(): unexpected cols = %v, want = %v", dst.Cols(), w)
+	}
+
+	if dst.Rows() != h {
+		t.Errorf("TestWarpPerspective(): unexpected rows = %v, want = %v", dst.Rows(), h)
+	}
+}
