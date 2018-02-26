@@ -533,3 +533,16 @@ func TestScalar(t *testing.T) {
 		t.Error("Scalar has invalid value")
 	}
 }
+
+func TestToCPoints(t *testing.T) {
+	points := []image.Point{
+		image.Pt(0, 0),
+		image.Pt(1, 1),
+	}
+
+	cPoints := toCPoints(points)
+
+	if int(cPoints.length) != len(points) {
+		t.Error("Invalid C Points length")
+	}
+}
