@@ -3,6 +3,7 @@ package gocv
 import (
 	"bytes"
 	"image"
+	"image/color"
 	"testing"
 )
 
@@ -545,4 +546,46 @@ func TestToCPoints(t *testing.T) {
 	if int(cPoints.length) != len(points) {
 		t.Error("Invalid C Points length")
 	}
+}
+
+func TestMatCompleteSymm(t *testing.T) {
+	src := NewMatWithSize(100, 100, MatTypeCV32F)
+	CompleteSymm(src, false)
+	if src.Empty() {
+		t.Error("TestCompleteSymm src should not be empty.")
+	}
+	src.Close()
+}
+
+func TestMatConvertScaleAbs(t *testing.T) {
+	src := NewMatWithSize(100, 100, MatTypeCV32F)
+	dst := NewMat()
+	ConvertScaleAbs(src, dst, 1, 0)
+	if dst.Empty() {
+		t.Error("TestConvertScaleAbs dst should not be empty.")
+	}
+	src.Close()
+	dst.Close()
+}
+
+func TestMatCopyMakeBorder(t *testing.T) {
+	src := NewMatWithSize(100, 100, MatTypeCV32F)
+	dst := NewMat()
+	CopyMakeBorder(src, dst, 10, 10, 10, 10, BorderReflect, color.RGBA{0, 0, 0, 0})
+	if dst.Empty() {
+		t.Error("TestCopyMakeBorder dst should not be empty.")
+	}
+	src.Close()
+	dst.Close()
+}
+
+func TestMatDct(t *testing.T) {
+	src := NewMatWithSize(100, 100, MatTypeCV32F)
+	dst := NewMat()
+	Dct(src, dst, DftComplexOutput)
+	if dst.Empty() {
+		t.Error("TestDct dst should not be empty.")
+	}
+	src.Close()
+	dst.Close()
 }
