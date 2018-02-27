@@ -19,19 +19,7 @@ import (
 // https://docs.opencv.org/3.4.0/d3/dc0/group__imgproc__shape.html#ga8d26483c636be6b35c3ec6335798a47c
 //
 func ArcLength(curve []image.Point, isClosed bool) float64 {
-	cPointSlice := make([]C.struct_Point, len(curve))
-	for i, point := range curve {
-		cPoint := C.struct_Point{
-			x: C.int(point.X),
-			y: C.int(point.Y),
-		}
-		cPointSlice[i] = cPoint
-	}
-
-	cPoints := C.struct_Points{
-		points: (*C.Point)(&cPointSlice[0]),
-		length: C.int(len(curve)),
-	}
+	cPoints := toCPoints(curve)
 	arcLength := C.ArcLength(cPoints, C.bool(isClosed))
 	return float64(arcLength)
 }
@@ -43,24 +31,18 @@ func ArcLength(curve []image.Point, isClosed bool) float64 {
 // https://docs.opencv.org/3.4.0/d3/dc0/group__imgproc__shape.html#ga0012a5fdaea70b8a9970165d98722b4c
 //
 func ApproxPolyDP(curve []image.Point, epsilon float64, closed bool) (approxCurve []image.Point) {
-	cPointArray := make([]C.struct_Point, len(curve))
-	for i, r := range curve {
-		cPointArray[i] = C.struct_Point{x: C.int(r.X), y: C.int(r.Y)}
-	}
-	cCurve := C.struct_Points{
-		points: (*C.Point)(&cPointArray[0]),
-		length: C.int(len(curve)),
-	}
+	cCurve := toCPoints(curve)
 
 	cApproxCurve := C.ApproxPolyDP(cCurve, C.double(epsilon), C.bool(closed))
 	defer C.Points_Close(cApproxCurve)
+
 	cApproxCurvePoints := (*[1 << 30]C.Point)(unsafe.Pointer(cApproxCurve.points))[:cApproxCurve.length:cApproxCurve.length]
 
 	approxCurve = make([]image.Point, cApproxCurve.length)
 	for i, cPoint := range cApproxCurvePoints {
 		approxCurve[i] = image.Pt(int(cPoint.x), int(cPoint.y))
 	}
-	return
+	return approxCurve
 }
 
 // ConvexHull finds the convex hull of a point set.
@@ -69,15 +51,7 @@ func ApproxPolyDP(curve []image.Point, epsilon float64, closed bool) (approxCurv
 // https://docs.opencv.org/3.4.0/d3/dc0/group__imgproc__shape.html#ga014b28e56cb8854c0de4a211cb2be656
 //
 func ConvexHull(points []image.Point, hull Mat, clockwise bool, returnPoints bool) {
-	cPointArray := make([]C.struct_Point, len(points))
-	for i, r := range points {
-		cPointArray[i] = C.struct_Point{x: C.int(r.X), y: C.int(r.Y)}
-	}
-	cPoints := C.struct_Points{
-		points: (*C.Point)(&cPointArray[0]),
-		length: C.int(len(points)),
-	}
-
+	cPoints := toCPoints(points)
 	C.ConvexHull(cPoints, hull.p, C.bool(clockwise), C.bool(returnPoints))
 }
 
@@ -87,15 +61,7 @@ func ConvexHull(points []image.Point, hull Mat, clockwise bool, returnPoints boo
 // https://docs.opencv.org/3.4.0/d3/dc0/group__imgproc__shape.html#gada4437098113fd8683c932e0567f47ba
 //
 func ConvexityDefects(contour []image.Point, hull Mat, result Mat) {
-	cPointArray := make([]C.struct_Point, len(contour))
-	for i, r := range contour {
-		cPointArray[i] = C.struct_Point{x: C.int(r.X), y: C.int(r.Y)}
-	}
-	cPoints := C.struct_Points{
-		points: (*C.Point)(&cPointArray[0]),
-		length: C.int(len(contour)),
-	}
-
+	cPoints := toCPoints(contour)
 	C.ConvexityDefects(cPoints, hull.p, result.p)
 }
 
@@ -214,20 +180,7 @@ const (
 // https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#gacb413ddce8e48ff3ca61ed7cf626a366
 //
 func BoundingRect(contour []image.Point) image.Rectangle {
-	cPointArray := make([]C.struct_Point, len(contour))
-	for i, r := range contour {
-		cPoint := C.struct_Point{
-			x: C.int(r.X),
-			y: C.int(r.Y),
-		}
-		cPointArray[i] = cPoint
-	}
-
-	cContour := C.struct_Points{
-		points: (*C.Point)(&cPointArray[0]),
-		length: C.int(len(contour)),
-	}
-
+	cContour := toCPoints(contour)
 	r := C.BoundingRect(cContour)
 	rect := image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
 	return rect
@@ -239,20 +192,7 @@ func BoundingRect(contour []image.Point) image.Rectangle {
 // https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga2c759ed9f497d4a618048a2f56dc97f1
 //
 func ContourArea(contour []image.Point) float64 {
-	cPointArray := make([]C.struct_Point, len(contour))
-	for i, r := range contour {
-		cPoint := C.struct_Point{
-			x: C.int(r.X),
-			y: C.int(r.Y),
-		}
-		cPointArray[i] = cPoint
-	}
-
-	cContour := C.struct_Points{
-		points: (*C.Point)(&cPointArray[0]),
-		length: C.int(len(contour)),
-	}
-
+	cContour := toCPoints(contour)
 	result := C.ContourArea(cContour)
 	return float64(result)
 }
@@ -924,6 +864,19 @@ func WarpAffineWithParams(src, dst, m Mat, sz image.Point, flags InterpolationFl
 	C.WarpAffineWithParams(src.p, dst.p, m.p, pSize, C.int(flags), C.int(borderType), bv)
 }
 
+// WarpPerspective applies a perspective transformation to an image.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/da/d54/group__imgproc__transform.html#gaf73673a7e8e18ec6963e3774e6a94b87
+func WarpPerspective(src, dst, m Mat, sz image.Point) {
+	pSize := C.struct_Size{
+		width:  C.int(sz.X),
+		height: C.int(sz.Y),
+	}
+
+	C.WarpPerspective(src.p, dst.p, m.p, pSize)
+}
+
 // ColormapTypes are the 12 GNU Octave/MATLAB equivalent colormaps.
 //
 // For further details, please see:
@@ -964,4 +917,15 @@ func ApplyColorMap(src, dst Mat, colormapType ColormapTypes) {
 // https://docs.opencv.org/3.4.0/d3/d50/group__imgproc__colormap.html#gacb22288ddccc55f9bd9e6d492b409cae
 func ApplyCustomColorMap(src, dst, customColormap Mat) {
 	C.ApplyCustomColorMap(src.p, dst.p, customColormap.p)
+}
+
+// GetPerspectiveTransform returns 3x3 perspective transformation for the
+// corresponding 4 point pairs.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/da/d54/group__imgproc__transform.html#ga8c1ae0e3589a9d77fffc962c49b22043
+func GetPerspectiveTransform(src, dst []image.Point) Mat {
+	srcPoints := toCPoints(src)
+	dstPoints := toCPoints(dst)
+	return Mat{p: C.GetPerspectiveTransform(srcPoints, dstPoints)}
 }

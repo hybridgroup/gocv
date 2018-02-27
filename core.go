@@ -774,3 +774,18 @@ func toRectangles(ret C.Rects) []image.Rectangle {
 	}
 	return rects
 }
+
+func toCPoints(points []image.Point) C.struct_Points {
+	cPointSlice := make([]C.struct_Point, len(points))
+	for i, point := range points {
+		cPointSlice[i] = C.struct_Point{
+			x: C.int(point.X),
+			y: C.int(point.Y),
+		}
+	}
+
+	return C.struct_Points{
+		points: (*C.Point)(&cPointSlice[0]),
+		length: C.int(len(points)),
+	}
+}
