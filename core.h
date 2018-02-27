@@ -2,6 +2,7 @@
 #define _OPENCV3_CORE_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef struct String {
   const char* str;

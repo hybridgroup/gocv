@@ -7,6 +7,7 @@ package gocv
 import "C"
 import (
 	"image"
+	"image/color"
 	"reflect"
 	"unsafe"
 )
@@ -537,14 +538,14 @@ func CopyMakeBorder(src Mat, dst Mat, top int, bottom int, left int, right int, 
 type DftFlags int
 
 const (
-	DftInverse        DftFlags = 1
-	DftScale                   = 2
-	DftRows                    = 4
-	DftComplexOutput           = 16
-	DftRealOutput              = 32
-	DftComplexInput            = 64
-	DctInverse                 = DftInverse
-	DctRows                    = DftRows
+	DftInverse       DftFlags = 1
+	DftScale                  = 2
+	DftRows                   = 4
+	DftComplexOutput          = 16
+	DftRealOutput             = 32
+	DftComplexInput           = 64
+	DctInverse                = DftInverse
+	DctRows                   = DftRows
 )
 
 // Dct Performs a forward or inverse discrete Cosine transform of 1D or 2D array.

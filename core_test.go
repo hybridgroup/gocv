@@ -3,6 +3,7 @@ package gocv
 import (
 	"bytes"
 	"image"
+	"image/color"
 	"testing"
 )
 
@@ -546,7 +547,6 @@ func TestToCPoints(t *testing.T) {
 		t.Error("Invalid C Points length")
 	}
 }
-
 
 func TestMatCompleteSymm(t *testing.T) {
 	src := NewMatWithSize(100, 100, MatTypeCV32F)
