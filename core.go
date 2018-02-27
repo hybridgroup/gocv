@@ -499,6 +499,63 @@ func CountNonZero(src Mat) int {
 	return int(C.Mat_CountNonZero(src.p))
 }
 
+// CompleteSymm Copies the lower or the upper half of a square matrix to its another half.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaa9d88dcd0e54b6d1af38d41f2a3e3d25
+//
+func CompleteSymm(m Mat, lowerToUpper bool) {
+	C.Mat_CompleteSymm(m.p, C.bool(lowerToUpper))
+}
+
+// ConvertScaleAbs Scales, calculates absolute values, and converts the result to 8-bit.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga3460e9c9f37b563ab9dd550c4d8c4e7d
+//
+func ConvertScaleAbs(src Mat, dst Mat, alpha float64, beta float64) {
+	C.Mat_ConvertScaleAbs(src.p, dst.p, C.double(alpha), C.double(beta))
+}
+
+// CopyMakeBorder Forms a border around an image.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga2ac1049c2c3dd25c2b41bffe17658a36
+//
+func CopyMakeBorder(src Mat, dst Mat, top int, bottom int, left int, right int, borderType int, value color.RGBA) {
+
+	c_value := C.struct_Scalar{
+		val1: C.double(value.B),
+		val2: C.double(value.G),
+		val3: C.double(value.R),
+		val4: C.double(value.A),
+	}
+
+	C.Mat_CopyMakeBorder(src.p, dst.p, C.int(top), C.int(bottom), C.int(left), C.int(right), C.int(borderType), c_value)
+}
+
+type DftFlags int
+
+const (
+	DftInverse        DftFlags = 1
+	DftScale                   = 2
+	DftRows                    = 4
+	DftComplexOutput           = 16
+	DftRealOutput              = 32
+	DftComplexInput            = 64
+	DctInverse                 = DftInverse
+	DctRows                    = DftRows
+)
+
+// Dct Performs a forward or inverse discrete Cosine transform of 1D or 2D array.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga85aad4d668c01fbd64825f589e3696d4
+//
+func Dct(src Mat, dst Mat, flags int) {
+	C.Mat_Dct(src.p, dst.p, C.int(flags))
+}
+
 // Divide performs the per-element division
 // on two arrays or an array and a scalar.
 //
