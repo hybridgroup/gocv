@@ -55,7 +55,12 @@ func main() {
 	// parse args
 	deviceID, _ := strconv.Atoi(os.Args[1])
 	model := os.Args[2]
-	descriptions, _ := readDescriptions(os.Args[3])
+	descr := os.Args[3]
+	descriptions, err := readDescriptions(descr)
+	if err != nil {
+		fmt.Printf("Error reading descriptions file: %v\n", descr)
+		return
+	}
 
 	// open capture device
 	webcam, err := gocv.VideoCaptureDevice(deviceID)
@@ -73,6 +78,10 @@ func main() {
 
 	// open DNN classifier
 	net := gocv.ReadNetFromTensorflow(model)
+	if net.Empty() {
+		fmt.Printf("Error reading network model : %v\n", model)
+		return
+	}
 	defer net.Close()
 
 	status := "Ready"
