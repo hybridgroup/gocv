@@ -783,3 +783,31 @@ func TestWarpPerspective(t *testing.T) {
 		t.Errorf("TestWarpPerspective(): unexpected rows = %v, want = %v", dst.Rows(), h)
 	}
 }
+
+func TestDrawContours(t *testing.T) {
+	img := NewMatWithSize(100, 200, MatTypeCV8UC1)
+	defer img.Close()
+
+	// Draw rectangle
+	white := color.RGBA{255, 255, 255, 255}
+	Rectangle(img, image.Rect(125, 25, 175, 75), white, 1)
+
+	contours := FindContours(img, RetrievalExternal, ChainApproxSimple)
+
+	if v := img.GetUCharAt(23, 123); v != 0 {
+		t.Errorf("TestDrawContours(): wrong pixel value = %v, want = %v", v, 0)
+	}
+	if v := img.GetUCharAt(25, 125); v != 206 {
+		t.Errorf("TestDrawContours(): wrong pixel value = %v, want = %v", v, 206)
+	}
+
+	DrawContours(img, contours, -1, white, 2)
+
+	// contour should be drawn with thickness = 2
+	if v := img.GetUCharAt(24, 124); v != 255 {
+		t.Errorf("TestDrawContours(): contour has not been drawn (value = %v, want = %v)", v, 255)
+	}
+	if v := img.GetUCharAt(25, 125); v != 255 {
+		t.Errorf("TestDrawContours(): contour has not been drawn (value = %v, want = %v)", v, 255)
+	}
+}

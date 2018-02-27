@@ -929,3 +929,44 @@ func GetPerspectiveTransform(src, dst []image.Point) Mat {
 	dstPoints := toCPoints(dst)
 	return Mat{p: C.GetPerspectiveTransform(srcPoints, dstPoints)}
 }
+
+// DrawContours draws contours outlines or filled contours.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.1/d6/d6e/group__imgproc__draw.html#ga746c0625f1781f1ffc9056259103edbc
+func DrawContours(src Mat, contours [][]image.Point, contourIdx int, c color.RGBA, thickness int) {
+	cntrs := make([]C.struct_Points, len(contours))
+
+	for i, contour := range contours {
+		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(contour))))
+		defer C.free(unsafe.Pointer(p))
+
+		pa := (*[1 << 30]C.struct_Point)(unsafe.Pointer(p))
+
+		for j, point := range contour {
+			(*pa)[j] = C.struct_Point{
+				x: C.int(point.X),
+				y: C.int(point.Y),
+			}
+		}
+
+		cntrs[i] = C.struct_Points{
+			points: (*C.Point)(p),
+			length: C.int(len(contour)),
+		}
+	}
+
+	cContours := C.struct_Contours{
+		contours: (*C.struct_Points)(&cntrs[0]),
+		length:   C.int(len(contours)),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.DrawContours(src.p, cContours, C.int(contourIdx), sColor, C.int(thickness))
+}
