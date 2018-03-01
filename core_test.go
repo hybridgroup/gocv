@@ -546,3 +546,55 @@ func TestToCPoints(t *testing.T) {
 		t.Error("Invalid C Points length")
 	}
 }
+
+func TestMatBatchDistance(t *testing.T) {
+	src1 := NewMatWithSize(100, 100, MatTypeCV8U)
+	src2 := NewMatWithSize(100, 100, MatTypeCV8U)
+	mask := NewMatWithSize(100, 100, MatTypeCV8U)
+	dist := NewMat()
+	nidx := NewMat()
+	BatchDistance(src1, src2, dist, -1, nidx, NormL2, 15, mask, 0, false)
+	if dist.Empty() {
+		t.Error("TestBatchDistance dst should not be empty.")
+	}
+	src1.Close()
+	src2.Close()
+	mask.Close()
+	dist.Close()
+	nidx.Close()
+}
+
+func TestMatBorderInterpolate(t *testing.T) {
+	n := BorderInterpolate(1, 5, 1)
+	if n == 0 {
+		t.Error("TestBorderInterpolate dst should not be 0.")
+	}
+}
+
+func TestMatCalcCovarMatrix(t *testing.T) {
+	samples := NewMatWithSize(10, 10, MatTypeCV32F)
+	covar := NewMat()
+	mean := NewMat()
+	CalcCovarMatrix(samples, covar, mean, COVAR_ROWS, MatTypeCV64F)
+	if covar.Empty() {
+		t.Error("TestCalcCovarMatrix dst should not be empty.")
+	}
+	samples.Close()
+	covar.Close()
+	mean.Close()
+}
+
+func TestMatCartToPolar(t *testing.T) {
+	x := NewMatWithSize(100, 100, MatTypeCV32F)
+	y := NewMatWithSize(100, 100, MatTypeCV32F)
+	magnitude := NewMat()
+	angle := NewMat()
+	CartToPolar(x, y, magnitude, angle, false)
+	if magnitude.Empty() || angle.Empty() {
+		t.Error("TestCartToPolar neither magnitude nor angle should be empty.")
+	}
+	x.Close()
+	y.Close()
+	magnitude.Close()
+	angle.Close()
+}

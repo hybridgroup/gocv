@@ -255,6 +255,22 @@ void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst) {
     cv::bitwise_xor(*src1, *src2, *dst);
 }
 
+void Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int normType, int K, Mat mask, int update, bool crosscheck) {
+    cv::batchDistance(*src1, *src2, *dist, dtype, *nidx, normType, K, *mask, update, crosscheck);
+}
+
+int Mat_BorderInterpolate(int p, int len, int borderType) {
+    return cv::borderInterpolate(p, len, borderType);
+}
+
+void  Mat_CalcCovarMatrix(Mat samples, Mat covar, Mat mean, int flags, int ctype) {
+    cv::calcCovarMatrix(*samples, *covar, *mean, flags, ctype);
+}
+
+void  Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees) {
+    cv::cartToPolar(*x, *y, *magnitude, *angle, angleInDegrees);
+}
+
 void Mat_Compare(Mat src1, Mat src2, Mat dst, int ct) {
     cv::compare(*src1, *src2, *dst, ct);
 }
