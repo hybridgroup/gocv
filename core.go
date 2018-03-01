@@ -480,6 +480,62 @@ func BitwiseXor(src1 Mat, src2 Mat, dst Mat) {
 	C.Mat_BitwiseXor(src1.p, src2.p, dst.p)
 }
 
+// BatchDistance naive nearest neighbor finder
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4ba778a1c57f83233b1d851c83f5a622
+//
+func BatchDistance(src1 Mat, src2 Mat, dist Mat, dtype int, nidx Mat, normType int, K int, mask Mat, update int, crosscheck bool) {
+	C.Mat_BatchDistance(src1.p, src2.p, dist.p, C.int(dtype), nidx.p, C.int(normType), C.int(K), mask.p, C.int(update), C.bool(crosscheck))
+}
+
+// BorderInterpolate Computes the source location of an extrapolated pixel.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga247f571aa6244827d3d798f13892da58
+//
+func BorderInterpolate(p int, len int, borderType CovarFlags) int {
+	ret := C.Mat_BorderInterpolate(C.int(p), C.int(len), C.int(borderType))
+	return int(ret)
+}
+
+//! Covariation flags
+// For further details, please see:
+// https://docs.opencv.org/master/d0/de1/group__core.html#ga719ebd4a73f30f4fab258ab7616d0f0f
+type CovarFlags int
+
+const (
+	COVAR_SCRAMBLED CovarFlags = 0
+
+	COVAR_NORMAL = 1
+
+	COVAR_USE_AVG = 2
+
+	COVAR_SCALE = 4
+
+	COVAR_ROWS = 8
+
+	COVAR_COLS = 16
+)
+
+// CalcCovarMatrix Calculates the covariance matrix of a set of vectors.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga017122d912af19d7d0d2cccc2d63819f
+//
+func CalcCovarMatrix(samples Mat, covar Mat, mean Mat, flags int, ctype int) {
+	C.Mat_CalcCovarMatrix(samples.p, covar.p, mean.p, C.int(flags), C.int(ctype))
+}
+
+// CartToPolar Calculates the magnitude and angle of 2D vectors.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gac5f92f48ec32cacf5275969c33ee837d
+//
+func CartToPolar(x Mat, y Mat, magnitude Mat, angle Mat, angleInDegrees bool) {
+	C.Mat_CartToPolar(x.p, y.p, magnitude.p, angle.p, C.bool(angleInDegrees))
+}
+
 // Compare performs the per-element comparison of two arrays
 // or an array and scalar value.
 //
