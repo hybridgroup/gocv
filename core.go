@@ -7,6 +7,7 @@ package gocv
 import "C"
 import (
 	"image"
+	"image/color"
 	"reflect"
 	"unsafe"
 )
@@ -499,23 +500,24 @@ func BorderInterpolate(p int, len int, borderType CovarFlags) int {
 	return int(ret)
 }
 
-//! Covariation flags
+// Covariation flags
+//
 // For further details, please see:
 // https://docs.opencv.org/master/d0/de1/group__core.html#ga719ebd4a73f30f4fab258ab7616d0f0f
 type CovarFlags int
 
 const (
-	COVAR_SCRAMBLED CovarFlags = 0
+	CovarScrambled CovarFlags = 0
 
-	COVAR_NORMAL = 1
+	CovarNormal = 1
 
-	COVAR_USE_AVG = 2
+	CovarUseAvg = 2
 
-	COVAR_SCALE = 4
+	CovarScale = 4
 
-	COVAR_ROWS = 8
+	CovarRows = 8
 
-	COVAR_COLS = 16
+	CovarCols = 16
 )
 
 // CalcCovarMatrix Calculates the covariance matrix of a set of vectors.
@@ -553,6 +555,99 @@ func Compare(src1 Mat, src2 Mat, dst Mat, ct CompareType) {
 //
 func CountNonZero(src Mat) int {
 	return int(C.Mat_CountNonZero(src.p))
+}
+
+// CompleteSymm copies the lower or the upper half of a square matrix to its another half.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaa9d88dcd0e54b6d1af38d41f2a3e3d25
+//
+func CompleteSymm(m Mat, lowerToUpper bool) {
+	C.Mat_CompleteSymm(m.p, C.bool(lowerToUpper))
+}
+
+// ConvertScaleAbs scales, calculates absolute values, and converts the result to 8-bit.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga3460e9c9f37b563ab9dd550c4d8c4e7d
+//
+func ConvertScaleAbs(src Mat, dst Mat, alpha float64, beta float64) {
+	C.Mat_ConvertScaleAbs(src.p, dst.p, C.double(alpha), C.double(beta))
+}
+
+// CopyMakeBorder forms a border around an image (applies padding).
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga2ac1049c2c3dd25c2b41bffe17658a36
+//
+func CopyMakeBorder(src Mat, dst Mat, top int, bottom int, left int, right int, borderType int, value color.RGBA) {
+
+	cValue := C.struct_Scalar{
+		val1: C.double(value.B),
+		val2: C.double(value.G),
+		val3: C.double(value.R),
+		val4: C.double(value.A),
+	}
+
+	C.Mat_CopyMakeBorder(src.p, dst.p, C.int(top), C.int(bottom), C.int(left), C.int(right), C.int(borderType), cValue)
+}
+
+//
+// Dft / Dct related flags.
+//
+// for full description, see here:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gaf4dde112b483b38175621befedda1f1c
+//
+type DftFlags int
+
+const (
+	// perform forward 1D or 2D dft or dct
+	DftForward DftFlags = 0
+
+	// performs an inverse 1D or 2D transform
+	DftInverse = 1
+
+	// scales the result: divide it by the number of array elements. Normally, it is combined with DFT_INVERSE.
+	DftScale = 2
+
+	// performs a forward or inverse transform of every individual row of the input matrix
+	DftRows = 4
+
+	// performs a forward transformation of 1D or 2D real array; the result, though being a complex array, has complex-conjugate symmetry
+	DftComplexOutput = 16
+
+	// performs an inverse transformation of a 1D or 2D complex array; the result is normally a complex array of the same size,
+	// however, if the input array has conjugate-complex symmetry (for example, it is a result of forward transformation with DFT_COMPLEX_OUTPUT flag),
+	// the output is a real array
+	DftRealOutput = 32
+
+	// specifies that input is complex input. If this flag is set, the input must have 2 channels
+	DftComplexInput = 64
+
+	// performs an inverse 1D or 2D dct transform
+	DctInverse = DftInverse
+
+	// performs a forward or inverse dct transform of every individual row of the input matrix
+	DctRows = DftRows
+)
+
+// DCT Performs a forward or inverse discrete Cosine transform of 1D or 2D array.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga85aad4d668c01fbd64825f589e3696d4
+//
+func DCT(src Mat, dst Mat, flags DftFlags) {
+	C.Mat_DCT(src.p, dst.p, C.int(flags))
+}
+
+// DFT performs a forward or inverse Discrete Fourier Transform (DFT)
+// of a 1D or 2D floating-point array.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gadd6cf9baf2b8b704a11b5f04aaf4f39d
+//
+func DFT(src Mat, dst Mat, flags DftFlags) {
+	C.Mat_DFT(src.p, dst.p, C.int(flags))
 }
 
 // Divide performs the per-element division
@@ -594,15 +689,6 @@ func ExtractChannel(src Mat, dst Mat, coi int) {
 	C.Mat_ExtractChannel(src.p, dst.p, C.int(coi))
 }
 
-// InRange checks if array elements lie between the elements of two Mat arrays.
-//
-// For further details, please see:
-// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga48af0ab51e36436c5d04340e036ce981
-//
-func InRange(src Mat, lb Mat, ub Mat, dst Mat) {
-	C.Mat_InRange(src.p, lb.p, ub.p, dst.p)
-}
-
 // GetOptimalDFTSize returns the optimal Discrete Fourier Transform (DFT) size
 // for a given vector size.
 //
@@ -613,14 +699,13 @@ func GetOptimalDFTSize(vecsize int) int {
 	return int(C.Mat_GetOptimalDFTSize(C.int(vecsize)))
 }
 
-// DFT performs a forward or inverse Discrete Fourier Transform (DFT)
-// of a 1D or 2D floating-point array.
+// InRange checks if array elements lie between the elements of two Mat arrays.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gadd6cf9baf2b8b704a11b5f04aaf4f39d
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga48af0ab51e36436c5d04340e036ce981
 //
-func DFT(src Mat, dst Mat) {
-	C.Mat_DFT(src.p, dst.p)
+func InRange(src Mat, lb Mat, ub Mat, dst Mat) {
+	C.Mat_InRange(src.p, lb.p, ub.p, dst.p)
 }
 
 // Merge creates one multi-channel array out of several single-channel ones.

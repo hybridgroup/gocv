@@ -3,6 +3,7 @@ package gocv
 import (
 	"bytes"
 	"image"
+	"image/color"
 	"testing"
 )
 
@@ -425,6 +426,16 @@ func TestMatInRange(t *testing.T) {
 	}
 }
 
+func TestMatDCT(t *testing.T) {
+	src := NewMatWithSize(64, 64, MatTypeCV32F)
+	dst := NewMat()
+
+	DCT(src, dst, DftForward)
+	if dst.Empty() {
+		t.Error("TestMatDCT dst should not be empty.")
+	}
+}
+
 func TestMatDFT(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV32F)
 	dst := NewMat()
@@ -439,7 +450,7 @@ func TestMatDFT(t *testing.T) {
 		t.Errorf("TestMatOptimalDFT dst error: %d", n)
 	}
 
-	DFT(src, dst)
+	DFT(src, dst, DftForward)
 	if dst.Empty() {
 		t.Error("TestMatDFT dst should not be empty.")
 	}
@@ -575,7 +586,7 @@ func TestMatCalcCovarMatrix(t *testing.T) {
 	samples := NewMatWithSize(10, 10, MatTypeCV32F)
 	covar := NewMat()
 	mean := NewMat()
-	CalcCovarMatrix(samples, covar, mean, COVAR_ROWS, MatTypeCV64F)
+	CalcCovarMatrix(samples, covar, mean, CovarRows, MatTypeCV64F)
 	if covar.Empty() {
 		t.Error("TestCalcCovarMatrix dst should not be empty.")
 	}
@@ -597,6 +608,37 @@ func TestMatCartToPolar(t *testing.T) {
 	y.Close()
 	magnitude.Close()
 	angle.Close()
+}
+
+func TestMatCompleteSymm(t *testing.T) {
+	src := NewMatWithSize(100, 100, MatTypeCV32F)
+	CompleteSymm(src, false)
+	if src.Empty() {
+		t.Error("TestCompleteSymm src should not be empty.")
+	}
+	src.Close()
+}
+
+func TestMatConvertScaleAbs(t *testing.T) {
+	src := NewMatWithSize(100, 100, MatTypeCV32F)
+	dst := NewMat()
+	ConvertScaleAbs(src, dst, 1, 0)
+	if dst.Empty() {
+		t.Error("TestConvertScaleAbs dst should not be empty.")
+	}
+	src.Close()
+	dst.Close()
+}
+
+func TestMatCopyMakeBorder(t *testing.T) {
+	src := NewMatWithSize(100, 100, MatTypeCV32F)
+	dst := NewMat()
+	CopyMakeBorder(src, dst, 10, 10, 10, 10, BorderReflect, color.RGBA{0, 0, 0, 0})
+	if dst.Empty() {
+		t.Error("TestCopyMakeBorder dst should not be empty.")
+	}
+	src.Close()
+	dst.Close()
 }
 
 func TestMatEigen(t *testing.T) {
