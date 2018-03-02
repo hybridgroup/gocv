@@ -565,6 +565,35 @@ func Divide(src1 Mat, src2 Mat, dst Mat) {
 	C.Mat_Divide(src1.p, src2.p, dst.p)
 }
 
+// Eigen Calculates eigenvalues and eigenvectors of a symmetric matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9fa0d58657f60eaa6c71f6fbb40456e3
+//
+
+func Eigen(src Mat, eigenvalues Mat, eigenvectors Mat) bool {
+	ret := C.Mat_Eigen(src.p, eigenvalues.p, eigenvectors.p)
+	return bool(ret)
+}
+
+// Exp Calculates the exponent of every array element.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga3e10108e2162c338f1b848af619f39e5
+//
+func Exp(src Mat, dst Mat) {
+	C.Mat_Exp(src.p, dst.p)
+}
+
+// ExtractChannel Extracts a single channel from src (coi is 0-based index)
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gacc6158574aa1f0281878c955bcf35642
+//
+func ExtractChannel(src Mat, dst Mat, coi int) {
+	C.Mat_ExtractChannel(src.p, dst.p, C.int(coi))
+}
+
 // InRange checks if array elements lie between the elements of two Mat arrays.
 //
 // For further details, please see:

@@ -279,6 +279,18 @@ int Mat_CountNonZero(Mat src) {
     return cv::countNonZero(*src);
 }
 
+bool Mat_Eigen(Mat src, Mat eigenvalues, Mat eigenvectors) {
+    return cv::eigen(*src, *eigenvalues, *eigenvectors);
+}
+
+void Mat_Exp(Mat src, Mat dst) {
+    cv::exp(*src, *dst);
+}
+
+void Mat_ExtractChannel(Mat src, Mat dst, int coi) {
+    cv::extractChannel(*src, *dst, coi);
+}
+
 void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst) {
     cv::inRange(*src, *lowerb, *upperb, *dst);
 }

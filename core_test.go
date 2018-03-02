@@ -598,3 +598,38 @@ func TestMatCartToPolar(t *testing.T) {
 	magnitude.Close()
 	angle.Close()
 }
+
+func TestMatEigen(t *testing.T) {
+	src := NewMatWithSize(10, 10, MatTypeCV32F)
+	eigenvalues := NewMat()
+	eigenvectors := NewMat()
+	Eigen(src, eigenvalues, eigenvectors)
+	if eigenvectors.Empty() || eigenvalues.Empty() {
+		t.Error("TestEigen should not have empty eigenvectors or eigenvalues.")
+	}
+	src.Close()
+	eigenvectors.Close()
+	eigenvalues.Close()
+}
+
+func TestMatExp(t *testing.T) {
+	src := NewMatWithSize(10, 10, MatTypeCV32F)
+	dst := NewMat()
+	Exp(src, dst)
+	if dst.Empty() {
+		t.Error("TestExp dst should not be empty.")
+	}
+	src.Close()
+	dst.Close()
+}
+
+func TestMatExtractChannel(t *testing.T) {
+	src := NewMatWithSize(10, 10, MatTypeCV32F+MatChannels3)
+	dst := NewMat()
+	ExtractChannel(src, dst, 1)
+	if dst.Empty() {
+		t.Error("TestExtractChannel dst should not be empty.")
+	}
+	src.Close()
+	dst.Close()
+}

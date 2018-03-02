@@ -214,10 +214,13 @@ void Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int no
 int Mat_BorderInterpolate(int p, int len, int borderType);
 void  Mat_CalcCovarMatrix(Mat samples, Mat covar, Mat mean, int flags, int ctype);
 void  Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees);
+void Mat_Divide(Mat src1, Mat src2, Mat dst);
+bool Mat_Eigen(Mat src, Mat eigenvalues, Mat eigenvectors);
+void Mat_Exp(Mat src, Mat dst);
 void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst);
 int Mat_GetOptimalDFTSize(int vecsize);
 void Mat_DFT(Mat m, Mat dst);
-void Mat_Divide(Mat src1, Mat src2, Mat dst);
+void Mat_ExtractChannel(Mat src, Mat dst, int coi);
 void Mat_Merge(struct Mats mats, Mat dst);
 void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc);
 void Mat_Multiply(Mat src1, Mat src2, Mat dst);
