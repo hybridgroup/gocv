@@ -279,20 +279,50 @@ int Mat_CountNonZero(Mat src) {
     return cv::countNonZero(*src);
 }
 
+
+void Mat_CompleteSymm(Mat m, bool lowerToUpper) {
+    cv::completeSymm(*m, lowerToUpper);
+}
+
+void Mat_ConvertScaleAbs(Mat src, Mat dst, double alpha, double beta) {
+    cv::convertScaleAbs(*src, *dst, alpha, beta);
+}
+
+void Mat_CopyMakeBorder(Mat src, Mat dst, int top, int bottom, int left, int right, int borderType, Scalar value) {
+    cv::Scalar c_value(value.val1, value.val2, value.val3, value.val4);
+    cv::copyMakeBorder(*src, *dst, top, bottom, left, right, borderType, c_value);
+}
+
+void Mat_DCT(Mat src, Mat dst, int flags) {
+    cv::dct(*src, *dst, flags);
+}
+
+void Mat_DFT(Mat m, Mat dst, int flags) {
+    cv::dft(*m, *dst, flags);
+}
+
+void Mat_Divide(Mat src1, Mat src2, Mat dst) {
+    cv::divide(*src1, *src2, *dst);
+}
+
+bool Mat_Eigen(Mat src, Mat eigenvalues, Mat eigenvectors) {
+    return cv::eigen(*src, *eigenvalues, *eigenvectors);
+}
+
+void Mat_Exp(Mat src, Mat dst) {
+    cv::exp(*src, *dst);
+}
+
+void Mat_ExtractChannel(Mat src, Mat dst, int coi) {
+    cv::extractChannel(*src, *dst, coi);
+}
+
 void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst) {
     cv::inRange(*src, *lowerb, *upperb, *dst);
 }
 
 int Mat_GetOptimalDFTSize(int vecsize) {
     return cv::getOptimalDFTSize(vecsize);
-}
-
-void Mat_DFT(Mat m, Mat dst) {
-    cv::dft(*m, *dst);
-}
-
-void Mat_Divide(Mat src1, Mat src2, Mat dst) {
-    cv::divide(*src1, *src2, *dst);
 }
 
 void Mat_Merge(struct Mats mats, Mat dst) {
