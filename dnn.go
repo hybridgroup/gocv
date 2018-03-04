@@ -13,7 +13,7 @@ import (
 // Net allows you to create and manipulate comprehensive artificial neural networks.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4.0/db/d30/classcv_1_1dnn_1_1Net.html
+// https://docs.opencv.org/master/db/d30/classcv_1_1dnn_1_1Net.html
 //
 type Net struct {
 	// C.Net
@@ -30,7 +30,7 @@ func (net *Net) Close() error {
 // Empty returns true if there are no layers in the network.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4.0/db/d30/classcv_1_1dnn_1_1Net.html#a6a5778787d5b8770deab5eda6968e66c
+// https://docs.opencv.org/master/db/d30/classcv_1_1dnn_1_1Net.html#a6a5778787d5b8770deab5eda6968e66c
 //
 func (net *Net) Empty() bool {
 	return bool(C.Net_Empty((C.Net)(net.p)))
@@ -63,7 +63,7 @@ func (net *Net) Forward(outputName string) Mat {
 // ReadNetFromCaffe reads a network model stored in Caffe framework's format.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4.0/d6/d0f/group__dnn.html#ga946b342af1355185a7107640f868b64a
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga946b342af1355185a7107640f868b64a
 //
 func ReadNetFromCaffe(prototxt string, caffeModel string) Net {
 	cprototxt := C.CString(prototxt)
@@ -77,7 +77,7 @@ func ReadNetFromCaffe(prototxt string, caffeModel string) Net {
 // ReadNetFromTensorflow reads a network model stored in Tensorflow framework's format.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4.0/d6/d0f/group__dnn.html#gad820b280978d06773234ba6841e77e8d
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#gad820b280978d06773234ba6841e77e8d
 //
 func ReadNetFromTensorflow(model string) Net {
 	cmodel := C.CString(model)

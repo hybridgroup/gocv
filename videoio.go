@@ -152,7 +152,7 @@ const (
 // VideoCapture is a wrapper around the OpenCV VideoCapture class.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.4.0/d8/dfe/classcv_1_1VideoCapture.html
+// http://docs.opencv.org/master/d8/dfe/classcv_1_1VideoCapture.html
 //
 type VideoCapture struct {
 	p C.VideoCapture
@@ -216,7 +216,7 @@ func (v *VideoCapture) Grab(skip int) {
 // VideoWriter is a wrapper around the OpenCV VideoWriter`class.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.4.0/dd/d9e/classcv_1_1VideoWriter.html
+// http://docs.opencv.org/master/dd/d9e/classcv_1_1VideoWriter.html
 //
 type VideoWriter struct {
 	mu *sync.RWMutex
@@ -228,7 +228,7 @@ type VideoWriter struct {
 // codec, for example "MJPG".
 //
 // For further details, please see:
-// http://docs.opencv.org/3.4.0/dd/d9e/classcv_1_1VideoWriter.html#a0901c353cd5ea05bba455317dab81130
+// http://docs.opencv.org/master/dd/d9e/classcv_1_1VideoWriter.html#a0901c353cd5ea05bba455317dab81130
 //
 func VideoWriterFile(name string, codec string, fps float64, width int, height int) (vw *VideoWriter, err error) {
 	vw = &VideoWriter{
@@ -256,7 +256,7 @@ func (vw *VideoWriter) Close() error {
 // IsOpened checks if the VideoWriter is open and ready to be written to.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.4.0/dd/d9e/classcv_1_1VideoWriter.html#a9a40803e5f671968ac9efa877c984d75
+// http://docs.opencv.org/master/dd/d9e/classcv_1_1VideoWriter.html#a9a40803e5f671968ac9efa877c984d75
 //
 func (vw *VideoWriter) IsOpened() bool {
 	isOpend := C.VideoWriter_IsOpened(vw.p)
@@ -266,7 +266,7 @@ func (vw *VideoWriter) IsOpened() bool {
 // Write the next video frame from the Mat image to the open VideoWriter.
 //
 // For further details, please see:
-// http://docs.opencv.org/3.4.0/dd/d9e/classcv_1_1VideoWriter.html#a3115b679d612a6a0b5864a0c88ed4b39
+// http://docs.opencv.org/master/dd/d9e/classcv_1_1VideoWriter.html#a3115b679d612a6a0b5864a0c88ed4b39
 //
 func (vw *VideoWriter) Write(img Mat) error {
 	vw.mu.Lock()

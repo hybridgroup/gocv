@@ -18,7 +18,7 @@ type BackgroundSubtractorMOG2 struct {
 // Segmentation Algorithm.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4.0/d7/d7b/classcv_1_1BackgroundSubtractorMOG2.html
+// https://docs.opencv.org/master/d7/d7b/classcv_1_1BackgroundSubtractorMOG2.html
 //
 func NewBackgroundSubtractorMOG2() BackgroundSubtractorMOG2 {
 	return BackgroundSubtractorMOG2{p: unsafe.Pointer(C.BackgroundSubtractorMOG2_Create())}
@@ -34,7 +34,7 @@ func (b *BackgroundSubtractorMOG2) Close() error {
 // Apply computes a foreground mask using the current BackgroundSubtractorMOG2.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4.0/d7/df6/classcv_1_1BackgroundSubtractor.html#aa735e76f7069b3fa9c3f32395f9ccd21
+// https://docs.opencv.org/master/d7/df6/classcv_1_1BackgroundSubtractor.html#aa735e76f7069b3fa9c3f32395f9ccd21
 //
 func (b *BackgroundSubtractorMOG2) Apply(src Mat, dst Mat) {
 	C.BackgroundSubtractorMOG2_Apply((C.BackgroundSubtractorMOG2)(b.p), src.p, dst.p)
@@ -52,7 +52,7 @@ type BackgroundSubtractorKNN struct {
 // Segmentation Algorithm
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4.0/db/d88/classcv_1_1BackgroundSubtractorKNN.html
+// https://docs.opencv.org/master/db/d88/classcv_1_1BackgroundSubtractorKNN.html
 //
 func NewBackgroundSubtractorKNN() BackgroundSubtractorKNN {
 	return BackgroundSubtractorKNN{p: unsafe.Pointer(C.BackgroundSubtractorKNN_Create())}
@@ -68,7 +68,7 @@ func (k *BackgroundSubtractorKNN) Close() error {
 // Apply computes a foreground mask using the current BackgroundSubtractorKNN.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4.0/d7/df6/classcv_1_1BackgroundSubtractor.html#aa735e76f7069b3fa9c3f32395f9ccd21
+// https://docs.opencv.org/master/d7/df6/classcv_1_1BackgroundSubtractor.html#aa735e76f7069b3fa9c3f32395f9ccd21
 //
 func (k *BackgroundSubtractorKNN) Apply(src Mat, dst Mat) {
 	C.BackgroundSubtractorKNN_Apply((C.BackgroundSubtractorKNN)(k.p), src.p, dst.p)
@@ -79,7 +79,7 @@ func (k *BackgroundSubtractorKNN) Apply(src Mat, dst Mat) {
 // Gunnar Farneback's algorithm.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4.0/dc/d6b/group__video__track.html#ga5d10ebbd59fe09c5f650289ec0ece5af
+// https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga5d10ebbd59fe09c5f650289ec0ece5af
 //
 func CalcOpticalFlowFarneback(prevImg Mat, nextImg Mat, flow Mat, pyrScale float64, levels int, winsize int,
 	iterations int, polyN int, polySigma float64, flags int) {
@@ -92,7 +92,7 @@ func CalcOpticalFlowFarneback(prevImg Mat, nextImg Mat, flow Mat, pyrScale float
 // the iterative Lucas-Kanade method with pyramids.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4.0/dc/d6b/group__video__track.html#ga473e4b886d0bcc6b65831eb88ed93323
+// https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga473e4b886d0bcc6b65831eb88ed93323
 //
 func CalcOpticalFlowPyrLK(prevImg Mat, nextImg Mat, prevPts Mat, nextPts Mat, status Mat, err Mat) {
 	C.CalcOpticalFlowPyrLK(prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p, err.p)

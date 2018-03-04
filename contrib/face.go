@@ -22,7 +22,7 @@ type LBPHFaceRecognizer struct {
 
 // Create new LBPH Recognizer model
 //
-// see https://docs.opencv.org/3.4.0/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html
+// see https://docs.opencv.org/master/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html
 //
 func NewLBPHFaceRecognizer() *LBPHFaceRecognizer {
 	return &LBPHFaceRecognizer{p: C.CreateLBPHFaceRecognizer()}
@@ -30,7 +30,7 @@ func NewLBPHFaceRecognizer() *LBPHFaceRecognizer {
 
 // Train loaded model with images and their labels
 //
-// see https://docs.opencv.org/3.4.0/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#ac8680c2aa9649ad3f55e27761165c0d6
+// see https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#ac8680c2aa9649ad3f55e27761165c0d6
 //
 func (fr *LBPHFaceRecognizer) Train(images []gocv.Mat, labels []int) {
 	cparams := []C.int{}
@@ -55,7 +55,7 @@ func (fr *LBPHFaceRecognizer) Train(images []gocv.Mat, labels []int) {
 
 // update existing trained model with new images and labels
 //
-// see https://docs.opencv.org/3.4.0/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a8a4e73ea878dcd0c235d0487189d25f3
+// see https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a8a4e73ea878dcd0c235d0487189d25f3
 //
 func (fr *LBPHFaceRecognizer) Update(newImages []gocv.Mat, newLabels []int) {
 	cparams := []C.int{}
@@ -80,7 +80,7 @@ func (fr *LBPHFaceRecognizer) Update(newImages []gocv.Mat, newLabels []int) {
 
 // predict image for trained model, retun label for correctly predicted image, return -1 if not found
 //
-// see https://docs.opencv.org/3.4.0/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#aa2d2f02faffab1bf01317ae6502fb631
+// see https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#aa2d2f02faffab1bf01317ae6502fb631
 //
 func (fr *LBPHFaceRecognizer) Predict(sample gocv.Mat) int {
 	label := C.LBPHFaceRecognizer_Predict(fr.p, (C.Mat)(sample.Ptr()))
@@ -90,7 +90,7 @@ func (fr *LBPHFaceRecognizer) Predict(sample gocv.Mat) int {
 
 // the same as above but returns some more info
 //
-// see https://docs.opencv.org/3.4.0/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#ab0d593e53ebd9a0f350c989fcac7f251
+// see https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#ab0d593e53ebd9a0f350c989fcac7f251
 //
 func (fr *LBPHFaceRecognizer) PredictExtendedResponse(sample gocv.Mat) PredictResponse {
 	respp := C.LBPHFaceRecognizer_PredictExtended(fr.p, (C.Mat)(sample.Ptr()))
@@ -104,7 +104,7 @@ func (fr *LBPHFaceRecognizer) PredictExtendedResponse(sample gocv.Mat) PredictRe
 
 // set Threshold value
 //
-// see https://docs.opencv.org/3.4.0/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a3182081e5f8023e658ad8ab96656dd63
+// see https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a3182081e5f8023e658ad8ab96656dd63
 //
 func (fr *LBPHFaceRecognizer) SetThreshold(threshold float32) {
 	C.LBPHFaceRecognizer_SetThreshold(fr.p, (C.double)(threshold))
@@ -112,7 +112,7 @@ func (fr *LBPHFaceRecognizer) SetThreshold(threshold float32) {
 
 // set Neighbors
 //
-// see https://docs.opencv.org/3.4.0/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#ab225f7bf353ce8697a506eda10124a92
+// see https://docs.opencv.org/master/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#ab225f7bf353ce8697a506eda10124a92
 // wrong neighbors can raise opencv exception!
 //
 func (fr *LBPHFaceRecognizer) SetNeighbors(neighbors int) {
@@ -121,7 +121,7 @@ func (fr *LBPHFaceRecognizer) SetNeighbors(neighbors int) {
 
 // get Neighbors
 //
-// see https://docs.opencv.org/3.4.0/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#a50a3e2ca6e8464166e153c9df84b0a77
+// see https://docs.opencv.org/master/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#a50a3e2ca6e8464166e153c9df84b0a77
 //
 func (fr *LBPHFaceRecognizer) GetNeighbors() int {
 	n := C.LBPHFaceRecognizer_GetNeighbors(fr.p)
@@ -131,7 +131,7 @@ func (fr *LBPHFaceRecognizer) GetNeighbors() int {
 
 // set Radius
 //
-// see https://docs.opencv.org/3.4.0/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#a62d94c75cade902fd3b487b1ef9883fc
+// see https://docs.opencv.org/master/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#a62d94c75cade902fd3b487b1ef9883fc
 //
 func (fr *LBPHFaceRecognizer) SetRadius(radius int) {
 	C.LBPHFaceRecognizer_SetRadius(fr.p, (C.int)(radius))
@@ -139,7 +139,7 @@ func (fr *LBPHFaceRecognizer) SetRadius(radius int) {
 
 // save trained model data to file
 //
-// see https://docs.opencv.org/3.4.0/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a2adf2d555550194244b05c91fefcb4d6
+// see https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a2adf2d555550194244b05c91fefcb4d6
 //
 func (fr *LBPHFaceRecognizer) SaveFile(fname string) {
 	cName := C.CString(fname)
@@ -149,7 +149,7 @@ func (fr *LBPHFaceRecognizer) SaveFile(fname string) {
 
 // load traned model data from file
 //
-// see https://docs.opencv.org/3.4.0/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#acc42e5b04595dba71f0777c7179af8c3
+// see https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#acc42e5b04595dba71f0777c7179af8c3
 //
 func (fr *LBPHFaceRecognizer) LoadFile(fname string) {
 	cName := C.CString(fname)

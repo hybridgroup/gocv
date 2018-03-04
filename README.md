@@ -178,7 +178,7 @@ Now you should be able to build or run any of the examples:
 The version program should output the following:
 
 		gocv version: 0.9.0
-		opencv lib version: 3.4.0
+		opencv lib version: 3.4.1
 
 You might want to copy the `env.sh` script into your own projects, to make it easier to setup these environment vars when building your own code.
 
@@ -244,7 +244,7 @@ Now you should be able to build or run any of the command examples:
 The version program should output the following:
 
 		gocv version: 0.9.0
-		opencv lib version: 3.4.0
+		opencv lib version: 3.4.1
 
 You might want to copy the `env.sh` script into your own projects, to make it easier to setup the needed environment vars when building your own code.
 
@@ -272,13 +272,13 @@ Download and install CMake [https://cmake.org/download/](https://cmake.org/downl
 
 #### Download OpenCV 3.4 and OpenCV Contrib Modules
 
-Download the source code for the latest OpenCV release from [https://github.com/opencv/opencv/archive/3.4.0.zip](https://github.com/opencv/opencv/archive/3.4.0.zip) and extract it to the directory `C:\opencv\opencv-3.4.0`
+Download the source code for the latest OpenCV release from [https://github.com/opencv/opencv/archive/3.4.1.zip](https://github.com/opencv/opencv/archive/3.4.1.zip) and extract it to the directory `C:\opencv\opencv-3.4.1`
 
-Download the source code for the latest OpenCV Contrib release from [https://github.com/opencv/opencv_contrib/archive/3.4.0.zip](https://github.com/opencv/opencv_contrib/archive/3.4.0.zip) and extract it to the directory `C:\opencv\opencv_contrib-3.4.0`
+Download the source code for the latest OpenCV Contrib release from [https://github.com/opencv/opencv_contrib/archive/3.4.1.zip](https://github.com/opencv/opencv_contrib/archive/3.4.1.zip) and extract it to the directory `C:\opencv\opencv_contrib-3.4.1`
 
 Create the directory `C:\opencv\build` as the build directory.
 
-Now launch the `cmake-gui` program, and set the "Where is the source code" to `C:\opencv\opencv-3.4.0`, and the "Where to build the binaries" to `C:\opencv\build`.
+Now launch the `cmake-gui` program, and set the "Where is the source code" to `C:\opencv\opencv-3.4.1`, and the "Where to build the binaries" to `C:\opencv\build`.
 
 Click on "Configure" and select "MinGW MakeFile" from the window, then click on the  "Next" button.
 
@@ -290,7 +290,7 @@ Now, scroll down the list and change the following settings as follows:
 - `BUILD_PERF_TESTS` should be unchecked (aka disabled).
 - `ENABLE_PRECOMPILED_HEADERS` should be unchecked.
 - `ENABLE_CXX11` should be checked.
-- `OPENCV_EXTRA_MODULES_PATH` should be set to `C:\opencv\opencv_contrib-3.4.0\modules`
+- `OPENCV_EXTRA_MODULES_PATH` should be set to `C:\opencv\opencv_contrib-3.4.1\modules`
 
 Click on the "Configure" button again, and wait for the configuration step.
 
@@ -327,7 +327,7 @@ Now you should be able to build or run any of the command examples:
 The version program should output the following:
 
 		gocv version: 0.9.0
-		opencv lib version: 3.4.0
+		opencv lib version: 3.4.1
 
 You might want to copy the `env.cmd` script into your own projects, to make it easier to setup the needed environment vars when building your own code.
 
