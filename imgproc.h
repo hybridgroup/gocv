@@ -57,6 +57,7 @@ void WarpPerspective(Mat src, Mat dst, Mat m, Size dsize);
 void ApplyColorMap(Mat src, Mat dst, int colormap);
 void ApplyCustomColorMap(Mat src, Mat dst, Mat colormap);
 Mat GetPerspectiveTransform(Contour src, Contour dst);
+void DrawContours(Mat src, Contours contours, int contourIdx, Scalar color, int thickness);
 #ifdef __cplusplus
 }
 #endif

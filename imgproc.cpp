@@ -270,3 +270,20 @@ Mat GetPerspectiveTransform(Contour src, Contour dst) {
 
   return new cv::Mat(cv::getPerspectiveTransform(src_pts, dst_pts));
 }
+
+void DrawContours(Mat src, Contours contours, int contourIdx, Scalar color, int thickness) {
+  std::vector<std::vector<cv::Point> > cntrs;
+  for (size_t i = 0; i < contours.length; i++) {
+    Contour contour = contours.contours[i];
+
+    std::vector<cv::Point> cntr;
+    for (size_t i = 0; i < contour.length; i++) {
+      cntr.push_back(cv::Point(contour.points[i].x, contour.points[i].y));
+    }
+
+    cntrs.push_back(cntr);
+  }
+
+  cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+  cv::drawContours(*src, cntrs, contourIdx, c, thickness);
+}
