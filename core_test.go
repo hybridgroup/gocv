@@ -466,6 +466,19 @@ func TestMatDivide(t *testing.T) {
 	}
 }
 
+func TestMeanStdDev(t *testing.T) {
+	src := NewMatWithSize(101, 102, MatTypeCV8U)
+	dst := NewMat()
+	dstStdDev := NewMat()
+	MeanStdDev(src, dst, dstStdDev)
+	if(dst.Empty()) {
+		t.Error("TestMeanStdDev dst should not be empty.")
+	}
+	if(dstStdDev.Empty()) {
+		t.Error("TestMeanStdDev dstStdDev should not be empty.")
+	}
+}
+
 func TestMatMerge(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
 	src2 := NewMatWithSize(101, 102, MatTypeCV8U)

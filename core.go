@@ -708,6 +708,15 @@ func InRange(src Mat, lb Mat, ub Mat, dst Mat) {
 	C.Mat_InRange(src.p, lb.p, ub.p, dst.p)
 }
 
+// Calculates a mean and standard deviation of array elements.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga846c858f4004d59493d7c6a4354b301d
+//
+func MeanStdDev(src Mat, dst Mat, dstStdDev Mat) {
+	C.Mat_MeanStdDev(src.p, dst.p, dstStdDev.p)
+}
+
 // Merge creates one multi-channel array out of several single-channel ones.
 //
 // For further details, please see:
