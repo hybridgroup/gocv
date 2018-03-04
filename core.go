@@ -738,6 +738,15 @@ func Subtract(src1 Mat, src2 Mat, dst Mat) {
 	C.Mat_Subtract(src1.p, src2.p, dst.p)
 }
 
+// Raises every array element to a power.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaf0d056b5bd1dc92500d6f6cf6bac41ef
+//
+func Pow(src Mat, power float64, dst Mat) {
+	C.Mat_Pow(src.p, C.double(power), dst.p)
+}
+
 // TermCriteria is the criteria for iterative algorithms.
 //
 // For further details, please see:

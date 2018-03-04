@@ -340,6 +340,11 @@ void Mat_Subtract(Mat src1, Mat src2, Mat dst) {
     cv::subtract(*src1, *src2, *dst);
 }
 
+void Mat_Pow(Mat src, double power, Mat dst) {
+    cv::pow(*src, power, *dst);
+}
+
+
 Scalar Mat_Sum(Mat src) {
     cv::Scalar c = cv::sum(*src);
     Scalar scal = Scalar();
