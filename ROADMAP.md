@@ -58,7 +58,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [perspectiveTransform](https://docs.opencv.org/3.4.1/d2/de8/group__core__array.html#gad327659ac03e5fd6894b90025e6900a7)
         - [ ] [phase](https://docs.opencv.org/3.4.1/d2/de8/group__core__array.html#ga9db9ca9b4d81c3bde5677b8f64dc0137)
         - [ ] [polarToCart](https://docs.opencv.org/3.4.1/d2/de8/group__core__array.html#ga581ff9d44201de2dd1b40a50db93d665)
-        - [ ] [pow](https://docs.opencv.org/3.4.1/d2/de8/group__core__array.html#gaf0d056b5bd1dc92500d6f6cf6bac41ef)
+        - [X] [pow](https://docs.opencv.org/3.4.1/d2/de8/group__core__array.html#gaf0d056b5bd1dc92500d6f6cf6bac41ef)
         - [ ] [PSNR](https://docs.opencv.org/3.4.1/d2/de8/group__core__array.html#ga07aaf34ae31d226b1b847d8bcff3698f)
         - [ ] [randn](https://docs.opencv.org/3.4.1/d2/de8/group__core__array.html#gaeff1f61e972d133a04ce3a5f81cf6808)
         - [ ] [randShuffle](https://docs.opencv.org/3.4.1/d2/de8/group__core__array.html#ga6a789c8a5cb56c6dd62506179808f763)
