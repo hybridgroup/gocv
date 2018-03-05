@@ -471,10 +471,10 @@ func TestMeanStdDev(t *testing.T) {
 	dst := NewMat()
 	dstStdDev := NewMat()
 	MeanStdDev(src, dst, dstStdDev)
-	if(dst.Empty()) {
+	if dst.Empty() {
 		t.Error("TestMeanStdDev dst should not be empty.")
 	}
-	if(dstStdDev.Empty()) {
+	if dstStdDev.Empty() {
 		t.Error("TestMeanStdDev dstStdDev should not be empty.")
 	}
 }
