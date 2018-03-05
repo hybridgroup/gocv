@@ -69,7 +69,7 @@ fi
 
 #if [[ ! -f "${HOME}/testdata/tensorflow_inception_graph.pb" ]]; then
   curl -sL https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip > ${HOME}/testdata/inception5h.zip
-  unzip -u ${HOME}/testdata/inception5h.zip tensorflow_inception_graph.pb -d ${HOME}/testdata
+  unzip ${HOME}/testdata/inception5h.zip tensorflow_inception_graph.pb -o ${HOME}/testdata/tensorflow_inception_graph.pb
 #fi
 
 cd ../..
