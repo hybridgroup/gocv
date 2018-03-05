@@ -522,6 +522,16 @@ func TestMatSubtract(t *testing.T) {
 		t.Error("Sum of Subtracting equal images is not 0")
 	}
 }
+func TestMatPow(t *testing.T) {
+	src := NewMatWithSize(101, 102, MatTypeCV8U)
+	dst := NewMat()
+	power := 2.0
+	Pow(src, power, dst)
+
+	if dst.Empty() {
+		t.Error("TestMatPow dest should not be empty.")
+	}
+}
 
 func TestMatSum(t *testing.T) {
 	src := NewMatFromScalar(NewScalar(1, 2, 3, 4), MatTypeCV8UC4)
