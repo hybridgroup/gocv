@@ -915,28 +915,6 @@ func toGoBytes(b C.struct_ByteArray) []byte {
 	return C.GoBytes(unsafe.Pointer(b.data), b.length)
 }
 
-func toFloat32(arg interface{}) float32 {
-	switch arg.(type) {
-	case int:
-		return float32(arg.(int))
-	case float64:
-		return float32(arg.(float64))
-	default:
-		return 0
-	}
-}
-
-func toFloat64(arg interface{}) float64 {
-	switch arg.(type) {
-	case int:
-		return float64(arg.(int))
-	case float64:
-		return float64(arg.(float64))
-	default:
-		return 0
-	}
-}
-
 func toRectangles(ret C.Rects) []image.Rectangle {
 	cArray := ret.rects
 	length := int(ret.length)
