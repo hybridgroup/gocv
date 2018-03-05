@@ -1,3 +1,44 @@
+0.10.0
+---
+* **build** 
+    * install unzip before build
+    * overwrite when unzipping file to install Tensorflow test model
+    * use -DCPU_DISPATCH= flag for build to avoid problem with disabled AVX on Windows
+    * update unzipped file when installing Tensorflow test model
+* **core** 
+    * add Compare() and CountNonZero() functions
+    * add getter/setter using optional params for multi-dimensional Mat using row/col/channel
+    * Add mat subtract function
+    * add new toRectangle function to DRY up conversion from CRects to []image.Rectangle
+    * add split subtract sum wrappers
+    * Add toCPoints() helper function
+    * Added Mat.CopyToWithMask() per #47
+    * added Pow() method
+    * BatchDistance BorderInterpolate CalcCovarMatrix CartToPolar
+    * CompleteSymm ConvertScaleAbs CopyMakeBorder Dct
+    * divide, multiply
+    * Eigen Exp ExtractChannels
+    * operations on a 3d Mat are not same as a 2d multichannel Mat
+    * resolve merge conflict with duplicate Subtract() function
+    * run gofmt on core tests
+    * Updated type for Mat.GetUCharAt() and Mat.SetUCharAt() to reflect uint8 instead of int8
+* **docs** 
+    * update ROADMAP of completed functions in core from recent contributions
+* **env** 
+    * check loading resources
+    * Add distribution detection to deps rule
+    * Add needed environment variables for Linux
+* **highgui** 
+    * add some missing test coverage on WaitKey()
+* **imgproc** 
+    * Add adaptive threshold function
+    * Add pyrDown and pyrUp functions
+    * Expose DrawContours()
+    * Expose WarpPerspective and GetPerspectiveTransform
+    * implement ConvexHull() and ConvexityDefects() functions
+* **opencv** 
+    * update to OpenCV version 3.4.1
+
 0.9.0
 ---
 * **bugfix** 
