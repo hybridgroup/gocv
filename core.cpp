@@ -325,6 +325,10 @@ int Mat_GetOptimalDFTSize(int vecsize) {
     return cv::getOptimalDFTSize(vecsize);
 }
 
+void Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev) {
+    cv::meanStdDev(*src, *dstMean, *dstStdDev);
+}
+
 void Mat_Merge(struct Mats mats, Mat dst) {
     std::vector<cv::Mat> images;
     for (int i = 0; i < mats.length; ++i) {
@@ -369,11 +373,6 @@ void Mat_Split(Mat src, struct Mats *mats) {
 void Mat_Subtract(Mat src1, Mat src2, Mat dst) {
     cv::subtract(*src1, *src2, *dst);
 }
-
-void Mat_Pow(Mat src, double power, Mat dst) {
-    cv::pow(*src, power, *dst);
-}
-
 
 Scalar Mat_Sum(Mat src) {
     cv::Scalar c = cv::sum(*src);
