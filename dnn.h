@@ -25,6 +25,8 @@ bool Net_Empty(Net net);
 void Net_SetInput(Net net, Mat blob, const char* name);
 Mat Net_Forward(Net net, const char* outputName);
 
+Mat Net_GetBlobChannel(Mat blob, int imgidx, int chnidx);
+
 #ifdef __cplusplus
 }
 #endif

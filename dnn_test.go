@@ -97,3 +97,18 @@ func TestTensorflow(t *testing.T) {
 		t.Errorf("Tensorflow maxLoc incorrect: %v\n", maxLoc)
 	}
 }
+
+func TestGetBlobChannel(t *testing.T) {
+	img := NewMatWithSize(100, 100, 5)
+	blob := BlobFromImage(img, 1.0, image.Pt(0, 0), NewScalar(0, 0, 0, 0), true, false)
+	ch2 := GetBlobChannel(blob, 0, 1)
+	if ch2.Empty() {
+		t.Errorf("GetBlobChannel failed to retrieve 2nd chan of a 3channel blob")
+	}
+	if ch2.Rows() != img.Rows() || ch2.Cols() != img.Cols() {
+		t.Errorf("GetBlobChannel: retrieved image size does not match original")
+	}
+	ch2.Close()
+	blob.Close()
+	img.Close()
+}
