@@ -173,7 +173,6 @@ type FileExt string
 const (
 	PNGFileExt  FileExt = ".png"
 	JPEGFileExt FileExt = ".jpg"
-	GIFFileExt  FileExt = ".gif"
 )
 
 // IMEncode encodes an image Mat into a memory buffer.
