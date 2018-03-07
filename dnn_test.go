@@ -99,16 +99,32 @@ func TestTensorflow(t *testing.T) {
 }
 
 func TestGetBlobChannel(t *testing.T) {
-	img := NewMatWithSize(100, 100, 5)
+	img := NewMatWithSize(100, 100, 5+16)
+	defer img.Close()
+
 	blob := BlobFromImage(img, 1.0, image.Pt(0, 0), NewScalar(0, 0, 0, 0), true, false)
+	defer blob.Close()
+
 	ch2 := GetBlobChannel(blob, 0, 1)
+	defer ch2.Close()
+
 	if ch2.Empty() {
 		t.Errorf("GetBlobChannel failed to retrieve 2nd chan of a 3channel blob")
 	}
 	if ch2.Rows() != img.Rows() || ch2.Cols() != img.Cols() {
 		t.Errorf("GetBlobChannel: retrieved image size does not match original")
 	}
-	ch2.Close()
-	blob.Close()
-	img.Close()
+}
+
+func TestGetBlobSize(t *testing.T) {
+	img := NewMatWithSize(100, 100, 5+16)
+	defer img.Close()
+
+	blob := BlobFromImage(img, 1.0, image.Pt(0, 0), NewScalar(0, 0, 0, 0), true, false)
+	defer blob.Close()
+
+	sz := GetBlobSize(blob)
+	if sz.Val1 != 1 || sz.Val2 != 3 || sz.Val3 != 100 || sz.Val4 != 100 {
+		t.Errorf("GetBlobSize retrieved wrong values")
+	}
 }

@@ -110,10 +110,17 @@ func BlobFromImage(img Mat, scaleFactor float64, size image.Point, mean Scalar,
 	return Mat{p: C.Net_BlobFromImage(img.p, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop))}
 }
 
-// GetBlobChannel extracts a single (2d)channel from a 4dimensional blob structure
+// GetBlobChannel extracts a single (2d)channel from a 4 dimensional blob structure
 // (this might e.g. contain the results of a SSD or YOLO detection,
 //  a bones structure from pose detection, or a color plane from Colorization)
 //
 func GetBlobChannel(blob Mat, imgidx int, chnidx int) Mat {
 	return Mat{p: C.Net_GetBlobChannel(blob.p, C.int(imgidx), C.int(chnidx))}
+}
+
+// GetBlobSize retrieves the 4 dimensional size information in (N,C,H,W) order
+//
+func GetBlobSize(blob Mat) Scalar {
+	s := C.Net_GetBlobSize(blob.p)
+	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
 }
