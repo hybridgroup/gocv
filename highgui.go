@@ -36,7 +36,7 @@ func NewWindow(name string) *Window {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 
-	C.Window_New(cName, 2)
+	C.Window_New(cName, 0)
 
 	return &Window{name: name, open: true}
 }
