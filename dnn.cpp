@@ -7,7 +7,7 @@ Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel) {
 
 Net Net_ReadNetFromTensorflow(const char* model) {
     Net n = new cv::dnn::Net(cv::dnn::readNetFromTensorflow(model));
-    return n;    
+    return n;
 }
 
 void Net_Close(Net net) {
@@ -31,5 +31,20 @@ Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, boo
     cv::Scalar cm = cv::Scalar(mean.val1, mean.val2, mean.val3, mean.val4);
 
     // TODO: handle different version signatures of this function v2 vs v3.
-    return new cv::Mat(cv::dnn::blobFromImage(*image, scalefactor, sz, cm, swapRB));
+    return new cv::Mat(cv::dnn::blobFromImage(*image, scalefactor, sz, cm, swapRB, crop));
+}
+
+Mat Net_GetBlobChannel(Mat blob, int imgidx, int chnidx) {
+    size_t w = blob->size[3];
+    size_t h = blob->size[2];
+    return new cv::Mat(h, w, CV_32F, blob->ptr<float>(imgidx, chnidx));
+}
+
+Scalar Net_GetBlobSize(Mat blob) {
+    Scalar scal = Scalar();
+    scal.val1 = blob->size[0];
+    scal.val2 = blob->size[1];
+    scal.val3 = blob->size[2];
+    scal.val4 = blob->size[3];
+    return scal;
 }
