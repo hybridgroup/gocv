@@ -6,6 +6,7 @@ package gocv
 */
 import "C"
 import (
+	"errors"
 	"image"
 	"image/color"
 	"reflect"
@@ -268,6 +269,11 @@ func (m *Mat) Type() int {
 	return int(C.Mat_Type(m.p))
 }
 
+// Step returns the number of bytes each matrix row occupies.
+func (m *Mat) Step() int {
+	return int(C.Mat_Step(m.p))
+}
+
 // GetUCharAt returns a value from a specific row/col
 // in this Mat expecting it to be of type uchar aka CV_8U.
 func (m *Mat) GetUCharAt(row int, col int) uint8 {
@@ -410,6 +416,56 @@ func (m *Mat) SetDoubleAt(row int, col int, val float64) {
 // in this Mat expecting it to be of type double aka CV_64F.
 func (m *Mat) SetDoubleAt3(x, y, z int, val float64) {
 	C.Mat_SetDouble3(m.p, C.int(x), C.int(y), C.int(z), C.double(val))
+}
+
+// ToImage converts a Mat to a image.Image.
+func (m *Mat) ToImage() (image.Image, error) {
+	t := MatType(m.Type())
+	if t != MatTypeCV8UC1 && t != MatTypeCV8UC3 && t != MatTypeCV8UC4 {
+		return nil, errors.New("ToImage supports only MatType CV8UC1, CV8UC3 and CV8UC4")
+	}
+
+	width := m.Cols()
+	height := m.Rows()
+	step := m.Step()
+	data := m.ToBytes()
+	channels := m.Channels()
+
+	if t == MatTypeCV8UC1 {
+		img := image.NewGray(image.Rect(0, 0, width, height))
+		c := color.Gray{Y: uint8(0)}
+
+		for y := 0; y < height; y++ {
+			for x := 0; x < width; x++ {
+				c.Y = uint8(data[y*step+x])
+				img.SetGray(x, y, c)
+			}
+		}
+
+		return img, nil
+	}
+
+	img := image.NewNRGBA(image.Rect(0, 0, width, height))
+	c := color.NRGBA{
+		R: uint8(0),
+		G: uint8(0),
+		B: uint8(0),
+		A: uint8(255),
+	}
+
+	for y := 0; y < height; y++ {
+		for x := 0; x < step; x = x + channels {
+			c.B = uint8(data[y*step+x])
+			c.G = uint8(data[y*step+x+1])
+			c.R = uint8(data[y*step+x+2])
+			if channels == 4 {
+				c.A = uint8(data[y*step+x+3])
+			}
+			img.SetNRGBA(int(x/channels), y, c)
+		}
+	}
+
+	return img, nil
 }
 
 // AbsDiff calculates the per-element absolute difference between two arrays
