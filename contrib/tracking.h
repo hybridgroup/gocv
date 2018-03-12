@@ -1,6 +1,6 @@
 
-#ifndef _OPENCV3_MY_H_
-#define _OPENCV3_MY_H_
+#ifndef _OPENCV3_TRACKING_H_
+#define _OPENCV3_TRACKING_H_
 
 #include "../core.h"
 
@@ -13,58 +13,51 @@ extern "C" {
 
 #ifdef __cplusplus
 typedef cv::Ptr<cv::Tracker>* Tracker;
-typedef cv::Ptr<cv::TrackerMIL>* TrackerMil;
+typedef cv::Ptr<cv::TrackerMIL>* TrackerMIL;
 typedef cv::Ptr<cv::TrackerBoosting>* TrackerBoosting;
 typedef cv::Ptr<cv::TrackerMedianFlow>* TrackerMedianFlow;
-typedef cv::Ptr<cv::TrackerTLD>* TrackerTld;
-typedef cv::Ptr<cv::TrackerKCF>* TrackerKcf;
-typedef cv::Ptr<cv::TrackerMOSSE>* TrackerMosse;
-typedef cv::Ptr<cv::TrackerCSRT>* TrackerCsrt;
+typedef cv::Ptr<cv::TrackerTLD>* TrackerTLD;
+typedef cv::Ptr<cv::TrackerKCF>* TrackerKCF;
+typedef cv::Ptr<cv::TrackerMOSSE>* TrackerMOSSE;
+typedef cv::Ptr<cv::TrackerCSRT>* TrackerCSRT;
 #else
 typedef void* Tracker;
-typedef void* TrackerMil;
+typedef void* TrackerMIL;
 typedef void* TrackerBoosting;
 typedef void* TrackerMedianFlow;
-typedef void* TrackerTld;
-typedef void* TrackerKcf;
-typedef void* TrackerMosse;
-typedef void* TrackerCsrt;
+typedef void* TrackerTLD;
+typedef void* TrackerKCF;
+typedef void* TrackerMOSSE;
+typedef void* TrackerCSRT;
 #endif
 
 bool Tracker_Init(Tracker self, Mat image, Rect boundingBox);
 bool Tracker_Update(Tracker self, Mat image, Rect *boundingBox);
 
-
-TrackerMil TrackerMil_Create();
-void TrackerMil_Close(TrackerMil self);
-
+TrackerMIL TrackerMIL_Create();
+void TrackerMIL_Close(TrackerMIL self);
 
 TrackerBoosting TrackerBoosting_Create();
 void TrackerBoosting_Close(TrackerBoosting self);
 
-
 TrackerMedianFlow TrackerMedianFlow_Create();
 void TrackerMedianFlow_Close(TrackerMedianFlow self);
 
+TrackerTLD TrackerTLD_Create();
+void TrackerTLD_Close(TrackerTLD self);
 
-TrackerTld TrackerTld_Create();
-void TrackerTld_Close(TrackerTld self);
+TrackerKCF TrackerKCF_Create();
+void TrackerKCF_Close(TrackerKCF self);
 
+TrackerMOSSE TrackerMOSSE_Create();
+void TrackerMOSSE_Close(TrackerMOSSE self);
 
-TrackerKcf TrackerKcf_Create();
-void TrackerKcf_Close(TrackerKcf self);
-
-
-TrackerMosse TrackerMosse_Create();
-void TrackerMosse_Close(TrackerMosse self);
-
-
-TrackerCsrt TrackerCsrt_Create();
-void TrackerCsrt_Close(TrackerCsrt self);
+TrackerCSRT TrackerCSRT_Create();
+void TrackerCSRT_Close(TrackerCSRT self);
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif //_OPENCV3_MY_H_
+#endif //_OPENCV3_TRACKING_H_

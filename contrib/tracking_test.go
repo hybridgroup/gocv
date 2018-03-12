@@ -6,60 +6,42 @@ import (
 	"testing"
 )
 
-func BaseTestTracker(t *testing.T, tracker Tracker, name string) {
-	if tracker == nil {
-		t.Error("TestTracker " + name + " should not be nil")
+func TestSingleTrackers(t *testing.T) {
+	tab := []struct {
+		name    string
+		tracker Tracker
+	}{
+		{"MIL", NewTrackerMIL()},
+		{"Boosting", NewTrackerBoosting()},
+		{"MedianFlow", NewTrackerMedianFlow()},
+		{"TLD", NewTrackerTLD()},
+		{"KCF", NewTrackerKCF()},
+		{"MOSSE", NewTrackerMOSSE()},
+		{"CSRT", NewTrackerCSRT()},
 	}
-	img := gocv.IMRead("../images/face.jpg", 1)
-	if img.Empty() {
-		t.Error("TestTracker " + name + " input img failed to load")
-	}
-	rect := image.Rect(250, 150, 250+200, 150+250)
-	init := tracker.Init(img, rect)
-	if !init {
-		t.Error("TestTracker " + name + " failed in Init")
-	}
-	_, ok := tracker.Update(img)
-	if !ok {
-		t.Error("TestTracker " + name + " lost object in Update")
-	}
-	img.Close()
-}
 
-func TestTrackerMil(t *testing.T) {
-	tracker := NewTrackerMil()
-	BaseTestTracker(t, tracker, "Mil")
-	tracker.Close()
-}
-func TestTrackerBoosting(t *testing.T) {
-	tracker := NewTrackerBoosting()
-	BaseTestTracker(t, tracker, "Boosting")
-	tracker.Close()
-}
-func TestTrackerMedianFlow(t *testing.T) {
-	tracker := NewTrackerMedianFlow()
-	BaseTestTracker(t, tracker, "MedianFlow")
-	tracker.Close()
-}
-func TestTrackerTld(t *testing.T) {
-	tracker := NewTrackerTld()
-	BaseTestTracker(t, tracker, "Tld")
-	tracker.Close()
-}
-func TestTrackerKcf(t *testing.T) {
-	tracker := NewTrackerKcf()
-	BaseTestTracker(t, tracker, "Kcf")
-	tracker.Close()
-}
+	for _, test := range tab {
+		defer test.tracker.Close()
 
-func TestTrackerMosse(t *testing.T) {
-	tracker := NewTrackerMosse()
-	BaseTestTracker(t, tracker, "Mosse")
-	tracker.Close()
-}
+		if test.tracker == nil {
+			t.Error("TestTracker " + test.name + " should not be nil")
+		}
 
-func TestTrackerCsrt(t *testing.T) {
-	tracker := NewTrackerCsrt()
-	BaseTestTracker(t, tracker, "Csrt")
-	tracker.Close()
+		img := gocv.IMRead("../images/face.jpg", 1)
+		if img.Empty() {
+			t.Error("TestTracker " + test.name + " input img failed to load")
+		}
+		defer img.Close()
+
+		rect := image.Rect(250, 150, 250+200, 150+250)
+		init := test.tracker.Init(img, rect)
+		if !init {
+			t.Error("TestTracker " + test.name + " failed in Init")
+		}
+
+		_, ok := test.tracker.Update(img)
+		if !ok {
+			t.Error("TestTracker " + test.name + " lost object in Update")
+		}
+	}
 }

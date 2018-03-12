@@ -3,34 +3,29 @@
 
 
 bool Tracker_Init(Tracker self, Mat image, Rect boundingBox) {
-    cv::Rect2d c_boundingBox(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
+    cv::Rect2d bb(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
 
-    bool ret = (*self)->init(*image, c_boundingBox);
+    bool ret = (*self)->init(*image, bb);
     return ret;
 }
-
 
 bool Tracker_Update(Tracker self, Mat image, Rect *boundingBox) {
-    cv::Rect2d cBox;
-    bool ret = (*self)->update(*image, cBox);
-    boundingBox->x = int(cBox.x);
-    boundingBox->y = int(cBox.y);
-    boundingBox->width = int(cBox.width);
-    boundingBox->height = int(cBox.height);
+    cv::Rect2d bb;
+    bool ret = (*self)->update(*image, bb);
+    boundingBox->x = int(bb.x);
+    boundingBox->y = int(bb.y);
+    boundingBox->width = int(bb.width);
+    boundingBox->height = int(bb.height);
     return ret;
 }
 
-
-
-
-TrackerMil TrackerMil_Create() {
+TrackerMIL TrackerMIL_Create() {
     return new cv::Ptr<cv::TrackerMIL>(cv::TrackerMIL::create());
 }
 
-void TrackerMil_Close(TrackerMil self){
+void TrackerMIL_Close(TrackerMIL self){
     delete self;
 }
-
 
 TrackerBoosting TrackerBoosting_Create() {
     return new cv::Ptr<cv::TrackerBoosting>(cv::TrackerBoosting::create());
@@ -40,7 +35,6 @@ void TrackerBoosting_Close(TrackerBoosting self){
 	delete self;
 }
 
-
 TrackerMedianFlow TrackerMedianFlow_Create() {
     return new cv::Ptr<cv::TrackerMedianFlow>(cv::TrackerMedianFlow::create());
 }
@@ -49,39 +43,34 @@ void TrackerMedianFlow_Close(TrackerMedianFlow self){
 	delete self;
 }
 
-
-TrackerTld TrackerTld_Create() {
+TrackerTLD TrackerTLD_Create() {
     return new cv::Ptr<cv::TrackerTLD>(cv::TrackerTLD::create());
 }
 
-void TrackerTld_Close(TrackerTld self){
+void TrackerTLD_Close(TrackerTLD self){
     delete self;
 }
 
-
-TrackerKcf TrackerKcf_Create() {
+TrackerKCF TrackerKCF_Create() {
     return new cv::Ptr<cv::TrackerKCF>(cv::TrackerKCF::create());
 }
 
-void TrackerKcf_Close(TrackerKcf self){
+void TrackerKCF_Close(TrackerKCF self){
     delete self;
 }
 
-
-TrackerMosse TrackerMosse_Create() {
+TrackerMOSSE TrackerMOSSE_Create() {
     return new cv::Ptr<cv::TrackerMOSSE>(cv::TrackerMOSSE::create());
 }
 
-void TrackerMosse_Close(TrackerMosse self){
+void TrackerMOSSE_Close(TrackerMOSSE self){
     delete self;
 }
 
-
-
-TrackerCsrt TrackerCsrt_Create() {
+TrackerCSRT TrackerCSRT_Create() {
     return new cv::Ptr<cv::TrackerCSRT>(cv::TrackerCSRT::create());
 }
 
-void TrackerCsrt_Close(TrackerCsrt self){
+void TrackerCSRT_Close(TrackerCSRT self){
     delete self;
 }
