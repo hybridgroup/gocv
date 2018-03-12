@@ -264,8 +264,8 @@ func (m *Mat) Channels() int {
 }
 
 // Type returns the type for this Mat.
-func (m *Mat) Type() int {
-	return int(C.Mat_Type(m.p))
+func (m *Mat) Type() MatType {
+	return MatType(C.Mat_Type(m.p))
 }
 
 // GetUCharAt returns a value from a specific row/col
