@@ -172,6 +172,7 @@ int Mat_Rows(Mat m);
 int Mat_Cols(Mat m);
 int Mat_Channels(Mat m);
 int Mat_Type(Mat m);
+int Mat_Step(Mat m);
 
 uint8_t Mat_GetUChar(Mat m, int row, int col);
 uint8_t Mat_GetUChar3(Mat m, int x, int y, int z);

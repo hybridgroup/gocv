@@ -685,3 +685,45 @@ func TestMatExtractChannel(t *testing.T) {
 	src.Close()
 	dst.Close()
 }
+
+func TestMatToImage(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8UC3)
+	defer mat1.Close()
+
+	img, err := mat1.ToImage()
+	if err != nil {
+		t.Errorf("TestToImage %v.", err)
+	}
+
+	if img.Bounds().Dx() != 102 {
+		t.Errorf("TestToImage incorrect width got %d.", img.Bounds().Dx())
+	}
+
+	if img.Bounds().Dy() != 101 {
+		t.Errorf("TestToImage incorrect height got %d.", img.Bounds().Dy())
+	}
+
+	mat2 := NewMatWithSize(101, 102, MatTypeCV8UC1)
+	defer mat2.Close()
+
+	img, err = mat2.ToImage()
+	if err != nil {
+		t.Errorf("TestToImage %v.", err)
+	}
+
+	mat3 := NewMatWithSize(101, 102, MatTypeCV8UC4)
+	defer mat3.Close()
+
+	img, err = mat3.ToImage()
+	if err != nil {
+		t.Errorf("TestToImage %v.", err)
+	}
+
+	matWithUnsupportedType := NewMatWithSize(101, 102, MatTypeCV8S)
+	defer matWithUnsupportedType.Close()
+
+	_, err = matWithUnsupportedType.ToImage()
+	if err == nil {
+		t.Error("TestToImage expected error got nil.")
+	}
+}
