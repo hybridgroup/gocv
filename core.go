@@ -420,7 +420,7 @@ func (m *Mat) SetDoubleAt3(x, y, z int, val float64) {
 
 // ToImage converts a Mat to a image.Image.
 func (m *Mat) ToImage() (image.Image, error) {
-	t := MatType(m.Type())
+	t := m.Type()
 	if t != MatTypeCV8UC1 && t != MatTypeCV8UC3 && t != MatTypeCV8UC4 {
 		return nil, errors.New("ToImage supports only MatType CV8UC1, CV8UC3 and CV8UC4")
 	}
