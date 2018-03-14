@@ -55,32 +55,36 @@ func tracker_Update(trk C.Tracker, img gocv.Mat) (image.Rectangle, bool) {
 	return rect, bool(ret)
 }
 
+type trackerMIL struct {
+	p C.TrackerMIL
+}
+
 //
 // The MIL algorithm trains a classifier in an online manner to separate the object from the background.
 // Multiple Instance Learning avoids the drift problem for a robust tracking.
 //
 // see: https://docs.opencv.org/master/d0/d26/classcv_1_1TrackerMIL.html
 //
-type TrackerMIL struct {
-	p C.TrackerMIL
+func NewTrackerMIL() Tracker {
+	return trackerMIL{p: C.TrackerMIL_Create()}
 }
 
-func NewTrackerMIL() TrackerMIL {
-	return TrackerMIL{p: C.TrackerMIL_Create()}
-}
-
-func (self TrackerMIL) Close() error {
+func (self trackerMIL) Close() error {
 	C.TrackerMIL_Close(self.p)
 	self.p = nil
 	return nil
 }
 
-func (self TrackerMIL) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
+func (self trackerMIL) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
 	return tracker_Init(C.Tracker(self.p), img, boundingBox)
 }
 
-func (self TrackerMIL) Update(img gocv.Mat) (image.Rectangle, bool) {
+func (self trackerMIL) Update(img gocv.Mat) (image.Rectangle, bool) {
 	return tracker_Update(C.Tracker(self.p), img)
+}
+
+type trackerBoosting struct {
+	p C.TrackerBoosting
 }
 
 //
@@ -88,26 +92,26 @@ func (self TrackerMIL) Update(img gocv.Mat) (image.Rectangle, bool) {
 //
 // see: https://docs.opencv.org/master/d1/d1a/classcv_1_1TrackerBoosting.html
 //
-type TrackerBoosting struct {
-	p C.TrackerBoosting
+func NewTrackerBoosting() Tracker {
+	return trackerBoosting{p: C.TrackerBoosting_Create()}
 }
 
-func NewTrackerBoosting() TrackerBoosting {
-	return TrackerBoosting{p: C.TrackerBoosting_Create()}
-}
-
-func (self TrackerBoosting) Close() error {
+func (self trackerBoosting) Close() error {
 	C.TrackerBoosting_Close(self.p)
 	self.p = nil
 	return nil
 }
 
-func (self TrackerBoosting) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
+func (self trackerBoosting) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
 	return tracker_Init(C.Tracker(self.p), img, boundingBox)
 }
 
-func (self TrackerBoosting) Update(img gocv.Mat) (image.Rectangle, bool) {
+func (self trackerBoosting) Update(img gocv.Mat) (image.Rectangle, bool) {
 	return tracker_Update(C.Tracker(self.p), img)
+}
+
+type trackerMedianFlow struct {
+	p C.TrackerMedianFlow
 }
 
 //
@@ -115,26 +119,26 @@ func (self TrackerBoosting) Update(img gocv.Mat) (image.Rectangle, bool) {
 //
 // see: https://docs.opencv.org/master/d7/d86/classcv_1_1TrackerMedianFlow.html
 //
-type TrackerMedianFlow struct {
-	p C.TrackerMedianFlow
+func NewTrackerMedianFlow() Tracker {
+	return trackerMedianFlow{p: C.TrackerMedianFlow_Create()}
 }
 
-func NewTrackerMedianFlow() TrackerMedianFlow {
-	return TrackerMedianFlow{p: C.TrackerMedianFlow_Create()}
-}
-
-func (self TrackerMedianFlow) Close() error {
+func (self trackerMedianFlow) Close() error {
 	C.TrackerMedianFlow_Close(self.p)
 	self.p = nil
 	return nil
 }
 
-func (self TrackerMedianFlow) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
+func (self trackerMedianFlow) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
 	return tracker_Init(C.Tracker(self.p), img, boundingBox)
 }
 
-func (self TrackerMedianFlow) Update(img gocv.Mat) (image.Rectangle, bool) {
+func (self trackerMedianFlow) Update(img gocv.Mat) (image.Rectangle, bool) {
 	return tracker_Update(C.Tracker(self.p), img)
+}
+
+type trackerTLD struct {
+	p C.TrackerTLD
 }
 
 //
@@ -142,26 +146,26 @@ func (self TrackerMedianFlow) Update(img gocv.Mat) (image.Rectangle, bool) {
 //
 // see: https://docs.opencv.org/master/dc/d1c/classcv_1_1TrackerTLD.html
 //
-type TrackerTLD struct {
-	p C.TrackerTLD
+func NewTrackerTLD() Tracker {
+	return trackerTLD{p: C.TrackerTLD_Create()}
 }
 
-func NewTrackerTLD() TrackerTLD {
-	return TrackerTLD{p: C.TrackerTLD_Create()}
-}
-
-func (self TrackerTLD) Close() error {
+func (self trackerTLD) Close() error {
 	C.TrackerTLD_Close(self.p)
 	self.p = nil
 	return nil
 }
 
-func (self TrackerTLD) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
+func (self trackerTLD) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
 	return tracker_Init(C.Tracker(self.p), img, boundingBox)
 }
 
-func (self TrackerTLD) Update(img gocv.Mat) (image.Rectangle, bool) {
+func (self trackerTLD) Update(img gocv.Mat) (image.Rectangle, bool) {
 	return tracker_Update(C.Tracker(self.p), img)
+}
+
+type trackerKCF struct {
+	p C.TrackerKCF
 }
 
 //
@@ -169,26 +173,26 @@ func (self TrackerTLD) Update(img gocv.Mat) (image.Rectangle, bool) {
 //
 // see: https://docs.opencv.org/master/d2/dff/classcv_1_1TrackerKCF.html
 //
-type TrackerKCF struct {
-	p C.TrackerKCF
+func NewTrackerKCF() Tracker {
+	return trackerKCF{p: C.TrackerKCF_Create()}
 }
 
-func NewTrackerKCF() TrackerKCF {
-	return TrackerKCF{p: C.TrackerKCF_Create()}
-}
-
-func (self TrackerKCF) Close() error {
+func (self trackerKCF) Close() error {
 	C.TrackerKCF_Close(self.p)
 	self.p = nil
 	return nil
 }
 
-func (self TrackerKCF) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
+func (self trackerKCF) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
 	return tracker_Init(C.Tracker(self.p), img, boundingBox)
 }
 
-func (self TrackerKCF) Update(img gocv.Mat) (image.Rectangle, bool) {
+func (self trackerKCF) Update(img gocv.Mat) (image.Rectangle, bool) {
 	return tracker_Update(C.Tracker(self.p), img)
+}
+
+type trackerMOSSE struct {
+	p C.TrackerMOSSE
 }
 
 //
@@ -197,26 +201,26 @@ func (self TrackerKCF) Update(img gocv.Mat) (image.Rectangle, bool) {
 //
 // see: https://docs.opencv.org/master/d0/d02/classcv_1_1TrackerMOSSE.html
 //
-type TrackerMOSSE struct {
-	p C.TrackerMOSSE
+func NewTrackerMOSSE() Tracker {
+	return trackerMOSSE{p: C.TrackerMOSSE_Create()}
 }
 
-func NewTrackerMOSSE() TrackerMOSSE {
-	return TrackerMOSSE{p: C.TrackerMOSSE_Create()}
-}
-
-func (self TrackerMOSSE) Close() error {
+func (self trackerMOSSE) Close() error {
 	C.TrackerMOSSE_Close(self.p)
 	self.p = nil
 	return nil
 }
 
-func (self TrackerMOSSE) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
+func (self trackerMOSSE) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
 	return tracker_Init(C.Tracker(self.p), img, boundingBox)
 }
 
-func (self TrackerMOSSE) Update(img gocv.Mat) (image.Rectangle, bool) {
+func (self trackerMOSSE) Update(img gocv.Mat) (image.Rectangle, bool) {
 	return tracker_Update(C.Tracker(self.p), img)
+}
+
+type trackerCSRT struct {
+	p C.TrackerCSRT
 }
 
 //
@@ -225,24 +229,20 @@ func (self TrackerMOSSE) Update(img gocv.Mat) (image.Rectangle, bool) {
 //
 // see: https://docs.opencv.org/master/d2/da2/classcv_1_1TrackerCSRT.html
 //
-type TrackerCSRT struct {
-	p C.TrackerCSRT
+func NewTrackerCSRT() Tracker {
+	return trackerCSRT{p: C.TrackerCSRT_Create()}
 }
 
-func NewTrackerCSRT() TrackerCSRT {
-	return TrackerCSRT{p: C.TrackerCSRT_Create()}
-}
-
-func (self TrackerCSRT) Close() error {
+func (self trackerCSRT) Close() error {
 	C.TrackerCSRT_Close(self.p)
 	self.p = nil
 	return nil
 }
 
-func (self TrackerCSRT) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
+func (self trackerCSRT) Init(img gocv.Mat, boundingBox image.Rectangle) bool {
 	return tracker_Init(C.Tracker(self.p), img, boundingBox)
 }
 
-func (self TrackerCSRT) Update(img gocv.Mat) (image.Rectangle, bool) {
+func (self trackerCSRT) Update(img gocv.Mat) (image.Rectangle, bool) {
 	return tracker_Update(C.Tracker(self.p), img)
 }
