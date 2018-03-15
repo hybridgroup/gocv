@@ -736,13 +736,40 @@ func Exp(src Mat, dst Mat) {
 	C.Mat_Exp(src.p, dst.p)
 }
 
-// ExtractChannel Extracts a single channel from src (coi is 0-based index)
+// ExtractChannel Extracts a single channel from src (coi is 0-based index).
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gacc6158574aa1f0281878c955bcf35642
 //
 func ExtractChannel(src Mat, dst Mat, coi int) {
 	C.Mat_ExtractChannel(src.p, dst.p, C.int(coi))
+}
+
+// FindNonZero returns the list of locations of non-zero pixels.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gaed7df59a3539b4cc0fe5c9c8d7586190
+//
+func FindNonZero(src, idx Mat) {
+	C.Mat_FindNonZero(src.p, idx.p)
+}
+
+// Flip flips a 2D array around horizontal(0), vertical(1), or both axes(-1).
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gaca7be533e3dac7feb70fc60635adf441
+//
+func Flip(src, dst Mat, flipCode int) {
+	C.Mat_Flip(src.p, dst.p, C.int(flipCode))
+}
+
+// Gemm performs generalized matrix multiplication.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gacb6e64071dffe36434e1e7ee79e7cb35
+//
+func Gemm(src1, src2 Mat, alpha float64, src3 Mat, beta float64, dst Mat, flags int) {
+	C.Mat_Gemm(src1.p, src2.p, C.double(alpha), src3.p, C.double(beta), dst.p, C.int(flags))
 }
 
 // GetOptimalDFTSize returns the optimal Discrete Fourier Transform (DFT) size
@@ -755,16 +782,90 @@ func GetOptimalDFTSize(vecsize int) int {
 	return int(C.Mat_GetOptimalDFTSize(C.int(vecsize)))
 }
 
+// Hconcat applies horizontal concatenation to given matrices.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gaab5ceee39e0580f879df645a872c6bf7
+//
+func Hconcat(src1, src2, dst Mat) {
+	C.Mat_Hconcat(src1.p, src2.p, dst.p)
+}
+
+// Idct calculates the inverse Discrete Cosine Transform of a 1D or 2D array.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga77b168d84e564c50228b69730a227ef2
+//
+func Idct(src, dst Mat, flags int) {
+	C.Mat_Idct(src.p, dst.p, C.int(flags))
+}
+
+// Idft calculates the inverse Discrete Fourier Transform of a 1D or 2D array.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gaa708aa2d2e57a508f968eb0f69aa5ff1
+//
+func Idft(src, dst Mat, flags, nonzeroRows int) {
+	C.Mat_Idft(src.p, dst.p, C.int(flags), C.int(nonzeroRows))
+}
+
 // InRange checks if array elements lie between the elements of two Mat arrays.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga48af0ab51e36436c5d04340e036ce981
 //
-func InRange(src Mat, lb Mat, ub Mat, dst Mat) {
+func InRange(src, lb, ub, dst Mat) {
 	C.Mat_InRange(src.p, lb.p, ub.p, dst.p)
 }
 
-// Calculates a mean and standard deviation of array elements.
+// InsertChannel inserts a single channel to dst (coi is 0-based index)
+// (it replaces channel i with another in dst).
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga1d4bd886d35b00ec0b764cb4ce6eb515
+//
+func InsertChannel(src, dst Mat, coi int) {
+	C.Mat_InsertChannel(src.p, dst.p, C.int(coi))
+}
+
+// Invert finds the inverse or pseudo-inverse of a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gad278044679d4ecf20f7622cc151aaaa2
+//
+func Invert(src, dst Mat, flags int) float64 {
+	ret := C.Mat_Invert(src.p, dst.p, C.int(flags))
+	return float64(ret)
+}
+
+// Log calculates the natural logarithm of every array element.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga937ecdce4679a77168730830a955bea7
+//
+func Log(src, dst Mat) {
+	C.Mat_Log(src.p, dst.p)
+}
+
+// Magnitude calculates the magnitude of 2D vectors.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6d3b097586bca4409873d64a90fe64c3
+//
+func Magnitude(x, y, magnitude Mat) {
+	C.Mat_Magnitude(x.p, y.p, magnitude.p)
+}
+
+// Max calculates per-element maximum of two arrays or an array and a scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gacc40fa15eac0fb83f8ca70b7cc0b588d
+//
+func Max(src1, src2, dst Mat) {
+	C.Mat_Max(src1.p, src2.p, dst.p)
+}
+
+// MeanStdDev calculates a mean and standard deviation of array elements.
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga846c858f4004d59493d7c6a4354b301d

@@ -322,12 +322,57 @@ void Mat_ExtractChannel(Mat src, Mat dst, int coi) {
     cv::extractChannel(*src, *dst, coi);
 }
 
-void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst) {
-    cv::inRange(*src, *lowerb, *upperb, *dst);
+void Mat_FindNonZero(Mat src, Mat idx) {
+    cv::findNonZero(*src, *idx);
+}
+
+void Mat_Flip(Mat src, Mat dst, int flipCode) {
+    cv::flip(*src, *dst, flipCode);
+}
+
+void Mat_Gemm(Mat src1, Mat src2, double alpha, Mat src3, double beta, Mat dst, int flags) {
+    cv::gemm(*src1, *src2, alpha, *src3, beta, *dst, flags);
 }
 
 int Mat_GetOptimalDFTSize(int vecsize) {
     return cv::getOptimalDFTSize(vecsize);
+}
+
+void Mat_Hconcat(Mat src1, Mat src2, Mat dst) {
+    cv::hconcat(*src1, *src2, *dst);
+}
+
+void Mat_Idct(Mat src, Mat dst, int flags) {
+    cv::idct(*src, *dst, flags);
+}
+
+void Mat_Idft(Mat src, Mat dst, int flags, int nonzeroRows) {
+    cv::idft(*src, *dst, flags, nonzeroRows);
+}
+
+void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst) {
+    cv::inRange(*src, *lowerb, *upperb, *dst);
+}
+
+void Mat_InsertChannel(Mat src, Mat dst, int coi) {
+    cv::insertChannel(*src, *dst, coi);
+}
+
+double Mat_Invert(Mat src, Mat dst, int flags) {
+    double ret = cv::invert(*src, *dst, flags);
+    return ret;
+}
+
+void Mat_Log(Mat src, Mat dst) {
+    cv::log(*src, *dst);
+}
+
+void Mat_Magnitude(Mat x, Mat y, Mat magnitude) {
+    cv::magnitude(*x, *y, *magnitude);
+}
+
+void Mat_Max(Mat src1, Mat src2, Mat dst) {
+    cv::max(*src1, *src2, *dst);
 }
 
 void Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev) {

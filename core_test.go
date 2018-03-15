@@ -699,6 +699,183 @@ func TestMatExtractChannel(t *testing.T) {
 	dst.Close()
 }
 
+func TestMatFindNonZero(t *testing.T) {
+	src := NewMatWithSize(10, 10, MatTypeCV8U)
+	defer src.Close()
+	src.SetFloatAt(3, 3, 17)
+	src.SetFloatAt(4, 4, 17)
+
+	dst := NewMat()
+	defer dst.Close()
+
+	FindNonZero(src, dst)
+
+	if dst.Empty() {
+		t.Error("TestMatFindNonZero dst should not be empty.")
+	}
+	if dst.Rows() != 2*2 {
+		t.Error("TestMatFindNonZero didn't find all nonzero locations.")
+	}
+}
+
+func TestMatFlip(t *testing.T) {
+	src := NewMatWithSize(10, 10, MatTypeCV32F)
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	Flip(src, dst, 0)
+
+	if dst.Empty() {
+		t.Error("TestMatFlip dst should not be empty.")
+	}
+	if dst.Rows() != src.Rows() {
+		t.Error("TestMatFlip src and dst size should be same.")
+	}
+}
+
+func TestMatGemm(t *testing.T) {
+	src1 := NewMatWithSize(3, 4, MatTypeCV32F)
+	defer src1.Close()
+
+	src2 := NewMatWithSize(4, 3, MatTypeCV32F)
+	defer src2.Close()
+
+	src3 := NewMat()
+	defer src3.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	Gemm(src1, src2, 1, src3, 0, dst, 0)
+
+	if dst.Empty() {
+		t.Error("Gemm dst should not be empty.")
+	}
+	if dst.Rows() != src1.Rows() {
+		t.Error("Gemm src and dst size should be same.")
+	}
+}
+
+func TestMatHconcat(t *testing.T) {
+	src := NewMatWithSize(10, 10, MatTypeCV32F)
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	Hconcat(src, src, dst)
+
+	if dst.Empty() {
+		t.Error("TestMatHconcat dst should not be empty.")
+	}
+	if dst.Cols() != 2*src.Cols() {
+		t.Error("TestMatHconcat dst.Cols should be 2 x src.Cols.")
+	}
+}
+
+func TestMatIdct(t *testing.T) {
+	src := NewMatWithSize(4, 4, MatTypeCV32F)
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	Idct(src, dst, 0)
+	if dst.Empty() {
+		t.Error("Idct dst should not be empty.")
+	}
+	if dst.Rows() != src.Rows() {
+		t.Error("Idct src and dst size should be same.")
+	}
+}
+
+func TestMatIdft(t *testing.T) {
+	src := NewMatWithSize(4, 4, MatTypeCV32F)
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	Idft(src, dst, 0, 0)
+	if dst.Empty() {
+		t.Error("Idct dst should not be empty.")
+	}
+	if dst.Rows() != src.Rows() {
+		t.Error("Idct src and dst size should be same.")
+	}
+}
+
+func TestMatInsertChannel(t *testing.T) {
+	src := NewMatWithSize(4, 4, MatTypeCV8U)
+	defer src.Close()
+
+	dst := NewMatWithSize(4, 4, MatTypeCV8UC3)
+	defer dst.Close()
+
+	InsertChannel(src, dst, 1)
+	if dst.Channels() != 3 {
+		t.Error("TestMatInsertChannel dst should change the channel count")
+	}
+}
+
+func TestMatInvert(t *testing.T) {
+	src := NewMatWithSize(4, 4, MatTypeCV32F) // only implemented for symm. Mats
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	Invert(src, dst, 0)
+	if dst.Empty() {
+		t.Error("Invert dst should not be empty.")
+	}
+}
+
+func TestMatLog(t *testing.T) {
+	src := NewMatWithSize(4, 3, MatTypeCV32F)
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	Log(src, dst)
+	if dst.Empty() {
+		t.Error("Log dst should not be empty.")
+	}
+}
+
+func TestMatMagnitude(t *testing.T) {
+	src1 := NewMatWithSize(4, 4, MatTypeCV32F)
+	defer src1.Close()
+	src2 := NewMatWithSize(4, 4, MatTypeCV32F)
+	defer src2.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	Magnitude(src1, src2, dst)
+	if dst.Empty() {
+		t.Error("Magnitude dst should not be empty.")
+	}
+}
+
+func TestMatMax(t *testing.T) {
+	src1 := NewMatWithSize(4, 4, MatTypeCV32F)
+	defer src1.Close()
+	src2 := NewMatWithSize(4, 4, MatTypeCV32F)
+	defer src2.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	Max(src1, src2, dst)
+	if dst.Empty() {
+		t.Error("Max dst should not be empty.")
+	}
+}
+
 func TestMatToImage(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8UC3)
 	defer mat1.Close()
