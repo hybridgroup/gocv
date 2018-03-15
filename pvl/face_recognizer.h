@@ -24,8 +24,10 @@ bool FaceRecognizer_Empty(FaceRecognizer f);
 void FaceRecognizer_SetTrackingModeEnabled(FaceRecognizer f, bool enabled);
 int FaceRecognizer_CreateNewPersonID(FaceRecognizer f);
 int FaceRecognizer_GetNumRegisteredPersons(FaceRecognizer f);
-void FaceRecognizer_Recognize(FaceRecognizer f, Mat img, Faces faces, IntVector* pids, IntVector* confs);
-int64_t FaceRecognizer_RegisterFace(FaceRecognizer f, Mat img, Face face, int personID, bool saveTofile);
+void FaceRecognizer_Recognize(FaceRecognizer f, Mat img, Faces faces, IntVector* pids,
+                              IntVector* confs);
+int64_t FaceRecognizer_RegisterFace(FaceRecognizer f, Mat img, Face face, int personID,
+                                    bool saveTofile);
 void FaceRecognizer_DeregisterFace(FaceRecognizer f, int64_t faceID);
 void FaceRecognizer_DeregisterPerson(FaceRecognizer f, int personID);
 FaceRecognizer FaceRecognizer_Load(const char* filename);

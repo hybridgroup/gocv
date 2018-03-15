@@ -32,7 +32,7 @@ typedef void* TrackerCSRT;
 #endif
 
 bool Tracker_Init(Tracker self, Mat image, Rect boundingBox);
-bool Tracker_Update(Tracker self, Mat image, Rect *boundingBox);
+bool Tracker_Update(Tracker self, Mat image, Rect* boundingBox);
 
 TrackerMIL TrackerMIL_Create();
 void TrackerMIL_Close(TrackerMIL self);

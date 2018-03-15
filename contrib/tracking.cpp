@@ -9,7 +9,7 @@ bool Tracker_Init(Tracker self, Mat image, Rect boundingBox) {
     return ret;
 }
 
-bool Tracker_Update(Tracker self, Mat image, Rect *boundingBox) {
+bool Tracker_Update(Tracker self, Mat image, Rect* boundingBox) {
     cv::Rect2d bb;
     bool ret = (*self)->update(*image, bb);
     boundingBox->x = int(bb.x);
@@ -23,7 +23,7 @@ TrackerMIL TrackerMIL_Create() {
     return new cv::Ptr<cv::TrackerMIL>(cv::TrackerMIL::create());
 }
 
-void TrackerMIL_Close(TrackerMIL self){
+void TrackerMIL_Close(TrackerMIL self) {
     delete self;
 }
 
@@ -31,23 +31,23 @@ TrackerBoosting TrackerBoosting_Create() {
     return new cv::Ptr<cv::TrackerBoosting>(cv::TrackerBoosting::create());
 }
 
-void TrackerBoosting_Close(TrackerBoosting self){
-	delete self;
+void TrackerBoosting_Close(TrackerBoosting self) {
+    delete self;
 }
 
 TrackerMedianFlow TrackerMedianFlow_Create() {
     return new cv::Ptr<cv::TrackerMedianFlow>(cv::TrackerMedianFlow::create());
 }
 
-void TrackerMedianFlow_Close(TrackerMedianFlow self){
-	delete self;
+void TrackerMedianFlow_Close(TrackerMedianFlow self) {
+    delete self;
 }
 
 TrackerTLD TrackerTLD_Create() {
     return new cv::Ptr<cv::TrackerTLD>(cv::TrackerTLD::create());
 }
 
-void TrackerTLD_Close(TrackerTLD self){
+void TrackerTLD_Close(TrackerTLD self) {
     delete self;
 }
 
@@ -55,7 +55,7 @@ TrackerKCF TrackerKCF_Create() {
     return new cv::Ptr<cv::TrackerKCF>(cv::TrackerKCF::create());
 }
 
-void TrackerKCF_Close(TrackerKCF self){
+void TrackerKCF_Close(TrackerKCF self) {
     delete self;
 }
 
@@ -63,7 +63,7 @@ TrackerMOSSE TrackerMOSSE_Create() {
     return new cv::Ptr<cv::TrackerMOSSE>(cv::TrackerMOSSE::create());
 }
 
-void TrackerMOSSE_Close(TrackerMOSSE self){
+void TrackerMOSSE_Close(TrackerMOSSE self) {
     delete self;
 }
 
@@ -71,6 +71,6 @@ TrackerCSRT TrackerCSRT_Create() {
     return new cv::Ptr<cv::TrackerCSRT>(cv::TrackerCSRT::create());
 }
 
-void TrackerCSRT_Close(TrackerCSRT self){
+void TrackerCSRT_Close(TrackerCSRT self) {
     delete self;
 }

@@ -26,7 +26,8 @@ Mat Net_Forward(Net net, const char* outputName) {
     return new cv::Mat(net->forward(outputName));
 }
 
-Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB, bool crop) {
+Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
+                      bool crop) {
     cv::Size sz(size.width, size.height);
     cv::Scalar cm = cv::Scalar(mean.val1, mean.val2, mean.val3, mean.val4);
 

@@ -1,16 +1,18 @@
 #include "face.h"
 
 LBPHFaceRecognizer CreateLBPHFaceRecognizer() {
-        return new cv::Ptr<cv::face::LBPHFaceRecognizer>(cv::face::LBPHFaceRecognizer::create());
+    return new cv::Ptr<cv::face::LBPHFaceRecognizer>(cv::face::LBPHFaceRecognizer::create());
 }
 
 void LBPHFaceRecognizer_Train(LBPHFaceRecognizer fr, Mats mats, IntVector labels_in) {
     std::vector<int> labels;
-    for(int i = 0, *v = labels_in.val; i < labels_in.length; ++v, ++i) {
+
+    for (int i = 0, *v = labels_in.val; i < labels_in.length; ++v, ++i) {
         labels.push_back(*v);
     }
 
     std::vector<cv::Mat> images;
+
     for (int i = 0; i < mats.length; ++i) {
         images.push_back(*mats.mats[i]);
     }
@@ -22,11 +24,13 @@ void LBPHFaceRecognizer_Train(LBPHFaceRecognizer fr, Mats mats, IntVector labels
 
 void LBPHFaceRecognizer_Update(LBPHFaceRecognizer fr, Mats mats, IntVector labels_in) {
     std::vector<int> labels;
-    for(int i = 0, *v = labels_in.val; i < labels_in.length; ++v, ++i) {
+
+    for (int i = 0, *v = labels_in.val; i < labels_in.length; ++v, ++i) {
         labels.push_back(*v);
     }
 
     std::vector<cv::Mat> images;
+
     for (int i = 0; i < mats.length; ++i) {
         images.push_back(*mats.mats[i]);
     }
@@ -49,8 +53,8 @@ struct PredictResponse LBPHFaceRecognizer_PredictExtended(LBPHFaceRecognizer fr,
     double confidence;
 
     (*fr)->predict(*sample, label, confidence);
-     response.label = label;
-     response.confidence = confidence;
+    response.label = label;
+    response.confidence = confidence;
 
 
     return response;
