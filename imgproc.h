@@ -38,6 +38,8 @@ void Canny(Mat src, Mat edges, double t1, double t2);
 void CornerSubPix(Mat img, Mat corners, Size winSize, Size zeroZone, TermCriteria criteria);
 void GoodFeaturesToTrack(Mat img, Mat corners, int maxCorners, double quality, double minDist);
 void HoughCircles(Mat src, Mat circles, int method, double dp, double minDist);
+void HoughCirclesWithParams(Mat src, Mat circles, int method, double dp, double minDist,
+                            double param1, double param2, int minRadius, int maxRadius);
 void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold);
 void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold);
 void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ);
