@@ -5,19 +5,19 @@
 #include <stdbool.h>
 
 typedef struct String {
-  const char* str;
-  int length;
+    const char* str;
+    int length;
 } String;
 
-typedef struct ByteArray{
-  char *data;
-  int length;
+typedef struct ByteArray {
+    char* data;
+    int length;
 } ByteArray;
 
 // Wrapper for std::vector<int>
 typedef struct IntVector {
-  int *val;
-  int length;
+    int* val;
+    int length;
 } IntVector;
 
 #ifdef __cplusplus
@@ -26,21 +26,21 @@ extern "C" {
 #endif
 
 typedef struct RawData {
-  int width;
-  int height;
-  struct ByteArray data;
+    int width;
+    int height;
+    struct ByteArray data;
 } RawData;
 
 // Wrapper for an individual cv::cvPoint
 typedef struct Point {
-  int x;
-  int y;
+    int x;
+    int y;
 } Point;
 
 // Wrapper for the vector of Point structs aka std::vector<Point>
 typedef struct Points {
-  Point* points;
-  int length;
+    Point* points;
+    int length;
 } Points;
 
 // Contour is alias for Points
@@ -48,83 +48,83 @@ typedef Points Contour;
 
 // Wrapper for the vector of Points vectors aka std::vector< std::vector<Point> >
 typedef struct Contours {
-  Contour* contours;
-  int length;
+    Contour* contours;
+    int length;
 } Contours;
 
 // Wrapper for an individual cv::cvRect
 typedef struct Rect {
-  int x;
-  int y;
-  int width;
-  int height;
+    int x;
+    int y;
+    int width;
+    int height;
 } Rect;
 
 // Wrapper for the vector of Rect struct aka std::vector<Rect>
 typedef struct Rects {
-  Rect* rects;
-  int length;
+    Rect* rects;
+    int length;
 } Rects;
 
 // Wrapper for an individual cv::cvSize
 typedef struct Size {
-  int width;
-  int height;
+    int width;
+    int height;
 } Size;
 
 // Wrapper for an individual cv::cvScalar
 typedef struct Scalar {
-  double val1;
-  double val2;
-  double val3;
-  double val4;
+    double val1;
+    double val2;
+    double val3;
+    double val4;
 } Scalar;
 
 // Wrapper for a individual cv::KeyPoint
 typedef struct KeyPoint {
-  double x;
-  double y;
-  double size;
-  double angle;
-  double response;
-  int octave;
-  int classID;
+    double x;
+    double y;
+    double size;
+    double angle;
+    double response;
+    int octave;
+    int classID;
 } KeyPoint;
 
 // Wrapper for the vector of KeyPoint struct aka std::vector<KeyPoint>
 typedef struct KeyPoints {
-  KeyPoint* keypoints;
-  int length;
+    KeyPoint* keypoints;
+    int length;
 } KeyPoints;
 
 // Wrapper for an individual cv::Moment
 typedef struct Moment {
-  double m00;
-  double m10;
-  double m01;
-  double m20;
-  double m11;
-  double m02;
-  double m30;
-  double m21;
-  double m12;
-  double m03;
+    double m00;
+    double m10;
+    double m01;
+    double m20;
+    double m11;
+    double m02;
+    double m30;
+    double m21;
+    double m12;
+    double m03;
 
-  double mu20;
-  double mu11;
-  double mu02;
-  double mu30;
-  double mu21;
-  double mu12;
-  double mu03;
+    double mu20;
+    double mu11;
+    double mu02;
+    double mu30;
+    double mu21;
+    double mu12;
+    double mu03;
 
-  double nu20;
-  double nu11;
-  double nu02;
-  double nu30;
-  double nu21;
-  double nu12;
-  double nu03;
+    double nu20;
+    double nu11;
+    double nu02;
+    double nu30;
+    double nu21;
+    double nu12;
+    double nu03;
 } Moment;
 
 #ifdef __cplusplus
@@ -137,8 +137,8 @@ typedef void* TermCriteria;
 
 // Wrapper for the vector of Mat aka std::vector<Mat>
 typedef struct Mats {
-  Mat* mats;
-  int length;
+    Mat* mats;
+    int length;
 } Mats;
 
 Mat Mats_get(struct Mats mats, int i);
@@ -210,13 +210,15 @@ void Mat_BitwiseNot(Mat src1, Mat dst);
 void Mat_BitwiseOr(Mat src1, Mat src2, Mat dst);
 void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst);
 void Mat_Compare(Mat src1, Mat src2, Mat dst, int ct);
-void Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int normType, int K, Mat mask, int update, bool crosscheck);
+void Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int normType, int K,
+                       Mat mask, int update, bool crosscheck);
 int Mat_BorderInterpolate(int p, int len, int borderType);
 void Mat_CalcCovarMatrix(Mat samples, Mat covar, Mat mean, int flags, int ctype);
 void Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees);
 void Mat_CompleteSymm(Mat m, bool lowerToUpper);
 void Mat_ConvertScaleAbs(Mat src, Mat dst, double alpha, double beta);
-void Mat_CopyMakeBorder(Mat src, Mat dst, int top, int bottom, int left, int right, int borderType, Scalar value);
+void Mat_CopyMakeBorder(Mat src, Mat dst, int top, int bottom, int left, int right, int borderType,
+                        Scalar value);
 int Mat_CountNonZero(Mat src);
 void Mat_DCT(Mat src, Mat dst, int flags);
 void Mat_DFT(Mat m, Mat dst, int flags);
@@ -244,7 +246,7 @@ void Mat_Multiply(Mat src1, Mat src2, Mat dst);
 void Mat_Subtract(Mat src1, Mat src2, Mat dst);
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ);
 double Norm(Mat src1, int normType);
-void Mat_Split(Mat src, struct Mats *mats);
+void Mat_Split(Mat src, struct Mats* mats);
 void Mat_Subtract(Mat src1, Mat src2, Mat dst);
 void Mat_Pow(Mat src, double power, Mat dst);
 Scalar Mat_Sum(Mat src1);

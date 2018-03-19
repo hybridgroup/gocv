@@ -1,13 +1,11 @@
 #include "face_recognizer.h"
 
 // FaceRecognizer
-FaceRecognizer FaceRecognizer_New() 
-{
+FaceRecognizer FaceRecognizer_New() {
     return new cv::Ptr<cv::pvl::FaceRecognizer>(cv::pvl::FaceRecognizer::create());
 }
 
-void FaceRecognizer_Close(FaceRecognizer f) 
-{
+void FaceRecognizer_Close(FaceRecognizer f) {
     delete f;
 }
 
@@ -19,8 +17,7 @@ bool FaceRecognizer_Empty(FaceRecognizer f) {
     return (*f)->empty();
 }
 
-void FaceRecognizer_SetTrackingModeEnabled(FaceRecognizer f, bool enabled)
-{
+void FaceRecognizer_SetTrackingModeEnabled(FaceRecognizer f, bool enabled) {
     (*f)->setTrackingModeEnabled(enabled);
     return;
 }
@@ -33,8 +30,10 @@ int FaceRecognizer_CreateNewPersonID(FaceRecognizer f) {
     return (*f)->createNewPersonID();
 }
 
-void FaceRecognizer_Recognize(FaceRecognizer f, Mat img, Faces faces, IntVector* pids, IntVector* confs) {
+void FaceRecognizer_Recognize(FaceRecognizer f, Mat img, Faces faces, IntVector* pids,
+                              IntVector* confs) {
     std::vector<cv::pvl::Face> vFaces;
+
     for (size_t i = 0; i < faces.length; ++i) {
         vFaces.push_back(cv::pvl::Face(*faces.faces[i]));
     }
@@ -45,7 +44,8 @@ void FaceRecognizer_Recognize(FaceRecognizer f, Mat img, Faces faces, IntVector*
     (*f)->recognize(*img, vFaces, personIDs, confidence);
 
     int* aInt = new int[personIDs.size()];
-    for(int i = 0; i < personIDs.size(); ++i) {
+
+    for (int i = 0; i < personIDs.size(); ++i) {
         aInt[i] = personIDs[i];
     }
 
@@ -53,7 +53,8 @@ void FaceRecognizer_Recognize(FaceRecognizer f, Mat img, Faces faces, IntVector*
     pids->length = personIDs.size();
 
     int* aConf = new int[confidence.size()];
-    for(int i = 0; i < confidence.size(); ++i) {
+
+    for (int i = 0; i < confidence.size(); ++i) {
         aConf[i] = confidence[i];
     }
 
@@ -63,7 +64,8 @@ void FaceRecognizer_Recognize(FaceRecognizer f, Mat img, Faces faces, IntVector*
     return;
 }
 
-int64_t FaceRecognizer_RegisterFace(FaceRecognizer f, Mat img, Face face, int personID, bool saveTofile) {
+int64_t FaceRecognizer_RegisterFace(FaceRecognizer f, Mat img, Face face, int personID,
+                                    bool saveTofile) {
     return (*f)->registerFace(*img, cv::pvl::Face(*face), personID, saveTofile);
 }
 

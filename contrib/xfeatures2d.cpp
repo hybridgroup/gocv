@@ -14,11 +14,14 @@ struct KeyPoints SIFT_Detect(SIFT d, Mat src) {
     (*d)->detect(*src, detected);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -28,11 +31,14 @@ struct KeyPoints SIFT_DetectAndCompute(SIFT d, Mat src, Mat mask, Mat desc) {
     (*d)->detectAndCompute(*src, *mask, detected, *desc);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -51,11 +57,14 @@ struct KeyPoints SURF_Detect(SURF d, Mat src) {
     (*d)->detect(*src, detected);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -65,11 +74,14 @@ struct KeyPoints SURF_DetectAndCompute(SURF d, Mat src, Mat mask, Mat desc) {
     (*d)->detectAndCompute(*src, *mask, detected, *desc);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }

@@ -56,4 +56,8 @@ clean:
 	cd ~
 	rm -rf /tmp/opencv
 
+astyle:
+	astyle --project=.astylerc --recursive *.cpp,*.h
+.PHONY: astyle
+
 install: download build clean

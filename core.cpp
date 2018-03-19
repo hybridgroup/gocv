@@ -53,7 +53,7 @@ void Mat_ConvertTo(Mat m, Mat dst, int type) {
 
 // Mat_ToBytes returns the bytes representation of the underlying data.
 struct ByteArray Mat_ToBytes(Mat m) {
-        return toByteArray(reinterpret_cast<const char*>(m->data), m->total() * m->elemSize());
+    return toByteArray(reinterpret_cast<const char*>(m->data), m->total() * m->elemSize());
 }
 
 // Mat_Region returns a Mat of a region of another Mat
@@ -84,7 +84,7 @@ Scalar Mat_Mean(Mat m) {
 }
 
 void LUT(Mat src, Mat lut, Mat dst) {
-  cv::LUT(*src, *lut, *dst);
+    cv::LUT(*src, *lut, *dst);
 }
 
 // Mat_Rows returns how many rows in this Mat.
@@ -119,7 +119,7 @@ uint8_t Mat_GetUChar(Mat m, int row, int col) {
 }
 
 uint8_t Mat_GetUChar3(Mat m, int x, int y, int z) {
-    return m->at<uchar>(x, y , z);
+    return m->at<uchar>(x, y, z);
 }
 
 // Mat_GetSChar returns a specific row/col value from this Mat expecting
@@ -185,11 +185,11 @@ void Mat_SetUChar3(Mat m, int x, int y, int z, uint8_t val) {
 // Mat_SetSChar set a specific row/col value from this Mat expecting
 // each element to contain a schar aka CV_8S.
 void Mat_SetSChar(Mat m, int row, int col, int8_t val) {
-  m->at<schar>(row, col) = val;
+    m->at<schar>(row, col) = val;
 }
 
 void Mat_SetSChar3(Mat m, int x, int y, int z, int8_t val) {
-  m->at<schar>(x, y, z) = val;
+    m->at<schar>(x, y, z) = val;
 }
 
 // Mat_SetShort set a specific row/col value from this Mat expecting
@@ -260,7 +260,8 @@ void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst) {
     cv::bitwise_xor(*src1, *src2, *dst);
 }
 
-void Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int normType, int K, Mat mask, int update, bool crosscheck) {
+void Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int normType, int K,
+                       Mat mask, int update, bool crosscheck) {
     cv::batchDistance(*src1, *src2, *dist, dtype, *nidx, normType, K, *mask, update, crosscheck);
 }
 
@@ -293,7 +294,8 @@ void Mat_ConvertScaleAbs(Mat src, Mat dst, double alpha, double beta) {
     cv::convertScaleAbs(*src, *dst, alpha, beta);
 }
 
-void Mat_CopyMakeBorder(Mat src, Mat dst, int top, int bottom, int left, int right, int borderType, Scalar value) {
+void Mat_CopyMakeBorder(Mat src, Mat dst, int top, int bottom, int left, int right, int borderType,
+                        Scalar value) {
     cv::Scalar c_value(value.val1, value.val2, value.val3, value.val4);
     cv::copyMakeBorder(*src, *dst, top, bottom, left, right, borderType, c_value);
 }
@@ -381,9 +383,11 @@ void Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev) {
 
 void Mat_Merge(struct Mats mats, Mat dst) {
     std::vector<cv::Mat> images;
+
     for (int i = 0; i < mats.length; ++i) {
         images.push_back(*mats.mats[i]);
     }
+
     cv::merge(images, *dst);
 }
 
@@ -410,13 +414,15 @@ double Norm(Mat src1, int normType) {
     return cv::norm(*src1, normType);
 }
 
-void Mat_Split(Mat src, struct Mats *mats) {
+void Mat_Split(Mat src, struct Mats* mats) {
     std::vector<cv::Mat> channels;
     cv::split(*src, channels);
     mats->mats = new Mat[channels.size()];
+
     for (size_t i = 0; i < channels.size(); ++i) {
         mats->mats[i] = new cv::Mat(channels[i]);
     }
+
     mats->length = (int)channels.size();
 }
 
@@ -448,6 +454,7 @@ void Contours_Close(struct Contours cs) {
     for (int i = 0; i < cs.length; i++) {
         Points_Close(cs.contours[i]);
     }
+
     delete[] cs.contours;
 }
 
@@ -459,6 +466,7 @@ void Points_Close(Points ps) {
     for (size_t i = 0; i < ps.length; i++) {
         Point_Close(ps.points[i]);
     }
+
     delete[] ps.points;
 }
 

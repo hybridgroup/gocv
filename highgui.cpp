@@ -47,12 +47,14 @@ struct Rects Window_SelectROIs(const char* winname, Mat img) {
     std::vector<cv::Rect> rois;
     cv::selectROIs(winname, *img, rois);
     Rect* rects = new Rect[rois.size()];
+
     for (size_t i = 0; i < rois.size(); ++i) {
-      Rect r = {rois[i].x, rois[i].y, rois[i].width, rois[i].height};
-      rects[i] = r;
+        Rect r = {rois[i].x, rois[i].y, rois[i].width, rois[i].height};
+        rects[i] = r;
     }
+
     Rects ret = {rects, (int)rois.size()};
-    return ret;    
+    return ret;
 }
 
 // Trackbar

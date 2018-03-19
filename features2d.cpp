@@ -14,11 +14,14 @@ struct KeyPoints AKAZE_Detect(AKAZE a, Mat src) {
     (*a)->detect(*src, detected);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -28,11 +31,14 @@ struct KeyPoints AKAZE_DetectAndCompute(AKAZE a, Mat src, Mat mask, Mat desc) {
     (*a)->detectAndCompute(*src, *mask, detected, *desc);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -51,11 +57,14 @@ struct KeyPoints AgastFeatureDetector_Detect(AgastFeatureDetector a, Mat src) {
     (*a)->detect(*src, detected);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -74,11 +83,14 @@ struct KeyPoints BRISK_Detect(BRISK b, Mat src) {
     (*b)->detect(*src, detected);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -88,11 +100,14 @@ struct KeyPoints BRISK_DetectAndCompute(BRISK b, Mat src, Mat mask, Mat desc) {
     (*b)->detectAndCompute(*src, *mask, detected, *desc);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -111,11 +126,14 @@ struct KeyPoints GFTTDetector_Detect(GFTTDetector a, Mat src) {
     (*a)->detect(*src, detected);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -134,11 +152,14 @@ struct KeyPoints KAZE_Detect(KAZE a, Mat src) {
     (*a)->detect(*src, detected);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -148,11 +169,14 @@ struct KeyPoints KAZE_DetectAndCompute(KAZE a, Mat src, Mat mask, Mat desc) {
     (*a)->detectAndCompute(*src, *mask, detected, *desc);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -171,11 +195,14 @@ struct KeyPoints MSER_Detect(MSER a, Mat src) {
     (*a)->detect(*src, detected);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -194,11 +221,14 @@ struct KeyPoints FastFeatureDetector_Detect(FastFeatureDetector f, Mat src) {
     (*f)->detect(*src, detected);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -217,11 +247,14 @@ struct KeyPoints ORB_Detect(ORB o, Mat src) {
     (*o)->detect(*src, detected);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -231,11 +264,14 @@ struct KeyPoints ORB_DetectAndCompute(ORB o, Mat src, Mat mask, Mat desc) {
     (*o)->detectAndCompute(*src, *mask, detected, *desc);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
@@ -254,11 +290,14 @@ struct KeyPoints SimpleBlobDetector_Detect(SimpleBlobDetector b, Mat src) {
     (*b)->detect(*src, detected);
 
     KeyPoint* kps = new KeyPoint[detected.size()];
+
     for (size_t i = 0; i < detected.size(); ++i) {
-      KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
-        detected[i].response, detected[i].octave, detected[i].class_id};
-      kps[i] = k;
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
     }
+
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }

@@ -28,7 +28,8 @@ double ContourArea(Contour con);
 struct Contours FindContours(Mat src, int mode, int method);
 void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt);
 void Laplacian(Mat src, Mat dst, int dDepth, int kSize, double scale, double delta, int borderType);
-void Scharr(Mat src, Mat dst, int dDepth, int dx, int dy, double scale, double delta, int borderType);
+void Scharr(Mat src, Mat dst, int dDepth, int dx, int dy, double scale, double delta,
+            int borderType);
 Mat GetStructuringElement(int shape, Size ksize);
 void MorphologyEx(Mat src, Mat dst, int op, Mat kernel);
 void MedianBlur(Mat src, Mat dst, int ksize);
@@ -40,7 +41,8 @@ void HoughCircles(Mat src, Mat circles, int method, double dp, double minDist);
 void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold);
 void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold);
 void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ);
-void AdaptiveThreshold(Mat src, Mat dst, double maxValue, int adaptiveTyp, int typ, int blockSize, double c);
+void AdaptiveThreshold(Mat src, Mat dst, double maxValue, int adaptiveTyp, int typ, int blockSize,
+                       double c);
 
 void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness);
 void Circle(Mat img, Point center, int radius, Scalar color, int thickness);
@@ -52,7 +54,8 @@ void PutText(Mat img, const char* text, Point org, int fontFace, double fontScal
 void Resize(Mat src, Mat dst, Size sz, double fx, double fy, int interp);
 Mat GetRotationMatrix2D(Point center, double angle, double scale);
 void WarpAffine(Mat src, Mat dst, Mat rot_mat, Size dsize);
-void WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode, Scalar borderValue);
+void WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode,
+                          Scalar borderValue);
 void WarpPerspective(Mat src, Mat dst, Mat m, Size dsize);
 void ApplyColorMap(Mat src, Mat dst, int colormap);
 void ApplyCustomColorMap(Mat src, Mat dst, Mat colormap);
