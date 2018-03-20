@@ -183,6 +183,11 @@ void HoughCircles(Mat src, Mat circles, int method, double dp, double minDist) {
     cv::HoughCircles(*src, *circles, method, dp, minDist);
 }
 
+void HoughCirclesWithParams(Mat src, Mat circles, int method, double dp, double minDist,
+                            double param1, double param2, int minRadius, int maxRadius) {
+    cv::HoughCircles(*src, *circles, method, dp, minDist, param1, param2, minRadius, maxRadius);
+}
+
 void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold) {
     cv::HoughLines(*src, *lines, rho, theta, threshold);
 }

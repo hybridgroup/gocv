@@ -415,6 +415,28 @@ func TestHoughCircles(t *testing.T) {
 	}
 }
 
+func TestHoughCirclesWithParams(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in HoughCircles test")
+	}
+	defer img.Close()
+
+	circles := NewMat()
+	defer circles.Close()
+
+	HoughCirclesWithParams(img, circles, 3, 5.0, 5.0, 100, 100, 0, 0)
+	if circles.Empty() {
+		t.Error("Empty HoughCirclesWithParams test")
+	}
+	if circles.Rows() != 1 {
+		t.Errorf("Invalid HoughCirclesWithParams test rows: %v", circles.Rows())
+	}
+	if circles.Cols() < 317 || circles.Cols() > 334 {
+		t.Errorf("Invalid HoughCirclesWithParams test cols: %v", circles.Cols())
+	}
+}
+
 func TestHoughLines(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {

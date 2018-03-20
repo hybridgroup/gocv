@@ -512,14 +512,44 @@ func GoodFeaturesToTrack(img Mat, corners Mat, maxCorners int, quality float64, 
 	C.GoodFeaturesToTrack(img.p, corners.p, C.int(maxCorners), C.double(quality), C.double(minDist))
 }
 
+// HoughMode is the type for Hough transform variants.
+type HoughMode int
+
+const (
+	// HoughStandard is the classical or standard Hough transform.
+	HoughStandard HoughMode = 0
+	// HoughProbabilistic is the probabilistic Hough transform (more efficient
+	// in case if the picture contains a few long linear segments).
+	HoughProbabilistic = 1
+	// HoughMultiScale is the multi-scale variant of the classical Hough
+	// transform.
+	HoughMultiScale = 2
+	// HoughGradient is basically 21HT, described in: HK Yuen, John Princen,
+	// John Illingworth, and Josef Kittler. Comparative study of hough
+	// transform methods for circle finding. Image and Vision Computing,
+	// 8(1):71–77, 1990.
+	HoughGradient = 3
+)
+
 // HoughCircles finds circles in a grayscale image using the Hough transform.
-// The only "method" currently supported is HOUGH_GRADIENT = 3.
+// The only "method" currently supported is HoughGradient. If you want to pass
+// more parameters, please see `HoughCirclesWithParams`.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d
 //
-func HoughCircles(src Mat, circles Mat, method int, dp float64, minDist float64) {
+func HoughCircles(src, circles Mat, method HoughMode, dp, minDist float64) {
 	C.HoughCircles(src.p, circles.p, C.int(method), C.double(dp), C.double(minDist))
+}
+
+// HoughCirclesWithParams finds circles in a grayscale image using the Hough
+// transform. The only "method" currently supported is HoughGradient.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d
+//
+func HoughCirclesWithParams(src, circles Mat, method HoughMode, dp, minDist, param1, param2 float64, minRadius, maxRadius int) {
+	C.HoughCirclesWithParams(src.p, circles.p, C.int(method), C.double(dp), C.double(minDist), C.double(param1), C.double(param2), C.int(minRadius), C.int(maxRadius))
 }
 
 // HoughLines implements the standard or standard multi-scale Hough transform
