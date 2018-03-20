@@ -58,11 +58,11 @@ func main() {
 	blue := color.RGBA{0, 0, 255, 0}
 	red := color.RGBA{255, 0, 0, 0}
 
-	ch := circles.Channels()
 	for i := 0; i < circles.Cols(); i++ {
-		x := int(circles.GetFloatAt(0, i*ch))
-		y := int(circles.GetFloatAt(0, i*ch+1))
-		r := int(circles.GetFloatAt(0, i*ch+2))
+		v := circles.GetVecfAt(0, i)
+		x := int(v[0])
+		y := int(v[1])
+		r := int(v[2])
 
 		gocv.Circle(&cimg, image.Pt(x, y), r, blue, 2)
 		gocv.Circle(&cimg, image.Pt(x, y), 2, red, 3)
