@@ -59,7 +59,7 @@ func main() {
 	defer img.Close()
 
 	// read an initial image
-	if ok := webcam.Read(img); !ok {
+	if ok := webcam.Read(&img); !ok {
 		fmt.Printf("cannot read device %d\n", deviceID)
 		return
 	}
@@ -82,7 +82,7 @@ func main() {
 	blue := color.RGBA{0, 0, 255, 0}
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
-		if ok := webcam.Read(img); !ok {
+		if ok := webcam.Read(&img); !ok {
 			fmt.Printf("cannot read device %d\n", deviceID)
 			return
 		}
@@ -94,7 +94,7 @@ func main() {
 		rect, _ := tracker.Update(img)
 
 		// draw it.
-		gocv.Rectangle(img, rect, blue, 3)
+		gocv.Rectangle(&img, rect, blue, 3)
 
 		// show the image in the window, and wait 10 millisecond
 		window.IMShow(img)

@@ -61,7 +61,7 @@ func main() {
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
-		if ok := webcam.Read(img); !ok {
+		if ok := webcam.Read(&img); !ok {
 			fmt.Printf("cannot read device %d\n", deviceID)
 			return
 		}
@@ -70,7 +70,7 @@ func main() {
 		}
 
 		// convert image to grayscale for detection
-		gocv.CvtColor(img, imgGray, gocv.ColorBGRAToGray)
+		gocv.CvtColor(img, &imgGray, gocv.ColorBGRAToGray)
 
 		// detect faces
 		faces := fd.DetectFaceRect(imgGray)
@@ -81,7 +81,7 @@ func main() {
 			imgFace := img.Region(face.Rectangle())
 
 			// blur face
-			gocv.GaussianBlur(imgFace, imgFace, image.Pt(23, 23), 30, 50, 4)
+			gocv.GaussianBlur(imgFace, &imgFace, image.Pt(23, 23), 30, 50, 4)
 			imgFace.Close()
 		}
 

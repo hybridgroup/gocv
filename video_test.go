@@ -18,7 +18,7 @@ func TestMOG2(t *testing.T) {
 	mog2 := NewBackgroundSubtractorMOG2()
 	defer mog2.Close()
 
-	mog2.Apply(img, dst)
+	mog2.Apply(img, &dst)
 
 	if dst.Empty() {
 		t.Error("Error in TestMOG2 test")
@@ -38,7 +38,7 @@ func TestKNN(t *testing.T) {
 	knn := NewBackgroundSubtractorKNN()
 	defer knn.Close()
 
-	knn.Apply(img, dst)
+	knn.Apply(img, &dst)
 
 	if dst.Empty() {
 		t.Error("Error in TestKNN test")
@@ -55,14 +55,14 @@ func TestCalcOpticalFlowFarneback(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	CvtColor(img1, dest, ColorBGRAToGray)
+	CvtColor(img1, &dest, ColorBGRAToGray)
 
 	img2 := dest.Clone()
 
 	flow := NewMat()
 	defer flow.Close()
 
-	CalcOpticalFlowFarneback(dest, img2, flow, 0.4, 1, 12, 2, 8, 1.2, 0)
+	CalcOpticalFlowFarneback(dest, img2, &flow, 0.4, 1, 12, 2, 8, 1.2, 0)
 
 	if flow.Empty() {
 		t.Error("Error in CalcOpticalFlowFarneback test")
@@ -85,7 +85,7 @@ func TestCalcOpticalFlowPyrLK(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	CvtColor(img1, dest, ColorBGRAToGray)
+	CvtColor(img1, &dest, ColorBGRAToGray)
 
 	img2 := dest.Clone()
 
@@ -104,11 +104,11 @@ func TestCalcOpticalFlowPyrLK(t *testing.T) {
 	corners := NewMat()
 	defer corners.Close()
 
-	GoodFeaturesToTrack(dest, corners, 500, 0.01, 10)
+	GoodFeaturesToTrack(dest, &corners, 500, 0.01, 10)
 	tc := NewTermCriteria(Count|EPS, 20, 0.03)
-	CornerSubPix(dest, corners, image.Pt(10, 10), image.Pt(-1, -1), tc)
+	CornerSubPix(dest, &corners, image.Pt(10, 10), image.Pt(-1, -1), tc)
 
-	CalcOpticalFlowPyrLK(dest, img2, corners, nextPts, status, err)
+	CalcOpticalFlowPyrLK(dest, img2, corners, nextPts, &status, &err)
 
 	if status.Empty() {
 		t.Error("Error in CalcOpticalFlowPyrLK test")

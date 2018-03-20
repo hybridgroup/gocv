@@ -167,9 +167,9 @@ func main() {
 			// not enough confidence for one of the end points, see above
 			continue
 		}
-		gocv.Line(img, p1, p2, green, 3)
-		gocv.Circle(img, p1, 3, red, -1)
-		gocv.Circle(img, p2, 3, red, -1)
+		gocv.Line(&img, p1, p2, green, 3)
+		gocv.Circle(&img, p1, 3, red, -1)
+		gocv.Circle(&img, p2, 3, red, -1)
 	}
 
 	window.IMShow(img)

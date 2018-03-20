@@ -14,11 +14,11 @@ func TestApproxPolyDP(t *testing.T) {
 
 	white := color.RGBA{255, 255, 255, 255}
 	// Draw triangle
-	Line(img, image.Pt(25, 25), image.Pt(25, 75), white, 1)
-	Line(img, image.Pt(25, 75), image.Pt(75, 50), white, 1)
-	Line(img, image.Pt(75, 50), image.Pt(25, 25), white, 1)
+	Line(&img, image.Pt(25, 25), image.Pt(25, 75), white, 1)
+	Line(&img, image.Pt(25, 75), image.Pt(75, 50), white, 1)
+	Line(&img, image.Pt(75, 50), image.Pt(25, 25), white, 1)
 	// Draw rectangle
-	Rectangle(img, image.Rect(125, 25, 175, 75), white, 1)
+	Rectangle(&img, image.Rect(125, 25, 175, 75), white, 1)
 
 	contours := FindContours(img, RetrievalExternal, ChainApproxSimple)
 
@@ -65,7 +65,7 @@ func TestConvexity(t *testing.T) {
 	defects := NewMat()
 	defer defects.Close()
 
-	ConvexityDefects(res[0], hull, defects)
+	ConvexityDefects(res[0], hull, &defects)
 	if defects.Empty() {
 		t.Error("Invalid ConvexityDefects test")
 	}
@@ -81,7 +81,7 @@ func TestCvtColor(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	CvtColor(img, dest, ColorBGRAToGray)
+	CvtColor(img, &dest, ColorBGRAToGray)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid convert in CvtColor test")
 	}
@@ -97,7 +97,7 @@ func TestBilateralFilter(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	BilateralFilter(img, dest, 1, 2.0, 3.0)
+	BilateralFilter(img, &dest, 1, 2.0, 3.0)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid BilateralFilter test")
 	}
@@ -113,7 +113,7 @@ func TestBlur(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	Blur(img, dest, image.Pt(3, 3))
+	Blur(img, &dest, image.Pt(3, 3))
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid Blur test")
 	}
@@ -131,7 +131,7 @@ func TestDilate(t *testing.T) {
 
 	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
 
-	Dilate(img, dest, kernel)
+	Dilate(img, &dest, kernel)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid Dilate test")
 	}
@@ -151,7 +151,7 @@ func TestMatchTemplate(t *testing.T) {
 	defer imgTemplate.Close()
 
 	result := NewMat()
-	MatchTemplate(imgScene, imgTemplate, result, TmCcoeffNormed, NewMat())
+	MatchTemplate(imgScene, imgTemplate, &result, TmCcoeffNormed, NewMat())
 	_, maxConfidence, _, _ := MinMaxLoc(result)
 	if maxConfidence < 0.95 {
 		t.Errorf("Max confidence of %f is too low. MatchTemplate could not find template in scene.", maxConfidence)
@@ -181,7 +181,7 @@ func TestPyrDown(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	PyrDown(img, dest, image.Point{X: dest.Cols(), Y: dest.Rows()}, BorderDefault)
+	PyrDown(img, &dest, image.Point{X: dest.Cols(), Y: dest.Rows()}, BorderDefault)
 	if dest.Empty() && math.Abs(float64(img.Cols()-2*dest.Cols())) < 2.0 && math.Abs(float64(img.Rows()-2*dest.Rows())) < 2.0 {
 		t.Error("Invalid PyrDown test")
 	}
@@ -197,7 +197,7 @@ func TestPyrUp(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	PyrUp(img, dest, image.Point{X: dest.Cols(), Y: dest.Rows()}, BorderDefault)
+	PyrUp(img, &dest, image.Point{X: dest.Cols(), Y: dest.Rows()}, BorderDefault)
 	if dest.Empty() && math.Abs(float64(2*img.Cols()-dest.Cols())) < 2.0 && math.Abs(float64(2*img.Rows()-dest.Rows())) < 2.0 {
 		t.Error("Invalid PyrUp test")
 	}
@@ -248,7 +248,7 @@ func TestErode(t *testing.T) {
 
 	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
 
-	Erode(img, dest, kernel)
+	Erode(img, &dest, kernel)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid Erode test")
 	}
@@ -266,7 +266,7 @@ func TestMorphologyEx(t *testing.T) {
 
 	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
 
-	MorphologyEx(img, dest, MorphOpen, kernel)
+	MorphologyEx(img, &dest, MorphOpen, kernel)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid MorphologyEx test")
 	}
@@ -282,7 +282,7 @@ func TestGaussianBlur(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	GaussianBlur(img, dest, image.Pt(23, 23), 30, 50, 4)
+	GaussianBlur(img, &dest, image.Pt(23, 23), 30, 50, 4)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid Blur test")
 	}
@@ -298,7 +298,7 @@ func TestLaplacian(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	Laplacian(img, dest, MatTypeCV16S, 1, 1, 0, BorderDefault)
+	Laplacian(img, &dest, MatTypeCV16S, 1, 1, 0, BorderDefault)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid Laplacian test")
 	}
@@ -314,7 +314,7 @@ func TestScharr(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	Scharr(img, dest, MatTypeCV16S, 1, 0, 0, 0, BorderDefault)
+	Scharr(img, &dest, MatTypeCV16S, 1, 0, 0, 0, BorderDefault)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid Scharr test")
 	}
@@ -330,7 +330,7 @@ func TestMedianBlur(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	MedianBlur(img, dest, 1)
+	MedianBlur(img, &dest, 1)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid MedianBlur test")
 	}
@@ -346,7 +346,7 @@ func TestCanny(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	Canny(img, dest, 50, 150)
+	Canny(img, &dest, 50, 150)
 	if dest.Empty() {
 		t.Error("Empty Canny test")
 	}
@@ -368,7 +368,7 @@ func TestGoodFeaturesToTrackAndCornerSubPix(t *testing.T) {
 	corners := NewMat()
 	defer corners.Close()
 
-	GoodFeaturesToTrack(img, corners, 500, 0.01, 10)
+	GoodFeaturesToTrack(img, &corners, 500, 0.01, 10)
 	if corners.Empty() {
 		t.Error("Empty GoodFeaturesToTrack test")
 	}
@@ -381,7 +381,7 @@ func TestGoodFeaturesToTrackAndCornerSubPix(t *testing.T) {
 
 	tc := NewTermCriteria(Count|EPS, 20, 0.03)
 
-	CornerSubPix(img, corners, image.Pt(10, 10), image.Pt(-1, -1), tc)
+	CornerSubPix(img, &corners, image.Pt(10, 10), image.Pt(-1, -1), tc)
 	if corners.Empty() {
 		t.Error("Empty CornerSubPix test")
 	}
@@ -403,7 +403,7 @@ func TestHoughCircles(t *testing.T) {
 	circles := NewMat()
 	defer circles.Close()
 
-	HoughCircles(img, circles, 3, 5.0, 5.0)
+	HoughCircles(img, &circles, 3, 5.0, 5.0)
 	if circles.Empty() {
 		t.Error("Empty HoughCircles test")
 	}
@@ -425,7 +425,7 @@ func TestHoughCirclesWithParams(t *testing.T) {
 	circles := NewMat()
 	defer circles.Close()
 
-	HoughCirclesWithParams(img, circles, 3, 5.0, 5.0, 100, 100, 0, 0)
+	HoughCirclesWithParams(img, &circles, 3, 5.0, 5.0, 100, 100, 0, 0)
 	if circles.Empty() {
 		t.Error("Empty HoughCirclesWithParams test")
 	}
@@ -447,7 +447,7 @@ func TestHoughLines(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	HoughLines(img, dest, math.Pi/180, 1, 1)
+	HoughLines(img, &dest, math.Pi/180, 1, 1)
 	if dest.Empty() {
 		t.Error("Empty HoughLines test")
 	}
@@ -485,7 +485,7 @@ func TestHoughLinesP(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	HoughLinesP(img, dest, math.Pi/180, 1, 1)
+	HoughLinesP(img, &dest, math.Pi/180, 1, 1)
 	if dest.Empty() {
 		t.Error("Empty HoughLinesP test")
 	}
@@ -523,7 +523,7 @@ func TestThreshold(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	Threshold(img, dest, 25, 255, ThresholdBinary)
+	Threshold(img, &dest, 25, 255, ThresholdBinary)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid Threshold test")
 	}
@@ -538,7 +538,7 @@ func TestAdaptiveThreshold(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	AdaptiveThreshold(img, dest, 255, AdaptiveThresholdMean, ThresholdBinary, 11, 2)
+	AdaptiveThreshold(img, &dest, 255, AdaptiveThresholdMean, ThresholdBinary, 11, 2)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid Threshold test")
 	}
@@ -551,10 +551,10 @@ func TestDrawing(t *testing.T) {
 	}
 	defer img.Close()
 
-	ArrowedLine(img, image.Pt(50, 50), image.Pt(75, 75), color.RGBA{0, 0, 255, 0}, 3)
-	Circle(img, image.Pt(60, 60), 20, color.RGBA{0, 0, 255, 0}, 3)
-	Rectangle(img, image.Rect(50, 50, 75, 75), color.RGBA{0, 0, 255, 0}, 3)
-	Line(img, image.Pt(50, 50), image.Pt(75, 75), color.RGBA{0, 0, 255, 0}, 3)
+	ArrowedLine(&img, image.Pt(50, 50), image.Pt(75, 75), color.RGBA{0, 0, 255, 0}, 3)
+	Circle(&img, image.Pt(60, 60), 20, color.RGBA{0, 0, 255, 0}, 3)
+	Rectangle(&img, image.Rect(50, 50, 75, 75), color.RGBA{0, 0, 255, 0}, 3)
+	Line(&img, image.Pt(50, 50), image.Pt(75, 75), color.RGBA{0, 0, 255, 0}, 3)
 
 	if img.Empty() {
 		t.Error("Error in Rectangle test")
@@ -579,7 +579,7 @@ func TestPutText(t *testing.T) {
 	defer img.Close()
 
 	pt := image.Pt(10, 10)
-	PutText(img, "Testing", pt, FontHersheyPlain, 1.2, color.RGBA{255, 255, 255, 0}, 2)
+	PutText(&img, "Testing", pt, FontHersheyPlain, 1.2, color.RGBA{255, 255, 255, 0}, 2)
 
 	if img.Empty() {
 		t.Error("Error in PutText test")
@@ -596,12 +596,12 @@ func TestResize(t *testing.T) {
 	dst := NewMat()
 	defer dst.Close()
 
-	Resize(src, dst, image.Point{}, 0.5, 0.5, InterpolationDefault)
+	Resize(src, &dst, image.Point{}, 0.5, 0.5, InterpolationDefault)
 	if dst.Cols() != 200 || dst.Rows() != 172 {
 		t.Errorf("Expected dst size of 200x172 got %dx%d", dst.Cols(), dst.Rows())
 	}
 
-	Resize(src, dst, image.Pt(440, 377), 0, 0, InterpolationCubic)
+	Resize(src, &dst, image.Pt(440, 377), 0, 0, InterpolationCubic)
 	if dst.Cols() != 440 || dst.Rows() != 377 {
 		t.Errorf("Expected dst size of 440x377 got %dx%d", dst.Cols(), dst.Rows())
 	}
@@ -663,14 +663,14 @@ func TestWarpAffine(t *testing.T) {
 	rot := GetRotationMatrix2D(image.Point{0, 0}, 1.0, 1.0)
 	dst := src.Clone()
 
-	WarpAffine(src, dst, rot, image.Point{256, 256})
+	WarpAffine(src, &dst, rot, image.Point{256, 256})
 	result := Norm(dst, NormL2)
 	if result != 0.0 {
 		t.Errorf("WarpAffine() = %v, want %v", result, 0.0)
 	}
 	src = IMRead("images/gocvlogo.jpg", IMReadUnchanged)
 	dst = src.Clone()
-	WarpAffine(src, dst, rot, image.Point{343, 400})
+	WarpAffine(src, &dst, rot, image.Point{343, 400})
 	result = Norm(dst, NormL2)
 
 	if !floatEquals(round(result, 0.05), round(111111.05, 0.05)) {
@@ -683,7 +683,7 @@ func TestWarpAffineWithParams(t *testing.T) {
 	rot := GetRotationMatrix2D(image.Point{0, 0}, 1.0, 1.0)
 	dst := src.Clone()
 
-	WarpAffineWithParams(src, dst, rot, image.Point{256, 256}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
+	WarpAffineWithParams(src, &dst, rot, image.Point{256, 256}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
 	result := Norm(dst, NormL2)
 	if !floatEquals(result, 0.0) {
 		t.Errorf("WarpAffineWithParams() = %v, want %v", result, 0.0)
@@ -691,7 +691,7 @@ func TestWarpAffineWithParams(t *testing.T) {
 
 	src = IMRead("images/gocvlogo.jpg", IMReadUnchanged)
 	dst = src.Clone()
-	WarpAffineWithParams(src, dst, rot, image.Point{343, 400}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
+	WarpAffineWithParams(src, &dst, rot, image.Point{343, 400}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
 	result = Norm(dst, NormL2)
 	if !floatEquals(round(result, 0.05), round(111111.05, 0.05)) {
 		t.Errorf("WarpAffine() = %v, want %v", round(result, 0.05), round(111111.05, 0.05))
@@ -726,7 +726,7 @@ func TestApplyColorMap(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			dst := src.Clone()
-			ApplyColorMap(src, dst, tt.args.colormapType)
+			ApplyColorMap(src, &dst, tt.args.colormapType)
 			result := Norm(dst, NormL2)
 			if !floatEquals(result, tt.args.want) {
 				t.Errorf("TestApplyColorMap() = %v, want %v", result, tt.args.want)
@@ -740,7 +740,7 @@ func TestApplyCustomColorMap(t *testing.T) {
 	customColorMap := NewMatWithSize(256, 1, MatTypeCV8UC1)
 
 	dst := src.Clone()
-	ApplyCustomColorMap(src, dst, customColorMap)
+	ApplyCustomColorMap(src, &dst, customColorMap)
 	result := Norm(dst, NormL2)
 	if !floatEquals(result, 0.0) {
 		t.Errorf("TestApplyCustomColorMap() = %v, want %v", result, 0.0)
@@ -795,7 +795,7 @@ func TestWarpPerspective(t *testing.T) {
 	dst := NewMat()
 	defer dst.Close()
 
-	WarpPerspective(img, dst, m, image.Pt(w, h))
+	WarpPerspective(img, &dst, m, image.Pt(w, h))
 
 	if dst.Cols() != w {
 		t.Errorf("TestWarpPerspective(): unexpected cols = %v, want = %v", dst.Cols(), w)
@@ -812,7 +812,7 @@ func TestDrawContours(t *testing.T) {
 
 	// Draw rectangle
 	white := color.RGBA{255, 255, 255, 255}
-	Rectangle(img, image.Rect(125, 25, 175, 75), white, 1)
+	Rectangle(&img, image.Rect(125, 25, 175, 75), white, 1)
 
 	contours := FindContours(img, RetrievalExternal, ChainApproxSimple)
 
@@ -823,7 +823,7 @@ func TestDrawContours(t *testing.T) {
 		t.Errorf("TestDrawContours(): wrong pixel value = %v, want = %v", v, 206)
 	}
 
-	DrawContours(img, contours, -1, white, 2)
+	DrawContours(&img, contours, -1, white, 2)
 
 	// contour should be drawn with thickness = 2
 	if v := img.GetUCharAt(24, 124); v != 255 {

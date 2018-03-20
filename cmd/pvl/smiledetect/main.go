@@ -68,7 +68,7 @@ func main() {
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
-		if ok := webcam.Read(img); !ok {
+		if ok := webcam.Read(&img); !ok {
 			fmt.Printf("cannot read device %d\n", deviceID)
 			return
 		}
@@ -77,7 +77,7 @@ func main() {
 		}
 
 		// convert image Mat to grayscale Mat for detection
-		gocv.CvtColor(img, imgGray, gocv.ColorBGRToGray)
+		gocv.CvtColor(img, &imgGray, gocv.ColorBGRToGray)
 
 		// detect faces
 		faces := fd.DetectFaceRect(imgGray)
@@ -97,11 +97,11 @@ func main() {
 			}
 
 			rect := face.Rectangle()
-			gocv.Rectangle(img, rect, color, 3)
+			gocv.Rectangle(&img, rect, color, 3)
 
 			size := gocv.GetTextSize("Human", gocv.FontHersheyPlain, 1.2, 2)
 			pt := image.Pt(rect.Min.X+(rect.Min.X/2)-(size.X/2), rect.Min.Y-2)
-			gocv.PutText(img, "Human", pt, gocv.FontHersheyPlain, 1.2, color, 2)
+			gocv.PutText(&img, "Human", pt, gocv.FontHersheyPlain, 1.2, color, 2)
 		}
 
 		// show the image in the window, and wait 1 millisecond
