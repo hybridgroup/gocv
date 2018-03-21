@@ -37,5 +37,20 @@ Here are a few basic guidelines on how to add a function from OpenCV to GoCV:
 - Always add the function to the GoCV file named the same as the OpenCV module to which the function belongs.
 - If the new function is in a module that is not yet implemented by GoCV, a new set of files for that module will need to be added.
 - Always add a "smoke" test for the new function being added. We are not testing OpenCV itself, but just the GoCV wrapper, so all that is needed generally is just exercising the new function.
+- If OpenCV has any default params for a function, we have been implementing 2 versions of the function since Go does not support overloading. For example, with a OpenCV function:
+
+```c
+opencv::xYZ(int p1, int p2, int p3=2, int p4=3);
+```
+
+We would define 2 functions in GoCV:
+
+```go
+// uses default param values
+XYZ(p1, p2)
+
+// sets each param
+XYZWithParams(p2, p2, p3, p4)
+```
 
 Thank you!
