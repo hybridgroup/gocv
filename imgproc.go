@@ -964,7 +964,7 @@ func GetPerspectiveTransform(src, dst []image.Point) Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/3.3.1/d6/d6e/group__imgproc__draw.html#ga746c0625f1781f1ffc9056259103edbc
-func DrawContours(src *Mat, contours [][]image.Point, contourIdx int, c color.RGBA, thickness int) {
+func DrawContours(img *Mat, contours [][]image.Point, contourIdx int, c color.RGBA, thickness int) {
 	cntrs := make([]C.struct_Points, len(contours))
 
 	for i, contour := range contours {
@@ -998,5 +998,5 @@ func DrawContours(src *Mat, contours [][]image.Point, contourIdx int, c color.RG
 		val4: C.double(c.A),
 	}
 
-	C.DrawContours(src.p, cContours, C.int(contourIdx), sColor, C.int(thickness))
+	C.DrawContours(img.p, cContours, C.int(contourIdx), sColor, C.int(thickness))
 }
