@@ -5,8 +5,8 @@ import (
 )
 
 func TestAKAZE(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in AKAZE test")
 	}
 	defer img.Close()
@@ -36,8 +36,8 @@ func TestAKAZE(t *testing.T) {
 }
 
 func TestAgastFeatureDetector(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in AgastFeatureDetector test")
 	}
 	defer img.Close()
@@ -55,8 +55,8 @@ func TestAgastFeatureDetector(t *testing.T) {
 }
 
 func TestBRISK(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in BRISK test")
 	}
 	defer img.Close()
@@ -86,8 +86,8 @@ func TestBRISK(t *testing.T) {
 }
 
 func TestFastFeatureDetector(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in FastFeatureDetector test")
 	}
 	defer img.Close()
@@ -105,8 +105,8 @@ func TestFastFeatureDetector(t *testing.T) {
 }
 
 func TestGFTTDetector(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in GFTTDetector test")
 	}
 	defer img.Close()
@@ -124,8 +124,8 @@ func TestGFTTDetector(t *testing.T) {
 }
 
 func TestKAZE(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in KAZE test")
 	}
 	defer img.Close()
@@ -155,8 +155,8 @@ func TestKAZE(t *testing.T) {
 }
 
 func TestMSER(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in MSER test")
 	}
 	defer img.Close()
@@ -174,8 +174,8 @@ func TestMSER(t *testing.T) {
 }
 
 func TestORB(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in AgastFeatureDetector test")
 	}
 	defer img.Close()
@@ -205,8 +205,8 @@ func TestORB(t *testing.T) {
 }
 
 func TestSimpleBlobDetector(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in SimpleBlobDetector test")
 	}
 	defer img.Close()

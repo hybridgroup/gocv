@@ -1,9 +1,10 @@
 package contrib
 
 import (
-	"gocv.io/x/gocv"
 	"math"
 	"testing"
+
+	"gocv.io/x/gocv"
 )
 
 func TestLBPHFaceRecognizer_Methods(t *testing.T) {
@@ -13,19 +14,27 @@ func TestLBPHFaceRecognizer_Methods(t *testing.T) {
 	}
 
 	labels := []int{1, 1, 1, 1, 2, 2, 2, 2}
-	images := []gocv.Mat{
-		gocv.IMRead("./att_faces/s1/1.pgm", gocv.IMReadGrayScale),
-		gocv.IMRead("./att_faces/s1/2.pgm", gocv.IMReadGrayScale),
-		gocv.IMRead("./att_faces/s1/3.pgm", gocv.IMReadGrayScale),
-		gocv.IMRead("./att_faces/s1/4.pgm", gocv.IMReadGrayScale),
-		gocv.IMRead("./att_faces/s2/1.pgm", gocv.IMReadGrayScale),
-		gocv.IMRead("./att_faces/s2/2.pgm", gocv.IMReadGrayScale),
-		gocv.IMRead("./att_faces/s2/3.pgm", gocv.IMReadGrayScale),
-		gocv.IMRead("./att_faces/s2/4.pgm", gocv.IMReadGrayScale),
-	}
+	images := []gocv.Mat{}
+	img, _ := gocv.IMRead("./att_faces/s1/1.pgm", gocv.IMReadGrayScale)
+	images = append(images, img)
+	img, _ = gocv.IMRead("./att_faces/s1/2.pgm", gocv.IMReadGrayScale)
+	images = append(images, img)
+	img, _ = gocv.IMRead("./att_faces/s1/3.pgm", gocv.IMReadGrayScale)
+	images = append(images, img)
+	img, _ = gocv.IMRead("./att_faces/s1/4.pgm", gocv.IMReadGrayScale)
+	images = append(images, img)
+	img, _ = gocv.IMRead("./att_faces/s2/1.pgm", gocv.IMReadGrayScale)
+	images = append(images, img)
+	img, _ = gocv.IMRead("./att_faces/s2/2.pgm", gocv.IMReadGrayScale)
+	images = append(images, img)
+	img, _ = gocv.IMRead("./att_faces/s2/3.pgm", gocv.IMReadGrayScale)
+	images = append(images, img)
+	img, _ = gocv.IMRead("./att_faces/s2/4.pgm", gocv.IMReadGrayScale)
+	images = append(images, img)
+
 	model.Train(images, labels)
 
-	sample := gocv.IMRead("./att_faces/s2/5.pgm", gocv.IMReadGrayScale)
+	sample, _ := gocv.IMRead("./att_faces/s2/5.pgm", gocv.IMReadGrayScale)
 	label := model.Predict(sample)
 	if label != 2 {
 		t.Errorf("Invalid simple predict! label: %d", label)
@@ -64,16 +73,28 @@ func TestLBPHFaceRecognizer_Methods(t *testing.T) {
 	}
 
 	// add new data
-	sample = gocv.IMRead("./att_faces/s3/10.pgm", gocv.IMReadGrayScale)
+	sample, _ = gocv.IMRead("./att_faces/s3/10.pgm", gocv.IMReadGrayScale)
 	newLabels := []int{3, 3, 3, 3, 3, 3}
-	newImages := []gocv.Mat{
-		gocv.IMRead("./att_faces/s3/1.pgm", gocv.IMReadGrayScale),
-		gocv.IMRead("./att_faces/s3/2.pgm", gocv.IMReadGrayScale),
-		gocv.IMRead("./att_faces/s3/3.pgm", gocv.IMReadGrayScale),
-		gocv.IMRead("./att_faces/s3/4.pgm", gocv.IMReadGrayScale),
-		gocv.IMRead("./att_faces/s3/5.pgm", gocv.IMReadGrayScale),
-		gocv.IMRead("./att_faces/s3/6.pgm", gocv.IMReadGrayScale),
-	}
+	newImages := []gocv.Mat{}
+
+	img, _ = gocv.IMRead("./att_faces/s3/1.pgm", gocv.IMReadGrayScale)
+	newImages = append(newImages, img)
+
+	img, _ = gocv.IMRead("./att_faces/s3/2.pgm", gocv.IMReadGrayScale)
+	newImages = append(newImages, img)
+
+	img, _ = gocv.IMRead("./att_faces/s3/3.pgm", gocv.IMReadGrayScale)
+	newImages = append(newImages, img)
+
+	img, _ = gocv.IMRead("./att_faces/s3/4.pgm", gocv.IMReadGrayScale)
+	newImages = append(newImages, img)
+
+	img, _ = gocv.IMRead("./att_faces/s3/5.pgm", gocv.IMReadGrayScale)
+	newImages = append(newImages, img)
+
+	img, _ = gocv.IMRead("./att_faces/s3/6.pgm", gocv.IMReadGrayScale)
+	newImages = append(newImages, img)
+
 	model.Update(newImages, newLabels)
 	label = model.Predict(sample)
 	if label != 3 {

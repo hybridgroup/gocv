@@ -38,8 +38,8 @@ func TestApproxPolyDP(t *testing.T) {
 }
 
 func TestConvexity(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid read of Mat in FindContours test")
 	}
 	defer img.Close()
@@ -72,8 +72,8 @@ func TestConvexity(t *testing.T) {
 }
 
 func TestCvtColor(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in CvtColor test")
 	}
 	defer img.Close()
@@ -88,8 +88,8 @@ func TestCvtColor(t *testing.T) {
 }
 
 func TestBilateralFilter(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in BilateralFilter test")
 	}
 	defer img.Close()
@@ -104,8 +104,8 @@ func TestBilateralFilter(t *testing.T) {
 }
 
 func TestBlur(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in GaussianBlur test")
 	}
 	defer img.Close()
@@ -120,8 +120,8 @@ func TestBlur(t *testing.T) {
 }
 
 func TestDilate(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in Dilate test")
 	}
 	defer img.Close()
@@ -138,14 +138,14 @@ func TestDilate(t *testing.T) {
 }
 
 func TestMatchTemplate(t *testing.T) {
-	imgScene := IMRead("images/face.jpg", IMReadGrayScale)
-	if imgScene.Empty() {
+	imgScene, err := IMRead("images/face.jpg", IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid read of face.jpg in MatchTemplate test")
 	}
 	defer imgScene.Close()
 
-	imgTemplate := IMRead("images/toy.jpg", IMReadGrayScale)
-	if imgTemplate.Empty() {
+	imgTemplate, err := IMRead("images/toy.jpg", IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid read of toy.jpg in MatchTemplate test")
 	}
 	defer imgTemplate.Close()
@@ -159,8 +159,8 @@ func TestMatchTemplate(t *testing.T) {
 }
 
 func TestMoments(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid read of Mat in Moments test")
 	}
 	defer img.Close()
@@ -172,8 +172,8 @@ func TestMoments(t *testing.T) {
 }
 
 func TestPyrDown(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in PyrDown test")
 	}
 	defer img.Close()
@@ -188,8 +188,8 @@ func TestPyrDown(t *testing.T) {
 }
 
 func TestPyrUp(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in PyrUp test")
 	}
 	defer img.Close()
@@ -204,8 +204,8 @@ func TestPyrUp(t *testing.T) {
 }
 
 func TestFindContours(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid read of Mat in FindContours test")
 	}
 	defer img.Close()
@@ -237,8 +237,8 @@ func TestFindContours(t *testing.T) {
 }
 
 func TestErode(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in Erode test")
 	}
 	defer img.Close()
@@ -255,8 +255,8 @@ func TestErode(t *testing.T) {
 }
 
 func TestMorphologyEx(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in MorphologyEx test")
 	}
 	defer img.Close()
@@ -273,8 +273,8 @@ func TestMorphologyEx(t *testing.T) {
 }
 
 func TestGaussianBlur(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in GaussianBlur test")
 	}
 	defer img.Close()
@@ -289,8 +289,8 @@ func TestGaussianBlur(t *testing.T) {
 }
 
 func TestLaplacian(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in Laplacian test")
 	}
 	defer img.Close()
@@ -305,8 +305,8 @@ func TestLaplacian(t *testing.T) {
 }
 
 func TestScharr(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in Scharr test")
 	}
 	defer img.Close()
@@ -321,8 +321,8 @@ func TestScharr(t *testing.T) {
 }
 
 func TestMedianBlur(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in MedianBlur test")
 	}
 	defer img.Close()
@@ -337,8 +337,8 @@ func TestMedianBlur(t *testing.T) {
 }
 
 func TestCanny(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid read of Mat in HoughLines test")
 	}
 	defer img.Close()
@@ -359,8 +359,8 @@ func TestCanny(t *testing.T) {
 }
 
 func TestGoodFeaturesToTrackAndCornerSubPix(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid read of Mat in GoodFeaturesToTrack test")
 	}
 	defer img.Close()
@@ -394,8 +394,8 @@ func TestGoodFeaturesToTrackAndCornerSubPix(t *testing.T) {
 }
 
 func TestHoughCircles(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid read of Mat in HoughCircles test")
 	}
 	defer img.Close()
@@ -416,8 +416,8 @@ func TestHoughCircles(t *testing.T) {
 }
 
 func TestHoughCirclesWithParams(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid read of Mat in HoughCircles test")
 	}
 	defer img.Close()
@@ -438,8 +438,8 @@ func TestHoughCirclesWithParams(t *testing.T) {
 }
 
 func TestHoughLines(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid read of Mat in HoughLines test")
 	}
 	defer img.Close()
@@ -476,8 +476,8 @@ func TestHoughLines(t *testing.T) {
 }
 
 func TestHoughLinesP(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid read of Mat in HoughLines test")
 	}
 	defer img.Close()
@@ -514,8 +514,8 @@ func TestHoughLinesP(t *testing.T) {
 }
 
 func TestThreshold(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in Erode test")
 	}
 	defer img.Close()
@@ -529,8 +529,8 @@ func TestThreshold(t *testing.T) {
 	}
 }
 func TestAdaptiveThreshold(t *testing.T) {
-	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid read of Mat in AdaptiveThreshold test")
 	}
 	defer img.Close()
@@ -587,8 +587,8 @@ func TestPutText(t *testing.T) {
 }
 
 func TestResize(t *testing.T) {
-	src := IMRead("images/gocvlogo.jpg", IMReadColor)
-	if src.Empty() {
+	src, err := IMRead("images/gocvlogo.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in Resize test")
 	}
 	defer src.Close()
@@ -668,7 +668,7 @@ func TestWarpAffine(t *testing.T) {
 	if result != 0.0 {
 		t.Errorf("WarpAffine() = %v, want %v", result, 0.0)
 	}
-	src = IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	src, _ = IMRead("images/gocvlogo.jpg", IMReadUnchanged)
 	dst = src.Clone()
 	WarpAffine(src, &dst, rot, image.Point{343, 400})
 	result = Norm(dst, NormL2)
@@ -689,7 +689,7 @@ func TestWarpAffineWithParams(t *testing.T) {
 		t.Errorf("WarpAffineWithParams() = %v, want %v", result, 0.0)
 	}
 
-	src = IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	src, _ = IMRead("images/gocvlogo.jpg", IMReadUnchanged)
 	dst = src.Clone()
 	WarpAffineWithParams(src, &dst, rot, image.Point{343, 400}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
 	result = Norm(dst, NormL2)
@@ -721,7 +721,7 @@ func TestApplyColorMap(t *testing.T) {
 		{name: "COLORMAP_HOT", args: args{colormapType: ColormapHot, want: 124941.02475968412}},
 		{name: "COLORMAP_PARULA", args: args{colormapType: ColormapParula, want: 111483.33555738274}},
 	}
-	src := IMRead("images/gocvlogo.jpg", IMReadGrayScale)
+	src, _ := IMRead("images/gocvlogo.jpg", IMReadGrayScale)
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -736,7 +736,7 @@ func TestApplyColorMap(t *testing.T) {
 }
 
 func TestApplyCustomColorMap(t *testing.T) {
-	src := IMRead("images/gocvlogo.jpg", IMReadGrayScale)
+	src, _ := IMRead("images/gocvlogo.jpg", IMReadGrayScale)
 	customColorMap := NewMatWithSize(256, 1, MatTypeCV8UC1)
 
 	dst := src.Clone()
@@ -772,7 +772,7 @@ func TestGetPerspectiveTransform(t *testing.T) {
 }
 
 func TestWarpPerspective(t *testing.T) {
-	img := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	img, _ := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
 	defer img.Close()
 
 	w := img.Cols()

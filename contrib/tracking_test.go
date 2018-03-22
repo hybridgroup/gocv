@@ -1,9 +1,10 @@
 package contrib
 
 import (
-	"gocv.io/x/gocv"
 	"image"
 	"testing"
+
+	"gocv.io/x/gocv"
 )
 
 func BaseTestTracker(t *testing.T, tracker Tracker, name string) {
@@ -11,8 +12,8 @@ func BaseTestTracker(t *testing.T, tracker Tracker, name string) {
 		t.Error("TestTracker " + name + " should not be nil")
 	}
 
-	img := gocv.IMRead("../images/face.jpg", 1)
-	if img.Empty() {
+	img, err := gocv.IMRead("../images/face.jpg", 1)
+	if err != nil {
 		t.Error("TestTracker " + name + " input img failed to load")
 	}
 	defer img.Close()

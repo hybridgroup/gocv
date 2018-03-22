@@ -40,7 +40,7 @@ func main() {
 	img := gocv.NewMat()
 	defer img.Close()
 
-	if ok := webcam.Read(&img); !ok {
+	if err := webcam.Read(&img); err != nil {
 		fmt.Printf("cannot read device %d\n", deviceID)
 		return
 	}
@@ -53,7 +53,7 @@ func main() {
 	defer writer.Close()
 
 	for i := 0; i < 100; i++ {
-		if ok := webcam.Read(&img); !ok {
+		if err := webcam.Read(&img); err != nil {
 			fmt.Printf("cannot read device %d\n", deviceID)
 			return
 		}

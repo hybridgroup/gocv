@@ -38,8 +38,8 @@ func TestVideoWriterFile(t *testing.T) {
 	dir, _ := ioutil.TempDir("", "gocvtests")
 	tmpfn := filepath.Join(dir, "test.avi")
 
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid read of Mat in VideoWriterFile test")
 	}
 	defer img.Close()
@@ -51,7 +51,7 @@ func TestVideoWriterFile(t *testing.T) {
 		t.Error("Unable to open VideoWriterFile")
 	}
 
-	err := vw.Write(img)
+	err = vw.Write(img)
 	if err != nil {
 		t.Error("Invalid Write() in VideoWriter")
 	}

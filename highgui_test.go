@@ -45,8 +45,8 @@ func TestIMShow(t *testing.T) {
 		t.Error("Unable to create IMShow Window")
 	}
 
-	img := IMRead("images/face-detect.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face-detect.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in IMShow")
 	}
 	defer img.Close()

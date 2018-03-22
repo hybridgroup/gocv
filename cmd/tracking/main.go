@@ -59,7 +59,7 @@ func main() {
 	defer img.Close()
 
 	// read an initial image
-	if ok := webcam.Read(&img); !ok {
+	if err := webcam.Read(&img); err != nil {
 		fmt.Printf("cannot read device %d\n", deviceID)
 		return
 	}
@@ -82,7 +82,7 @@ func main() {
 	blue := color.RGBA{0, 0, 255, 0}
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
-		if ok := webcam.Read(&img); !ok {
+		if err := webcam.Read(&img); err != nil {
 			fmt.Printf("cannot read device %d\n", deviceID)
 			return
 		}

@@ -30,7 +30,7 @@ import (
 
 func main() {
 	webcam, _ := gocv.VideoCaptureDevice(0)
-	window := gocv.NewWindow("Hello")	
+	window := gocv.NewWindow("Hello")
 	img := gocv.NewMat()
 
 	for {
@@ -87,7 +87,7 @@ func main() {
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
-		if ok := webcam.Read(&img); !ok {
+		if err := webcam.Read(&img); err != nil {
 			fmt.Printf("cannot read device %d\n", deviceID)
 			return
 		}

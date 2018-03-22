@@ -6,6 +6,7 @@ package gocv
 */
 import "C"
 import (
+	"errors"
 	"sync"
 	"unsafe"
 )
@@ -204,8 +205,11 @@ func (v *VideoCapture) IsOpened() bool {
 
 // Read reads the next frame from the VideoCapture to the Mat passed in
 // as the param. It returns false if the VideoCapture cannot read frame.
-func (v *VideoCapture) Read(m *Mat) bool {
-	return C.VideoCapture_Read(v.p, m.p) != 0
+func (v *VideoCapture) Read(m *Mat) (err error) {
+	if C.VideoCapture_Read(v.p, m.p) == 0 {
+		err = errors.New("VideoCapture Read error")
+	}
+	return
 }
 
 // Grab skips a specific number of frames.

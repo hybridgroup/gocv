@@ -183,13 +183,13 @@ func TestMatMean(t *testing.T) {
 }
 
 func TestLUT(t *testing.T) {
-	src := IMRead("images/gocvlogo.jpg", IMReadColor)
+	src, _ := IMRead("images/gocvlogo.jpg", IMReadColor)
 	if src.Empty() {
 		t.Error("Invalid read of Source Mat in LUT test")
 	}
 	defer src.Close()
 
-	lut := IMRead("images/lut.png", IMReadColor)
+	lut, _ := IMRead("images/lut.png", IMReadColor)
 	if lut.Empty() {
 		t.Error("Invalid read of LUT Mat in LUT test")
 	}
@@ -510,7 +510,7 @@ func TestMatNormalize(t *testing.T) {
 }
 
 func TestMatSplit(t *testing.T) {
-	src := IMRead("images/face.jpg", 1)
+	src, _ := IMRead("images/face.jpg", 1)
 	chans := Split(src)
 	if len(chans) != src.Channels() {
 		t.Error("Split Channel count differs")
@@ -526,8 +526,8 @@ func TestMatSplit(t *testing.T) {
 }
 
 func TestMatSubtract(t *testing.T) {
-	src1 := IMRead("images/lut.png", 1)
-	src2 := IMRead("images/lut.png", 1)
+	src1, _ := IMRead("images/lut.png", 1)
+	src2, _ := IMRead("images/lut.png", 1)
 	dst := NewMat()
 	Subtract(src1, src2, &dst)
 	sum := dst.Sum()
