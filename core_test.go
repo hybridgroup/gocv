@@ -782,7 +782,7 @@ func TestMatIdct(t *testing.T) {
 	dst := NewMat()
 	defer dst.Close()
 
-	Idct(src, &dst, 0)
+	IDCT(src, &dst, 0)
 	if dst.Empty() {
 		t.Error("Idct dst should not be empty.")
 	}
@@ -798,7 +798,7 @@ func TestMatIdft(t *testing.T) {
 	dst := NewMat()
 	defer dst.Close()
 
-	Idft(src, &dst, 0, 0)
+	IDFT(src, &dst, 0, 0)
 	if dst.Empty() {
 		t.Error("Idct dst should not be empty.")
 	}

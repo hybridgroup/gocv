@@ -65,6 +65,7 @@ const (
 	MatTypeCV8UC4 = MatTypeCV8U + MatChannels4
 )
 
+// CompareType is used for Compare operations to indicate which kind of comparison to use.
 type CompareType int
 
 const (
@@ -537,7 +538,7 @@ func BitwiseXor(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_BitwiseXor(src1.p, src2.p, dst.p)
 }
 
-// BatchDistance naive nearest neighbor finder
+// BatchDistance is a naive nearest neighbor finder.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4ba778a1c57f83233b1d851c83f5a622
@@ -546,7 +547,7 @@ func BatchDistance(src1 Mat, src2 Mat, dist Mat, dtype int, nidx Mat, normType i
 	C.Mat_BatchDistance(src1.p, src2.p, dist.p, C.int(dtype), nidx.p, C.int(normType), C.int(K), mask.p, C.int(update), C.bool(crosscheck))
 }
 
-// BorderInterpolate Computes the source location of an extrapolated pixel.
+// BorderInterpolate computes the source location of an extrapolated pixel.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga247f571aa6244827d3d798f13892da58
@@ -556,36 +557,43 @@ func BorderInterpolate(p int, len int, borderType CovarFlags) int {
 	return int(ret)
 }
 
-// Covariation flags
+// CovarFlags are the covariation flags used by functions such as BorderInterpolate.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/de1/group__core.html#ga719ebd4a73f30f4fab258ab7616d0f0f
+//
 type CovarFlags int
 
 const (
+	// CovarScrambled indicates to scramble the results.
 	CovarScrambled CovarFlags = 0
 
+	// CovarNormal indicates to use normal covariation.
 	CovarNormal = 1
 
+	// CovarUseAvg indicates to use average covariation.
 	CovarUseAvg = 2
 
+	// CovarScale indicates to use scaled covariation.
 	CovarScale = 4
 
+	// CovarRows indicates to use covariation on rows.
 	CovarRows = 8
 
+	// CovarCols indicates to use covariation on columns.
 	CovarCols = 16
 )
 
-// CalcCovarMatrix Calculates the covariance matrix of a set of vectors.
+// CalcCovarMatrix calculates the covariance matrix of a set of vectors.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga017122d912af19d7d0d2cccc2d63819f
 //
-func CalcCovarMatrix(samples Mat, covar *Mat, mean *Mat, flags int, ctype int) {
+func CalcCovarMatrix(samples Mat, covar *Mat, mean *Mat, flags CovarFlags, ctype int) {
 	C.Mat_CalcCovarMatrix(samples.p, covar.p, mean.p, C.int(flags), C.int(ctype))
 }
 
-// CartToPolar Calculates the magnitude and angle of 2D vectors.
+// CartToPolar calculates the magnitude and angle of 2D vectors.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gac5f92f48ec32cacf5275969c33ee837d
@@ -648,46 +656,45 @@ func CopyMakeBorder(src Mat, dst *Mat, top int, bottom int, left int, right int,
 	C.Mat_CopyMakeBorder(src.p, dst.p, C.int(top), C.int(bottom), C.int(left), C.int(right), C.int(borderType), cValue)
 }
 
+// DftFlags are Dft / Dct related flags.
 //
-// Dft / Dct related flags.
-//
-// for full description, see here:
+// For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gaf4dde112b483b38175621befedda1f1c
 //
 type DftFlags int
 
 const (
-	// perform forward 1D or 2D dft or dct
+	// DftForward perform forward 1D or 2D dft or dct.
 	DftForward DftFlags = 0
 
-	// performs an inverse 1D or 2D transform
+	// DftInverse performs an inverse 1D or 2D transform.
 	DftInverse = 1
 
-	// scales the result: divide it by the number of array elements. Normally, it is combined with DFT_INVERSE.
+	// DftScale scales the result: divide it by the number of array elements. Normally, it is combined with DFT_INVERSE.
 	DftScale = 2
 
-	// performs a forward or inverse transform of every individual row of the input matrix
+	// DftRows performs a forward or inverse transform of every individual row of the input matrix.
 	DftRows = 4
 
-	// performs a forward transformation of 1D or 2D real array; the result, though being a complex array, has complex-conjugate symmetry
+	// DftComplexOutput performs a forward transformation of 1D or 2D real array; the result, though being a complex array, has complex-conjugate symmetry
 	DftComplexOutput = 16
 
-	// performs an inverse transformation of a 1D or 2D complex array; the result is normally a complex array of the same size,
+	// DftRealOutput performs an inverse transformation of a 1D or 2D complex array; the result is normally a complex array of the same size,
 	// however, if the input array has conjugate-complex symmetry (for example, it is a result of forward transformation with DFT_COMPLEX_OUTPUT flag),
-	// the output is a real array
+	// the output is a real array.
 	DftRealOutput = 32
 
-	// specifies that input is complex input. If this flag is set, the input must have 2 channels
+	// DftComplexInput specifies that input is complex input. If this flag is set, the input must have 2 channels.
 	DftComplexInput = 64
 
-	// performs an inverse 1D or 2D dct transform
+	// DctInverse performs an inverse 1D or 2D dct transform.
 	DctInverse = DftInverse
 
-	// performs a forward or inverse dct transform of every individual row of the input matrix
+	// DctRows performs a forward or inverse dct transform of every individual row of the input matrix.
 	DctRows = DftRows
 )
 
-// DCT Performs a forward or inverse discrete Cosine transform of 1D or 2D array.
+// DCT performs a forward or inverse discrete Cosine transform of 1D or 2D array.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga85aad4d668c01fbd64825f589e3696d4
@@ -716,18 +723,17 @@ func Divide(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_Divide(src1.p, src2.p, dst.p)
 }
 
-// Eigen Calculates eigenvalues and eigenvectors of a symmetric matrix.
+// Eigen calculates eigenvalues and eigenvectors of a symmetric matrix.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9fa0d58657f60eaa6c71f6fbb40456e3
 //
-
 func Eigen(src Mat, eigenvalues *Mat, eigenvectors *Mat) bool {
 	ret := C.Mat_Eigen(src.p, eigenvalues.p, eigenvectors.p)
 	return bool(ret)
 }
 
-// Exp Calculates the exponent of every array element.
+// Exp calculates the exponent of every array element.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga3e10108e2162c338f1b848af619f39e5
@@ -736,7 +742,7 @@ func Exp(src Mat, dst *Mat) {
 	C.Mat_Exp(src.p, dst.p)
 }
 
-// ExtractChannel Extracts a single channel from src (coi is 0-based index).
+// ExtractChannel extracts a single channel from src (coi is 0-based index).
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gacc6158574aa1f0281878c955bcf35642
@@ -791,21 +797,21 @@ func Hconcat(src1, src2 Mat, dst *Mat) {
 	C.Mat_Hconcat(src1.p, src2.p, dst.p)
 }
 
-// Idct calculates the inverse Discrete Cosine Transform of a 1D or 2D array.
+// IDCT calculates the inverse Discrete Cosine Transform of a 1D or 2D array.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga77b168d84e564c50228b69730a227ef2
 //
-func Idct(src Mat, dst *Mat, flags int) {
+func IDCT(src Mat, dst *Mat, flags int) {
 	C.Mat_Idct(src.p, dst.p, C.int(flags))
 }
 
-// Idft calculates the inverse Discrete Fourier Transform of a 1D or 2D array.
+// IDFT calculates the inverse Discrete Fourier Transform of a 1D or 2D array.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gaa708aa2d2e57a508f968eb0f69aa5ff1
 //
-func Idft(src Mat, dst *Mat, flags, nonzeroRows int) {
+func IDFT(src Mat, dst *Mat, flags, nonzeroRows int) {
 	C.Mat_Idft(src.p, dst.p, C.int(flags), C.int(nonzeroRows))
 }
 
@@ -868,7 +874,7 @@ func Max(src1, src2 Mat, dst *Mat) {
 // MeanStdDev calculates a mean and standard deviation of array elements.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga846c858f4004d59493d7c6a4354b301d
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga846c858f4004d59493d7c6a4354b301d
 //
 func MeanStdDev(src Mat, dst *Mat, dstStdDev *Mat) {
 	C.Mat_MeanStdDev(src.p, dst.p, dstStdDev.p)
@@ -1021,7 +1027,7 @@ func Subtract(src1 Mat, src2 Mat, dst *Mat) {
 // Pow raises every array element to a power.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaf0d056b5bd1dc92500d6f6cf6bac41ef
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gaf0d056b5bd1dc92500d6f6cf6bac41ef
 //
 func Pow(src Mat, power float64, dst *Mat) {
 	C.Mat_Pow(src.p, C.double(power), dst.p)
