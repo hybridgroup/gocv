@@ -32,7 +32,7 @@ func main() {
 
 	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
 	if err != nil {
-		fmt.Printf("error opening video capture device: %v\n", deviceID)
+		fmt.Println(err)
 		return
 	}
 	defer webcam.Close()
@@ -41,20 +41,20 @@ func main() {
 	defer img.Close()
 
 	if err := webcam.Read(&img); err != nil {
-		fmt.Printf("cannot read device %d\n", deviceID)
+		fmt.Println(err)
 		return
 	}
 
 	writer, err := gocv.VideoWriterFile(saveFile, "MJPG", 25, img.Cols(), img.Rows())
 	if err != nil {
-		fmt.Printf("error opening video writer device: %v\n", saveFile)
+		fmt.Println(err)
 		return
 	}
 	defer writer.Close()
 
 	for i := 0; i < 100; i++ {
 		if err := webcam.Read(&img); err != nil {
-			fmt.Printf("cannot read device %d\n", deviceID)
+			fmt.Println(err)
 			return
 		}
 		if img.Empty() {

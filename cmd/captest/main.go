@@ -42,7 +42,7 @@ func main() {
 	fmt.Printf("Start reading camera device: %v\n", deviceID)
 	for i := 0; i < 100; i++ {
 		if err := webcam.Read(&buf); err != nil {
-			fmt.Printf("cannot read device %d\n", deviceID)
+			fmt.Println(err)
 			return
 		}
 		if buf.Empty() {

@@ -58,14 +58,14 @@ func main() {
 	descr := os.Args[3]
 	descriptions, err := readDescriptions(descr)
 	if err != nil {
-		fmt.Printf("Error reading descriptions file: %v\n", descr)
+		fmt.Println(err)
 		return
 	}
 
 	// open capture device
 	webcam, err := gocv.VideoCaptureDevice(deviceID)
 	if err != nil {
-		fmt.Printf("Error opening video capture device: %v\n", deviceID)
+		fmt.Println(err)
 		return
 	}
 	defer webcam.Close()
@@ -90,7 +90,7 @@ func main() {
 
 	for {
 		if err := webcam.Read(&img); err != nil {
-			fmt.Printf("Error cannot read device %d\n", deviceID)
+			fmt.Println(err)
 			return
 		}
 		if img.Empty() {

@@ -60,7 +60,7 @@ func main() {
 	count := 0
 	for {
 		if err := video.Read(&img); err != nil {
-			fmt.Printf("Error cannot read file %s\n", file)
+			fmt.Println(err)
 			return
 		}
 		if img.Empty() {

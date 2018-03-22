@@ -28,7 +28,7 @@ func main() {
 	window := gocv.NewWindow("Hello")
 	img, err := gocv.IMRead(filename, gocv.IMReadColor)
 	if err != nil {
-		fmt.Println("Error reading image from: %v", filename)
+		fmt.Println(err)
 		return
 	}
 	for {
