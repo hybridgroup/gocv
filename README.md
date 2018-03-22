@@ -34,7 +34,7 @@ func main() {
 	img := gocv.NewMat()
 
 	for {
-		webcam.Read(img)
+		webcam.Read(&img)
 		window.IMShow(img)
 		window.WaitKey(1)
 	}
@@ -87,7 +87,7 @@ func main() {
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
-		if ok := webcam.Read(img); !ok {
+		if ok := webcam.Read(&img); !ok {
 			fmt.Printf("cannot read device %d\n", deviceID)
 			return
 		}
@@ -101,7 +101,7 @@ func main() {
 
 		// draw a rectangle around each face on the original image
 		for _, r := range rects {
-			gocv.Rectangle(img, r, blue, 3)
+			gocv.Rectangle(&img, r, blue, 3)
 		}
 
 		// show the image in the window, and wait 1 millisecond
@@ -123,13 +123,13 @@ To install GoCV, run the following command:
 go get -u -d gocv.io/x/gocv
 ```
 
-To run code that uses the GoCV package, you must also install OpenCV 3.4 on your system. Here are instructions for Ubuntu, OS X, and Windows.
+To run code that uses the GoCV package, you must also install OpenCV 3.4.1 on your system. Here are instructions for Ubuntu, OS X, and Windows.
 
 ## Ubuntu/Linux
 
 ### Installation
 
-You can use `make` to install OpenCV 3.4 with the handy `Makefile` included with this repo. If you already have installed OpenCV, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options such as Python or Java wrappers if you have already installed OpenCV some other way.
+You can use `make` to install OpenCV 3.4.1 with the handy `Makefile` included with this repo. If you already have installed OpenCV, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options such as Python or Java wrappers if you have already installed OpenCV some other way.
 
 #### Install required packages
 
@@ -143,7 +143,7 @@ Next, you need to update the system, and install any required packages:
 
 #### Download source
 
-Now, download the OpenCV 3.4 and OpenCV Contrib source code:
+Now, download the OpenCV 3.4.1 and OpenCV Contrib source code:
 
 		make download
 
@@ -217,7 +217,7 @@ Please note that you will need to run these 2 lines of code one time in your cur
 
 ### Installation
 
-You can install OpenCV 3.4 using Homebrew:
+You can install OpenCV 3.4.1 using Homebrew:
 
 		brew install opencv
 
@@ -258,7 +258,7 @@ If you are not modifying gocv source, compile gocv to a static library, to signi
 
 The following assumes that you are running a 64-bit version of Windows 10.
 
-In order to build and install OpenCV 3.4 on Windows, you must first download and install MinGW-W64 and CMake, as follows.
+In order to build and install OpenCV 3.4.1 on Windows, you must first download and install MinGW-W64 and CMake, as follows.
 
 #### MinGW-W64
 
@@ -270,7 +270,7 @@ Add the `C:\Program Files\mingw-w64\x86_64-7.1.0-posix-seh-rt_v5-rev2\mingw64\bi
 
 Download and install CMake [https://cmake.org/download/](https://cmake.org/download/) to the default location. CMake installer will add CMake to your system path.
 
-#### Download OpenCV 3.4 and OpenCV Contrib Modules
+#### Download OpenCV 3.4.1 and OpenCV Contrib Modules
 
 Download the source code for the latest OpenCV release from [https://github.com/opencv/opencv/archive/3.4.1.zip](https://github.com/opencv/opencv/archive/3.4.1.zip) and extract it to the directory `C:\opencv\opencv-3.4.1`
 
