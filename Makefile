@@ -1,5 +1,5 @@
 .ONESHELL:
-.PHONY: test deps download build clean
+.PHONY: test deps download build clean astyle
 
 
 # Package list for each well-known Linux distribution
@@ -58,6 +58,5 @@ clean:
 
 astyle:
 	astyle --project=.astylerc --recursive *.cpp,*.h
-.PHONY: astyle
 
 install: download build clean
