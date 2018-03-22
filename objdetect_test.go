@@ -6,8 +6,8 @@ import (
 )
 
 func TestCascadeClassifier(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in CascadeClassifier test")
 	}
 	defer img.Close()
@@ -25,8 +25,8 @@ func TestCascadeClassifier(t *testing.T) {
 }
 
 func TestCascadeClassifierWithParams(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in CascadeClassifierWithParams test")
 	}
 	defer img.Close()
@@ -44,8 +44,8 @@ func TestCascadeClassifierWithParams(t *testing.T) {
 }
 
 func TestHOGDescriptor(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in HOGDescriptor test")
 	}
 	defer img.Close()
@@ -63,8 +63,8 @@ func TestHOGDescriptor(t *testing.T) {
 }
 
 func TestHOGDescriptorWithParams(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in HOGDescriptorWithParams test")
 	}
 	defer img.Close()

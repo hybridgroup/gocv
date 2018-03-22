@@ -6,6 +6,7 @@ package gocv
 */
 import "C"
 import (
+	"errors"
 	"sync"
 	"unsafe"
 )
@@ -204,8 +205,11 @@ func (v *VideoCapture) IsOpened() bool {
 
 // Read reads the next frame from the VideoCapture to the Mat passed in
 // as the param. It returns false if the VideoCapture cannot read frame.
-func (v *VideoCapture) Read(m *Mat) bool {
-	return C.VideoCapture_Read(v.p, m.p) != 0
+func (v *VideoCapture) Read(m *Mat) (err error) {
+	if C.VideoCapture_Read(v.p, m.p) == 0 {
+		err = errors.New("VideoCapture Read error")
+	}
+	return
 }
 
 // Grab skips a specific number of frames.
@@ -242,7 +246,9 @@ func VideoWriterFile(name string, codec string, fps float64, width int, height i
 	cCodec := C.CString(codec)
 	defer C.free(unsafe.Pointer(cCodec))
 
-	C.VideoWriter_Open(vw.p, cName, cCodec, C.double(fps), C.int(width), C.int(height))
+	if !bool(C.VideoWriter_Open(vw.p, cName, cCodec, C.double(fps), C.int(width), C.int(height))) {
+		err = errors.New("VideoWriterFile Open error")
+	}
 	return
 }
 

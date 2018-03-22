@@ -58,14 +58,14 @@ func main() {
 	descr := os.Args[3]
 	descriptions, err := readDescriptions(descr)
 	if err != nil {
-		fmt.Printf("Error reading descriptions file: %v\n", descr)
+		fmt.Println(err)
 		return
 	}
 
 	// open capture device
 	webcam, err := gocv.VideoCaptureDevice(deviceID)
 	if err != nil {
-		fmt.Printf("Error opening video capture device: %v\n", deviceID)
+		fmt.Println(err)
 		return
 	}
 	defer webcam.Close()
@@ -89,8 +89,8 @@ func main() {
 	fmt.Printf("Start reading camera device: %v\n", deviceID)
 
 	for {
-		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("Error cannot read device %d\n", deviceID)
+		if err := webcam.Read(&img); err != nil {
+			fmt.Println(err)
 			return
 		}
 		if img.Empty() {
@@ -118,7 +118,7 @@ func main() {
 			desc = descriptions[maxLoc.X]
 		}
 		status = fmt.Sprintf("description: %v, maxVal: %v\n", desc, maxVal)
-		gocv.PutText(img, status, image.Pt(10, 20), gocv.FontHersheyPlain, 1.2, statusColor, 2)
+		gocv.PutText(&img, status, image.Pt(10, 20), gocv.FontHersheyPlain, 1.2, statusColor, 2)
 
 		blob.Close()
 		prob.Close()

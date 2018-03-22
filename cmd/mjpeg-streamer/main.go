@@ -70,8 +70,8 @@ func capture() {
 	defer img.Close()
 
 	for {
-		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("cannot read device %d\n", deviceID)
+		if err := webcam.Read(&img); err != nil {
+			fmt.Println(err)
 			return
 		}
 		if img.Empty() {

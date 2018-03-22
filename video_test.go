@@ -6,8 +6,8 @@ import (
 )
 
 func TestMOG2(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in MOG2 test")
 	}
 	defer img.Close()
@@ -26,8 +26,8 @@ func TestMOG2(t *testing.T) {
 }
 
 func TestKNN(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
-	if img.Empty() {
+	img, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in KNN test")
 	}
 	defer img.Close()
@@ -46,8 +46,8 @@ func TestKNN(t *testing.T) {
 }
 
 func TestCalcOpticalFlowFarneback(t *testing.T) {
-	img1 := IMRead("images/face.jpg", IMReadColor)
-	if img1.Empty() {
+	img1, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in CalcOpticalFlowFarneback test")
 	}
 	defer img1.Close()
@@ -76,8 +76,8 @@ func TestCalcOpticalFlowFarneback(t *testing.T) {
 }
 
 func TestCalcOpticalFlowPyrLK(t *testing.T) {
-	img1 := IMRead("images/face.jpg", IMReadColor)
-	if img1.Empty() {
+	img1, err := IMRead("images/face.jpg", IMReadColor)
+	if err != nil {
 		t.Error("Invalid Mat in CalcOpticalFlowPyrLK test")
 	}
 	defer img1.Close()
@@ -98,8 +98,8 @@ func TestCalcOpticalFlowPyrLK(t *testing.T) {
 	status := NewMat()
 	defer status.Close()
 
-	err := NewMat()
-	defer err.Close()
+	errMat := NewMat()
+	defer errMat.Close()
 
 	corners := NewMat()
 	defer corners.Close()
@@ -108,7 +108,7 @@ func TestCalcOpticalFlowPyrLK(t *testing.T) {
 	tc := NewTermCriteria(Count|EPS, 20, 0.03)
 	CornerSubPix(dest, &corners, image.Pt(10, 10), image.Pt(-1, -1), tc)
 
-	CalcOpticalFlowPyrLK(dest, img2, corners, nextPts, &status, &err)
+	CalcOpticalFlowPyrLK(dest, img2, corners, nextPts, &status, &errMat)
 
 	if status.Empty() {
 		t.Error("Error in CalcOpticalFlowPyrLK test")

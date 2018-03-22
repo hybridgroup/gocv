@@ -18,7 +18,7 @@ func TestCaffe(t *testing.T) {
 	}
 	defer net.Close()
 
-	img := IMRead("images/space_shuttle.jpg", IMReadColor)
+	img, _ := IMRead("images/space_shuttle.jpg", IMReadColor)
 	if img.Empty() {
 		t.Error("Invalid Mat in Caffe test")
 	}
@@ -64,7 +64,7 @@ func TestTensorflow(t *testing.T) {
 	}
 	defer net.Close()
 
-	img := IMRead("images/space_shuttle.jpg", IMReadColor)
+	img, _ := IMRead("images/space_shuttle.jpg", IMReadColor)
 	if img.Empty() {
 		t.Error("Invalid Mat in Tensorflow test")
 	}

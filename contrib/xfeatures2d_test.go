@@ -7,8 +7,8 @@ import (
 )
 
 func TestSIFT(t *testing.T) {
-	img := gocv.IMRead("../images/face.jpg", gocv.IMReadGrayScale)
-	if img.Empty() {
+	img, err := gocv.IMRead("../images/face.jpg", gocv.IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid Mat in SIFT test")
 	}
 	defer img.Close()
@@ -38,8 +38,8 @@ func TestSIFT(t *testing.T) {
 }
 
 func TestSURF(t *testing.T) {
-	img := gocv.IMRead("../images/face.jpg", gocv.IMReadGrayScale)
-	if img.Empty() {
+	img, err := gocv.IMRead("../images/face.jpg", gocv.IMReadGrayScale)
+	if err != nil {
 		t.Error("Invalid Mat in SURF test")
 	}
 	defer img.Close()
