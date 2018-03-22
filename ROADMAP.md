@@ -81,6 +81,15 @@ Your pull requests will be greatly appreciated!
 - [ ] **video. Video Analysis - WORK STARTED**
     - [X] **Motion Analysis**
     - [ ] **Object Tracking - WORK STARTED** (https://docs.opencv.org/master/dc/d6b/group__video__track.html)
+        - [ ] [buildOpticalFlowPyramid] https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga86640c1c470f87b2660c096d2b22b2ce
+        - [ ] [estimateRigidTransform] https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga762cbe5efd52cf078950196f3c616d48
+        - [ ] [findTransformECC] https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga7ded46f9a55c0364c92ccd2019d43e3a
+        - [ ] [meanShift] https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga7ded46f9a55c0364c92ccd2019d43e3a
+        - [ ] [CamShift] https://docs.opencv.org/master/dc/d6b/group__video__track.html#gaef2bd39c8356f423124f1fe7c44d54a1
+        - [ ] [DualTVL1OpticalFlow] https://docs.opencv.org/master/dc/d47/classcv_1_1DualTVL1OpticalFlow.html
+        - [ ] [FarnebackOpticalFlow] https://docs.opencv.org/master/de/d9e/classcv_1_1FarnebackOpticalFlow.html
+        - [ ] [KalmanFilter] https://docs.opencv.org/master/dd/d6a/classcv_1_1KalmanFilter.html
+        - [ ] [SparsePyrLKOpticalFlow] https://docs.opencv.org/master/d7/d08/classcv_1_1SparsePyrLKOpticalFlow.html
 
 - [ ] calib3d. Camera Calibration and 3D Reconstruction
 - [ ] **features2d. 2D Features Framework - WORK STARTED**
@@ -141,7 +150,7 @@ Your pull requests will be greatly appreciated!
 - [ ] structured_light. Structured Light API
 - [ ] surface_matching. Surface Matching
 - [ ] text. Scene Text Detection and Recognition
-- [ ] tracking. Tracking API
+- [ ] **tracking. Tracking API - WORK STARTED**
 - [ ] **xfeatures2d. Extra 2D Features Framework - WORK STARTED**
 - [ ] ximgproc. Extended Image Processing
 - [ ] xobjdetect. Extended object detection
