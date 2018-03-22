@@ -78,7 +78,7 @@ func main() {
 	fmt.Printf("Start reading camera device: %v\n", deviceID)
 
 	for {
-		if ok := webcam.Read(img); !ok {
+		if ok := webcam.Read(&img); !ok {
 			fmt.Printf("Error cannot read device %d\n", deviceID)
 			return
 		}
@@ -129,7 +129,7 @@ func main() {
 
 			// draw it
 			rect := image.Rect(int(left), int(top), int(right), int(bottom))
-			gocv.Rectangle(img, rect, green, 3)
+			gocv.Rectangle(&img, rect, green, 3)
 		}
 
 		window.IMShow(img)

@@ -60,7 +60,7 @@ func ConvexHull(points []image.Point, hull Mat, clockwise bool, returnPoints boo
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gada4437098113fd8683c932e0567f47ba
 //
-func ConvexityDefects(contour []image.Point, hull Mat, result Mat) {
+func ConvexityDefects(contour []image.Point, hull Mat, result *Mat) {
 	cPoints := toCPoints(contour)
 	C.ConvexityDefects(cPoints, hull.p, result.p)
 }
@@ -72,7 +72,7 @@ func ConvexityDefects(contour []image.Point, hull Mat, result Mat) {
 // For further details, please see:
 // http://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga4e0972be5de079fed4e3a10e24ef5ef0
 //
-func CvtColor(src Mat, dst Mat, code ColorConversionCode) {
+func CvtColor(src Mat, dst *Mat, code ColorConversionCode) {
 	C.CvtColor(src.p, dst.p, C.int(code))
 }
 
@@ -87,7 +87,7 @@ func CvtColor(src Mat, dst Mat, code ColorConversionCode) {
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga9d7064d478c95d60003cf839430737ed
 //
-func BilateralFilter(src Mat, dst Mat, diameter int, sigmaColor float64, sigmaSpace float64) {
+func BilateralFilter(src Mat, dst *Mat, diameter int, sigmaColor float64, sigmaSpace float64) {
 	C.BilateralFilter(src.p, dst.p, C.int(diameter), C.double(sigmaColor), C.double(sigmaSpace))
 }
 
@@ -96,7 +96,7 @@ func BilateralFilter(src Mat, dst Mat, diameter int, sigmaColor float64, sigmaSp
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga8c45db9afe636703801b0b2e440fce37
 //
-func Blur(src Mat, dst Mat, ksize image.Point) {
+func Blur(src Mat, dst *Mat, ksize image.Point) {
 	pSize := C.struct_Size{
 		width:  C.int(ksize.X),
 		height: C.int(ksize.Y),
@@ -110,7 +110,7 @@ func Blur(src Mat, dst Mat, ksize image.Point) {
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga4ff0f3318642c4f469d0e11f242f3b6c
 //
-func Dilate(src Mat, dst Mat, kernel Mat) {
+func Dilate(src Mat, dst *Mat, kernel Mat) {
 	C.Dilate(src.p, dst.p, kernel.p)
 }
 
@@ -119,7 +119,7 @@ func Dilate(src Mat, dst Mat, kernel Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaeb1e0c1033e3f6b891a25d0511362aeb
 //
-func Erode(src Mat, dst Mat, kernel Mat) {
+func Erode(src Mat, dst *Mat, kernel Mat) {
 	C.Erode(src.p, dst.p, kernel.p)
 }
 
@@ -259,7 +259,7 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/master/df/dfb/group__imgproc__object.html#ga586ebfb0a7fb604b35a23d85391329be
 //
-func MatchTemplate(image Mat, templ Mat, result Mat, method TemplateMatchMode, mask Mat) {
+func MatchTemplate(image Mat, templ Mat, result *Mat, method TemplateMatchMode, mask Mat) {
 	C.MatchTemplate(image.p, templ.p, result.p, C.int(method), mask.p)
 }
 
@@ -306,7 +306,7 @@ func Moments(src Mat, binaryImage bool) map[string]float64 {
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaf9bba239dfca11654cb7f50f889fc2ff
 //
-func PyrDown(src Mat, dst Mat, ksize image.Point, borderType BorderType) {
+func PyrDown(src Mat, dst *Mat, ksize image.Point, borderType BorderType) {
 	pSize := C.struct_Size{
 		height: C.int(ksize.X),
 		width:  C.int(ksize.Y),
@@ -319,7 +319,7 @@ func PyrDown(src Mat, dst Mat, ksize image.Point, borderType BorderType) {
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gada75b59bdaaca411ed6fee10085eb784
 //
-func PyrUp(src Mat, dst Mat, ksize image.Point, borderType BorderType) {
+func PyrUp(src Mat, dst *Mat, ksize image.Point, borderType BorderType) {
 	pSize := C.struct_Size{
 		height: C.int(ksize.X),
 		width:  C.int(ksize.Y),
@@ -332,7 +332,7 @@ func PyrUp(src Mat, dst Mat, ksize image.Point, borderType BorderType) {
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga67493776e3ad1a3df63883829375201f
 //
-func MorphologyEx(src Mat, dst Mat, op MorphType, kernel Mat) {
+func MorphologyEx(src Mat, dst *Mat, op MorphType, kernel Mat) {
 	C.MorphologyEx(src.p, dst.p, C.int(op), kernel.p)
 }
 
@@ -427,7 +427,7 @@ const (
 // For further details, please see:
 // http://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaabe8c836e97159a9193fb0b11ac52cf1
 //
-func GaussianBlur(src Mat, dst Mat, ksize image.Point, sigmaX float64,
+func GaussianBlur(src Mat, dst *Mat, ksize image.Point, sigmaX float64,
 	sigmaY float64, borderType BorderType) {
 	pSize := C.struct_Size{
 		width:  C.int(ksize.X),
@@ -442,7 +442,7 @@ func GaussianBlur(src Mat, dst Mat, ksize image.Point, sigmaX float64,
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gad78703e4c8fe703d479c1860d76429e6
 //
-func Laplacian(src Mat, dst Mat, dDepth int, size int, scale float64,
+func Laplacian(src Mat, dst *Mat, dDepth int, size int, scale float64,
 	delta float64, borderType BorderType) {
 	C.Laplacian(src.p, dst.p, C.int(dDepth), C.int(size), C.double(scale), C.double(delta), C.int(borderType))
 }
@@ -452,7 +452,7 @@ func Laplacian(src Mat, dst Mat, dDepth int, size int, scale float64,
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaa13106761eedf14798f37aa2d60404c9
 //
-func Scharr(src Mat, dst Mat, dDepth int, dx int, dy int, scale float64,
+func Scharr(src Mat, dst *Mat, dDepth int, dx int, dy int, scale float64,
 	delta float64, borderType BorderType) {
 	C.Scharr(src.p, dst.p, C.int(dDepth), C.int(dx), C.int(dy), C.double(scale), C.double(delta), C.int(borderType))
 }
@@ -462,7 +462,7 @@ func Scharr(src Mat, dst Mat, dDepth int, dx int, dy int, scale float64,
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga564869aa33e58769b4469101aac458f9
 //
-func MedianBlur(src Mat, dst Mat, ksize int) {
+func MedianBlur(src Mat, dst *Mat, ksize int) {
 	C.MedianBlur(src.p, dst.p, C.int(ksize))
 }
 
@@ -477,7 +477,7 @@ func MedianBlur(src Mat, dst Mat, ksize int) {
 // For further details, please see:
 // http://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga04723e007ed888ddf11d9ba04e2232de
 //
-func Canny(src Mat, edges Mat, t1 float32, t2 float32) {
+func Canny(src Mat, edges *Mat, t1 float32, t2 float32) {
 	C.Canny(src.p, edges.p, C.double(t1), C.double(t2))
 }
 
@@ -487,7 +487,7 @@ func Canny(src Mat, edges Mat, t1 float32, t2 float32) {
 // For further details, please see:
 // https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga354e0d7c86d0d9da75de9b9701a9a87e
 //
-func CornerSubPix(img Mat, corners Mat, winSize image.Point, zeroZone image.Point, criteria TermCriteria) {
+func CornerSubPix(img Mat, corners *Mat, winSize image.Point, zeroZone image.Point, criteria TermCriteria) {
 	winSz := C.struct_Size{
 		width:  C.int(winSize.X),
 		height: C.int(winSize.Y),
@@ -508,7 +508,7 @@ func CornerSubPix(img Mat, corners Mat, winSize image.Point, zeroZone image.Poin
 // For further details, please see:
 // https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga1d6bb77486c8f92d79c8793ad995d541
 //
-func GoodFeaturesToTrack(img Mat, corners Mat, maxCorners int, quality float64, minDist float64) {
+func GoodFeaturesToTrack(img Mat, corners *Mat, maxCorners int, quality float64, minDist float64) {
 	C.GoodFeaturesToTrack(img.p, corners.p, C.int(maxCorners), C.double(quality), C.double(minDist))
 }
 
@@ -538,7 +538,7 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d
 //
-func HoughCircles(src, circles Mat, method HoughMode, dp, minDist float64) {
+func HoughCircles(src Mat, circles *Mat, method HoughMode, dp, minDist float64) {
 	C.HoughCircles(src.p, circles.p, C.int(method), C.double(dp), C.double(minDist))
 }
 
@@ -548,7 +548,7 @@ func HoughCircles(src, circles Mat, method HoughMode, dp, minDist float64) {
 // For further details, please see:
 // https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d
 //
-func HoughCirclesWithParams(src, circles Mat, method HoughMode, dp, minDist, param1, param2 float64, minRadius, maxRadius int) {
+func HoughCirclesWithParams(src Mat, circles *Mat, method HoughMode, dp, minDist, param1, param2 float64, minRadius, maxRadius int) {
 	C.HoughCirclesWithParams(src.p, circles.p, C.int(method), C.double(dp), C.double(minDist), C.double(param1), C.double(param2), C.int(minRadius), C.int(maxRadius))
 }
 
@@ -559,7 +559,7 @@ func HoughCirclesWithParams(src, circles Mat, method HoughMode, dp, minDist, par
 // For further details, please see:
 // http://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga46b4e588934f6c8dfd509cc6e0e4545a
 //
-func HoughLines(src Mat, lines Mat, rho float32, theta float32, threshold int) {
+func HoughLines(src Mat, lines *Mat, rho float32, theta float32, threshold int) {
 	C.HoughLines(src.p, lines.p, C.double(rho), C.double(theta), C.int(threshold))
 }
 
@@ -570,7 +570,7 @@ func HoughLines(src Mat, lines Mat, rho float32, theta float32, threshold int) {
 // For further details, please see:
 // http://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga8618180a5948286384e3b7ca02f6feeb
 //
-func HoughLinesP(src Mat, lines Mat, rho float32, theta float32, threshold int) {
+func HoughLinesP(src Mat, lines *Mat, rho float32, theta float32, threshold int) {
 	C.HoughLinesP(src.p, lines.p, C.double(rho), C.double(theta), C.int(threshold))
 }
 
@@ -608,7 +608,7 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/3.3.0/d7/d1b/group__imgproc__misc.html#gae8a4a146d1ca78c626a53577199e9c57
 //
-func Threshold(src Mat, dst Mat, thresh float32, maxvalue float32, typ ThresholdType) {
+func Threshold(src Mat, dst *Mat, thresh float32, maxvalue float32, typ ThresholdType) {
 	C.Threshold(src.p, dst.p, C.double(thresh), C.double(maxvalue), C.int(typ))
 }
 
@@ -628,7 +628,7 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga72b913f352e4a1b1b397736707afcde3
 //
-func AdaptiveThreshold(src Mat, dst Mat, maxValue float32, adaptiveTyp AdaptiveThresholdType, typ ThresholdType, blockSize int, c float32) {
+func AdaptiveThreshold(src Mat, dst *Mat, maxValue float32, adaptiveTyp AdaptiveThresholdType, typ ThresholdType, blockSize int, c float32) {
 	C.AdaptiveThreshold(src.p, dst.p, C.double(maxValue), C.int(adaptiveTyp), C.int(typ), C.int(blockSize), C.double(c))
 }
 
@@ -638,7 +638,7 @@ func AdaptiveThreshold(src Mat, dst Mat, maxValue float32, adaptiveTyp AdaptiveT
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga0a165a3ca093fd488ac709fdf10c05b2
 //
-func ArrowedLine(img Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness int) {
+func ArrowedLine(img *Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness int) {
 	sp1 := C.struct_Point{
 		x: C.int(pt1.X),
 		y: C.int(pt1.Y),
@@ -664,7 +664,7 @@ func ArrowedLine(img Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickn
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf10604b069374903dbd0f0488cb43670
 //
-func Circle(img Mat, center image.Point, radius int, c color.RGBA, thickness int) {
+func Circle(img *Mat, center image.Point, radius int, c color.RGBA, thickness int) {
 	pc := C.struct_Point{
 		x: C.int(center.X),
 		y: C.int(center.Y),
@@ -685,7 +685,7 @@ func Circle(img Mat, center image.Point, radius int, c color.RGBA, thickness int
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga7078a9fae8c7e7d13d24dac2520ae4a2
 //
-func Line(img Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness int) {
+func Line(img *Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness int) {
 	sp1 := C.struct_Point{
 		x: C.int(pt1.X),
 		y: C.int(pt1.Y),
@@ -712,7 +712,7 @@ func Line(img Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness int
 // For further details, please see:
 // http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga346ac30b5c74e9b5137576c9ee9e0e8c
 //
-func Rectangle(img Mat, r image.Rectangle, c color.RGBA, thickness int) {
+func Rectangle(img *Mat, r image.Rectangle, c color.RGBA, thickness int) {
 	cRect := C.struct_Rect{
 		x:      C.int(r.Min.X),
 		y:      C.int(r.Min.Y),
@@ -784,7 +784,7 @@ func GetTextSize(text string, fontFace HersheyFont, fontScale float64, thickness
 // For further details, please see:
 // http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga5126f47f883d730f633d74f07456c576
 //
-func PutText(img Mat, text string, org image.Point, fontFace HersheyFont, fontScale float64, c color.RGBA, thickness int) {
+func PutText(img *Mat, text string, org image.Point, fontFace HersheyFont, fontScale float64, c color.RGBA, thickness int) {
 	cText := C.CString(text)
 	defer C.free(unsafe.Pointer(cText))
 
@@ -841,7 +841,7 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga47a974309e9102f5f08231edc7e7529d
-func Resize(src, dst Mat, sz image.Point, fx, fy float64, interp InterpolationFlags) {
+func Resize(src Mat, dst *Mat, sz image.Point, fx, fy float64, interp InterpolationFlags) {
 	pSize := C.struct_Size{
 		width:  C.int(sz.X),
 		height: C.int(sz.Y),
@@ -867,7 +867,7 @@ func GetRotationMatrix2D(center image.Point, angle, scale float64) Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga0203d9ee5fcd28d40dbc4a1ea4451983
-func WarpAffine(src, dst, m Mat, sz image.Point) {
+func WarpAffine(src Mat, dst *Mat, m Mat, sz image.Point) {
 	pSize := C.struct_Size{
 		width:  C.int(sz.X),
 		height: C.int(sz.Y),
@@ -880,7 +880,7 @@ func WarpAffine(src, dst, m Mat, sz image.Point) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga0203d9ee5fcd28d40dbc4a1ea4451983
-func WarpAffineWithParams(src, dst, m Mat, sz image.Point, flags InterpolationFlags, borderType BorderType, borderValue color.RGBA) {
+func WarpAffineWithParams(src Mat, dst *Mat, m Mat, sz image.Point, flags InterpolationFlags, borderType BorderType, borderValue color.RGBA) {
 	pSize := C.struct_Size{
 		width:  C.int(sz.X),
 		height: C.int(sz.Y),
@@ -898,7 +898,7 @@ func WarpAffineWithParams(src, dst, m Mat, sz image.Point, flags InterpolationFl
 //
 // For further details, please see:
 // https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gaf73673a7e8e18ec6963e3774e6a94b87
-func WarpPerspective(src, dst, m Mat, sz image.Point) {
+func WarpPerspective(src Mat, dst *Mat, m Mat, sz image.Point) {
 	pSize := C.struct_Size{
 		width:  C.int(sz.X),
 		height: C.int(sz.Y),
@@ -937,7 +937,7 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/d50/group__imgproc__colormap.html#gadf478a5e5ff49d8aa24e726ea6f65d15
-func ApplyColorMap(src, dst Mat, colormapType ColormapTypes) {
+func ApplyColorMap(src Mat, dst *Mat, colormapType ColormapTypes) {
 	C.ApplyColorMap(src.p, dst.p, C.int(colormapType))
 }
 
@@ -945,7 +945,7 @@ func ApplyColorMap(src, dst Mat, colormapType ColormapTypes) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/d50/group__imgproc__colormap.html#gacb22288ddccc55f9bd9e6d492b409cae
-func ApplyCustomColorMap(src, dst, customColormap Mat) {
+func ApplyCustomColorMap(src Mat, dst *Mat, customColormap Mat) {
 	C.ApplyCustomColorMap(src.p, dst.p, customColormap.p)
 }
 
@@ -964,7 +964,7 @@ func GetPerspectiveTransform(src, dst []image.Point) Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/3.3.1/d6/d6e/group__imgproc__draw.html#ga746c0625f1781f1ffc9056259103edbc
-func DrawContours(src Mat, contours [][]image.Point, contourIdx int, c color.RGBA, thickness int) {
+func DrawContours(img *Mat, contours [][]image.Point, contourIdx int, c color.RGBA, thickness int) {
 	cntrs := make([]C.struct_Points, len(contours))
 
 	for i, contour := range contours {
@@ -998,5 +998,5 @@ func DrawContours(src Mat, contours [][]image.Point, contourIdx int, c color.RGB
 		val4: C.double(c.A),
 	}
 
-	C.DrawContours(src.p, cContours, C.int(contourIdx), sColor, C.int(thickness))
+	C.DrawContours(img.p, cContours, C.int(contourIdx), sColor, C.int(thickness))
 }

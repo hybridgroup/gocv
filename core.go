@@ -164,7 +164,7 @@ func (m *Mat) CopyTo(dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#a626fe5f96d02525e2604d2ad46dd574f
 //
-func (m *Mat) CopyToWithMask(dst Mat, mask Mat) {
+func (m *Mat) CopyToWithMask(dst *Mat, mask Mat) {
 	C.Mat_CopyToWithMask(m.p, dst.p, mask.p)
 	return
 }
@@ -174,7 +174,7 @@ func (m *Mat) CopyToWithMask(dst Mat, mask Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#adf88c60c5b4980e05bb556080916978b
 //
-func (m *Mat) ConvertTo(dst Mat, mt MatType) {
+func (m *Mat) ConvertTo(dst *Mat, mt MatType) {
 	C.Mat_ConvertTo(m.p, dst.p, C.int(mt))
 	return
 }
@@ -245,7 +245,7 @@ func (m *Mat) Sum() Scalar {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gab55b8d062b7f5587720ede032d34156f
-func LUT(src, wbLUT, dst Mat) {
+func LUT(src, wbLUT Mat, dst *Mat) {
 	C.LUT(src.p, wbLUT.p, dst.p)
 }
 
@@ -474,7 +474,7 @@ func (m *Mat) ToImage() (image.Image, error) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6fef31bc8c4071cbc114a758a2b79c14
 //
-func AbsDiff(src1 Mat, src2 Mat, dst Mat) {
+func AbsDiff(src1, src2 Mat, dst *Mat) {
 	C.Mat_AbsDiff(src1.p, src2.p, dst.p)
 }
 
@@ -483,7 +483,7 @@ func AbsDiff(src1 Mat, src2 Mat, dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga10ac1bfb180e2cfda1701d06c24fdbd6
 //
-func Add(src1 Mat, src2 Mat, dst Mat) {
+func Add(src1, src2 Mat, dst *Mat) {
 	C.Mat_Add(src1.p, src2.p, dst.p)
 }
 
@@ -492,7 +492,7 @@ func Add(src1 Mat, src2 Mat, dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gafafb2513349db3bcff51f54ee5592a19
 //
-func AddWeighted(src1 Mat, alpha float64, src2 Mat, beta float64, gamma float64, dst Mat) {
+func AddWeighted(src1 Mat, alpha float64, src2 Mat, beta float64, gamma float64, dst *Mat) {
 	C.Mat_AddWeighted(src1.p, C.double(alpha),
 		src2.p, C.double(beta), C.double(gamma), dst.p)
 }
@@ -504,7 +504,7 @@ func AddWeighted(src1 Mat, alpha float64, src2 Mat, beta float64, gamma float64,
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga60b4d04b251ba5eb1392c34425497e14
 //
-func BitwiseAnd(src1 Mat, src2 Mat, dst Mat) {
+func BitwiseAnd(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_BitwiseAnd(src1.p, src2.p, dst.p)
 }
 
@@ -513,7 +513,7 @@ func BitwiseAnd(src1 Mat, src2 Mat, dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga0002cf8b418479f4cb49a75442baee2f
 //
-func BitwiseNot(src1 Mat, dst Mat) {
+func BitwiseNot(src1 Mat, dst *Mat) {
 	C.Mat_BitwiseNot(src1.p, dst.p)
 }
 
@@ -523,7 +523,7 @@ func BitwiseNot(src1 Mat, dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gab85523db362a4e26ff0c703793a719b4
 //
-func BitwiseOr(src1 Mat, src2 Mat, dst Mat) {
+func BitwiseOr(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_BitwiseOr(src1.p, src2.p, dst.p)
 }
 
@@ -533,7 +533,7 @@ func BitwiseOr(src1 Mat, src2 Mat, dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga84b2d8188ce506593dcc3f8cd00e8e2c
 //
-func BitwiseXor(src1 Mat, src2 Mat, dst Mat) {
+func BitwiseXor(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_BitwiseXor(src1.p, src2.p, dst.p)
 }
 
@@ -581,7 +581,7 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga017122d912af19d7d0d2cccc2d63819f
 //
-func CalcCovarMatrix(samples Mat, covar Mat, mean Mat, flags int, ctype int) {
+func CalcCovarMatrix(samples Mat, covar *Mat, mean *Mat, flags int, ctype int) {
 	C.Mat_CalcCovarMatrix(samples.p, covar.p, mean.p, C.int(flags), C.int(ctype))
 }
 
@@ -590,7 +590,7 @@ func CalcCovarMatrix(samples Mat, covar Mat, mean Mat, flags int, ctype int) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gac5f92f48ec32cacf5275969c33ee837d
 //
-func CartToPolar(x Mat, y Mat, magnitude Mat, angle Mat, angleInDegrees bool) {
+func CartToPolar(x Mat, y Mat, magnitude *Mat, angle *Mat, angleInDegrees bool) {
 	C.Mat_CartToPolar(x.p, y.p, magnitude.p, angle.p, C.bool(angleInDegrees))
 }
 
@@ -600,7 +600,7 @@ func CartToPolar(x Mat, y Mat, magnitude Mat, angle Mat, angleInDegrees bool) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga303cfb72acf8cbb36d884650c09a3a97
 //
-func Compare(src1 Mat, src2 Mat, dst Mat, ct CompareType) {
+func Compare(src1 Mat, src2 Mat, dst *Mat, ct CompareType) {
 	C.Mat_Compare(src1.p, src2.p, dst.p, C.int(ct))
 }
 
@@ -627,7 +627,7 @@ func CompleteSymm(m Mat, lowerToUpper bool) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga3460e9c9f37b563ab9dd550c4d8c4e7d
 //
-func ConvertScaleAbs(src Mat, dst Mat, alpha float64, beta float64) {
+func ConvertScaleAbs(src Mat, dst *Mat, alpha float64, beta float64) {
 	C.Mat_ConvertScaleAbs(src.p, dst.p, C.double(alpha), C.double(beta))
 }
 
@@ -636,7 +636,7 @@ func ConvertScaleAbs(src Mat, dst Mat, alpha float64, beta float64) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga2ac1049c2c3dd25c2b41bffe17658a36
 //
-func CopyMakeBorder(src Mat, dst Mat, top int, bottom int, left int, right int, borderType int, value color.RGBA) {
+func CopyMakeBorder(src Mat, dst *Mat, top int, bottom int, left int, right int, borderType int, value color.RGBA) {
 
 	cValue := C.struct_Scalar{
 		val1: C.double(value.B),
@@ -692,7 +692,7 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga85aad4d668c01fbd64825f589e3696d4
 //
-func DCT(src Mat, dst Mat, flags DftFlags) {
+func DCT(src Mat, dst *Mat, flags DftFlags) {
 	C.Mat_DCT(src.p, dst.p, C.int(flags))
 }
 
@@ -702,7 +702,7 @@ func DCT(src Mat, dst Mat, flags DftFlags) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gadd6cf9baf2b8b704a11b5f04aaf4f39d
 //
-func DFT(src Mat, dst Mat, flags DftFlags) {
+func DFT(src Mat, dst *Mat, flags DftFlags) {
 	C.Mat_DFT(src.p, dst.p, C.int(flags))
 }
 
@@ -712,7 +712,7 @@ func DFT(src Mat, dst Mat, flags DftFlags) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6db555d30115642fedae0cda05604874
 //
-func Divide(src1 Mat, src2 Mat, dst Mat) {
+func Divide(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_Divide(src1.p, src2.p, dst.p)
 }
 
@@ -722,7 +722,7 @@ func Divide(src1 Mat, src2 Mat, dst Mat) {
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9fa0d58657f60eaa6c71f6fbb40456e3
 //
 
-func Eigen(src Mat, eigenvalues Mat, eigenvectors Mat) bool {
+func Eigen(src Mat, eigenvalues *Mat, eigenvectors *Mat) bool {
 	ret := C.Mat_Eigen(src.p, eigenvalues.p, eigenvectors.p)
 	return bool(ret)
 }
@@ -732,7 +732,7 @@ func Eigen(src Mat, eigenvalues Mat, eigenvectors Mat) bool {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga3e10108e2162c338f1b848af619f39e5
 //
-func Exp(src Mat, dst Mat) {
+func Exp(src Mat, dst *Mat) {
 	C.Mat_Exp(src.p, dst.p)
 }
 
@@ -741,7 +741,7 @@ func Exp(src Mat, dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gacc6158574aa1f0281878c955bcf35642
 //
-func ExtractChannel(src Mat, dst Mat, coi int) {
+func ExtractChannel(src Mat, dst *Mat, coi int) {
 	C.Mat_ExtractChannel(src.p, dst.p, C.int(coi))
 }
 
@@ -750,7 +750,7 @@ func ExtractChannel(src Mat, dst Mat, coi int) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gaed7df59a3539b4cc0fe5c9c8d7586190
 //
-func FindNonZero(src, idx Mat) {
+func FindNonZero(src Mat, idx *Mat) {
 	C.Mat_FindNonZero(src.p, idx.p)
 }
 
@@ -759,7 +759,7 @@ func FindNonZero(src, idx Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gaca7be533e3dac7feb70fc60635adf441
 //
-func Flip(src, dst Mat, flipCode int) {
+func Flip(src Mat, dst *Mat, flipCode int) {
 	C.Mat_Flip(src.p, dst.p, C.int(flipCode))
 }
 
@@ -768,7 +768,7 @@ func Flip(src, dst Mat, flipCode int) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gacb6e64071dffe36434e1e7ee79e7cb35
 //
-func Gemm(src1, src2 Mat, alpha float64, src3 Mat, beta float64, dst Mat, flags int) {
+func Gemm(src1, src2 Mat, alpha float64, src3 Mat, beta float64, dst *Mat, flags int) {
 	C.Mat_Gemm(src1.p, src2.p, C.double(alpha), src3.p, C.double(beta), dst.p, C.int(flags))
 }
 
@@ -787,7 +787,7 @@ func GetOptimalDFTSize(vecsize int) int {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gaab5ceee39e0580f879df645a872c6bf7
 //
-func Hconcat(src1, src2, dst Mat) {
+func Hconcat(src1, src2 Mat, dst *Mat) {
 	C.Mat_Hconcat(src1.p, src2.p, dst.p)
 }
 
@@ -796,7 +796,7 @@ func Hconcat(src1, src2, dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga77b168d84e564c50228b69730a227ef2
 //
-func Idct(src, dst Mat, flags int) {
+func Idct(src Mat, dst *Mat, flags int) {
 	C.Mat_Idct(src.p, dst.p, C.int(flags))
 }
 
@@ -805,7 +805,7 @@ func Idct(src, dst Mat, flags int) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gaa708aa2d2e57a508f968eb0f69aa5ff1
 //
-func Idft(src, dst Mat, flags, nonzeroRows int) {
+func Idft(src Mat, dst *Mat, flags, nonzeroRows int) {
 	C.Mat_Idft(src.p, dst.p, C.int(flags), C.int(nonzeroRows))
 }
 
@@ -814,7 +814,7 @@ func Idft(src, dst Mat, flags, nonzeroRows int) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga48af0ab51e36436c5d04340e036ce981
 //
-func InRange(src, lb, ub, dst Mat) {
+func InRange(src, lb, ub Mat, dst *Mat) {
 	C.Mat_InRange(src.p, lb.p, ub.p, dst.p)
 }
 
@@ -824,7 +824,7 @@ func InRange(src, lb, ub, dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga1d4bd886d35b00ec0b764cb4ce6eb515
 //
-func InsertChannel(src, dst Mat, coi int) {
+func InsertChannel(src Mat, dst *Mat, coi int) {
 	C.Mat_InsertChannel(src.p, dst.p, C.int(coi))
 }
 
@@ -833,7 +833,7 @@ func InsertChannel(src, dst Mat, coi int) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gad278044679d4ecf20f7622cc151aaaa2
 //
-func Invert(src, dst Mat, flags int) float64 {
+func Invert(src Mat, dst *Mat, flags int) float64 {
 	ret := C.Mat_Invert(src.p, dst.p, C.int(flags))
 	return float64(ret)
 }
@@ -843,7 +843,7 @@ func Invert(src, dst Mat, flags int) float64 {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga937ecdce4679a77168730830a955bea7
 //
-func Log(src, dst Mat) {
+func Log(src Mat, dst *Mat) {
 	C.Mat_Log(src.p, dst.p)
 }
 
@@ -852,7 +852,7 @@ func Log(src, dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6d3b097586bca4409873d64a90fe64c3
 //
-func Magnitude(x, y, magnitude Mat) {
+func Magnitude(x, y Mat, magnitude *Mat) {
 	C.Mat_Magnitude(x.p, y.p, magnitude.p)
 }
 
@@ -861,7 +861,7 @@ func Magnitude(x, y, magnitude Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gacc40fa15eac0fb83f8ca70b7cc0b588d
 //
-func Max(src1, src2, dst Mat) {
+func Max(src1, src2 Mat, dst *Mat) {
 	C.Mat_Max(src1.p, src2.p, dst.p)
 }
 
@@ -870,7 +870,7 @@ func Max(src1, src2, dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#ga846c858f4004d59493d7c6a4354b301d
 //
-func MeanStdDev(src Mat, dst Mat, dstStdDev Mat) {
+func MeanStdDev(src Mat, dst *Mat, dstStdDev *Mat) {
 	C.Mat_MeanStdDev(src.p, dst.p, dstStdDev.p)
 }
 
@@ -879,7 +879,7 @@ func MeanStdDev(src Mat, dst Mat, dstStdDev Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga7d7b4d6c6ee504b30a20b1680029c7b4
 //
-func Merge(mv []Mat, dst Mat) {
+func Merge(mv []Mat, dst *Mat) {
 	cMatArray := make([]C.Mat, len(mv))
 	for i, r := range mv {
 		cMatArray[i] = r.p
@@ -917,7 +917,7 @@ func MinMaxLoc(input Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga979d898a58d7f61c53003e162e7ad89f
 //
-func Multiply(src1 Mat, src2 Mat, dst Mat) {
+func Multiply(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_Multiply(src1.p, src2.p, dst.p)
 }
 
@@ -962,7 +962,7 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga87eef7ee3970f86906d69a92cbf064bd
 //
-func Normalize(src Mat, dst Mat, alpha float64, beta float64, typ NormType) {
+func Normalize(src Mat, dst *Mat, alpha float64, beta float64, typ NormType) {
 	C.Mat_Normalize(src.p, dst.p, C.double(alpha), C.double(beta), C.int(typ))
 }
 
@@ -1014,7 +1014,7 @@ func Split(src Mat) (mv []Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gaa0f00d98b4b5edeaeb7b8333b2de353b
 //
-func Subtract(src1 Mat, src2 Mat, dst Mat) {
+func Subtract(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_Subtract(src1.p, src2.p, dst.p)
 }
 
@@ -1023,7 +1023,7 @@ func Subtract(src1 Mat, src2 Mat, dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/3.4.0/d2/de8/group__core__array.html#gaf0d056b5bd1dc92500d6f6cf6bac41ef
 //
-func Pow(src Mat, power float64, dst Mat) {
+func Pow(src Mat, power float64, dst *Mat) {
 	C.Mat_Pow(src.p, C.double(power), dst.p)
 }
 

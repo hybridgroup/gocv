@@ -36,7 +36,7 @@ func (b *BackgroundSubtractorMOG2) Close() error {
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df6/classcv_1_1BackgroundSubtractor.html#aa735e76f7069b3fa9c3f32395f9ccd21
 //
-func (b *BackgroundSubtractorMOG2) Apply(src Mat, dst Mat) {
+func (b *BackgroundSubtractorMOG2) Apply(src Mat, dst *Mat) {
 	C.BackgroundSubtractorMOG2_Apply((C.BackgroundSubtractorMOG2)(b.p), src.p, dst.p)
 	return
 }
@@ -70,7 +70,7 @@ func (k *BackgroundSubtractorKNN) Close() error {
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df6/classcv_1_1BackgroundSubtractor.html#aa735e76f7069b3fa9c3f32395f9ccd21
 //
-func (k *BackgroundSubtractorKNN) Apply(src Mat, dst Mat) {
+func (k *BackgroundSubtractorKNN) Apply(src Mat, dst *Mat) {
 	C.BackgroundSubtractorKNN_Apply((C.BackgroundSubtractorKNN)(k.p), src.p, dst.p)
 	return
 }
@@ -81,7 +81,7 @@ func (k *BackgroundSubtractorKNN) Apply(src Mat, dst Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga5d10ebbd59fe09c5f650289ec0ece5af
 //
-func CalcOpticalFlowFarneback(prevImg Mat, nextImg Mat, flow Mat, pyrScale float64, levels int, winsize int,
+func CalcOpticalFlowFarneback(prevImg Mat, nextImg Mat, flow *Mat, pyrScale float64, levels int, winsize int,
 	iterations int, polyN int, polySigma float64, flags int) {
 	C.CalcOpticalFlowFarneback(prevImg.p, nextImg.p, flow.p, C.double(pyrScale), C.int(levels), C.int(winsize),
 		C.int(iterations), C.int(polyN), C.double(polySigma), C.int(flags))
@@ -94,7 +94,7 @@ func CalcOpticalFlowFarneback(prevImg Mat, nextImg Mat, flow Mat, pyrScale float
 // For further details, please see:
 // https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga473e4b886d0bcc6b65831eb88ed93323
 //
-func CalcOpticalFlowPyrLK(prevImg Mat, nextImg Mat, prevPts Mat, nextPts Mat, status Mat, err Mat) {
+func CalcOpticalFlowPyrLK(prevImg Mat, nextImg Mat, prevPts Mat, nextPts Mat, status *Mat, err *Mat) {
 	C.CalcOpticalFlowPyrLK(prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p, err.p)
 	return
 }

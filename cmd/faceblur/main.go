@@ -60,7 +60,7 @@ func main() {
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
-		if ok := webcam.Read(img); !ok {
+		if ok := webcam.Read(&img); !ok {
 			fmt.Printf("cannot read device %d\n", deviceID)
 			return
 		}
@@ -77,7 +77,7 @@ func main() {
 			imgFace := img.Region(r)
 
 			// blur face
-			gocv.GaussianBlur(imgFace, imgFace, image.Pt(75, 75), 0, 0, gocv.BorderDefault)
+			gocv.GaussianBlur(imgFace, &imgFace, image.Pt(75, 75), 0, 0, gocv.BorderDefault)
 			imgFace.Close()
 		}
 

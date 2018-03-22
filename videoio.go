@@ -202,9 +202,9 @@ func (v *VideoCapture) IsOpened() bool {
 	return isOpened != 0
 }
 
-// Read read the next frame from the VideoCapture to the Mat passed in
-// as the parem. It returns false if the VideoCapture cannot read frame.
-func (v *VideoCapture) Read(m Mat) bool {
+// Read reads the next frame from the VideoCapture to the Mat passed in
+// as the param. It returns false if the VideoCapture cannot read frame.
+func (v *VideoCapture) Read(m *Mat) bool {
 	return C.VideoCapture_Read(v.p, m.p) != 0
 }
 

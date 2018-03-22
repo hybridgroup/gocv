@@ -92,7 +92,7 @@ func main() {
 	fmt.Printf("Start reading camera device: %v\n", deviceID)
 
 	for {
-		if ok := webcam.Read(img); !ok {
+		if ok := webcam.Read(&img); !ok {
 			fmt.Printf("Error cannot read device %d\n", deviceID)
 			return
 		}
@@ -117,7 +117,7 @@ func main() {
 
 		// display classification
 		status = fmt.Sprintf("description: %v, maxVal: %v\n", descriptions[maxLoc.X], maxVal)
-		gocv.PutText(img, status, image.Pt(10, 20), gocv.FontHersheyPlain, 1.2, statusColor, 2)
+		gocv.PutText(&img, status, image.Pt(10, 20), gocv.FontHersheyPlain, 1.2, statusColor, 2)
 
 		blob.Close()
 		prob.Close()
