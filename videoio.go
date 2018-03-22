@@ -246,7 +246,9 @@ func VideoWriterFile(name string, codec string, fps float64, width int, height i
 	cCodec := C.CString(codec)
 	defer C.free(unsafe.Pointer(cCodec))
 
-	C.VideoWriter_Open(vw.p, cName, cCodec, C.double(fps), C.int(width), C.int(height))
+	if !bool(C.VideoWriter_Open(vw.p, cName, cCodec, C.double(fps), C.int(width), C.int(height))) {
+		err = errors.New("VideoWriterFile Open error")
+	}
 	return
 }
 
