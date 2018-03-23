@@ -64,6 +64,20 @@ Your pull requests will be greatly appreciated!
 
 - [ ] imgproc. Image processing
     - [ ] **Image Filtering - WORK STARTED**
+        - [ ] [boxFilter](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gad533230ebf2d42509547d514f7d3fbc3)
+        - [ ] [buildPyramid](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gacfdda2bc1ac55e96de7e9f0bce7238c0)
+        - [ ] [filter2D](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga27c049795ce870216ddfb366086b5a04)
+        - [ ] [getDerivKernels](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga6d6c23f7bd3f5836c31cfae994fc4aea)
+        - [ ] [getGaborKernel](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gae84c92d248183bd92fa713ce51cc3599)
+        - [ ] [getGaussianKernel](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gac05a120c1ae92a6060dd0db190a61afa)
+        - [ ] [morphologyDefaultBorderValue](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga94756fad83d9d24d29c9bf478558c40a)
+        - [ ] [morphologyExWithParams](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga67493776e3ad1a3df63883829375201f)
+        - [ ] [pyrMeanShiftFiltering](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga9fabdce9543bd602445f5db3827e4cc0)
+        - [ ] [sepFilter2D](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga910e29ff7d7b105057d1625a4bf6318d)
+        - [ ] [Sobel](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gacea54f142e81b6758cb6f375ce782c8d)
+        - [ ] [spatialGradient](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga405d03b20c782b65a4daf54d233239a2)
+        - [ ] [sqrBoxFilter](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga045028184a9ef65d7d2579e5c4bff6c0)
+    
     - [ ] **Geometric Image Transformations - WORK STARTED**
     - [ ] **Miscellaneous Image Transformations - WORK STARTED**
     - [ ] **Drawing Functions - WORK STARTED**
@@ -80,7 +94,7 @@ Your pull requests will be greatly appreciated!
 - [X] **highgui. High-level GUI**
 - [ ] **video. Video Analysis - WORK STARTED**
     - [X] **Motion Analysis**
-    - [ ] **Object Tracking - WORK STARTED** (https://docs.opencv.org/master/dc/d6b/group__video__track.html)
+    - [ ] **Object Tracking - WORK STARTED**
         - [ ] [buildOpticalFlowPyramid] https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga86640c1c470f87b2660c096d2b22b2ce
         - [ ] [estimateRigidTransform] https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga762cbe5efd52cf078950196f3c616d48
         - [ ] [findTransformECC] https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga7ded46f9a55c0364c92ccd2019d43e3a
