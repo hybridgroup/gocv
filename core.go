@@ -65,7 +65,8 @@ const (
 	MatTypeCV8UC4 = MatTypeCV8U + MatChannels4
 )
 
-// CompareType is used for Compare operations to indicate which kind of comparison to use.
+// CompareType is used for Compare operations to indicate which kind of
+// comparison to use.
 type CompareType int
 
 const (
@@ -656,7 +657,7 @@ func CopyMakeBorder(src Mat, dst *Mat, top int, bottom int, left int, right int,
 	C.Mat_CopyMakeBorder(src.p, dst.p, C.int(top), C.int(bottom), C.int(left), C.int(right), C.int(borderType), cValue)
 }
 
-// DftFlags are Dft / Dct related flags.
+// DftFlags represents a DFT or DCT flag.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gaf4dde112b483b38175621befedda1f1c
@@ -664,7 +665,7 @@ func CopyMakeBorder(src Mat, dst *Mat, top int, bottom int, left int, right int,
 type DftFlags int
 
 const (
-	// DftForward perform forward 1D or 2D dft or dct.
+	// DftForward performs forward 1D or 2D dft or dct.
 	DftForward DftFlags = 0
 
 	// DftInverse performs an inverse 1D or 2D transform.
