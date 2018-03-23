@@ -7,10 +7,10 @@
 // http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel
 //
 // Also, you will need the prototxt file:
-// https://raw.githubusercontent.com/opencv/opencv/master/samples/data/dnn/bvlc_googlenet.prototxt
+// https://raw.githubusercontent.com/opencv/opencv_extra/master/testdata/dnn/bvlc_googlenet.prototxt
 //
 // And the words text file with the descriptions:
-// https://raw.githubusercontent.com/opencv/opencv/master/samples/data/dnn/synset_words.txt
+// https://raw.githubusercontent.com/opencv/opencv/master/samples/data/dnn/classification_classes_ILSVRC2012.txt
 //
 // How to run:
 //
