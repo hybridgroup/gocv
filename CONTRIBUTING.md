@@ -1,10 +1,12 @@
 # How to contribute
 
-We would like your help to make this project better, so we appreciate any contributions. See if one of the following descriptions matches you.
+Thank you for your interest in improving GoCV.
+
+We would like your help to make this project better, so we appreciate any contributions. See if one of the following descriptions matches your situation:
 
 ### Newcomer to GoCV, to OpenCV, or to computer vision in general
 
-We'd love to get your feedback on getting started with GoCV. Run into any difficulty, confusion, or anything else? We want to know, so we can help the next people. Please open a Github issue with your questions, or get in touch directly with us.
+We'd love to get your feedback on getting started with GoCV. Run into any difficulty, confusion, or anything else? You are not alone. We want to know about your experience, so we can help the next people. Please open a Github issue with your questions, or get in touch directly with us.
 
 ### Something in GoCV is not working as you expect
 
@@ -53,4 +55,19 @@ XYZ(p1, p2)
 XYZWithParams(p2, p2, p3, p4)
 ```
 
-Thank you!
+## How to run tests
+
+You will need to run `source env.sh` or `env.cmd` depending on your OS one time before you can run the Go unit tests.
+
+Then you can run:
+
+```
+go test .
+go test ./contrib/.
+```
+
+If you are using the Intel CV SDK, you can run those tests using:
+
+```
+go test ./pvl/.
+```
