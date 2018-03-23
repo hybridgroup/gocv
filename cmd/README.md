@@ -34,6 +34,10 @@ Opens a video capture device, then streams MJPEG from it that you can view in an
 
 Opens a video capture device, then processes it looking for motion, human or otherwise.
 
+## Pose
+
+Advanced Deep Neural Network example does pose detection.
+
 ## Saveimage
 
 Capture a single frame from a connected webcam, then save it to an image file on disk.
@@ -45,6 +49,10 @@ Capture video from a connected camera, and save 100 frames worth to a video file
 ## Showimage
 
 Open an image file from disk, then display it in a window.
+
+## SSD-Facedetect
+
+Advanced Deep Neural Network example uses SSD classifier to detect faces.
 
 ## TF Classifier
 
