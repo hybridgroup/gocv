@@ -936,3 +936,22 @@ func TestGetVecfAt(t *testing.T) {
 		}
 	}
 }
+
+func TestGetVeciAt(t *testing.T) {
+	var cases = []struct {
+		m            Mat
+		expectedSize int
+	}{
+		{NewMatWithSize(1, 1, MatTypeCV8UC1), 1},
+		{NewMatWithSize(1, 1, MatTypeCV8UC2), 2},
+		{NewMatWithSize(1, 1, MatTypeCV8UC3), 3},
+		{NewMatWithSize(1, 1, MatTypeCV8UC4), 4},
+	}
+
+	for _, c := range cases {
+		vec := c.m.GetVeciAt(0, 0)
+		if len := len(vec); len != c.expectedSize {
+			t.Errorf("TestGetVeciAt: expected %d, got: %d.", c.expectedSize, len)
+		}
+	}
+}

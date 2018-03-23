@@ -1093,6 +1093,22 @@ func (m *Mat) GetVecfAt(row int, col int) Vecf {
 	return v
 }
 
+// Veci is a generic vector of integers.
+type Veci []int32
+
+// GetVeciAt returns a vector of integers. Its size corresponds to the number
+// of channels of the Mat.
+func (m *Mat) GetVeciAt(row int, col int) Veci {
+	ch := m.Channels()
+	v := make(Veci, ch)
+
+	for c := 0; c < ch; c++ {
+		v[c] = m.GetIntAt(row, col*ch+c)
+	}
+
+	return v
+}
+
 func toByteArray(b []byte) C.struct_ByteArray {
 	return C.struct_ByteArray{
 		data:   (*C.char)(unsafe.Pointer(&b[0])),
