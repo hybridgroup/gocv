@@ -37,7 +37,7 @@ func TestIMWriteWithParams(t *testing.T) {
 		t.Error("Invalid read of Mat in IMWrite test")
 	}
 
-	result := IMWriteWithParams(tmpfn, img, []int{ImwriteJpegQuality, 60})
+	result := IMWriteWithParams(tmpfn, img, []int{IMWriteJpegQuality, 60})
 	if !result {
 		t.Error("Invalid write of Mat in IMWrite test")
 	}

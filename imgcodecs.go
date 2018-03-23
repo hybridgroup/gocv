@@ -61,61 +61,67 @@ const (
 	// IMReadIgnoreOrientation do not rotate the image according to EXIF's orientation flag.
 	IMReadIgnoreOrientation = 128
 
-	// For JPEG, it can be a quality from 0 to 100 (the higher is the better). Default value is 95.
-	ImwriteJpegQuality = 1
+	//IMWriteJpegQuality is the quality from 0 to 100 for JPEG (the higher is the better). Default value is 95.
+	IMWriteJpegQuality = 1
 
-	// Enable JPEG features, 0 or 1, default is False.
-	ImwriteJpegProgressive = 2
+	// IMWriteJpegProgressive enables JPEG progressive feature, 0 or 1, default is False.
+	IMWriteJpegProgressive = 2
 
-	// Enable JPEG features, 0 or 1, default is False.
-	ImwriteJpegOptimize = 3
+	// IMWriteJpegOptimize enables JPEG optimization, 0 or 1, default is False.
+	IMWriteJpegOptimize = 3
 
-	// JPEG restart interval, 0 - 65535, default is 0 - no restart.
-	ImwriteJpegRstInterval = 4
+	// IMWriteJpegRstInterval is the JPEG restart interval, 0 - 65535, default is 0 - no restart.
+	IMWriteJpegRstInterval = 4
 
-	// Separate luma quality level, 0 - 100, default is 0 - don't use.
-	ImwriteJpegLumaQuality = 5
+	// IMWriteJpegLumaQuality separates luma quality level, 0 - 100, default is 0 - don't use.
+	IMWriteJpegLumaQuality = 5
 
-	// Separate chroma quality level, 0 - 100, default is 0 - don't use.
-	ImwriteJpegChromaQuality = 6
+	// IMWriteJpegChromaQuality separates chroma quality level, 0 - 100, default is 0 - don't use.
+	IMWriteJpegChromaQuality = 6
 
-	// For PNG, it can be the compression level from 0 to 9. A higher value means a smaller size and longer compression time.
+	// IMWritePngCompression is the compression level from 0 to 9 for PNG. A
+	// higher value means a smaller size and longer compression time.
 	// If specified, strategy is changed to IMWRITE_PNG_STRATEGY_DEFAULT (Z_DEFAULT_STRATEGY).
 	// Default value is 1 (best speed setting).
-	ImwritePngCompression = 16
+	IMWritePngCompression = 16
 
-	// One of cv::ImwritePNGFlags, default is IMWRITE_PNG_STRATEGY_RLE.
-	ImwritePngStrategy = 17
+	// IMWritePngStrategy is one of cv::IMWritePNGFlags, default is IMWRITE_PNG_STRATEGY_RLE.
+	IMWritePngStrategy = 17
 
-	// Binary level PNG, 0 or 1, default is 0.
-	ImwritePngBilevel = 18
+	// IMWritePngBilevel is the binary level PNG, 0 or 1, default is 0.
+	IMWritePngBilevel = 18
 
-	// For PPM, PGM, or PBM, it can be a binary format flag, 0 or 1. Default value is 1.
-	ImwritePxmBinary = 32
+	// IMWritePxmBinary for PPM, PGM, or PBM can be a binary format flag, 0 or 1. Default value is 1.
+	IMWritePxmBinary = 32
 
-	// For WEBP, it can be a quality from 1 to 100 (the higher is the better).
-	// By default (without any parameter) and for quality above 100 the lossless compression is used.
-	ImwriteWebpQuality = 64
+	// IMWriteWebpQuality is the quality from 1 to 100 for WEBP (the higher is
+	// the better). By default (without any parameter) and for quality above
+	// 100 the lossless compression is used.
+	IMWriteWebpQuality = 64
 
-	// For PAM, sets the TUPLETYPE field to the corresponding string value that is defined for the format.
-	ImwritePamTupletype = 128
+	// IMWritePamTupletype sets the TUPLETYPE field to the corresponding string
+	// value that is defined for the format.
+	IMWritePamTupletype = 128
 
-	// Use this value for normal data.
-	ImwritePngStrategyDefault = 0
+	// IMWritePngStrategyDefault is the value to use for normal data.
+	IMWritePngStrategyDefault = 0
 
-	// Use this value for data produced by a filter (or predictor).
-	// Filtered data consists mostly of small values with a somewhat random distribution.
-	// In this case, the compression algorithm is tuned to compress them better.
-	ImwritePngStrategyFiltered = 1
+	// IMWritePngStrategyFiltered is the value to use for data produced by a
+	// filter (or predictor). Filtered data consists mostly of small values
+	// with a somewhat random distribution. In this case, the compression
+	// algorithm is tuned to compress them better.
+	IMWritePngStrategyFiltered = 1
 
-	// Use this value to force Huffman encoding only (no string match).
-	ImwritePngStrategyHuffmanOnly = 2
+	// IMWritePngStrategyHuffmanOnly forces Huffman encoding only (no string match).
+	IMWritePngStrategyHuffmanOnly = 2
 
-	// Use this value to limit match distances to one (run-length encoding).
-	ImwritePngStrategyRle = 3
+	// IMWritePngStrategyRle is the value to use to limit match distances to
+	// one (run-length encoding).
+	IMWritePngStrategyRle = 3
 
-	// Using this value prevents the use of dynamic Huffman codes, allowing for a simpler decoder for special applications.
-	ImwritePngStrategyFixed = 4
+	// IMWritePngStrategyFixed is the value to prevent the use of dynamic
+	// Huffman codes, allowing for a simpler decoder for special applications.
+	IMWritePngStrategyFixed = 4
 )
 
 // IMRead reads an image from a file into a Mat.
@@ -145,8 +151,8 @@ func IMWrite(name string, img Mat) bool {
 	return bool(C.Image_IMWrite(cName, img.p))
 }
 
-// IMWrite writes a Mat to an image file.
-// With that func you can pass compression parameters
+// IMWriteWithParams writes a Mat to an image file. With that func you can
+// pass compression parameters.
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d4/da8/group__imgcodecs.html#gabbc7ef1aa2edfaa87772f1202d67e0ce
@@ -168,12 +174,16 @@ func IMWriteWithParams(name string, img Mat, params []int) bool {
 	return bool(C.Image_IMWrite_WithParams(cName, img.p, paramsVector))
 }
 
+// FileExt represents a file extension.
 type FileExt string
 
 const (
-	PNGFileExt  FileExt = ".png"
+	// PNGFileExt is the file extension for PNG.
+	PNGFileExt FileExt = ".png"
+	// JPEGFileExt is the file extension for JPEG.
 	JPEGFileExt FileExt = ".jpg"
-	GIFFileExt  FileExt = ".gif"
+	// GIFFileExt is the file extension for GIF.
+	GIFFileExt FileExt = ".gif"
 )
 
 // IMEncode encodes an image Mat into a memory buffer.
