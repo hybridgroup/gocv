@@ -220,6 +220,15 @@ void Circle(Mat img, Point center, int radius, Scalar color, int thickness) {
     cv::circle(*img, p1, radius, c, thickness);
 }
 
+void Ellipse(Mat img, Point center, Point axes, double angle, double
+             startAngle, double endAngle, Scalar color, int thickness) {
+    cv::Point p1(center.x, center.y);
+    cv::Point p2(axes.x, axes.y);
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::ellipse(*img, p1, p2, angle, startAngle, endAngle, c, thickness);
+}
+
 void Line(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
     cv::Point p1(pt1.x, pt1.y);
     cv::Point p2(pt2.x, pt2.y);
@@ -230,8 +239,34 @@ void Line(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
 
 void Rectangle(Mat img, Rect r, Scalar color, int thickness) {
     cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
-    cv::rectangle(*img, cv::Point(r.x, r.y), cv::Point(r.x + r.width, r.y + r.height),
-                  c, thickness, CV_AA);
+    cv::rectangle(
+        *img,
+        cv::Point(r.x, r.y),
+        cv::Point(r.x + r.width, r.y + r.height),
+        c,
+        thickness,
+        CV_AA
+    );
+}
+
+void FillPoly(Mat img, Contours points, Scalar color) {
+    std::vector<std::vector<cv::Point> > pts;
+
+    for (size_t i = 0; i < points.length; i++) {
+        Contour contour = points.contours[i];
+
+        std::vector<cv::Point> cntr;
+
+        for (size_t i = 0; i < contour.length; i++) {
+            cntr.push_back(cv::Point(contour.points[i].x, contour.points[i].y));
+        }
+
+        pts.push_back(cntr);
+    }
+
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::fillPoly(*img, pts, c);
 }
 
 struct Size GetTextSize(const char* text, int fontFace, double fontScale, int thickness) {

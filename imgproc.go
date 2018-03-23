@@ -680,6 +680,31 @@ func Circle(img *Mat, center image.Point, radius int, c color.RGBA, thickness in
 	C.Circle(img.p, pc, C.int(radius), sColor, C.int(thickness))
 }
 
+// Ellipse draws a simple or thick elliptic arc or fills an ellipse sector.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga28b2267d35786f5f890ca167236cbc69
+//
+func Ellipse(img *Mat, center, axes image.Point, angle, startAngle, endAngle float64, c color.RGBA, thickness int) {
+	pc := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+	pa := C.struct_Point{
+		x: C.int(axes.X),
+		y: C.int(axes.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.Ellipse(img.p, pc, pa, C.double(angle), C.double(startAngle), C.double(endAngle), sColor, C.int(thickness))
+}
+
 // Line draws a line segment connecting two points.
 //
 // For further details, please see:
@@ -728,6 +753,47 @@ func Rectangle(img *Mat, r image.Rectangle, c color.RGBA, thickness int) {
 	}
 
 	C.Rectangle(img.p, cRect, sColor, C.int(thickness))
+}
+
+// FillPoly fills the area bounded by one or more polygons.
+//
+// For more information, see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf30888828337aa4c6b56782b5dfbd4b7
+func FillPoly(img *Mat, pts [][]image.Point, c color.RGBA) {
+	points := make([]C.struct_Points, len(pts))
+
+	for i, pt := range pts {
+		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
+		defer C.free(unsafe.Pointer(p))
+
+		pa := (*[1 << 30]C.struct_Point)(unsafe.Pointer(p))
+
+		for j, point := range pt {
+			(*pa)[j] = C.struct_Point{
+				x: C.int(point.X),
+				y: C.int(point.Y),
+			}
+		}
+
+		points[i] = C.struct_Points{
+			points: (*C.Point)(p),
+			length: C.int(len(pt)),
+		}
+	}
+
+	cPoints := C.struct_Contours{
+		contours: (*C.struct_Points)(&points[0]),
+		length:   C.int(len(pts)),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.FillPoly(img.p, cPoints, sColor)
 }
 
 // HersheyFont are the font libraries included in OpenCV.
