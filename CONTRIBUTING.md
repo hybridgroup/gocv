@@ -10,11 +10,15 @@ We'd love to get your feedback on getting started with GoCV. Run into any diffic
 
 ### Something in GoCV is not working as you expect
 
-Please open a Github issue with your problem.
+Please open a Github issue with your problem, and we will be happy to assist.
 
 ### Something you want/need from OpenCV does not appear to be in GoCV
 
 We probably have not implemented it yet. Please take a look at our [ROADMAP.md](ROADMAP.md). Your pull request adding the functionality to GoCV would be greatly appreciated.
+
+### You found some Python code on the Internet that performs some computer vision task, and you want to do it using GoCV 
+
+Please open a Github issue with your needs, and we can see what we can do.
 
 ## How to use our Github repository
 
