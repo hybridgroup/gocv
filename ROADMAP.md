@@ -63,7 +63,7 @@ Your pull requests will be greatly appreciated!
     - [ ] OpenCL support 
 
 - [ ] imgproc. Image processing
-    - [ ] **Image Filtering - WORK STARTED**
+    - [ ] **Image Filtering - WORK STARTED** The following functions still need implementation:
         - [ ] [boxFilter](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gad533230ebf2d42509547d514f7d3fbc3)
         - [ ] [buildPyramid](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gacfdda2bc1ac55e96de7e9f0bce7238c0)
         - [ ] [filter2D](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga27c049795ce870216ddfb366086b5a04)
@@ -78,7 +78,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [spatialGradient](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga405d03b20c782b65a4daf54d233239a2)
         - [ ] [sqrBoxFilter](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga045028184a9ef65d7d2579e5c4bff6c0)
     
-    - [ ] **Geometric Image Transformations - WORK STARTED**
+    - [ ] **Geometric Image Transformations - WORK STARTED** The following functions still need implementation:
         - [ ] [convertMaps](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#ga9156732fa8f01be9ebd1a194f2728b7f)
         - [ ] [getAffineTransform](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#ga8f6d378f9f8eebb5cb55cd3ae295a999)
         - [ ] [getDefaultNewCameraMatrix](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#ga744529385e88ef7bc841cbe04b35bfbf)
@@ -92,7 +92,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [undistort](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#ga69f2545a8b62a6b0fc2ee060dc30559d)
         - [ ] [undistortPoints](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#ga55c716492470bfe86b0ee9bf3a1f0f7e)
 
-    - [ ] **Miscellaneous Image Transformations - WORK STARTED**
+    - [ ] **Miscellaneous Image Transformations - WORK STARTED** The following functions still need implementation:
         - [ ] [cvtColorTwoPlane](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8e873314e72a1a6c0252375538fbf753)
         - [ ] [distanceTransform](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8a0b7fdfcb7a13dde018988ba3a43042)
         - [ ] [floodFill](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#gaf1f55a048f8a45bc3383586e80b1f0d0)
@@ -100,7 +100,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [integral](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga97b87bec26908237e8ba0f6e96d23e28)
         - [ ] [watershed](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga3267243e4d3f95165d55a618c65ac6e1)
 
-    - [ ] **Drawing Functions - WORK STARTED**
+    - [ ] **Drawing Functions - WORK STARTED** The following functions still need implementation:
         - [ ] [clipLine](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf483cb46ad6b049bc35ec67052ef1c2c)
         - [ ] [drawMarker](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga482fa7b0f578fcdd8a174904592a6250)
         - [ ] [ellipse2Poly](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga727a72a3f6a625a2ae035f957c61051f)
@@ -111,7 +111,7 @@ Your pull requests will be greatly appreciated!
     - [ ] ColorMaps in OpenCV
     - [ ] Planar Subdivision
     - [ ] Histograms
-    - [ ] **Structural Analysis and Shape Descriptors - WORK STARTED**
+    - [ ] **Structural Analysis and Shape Descriptors - WORK STARTED** The following functions still need implementation:
         - [ ] [boxPoints](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf78d467e024b4d7936cf9397185d2f5c)
         - [ ] [connectedComponents](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaedef8c7340499ca391d459122e51bef5)
         - [ ] [connectedComponentsWithStats](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga107a78bf7cd25dec05fb4dfc5c9e765f)
@@ -130,7 +130,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [rotatedRectangleIntersection](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8740e7645628c59d238b0b22c2abe2d4)
 
     - [ ] Motion Analysis and Object Tracking
-    - [ ] **Feature Detection - WORK STARTED**
+    - [ ] **Feature Detection - WORK STARTED** The following functions still need implementation:
         - [ ] [cornerEigenValsAndVecs](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga4055896d9ef77dd3cacf2c5f60e13f1c)
         - [ ] [cornerHarris](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#gac1fc3598018010880e370e2f709b4345)
         - [ ] [cornerMinEigenVal](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga3dbce297c1feb859ee36707e1003e0a8)
@@ -145,7 +145,7 @@ Your pull requests will be greatly appreciated!
 - [X] **highgui. High-level GUI**
 - [ ] **video. Video Analysis - WORK STARTED**
     - [X] **Motion Analysis**
-    - [ ] **Object Tracking - WORK STARTED**
+    - [ ] **Object Tracking - WORK STARTED** The following functions still need implementation:
         - [ ] [buildOpticalFlowPyramid](https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga86640c1c470f87b2660c096d2b22b2ce)
         - [ ] [estimateRigidTransform](https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga762cbe5efd52cf078950196f3c616d48)
         - [ ] [findTransformECC](https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga7ded46f9a55c0364c92ccd2019d43e3a)
