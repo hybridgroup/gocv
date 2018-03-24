@@ -833,3 +833,35 @@ func TestDrawContours(t *testing.T) {
 		t.Errorf("TestDrawContours(): contour has not been drawn (value = %v, want = %v)", v, 255)
 	}
 }
+
+func TestEllipse(t *testing.T) {
+	img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+	defer img.Close()
+
+	white := color.RGBA{255, 255, 255, 0}
+	Ellipse(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white, 2)
+
+	if v := img.GetUCharAt(24, 50); v != 255 {
+		t.Errorf("TestEllipse(): wrong pixel value = %v, want = %v", v, 255)
+	}
+}
+
+func TestFillPoly(t *testing.T) {
+	img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+	defer img.Close()
+
+	white := color.RGBA{255, 255, 255, 0}
+	pts := [][]image.Point{
+		{
+			image.Pt(10, 10),
+			image.Pt(10, 20),
+			image.Pt(20, 20),
+			image.Pt(20, 10),
+		},
+	}
+	FillPoly(&img, pts, white)
+
+	if v := img.GetUCharAt(10, 10); v != 255 {
+		t.Errorf("TestFillPoly(): wrong pixel value = %v, want = %v", v, 255)
+	}
+}
