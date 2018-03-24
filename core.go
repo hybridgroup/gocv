@@ -580,7 +580,7 @@ func ConvertScaleAbs(src Mat, dst Mat, alpha float64, beta float64) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga2ac1049c2c3dd25c2b41bffe17658a36
 //
-func CopyMakeBorder(src Mat, dst Mat, top int, bottom int, left int, right int, borderType int, value color.RGBA) {
+func CopyMakeBorder(src Mat, dst Mat, top int, bottom int, left int, right int, bt BorderType, value color.RGBA) {
 
 	cValue := C.struct_Scalar{
 		val1: C.double(value.B),
@@ -589,7 +589,7 @@ func CopyMakeBorder(src Mat, dst Mat, top int, bottom int, left int, right int, 
 		val4: C.double(value.A),
 	}
 
-	C.Mat_CopyMakeBorder(src.p, dst.p, C.int(top), C.int(bottom), C.int(left), C.int(right), C.int(borderType), cValue)
+	C.Mat_CopyMakeBorder(src.p, dst.p, C.int(top), C.int(bottom), C.int(left), C.int(right), C.int(bt), cValue)
 }
 
 //
