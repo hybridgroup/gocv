@@ -12,7 +12,7 @@ Your pull requests will be greatly appreciated!
 
 ## Modules list
 
-- [ ] core. Core functionality
+- [ ] **core. Core functionality - WORK STARTED**
     - [ ] **Basic structures - WORK STARTED**
     - [ ] **Operations on arrays - WORK STARTED**. The following functions still need implementation:
         - [ ] [checkRange](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga2bd19d89cae59361416736f87e3c7a64)
@@ -62,7 +62,7 @@ Your pull requests will be greatly appreciated!
     - [ ] Optimization Algorithms
     - [ ] OpenCL support 
 
-- [ ] imgproc. Image processing
+- [ ] **imgproc. Image processing - WORK STARTED**
     - [ ] **Image Filtering - WORK STARTED** The following functions still need implementation:
         - [ ] [boxFilter](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gad533230ebf2d42509547d514f7d3fbc3)
         - [ ] [buildPyramid](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gacfdda2bc1ac55e96de7e9f0bce7238c0)
