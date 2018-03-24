@@ -79,15 +79,66 @@ Your pull requests will be greatly appreciated!
         - [ ] [sqrBoxFilter](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga045028184a9ef65d7d2579e5c4bff6c0)
     
     - [ ] **Geometric Image Transformations - WORK STARTED**
+        - [ ] [convertMaps](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#ga9156732fa8f01be9ebd1a194f2728b7f)
+        - [ ] [getAffineTransform](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#ga8f6d378f9f8eebb5cb55cd3ae295a999)
+        - [ ] [getDefaultNewCameraMatrix](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#ga744529385e88ef7bc841cbe04b35bfbf)
+        - [ ] [getRectSubPix](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#ga77576d06075c1a4b6ba1a608850cd614)
+        - [ ] [initUndistortRectifyMap](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#ga7dfb72c9cf9780a347fbe3d1c47e5d5a)
+        - [ ] [initWideAngleProjMap](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#gaceb049ec48898d1dadd5b50c604429c8)
+        - [ ] [invertAffineTransform](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#ga57d3505a878a7e1a636645727ca08f51)
+        - [ ] [linearPolar](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#gaa38a6884ac8b6e0b9bed47939b5362f3)
+        - [ ] [logPolar](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#gaec3a0b126a85b5ca2c667b16e0ae022d)
+        - [ ] [remap](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#gab75ef31ce5cdfb5c44b6da5f3b908ea4)
+        - [ ] [undistort](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#ga69f2545a8b62a6b0fc2ee060dc30559d)
+        - [ ] [undistortPoints](https://docs.opencv.org/3.4.1/da/d54/group__imgproc__transform.html#ga55c716492470bfe86b0ee9bf3a1f0f7e)
+
     - [ ] **Miscellaneous Image Transformations - WORK STARTED**
+        - [ ] [cvtColorTwoPlane](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8e873314e72a1a6c0252375538fbf753)
+        - [ ] [distanceTransform](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8a0b7fdfcb7a13dde018988ba3a43042)
+        - [ ] [floodFill](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#gaf1f55a048f8a45bc3383586e80b1f0d0)
+        - [ ] [grabCut](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga909c1dda50efcbeaa3ce126be862b37f)
+        - [ ] [integral](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga97b87bec26908237e8ba0f6e96d23e28)
+        - [ ] [watershed](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga3267243e4d3f95165d55a618c65ac6e1)
+
     - [ ] **Drawing Functions - WORK STARTED**
+        - [ ] [clipLine](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf483cb46ad6b049bc35ec67052ef1c2c)
+        - [ ] [drawMarker](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga482fa7b0f578fcdd8a174904592a6250)
+        - [ ] [ellipse2Poly](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga727a72a3f6a625a2ae035f957c61051f)
+        - [ ] [fillConvexPoly](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga906aae1606ea4ed2f27bec1537f6c5c2)
+        - [ ] [getFontScaleFromHeight](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga442ff925c1a957794a1309e0ed3ba2c3)
+        - [ ] [polylines](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga444cb8a2666320f47f09d5af08d91ffb)
+    
     - [ ] ColorMaps in OpenCV
     - [ ] Planar Subdivision
     - [ ] Histograms
-    - [ ] Structural Analysis and Shape Descriptors
-    - [ ] **Motion Analysis and Object Tracking - WORK STARTED**
+    - [ ] **Structural Analysis and Shape Descriptors - WORK STARTED**
+        - [ ] [boxPoints](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf78d467e024b4d7936cf9397185d2f5c)
+        - [ ] [connectedComponents](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaedef8c7340499ca391d459122e51bef5)
+        - [ ] [connectedComponentsWithStats](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga107a78bf7cd25dec05fb4dfc5c9e765f)
+        - [ ] [fitEllipse](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf259efaad93098103d6c27b9e4900ffa)
+        - [ ] [fitEllipseAMS](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga69e90cda55c4e192a8caa0b99c3e4550)
+        - [ ] [fitEllipseDirect](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga6421884fd411923a74891998bbe9e813)
+        - [ ] [fitLine](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf849da1fdafa67ee84b1e9a23b93f91f)
+        - [ ] [HuMoments](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gab001db45c1f1af6cbdbe64df04c4e944)
+        - [ ] [intersectConvexConvex](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8e840f3f3695613d32c052bec89e782c)
+        - [ ] [isContourConvex](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8abf8010377b58cbc16db6734d92941b)
+        - [ ] [matchShapes](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaadc90cb16e2362c9bd6e7363e6e4c317)
+        - [ ] [minAreaRect](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga3d476a3417130ae5154aea421ca7ead9)
+        - [ ] [minEnclosingCircle](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8ce13c24081bbc7151e9326f412190f1)
+        - [ ] [minEnclosingTriangle](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga1513e72f6bbdfc370563664f71e0542f)
+        - [ ] [pointPolygonTest](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga1a539e8db2135af2566103705d7a5722)
+        - [ ] [rotatedRectangleIntersection](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8740e7645628c59d238b0b22c2abe2d4)
+
+    - [ ] Motion Analysis and Object Tracking
     - [ ] **Feature Detection - WORK STARTED**
-    - [ ] **Object Detection - WORK STARTED**
+        - [ ] [cornerEigenValsAndVecs](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga4055896d9ef77dd3cacf2c5f60e13f1c)
+        - [ ] [cornerHarris](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#gac1fc3598018010880e370e2f709b4345)
+        - [ ] [cornerMinEigenVal](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga3dbce297c1feb859ee36707e1003e0a8)
+        - [ ] [createLineSegmentDetector](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga6b2ad2353c337c42551b521a73eeae7d)
+        - [ ] [HoughLinesPointSet](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga2858ef61b4e47d1919facac2152a160e)
+        - [ ] [preCornerDetect](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#gaa819f39b5c994871774081803ae22586)
+
+    - [X] **Object Detection**
 
 - [X] **imgcodecs. Image file reading and writing.**
 - [X] **videoio. Video I/O**
@@ -95,15 +146,15 @@ Your pull requests will be greatly appreciated!
 - [ ] **video. Video Analysis - WORK STARTED**
     - [X] **Motion Analysis**
     - [ ] **Object Tracking - WORK STARTED**
-        - [ ] [buildOpticalFlowPyramid] https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga86640c1c470f87b2660c096d2b22b2ce
-        - [ ] [estimateRigidTransform] https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga762cbe5efd52cf078950196f3c616d48
-        - [ ] [findTransformECC] https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga7ded46f9a55c0364c92ccd2019d43e3a
-        - [ ] [meanShift] https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga7ded46f9a55c0364c92ccd2019d43e3a
-        - [ ] [CamShift] https://docs.opencv.org/master/dc/d6b/group__video__track.html#gaef2bd39c8356f423124f1fe7c44d54a1
-        - [ ] [DualTVL1OpticalFlow] https://docs.opencv.org/master/dc/d47/classcv_1_1DualTVL1OpticalFlow.html
-        - [ ] [FarnebackOpticalFlow] https://docs.opencv.org/master/de/d9e/classcv_1_1FarnebackOpticalFlow.html
-        - [ ] [KalmanFilter] https://docs.opencv.org/master/dd/d6a/classcv_1_1KalmanFilter.html
-        - [ ] [SparsePyrLKOpticalFlow] https://docs.opencv.org/master/d7/d08/classcv_1_1SparsePyrLKOpticalFlow.html
+        - [ ] [buildOpticalFlowPyramid](https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga86640c1c470f87b2660c096d2b22b2ce)
+        - [ ] [estimateRigidTransform](https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga762cbe5efd52cf078950196f3c616d48)
+        - [ ] [findTransformECC](https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga7ded46f9a55c0364c92ccd2019d43e3a)
+        - [ ] [meanShift](https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga7ded46f9a55c0364c92ccd2019d43e3a)
+        - [ ] [CamShift](https://docs.opencv.org/master/dc/d6b/group__video__track.html#gaef2bd39c8356f423124f1fe7c44d54a1)
+        - [ ] [DualTVL1OpticalFlow](https://docs.opencv.org/master/dc/d47/classcv_1_1DualTVL1OpticalFlow.html)
+        - [ ] [FarnebackOpticalFlow](https://docs.opencv.org/master/de/d9e/classcv_1_1FarnebackOpticalFlow.html)
+        - [ ] [KalmanFilter](https://docs.opencv.org/master/dd/d6a/classcv_1_1KalmanFilter.html)
+        - [ ] [SparsePyrLKOpticalFlow](https://docs.opencv.org/master/d7/d08/classcv_1_1SparsePyrLKOpticalFlow.html)
 
 - [ ] calib3d. Camera Calibration and 3D Reconstruction
 - [ ] **features2d. 2D Features Framework - WORK STARTED**
