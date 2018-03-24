@@ -50,7 +50,7 @@ func ApproxPolyDP(curve []image.Point, epsilon float64, closed bool) (approxCurv
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga014b28e56cb8854c0de4a211cb2be656
 //
-func ConvexHull(points []image.Point, hull Mat, clockwise bool, returnPoints bool) {
+func ConvexHull(points []image.Point, hull *Mat, clockwise bool, returnPoints bool) {
 	cPoints := toCPoints(points)
 	C.ConvexHull(cPoints, hull.p, C.bool(clockwise), C.bool(returnPoints))
 }

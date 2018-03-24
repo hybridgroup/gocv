@@ -57,7 +57,7 @@ func TestConvexity(t *testing.T) {
 	hull := NewMat()
 	defer hull.Close()
 
-	ConvexHull(res[0], hull, true, false)
+	ConvexHull(res[0], &hull, true, false)
 	if hull.Empty() {
 		t.Error("Invalid ConvexHull test")
 	}
