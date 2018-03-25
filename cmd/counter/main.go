@@ -84,13 +84,13 @@ func main() {
 				if x > 0 && x < img.Cols() && y > line && y < line+width {
 					count++
 				}
-				gocv.Line(img, image.Pt(0, line), image.Pt(img.Cols(), line), color.RGBA{255, 0, 0, 0}, 2)
+				gocv.Line(&img, image.Pt(0, line), image.Pt(img.Cols(), line), color.RGBA{255, 0, 0, 0}, 2)
 			}
 			if axis == "x" {
 				if y > 0 && y < img.Rows() && x > line && x < line+width {
 					count++
 				}
-				gocv.Line(img, image.Pt(line, 0), image.Pt(line, img.Rows()), color.RGBA{255, 0, 0, 0}, 2)
+				gocv.Line(&img, image.Pt(line, 0), image.Pt(line, img.Rows()), color.RGBA{255, 0, 0, 0}, 2)
 			}
 		}
 
