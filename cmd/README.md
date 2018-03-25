@@ -30,6 +30,10 @@ Captures video from a connected camera, then uses the CascadeClassifier to detec
 
 Find circles in an image using the Hough transform.
 
+## Hand-gestures
+
+Count the number of fingers being held up in front of the camera by looking for convexity defects.
+
 ## MJPEG-Streamer
 
 Opens a video capture device, then streams MJPEG from it that you can view in any browser.
@@ -40,7 +44,7 @@ Opens a video capture device, then processes it looking for motion, human or oth
 
 ## Pose
 
-Advanced Deep Neural Network example does pose detection.
+Advanced Deep Neural Network example does pose detection on an image.
 
 ## Saveimage
 
@@ -54,13 +58,17 @@ Capture video from a connected camera, and save 100 frames worth to a video file
 
 Open an image file from disk, then display it in a window.
 
-## SSD-Facedetect
+## SSD Facedetect
 
-Advanced Deep Neural Network example uses SSD classifier to detect faces.
+Advanced Deep Neural Network example that uses SSD classifier to detect faces from a connected camera.
 
 ## TF Classifier
 
 Capture video from a connected webcam, then use the Tensorflow machine learning framework to classify whatever is in front of the camera.
+
+## Tracking
+
+Example of using Tracker from OpenCV Contrib to track any region of interest selected by the user using the TrackerMOSSE algorithm using the connected camera.
 
 ## Version
 
