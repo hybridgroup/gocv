@@ -1,5 +1,5 @@
 .ONESHELL:
-.PHONY: test deps download build clean astyle
+.PHONY: test deps download build clean astyle cmds
 
 
 # Package list for each well-known Linux distribution
@@ -60,3 +60,9 @@ astyle:
 	astyle --project=.astylerc --recursive *.cpp,*.h
 
 install: download build clean
+
+CMDS=basic-drawing caffe-classifier captest capwindow counter faceblur facedetect find-circles hand-gestures mjpeg-streamer motion-detect pose saveimage savevideo showimage ssd-facedetect tf-classifier tracking version
+cmds:
+	for cmd in $(CMDS) ; do \
+		go build -o build/$$cmd cmd/$$cmd/main.go ;
+	done ; \
