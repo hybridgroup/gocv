@@ -63,7 +63,7 @@ func main() {
 	// open webcam
 	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
 	if err != nil {
-		fmt.Printf("error opening video capture device: %v\n", deviceID)
+		fmt.Println(err)
 		return
 	}	
 	defer webcam.Close()
@@ -177,7 +177,7 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-		gocv version: 0.10.0
+		gocv version: 0.11.0
 		opencv lib version: 3.4.1
 
 You might want to copy the `env.sh` script into your own projects, to make it easier to setup these environment vars when building your own code.
@@ -213,7 +213,7 @@ For example:
 
 Please note that you will need to run these 2 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables.
 
-## OS X
+## macOS
 
 ### Installation
 
@@ -243,7 +243,7 @@ Now you should be able to build or run any of the command examples:
 
 The version program should output the following:
 
-		gocv version: 0.10.0
+		gocv version: 0.11.0
 		opencv lib version: 3.4.1
 
 You might want to copy the `env.sh` script into your own projects, to make it easier to setup the needed environment vars when building your own code.
@@ -262,9 +262,13 @@ In order to build and install OpenCV 3.4.1 on Windows, you must first download a
 
 #### MinGW-W64
 
-Download and run the MinGW-W64 compiler installer from [https://sourceforge.net/projects/mingw-w64/?source=typ_redirect](https://sourceforge.net/projects/mingw-w64/?source=typ_redirect). Choose the options for "posix" threads, and for "seh" exceptions handling, then install to the default location `c:\Program Files\mingw-w64\x86_64-7.1.0-posix-seh-rt_v5-rev2`.
+Download and run the MinGW-W64 compiler installer from [https://sourceforge.net/projects/mingw-w64/?source=typ_redirect](https://sourceforge.net/projects/mingw-w64/?source=typ_redirect).
 
-Add the `C:\Program Files\mingw-w64\x86_64-7.1.0-posix-seh-rt_v5-rev2\mingw64\bin` path to your System Path.
+The latest version of the MinGW-W64 toolchain is `7.3.0`, but any version from `7.X` on should work.
+
+Choose the options for "posix" threads, and for "seh" exceptions handling, then install to the default location `c:\Program Files\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev2`.
+
+Add the `C:\Program Files\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev2\mingw64\bin` path to your System Path.
 
 #### CMake 
 
@@ -326,7 +330,7 @@ Now you should be able to build or run any of the command examples:
 
 The version program should output the following:
 
-		gocv version: 0.10.0
+		gocv version: 0.11.0
 		opencv lib version: 3.4.1
 
 You might want to copy the `env.cmd` script into your own projects, to make it easier to setup the needed environment vars when building your own code.

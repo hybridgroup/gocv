@@ -1,3 +1,50 @@
+0.11.0
+---
+* **build**
+    * Add astyle config
+    * Astyle cpp/h files
+    * remove duplication in Makefile for astyle
+* **core**
+    * Add GetVecfAt() function to Mat
+    * Add GetVeciAt() function to Mat
+    * Add Mat.ToImage()
+    * add MeanStdDev() method to Mat
+    * add more functions
+    * Compare Mat Type directly
+    * further cleanup for GoDocs and enforce type for convariance operations
+    * Make borderType in CopyMakeBorder be type BorderType
+    * Mat Type() should return MatType
+    * remove unused convenience functions
+    * use Mat* to indicate when a Mat is mutable aka an output parameter
+* **dnn**
+    * add a ssd sample and a GetBlobChannel helper
+    * added another helper func and a pose detection demo
+* **docs**
+    * add some additional detail about adding OpenCV functions to GoCV
+    * updates to contribution guidelines
+    * fill out complete list of needed imgproc functions for sections that have work started
+    * indicate that missing imgproc functions need implementation
+    * mention the WithParams patterns to be used for functions with default params
+    * update README for the Mat* based API changes
+    * update ROADMAP for recent changes especially awesome recent core contributions from @berak
+* **examples**
+    * Fix tf-classifier example
+    * move new DNN advanced examples into separate folders
+    * Update doc for the face contrib package
+    * Update links in caffe-classifier demo
+    * WIP on hand gestures tracking example
+* **highgui**
+    * fix constant in NewWindow
+* **imgproc**
+    * Add Ellipse() and FillPoly() functions
+    * Add HoughCirclesWithParams() func
+    * correct output Mat to for ConvexHull()
+    * rename param being used for Mat image to be modified
+* **tracking**
+    * add support for TrackerMIL, TrackerBoosting, TrackerMedianFlow, TrackerTLD, TrackerKCF, TrackerMOSSE, TrackerCSRT trackers
+    * removed mutitracker, added Csrt, rebased
+    * update GoDocs and minor renaming based on gometalint output
+
 0.10.0
 ---
 * **build** 
