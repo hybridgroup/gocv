@@ -4,6 +4,14 @@ import (
 	"bytes"
 	"image"
 	"image/color"
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
+	"io"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"path"
 	"testing"
 )
 
@@ -949,6 +957,55 @@ func TestMatMax(t *testing.T) {
 	Max(src1, src2, &dst)
 	if dst.Empty() {
 		t.Error("Max dst should not be empty.")
+	}
+}
+
+// This test does the following:
+// - download the JPEG image
+// - decodes to the image.Image with magic number
+// - writes its content (bytes) to the temp file
+// - creates Mat from go image
+// - reads new Mat from temp file path
+// - runs diff
+func TestMatFromImage(t *testing.T) {
+	url := "http://i.imgur.com/m1UIjW1.jpg"
+	response, err := http.Get(url)
+	if err != nil {
+		t.Errorf("TestMatFromImage %v.", err)
+	}
+	img1, magicNumber, err := image.Decode(response.Body)
+	if err != nil {
+		t.Errorf("TestMatFromImage %v.", err)
+	}
+
+	tmpDir := os.TempDir()
+	prefix := "m1UIjW1.jpg"
+	tempFilePath := path.Join(tmpDir, prefix)
+	tempFile, err := ioutil.TempFile(os.TempDir(), prefix)
+	if err != nil {
+		t.Errorf("TestMatFromImage %v.", err)
+	}
+
+	_, err = io.Copy(tempFile, response.Body)
+	if err != nil {
+		t.Errorf("TestMatFromImage %v.", err)
+	}
+	defer tempFile.Close()
+
+	mat1 := NewMat()
+	err = mat1.FromImage(img1, ImageMagicType(magicNumber), MatTypeCV8UC3)
+	if err != nil {
+		t.Errorf("TestMatFromImage %v.", err)
+	}
+
+	diff := NewMat()
+	defer diff.Close()
+
+	mat2 := IMRead(tempFilePath, IMReadUnchanged)
+
+	Compare(mat1, mat2, &diff, CompareEQ)
+	if CountNonZero(diff) == 0 {
+		t.Errorf("TestMatFromImage. Source and Copy images are not equal: %v\n", CountNonZero(diff))
 	}
 }
 
