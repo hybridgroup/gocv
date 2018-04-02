@@ -6,9 +6,14 @@ package gocv
 */
 import "C"
 import (
+	"bytes"
 	"errors"
+	"fmt"
 	"image"
 	"image/color"
+	"image/gif"
+	"image/jpeg"
+	"image/png"
 	"reflect"
 	"unsafe"
 )
@@ -87,6 +92,16 @@ const (
 
 	// CompareNE src1 is unequal to src2.
 	CompareNE = 5
+)
+
+type ImageMagicType string
+
+// represents images types supported by Golang standard library
+// magic number - this is what image.Decode returns as a hint to define the encoder
+const (
+	JPEG ImageMagicType = "jpeg"
+	PNG  ImageMagicType = "png"
+	GIF  ImageMagicType = "gif"
 )
 
 // Mat represents an n-dimensional dense numerical single-channel
@@ -468,6 +483,38 @@ func (m *Mat) ToImage() (image.Image, error) {
 	}
 
 	return img, nil
+}
+
+// FromImage converts go Image to the Mat object
+func (m *Mat) FromImage(img image.Image, imgType ImageMagicType, mt MatType) error {
+	bounds := img.Bounds()
+	buf := new(bytes.Buffer)
+	switch imgType {
+	case JPEG:
+		err := jpeg.Encode(buf, img, nil)
+		if err != nil {
+			return err
+		}
+	case PNG:
+		err := png.Encode(buf, img)
+		if err != nil {
+			return err
+		}
+	case GIF:
+		err := gif.Encode(buf, img, nil)
+		if err != nil {
+			return err
+		}
+	default:
+		return errors.New(fmt.Sprintf(
+			"unknown image type, please note that supported types are: "+
+				"'%s', '%s', '%s'", JPEG, PNG, GIFFileExt))
+	}
+
+	newM := NewMatFromBytes(bounds.Dy(), bounds.Dx(), mt, buf.Bytes())
+	newM.CopyTo(*m)
+
+	return nil
 }
 
 // AbsDiff calculates the per-element absolute difference between two arrays
