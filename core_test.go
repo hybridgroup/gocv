@@ -983,7 +983,7 @@ func TestMatFromImage(t *testing.T) {
 	diff := NewMat()
 	defer diff.Close()
 
-	Compare(*mat1, mat2, &diff, CompareEQ)
+	Compare(mat1, mat2, &diff, CompareEQ)
 	if CountNonZero(diff) == 0 {
 		t.Errorf("TestMatFromImage. Source and Copy images are not equal: %v\n", CountNonZero(diff))
 	}

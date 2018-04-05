@@ -499,33 +499,33 @@ func (m *Mat) ToImage() (image.Image, error) {
 }
 
 // FromImage converts go Image to the Mat object
-func FromImage(img image.Image, imgType ImageMagicType, mt MatType) (*Mat, error) {
+func FromImage(img image.Image, imgType ImageMagicType, mt MatType) (Mat, error) {
+	errMat := NewMat()
 	bounds := img.Bounds()
 	buf := new(bytes.Buffer)
 	switch imgType {
 	case JPEG:
 		err := jpeg.Encode(buf, img, nil)
 		if err != nil {
-			return nil, err
+			return errMat, err
 		}
 	case PNG:
 		err := png.Encode(buf, img)
 		if err != nil {
-			return nil, err
+			return errMat, err
 		}
 	case GIF:
 		err := gif.Encode(buf, img, nil)
 		if err != nil {
-			return nil, err
+			return errMat, err
 		}
 	default:
-		return nil, errors.New(fmt.Sprintf(
+		return errMat, errors.New(fmt.Sprintf(
 			"unknown image type, please note that supported types are: "+
 				"'%s', '%s', '%s'", JPEG, PNG, GIFFileExt))
 	}
-	m := NewMatFromBytes(bounds.Dy(), bounds.Dx(), mt, buf.Bytes())
 
-	return &m, nil
+	return NewMatFromBytes(bounds.Dy(), bounds.Dx(), mt, buf.Bytes()), nil
 }
 
 // AbsDiff calculates the per-element absolute difference between two arrays
