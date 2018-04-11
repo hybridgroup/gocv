@@ -57,7 +57,7 @@ const (
 )
 
 // FisheyeCalibrate performs camera calibaration.
-func FisheyeCalibrate(objectPoints, imagePoints, k, d, rvecs, tvecs Mat, size image.Point) float64 {
+func FisheyeCalibrate(objectPoints, imagePoints, k, d Mat, rvecs, tvecs *Mat, size image.Point) float64 {
 	sz := C.struct_Size{
 		width:  C.int(size.X),
 		height: C.int(size.Y),
@@ -66,16 +66,16 @@ func FisheyeCalibrate(objectPoints, imagePoints, k, d, rvecs, tvecs Mat, size im
 }
 
 // FisheyeUndistortPoints undistorts 2D points using fisheye model
-func FisheyeUndistortPoints(distorted, undistorted, k, d Mat) {
+func FisheyeUndistortPoints(distorted Mat, undistorted *Mat, k, d Mat) {
 	C.Fisheye_UndistortPoints(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr())
 }
 
 // FisheyeUndistortImage transforms an image to compensate for fisheye lens distortion
-func FisheyeUndistortImage(distorted, undistorted, k, d Mat) {
+func FisheyeUndistortImage(distorted Mat, undistorted *Mat, k, d Mat) {
 	C.Fisheye_UndistortImage(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr())
 }
 
 // FisheyeUndistortImageWithKNewMat transforms an image to compensate for fisheye lens distortion with Knew matrix
-func FisheyeUndistortImageWithKNewMat(distorted, undistorted, k, d, knew Mat) {
+func FisheyeUndistortImageWithKNewMat(distorted Mat, undistorted *Mat, k, d, knew Mat) {
 	C.Fisheye_UndistortImageWithKNewMat(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr(), knew.Ptr())
 }
