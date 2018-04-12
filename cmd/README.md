@@ -50,6 +50,12 @@ Count the number of fingers being held up in front of the camera by looking for 
 
 https://github.com/hybridgroup/gocv/blob/master/cmd/hand-gestures/main.go
 
+## Img-similarity
+
+Compute and compare perceptual hashes for a pair of images, with a variety of algorithms.
+
+https://github.com/hybridgroup/gocv/blob/master/cmd/img-similarity/main.go
+
 ## MJPEG-Streamer
 
 Opens a video capture device, then streams MJPEG from it that you can view in any browser.
