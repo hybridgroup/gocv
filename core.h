@@ -231,6 +231,8 @@ void Mat_Flip(Mat src, Mat dst, int flipCode);
 void Mat_Gemm(Mat src1, Mat src2, double alpha, Mat src3, double beta, Mat dst, int flags);
 int Mat_GetOptimalDFTSize(int vecsize);
 void Mat_Hconcat(Mat src1, Mat src2, Mat dst);
+void Mat_Vconcat(Mat src1, Mat src2, Mat dst);
+void Rotate(Mat src, Mat dst, int rotationCode);
 void Mat_Idct(Mat src, Mat dst, int flags);
 void Mat_Idft(Mat src, Mat dst, int flags, int nonzeroRows);
 void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst);

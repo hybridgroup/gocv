@@ -798,6 +798,23 @@ func Hconcat(src1, src2 Mat, dst *Mat) {
 	C.Mat_Hconcat(src1.p, src2.p, dst.p)
 }
 
+// Vconcat applies vertical concatenation to given matrices.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gaab5ceee39e0580f879df645a872c6bf7
+//
+func Vconcat(src1, src2 Mat, dst *Mat) {
+	C.Mat_Vconcat(src1.p, src2.p, dst.p)
+}
+
+// Rotate rotates a 2D array in multiples of 90 degrees
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4ad01c0978b0ce64baa246811deeac24
+func Rotate(src Mat, dst *Mat, code int) {
+	C.Rotate(src.p, dst.p, C.int(code))
+}
+
 // IDCT calculates the inverse Discrete Cosine Transform of a 1D or 2D array.
 //
 // For further details, please see:
