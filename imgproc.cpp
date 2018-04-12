@@ -24,10 +24,10 @@ Contour ApproxPolyDP(Contour curve, double epsilon, bool closed) {
     Point* points = new Point[length];
 
     for (size_t i = 0; i < length; i++) {
-        points[i] = Point{approxCurvePts[i].x, approxCurvePts[i].y};
+        points[i] = (Point){approxCurvePts[i].x, approxCurvePts[i].y};
     }
 
-    return Contour{points, length};
+    return (Contour){points, length};
 }
 
 void CvtColor(Mat src, Mat dst, int code) {
@@ -130,7 +130,7 @@ struct Contours FindContours(Mat src, int mode, int method) {
             pts[j] = pt;
         }
 
-        points[i] = Contour{pts, (int)contours[i].size()};
+        points[i] = (Contour){pts, (int)contours[i].size()};
     }
 
     Contours cons = {points, (int)contours.size()};
