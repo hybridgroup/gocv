@@ -775,6 +775,35 @@ func TestMatHconcat(t *testing.T) {
 	}
 }
 
+func TestMatVconcat(t *testing.T) {
+	src := NewMatWithSize(10, 10, MatTypeCV32F)
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	Vconcat(src, src, &dst)
+
+	if dst.Empty() {
+		t.Error("TestMatVconcat dst should not be empty.")
+	}
+	if dst.Rows() != 2*src.Rows() {
+		t.Error("TestMatVconcat dst.Cols should be 2 x src.Rows().")
+	}
+}
+
+func TestRotate(t *testing.T) {
+	src := NewMatWithSize(1, 2, MatTypeCV64F)
+	defer src.Close()
+	dst := NewMat()
+	defer dst.Close()
+
+	Rotate(src, &dst, 0)
+	if dst.Rows() != 2 {
+		t.Errorf("expected rows: %d got %d", src.Cols(), dst.Rows())
+	}
+}
+
 func TestMatIdct(t *testing.T) {
 	src := NewMatWithSize(4, 4, MatTypeCV32F)
 	defer src.Close()

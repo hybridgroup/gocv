@@ -344,6 +344,14 @@ void Mat_Hconcat(Mat src1, Mat src2, Mat dst) {
     cv::hconcat(*src1, *src2, *dst);
 }
 
+void Mat_Vconcat(Mat src1, Mat src2, Mat dst) {
+    cv::vconcat(*src1, *src2, *dst);
+}
+
+void Rotate(Mat src, Mat dst, int rotateCode) {
+    cv::rotate(*src, *dst, rotateCode);
+}
+
 void Mat_Idct(Mat src, Mat dst, int flags) {
     cv::idct(*src, *dst, flags);
 }
