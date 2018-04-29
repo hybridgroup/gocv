@@ -18,6 +18,12 @@ Mat Mat_NewFromScalar(Scalar ar, int type) {
     return new cv::Mat(1, 1, type, c);
 }
 
+// Mat_NewFromScalarWithSize creates a new Mat from a Scalar with a specific size dimension and number of channels
+Mat Mat_NewFromScalarWithSize(Scalar ar, int rows, int cols, int type) {
+    cv::Scalar c = cv::Scalar(ar.val1, ar.val2, ar.val3, ar.val4);
+    return new cv::Mat(rows, cols, type, c);
+}
+
 Mat Mat_NewFromBytes(int rows, int cols, int type, struct ByteArray buf) {
     return new cv::Mat(rows, cols, type, buf.data);
 }
@@ -344,6 +350,14 @@ void Mat_Hconcat(Mat src1, Mat src2, Mat dst) {
     cv::hconcat(*src1, *src2, *dst);
 }
 
+void Mat_Vconcat(Mat src1, Mat src2, Mat dst) {
+    cv::vconcat(*src1, *src2, *dst);
+}
+
+void Rotate(Mat src, Mat dst, int rotateCode) {
+    cv::rotate(*src, *dst, rotateCode);
+}
+
 void Mat_Idct(Mat src, Mat dst, int flags) {
     cv::idct(*src, *dst, flags);
 }
@@ -354,6 +368,12 @@ void Mat_Idft(Mat src, Mat dst, int flags, int nonzeroRows) {
 
 void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst) {
     cv::inRange(*src, *lowerb, *upperb, *dst);
+}
+
+void Mat_InScalarRange(Mat src, Scalar lowerb, Scalar upperb, Mat dst) {
+    cv::Scalar lb = cv::Scalar(lowerb.val1, lowerb.val2, lowerb.val3, lowerb.val4);
+    cv::Scalar ub = cv::Scalar(upperb.val1, upperb.val2, upperb.val3, upperb.val4);
+    cv::inRange(*src, lb, ub, *dst);
 }
 
 void Mat_InsertChannel(Mat src, Mat dst, int coi) {

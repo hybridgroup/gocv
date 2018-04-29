@@ -37,6 +37,42 @@ func TestMatWithSize(t *testing.T) {
 	}
 }
 
+func TestMatFromScalarWithSize(t *testing.T) {
+	s := NewScalar(255.0, 105.0, 180.0, 0.0)
+	mat := NewMatFromScalarWithSize(s, 2, 3, MatTypeCV8UC3)
+	if mat.Empty() {
+		t.Error("NewMatFromScalarWithSize should not be empty")
+	}
+
+	if mat.Rows() != 2 {
+		t.Errorf("NewMatFromScalarWithSize incorrect row count: %v\n", mat.Rows())
+	}
+
+	if mat.Cols() != 3 {
+		t.Errorf("NewMatFromScalarWithSize incorrect col count: %v\n", mat.Cols())
+	}
+
+	if mat.Channels() != 3 {
+		t.Errorf("NewMatFromScalarWithSize incorrect channels count: %v\n", mat.Channels())
+	}
+
+	if mat.Type() != 16 {
+		t.Errorf("NewMatFromScalarWithSize incorrect type: %v\n", mat.Type())
+	}
+
+	matChans := Split(mat)
+	scalarByte := []byte{255, 105, 180}
+	for c := 0; c < mat.Channels(); c++ {
+		for i := 0; i < mat.Rows(); i++ {
+			for j := 0; j < mat.Cols(); j++ {
+				if s := matChans[c].GetUCharAt(i, j); s != scalarByte[c] {
+					t.Errorf("NewMatFromScalarWithSize incorrect scalar: %v\n", s)
+				}
+			}
+		}
+	}
+}
+
 func TestMatClone(t *testing.T) {
 	mat := NewMatWithSize(101, 102, MatTypeCV8U)
 	clone := mat.Clone()
@@ -426,6 +462,17 @@ func TestMatInRange(t *testing.T) {
 	}
 }
 
+func TestMatInScalarRange(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	lb := NewScalar(20.0, 100.0, 100.0, 0.0)
+	ub := NewScalar(20.0, 100.0, 100.0, 0.0)
+	dst := NewMat()
+	InScalarRange(mat1, lb, ub, &dst)
+	if dst.Empty() {
+		t.Error("TestMatAddWeighted dest mat3 should not be empty.")
+	}
+}
+
 func TestMatDCT(t *testing.T) {
 	src := NewMatWithSize(64, 64, MatTypeCV32F)
 	dst := NewMat()
@@ -772,6 +819,35 @@ func TestMatHconcat(t *testing.T) {
 	}
 	if dst.Cols() != 2*src.Cols() {
 		t.Error("TestMatHconcat dst.Cols should be 2 x src.Cols.")
+	}
+}
+
+func TestMatVconcat(t *testing.T) {
+	src := NewMatWithSize(10, 10, MatTypeCV32F)
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	Vconcat(src, src, &dst)
+
+	if dst.Empty() {
+		t.Error("TestMatVconcat dst should not be empty.")
+	}
+	if dst.Rows() != 2*src.Rows() {
+		t.Error("TestMatVconcat dst.Cols should be 2 x src.Rows().")
+	}
+}
+
+func TestRotate(t *testing.T) {
+	src := NewMatWithSize(1, 2, MatTypeCV64F)
+	defer src.Close()
+	dst := NewMat()
+	defer dst.Close()
+
+	Rotate(src, &dst, 0)
+	if dst.Rows() != 2 {
+		t.Errorf("expected rows: %d got %d", src.Cols(), dst.Rows())
 	}
 }
 

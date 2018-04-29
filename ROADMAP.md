@@ -37,7 +37,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [randu](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga1ba1026dca0807b27057ba6a49d258c0)
         - [ ] [reduce](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4b78072a303f29d9031d56e5638da78e)
         - [ ] [repeat](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga496c3860f3ac44c40b48811333cfda2d)
-        - [ ] [rotate](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4ad01c0978b0ce64baa246811deeac24)
+        - [X] [rotate](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4ad01c0978b0ce64baa246811deeac24)
         - [ ] [scaleAdd](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9e0845db4135f55dcf20227402f00d98)
         - [ ] [setIdentity](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga388d7575224a4a277ceb98ccaa327c99)
         - [ ] [setRNGSeed](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga757e657c037410d9e19e819569e7de0f)
@@ -53,7 +53,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [trace](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga3419ac19c7dcd2be4bd552a23e147dd8)
         - [ ] [transform](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga393164aa54bb9169ce0a8cc44e08ff22)
         - [ ] [transpose](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga46630ed6c0ea6254a35f447289bd7404)
-        - [ ] [vconcat](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga744f53b69f6e4f12156cdde4e76aed27)
+        - [X] [vconcat](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga744f53b69f6e4f12156cdde4e76aed27)
     - [ ] XML/YAML Persistence
     - [ ] Clustering
     - [ ] Utility and system functions and macros
@@ -201,7 +201,7 @@ Your pull requests will be greatly appreciated!
 - [ ] freetype. Drawing UTF-8 strings with freetype/harfbuzz
 - [ ] fuzzy. Image processing based on fuzzy mathematics
 - [ ] hdf. Hierarchical Data Format I/O routines
-- [ ] img_hash. The module brings implementations of different image hashing algorithms.
+- [X] **img_hash. The module brings implementations of different image hashing algorithms.**
 - [ ] line_descriptor. Binary descriptors for lines extracted from an image
 - [ ] matlab. MATLAB Bridge
 - [ ] optflow. Optical Flow Algorithms

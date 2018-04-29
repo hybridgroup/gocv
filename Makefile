@@ -61,7 +61,7 @@ astyle:
 
 install: download build clean
 
-CMDS=basic-drawing caffe-classifier captest capwindow counter faceblur facedetect find-circles hand-gestures mjpeg-streamer motion-detect pose saveimage savevideo showimage ssd-facedetect tf-classifier tracking version
+CMDS=basic-drawing caffe-classifier captest capwindow counter faceblur facedetect find-circles hand-gestures img-similarity mjpeg-streamer motion-detect pose saveimage savevideo showimage ssd-facedetect tf-classifier tracking version
 cmds:
 	for cmd in $(CMDS) ; do \
 		go build -o build/$$cmd cmd/$$cmd/main.go ;

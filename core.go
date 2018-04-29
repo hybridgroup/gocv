@@ -123,6 +123,19 @@ func NewMatFromScalar(s Scalar, mt MatType) Mat {
 	return Mat{p: C.Mat_NewFromScalar(sVal, C.int(mt))}
 }
 
+// NewMatFromScalarWithSize returns a new Mat for a specific Scala value with a specific size and type
+// This simplifies creation of specific color filters or creating Mats of specific colors and sizes
+func NewMatFromScalarWithSize(s Scalar, rows int, cols int, mt MatType) Mat {
+	sVal := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
+	}
+
+	return Mat{p: C.Mat_NewFromScalarWithSize(sVal, C.int(rows), C.int(cols), C.int(mt))}
+}
+
 // NewMatFromBytes returns a new Mat with a specific size and type, initialized from a []byte.
 func NewMatFromBytes(rows int, cols int, mt MatType, data []byte) Mat {
 	return Mat{p: C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), toByteArray(data))}
@@ -798,6 +811,23 @@ func Hconcat(src1, src2 Mat, dst *Mat) {
 	C.Mat_Hconcat(src1.p, src2.p, dst.p)
 }
 
+// Vconcat applies vertical concatenation to given matrices.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gaab5ceee39e0580f879df645a872c6bf7
+//
+func Vconcat(src1, src2 Mat, dst *Mat) {
+	C.Mat_Vconcat(src1.p, src2.p, dst.p)
+}
+
+// Rotate rotates a 2D array in multiples of 90 degrees
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4ad01c0978b0ce64baa246811deeac24
+func Rotate(src Mat, dst *Mat, code int) {
+	C.Rotate(src.p, dst.p, C.int(code))
+}
+
 // IDCT calculates the inverse Discrete Cosine Transform of a 1D or 2D array.
 //
 // For further details, please see:
@@ -823,6 +853,29 @@ func IDFT(src Mat, dst *Mat, flags, nonzeroRows int) {
 //
 func InRange(src, lb, ub Mat, dst *Mat) {
 	C.Mat_InRange(src.p, lb.p, ub.p, dst.p)
+}
+
+// InScalarRange checks if array elements lie between the elements of two Scalars
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga48af0ab51e36436c5d04340e036ce981
+//
+func InScalarRange(src Mat, lb, ub Scalar, dst *Mat) {
+	lbVal := C.struct_Scalar{
+		val1: C.double(lb.Val1),
+		val2: C.double(lb.Val2),
+		val3: C.double(lb.Val3),
+		val4: C.double(lb.Val4),
+	}
+
+	ubVal := C.struct_Scalar{
+		val1: C.double(ub.Val1),
+		val2: C.double(ub.Val2),
+		val3: C.double(ub.Val3),
+		val4: C.double(ub.Val4),
+	}
+
+	C.Mat_InScalarRange(src.p, lbVal, ubVal, dst.p)
 }
 
 // InsertChannel inserts a single channel to dst (coi is 0-based index)
