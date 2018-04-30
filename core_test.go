@@ -37,6 +37,42 @@ func TestMatWithSize(t *testing.T) {
 	}
 }
 
+func TestMatWithSizeFromScalar(t *testing.T) {
+	s := NewScalar(255.0, 105.0, 180.0, 0.0)
+	mat := NewMatWithSizeFromScalar(s, 2, 3, MatTypeCV8UC3)
+	if mat.Empty() {
+		t.Error("NewMatWithSizeFromScalar should not be empty")
+	}
+
+	if mat.Rows() != 2 {
+		t.Errorf("NewMatWithSizeFromScalar incorrect row count: %v\n", mat.Rows())
+	}
+
+	if mat.Cols() != 3 {
+		t.Errorf("NewMatWithSizeFromScalar incorrect col count: %v\n", mat.Cols())
+	}
+
+	if mat.Channels() != 3 {
+		t.Errorf("NewMatWithSizeFromScalar incorrect channels count: %v\n", mat.Channels())
+	}
+
+	if mat.Type() != 16 {
+		t.Errorf("NewMatWithSizeFromScalar incorrect type: %v\n", mat.Type())
+	}
+
+	matChans := Split(mat)
+	scalarByte := []byte{255, 105, 180}
+	for c := 0; c < mat.Channels(); c++ {
+		for i := 0; i < mat.Rows(); i++ {
+			for j := 0; j < mat.Cols(); j++ {
+				if s := matChans[c].GetUCharAt(i, j); s != scalarByte[c] {
+					t.Errorf("NewMatWithSizeFromScalar incorrect scalar: %v\n", s)
+				}
+			}
+		}
+	}
+}
+
 func TestMatClone(t *testing.T) {
 	mat := NewMatWithSize(101, 102, MatTypeCV8U)
 	clone := mat.Clone()
@@ -421,6 +457,17 @@ func TestMatInRange(t *testing.T) {
 	ub := NewMatFromScalar(NewScalar(20.0, 100.0, 100.0, 0.0), MatTypeCV8U)
 	dst := NewMat()
 	InRange(mat1, lb, ub, &dst)
+	if dst.Empty() {
+		t.Error("TestMatAddWeighted dest mat3 should not be empty.")
+	}
+}
+
+func TestMatInRangeWithScalar(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	lb := NewScalar(20.0, 100.0, 100.0, 0.0)
+	ub := NewScalar(20.0, 100.0, 100.0, 0.0)
+	dst := NewMat()
+	InRangeWithScalar(mat1, lb, ub, &dst)
 	if dst.Empty() {
 		t.Error("TestMatAddWeighted dest mat3 should not be empty.")
 	}
