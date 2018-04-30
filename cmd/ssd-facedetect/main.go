@@ -11,7 +11,7 @@
 //
 // How to run:
 //
-// 		go run ./cmd/dnn-ssd/main.go 0 [protofile] [modelfile]
+// 		go run ./cmd/ssd-facedetect/main.go 0 [protofile] [modelfile]
 //
 // +build example
 
