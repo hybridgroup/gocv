@@ -237,7 +237,7 @@ void Rotate(Mat src, Mat dst, int rotationCode);
 void Mat_Idct(Mat src, Mat dst, int flags);
 void Mat_Idft(Mat src, Mat dst, int flags, int nonzeroRows);
 void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst);
-void Mat_InScalarRange(Mat src, const Scalar lowerb, const Scalar upperb, Mat dst);
+void Mat_InRangeWithScalar(Mat src, const Scalar lowerb, const Scalar upperb, Mat dst);
 void Mat_InsertChannel(Mat src, Mat dst, int coi);
 double Mat_Invert(Mat src, Mat dst, int flags);
 void Mat_Log(Mat src, Mat dst);

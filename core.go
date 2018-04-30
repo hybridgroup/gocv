@@ -855,12 +855,12 @@ func InRange(src, lb, ub Mat, dst *Mat) {
 	C.Mat_InRange(src.p, lb.p, ub.p, dst.p)
 }
 
-// InScalarRange checks if array elements lie between the elements of two Scalars
+// InRangeWithScalar checks if array elements lie between the elements of two Scalars
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga48af0ab51e36436c5d04340e036ce981
 //
-func InScalarRange(src Mat, lb, ub Scalar, dst *Mat) {
+func InRangeWithScalar(src Mat, lb, ub Scalar, dst *Mat) {
 	lbVal := C.struct_Scalar{
 		val1: C.double(lb.Val1),
 		val2: C.double(lb.Val2),
@@ -875,7 +875,7 @@ func InScalarRange(src Mat, lb, ub Scalar, dst *Mat) {
 		val4: C.double(ub.Val4),
 	}
 
-	C.Mat_InScalarRange(src.p, lbVal, ubVal, dst.p)
+	C.Mat_InRangeWithScalar(src.p, lbVal, ubVal, dst.p)
 }
 
 // InsertChannel inserts a single channel to dst (coi is 0-based index)

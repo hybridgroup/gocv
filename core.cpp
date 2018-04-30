@@ -370,7 +370,7 @@ void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst) {
     cv::inRange(*src, *lowerb, *upperb, *dst);
 }
 
-void Mat_InScalarRange(Mat src, Scalar lowerb, Scalar upperb, Mat dst) {
+void Mat_InRangeWithScalar(Mat src, Scalar lowerb, Scalar upperb, Mat dst) {
     cv::Scalar lb = cv::Scalar(lowerb.val1, lowerb.val2, lowerb.val3, lowerb.val4);
     cv::Scalar ub = cv::Scalar(upperb.val1, upperb.val2, upperb.val3, upperb.val4);
     cv::inRange(*src, lb, ub, *dst);

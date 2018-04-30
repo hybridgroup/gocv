@@ -462,12 +462,12 @@ func TestMatInRange(t *testing.T) {
 	}
 }
 
-func TestMatInScalarRange(t *testing.T) {
+func TestMatInRangeWithScalar(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
 	lb := NewScalar(20.0, 100.0, 100.0, 0.0)
 	ub := NewScalar(20.0, 100.0, 100.0, 0.0)
 	dst := NewMat()
-	InScalarRange(mat1, lb, ub, &dst)
+	InRangeWithScalar(mat1, lb, ub, &dst)
 	if dst.Empty() {
 		t.Error("TestMatAddWeighted dest mat3 should not be empty.")
 	}
