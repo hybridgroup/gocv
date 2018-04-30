@@ -18,8 +18,8 @@ Mat Mat_NewFromScalar(Scalar ar, int type) {
     return new cv::Mat(1, 1, type, c);
 }
 
-// Mat_NewFromScalarWithSize creates a new Mat from a Scalar with a specific size dimension and number of channels
-Mat Mat_NewFromScalarWithSize(Scalar ar, int rows, int cols, int type) {
+// Mat_NewWithSizeFromScalar creates a new Mat from a Scalar with a specific size dimension and number of channels
+Mat Mat_NewWithSizeFromScalar(Scalar ar, int rows, int cols, int type) {
     cv::Scalar c = cv::Scalar(ar.val1, ar.val2, ar.val3, ar.val4);
     return new cv::Mat(rows, cols, type, c);
 }

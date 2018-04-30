@@ -123,9 +123,9 @@ func NewMatFromScalar(s Scalar, mt MatType) Mat {
 	return Mat{p: C.Mat_NewFromScalar(sVal, C.int(mt))}
 }
 
-// NewMatFromScalarWithSize returns a new Mat for a specific Scala value with a specific size and type
+// NewMatWithSizeFromScalar returns a new Mat for a specific Scala value with a specific size and type
 // This simplifies creation of specific color filters or creating Mats of specific colors and sizes
-func NewMatFromScalarWithSize(s Scalar, rows int, cols int, mt MatType) Mat {
+func NewMatWithSizeFromScalar(s Scalar, rows int, cols int, mt MatType) Mat {
 	sVal := C.struct_Scalar{
 		val1: C.double(s.Val1),
 		val2: C.double(s.Val2),
@@ -133,7 +133,7 @@ func NewMatFromScalarWithSize(s Scalar, rows int, cols int, mt MatType) Mat {
 		val4: C.double(s.Val4),
 	}
 
-	return Mat{p: C.Mat_NewFromScalarWithSize(sVal, C.int(rows), C.int(cols), C.int(mt))}
+	return Mat{p: C.Mat_NewWithSizeFromScalar(sVal, C.int(rows), C.int(cols), C.int(mt))}
 }
 
 // NewMatFromBytes returns a new Mat with a specific size and type, initialized from a []byte.

@@ -37,27 +37,27 @@ func TestMatWithSize(t *testing.T) {
 	}
 }
 
-func TestMatFromScalarWithSize(t *testing.T) {
+func TestMatWithSizeFromScalar(t *testing.T) {
 	s := NewScalar(255.0, 105.0, 180.0, 0.0)
-	mat := NewMatFromScalarWithSize(s, 2, 3, MatTypeCV8UC3)
+	mat := NewMatWithSizeFromScalar(s, 2, 3, MatTypeCV8UC3)
 	if mat.Empty() {
-		t.Error("NewMatFromScalarWithSize should not be empty")
+		t.Error("NewMatWithSizeFromScalar should not be empty")
 	}
 
 	if mat.Rows() != 2 {
-		t.Errorf("NewMatFromScalarWithSize incorrect row count: %v\n", mat.Rows())
+		t.Errorf("NewMatWithSizeFromScalar incorrect row count: %v\n", mat.Rows())
 	}
 
 	if mat.Cols() != 3 {
-		t.Errorf("NewMatFromScalarWithSize incorrect col count: %v\n", mat.Cols())
+		t.Errorf("NewMatWithSizeFromScalar incorrect col count: %v\n", mat.Cols())
 	}
 
 	if mat.Channels() != 3 {
-		t.Errorf("NewMatFromScalarWithSize incorrect channels count: %v\n", mat.Channels())
+		t.Errorf("NewMatWithSizeFromScalar incorrect channels count: %v\n", mat.Channels())
 	}
 
 	if mat.Type() != 16 {
-		t.Errorf("NewMatFromScalarWithSize incorrect type: %v\n", mat.Type())
+		t.Errorf("NewMatWithSizeFromScalar incorrect type: %v\n", mat.Type())
 	}
 
 	matChans := Split(mat)
@@ -66,7 +66,7 @@ func TestMatFromScalarWithSize(t *testing.T) {
 		for i := 0; i < mat.Rows(); i++ {
 			for j := 0; j < mat.Cols(); j++ {
 				if s := matChans[c].GetUCharAt(i, j); s != scalarByte[c] {
-					t.Errorf("NewMatFromScalarWithSize incorrect scalar: %v\n", s)
+					t.Errorf("NewMatWithSizeFromScalar incorrect scalar: %v\n", s)
 				}
 			}
 		}
