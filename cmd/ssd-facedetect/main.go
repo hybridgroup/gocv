@@ -43,7 +43,7 @@ func max(a, b float32) float32 {
 
 func main() {
 	if len(os.Args) < 4 {
-		fmt.Println("How to run:\ndnn-ssd [camera ID] [protofile] [modelfile]")
+		fmt.Println("How to run:\nssd-facedetect [camera ID] [protofile] [modelfile]")
 		return
 	}
 
