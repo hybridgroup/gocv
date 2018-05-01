@@ -15,10 +15,10 @@ test:
 	go test .
 
 deps:
-ifneq ($(IS_FEDORA),'')
+ifneq ($(IS_FEDORA),)
 	$(MAKE) deps_fedora
 else
-ifneq ($(IS_RH_CENTOS),'')
+ifneq ($(IS_RH_CENTOS),)
 	$(MAKE) deps_rh_centos
 else
 	$(MAKE) deps_debian
@@ -31,9 +31,17 @@ deps_rh_centos:
 deps_fedora:
 	sudo dnf install $(RPMS)
 
-deps_debian:
+deps_debian: libjasper
 	sudo apt-get update
 	sudo apt-get install $(DEBS)
+
+libjasper:
+	IS_UBUNTU17=$(shell cat /etc/issue | grep -o "17")
+ifeq ($(IS_UBUNTU17), 17)
+	sudo add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main"
+	sudo apt update
+	sudo apt install libjasper-dev
+endif
 
 download:
 	mkdir /tmp/opencv
