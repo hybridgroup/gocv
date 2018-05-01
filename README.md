@@ -30,7 +30,7 @@ import (
 
 func main() {
 	webcam, _ := gocv.VideoCaptureDevice(0)
-	window := gocv.NewWindow("Hello")	
+	window := gocv.NewWindow("Hello")
 	img := gocv.NewMat()
 
 	for {
@@ -65,7 +65,7 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 		return
-	}	
+	}
 	defer webcam.Close()
 
 	// open display window
@@ -82,7 +82,7 @@ func main() {
 	// load classifier to recognize faces
 	classifier := gocv.NewCascadeClassifier()
 	defer classifier.Close()
-	
+
 	classifier.Load("data/haarcascade_frontalface_default.xml")
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
@@ -140,6 +140,16 @@ First, you need to change the current directory to the location of the GoCV repo
 Next, you need to update the system, and install any required packages:
 
 		make deps
+
+**Note** Ubuntu users (starting from 17.04) may have an issue with the package `libjasper-dev` being unavaliable.
+
+You can add it from the 16.04 repository before running `make deps`:
+
+```
+sudo add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main"
+sudo apt update
+sudo apt install libjasper-dev
+```
 
 #### Download source
 
@@ -208,7 +218,7 @@ Once you have this info, you can build or run the Go code that consumes it by po
 
 For example:
 
-		export CGO_CPPFLAGS="-I/usr/local/include" 
+		export CGO_CPPFLAGS="-I/usr/local/include"
 		export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_face -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_features2d -lopencv_video -lopencv_dnn -lopencv_xfeatures2d"
 
 Please note that you will need to run these 2 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables.
@@ -270,7 +280,7 @@ Choose the options for "posix" threads, and for "seh" exceptions handling, then 
 
 Add the `C:\Program Files\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev2\mingw64\bin` path to your System Path.
 
-#### CMake 
+#### CMake
 
 Download and install CMake [https://cmake.org/download/](https://cmake.org/download/) to the default location. CMake installer will add CMake to your system path.
 
@@ -303,7 +313,7 @@ Some new configuration options will have appeared. Scroll down the list and chan
 
 Click on the "Configure" button again, and wait for the configuration step.
 
-Once it is complete, click on the "Generate" button, and wait for it to generate your make files. 
+Once it is complete, click on the "Generate" button, and wait for it to generate your make files.
 
 Now run the following commands:
 

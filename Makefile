@@ -15,10 +15,10 @@ test:
 	go test .
 
 deps:
-ifneq ($(IS_FEDORA),'')
+ifneq ($(IS_FEDORA),)
 	$(MAKE) deps_fedora
 else
-ifneq ($(IS_RH_CENTOS),'')
+ifneq ($(IS_RH_CENTOS),)
 	$(MAKE) deps_rh_centos
 else
 	$(MAKE) deps_debian
