@@ -12,6 +12,11 @@ import (
 	"unsafe"
 )
 
+func getPoints(pts *C.Point, l int) []C.Point {
+	h := &reflect.SliceHeader{uintptr(unsafe.Pointer(pts)), l, l}
+	return *(*[]C.Point)(unsafe.Pointer(h))
+}
+
 // ArcLength calculates a contour perimeter or a curve length.
 //
 // For further details, please see:
@@ -36,7 +41,7 @@ func ApproxPolyDP(curve []image.Point, epsilon float64, closed bool) (approxCurv
 	cApproxCurve := C.ApproxPolyDP(cCurve, C.double(epsilon), C.bool(closed))
 	defer C.Points_Close(cApproxCurve)
 
-	cApproxCurvePoints := (*[1 << 30]C.Point)(unsafe.Pointer(cApproxCurve.points))[:cApproxCurve.length:cApproxCurve.length]
+	cApproxCurvePoints := getPoints(cApproxCurve.points, int(cApproxCurve.length))
 
 	approxCurve = make([]image.Point, cApproxCurve.length)
 	for i, cPoint := range cApproxCurvePoints {
@@ -766,10 +771,10 @@ func FillPoly(img *Mat, pts [][]image.Point, c color.RGBA) {
 		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
 		defer C.free(unsafe.Pointer(p))
 
-		pa := (*[1 << 30]C.struct_Point)(unsafe.Pointer(p))
+		pa := getPoints(p, len(pt))
 
 		for j, point := range pt {
-			(*pa)[j] = C.struct_Point{
+			pa[j] = C.struct_Point{
 				x: C.int(point.X),
 				y: C.int(point.Y),
 			}
@@ -1037,10 +1042,10 @@ func DrawContours(img *Mat, contours [][]image.Point, contourIdx int, c color.RG
 		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(contour))))
 		defer C.free(unsafe.Pointer(p))
 
-		pa := (*[1 << 30]C.struct_Point)(unsafe.Pointer(p))
+		pa := getPoints(p, len(contour))
 
 		for j, point := range contour {
-			(*pa)[j] = C.struct_Point{
+			pa[j] = C.struct_Point{
 				x: C.int(point.X),
 				y: C.int(point.Y),
 			}
