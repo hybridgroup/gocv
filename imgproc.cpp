@@ -63,6 +63,16 @@ void Blur(Mat src, Mat dst, Size ps) {
     cv::blur(*src, *dst, sz);
 }
 
+void BoxFilter(Mat src, Mat dst, int ddepth, Size ps) {
+    cv::Size sz(ps.width, ps.height);
+    cv::boxFilter(*src, *dst, ddepth, sz);
+}
+
+void SqBoxFilter(Mat src, Mat dst, int ddepth, Size ps) {
+    cv::Size sz(ps.width, ps.height);
+    cv::sqrBoxFilter(*src, *dst, ddepth, sz);
+}
+
 void Dilate(Mat src, Mat dst, Mat kernel) {
     cv::dilate(*src, *dst, *kernel);
 }

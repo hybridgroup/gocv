@@ -119,6 +119,38 @@ func TestBlur(t *testing.T) {
 	}
 }
 
+func TestBoxFilter(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in BoxFilter test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	BoxFilter(img, &dest, -1, image.Pt(3, 3))
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid BoxFilter test")
+	}
+}
+
+func TestSqBoxFilter(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in SqBoxFilter test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	SqBoxFilter(img, &dest, -1, image.Pt(3, 3))
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid SqBoxFilter test")
+	}
+}
+
 func TestDilate(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {

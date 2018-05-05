@@ -17,6 +17,8 @@ void ConvexHull(Contour points, Mat hull, bool clockwise, bool returnPoints);
 void ConvexityDefects(Contour points, Mat hull, Mat result);
 void BilateralFilter(Mat src, Mat dst, int d, double sc, double ss);
 void Blur(Mat src, Mat dst, Size ps);
+void BoxFilter(Mat src, Mat dst, int ddepth, Size ps);
+void SqBoxFilter(Mat src, Mat dst, int ddepth, Size ps);
 void Dilate(Mat src, Mat dst, Mat kernel);
 void Erode(Mat src, Mat dst, Mat kernel);
 void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask);

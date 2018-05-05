@@ -110,6 +110,32 @@ func Blur(src Mat, dst *Mat, ksize image.Point) {
 	C.Blur(src.p, dst.p, pSize)
 }
 
+// BoxFilter blurs an image using the box filter.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gad533230ebf2d42509547d514f7d3fbc3
+//
+func BoxFilter(src Mat, dst *Mat, depth int, ksize image.Point) {
+	pSize := C.struct_Size{
+		height: C.int(ksize.X),
+		width:  C.int(ksize.Y),
+	}
+	C.BoxFilter(src.p, dst.p, C.int(depth), pSize)
+}
+
+// SqBoxFilter calculates the normalized sum of squares of the pixel values overlapping the filter.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga045028184a9ef65d7d2579e5c4bff6c0
+//
+func SqBoxFilter(src Mat, dst *Mat, depth int, ksize image.Point) {
+	pSize := C.struct_Size{
+		height: C.int(ksize.X),
+		width:  C.int(ksize.Y),
+	}
+	C.SqBoxFilter(src.p, dst.p, C.int(depth), pSize)
+}
+
 // Dilate dilates an image by using a specific structuring element.
 //
 // For further details, please see:
