@@ -82,8 +82,11 @@ func main() {
 	// load classifier to recognize faces
 	classifier := gocv.NewCascadeClassifier()
 	defer classifier.Close()
-	
-	classifier.Load("data/haarcascade_frontalface_default.xml")
+
+	if !classifier.Load("data/haarcascade_frontalface_default.xml") {
+		fmt.Printf("Error reading cascade file: %v\n", xmlFile)
+		return
+	}
 
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
