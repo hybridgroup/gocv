@@ -137,8 +137,12 @@ func NewMatWithSizeFromScalar(s Scalar, rows int, cols int, mt MatType) Mat {
 }
 
 // NewMatFromBytes returns a new Mat with a specific size and type, initialized from a []byte.
-func NewMatFromBytes(rows int, cols int, mt MatType, data []byte) Mat {
-	return Mat{p: C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), toByteArray(data))}
+func NewMatFromBytes(rows int, cols int, mt MatType, data []byte) (Mat, error) {
+	cBytes, err := toByteArray(data)
+	if err != nil {
+		return Mat{}, err
+	}
+	return Mat{p: C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), cBytes)}, nil
 }
 
 // Close the Mat object.
@@ -1162,11 +1166,14 @@ func (m *Mat) GetVeciAt(row int, col int) Veci {
 	return v
 }
 
-func toByteArray(b []byte) C.struct_ByteArray {
+func toByteArray(b []byte) (C.struct_ByteArray, error) {
+	if len(b) == 0 {
+		return nil, errors.New("empty byte array")
+	}
 	return C.struct_ByteArray{
 		data:   (*C.char)(unsafe.Pointer(&b[0])),
 		length: C.int(len(b)),
-	}
+	}, nil
 }
 
 func toGoBytes(b C.struct_ByteArray) []byte {

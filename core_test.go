@@ -143,7 +143,10 @@ func TestMatToBytes(t *testing.T) {
 		t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 	}
 
-	copy := NewMatFromBytes(101, 102, MatTypeCV8U, b)
+	copy, err := NewMatFromBytes(101, 102, MatTypeCV8U, b)
+	if err != nil {
+		t.Error(err.Error())
+	}
 	if copy.Rows() != 101 {
 		t.Errorf("Mat from bytes incorrect row count: %v\n", copy.Rows())
 	}

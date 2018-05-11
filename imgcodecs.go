@@ -210,7 +210,10 @@ func IMEncode(fileExt FileExt, img Mat) (buf []byte, err error) {
 // For further details, please see:
 // https://docs.opencv.org/master/d4/da8/group__imgcodecs.html#ga26a67788faa58ade337f8d28ba0eb19e
 //
-func IMDecode(buf []byte, flags IMReadFlag) Mat {
-	data := toByteArray(buf)
-	return Mat{p: C.Image_IMDecode(data, C.int(flags))}
+func IMDecode(buf []byte, flags IMReadFlag) (Mat, error) {
+	data, err := toByteArray(buf)
+	if err != nil {
+		return Mat{}, err
+	}
+	return Mat{p: C.Image_IMDecode(data, C.int(flags))}, nil
 }
