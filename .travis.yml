@@ -45,7 +45,7 @@ script:
   - export GOCV_CAFFE_TEST_FILES="${HOME}/testdata"
   - export GOCV_TENSORFLOW_TEST_FILES="${HOME}/testdata"
   - echo "Ensuring code is well formatted"; ! gofmt -s -d . | read
-  - go test -coverprofile=coverage.txt -covermode=atomic
+  - go test -v -coverprofile=coverage.txt -covermode=atomic
   - go test ./contrib -coverprofile=contrib.txt -covermode=atomic; cat contrib.txt >> coverage.txt; rm contrib.txt;
 
 after_success:
