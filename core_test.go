@@ -979,6 +979,10 @@ func TestMatFromImage(t *testing.T) {
 	if err != nil {
 		t.Errorf("TestMatFromImage %v.", err)
 	}
+	
+	if mat1.Empty() {
+		t.Error("FromImage returned an empty Mat")
+	}
 
 	diff := NewMat()
 	defer diff.Close()
