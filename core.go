@@ -142,7 +142,7 @@ func NewMatFromBytes(rows int, cols int, mt MatType, data []byte) (Mat, error) {
 	if err != nil {
 		return Mat{}, err
 	}
-	return Mat{p: C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), cBytes)}, nil
+	return Mat{p: C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), *cBytes)}, nil
 }
 
 // Close the Mat object.
@@ -1166,11 +1166,11 @@ func (m *Mat) GetVeciAt(row int, col int) Veci {
 	return v
 }
 
-func toByteArray(b []byte) (C.struct_ByteArray, error) {
+func toByteArray(b []byte) (*C.struct_ByteArray, error) {
 	if len(b) == 0 {
 		return nil, errors.New("empty byte array")
 	}
-	return C.struct_ByteArray{
+	return &C.struct_ByteArray{
 		data:   (*C.char)(unsafe.Pointer(&b[0])),
 		length: C.int(len(b)),
 	}, nil

@@ -215,5 +215,5 @@ func IMDecode(buf []byte, flags IMReadFlag) (Mat, error) {
 	if err != nil {
 		return Mat{}, err
 	}
-	return Mat{p: C.Image_IMDecode(data, C.int(flags))}, nil
+	return Mat{p: C.Image_IMDecode(*data, C.int(flags))}, nil
 }
