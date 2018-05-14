@@ -36,7 +36,7 @@ func ApproxPolyDP(curve []image.Point, epsilon float64, closed bool) (approxCurv
 	cApproxCurve := C.ApproxPolyDP(cCurve, C.double(epsilon), C.bool(closed))
 	defer C.Points_Close(cApproxCurve)
 
-	cApproxCurvePoints := (*[1 << 30]C.Point)(unsafe.Pointer(cApproxCurve.points))[:cApproxCurve.length:cApproxCurve.length]
+	cApproxCurvePoints := (*[addressShift]C.Point)(unsafe.Pointer(cApproxCurve.points))[:cApproxCurve.length:cApproxCurve.length]
 
 	approxCurve = make([]image.Point, cApproxCurve.length)
 	for i, cPoint := range cApproxCurvePoints {
@@ -766,7 +766,7 @@ func FillPoly(img *Mat, pts [][]image.Point, c color.RGBA) {
 		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
 		defer C.free(unsafe.Pointer(p))
 
-		pa := (*[1 << 30]C.struct_Point)(unsafe.Pointer(p))
+		pa := (*[addressShift]C.struct_Point)(unsafe.Pointer(p))
 
 		for j, point := range pt {
 			(*pa)[j] = C.struct_Point{
@@ -1037,7 +1037,7 @@ func DrawContours(img *Mat, contours [][]image.Point, contourIdx int, c color.RG
 		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(contour))))
 		defer C.free(unsafe.Pointer(p))
 
-		pa := (*[1 << 30]C.struct_Point)(unsafe.Pointer(p))
+		pa := (*[addressShift]C.struct_Point)(unsafe.Pointer(p))
 
 		for j, point := range contour {
 			(*pa)[j] = C.struct_Point{
