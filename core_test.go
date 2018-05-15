@@ -4,6 +4,10 @@ import (
 	"bytes"
 	"image"
 	"image/color"
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
+	"os"
 	"testing"
 )
 
@@ -949,6 +953,43 @@ func TestMatMax(t *testing.T) {
 	Max(src1, src2, &dst)
 	if dst.Empty() {
 		t.Error("Max dst should not be empty.")
+	}
+}
+
+// This test does the following:
+// - download the JPEG image
+// - decodes to the image.Image with magic number
+// - writes its content (bytes) to the temp file
+// - creates Mat from go image
+// - reads new Mat from temp file path
+// - runs diff
+func TestMatFromImage(t *testing.T) {
+	mat2 := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	img, err := os.Open("images/gocvlogo.jpg")
+	if err != nil {
+		t.Errorf("TestMatFromImage %v.", err)
+	}
+
+	img1, magicNumber, err := image.Decode(img)
+	if err != nil {
+		t.Errorf("TestMatFromImage %v.", err)
+	}
+
+	mat1, err := FromImage(img1, ImageMagicType(magicNumber), mat2.Type())
+	if err != nil {
+		t.Errorf("TestMatFromImage %v.", err)
+	}
+	
+	if mat1.Empty() {
+		t.Error("FromImage returned an empty Mat")
+	}
+
+	diff := NewMat()
+	defer diff.Close()
+
+	Compare(mat1, mat2, &diff, CompareEQ)
+	if CountNonZero(diff) == 0 {
+		t.Errorf("TestMatFromImage. Source and Copy images are not equal: %v\n", CountNonZero(diff))
 	}
 }
 
