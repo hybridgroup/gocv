@@ -214,6 +214,16 @@ func (v *VideoCapture) Grab(skip int) {
 	C.VideoCapture_Grab(v.p, C.int(skip))
 }
 
+// CodecString returns a string representation of FourCC bytes, i.e. the name of a codec
+func (v *VideoCapture) CodecString() string {
+	res := ""
+	hexes := []int64{0xff, 0xff00, 0xff0000, 0xff000000}
+	for i, h := range hexes {
+		res += string(int64(v.Get(VideoCaptureFOURCC)) & h >> (uint(i * 8)))
+	}
+	return res
+}
+
 // VideoWriter is a wrapper around the OpenCV VideoWriter`class.
 //
 // For further details, please see:
