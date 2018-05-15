@@ -680,6 +680,14 @@ func TestMatCartToPolar(t *testing.T) {
 	angle.Close()
 }
 
+func TestMatCheckRange(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	ret := CheckRange(mat1)
+	if !ret {
+		t.Error("TestCheckRange error.")
+	}
+}
+
 func TestMatCompleteSymm(t *testing.T) {
 	src := NewMatWithSize(100, 100, MatTypeCV32F)
 	CompleteSymm(src, false)
@@ -711,6 +719,14 @@ func TestMatCopyMakeBorder(t *testing.T) {
 	dst.Close()
 }
 
+func TestMatDeterminant(t *testing.T) {
+	mat1 := NewMatWithSize(101, 101, MatTypeCV32F)
+	ret := Determinant(mat1)
+	if ret != 0 {
+		t.Error("TestMatDeterminant error.")
+	}
+}
+
 func TestMatEigen(t *testing.T) {
 	src := NewMatWithSize(10, 10, MatTypeCV32F)
 	eigenvalues := NewMat()
@@ -718,6 +734,19 @@ func TestMatEigen(t *testing.T) {
 	Eigen(src, &eigenvalues, &eigenvectors)
 	if eigenvectors.Empty() || eigenvalues.Empty() {
 		t.Error("TestEigen should not have empty eigenvectors or eigenvalues.")
+	}
+	src.Close()
+	eigenvectors.Close()
+	eigenvalues.Close()
+}
+
+func TestMatEigenNonSymmetric(t *testing.T) {
+	src := NewMatWithSizeFromScalar(NewScalar(0.1, 0.1, 0.1, 0.1), 10, 10, MatTypeCV32F)
+	eigenvalues := NewMat()
+	eigenvectors := NewMat()
+	EigenNonSymmetric(src, &eigenvalues, &eigenvectors)
+	if eigenvectors.Empty() || eigenvalues.Empty() {
+		t.Error("TestEigenNonSymmetric should not have empty eigenvectors or eigenvalues.")
 	}
 	src.Close()
 	eigenvectors.Close()
@@ -949,6 +978,37 @@ func TestMatMax(t *testing.T) {
 	Max(src1, src2, &dst)
 	if dst.Empty() {
 		t.Error("Max dst should not be empty.")
+	}
+}
+
+func TestMatMin(t *testing.T) {
+	src1 := NewMatWithSize(4, 4, MatTypeCV32F)
+	defer src1.Close()
+	src2 := NewMatWithSize(4, 4, MatTypeCV32F)
+	defer src2.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	Min(src1, src2, &dst)
+	if dst.Empty() {
+		t.Error("Min dst should not be empty.")
+	}
+}
+
+func TestMatMinMaxIdx(t *testing.T) {
+	src := NewMatWithSize(10, 10, MatTypeCV32F)
+	defer src.Close()
+	src.SetFloatAt(3, 3, 17)
+	src.SetFloatAt(4, 4, 16)
+
+	minVal, maxVal, _, _ := MinMaxIdx(src)
+
+	if minVal != 0 {
+		t.Error("TestMatMinMaxIdx minVal should be 0.")
+	}
+	if maxVal != 17 {
+		t.Errorf("TestMatMinMaxIdx maxVal should be 17, was %f", maxVal)
 	}
 }
 

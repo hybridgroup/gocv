@@ -216,15 +216,18 @@ void Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int no
 int Mat_BorderInterpolate(int p, int len, int borderType);
 void Mat_CalcCovarMatrix(Mat samples, Mat covar, Mat mean, int flags, int ctype);
 void Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees);
+bool Mat_CheckRange(Mat m);
 void Mat_CompleteSymm(Mat m, bool lowerToUpper);
 void Mat_ConvertScaleAbs(Mat src, Mat dst, double alpha, double beta);
 void Mat_CopyMakeBorder(Mat src, Mat dst, int top, int bottom, int left, int right, int borderType,
                         Scalar value);
 int Mat_CountNonZero(Mat src);
 void Mat_DCT(Mat src, Mat dst, int flags);
+double Mat_Determinant(Mat m);
 void Mat_DFT(Mat m, Mat dst, int flags);
 void Mat_Divide(Mat src1, Mat src2, Mat dst);
 bool Mat_Eigen(Mat src, Mat eigenvalues, Mat eigenvectors);
+void Mat_EigenNonSymmetric(Mat src, Mat eigenvalues, Mat eigenvectors);
 void Mat_Exp(Mat src, Mat dst);
 void Mat_ExtractChannel(Mat src, Mat dst, int coi);
 void Mat_FindNonZero(Mat src, Mat idx);
@@ -245,6 +248,8 @@ void Mat_Magnitude(Mat x, Mat y, Mat magnitude);
 void Mat_Max(Mat src1, Mat src2, Mat dst);
 void Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev);
 void Mat_Merge(struct Mats mats, Mat dst);
+void Mat_Min(Mat src1, Mat src2, Mat dst);
+void Mat_MinMaxIdx(Mat m, double* minVal, double* maxVal, int* minIdx, int* maxIdx);
 void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc);
 void Mat_Multiply(Mat src1, Mat src2, Mat dst);
 void Mat_Subtract(Mat src1, Mat src2, Mat dst);

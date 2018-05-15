@@ -283,6 +283,10 @@ void  Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegree
     cv::cartToPolar(*x, *y, *magnitude, *angle, angleInDegrees);
 }
 
+bool Mat_CheckRange(Mat m) {
+    return cv::checkRange(*m);
+}
+
 void Mat_Compare(Mat src1, Mat src2, Mat dst, int ct) {
     cv::compare(*src1, *src2, *dst, ct);
 }
@@ -310,6 +314,10 @@ void Mat_DCT(Mat src, Mat dst, int flags) {
     cv::dct(*src, *dst, flags);
 }
 
+double Mat_Determinant(Mat m) {
+    return cv::determinant(*m);
+}
+
 void Mat_DFT(Mat m, Mat dst, int flags) {
     cv::dft(*m, *dst, flags);
 }
@@ -320,6 +328,10 @@ void Mat_Divide(Mat src1, Mat src2, Mat dst) {
 
 bool Mat_Eigen(Mat src, Mat eigenvalues, Mat eigenvectors) {
     return cv::eigen(*src, *eigenvalues, *eigenvectors);
+}
+
+void Mat_EigenNonSymmetric(Mat src, Mat eigenvalues, Mat eigenvectors) {
+    cv::eigenNonSymmetric(*src, *eigenvalues, *eigenvectors);
 }
 
 void Mat_Exp(Mat src, Mat dst) {
@@ -409,6 +421,14 @@ void Mat_Merge(struct Mats mats, Mat dst) {
     }
 
     cv::merge(images, *dst);
+}
+
+void Mat_Min(Mat src1, Mat src2, Mat dst) {
+    cv::min(*src1, *src2, *dst);
+}
+
+void Mat_MinMaxIdx(Mat m, double* minVal, double* maxVal, int* minIdx, int* maxIdx) {
+    cv::minMaxIdx(*m, minVal, maxVal, minIdx, maxIdx);
 }
 
 void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc) {

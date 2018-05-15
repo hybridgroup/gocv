@@ -616,6 +616,15 @@ func CartToPolar(x Mat, y Mat, magnitude *Mat, angle *Mat, angleInDegrees bool) 
 	C.Mat_CartToPolar(x.p, y.p, magnitude.p, angle.p, C.bool(angleInDegrees))
 }
 
+// CheckRange checks every element of an input array for invalid values.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga2bd19d89cae59361416736f87e3c7a64
+//
+func CheckRange(src Mat) bool {
+	return bool(C.Mat_CheckRange(src.p))
+}
+
 // Compare performs the per-element comparison of two arrays
 // or an array and scalar value.
 //
@@ -717,6 +726,15 @@ func DCT(src Mat, dst *Mat, flags DftFlags) {
 	C.Mat_DCT(src.p, dst.p, C.int(flags))
 }
 
+// Determinant returns the determinant of a square floating-point matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gaf802bd9ca3e07b8b6170645ef0611d0c
+//
+func Determinant(src Mat) float64 {
+	return float64(C.Mat_Determinant(src.p))
+}
+
 // DFT performs a forward or inverse Discrete Fourier Transform (DFT)
 // of a 1D or 2D floating-point array.
 //
@@ -745,6 +763,15 @@ func Divide(src1 Mat, src2 Mat, dst *Mat) {
 func Eigen(src Mat, eigenvalues *Mat, eigenvectors *Mat) bool {
 	ret := C.Mat_Eigen(src.p, eigenvalues.p, eigenvectors.p)
 	return bool(ret)
+}
+
+// EigenNonSymmetric calculates eigenvalues and eigenvectors of a non-symmetric matrix (real eigenvalues only).
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gaf51987e03cac8d171fbd2b327cf966f6
+//
+func EigenNonSymmetric(src Mat, eigenvalues *Mat, eigenvectors *Mat) {
+	C.Mat_EigenNonSymmetric(src.p, eigenvalues.p, eigenvectors.p)
 }
 
 // Exp calculates the exponent of every array element.
@@ -950,6 +977,31 @@ func Merge(mv []Mat, dst *Mat) {
 	}
 
 	C.Mat_Merge(cMats, dst.p)
+}
+
+// Min calculates per-element minimum of two arrays or an array and a scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9af368f182ee76d0463d0d8d5330b764
+//
+func Min(src1, src2 Mat, dst *Mat) {
+	C.Mat_Min(src1.p, src2.p, dst.p)
+}
+
+// MinMaxIdx finds the global minimum and maximum in an array.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga7622c466c628a75d9ed008b42250a73f
+//
+func MinMaxIdx(input Mat) (minVal, maxVal float32, minIdx, maxIdx int) {
+	var cMinVal C.double
+	var cMaxVal C.double
+	var cMinIdx C.int
+	var cMaxIdx C.int
+
+	C.Mat_MinMaxIdx(input.p, &cMinVal, &cMaxVal, &cMinIdx, &cMaxIdx)
+
+	return float32(cMinVal), float32(cMaxVal), int(minIdx), int(maxIdx)
 }
 
 // MinMaxLoc finds the global minimum and maximum in an array.
