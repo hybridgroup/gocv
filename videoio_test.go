@@ -3,8 +3,21 @@ package gocv
 import (
 	"io/ioutil"
 	"path/filepath"
+	"strings"
 	"testing"
 )
+
+func TestVideoCaptureEmptyNumericalParameters(t *testing.T) {
+	_, err := VideoWriterFile(
+		"images/small.mp4", "MJPEG", 0, 0, 0)
+	if err == nil {
+		t.Error("Must fail due to an empty numerical parameters.")
+	}
+	if !strings.Contains(err.Error(), "one of the numerical parameters is equal to zero") {
+		t.Errorf("Must fail due to an empty numerical "+
+			"parameters, but have different error: %v", err)
+	}
+}
 
 func TestVideoCaptureFile(t *testing.T) {
 	vc, _ := VideoCaptureFile("images/small.mp4")

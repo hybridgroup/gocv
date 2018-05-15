@@ -6,6 +6,7 @@ package gocv
 */
 import "C"
 import (
+	"fmt"
 	"sync"
 	"unsafe"
 )
@@ -231,6 +232,12 @@ type VideoWriter struct {
 // http://docs.opencv.org/master/dd/d9e/classcv_1_1VideoWriter.html#a0901c353cd5ea05bba455317dab81130
 //
 func VideoWriterFile(name string, codec string, fps float64, width int, height int) (vw *VideoWriter, err error) {
+
+	if fps == 0 || width == 0 || height == 0 {
+		return nil, fmt.Errorf("one of the numerical parameters "+
+			"is equal to zero: FPS: %f, width: %d, height: %d", fps, width, height)
+	}
+
 	vw = &VideoWriter{
 		p:  C.VideoWriter_New(),
 		mu: &sync.RWMutex{},
