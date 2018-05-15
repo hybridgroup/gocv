@@ -582,6 +582,26 @@ func TestMatSubtract(t *testing.T) {
 		t.Error("Sum of Subtracting equal images is not 0")
 	}
 }
+
+func TestMatTransform(t *testing.T) {
+	src := IMRead("images/lut.png", 1)
+	dst := NewMat()
+	tm := NewMatWithSize(4, 4, MatTypeCV8UC4)
+	Transform(src, &dst, tm)
+	if dst.Empty() {
+		t.Error("Transform error")
+	}
+}
+
+func TestMatTranspose(t *testing.T) {
+	src := IMRead("images/lut.png", 1)
+	dst := NewMat()
+	Transpose(src, &dst)
+	if dst.Empty() {
+		t.Error("Transpose error")
+	}
+}
+
 func TestMatPow(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
 	dst := NewMat()

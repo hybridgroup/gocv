@@ -257,6 +257,8 @@ void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ);
 double Norm(Mat src1, int normType);
 void Mat_Split(Mat src, struct Mats* mats);
 void Mat_Subtract(Mat src1, Mat src2, Mat dst);
+void Mat_Transform(Mat src, Mat dst, Mat tm);
+void Mat_Transpose(Mat src, Mat dst);
 void Mat_Pow(Mat src, double power, Mat dst);
 Scalar Mat_Sum(Mat src1);
 

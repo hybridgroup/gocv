@@ -51,8 +51,8 @@ Your pull requests will be greatly appreciated!
         - [ ] [SVDecomp](https://docs.opencv.org/master/d2/de8/group__core__array.html#gab477b5b7b39b370bb03e75b19d2d5109)
         - [ ] [theRNG](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga75843061d150ad6564b5447e38e57722)
         - [ ] [trace](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga3419ac19c7dcd2be4bd552a23e147dd8)
-        - [ ] [transform](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga393164aa54bb9169ce0a8cc44e08ff22)
-        - [ ] [transpose](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga46630ed6c0ea6254a35f447289bd7404)
+        - [X] [transform](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga393164aa54bb9169ce0a8cc44e08ff22)
+        - [X] [transpose](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga46630ed6c0ea6254a35f447289bd7404)
         - [X] [vconcat](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga744f53b69f6e4f12156cdde4e76aed27)
     - [ ] XML/YAML Persistence
     - [ ] Clustering

@@ -1130,6 +1130,24 @@ func Subtract(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_Subtract(src1.p, src2.p, dst.p)
 }
 
+// Transform performs the matrix transformation of every array element.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga393164aa54bb9169ce0a8cc44e08ff22
+//
+func Transform(src Mat, dst *Mat, tm Mat) {
+	C.Mat_Transform(src.p, dst.p, tm.p)
+}
+
+// Transpose transposes a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga46630ed6c0ea6254a35f447289bd7404
+//
+func Transpose(src Mat, dst *Mat) {
+	C.Mat_Transpose(src.p, dst.p)
+}
+
 // Pow raises every array element to a power.
 //
 // For further details, please see:
