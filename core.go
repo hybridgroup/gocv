@@ -243,6 +243,15 @@ func (m *Mat) Mean() Scalar {
 	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
 }
 
+// Sqrt calculates a square root of array elements.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga186222c3919657890f88df5a1f64a7d7
+//
+func (m *Mat) Sqrt() Mat {
+	return Mat{p: C.Mat_Sqrt(m.p)}
+}
+
 // Sum calculates the per-channel pixel sum of an image.
 //
 // For further details, please see:
@@ -251,6 +260,15 @@ func (m *Mat) Mean() Scalar {
 func (m *Mat) Sum() Scalar {
 	s := C.Mat_Sum(m.p)
 	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
+}
+
+// PatchNaNs converts NaN's to zeros.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga62286befb7cde3568ff8c7d14d5079da
+//
+func (m *Mat) PatchNaNs() {
+	C.Mat_PatchNaNs(m.p)
 }
 
 // LUT performs a look-up table transform of an array.
@@ -1085,6 +1103,15 @@ func Normalize(src Mat, dst *Mat, alpha float64, beta float64, typ NormType) {
 //
 func Norm(src1 Mat, normType NormType) float64 {
 	return float64(C.Norm(src1.p, C.int(normType)))
+}
+
+// PerspectiveTransform performs the perspective matrix transformation of vectors.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gad327659ac03e5fd6894b90025e6900a7
+//
+func PerspectiveTransform(src Mat, dst *Mat, tm Mat) {
+	C.Mat_PerspectiveTransform(src.p, dst.p, tm.p)
 }
 
 // TermCriteriaType for TermCriteria.

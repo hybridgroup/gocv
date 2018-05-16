@@ -193,6 +193,16 @@ func TestMatReshape(t *testing.T) {
 	}
 }
 
+func TestMatPatchNaNs(t *testing.T) {
+	mat := NewMatWithSize(100, 100, MatTypeCV32F)
+	defer mat.Close()
+
+	mat.PatchNaNs()
+	if mat.Empty() {
+		t.Error("TestMatPatchNaNs error.")
+	}
+}
+
 func TestMatConvert(t *testing.T) {
 	src := NewMatWithSize(100, 100, MatTypeCV32F)
 	dst := NewMat()
@@ -210,6 +220,13 @@ func TestMatConvertFp16(t *testing.T) {
 	}
 }
 
+func TestMatSqrt(t *testing.T) {
+	src := NewMatWithSize(100, 100, MatTypeCV32F)
+	dst := src.Sqrt()
+	if dst.Empty() {
+		t.Error("TestSqrt dst should not be empty.")
+	}
+}
 func TestMatMean(t *testing.T) {
 	mat := NewMatWithSize(100, 100, MatTypeCV8U)
 	mean := mat.Mean()
@@ -553,6 +570,16 @@ func TestMatNormalize(t *testing.T) {
 	Normalize(src, &dst, 0.0, 255.0, NormMixMax)
 	if dst.Empty() {
 		t.Error("TestMatNormalize dst should not be empty.")
+	}
+}
+
+func TestMatPerspectiveTransform(t *testing.T) {
+	src := NewMatWithSize(100, 1, MatTypeCV32F+MatChannels2)
+	dst := NewMat()
+	tm := NewMatWithSize(3, 3, MatTypeCV32F)
+	PerspectiveTransform(src, &dst, tm)
+	if dst.Empty() {
+		t.Error("PerspectiveTransform error")
 	}
 }
 

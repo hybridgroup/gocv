@@ -71,9 +71,19 @@ Mat Mat_Reshape(Mat m, int cn, int rows) {
     return new cv::Mat(m->reshape(cn, rows));
 }
 
+void Mat_PatchNaNs(Mat m) {
+    cv::patchNaNs(*m);
+}
+
 Mat Mat_ConvertFp16(Mat m) {
     Mat dst = new cv::Mat();
     cv::convertFp16(*m, *dst);
+    return dst;
+}
+
+Mat Mat_Sqrt(Mat m) {
+    Mat dst = new cv::Mat();
+    cv::sqrt(*m, *dst);
     return dst;
 }
 
@@ -452,6 +462,10 @@ void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
 
 double Norm(Mat src1, int normType) {
     return cv::norm(*src1, normType);
+}
+
+void Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm) {
+    cv::perspectiveTransform(*src, *dst, *tm);
 }
 
 void Mat_Split(Mat src, struct Mats* mats) {
