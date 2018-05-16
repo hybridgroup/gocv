@@ -1,48 +1,10 @@
 # Using the Intel OpenVINO toolkit
 
-The Intel OpenVINO toolkit is a set of tools and libraries for computer vision applications. It also includes a complete build of OpenCV installed with the Intel OpenVINO. It uses computer vision and imaging algorithms developed at Intel.
+The Intel OpenVINO toolkit is a set of tools and libraries for computer vision applications, that uses computer vision and imaging algorithms developed at Intel. It also includes a complete build of OpenCV.
 
-GoCV support for the Intel OpenVINO Photography Vision Library (PVL) can be found here in the "gocv.io/x/gocv/openvino/pvl" package. Check out the README.md in the `pvl` directory for more information.
+GoCV support for the Intel OpenVINO Photography Vision Library (PVL) which can be found in the "gocv.io/x/gocv/openvino/pvl" package. Check out the README.md in the `pvl` directory for more information.
 
-## How to install the Intel OpenVINO toolkit
-
-You will need to install various dependencies before you will be able to run the Intel OpenVINO installer:
-
-```
-sudo apt-get update
-sudo apt-get install build-essential ffmpeg cmake checkinstall pkg-config yasm libjpeg-dev curl imagemagick gedit mplayer unzip libpng12-dev libcairo2-dev libpango1.0-dev libgtk2.0-dev libgstreamer0.10-dev libswscale.dev libavcodec-dev libavformat-dev
-```
-
-### Installing OpenCL Support
-
-If you also want to use the OpenCL support for GPU-based hardware acceleration, you must install the OpenCL runtime. First, install the dependencies:
-
-```
-sudo apt-get update
-sudo apt-get install build-essential ffmpeg cmake checkinstall pkg-config yasm libjpeg-dev curl imagemagick gedit mplayer unzip libpng12-dev libcairo2-dev libpango1.0-dev libgtk2.0-dev libgstreamer0.10-dev libswscale.dev libavcodec-dev libavformat-dev
-```
-
-Next, obtain the OpenCL runtime package:
-
-```
-wget http://registrationcenter-download.intel.com/akdlm/irc_nas/11396/SRB5.0_linux64.zip
-unzip SRB5.0_linux64.zip -d SRB5.0_linux64
-cd SRB5.0_linux64
-```
-
-Last, install the OpenCL runtime:
-
-```
-sudo apt-get install xz-utils
-mkdir intel-opencl
-tar -C intel-opencl -Jxf intel-opencl-r5.0-63503.x86_64.tar.xz
-tar -C intel-opencl -Jxf intel-opencl-devel-r5.0-63503.x86_64.tar.xz
-tar -C intel-opencl -Jxf intel-opencl-cpu-r5.0-63503.x86_64.tar.xz
-sudo cp -R intel-opencl/* /
-sudo ldconfig
-```
-
-### Installing Intel OpenVINO toolkit
+## Installing Intel OpenVINO toolkit
 
 The most recent version of the Intel OpenVINO toolkit is currently R1. You can obtain it from here:
 

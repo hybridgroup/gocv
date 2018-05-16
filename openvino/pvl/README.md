@@ -1,6 +1,6 @@
 # Using the Intel OpenVINO Photography Vision Library
 
-The Intel OpenVINO Photography Vision Library (PVL) is a set of extensions to OpenCV that is installed with the Intel CV SDK. It uses computer vision and imaging algorithms developed at Intel.
+The Photography Vision Library (PVL) is a set of extensions to OpenCV that is installed with the Intel OpenVINO toolkit. It uses computer vision and imaging algorithms developed at Intel.
 
 GoCV support for the PVL can be found here in the "gocv.io/x/gocv/openvino/pvl" package.
 
@@ -79,25 +79,3 @@ func main() {
 ```
 
 Some PVL examples are in the [cmd/openvino/pvl directory](../cmd/openvino/pvl) of this repo, in the form of some useful commands such as the [smile detector](../cmd/openvino/pvl/smiledetector).
-
-## How to build/run code
-
-Setup the environment for the Intel OpenVINO toolkit, by running the `setupvars.sh` program included with OpenVINO:
-
-```
-source /opt/intel/computer_vision_sdk/bin/setupvars.sh
-```
-
-Then set the needed other exports for building/running GoCV code by running the `env.sh` that is in the GoCV `openvino` directory:
-
-You only need to do these two steps one time per session. Once you have run them, you do not need to run them again until you close your terminal window.
-
-Now you can run the version command example to make sure you are compiling/linking against Intel OpenVINO:
-
-```
-$ go run ./cmd/version/main.go 
-gocv version: 0.7.0
-opencv lib version: 3.3.1-cvsdk_2017_R3.2
-```
-
-Examples that use the Intel OpenVINO toolkit can be found in the `cmd/openvino/pvl` directory of this repository.
