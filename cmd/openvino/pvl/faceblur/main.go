@@ -1,13 +1,13 @@
 // What it does:
 //
-// This example uses the Intel CV SDK PVL FaceDetect to detect faces,
+// This example uses the Intel OpenVINO PVL FaceDetect to detect faces,
 // then blurs them using a Gaussian blur before displaying in a window.
 //
 // How to run:
 //
 // faceblur [camera ID]
 //
-// 		go run ./cmd/pvl/faceblur/main.go 0
+// 		go run ./cmd/openvino/pvl/faceblur/main.go 0
 //
 // +build example
 
@@ -20,7 +20,7 @@ import (
 	"strconv"
 
 	"gocv.io/x/gocv"
-	"gocv.io/x/gocv/pvl"
+	"gocv.io/x/gocv/openvino/pvl"
 )
 
 func main() {
@@ -41,7 +41,7 @@ func main() {
 	defer webcam.Close()
 
 	// open display window
-	window := gocv.NewWindow("PVL Faceblur")
+	window := gocv.NewWindow("OpenVINO PVL Faceblur")
 	defer window.Close()
 
 	// prepare input image matrix

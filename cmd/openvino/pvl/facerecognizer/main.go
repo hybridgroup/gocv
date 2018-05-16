@@ -1,6 +1,6 @@
 // What it does:
 //
-// This example uses the Intel CV SDK PVL FaceRecognizer to recognize people by their face.
+// This example uses the Intel OpenVINO PVL FaceRecognizer to recognize people by their face.
 // It first detects faces using the FaceDetector, then uses that information to try to identify
 // them in the database.
 //
@@ -13,7 +13,7 @@
 //
 // facerecognizer [camera ID] [face data file]
 //
-// 		go run ./cmd/pvl/facerecognizer/main.go 0 ./myfacedata.xml
+// 		go run ./cmd/openvino/pvl/facerecognizer/main.go 0 ./myfacedata.xml
 //
 // +build example
 
@@ -27,7 +27,7 @@ import (
 	"strconv"
 
 	"gocv.io/x/gocv"
-	"gocv.io/x/gocv/pvl"
+	"gocv.io/x/gocv/openvino/pvl"
 )
 
 const (
@@ -54,7 +54,7 @@ func main() {
 	defer webcam.Close()
 
 	// open display window
-	window := gocv.NewWindow("PVL Face Recognizer")
+	window := gocv.NewWindow("OpenVINO PVL Face Recognizer")
 	defer window.Close()
 
 	// prepare input image matrix

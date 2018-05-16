@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-#include "../core.h"
+#include "../../core.h"
 #include "face.h"
 
 #ifdef __cplusplus

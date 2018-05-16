@@ -1,6 +1,6 @@
 // What it does:
 //
-// This example uses the Intel CV SDK PVL FaceDetect class to detect smiles!
+// This example uses the Intel OpenVINO toolkit's PVL FaceDetect class to detect smiles!
 // It first detects faces, then detects the smiles on each. Based on if the person is
 // smiling, it draws a green or blue rectangle around each of them,
 // before displaying them within a Window.
@@ -9,7 +9,7 @@
 //
 // smiledetect [camera ID]
 //
-// 		go run ./cmd/pvl/smiledetect/main.go 0
+// 		go run ./cmd/openvino/pvl/smiledetect/main.go 0
 //
 // +build example
 
@@ -23,7 +23,7 @@ import (
 	"strconv"
 
 	"gocv.io/x/gocv"
-	"gocv.io/x/gocv/pvl"
+	"gocv.io/x/gocv/openvino/pvl"
 )
 
 func main() {

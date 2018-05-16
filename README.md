@@ -13,7 +13,7 @@ The GoCV package provides Go language bindings for the [OpenCV 3](http://opencv.
 
 The GoCV package supports the latest releases of Go and OpenCV (v3.4) on Linux, OS X, and Windows. We intend to make the Go language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
 
-GoCV also supports the [Intel Computer Vision SDK](https://software.intel.com/en-us/cvsdk-devguide) using the Photography Vision Library (PVL). Check out the [PVL README](./pvl/README.md) for more info on how to use GoCV with the Intel CV SDK.
+GoCV also supports [Intel OpenVINO](https://software.intel.com/en-us/openvino-toolkit) by using the Photography Vision Library (PVL). Check out the [OpenVINO README](./openvino/pvl/README.md) for more info on how to use GoCV with the Intel OpenVINO toolkit.
 
 ## How to use
 
