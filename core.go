@@ -89,6 +89,8 @@ const (
 	CompareNE = 5
 )
 
+var ErrEmptyByteSlice = errors.New("empty byte array")
+
 // Mat represents an n-dimensional dense numerical single-channel
 // or multi-channel array. It can be used to store real or complex-valued
 // vectors and matrices, grayscale or color images, voxel volumes,
@@ -1168,7 +1170,7 @@ func (m *Mat) GetVeciAt(row int, col int) Veci {
 
 func toByteArray(b []byte) (*C.struct_ByteArray, error) {
 	if len(b) == 0 {
-		return nil, errors.New("empty byte array")
+		return nil, ErrEmptyByteSlice
 	}
 	return &C.struct_ByteArray{
 		data:   (*C.char)(unsafe.Pointer(&b[0])),
