@@ -49,7 +49,7 @@ void VideoWriter_Close(VideoWriter vw) {
 }
 
 void VideoWriter_Open(VideoWriter vw, const char* name, const char* codec, double fps, int width,
-                      int height, bool isColor = true) {
+                      int height, bool isColor) {
     int codecCode = cv::VideoWriter::fourcc(codec[0], codec[1], codec[2], codec[3]);
     vw->open(name, codecCode, fps, cv::Size(width, height), isColor);
 }
