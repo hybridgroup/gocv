@@ -241,7 +241,7 @@ type VideoWriter struct {
 // For further details, please see:
 // http://docs.opencv.org/master/dd/d9e/classcv_1_1VideoWriter.html#a0901c353cd5ea05bba455317dab81130
 //
-func VideoWriterFile(name string, codec string, fps float64, width int, height int) (vw *VideoWriter, err error) {
+func VideoWriterFile(name string, codec string, fps float64, width int, height int, isColor bool) (vw *VideoWriter, err error) {
 
 	if fps == 0 || width == 0 || height == 0 {
 		return nil, fmt.Errorf("one of the numerical parameters "+
@@ -259,7 +259,7 @@ func VideoWriterFile(name string, codec string, fps float64, width int, height i
 	cCodec := C.CString(codec)
 	defer C.free(unsafe.Pointer(cCodec))
 
-	C.VideoWriter_Open(vw.p, cName, cCodec, C.double(fps), C.int(width), C.int(height))
+	C.VideoWriter_Open(vw.p, cName, cCodec, C.double(fps), C.int(width), C.int(height), C.bool(isColor))
 	return
 }
 

@@ -9,7 +9,7 @@ import (
 
 func TestVideoCaptureEmptyNumericalParameters(t *testing.T) {
 	_, err := VideoWriterFile(
-		"images/small.mp4", "MJPEG", 0, 0, 0)
+		"images/small.mp4", "MJPEG", 0, 0, 0, true)
 	if err == nil {
 		t.Error("Must fail due to an empty numerical parameters.")
 	}
@@ -67,7 +67,7 @@ func TestVideoWriterFile(t *testing.T) {
 	}
 	defer img.Close()
 
-	vw, _ := VideoWriterFile(tmpfn, "MJPG", 25, img.Cols(), img.Rows())
+	vw, _ := VideoWriterFile(tmpfn, "MJPG", 25, img.Cols(), img.Rows(), true)
 	defer vw.Close()
 
 	if !vw.IsOpened() {
