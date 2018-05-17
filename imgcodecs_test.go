@@ -64,7 +64,10 @@ func TestIMDecode(t *testing.T) {
 		t.Error("Invalid ReadFile in IMDecode")
 	}
 
-	dec := IMDecode(content, IMReadColor)
+	dec, err := IMDecode(content, IMReadColor)
+	if err != nil {
+		t.Error(err.Error())
+	}
 	if dec.Empty() {
 		t.Error("Invalid Mat in IMDecode")
 	}

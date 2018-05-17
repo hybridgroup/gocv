@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"image"
 	"image/color"
+	"strings"
 	"testing"
 )
 
@@ -11,6 +12,19 @@ func TestMat(t *testing.T) {
 	mat := NewMat()
 	if !mat.Empty() {
 		t.Error("New Mat should be empty")
+	}
+}
+
+func TestMatFromBytesWithEmptyByteSlise(t *testing.T) {
+	_, err := NewMatFromBytes(600, 800, MatTypeCV8U, []byte{})
+	if err == nil {
+		t.Error("TestMatFromBytesWithEmptyByteSlise: " +
+			"must fail because of an empty byte slise")
+	}
+	if !strings.Contains(err.Error(), ErrEmptyByteSlice.Error()) {
+		t.Errorf("TestMatFromBytesWithEmptyByteSlise: "+
+			"error must contain the following description: "+
+			"%v, but have: %v", ErrEmptyByteSlice, err)
 	}
 }
 
@@ -143,7 +157,10 @@ func TestMatToBytes(t *testing.T) {
 		t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 	}
 
-	copy := NewMatFromBytes(101, 102, MatTypeCV8U, b)
+	copy, err := NewMatFromBytes(101, 102, MatTypeCV8U, b)
+	if err != nil {
+		t.Error(err.Error())
+	}
 	if copy.Rows() != 101 {
 		t.Errorf("Mat from bytes incorrect row count: %v\n", copy.Rows())
 	}
