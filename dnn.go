@@ -89,7 +89,7 @@ func ReadNetFromTensorflow(model string) Net {
 func ReadNetFromTensorflowWithConfig(model string, config string) Net {
 	cmodel := C.CString(model)
 	defer C.free(unsafe.Pointer(cmodel))
-	
+
 	cconfig := C.CString(config)
 	defer C.free(unsafe.Pointer(cconfig))
 	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTensorflowWithConfig(cmodel, cconfig))}
