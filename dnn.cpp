@@ -10,6 +10,11 @@ Net Net_ReadNetFromTensorflow(const char* model) {
     return n;
 }
 
+Net Net_ReadNetFromTensorflowWithConfig(const char* model, const char* config) {
+	Net n = new cv::dnn::Net(cv::dnn::readNetFromTensorflow(model, config));
+	return n;
+}
+
 void Net_Close(Net net) {
     delete net;
 }
