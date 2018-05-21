@@ -19,6 +19,7 @@ typedef void* Net;
 
 Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel);
 Net Net_ReadNetFromTensorflow(const char* model);
+Net Net_ReadNetFromTensorflowWithConfig(const char* model, const char* config);
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
                       bool crop);
 void Net_Close(Net net);
