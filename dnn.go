@@ -85,6 +85,16 @@ func ReadNetFromTensorflow(model string) Net {
 	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTensorflow(cmodel))}
 }
 
+// ReadNetFromTensorflowWithConfig reads a network model and config stored in Tensorflow framework's format.
+func ReadNetFromTensorflowWithConfig(model string, config string) Net {
+	cmodel := C.CString(model)
+	defer C.free(unsafe.Pointer(cmodel))
+
+	cconfig := C.CString(config)
+	defer C.free(unsafe.Pointer(cconfig))
+	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTensorflowWithConfig(cmodel, cconfig))}
+}
+
 // BlobFromImage creates 4-dimensional blob from image. Optionally resizes and crops
 // image from center, subtract mean values, scales values by scalefactor,
 // swap Blue and Red channels.
