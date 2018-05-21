@@ -538,6 +538,22 @@ void Rects_Close(struct Rects rs) {
     delete[] rs.rects;
 }
 
+void DMatches_Close(struct DMatches ds) {
+    delete[] ds.dmatches;
+}
+
+void MultiDMatches_Close(struct MultiDMatches mds) {
+    for (size_t i = 0; i < mds.length; i++) {
+        DMatches_Close(mds.dmatches[i]);
+    }
+
+    delete[] mds.dmatches;
+}
+
+struct DMatches MultiDMatches_get(struct MultiDMatches mds, int index) {
+    return mds.dmatches[index];
+}
+
 // since it is next to impossible to iterate over mats.mats on the cgo side
 Mat Mats_get(struct Mats mats, int i) {
     return mats.mats[i];
