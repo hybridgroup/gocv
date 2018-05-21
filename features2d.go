@@ -385,3 +385,82 @@ func getKeyPoints(ret C.KeyPoints) []KeyPoint {
 	}
 	return keys
 }
+
+// BFMatcher is a wrapper around the the cv::BFMatcher algorithm
+type BFMatcher struct {
+	// C.BFMatcher
+	p unsafe.Pointer
+}
+
+// NewBFMatcher returns a new BFMatcher
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/da1/classcv_1_1BFMatcher.html#abe0bb11749b30d97f60d6ade665617bd
+//
+func NewBFMatcher() BFMatcher {
+	return BFMatcher{p: unsafe.Pointer(C.BFMatcher_Create())}
+}
+
+// NewBFMatcherWithParams creates a new BFMatchers but allows setting parameters
+// to values other than just the defaults.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/da1/classcv_1_1BFMatcher.html#abe0bb11749b30d97f60d6ade665617bd
+//
+func NewBFMatcherWithParams(normType NormType, crossCheck bool) BFMatcher {
+	return BFMatcher{p: unsafe.Pointer(C.BFMatcher_CreateWithParams(C.int(normType), C.bool(crossCheck)))}
+}
+
+// Close BFMatcher
+func (b *BFMatcher) Close() error {
+	C.BFMatcher_Close((C.BFMatcher)(b.p))
+	b.p = nil
+	return nil
+}
+
+// KnnMatch Finds the k best matches for each descriptor from a query set.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d39/classcv_1_1DescriptorMatcher.html#aa880f9353cdf185ccf3013e08210483a
+//
+func (b *BFMatcher) KnnMatch(query, train Mat, k int) [][]DMatch {
+	ret := C.BFMatcher_KnnMatch((C.BFMatcher)(b.p), query.p, train.p, C.int(k))
+	defer C.MultiDMatches_Close(ret)
+
+	return getMultiDMatches(ret)
+}
+
+func getMultiDMatches(ret C.MultiDMatches) [][]DMatch {
+	cArray := ret.dmatches
+	length := int(ret.length)
+	hdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cArray)),
+		Len:  length,
+		Cap:  length,
+	}
+	s := *(*[]C.DMatches)(unsafe.Pointer(&hdr))
+
+	keys := make([][]DMatch, length)
+	for i := range s {
+		keys[i] = getDMatches(C.MultiDMatches_get(ret, C.int(i)))
+	}
+	return keys
+}
+
+func getDMatches(ret C.DMatches) []DMatch {
+	cArray := ret.dmatches
+	length := int(ret.length)
+	hdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cArray)),
+		Len:  length,
+		Cap:  length,
+	}
+	s := *(*[]C.DMatch)(unsafe.Pointer(&hdr))
+
+	keys := make([]DMatch, length)
+	for i, r := range s {
+		keys[i] = DMatch{int(r.queryIdx), int(r.trainIdx), int(r.imgIdx),
+			float64(r.distance)}
+	}
+	return keys
+}

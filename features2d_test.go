@@ -222,3 +222,45 @@ func TestSimpleBlobDetector(t *testing.T) {
 		t.Errorf("Invalid KeyPoint array in SimpleBlobDetector test: %d", len(kp))
 	}
 }
+
+func TestBFMatcher(t *testing.T) {
+	descriptorFile := "images/sift_descriptor.png"
+	desc1 := IMRead(descriptorFile, IMReadGrayScale)
+	if desc1.Empty() {
+		t.Error("descriptor one is empty in BFMatcher test")
+	}
+	defer desc1.Close()
+
+	desc2 := IMRead(descriptorFile, IMReadGrayScale)
+	if desc2.Empty() {
+		t.Error("descriptor two is empty in BFMatcher test")
+	}
+	defer desc2.Close()
+
+	bf := NewBFMatcher()
+	defer bf.Close()
+
+	k := 2
+	dMatches := bf.KnnMatch(desc1, desc2, k)
+	if len(dMatches) < 1 {
+		t.Errorf("DMatches was excepted to have at least one element")
+	}
+	for i := range dMatches {
+		if len(dMatches[i]) != k {
+			t.Errorf("Length does not match k cluster amount in BFMatcher")
+		}
+	}
+
+	bfParams := NewBFMatcherWithParams(NormHamming, false)
+	defer bfParams.Close()
+
+	dMatches = bfParams.KnnMatch(desc1, desc2, k)
+	if len(dMatches) < 1 {
+		t.Errorf("DMatches was excepted to have at least one element")
+	}
+	for i := range dMatches {
+		if len(dMatches[i]) != k {
+			t.Errorf("Length does not match k cluster amount in BFMatcher")
+		}
+	}
+}

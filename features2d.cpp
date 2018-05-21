@@ -301,3 +301,51 @@ struct KeyPoints SimpleBlobDetector_Detect(SimpleBlobDetector b, Mat src) {
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
+
+BFMatcher BFMatcher_Create() {
+    return new cv::Ptr<cv::BFMatcher>(cv::BFMatcher::create());
+}
+
+BFMatcher BFMatcher_CreateWithParams(int normType, bool crossCheck) {
+    return new cv::Ptr<cv::BFMatcher>(cv::BFMatcher::create(normType, crossCheck));
+}
+
+void BFMatcher_Close(BFMatcher b) {
+    delete b;
+}
+
+struct MultiDMatches BFMatcher_KnnMatch(BFMatcher b, Mat query, Mat train, int k) {
+    std::vector<std::vector<cv::DMatch>> matches;
+    (*b)->knnMatch(*query, *train, matches, k);
+
+    DMatches *dms = new DMatches[matches.size()];
+    for (size_t i = 0; i < matches.size(); ++i) {
+        DMatch *dmatches = new DMatch[matches[i].size()];
+        for (size_t j = 0; j < matches[i].size(); ++j) {
+            DMatch dmatch = {matches[i][j].queryIdx, matches[i][j].trainIdx, matches[i][j].imgIdx,
+                             matches[i][j].distance};
+            dmatches[j] = dmatch;
+        }
+        dms[i] = {dmatches, (int) matches[i].size()};
+    }
+    MultiDMatches ret = {dms, (int) matches.size()};
+    return ret;
+}
+
+struct MultiDMatches BFMatcher_KnnMatchWithParams(BFMatcher b, Mat query, Mat train, int k, Mat mask, bool compactResult) {
+    std::vector<std::vector<cv::DMatch>> matches;
+    (*b)->knnMatch(*query, *train, matches, k, *mask, compactResult);
+
+    DMatches *dms = new DMatches[matches.size()];
+    for (size_t i = 0; i < matches.size(); ++i) {
+        DMatch *dmatches = new DMatch[matches[i].size()];
+        for (size_t j = 0; j < matches[i].size(); ++j) {
+            DMatch dmatch = {matches[i][j].queryIdx, matches[i][j].trainIdx, matches[i][j].imgIdx,
+                             matches[i][j].distance};
+            dmatches[j] = dmatch;
+        }
+        dms[i] = {dmatches, (int) matches[i].size()};
+    }
+    MultiDMatches ret = {dms, (int) matches.size()};
+    return ret;
+}
