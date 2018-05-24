@@ -43,6 +43,8 @@ func main() {
 		return
 	}
 
+	fmt.Println("IE Version:", ie.Version())
+
 	// parse args
 	deviceID, _ := strconv.Atoi(os.Args[1])
 	model := os.Args[2]

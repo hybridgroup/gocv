@@ -12,6 +12,11 @@ import (
 	"unsafe"
 )
 
+// Version returns the current Inference Engine library version
+func Version() string {
+	return C.GoString(C.IEVersion())
+}
+
 // InferenceEnginePlugin is a wrapper around InferenceEngine::InferenceEnginePluginPtr.
 type InferenceEnginePlugin struct {
 	p C.InferenceEnginePluginPtr

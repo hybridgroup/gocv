@@ -18,6 +18,8 @@ typedef void* CNNNetReader;
 typedef void* CNNNetwork;
 #endif
 
+const char* IEVersion();
+
 // InferencePlugin
 InferenceEnginePluginPtr InferenceEnginePluginPtr_New(const char* libpath);
 void InferenceEnginePluginPtr_Close(InferenceEnginePluginPtr p);
