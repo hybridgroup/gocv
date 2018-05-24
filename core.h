@@ -97,6 +97,26 @@ typedef struct KeyPoints {
     int length;
 } KeyPoints;
 
+// Wrapper for an individual cv::DMatch
+typedef struct DMatch {
+    int queryIdx;
+    int trainIdx;
+    int imgIdx;
+    float distance;
+} DMatch;
+
+// Wrapper for the vector of DMatch struct aka std::vector<DMatch>
+typedef struct DMatches {
+    DMatch* dmatches;
+    int length;
+} DMatches;
+
+// Wrapper for the vector vector of DMatch struct aka std::vector<std::vector<DMatch>>
+typedef struct MultiDMatches {
+    DMatches* dmatches;
+    int length;
+} MultiDMatches;
+
 // Wrapper for an individual cv::Moment
 typedef struct Moment {
     double m00;
@@ -142,6 +162,7 @@ typedef struct Mats {
 } Mats;
 
 Mat Mats_get(struct Mats mats, int i);
+struct DMatches MultiDMatches_get(struct MultiDMatches mds, int index);
 
 struct ByteArray toByteArray(const char* buf, int len);
 void ByteArray_Release(struct ByteArray buf);
@@ -152,6 +173,8 @@ void Rects_Close(struct Rects rs);
 void Mats_Close(struct Mats mats);
 void Point_Close(struct Point p);
 void Points_Close(struct Points ps);
+void DMatches_Close(struct DMatches ds);
+void MultiDMatches_Close(struct MultiDMatches mds);
 
 Mat Mat_New();
 Mat Mat_NewWithSize(int rows, int cols, int type);

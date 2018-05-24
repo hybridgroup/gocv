@@ -1233,6 +1233,18 @@ type KeyPoint struct {
 	Octave, ClassID       int
 }
 
+// DMatch is data structure for matching keypoint descriptors.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/de0/classcv_1_1DMatch.html#a546ddb9a87898f06e510e015a6de596e
+//
+type DMatch struct {
+	QueryIdx int
+	TrainIdx int
+	ImgIdx   int
+	Distance float64
+}
+
 // Vecf is a generic vector of floats.
 type Vecf []float32
 
