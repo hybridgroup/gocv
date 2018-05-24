@@ -1,3 +1,43 @@
+0.12.0
+---
+* **build**
+    * convert to CRLF
+    * Enable verbosity for travisCI
+    * Further improvements to Makefile
+* **core**
+    * Add Rotate, VConcat
+    * Adding InScalarRange and NewMatFromScalarWithSize functions
+    * Changed NewMatFromScalarWithSize to NewMatWithSizeFromScalar
+    * implement CheckRange(), Determinant(), EigenNonSymmetric(), Min(), and MinMaxIdx() functions
+    * implement PerspectiveTransform() and Sqrt() functions
+    * implement Transform() and Transpose() functions
+    * Make toByteArray safe for empty byte slices
+    * Renamed InScalarRange to InRangeWithScalar
+* **docs**
+    * nicer error if we can't read haarcascade_frontalface_default
+    * correct some ROADMAP links
+    * Fix example command.
+    * Fix executable name in help text.
+    * update ROADMAP from recent contributions
+* **imgproc** 
+    * add BoxFilter and SqBoxFilter functions
+    * Fix the hack to convert C arrays to Go slices.
+* **videoio** 
+    * Add isColor to VideoWriterFile
+    * Check numerical parameters for gocv.VideoWriterFile
+    * CodecString()
+* **features2d** 
+    * add BFMatcher
+* **img_hash** 
+    * Add contrib/img_hash module
+    * add GoDocs for new img_hash module
+    * Add img-similarity as an example for img_hash
+* **openvino** 
+    * adds support for Intel OpenVINO toolkit PVL
+    * starting experimental work on OpenVINO IE
+    * update README files for Intel OpenVINO toolkit support
+    * WIP on IE can load an IR network
+
 0.11.0
 ---
 * **build**
