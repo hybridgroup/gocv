@@ -15,20 +15,13 @@ Your pull requests will be greatly appreciated!
 - [ ] **core. Core functionality - WORK STARTED**
     - [ ] **Basic structures - WORK STARTED**
     - [ ] **Operations on arrays - WORK STARTED**. The following functions still need implementation:
-        - [X] [checkRange](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga2bd19d89cae59361416736f87e3c7a64)
-        - [X] [determinant](https://docs.opencv.org/master/d2/de8/group__core__array.html#gaf802bd9ca3e07b8b6170645ef0611d0c)
-        - [X] [eigenNonSymmetric](https://docs.opencv.org/master/d2/de8/group__core__array.html#gaf51987e03cac8d171fbd2b327cf966f6)
         - [ ] [Mahalanobis](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4493aee129179459cbfc6064f051aa7d)
-        - [X] [min](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9af368f182ee76d0463d0d8d5330b764)
-        - [X] [minMaxIdx](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga7622c466c628a75d9ed008b42250a73f)
         - [ ] [mixChannels](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga51d768c270a1cdd3497255017c4504be)
         - [ ] [mulSpectrums](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga3ab38646463c59bf0ce962a9d51db64f)
         - [ ] [mulTransposed](https://docs.opencv.org/master/d2/de8/group__core__array.html#gadc4e49f8f7a155044e3be1b9e3b270ab)
-        - [X] [patchNaNs](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga62286befb7cde3568ff8c7d14d5079da)
         - [ ] [PCABackProject](https://docs.opencv.org/master/d2/de8/group__core__array.html#gab26049f30ee8e94f7d69d82c124faafc)
         - [ ] [PCACompute](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4e2073c7311f292a0648f04c37b73781)
         - [ ] [PCAProject](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6b9fbc7b3a99ebfd441bbec0a6bc4f88)
-        - [X] [perspectiveTransform](https://docs.opencv.org/master/d2/de8/group__core__array.html#gad327659ac03e5fd6894b90025e6900a7)
         - [ ] [phase](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9db9ca9b4d81c3bde5677b8f64dc0137)
         - [ ] [polarToCart](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga581ff9d44201de2dd1b40a50db93d665)
         - [ ] [PSNR](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga07aaf34ae31d226b1b847d8bcff3698f)
@@ -37,7 +30,6 @@ Your pull requests will be greatly appreciated!
         - [ ] [randu](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga1ba1026dca0807b27057ba6a49d258c0)
         - [ ] [reduce](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4b78072a303f29d9031d56e5638da78e)
         - [ ] [repeat](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga496c3860f3ac44c40b48811333cfda2d)
-        - [X] [rotate](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4ad01c0978b0ce64baa246811deeac24)
         - [ ] [scaleAdd](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9e0845db4135f55dcf20227402f00d98)
         - [ ] [setIdentity](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga388d7575224a4a277ceb98ccaa327c99)
         - [ ] [setRNGSeed](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga757e657c037410d9e19e819569e7de0f)
@@ -46,14 +38,10 @@ Your pull requests will be greatly appreciated!
         - [ ] [solvePoly](https://docs.opencv.org/master/d2/de8/group__core__array.html#gac2f5e953016fabcdf793d762f4ec5dce)
         - [ ] [sort](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga45dd56da289494ce874be2324856898f)
         - [ ] [sortIdx](https://docs.opencv.org/master/d2/de8/group__core__array.html#gadf35157cbf97f3cb85a545380e383506)
-        - [X] [sqrt](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga186222c3919657890f88df5a1f64a7d7)
         - [ ] [SVBackSubst](https://docs.opencv.org/master/d2/de8/group__core__array.html#gab4e620e6fc6c8a27bb2be3d50a840c0b)
         - [ ] [SVDecomp](https://docs.opencv.org/master/d2/de8/group__core__array.html#gab477b5b7b39b370bb03e75b19d2d5109)
         - [ ] [theRNG](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga75843061d150ad6564b5447e38e57722)
         - [ ] [trace](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga3419ac19c7dcd2be4bd552a23e147dd8)
-        - [X] [transform](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga393164aa54bb9169ce0a8cc44e08ff22)
-        - [X] [transpose](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga46630ed6c0ea6254a35f447289bd7404)
-        - [X] [vconcat](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga744f53b69f6e4f12156cdde4e76aed27)
     - [ ] XML/YAML Persistence
     - [ ] Clustering
     - [ ] Utility and system functions and macros
@@ -64,7 +52,6 @@ Your pull requests will be greatly appreciated!
 
 - [ ] **imgproc. Image processing - WORK STARTED**
     - [ ] **Image Filtering - WORK STARTED** The following functions still need implementation:
-        - [X] [boxFilter](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gad533230ebf2d42509547d514f7d3fbc3)
         - [ ] [buildPyramid](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gacfdda2bc1ac55e96de7e9f0bce7238c0)
         - [ ] [filter2D](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga27c049795ce870216ddfb366086b5a04)
         - [ ] [getDerivKernels](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga6d6c23f7bd3f5836c31cfae994fc4aea)
@@ -76,7 +63,6 @@ Your pull requests will be greatly appreciated!
         - [ ] [sepFilter2D](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga910e29ff7d7b105057d1625a4bf6318d)
         - [ ] [Sobel](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gacea54f142e81b6758cb6f375ce782c8d)
         - [ ] [spatialGradient](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga405d03b20c782b65a4daf54d233239a2)
-        - [X] [sqrBoxFilter](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga045028184a9ef65d7d2579e5c4bff6c0)
     
     - [ ] **Geometric Image Transformations - WORK STARTED** The following functions still need implementation:
         - [ ] [convertMaps](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga9156732fa8f01be9ebd1a194f2728b7f)
@@ -160,7 +146,6 @@ Your pull requests will be greatly appreciated!
 - [ ] **features2d. 2D Features Framework - WORK STARTED**
     - [X] **Feature Detection and Description**
     - [ ] **Descriptor Matchers - WORK STARTED** The following functions still need implementation:
-        - [X] [BFMatcher](https://docs.opencv.org/master/d3/da1/classcv_1_1BFMatcher.html)
         - [ ] [FlannBasedMatcher](https://docs.opencv.org/master/dc/de2/classcv_1_1FlannBasedMatcher.html)
     - [ ] Drawing Function of Keypoints and Matches (https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html)
     - [ ] Object Categorization (https://docs.opencv.org/master/de/d24/group__features2d__category.html)
