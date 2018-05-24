@@ -315,7 +315,7 @@ void BFMatcher_Close(BFMatcher b) {
 }
 
 struct MultiDMatches BFMatcher_KnnMatch(BFMatcher b, Mat query, Mat train, int k) {
-    std::vector<std::vector<cv::DMatch>> matches;
+    std::vector< std::vector<cv::DMatch> > matches;
     (*b)->knnMatch(*query, *train, matches, k);
 
     DMatches *dms = new DMatches[matches.size()];
@@ -333,7 +333,7 @@ struct MultiDMatches BFMatcher_KnnMatch(BFMatcher b, Mat query, Mat train, int k
 }
 
 struct MultiDMatches BFMatcher_KnnMatchWithParams(BFMatcher b, Mat query, Mat train, int k, Mat mask, bool compactResult) {
-    std::vector<std::vector<cv::DMatch>> matches;
+    std::vector< std::vector<cv::DMatch> > matches;
     (*b)->knnMatch(*query, *train, matches, k, *mask, compactResult);
 
     DMatches *dms = new DMatches[matches.size()];

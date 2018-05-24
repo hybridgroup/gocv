@@ -159,7 +159,9 @@ Your pull requests will be greatly appreciated!
 - [ ] calib3d. Camera Calibration and 3D Reconstruction
 - [ ] **features2d. 2D Features Framework - WORK STARTED**
     - [X] **Feature Detection and Description**
-    - [ ] Descriptor Matchers (https://docs.opencv.org/master/d8/d9b/group__features2d__match.html)
+    - [ ] **Descriptor Matchers - WORK STARTED** The following functions still need implementation:
+        - [X] [BFMatcher](https://docs.opencv.org/master/d3/da1/classcv_1_1BFMatcher.html)
+        - [ ] [FlannBasedMatcher](https://docs.opencv.org/master/dc/de2/classcv_1_1FlannBasedMatcher.html)
     - [ ] Drawing Function of Keypoints and Matches (https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html)
     - [ ] Object Categorization (https://docs.opencv.org/master/de/d24/group__features2d__category.html)
 
