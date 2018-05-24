@@ -38,15 +38,16 @@ func readDescriptions(path string) ([]string, error) {
 }
 
 func main() {
-	if len(os.Args) < 5 {
-		fmt.Println("How to run:\nclassifier [camera ID] [protofile] [modelfile] [descriptionsfile]")
+	if len(os.Args) < 4 {
+		fmt.Println("How to run:\nclassifier [camera ID] [model] [weights] [descriptionsfile]")
 		return
 	}
 
 	// parse args
 	deviceID, _ := strconv.Atoi(os.Args[1])
-	// proto := os.Args[2]
-	// model := os.Args[3]
+	model := os.Args[2]
+	weights := os.Args[3]
+
 	//descr := os.Args[4]
 	// descriptions, err := readDescriptions(descr)
 	// if err != nil {
@@ -68,8 +69,17 @@ func main() {
 	img := gocv.NewMat()
 	defer img.Close()
 
-	pd := ie.NewInferenceEnginePluginPtr()
+	pd := ie.NewInferenceEnginePlugin()
 	defer pd.Close()
+
+	nr := ie.NewCNNNetReader()
+	defer nr.Close()
+
+	nr.ReadNetwork(model)
+	nr.ReadWeights(weights)
+
+	net := nr.GetNetwork()
+	defer net.Close()
 
 	// status := "Ready"
 	// statusColor := color.RGBA{0, 255, 0, 0}
