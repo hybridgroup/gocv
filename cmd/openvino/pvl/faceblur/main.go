@@ -17,9 +17,9 @@ import (
 	"fmt"
 	"image"
 	"os"
-	"strconv"
 
 	"gocv.io/x/gocv"
+	"gocv.io/x/gocv/cmd/internal/capture"
 	"gocv.io/x/gocv/openvino/pvl"
 )
 
@@ -30,10 +30,10 @@ func main() {
 	}
 
 	// parse args
-	deviceID, _ := strconv.Atoi(os.Args[1])
+	deviceID := os.Args[1]
 
 	// open webcam
-	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
+	webcam, err := capture.Open(deviceID)
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return

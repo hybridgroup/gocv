@@ -16,9 +16,9 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 
 	"gocv.io/x/gocv"
+	"gocv.io/x/gocv/cmd/internal/capture"
 )
 
 func main() {
@@ -27,10 +27,10 @@ func main() {
 		return
 	}
 
-	deviceID, _ := strconv.Atoi(os.Args[1])
+	deviceID := os.Args[1]
 	saveFile := os.Args[2]
 
-	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
+	webcam, err := capture.Open(deviceID)
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return

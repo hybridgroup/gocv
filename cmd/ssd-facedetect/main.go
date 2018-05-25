@@ -22,9 +22,9 @@ import (
 	"image"
 	"image/color"
 	"os"
-	"strconv"
 
 	"gocv.io/x/gocv"
+	"gocv.io/x/gocv/cmd/internal/capture"
 )
 
 func min(a, b float32) float32 {
@@ -48,12 +48,12 @@ func main() {
 	}
 
 	// parse args
-	deviceID, _ := strconv.Atoi(os.Args[1])
+	deviceID := os.Args[1]
 	proto := os.Args[2]
 	model := os.Args[3]
 
 	// open capture device
-	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
+	webcam, err := capture.Open(deviceID)
 	if err != nil {
 		fmt.Printf("Error opening video capture device: %v\n", deviceID)
 		return
