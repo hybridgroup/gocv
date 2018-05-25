@@ -18,7 +18,7 @@ import (
 	"os"
 	"strconv"
 
-	"gocv.io/x/gocv"
+	"github.com/bukalapak/gocv"
 )
 
 func main() {

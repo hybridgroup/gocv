@@ -23,8 +23,8 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/bukalapak/gocv"
 	"github.com/hybridgroup/mjpeg"
-	"gocv.io/x/gocv"
 )
 
 var (

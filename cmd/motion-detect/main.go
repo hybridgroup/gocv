@@ -21,7 +21,7 @@ import (
 	"os"
 	"strconv"
 
-	"gocv.io/x/gocv"
+	"github.com/bukalapak/gocv"
 )
 
 const MinimumArea = 3000
