@@ -15,7 +15,7 @@ import (
 	"fmt"
 	"os"
 
-	"gocv.io/x/gocv"
+	"github.com/bukalapak/gocv"
 )
 
 func main() {

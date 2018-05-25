@@ -9,7 +9,7 @@ import "C"
 import (
 	"unsafe"
 
-	"gocv.io/x/gocv"
+	"github.com/bukalapak/gocv"
 )
 
 // UnknownFace is when the FaceRecognizer cannot identify a Face.
