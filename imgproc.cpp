@@ -206,6 +206,10 @@ void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold) {
     cv::HoughLinesP(*src, *lines, rho, theta, threshold);
 }
 
+void HoughLinesPWithParams(Mat src, Mat lines, double rho, double theta, int threshold, double minLineLength, double maxLineGap) {
+    cv::HoughLinesP(*src, *lines, rho, theta, threshold, minLineLength, maxLineGap);
+}
+
 void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ) {
     cv::threshold(*src, *dst, thresh, maxvalue, typ);
 }

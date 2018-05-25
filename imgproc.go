@@ -604,6 +604,9 @@ func HoughLines(src Mat, lines *Mat, rho float32, theta float32, threshold int) 
 func HoughLinesP(src Mat, lines *Mat, rho float32, theta float32, threshold int) {
 	C.HoughLinesP(src.p, lines.p, C.double(rho), C.double(theta), C.int(threshold))
 }
+func HoughLinesPWithParams(src Mat, lines *Mat, rho float32, theta float32, threshold int, minLineLength float32, maxLineGap float32) {
+	C.HoughLinesPWithParams(src.p, lines.p, C.double(rho), C.double(theta), C.int(threshold), C.double(minLineLength), C.double(maxLineGap))
+}
 
 // ThresholdType type of threshold operation.
 type ThresholdType int
