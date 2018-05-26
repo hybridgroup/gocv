@@ -1,8 +1,8 @@
 // +build !customenv
 
-package gocv
+package contrib
 
-// Changes here should be mirrored in contrib/cgo.go.
+// Changes here should be mirrored in gocv/cgo.go.
 
 /*
 #cgo !windows pkg-config: opencv
