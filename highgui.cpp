@@ -1,4 +1,4 @@
-#include "highgui.h"
+#include "highgui_gocv.h"
 
 // Window
 void Window_New(const char* winname, int flags) {

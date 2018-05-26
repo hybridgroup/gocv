@@ -2,7 +2,7 @@ package gocv
 
 /*
 #include <stdlib.h>
-#include "highgui.h"
+#include "highgui_gocv.h"
 */
 import "C"
 import (
