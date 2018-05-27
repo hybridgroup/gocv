@@ -76,7 +76,7 @@ sudo_install:
 
 # Build a minimal Go app to confirm gocv works.
 verify:
-	/bin/bash -c "source ./env.sh && go run ./cmd/version/main.go"
+	go run ./cmd/version/main.go
 
 # Runs tests.
 # This assumes env.sh was already sourced.
