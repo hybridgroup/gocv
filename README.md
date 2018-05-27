@@ -138,81 +138,59 @@ You can use `make` to install OpenCV 3.4.1 with the handy `Makefile` included wi
 
 First, you need to change the current directory to the location of the GoCV repo, so you can access the `Makefile`:
 
-		cd $GOPATH/src/gocv.io/x/gocv
+	cd $GOPATH/src/gocv.io/x/gocv
 
 Next, you need to update the system, and install any required packages:
 
-		make deps
+	make deps
 
 #### Download source
 
 Now, download the OpenCV 3.4.1 and OpenCV Contrib source code:
 
-		make download
+	make download
 
 #### Build
 
 Build and install everything. This will take quite a while:
 
-		make build
+	make build
 
 #### Cleanup extra files
 
 After the installation is complete, you can remove the extra files and folders:
 
-		make clean
+	make clean
 
-### How to go build/go run your code
+### Verifying the installation
 
-In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your GoCV installation.
+To verify your installation you can run one of the included examples.
 
 First, change the current directory to the location of the GoCV repo:
 
-		cd $GOPATH/src/gocv.io/x/gocv
-
-One time per session, you must run the script:
-
-		source ./env.sh
+	cd $GOPATH/src/gocv.io/x/gocv
 
 Now you should be able to build or run any of the examples:
 
-		go run ./cmd/version/main.go
+	go run ./cmd/version/main.go
 
 The version program should output the following:
 
-		gocv version: 0.12.0
-		opencv lib version: 3.4.1
+	gocv version: 0.12.0
+	opencv lib version: 3.4.1
 
-You might want to copy the `env.sh` script into your own projects, to make it easier to setup these environment vars when building your own code.
+If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times:
 
-If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times (`env.sh` must have been executed as described above):
+	go install gocv.io/x/gocv
 
-        go install gocv.io/x/gocv
+### Custom Environment
 
-### Other Linux installations
-
-One way to find out the locations for your includes and libs is to use the `pkg-config` tool like this:
-
-		pkg-config --cflags opencv
-
-Should output the `include` flags:
-
-		-I/usr/local/include/opencv -I/usr/local/include
-
-Then this command:
-
-		pkg-config --libs opencv
-
-Should output the `lib` flags:
-
-		-L/usr/local/lib -lopencv_stitching -lopencv_superres -lopencv_videostab -lopencv_photo -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dpm -lopencv_face -lopencv_freetype -lopencv_fuzzy -lopencv_img_hash -lopencv_line_descriptor -lopencv_optflow -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_text -lopencv_dnn -lopencv_plot -lopencv_ml -lopencv_xfeatures2d -lopencv_shape -lopencv_video -lopencv_ximgproc -lopencv_calib3d -lopencv_features2d -lopencv_highgui -lopencv_videoio -lopencv_flann -lopencv_xobjdetect -lopencv_imgcodecs -lopencv_objdetect -lopencv_xphoto -lopencv_imgproc -lopencv_core
-
-Once you have this info, you can build or run the Go code that consumes it by populating the needed `CGO_CPPFLAGS` and `CGO_LDFLAGS` ENV vars.
+By default, pkg-config is used to determine the correct flags for compiling and linking OpenCV. This behavior can be disabled by supplying `-tags customenv` when building/running your application. When building with this tag you will need to supply the CGO environment variables yourself.
 
 For example:
 
-		export CGO_CPPFLAGS="-I/usr/local/include" 
-		export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_face -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_features2d -lopencv_video -lopencv_dnn -lopencv_xfeatures2d"
+	export CGO_CPPFLAGS="-I/usr/local/include"
+	export CGO_LDFLAGS="-L/usr/local/lib -lopencv_core -lopencv_face -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_features2d -lopencv_video -lopencv_dnn -lopencv_xfeatures2d"
 
 Please note that you will need to run these 2 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables.
 
@@ -222,38 +200,44 @@ Please note that you will need to run these 2 lines of code one time in your cur
 
 You can install OpenCV 3.4.1 using Homebrew:
 
-		brew install opencv
+	brew install opencv
 
 If you already have an earlier version of OpenCV installed, you should probably upgrade it to the latest version, instead of installing:
 
-		brew upgrade opencv
+	brew upgrade opencv
 
-### How to go build/go run your code
+### Verifying the installation
 
-In order to build/run Go code that uses this package, you will need to specify the location for the includes and libs for your gocv installation. If you have used Homebrew to install OpenCV 3.4, the following instructions should work.
+To verify your installation you can run one of the included examples.
 
-First, you need to change the current directory to the location of the GoCV repo:
+First, change the current directory to the location of the GoCV repo:
 
-		cd $GOPATH/src/gocv.io/x/gocv
+	cd $GOPATH/src/gocv.io/x/gocv
 
-One time per session, you must run the script:
+Now you should be able to build or run any of the examples:
 
-		source ./env.sh
-
-Now you should be able to build or run any of the command examples:
-
-		go run ./cmd/version/main.go
+	go run ./cmd/version/main.go
 
 The version program should output the following:
 
-		gocv version: 0.12.0
-		opencv lib version: 3.4.1
+	gocv version: 0.12.0
+	opencv lib version: 3.4.1
 
-You might want to copy the `env.sh` script into your own projects, to make it easier to setup the needed environment vars when building your own code.
+If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times:
 
-If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times (`env.sh` must have been executed as described above):
+	go install gocv.io/x/gocv
 
-        go install gocv.io/x/gocv
+### Custom Environment
+
+By default, pkg-config is used to determine the correct flags for compiling and linking OpenCV. This behavior can be disabled by supplying `-tags customenv` when building/running your application. When building with this tag you will need to supply the CGO environment variables yourself.
+
+For example:
+
+	export CGO_CXXFLAGS="--std=c++11"
+	export CGO_CPPFLAGS="-I/usr/local/Cellar/opencv/3.4.1_5/include"
+	export CGO_LDFLAGS="-L/usr/local/Cellar/opencv/3.4.1_5/lib -lopencv_stitching -lopencv_superres -lopencv_videostab -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dnn_objdetect -lopencv_dpm -lopencv_face -lopencv_photo -lopencv_fuzzy -lopencv_hfs -lopencv_img_hash -lopencv_line_descriptor -lopencv_optflow -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_dnn -lopencv_plot -lopencv_xfeatures2d -lopencv_shape -lopencv_video -lopencv_ml -lopencv_ximgproc -lopencv_calib3d -lopencv_features2d -lopencv_highgui -lopencv_videoio -lopencv_flann -lopencv_xobjdetect -lopencv_imgcodecs -lopencv_objdetect -lopencv_xphoto -lopencv_imgproc -lopencv_core"
+
+Please note that you will need to run these 3 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables.
 
 ## Windows
 
@@ -310,37 +294,50 @@ Once it is complete, click on the "Generate" button, and wait for it to generate
 
 Now run the following commands:
 
-		cd C:\opencv\build
-		mingw32-make
+	cd C:\opencv\build
+	mingw32-make
 
 The build should start. It will probably take a very long time. When it is finished run:
 
-		mingw32-make install
+	mingw32-make install
 
 Last, add `C:\opencv\build\install\x64\mingw\bin` to your System Path.
 
 You should now have OpenCV 3.4 installed on your Windows 10 machine.
 
-### How to go build/go run your code
+### Verifying the installation
 
-One time per session, you must run the script:
+To verify your installation you can run one of the included examples.
 
-		env.cmd
+First, change the current directory to the location of the GoCV repo:
+
+	cd %GOPATH%/src/gocv.io/x/gocv
 
 Now you should be able to build or run any of the command examples:
 
-		go run .\cmd\version\main.go
+	go run .\cmd\version\main.go
 
 The version program should output the following:
 
-		gocv version: 0.12.0
-		opencv lib version: 3.4.1
+	gocv version: 0.12.0
+	opencv lib version: 3.4.1
 
-You might want to copy the `env.cmd` script into your own projects, to make it easier to setup the needed environment vars when building your own code.
+If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times:
 
-If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times (`env.cmd` must have been executed as described above):
+	go install gocv.io/x/gocv
 
-        go install gocv.io/x/gocv
+### Custom Environment
+
+By default, OpenCV is expected to be in `C:\opencv\build\install\include`. This behavior can be disabled by supplying `-tags customenv` when building/running your application. When building with this tag you will need to supply the CGO environment variables yourself.
+
+Due to the way OpenCV produces DLLs, including the version in the name, using this method is required if you're using a different version of OpenCV.
+
+For example:
+
+	set CGO_CPPFLAGS=-IC:\opencv\build\install\include
+	set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core341 -lopencv_face341 -lopencv_videoio341 -lopencv_imgproc341 -lopencv_highgui341 -lopencv_imgcodecs341 -lopencv_objdetect341 -lopencv_features2d341 -lopencv_video341 -lopencv_dnn341 -lopencv_xfeatures2d341 -lopencv_plot341 -lopencv_tracking341 -lopencv_img_hash341
+
+Please note that you will need to run these 2 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables.
 
 ## How to contribute
 
