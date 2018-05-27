@@ -31,9 +31,11 @@ You only need to do these two steps one time per session. Once you have run them
 Now you can run the version command example to make sure you are compiling/linking against Intel OpenVINO:
 
 ```
-$ go run ./cmd/version/main.go 
+$ go run -tags customenv ./cmd/version/main.go 
 gocv version: 0.11.0
 opencv lib version: 3.4.1-cvsdk_2018_1.0.5
 ```
+
+Note the use of `-tags customenv` is needed when using `go run` or `go build` with OpenVINO, so the CGo compiler can pickup the correct settings for the environment, and ignore the usual defaults.
 
 Examples that use the Intel OpenVINO toolkit can be found in the `cmd/openvino` directory of this repository.
