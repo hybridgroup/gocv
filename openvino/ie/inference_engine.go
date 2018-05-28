@@ -94,3 +94,8 @@ func (n CNNNetwork) Close() error {
 	n.p = nil
 	return nil
 }
+
+// Size returns the number of nodes in this CNNNetwork.
+func (n CNNNetwork) Size() uint32 {
+	return uint32(C.CNNNetwork_Size((*C.CNNNetwork)(n.p)))
+}

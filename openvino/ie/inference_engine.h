@@ -30,6 +30,7 @@ void CNNNetReader_ReadWeights(CNNNetReader* r, const char* cWeightsFile);
 CNNNetwork* CNNNetReader_GetNetwork(CNNNetReader* r);
 
 //CNNNetwork CNNNetwork_New();
+size_t CNNNetwork_Size(CNNNetwork* n);
 
 #ifdef __cplusplus
 }

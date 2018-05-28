@@ -36,6 +36,10 @@ CNNNetwork* CNNNetReader_GetNetwork(CNNNetReader* r) {
     return new CNNNetwork(r->getNetwork());
 }
 
+size_t CNNNetwork_Size(CNNNetwork* n) {
+    return n->size();
+}
+
 // CNNNetwork
 
 // CNNNetwork_New(const char* cModelFile, const char* cWeightsFile) {
