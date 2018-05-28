@@ -9,7 +9,7 @@
 //
 // smiledetect [camera ID]
 //
-// 		go run ./cmd/openvino/pvl/smiledetect/main.go 0
+// 		go run -tags openvino ./cmd/openvino/pvl/smiledetect/main.go 0
 //
 // +build example
 

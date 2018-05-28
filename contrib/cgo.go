@@ -1,4 +1,4 @@
-// +build !customenv
+// +build !customenv, !openvino
 
 package contrib
 

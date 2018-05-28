@@ -4,7 +4,7 @@
 //
 // How to run:
 //
-// 		go run ./cmd/openvino/ie/classifier/main.go 0 [xmlfile] [binfile] [descriptionsfile]
+// 		go run -tags openvino ./cmd/openvino/ie/classifier/main.go 0 [xmlfile] [binfile] [descriptionsfile]
 //
 // +//build example
 

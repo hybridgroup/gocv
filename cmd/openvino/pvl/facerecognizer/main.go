@@ -13,7 +13,7 @@
 //
 // facerecognizer [camera ID] [face data file]
 //
-// 		go run ./cmd/openvino/pvl/facerecognizer/main.go 0 ./myfacedata.xml
+// 		go run -tags openvino ./cmd/openvino/pvl/facerecognizer/main.go 0 ./myfacedata.xml
 //
 // +build example
 

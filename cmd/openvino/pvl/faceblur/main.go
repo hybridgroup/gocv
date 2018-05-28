@@ -7,7 +7,7 @@
 //
 // faceblur [camera ID]
 //
-// 		go run ./cmd/openvino/pvl/faceblur/main.go 0
+// 		go run -tags openvino ./cmd/openvino/pvl/faceblur/main.go 0
 //
 // +build example
 
