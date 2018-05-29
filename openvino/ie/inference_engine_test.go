@@ -6,8 +6,11 @@ import (
 )
 
 func TestInferenceEnginePlugin(t *testing.T) {
-	pd := NewInferenceEnginePlugin()
-	pd.Close()
+	pd := NewInferenceEnginePluginDispatcher(DefaultLibPath())
+	defer pd.Close()
+
+	pu := pd.GetPluginByDevice("CPU")
+	defer pu.Close()
 }
 
 func TestCNNNetwork(t *testing.T) {

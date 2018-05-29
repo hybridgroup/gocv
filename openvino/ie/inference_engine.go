@@ -17,24 +17,50 @@ func Version() string {
 	return C.GoString(C.IEVersion())
 }
 
-// InferenceEnginePlugin is a wrapper around InferenceEngine::InferenceEnginePluginPtr.
-type InferenceEnginePlugin struct {
-	p C.InferenceEnginePluginPtr
+// InferenceEnginePluginDispatcher is a wrapper around InferenceEngine::InferenceEnginePluginDispatcher.
+type InferenceEnginePluginDispatcher struct {
+	// C.InferenceEnginePluginDispatcher
+	p unsafe.Pointer
 }
 
-// NewInferenceEnginePlugin returns a new OpenVINO InferencePlugin.
-func NewInferenceEnginePlugin() InferenceEnginePlugin {
-	libPath := os.Getenv("INTEL_CVSDK_DIR") + "/deployment_tools/inference_engine/lib/ubuntu_16.04/intel64"
-	cLibPath := C.CString(libPath)
+// DefaultLibPath returns the usual lib path for Ubuntu
+func DefaultLibPath() string {
+	return os.Getenv("INTEL_CVSDK_DIR") + "/deployment_tools/inference_engine/lib/ubuntu_16.04/intel64"
+}
+
+// NewInferenceEnginePluginDispatcher returns a new OpenVINO InferenceEnginePluginDispatcher.
+func NewInferenceEnginePluginDispatcher(libpath string) InferenceEnginePluginDispatcher {
+	cLibPath := C.CString(libpath)
 	defer C.free(unsafe.Pointer(cLibPath))
 
-	return InferenceEnginePlugin{p: C.InferenceEnginePluginPtr_New(cLibPath)}
+	pd := C.InferenceEnginePluginDispatcher_New(cLibPath)
+	return InferenceEnginePluginDispatcher{p: unsafe.Pointer(pd)}
+}
+
+// Close InferenceEnginePluginDispatcher.
+func (pd InferenceEnginePluginDispatcher) Close() error {
+	pd.p = nil
+	return nil
+}
+
+// GetPluginByDevice from InferenceEnginePluginDispatcher.
+func (pd InferenceEnginePluginDispatcher) GetPluginByDevice(device string) InferenceEnginePlugin {
+	cDevice := C.CString(device)
+	defer C.free(unsafe.Pointer(cDevice))
+
+	pu := C.InferenceEnginePluginDispatcher_GetPluginByDevice((*C.InferenceEnginePluginDispatcher)(pd.p), cDevice)
+	return InferenceEnginePlugin{p: unsafe.Pointer(pu)}
+}
+
+// InferenceEnginePlugin is a wrapper around InferenceEngine::InferenceEnginePluginPtr.
+type InferenceEnginePlugin struct {
+	// C.InferenceEnginePluginPtr
+	p unsafe.Pointer
 }
 
 // Close InferenceEnginePlugin.
-func (pd InferenceEnginePlugin) Close() error {
-	//C.FaceDetector_Close((C.FaceDetector)(f.p))
-	pd.p = nil
+func (pu InferenceEnginePlugin) Close() error {
+	pu.p = nil
 	return nil
 }
 

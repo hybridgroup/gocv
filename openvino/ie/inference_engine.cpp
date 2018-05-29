@@ -10,9 +10,16 @@ const char* IEVersion() {
     return res.str().c_str();
 }
 
-// InferencePlugin
-InferenceEnginePluginPtr InferenceEnginePluginPtr_New(const char* libpath) {
-    return InferenceEnginePluginPtr(InferenceEngine::PluginDispatcher({libpath, ""}).getPluginByDevice("CPU"));
+InferenceEnginePluginDispatcher* InferenceEnginePluginDispatcher_New(const char* libpath) {
+    return new InferenceEnginePluginDispatcher(InferenceEngine::PluginDispatcher({libpath, ""}));
+}
+
+void InferenceEnginePluginDispatcher_Close(InferenceEnginePluginDispatcher p) {
+}
+
+InferenceEnginePluginPtr* InferenceEnginePluginDispatcher_GetPluginByDevice(InferenceEnginePluginDispatcher* p, 
+                                                                            const char* device) {
+    return new InferenceEnginePluginPtr(p->getPluginByDevice(device));
 }
 
 void InferenceEnginePluginPtr_Close(InferenceEnginePluginPtr p) {
@@ -36,21 +43,7 @@ CNNNetwork* CNNNetReader_GetNetwork(CNNNetReader* r) {
     return new CNNNetwork(r->getNetwork());
 }
 
+// CNNNetwork
 size_t CNNNetwork_Size(CNNNetwork* n) {
     return n->size();
 }
-
-// CNNNetwork
-
-// CNNNetwork_New(const char* cModelFile, const char* cWeightsFile) {
-//     printf("%s\n", cModelFile);
-//     printf("%s\n", cWeightsFile);
-
-//     InferenceEngine::CNNNetReader r;
-    
-
-//     r.getNetwork().setBatchSize(1);
-
-//     //r.ReadWeights(cWeightsFile);
-//     return r    
-// }
