@@ -1,3 +1,23 @@
+0.13.0
+---
+* **build**
+    * Add cgo directives to contrib
+    * contrib subpackage also needs cpp 11 or greater for a warning free build on Linux
+    * Deprecate env scripts and update README
+    * Don't set --std=c++1z on non-macOS
+    * Remove CGO vars from CI and correct Windows cgo directives
+    * Support pkg-config via cgo directives
+    * we actually do need cpp 11 or greater for a warning free build on Linux
+* **docs**
+    * add a Github issue template to project
+    * provide specific examples of using custom environment
+* **imgproc**
+    * add HoughLinesPWithParams() function
+* **openvino**
+    * add build tag specific to openvino
+    * add roadmap info
+    * add smoke test for ie
+
 0.12.0
 ---
 * **build**

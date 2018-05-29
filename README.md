@@ -176,7 +176,7 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-	gocv version: 0.12.0
+	gocv version: 0.13.0
 	opencv lib version: 3.4.1
 
 If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times:
@@ -222,7 +222,7 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-	gocv version: 0.12.0
+	gocv version: 0.13.0
 	opencv lib version: 3.4.1
 
 If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times:
@@ -323,7 +323,7 @@ Now you should be able to build or run any of the command examples:
 
 The version program should output the following:
 
-	gocv version: 0.12.0
+	gocv version: 0.13.0
 	opencv lib version: 3.4.1
 
 If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times:
