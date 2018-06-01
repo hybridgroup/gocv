@@ -9,10 +9,11 @@ GoCV support for the Intel OpenVINO Inference Engine will be able to be found he
 Support in GoCV for the Intel OpenVINO Inference Engine is still under development, and is not yet in a usable state.
 
 - [ ] InferenceEnginePlugin - work started, can load plugin
-- [X] CNNNetReader
-- [ ] CNNNetwork  - work started
-- [ ] InputsDataMap
-- [ ] InputInfo
-- [ ] OutputsDataMap
-- [ ] InferRequest
-- [ ] Blob
+- [X] InferenceEngine::CNNNetReader
+- [ ] InferenceEngine::CNNNetwork  - work started
+- [ ] InferenceEngine::InputsDataMap
+- [ ] InferenceEngine::InputInfo
+- [ ] InferenceEngine::OutputsDataMap
+- [ ] InferenceEngine::ExecutableNetwork
+- [ ] InferenceEngine::InferRequest
+- [ ] InferenceEngine::Blob
