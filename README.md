@@ -84,7 +84,7 @@ func main() {
 	defer classifier.Close()
 
 	if !classifier.Load("data/haarcascade_frontalface_default.xml") {
-		fmt.Printf("Error reading cascade file: %v\n", xmlFile)
+		fmt.Println("Error reading cascade file: data/haarcascade_frontalface_default.xml")
 		return
 	}
 
