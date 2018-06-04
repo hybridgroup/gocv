@@ -83,7 +83,8 @@ func main() {
 	classifier := gocv.NewCascadeClassifier()
 	defer classifier.Close()
 
-	if !classifier.Load("data/haarcascade_frontalface_default.xml") {
+	const xmlFile = "data/haarcascade_frontalface_default.xml"
+	if !classifier.Load(xmlFile) {
 		fmt.Printf("Error reading cascade file: %v\n", xmlFile)
 		return
 	}
