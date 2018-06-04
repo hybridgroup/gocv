@@ -1,4 +1,4 @@
-// +build !customenv, !openvino
+// +build !customenv,!openvino
 
 package gocv
 
