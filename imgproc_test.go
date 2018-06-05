@@ -624,7 +624,7 @@ func TestEqualizeHist(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	EqualizeHist(img, &dest);
+	EqualizeHist(img, &dest)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid EqualizeHist test")
 	}
