@@ -614,6 +614,22 @@ func TestAdaptiveThreshold(t *testing.T) {
 	}
 }
 
+func TestEqualizeHist(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in EqualizeHist test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	EqualizeHist(img, &dest)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid EqualizeHist test")
+	}
+}
+
 func TestDrawing(t *testing.T) {
 	img := NewMatWithSize(150, 150, MatTypeCV8U)
 	if img.Empty() {
