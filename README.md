@@ -11,7 +11,7 @@
 
 The GoCV package provides Go language bindings for the [OpenCV 3](http://opencv.org/) computer vision library.
 
-The GoCV package supports the latest releases of Go and OpenCV (v3.4) on Linux, OS X, and Windows. We intend to make the Go language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
+The GoCV package supports the latest releases of Go and OpenCV (v3.4.1) on Linux, macOS, and Windows. We intend to make the Go language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
 
 GoCV also supports [Intel OpenVINO](https://software.intel.com/en-us/openvino-toolkit). Check out the [OpenVINO README](./openvino/README.md) for more info on how to use GoCV with the Intel OpenVINO toolkit.
 
@@ -134,7 +134,25 @@ To run code that uses the GoCV package, you must also install OpenCV 3.4.1 on yo
 
 You can use `make` to install OpenCV 3.4.1 with the handy `Makefile` included with this repo. If you already have installed OpenCV, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options such as Python or Java wrappers if you have already installed OpenCV some other way.
 
-#### Install required packages
+#### Quick Install
+
+The following commands should do everything to download and install OpenCV 3.4.1 on Linux:
+
+	cd $GOPATH/src/gocv.io/x/gocv
+	make install
+
+If it works correctly, at the end of the entire process, the following message should be displayed:
+
+	gocv version: 0.13.0
+	opencv lib version: 3.4.1
+
+That's it, now you are ready to use GoCV.
+
+#### Complete Install
+
+Here are details for each of the steps that are performed during the "Quick Install". If you have already run `make install` as described above, you do not need to run any of these commands.
+
+##### Install required packages
 
 First, you need to change the current directory to the location of the GoCV repo, so you can access the `Makefile`:
 
@@ -152,9 +170,15 @@ Now, download the OpenCV 3.4.1 and OpenCV Contrib source code:
 
 #### Build
 
-Build and install everything. This will take quite a while:
+Build everything. This will take quite a while:
 
 	make build
+
+#### Install
+
+Once the code is buikt, you are ready to install:
+
+	make sudo_install
 
 #### Cleanup extra files
 
