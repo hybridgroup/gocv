@@ -180,12 +180,6 @@ Once the code is buikt, you are ready to install:
 
 	make sudo_install
 
-#### Cleanup extra files
-
-After the installation is complete, you can remove the extra files and folders:
-
-	make clean
-
 ### Verifying the installation
 
 To verify your installation you can run one of the included examples.
@@ -203,7 +197,15 @@ The version program should output the following:
 	gocv version: 0.13.0
 	opencv lib version: 3.4.1
 
-If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times:
+#### Cleanup extra files
+
+After the installation is complete, you can remove the extra files and folders:
+
+	make clean
+
+### Cache builds
+
+If you are running a version of Go older than v1.10 and not modifying GoCV source, precompile the GoCV package to significantly decrease your build times:
 
 	go install gocv.io/x/gocv
 
@@ -249,7 +251,9 @@ The version program should output the following:
 	gocv version: 0.13.0
 	opencv lib version: 3.4.1
 
-If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times:
+### Cache builds
+
+If you are running a version of Go older than v1.10 and not modifying GoCV source, precompile the GoCV package to significantly decrease your build times:
 
 	go install gocv.io/x/gocv
 
@@ -350,7 +354,9 @@ The version program should output the following:
 	gocv version: 0.13.0
 	opencv lib version: 3.4.1
 
-If you are not modifying gocv source, compile gocv to a static library, to significantly decrease your build times:
+### Cache builds
+
+If you are running a version of Go older than v1.10 and not modifying GoCV source, precompile the GoCV package to significantly decrease your build times:
 
 	go install gocv.io/x/gocv
 
