@@ -20,6 +20,40 @@ type Net struct {
 	p unsafe.Pointer
 }
 
+// NetBackendType is the type for the various different kinds of DNN backends.
+type NetBackendType int
+
+const (
+	// NetBackendDefault is the default backend.
+	NetBackendDefault NetBackendType = 0
+
+	// NetBackendHalide is the Halide backend.
+	NetBackendHalide NetBackendType = 1
+
+	// NetBackendOpenVINO is the OpenVINO backend.
+	NetBackendOpenVINO NetBackendType = 2
+
+	// NetBackendOpenCV is the OpenCV backend.
+	NetBackendOpenCV NetBackendType = 3
+)
+
+// NetTargetType is the type for the various different kinds of DNN device targets.
+type NetTargetType int
+
+const (
+	// NetTargetCPU is the default CPU device target.
+	NetTargetCPU NetTargetType = 0
+
+	// NetBackendFP32 is the 32-bit OpenCL backend.
+	NetBackendOpenCL NetTargetType = 1
+
+	// NetBackendFP16 is the 16-bit OpenCL backend.
+	NetBackendFP16 NetTargetType = 2
+
+	// NetBackendVPU is the Movidius VPU backend.
+	NetBackendVPU NetTargetType = 3
+)
+
 // Close Net
 func (net *Net) Close() error {
 	C.Net_Close((C.Net)(net.p))
@@ -58,6 +92,40 @@ func (net *Net) Forward(outputName string) Mat {
 	defer C.free(unsafe.Pointer(cName))
 
 	return Mat{p: C.Net_Forward((C.Net)(net.p), cName)}
+}
+
+// SetPreferableBackend ask network to use specific computation backend.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4/db/d30/classcv_1_1dnn_1_1Net.html#a7f767df11386d39374db49cd8df8f59e
+//
+func (net *Net) SetPreferableBackend(backend NetBackendType) error {
+	C.Net_SetPreferableBackend((C.Net)(net.p), C.int(backend))
+	return nil
+}
+
+// SetPreferableTarget ask network to make computations on specific target device.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4/db/d30/classcv_1_1dnn_1_1Net.html#a9dddbefbc7f3defbe3eeb5dc3d3483f4
+//
+func (net *Net) SetPreferableTarget(target NetTargetType) error {
+	C.Net_SetPreferableTarget((C.Net)(net.p), C.int(target))
+	return nil
+}
+
+// ReadNet reads a deep learning network represented in one of the supported formats.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4/d6/d0f/group__dnn.html#ga3b34fe7a29494a6a4295c169a7d32422
+//
+func ReadNet(model string, config string) Net {
+	cModel := C.CString(model)
+	defer C.free(unsafe.Pointer(cModel))
+
+	cConfig := C.CString(config)
+	defer C.free(unsafe.Pointer(cConfig))
+	return Net{p: unsafe.Pointer(C.Net_ReadNet(cModel, cConfig))}
 }
 
 // ReadNetFromCaffe reads a network model stored in Caffe framework's format.

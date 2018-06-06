@@ -17,6 +17,7 @@ typedef cv::dnn::Net* Net;
 typedef void* Net;
 #endif
 
+Net Net_ReadNet(const char* model, const char* config);
 Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel);
 Net Net_ReadNetFromTensorflow(const char* model);
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
@@ -25,6 +26,8 @@ void Net_Close(Net net);
 bool Net_Empty(Net net);
 void Net_SetInput(Net net, Mat blob, const char* name);
 Mat Net_Forward(Net net, const char* outputName);
+void Net_SetPreferableBackend(Net net, int backend);
+void Net_SetPreferableTarget(Net net, int target);
 
 Mat Net_GetBlobChannel(Mat blob, int imgidx, int chnidx);
 Scalar Net_GetBlobSize(Mat blob);

@@ -1,5 +1,10 @@
 #include "dnn.h"
 
+Net Net_ReadNet(const char* model, const char* config) {
+    Net n = new cv::dnn::Net(cv::dnn::readNet(model, config));
+    return n;
+}
+
 Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel) {
     Net n = new cv::dnn::Net(cv::dnn::readNetFromCaffe(prototxt, caffeModel));
     return n;
@@ -24,6 +29,14 @@ void Net_SetInput(Net net, Mat blob, const char* name) {
 
 Mat Net_Forward(Net net, const char* outputName) {
     return new cv::Mat(net->forward(outputName));
+}
+
+void Net_SetPreferableBackend(Net net, int backend) {
+    net->setPreferableBackend(backend);
+}
+
+void Net_SetPreferableTarget(Net net, int target) {
+    net->setPreferableTarget(target);
 }
 
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
