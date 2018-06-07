@@ -96,7 +96,14 @@ Your pull requests will be greatly appreciated!
     
     - [ ] ColorMaps in OpenCV
     - [ ] Planar Subdivision
-    - [ ] Histograms
+    - [ ] **Histograms  - WORK STARTED** The following functions still need implementation:
+        - [ ] [calcBackProject](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga3a0af640716b456c3d14af8aee12e3ca)
+        - [ ] [calcHist](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga4b2b5fd75503ff9e6844cc4dcdaed35d)
+        - [ ] [compareHist](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#gaf4190090efa5c47cb367cf97a9a519bd)
+        - [ ] [EMD](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga902b8e60cc7075c8947345489221e0e0)
+        - [X] [equalizeHist](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga7e54091f0c937d49bf84152a16f76d6e)
+        - [ ] [wrapperEMD](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga31fdda0864e64ca6b9de252a2611758b)
+
     - [ ] **Structural Analysis and Shape Descriptors - WORK STARTED** The following functions still need implementation:
         - [ ] [boxPoints](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf78d467e024b4d7936cf9397185d2f5c)
         - [ ] [connectedComponents](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaedef8c7340499ca391d459122e51bef5)
