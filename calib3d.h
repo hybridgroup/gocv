@@ -12,8 +12,6 @@ extern "C" {
 #include "core.h"
 
 //Calib
-double Fisheye_Calibrate(Mat objectPoints, Mat imagePoints, Size size, Mat k, Mat d, Mat rvecs, Mat tvecs);
-void Fisheye_UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d);
 void Fisheye_UndistortImage(Mat distorted, Mat undistorted, Mat k, Mat d);
 void Fisheye_UndistortImageWithKNewMat(Mat distorted, Mat undistorted, Mat k, Mat d, Mat knew);
 

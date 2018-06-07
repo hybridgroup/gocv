@@ -6,10 +6,6 @@ package gocv
 */
 import "C"
 
-import (
-	"image"
-)
-
 // Calib is a wrapper around OpenCV's "Camera Calibration and 3D Reconstruction" of
 // Fisheye Camera model
 //
@@ -55,20 +51,6 @@ const (
 	// It stays at the center or at a different location specified when CalibUseIntrinsicGuess is set too.
 	CalibFixPrincipalPoint
 )
-
-// FisheyeCalibrate performs camera calibaration.
-func FisheyeCalibrate(objectPoints, imagePoints, k, d Mat, rvecs, tvecs *Mat, size image.Point) float64 {
-	sz := C.struct_Size{
-		width:  C.int(size.X),
-		height: C.int(size.Y),
-	}
-	return float64(C.Fisheye_Calibrate(objectPoints.Ptr(), imagePoints.Ptr(), sz, k.Ptr(), d.Ptr(), rvecs.Ptr(), tvecs.Ptr()))
-}
-
-// FisheyeUndistortPoints undistorts 2D points using fisheye model
-func FisheyeUndistortPoints(distorted Mat, undistorted *Mat, k, d Mat) {
-	C.Fisheye_UndistortPoints(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr())
-}
 
 // FisheyeUndistortImage transforms an image to compensate for fisheye lens distortion
 func FisheyeUndistortImage(distorted Mat, undistorted *Mat, k, d Mat) {
