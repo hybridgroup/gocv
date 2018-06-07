@@ -1,6 +1,7 @@
 package gocv
 
 import (
+	"image"
 	"testing"
 )
 
@@ -8,6 +9,7 @@ func TestFisheyeUndistorImage(t *testing.T) {
 	img := IMRead("images/fisheye_sample.jpg", IMReadUnchanged)
 	if img.Empty() {
 		t.Error("Invalid read of Mat test")
+		return
 	}
 	defer img.Close()
 
@@ -41,13 +43,16 @@ func TestFisheyeUndistorImage(t *testing.T) {
 
 	if dest.Empty() {
 		t.Error("final image is empty")
+		return
 	}
+	// IMWrite("images/fisheye_sample-u.jpg", dest)
 }
 
-func TestFisheyeUndistorImageWithKNewMat(t *testing.T) {
+func TestFisheyeUndistorImageWithParams(t *testing.T) {
 	img := IMRead("images/fisheye_sample.jpg", IMReadUnchanged)
 	if img.Empty() {
 		t.Error("Invalid read of Mat test")
+		return
 	}
 	defer img.Close()
 
@@ -85,9 +90,12 @@ func TestFisheyeUndistorImageWithKNewMat(t *testing.T) {
 	knew.SetDoubleAt(0, 0, 0.4*k.GetDoubleAt(0, 0))
 	knew.SetDoubleAt(1, 1, 0.4*k.GetDoubleAt(1, 1))
 
-	FisheyeUndistortImageWithKNewMat(img, &dest, k, d, knew)
+	size := image.Point{dest.Rows(), dest.Cols()}
+	FisheyeUndistortImageWithParams(img, &dest, k, d, knew, size)
 
 	if dest.Empty() {
 		t.Error("final image is empty")
+		return
 	}
+	// IMWrite("images/fisheye_sample-up.jpg", dest)
 }

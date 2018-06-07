@@ -5,6 +5,7 @@ package gocv
 #include "calib3d.h"
 */
 import "C"
+import "image"
 
 // Calib is a wrapper around OpenCV's "Camera Calibration and 3D Reconstruction" of
 // Fisheye Camera model
@@ -57,7 +58,11 @@ func FisheyeUndistortImage(distorted Mat, undistorted *Mat, k, d Mat) {
 	C.Fisheye_UndistortImage(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr())
 }
 
-// FisheyeUndistortImageWithKNewMat transforms an image to compensate for fisheye lens distortion with Knew matrix
-func FisheyeUndistortImageWithKNewMat(distorted Mat, undistorted *Mat, k, d, knew Mat) {
-	C.Fisheye_UndistortImageWithKNewMat(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr(), knew.Ptr())
+// FisheyeUndistortImageWithParams transforms an image to compensate for fisheye lens distortion with Knew matrix
+func FisheyeUndistortImageWithParams(distorted Mat, undistorted *Mat, k, d, knew Mat, size image.Point) {
+	sz := C.struct_Size{
+		width:  C.int(size.X),
+		height: C.int(size.Y),
+	}
+	C.Fisheye_UndistortImageWithParams(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr(), knew.Ptr(), sz)
 }

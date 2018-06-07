@@ -13,7 +13,7 @@ extern "C" {
 
 //Calib
 void Fisheye_UndistortImage(Mat distorted, Mat undistorted, Mat k, Mat d);
-void Fisheye_UndistortImageWithKNewMat(Mat distorted, Mat undistorted, Mat k, Mat d, Mat knew);
+void Fisheye_UndistortImageWithParams(Mat distorted, Mat undistorted, Mat k, Mat d, Mat knew, Size size);
 
 #ifdef __cplusplus
 }
