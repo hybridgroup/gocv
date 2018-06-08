@@ -222,6 +222,10 @@ Please note that you will need to run these 2 lines of code one time in your cur
 
 	go run -tags customenv ./cmd/version/main.go
 
+### Alpine 3.7 Docker image
+
+There is a Docker image with Alpine 3.7 that has been created by project contributor [@denismakogon](https://github.com/denismakogon). You can find it located at [https://github.com/denismakogon/gocv-alpine](https://github.com/denismakogon/gocv-alpine).
+
 ## macOS
 
 ### Installation
