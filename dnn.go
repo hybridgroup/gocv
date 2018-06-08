@@ -37,6 +37,24 @@ const (
 	NetBackendOpenCV NetBackendType = 3
 )
 
+// ParseNetBackend returns a valid NetBackendType given a string. Valid values are:
+// - halide
+// - openvino
+// - opencv
+// - default
+func ParseNetBackend(backend string) NetBackendType {
+	switch backend {
+	case "halide":
+		return NetBackendHalide
+	case "openvino":
+		return NetBackendOpenVINO
+	case "opencv":
+		return NetBackendOpenCV
+	default:
+		return NetBackendDefault
+	}
+}
+
 // NetTargetType is the type for the various different kinds of DNN device targets.
 type NetTargetType int
 
@@ -45,7 +63,7 @@ const (
 	NetTargetCPU NetTargetType = 0
 
 	// NetBackendFP32 is the 32-bit OpenCL backend.
-	NetBackendOpenCL NetTargetType = 1
+	NetBackendFP32 NetTargetType = 1
 
 	// NetBackendFP16 is the 16-bit OpenCL backend.
 	NetBackendFP16 NetTargetType = 2
@@ -53,6 +71,26 @@ const (
 	// NetBackendVPU is the Movidius VPU backend.
 	NetBackendVPU NetTargetType = 3
 )
+
+// ParseNetTarget returns a valid NetTargetType given a string. Valid values are:
+// - cpu
+// - fp32
+// - fp16
+// - vpu
+func ParseNetTarget(target string) NetTargetType {
+	switch target {
+	case "cpu":
+		return NetTargetCPU
+	case "fp32":
+		return NetBackendFP32
+	case "fp16":
+		return NetBackendFP16
+	case "vpu":
+		return NetBackendVPU
+	default:
+		return NetTargetCPU
+	}
+}
 
 // Close Net
 func (net *Net) Close() error {
@@ -92,6 +130,24 @@ func (net *Net) Forward(outputName string) Mat {
 	defer C.free(unsafe.Pointer(cName))
 
 	return Mat{p: C.Net_Forward((C.Net)(net.p), cName)}
+}
+
+// ForwardLayers forward pass to compute outputs of layers listed in outBlobNames.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4.1/db/d30/classcv_1_1dnn_1_1Net.html#adb34d7650e555264c7da3b47d967311b
+//
+func (net *Net) ForwardLayers(outputBlobs []Mat, outBlobNames []string) {
+	cMatArray := make([]C.Mat, len(outputBlobs))
+	for i, r := range outputBlobs {
+		cMatArray[i] = r.p
+	}
+	cMats := C.struct_Mats{
+		mats:   (*C.Mat)(&cMatArray[0]),
+		length: C.int(len(outputBlobs)),
+	}
+
+	C.Net_ForwardLayers((C.Net)(net.p), cMats, toCStrings(outBlobNames))
 }
 
 // SetPreferableBackend ask network to use specific computation backend.

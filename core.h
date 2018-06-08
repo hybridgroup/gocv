@@ -4,10 +4,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef struct String {
-    const char* str;
+// Wrapper for std::vector<string>
+typedef struct CStrings {
+    const char** strs;
     int length;
-} String;
+} CStrings;
 
 typedef struct ByteArray {
     char* data;

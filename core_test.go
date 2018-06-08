@@ -692,6 +692,20 @@ func TestToCPoints(t *testing.T) {
 	}
 }
 
+func TestToCStrings(t *testing.T) {
+	strs := []string{
+		"hello",
+		"fellow",
+		"CStrings",
+	}
+
+	cStrs := toCStrings(strs)
+
+	if int(cStrs.length) != len(strs) {
+		t.Error("Invalid CStrings length")
+	}
+}
+
 func TestMatBatchDistance(t *testing.T) {
 	src1 := NewMatWithSize(100, 100, MatTypeCV8U)
 	src2 := NewMatWithSize(100, 100, MatTypeCV8U)

@@ -14,7 +14,12 @@
 //
 // How to run:
 //
-// 		go run ./cmd/caffe-classifier/main.go 0 [protofile] [modelfile] [descriptionsfile]
+// 		go run ./cmd/caffe-classifier/main.go 0 [modelfile] [configfile] [descriptionsfile] [backend] [device]
+//
+//
+// You can also use this sample with the Intel OpenVINO Inference Engine, if you have it installed.
+//
+// 		go run ./cmd/caffe-classifier/main.go 0 [modelfile] [configfile] [descriptionsfile] [backend] [device]
 //
 // +build example
 
@@ -49,7 +54,7 @@ func readDescriptions(path string) ([]string, error) {
 
 func main() {
 	if len(os.Args) < 5 {
-		fmt.Println("How to run:\ncaffe-classifier [camera ID] [protofile] [modelfile] [descriptionsfile]")
+		fmt.Println("How to run:\ncaffe-classifier [camera ID] [modelfile] [configfile] [descriptionsfile] ([backend] [device])")
 		return
 	}
 
@@ -62,6 +67,16 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error reading descriptions file: %v\n", descr)
 		return
+	}
+
+	backend := gocv.NetBackendDefault
+	if len(os.Args) > 5 {
+		backend = gocv.ParseNetBackend(os.Args[5])
+	}
+
+	target := gocv.NetTargetCPU
+	if len(os.Args) > 6 {
+		target = gocv.ParseNetTarget(os.Args[6])
 	}
 
 	// open capture device
@@ -79,12 +94,14 @@ func main() {
 	defer img.Close()
 
 	// open DNN classifier
-	net := gocv.ReadNetFromCaffe(proto, model)
+	net := gocv.ReadNet(model, proto)
 	if net.Empty() {
-		fmt.Printf("Error reading network model from : %v %v\n", proto, model)
+		fmt.Printf("Error reading network model from : %v %v\n", model, proto)
 		return
 	}
 	defer net.Close()
+	net.SetPreferableBackend(gocv.NetBackendType(backend))
+	net.SetPreferableTarget(gocv.NetTargetType(target))
 
 	status := "Ready"
 	statusColor := color.RGBA{0, 255, 0, 0}
@@ -103,10 +120,10 @@ func main() {
 		blob := gocv.BlobFromImage(img, 1.0, image.Pt(224, 224), gocv.NewScalar(104, 117, 123, 0), false, false)
 
 		// feed the blob into the classifier
-		net.SetInput(blob, "data")
+		net.SetInput(blob, "")
 
 		// run a forward pass thru the network
-		prob := net.Forward("prob")
+		prob := net.Forward("")
 
 		// reshape the results into a 1x1000 matrix
 		probMat := prob.Reshape(1, 1)

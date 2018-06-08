@@ -263,7 +263,7 @@ void Rectangle(Mat img, Rect r, Scalar color, int thickness) {
         cv::Point(r.x + r.width, r.y + r.height),
         c,
         thickness,
-        CV_AA
+        cv::LINE_AA
     );
 }
 

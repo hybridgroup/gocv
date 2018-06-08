@@ -1338,3 +1338,15 @@ func toCPoints(points []image.Point) C.struct_Points {
 		length: C.int(len(points)),
 	}
 }
+
+func toCStrings(strs []string) C.struct_CStrings {
+	cStringsSlice := make([]*C.char, len(strs))
+	for i, s := range strs {
+		cStringsSlice[i] = C.CString(s)
+	}
+
+	return C.struct_CStrings{
+		strs:   (**C.char)(&cStringsSlice[0]),
+		length: C.int(len(strs)),
+	}
+}
