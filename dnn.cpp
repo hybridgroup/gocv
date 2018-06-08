@@ -31,17 +31,23 @@ Mat Net_Forward(Net net, const char* outputName) {
     return new cv::Mat(net->forward(outputName));
 }
 
-void Net_ForwardLayers(Net net, struct Mats outputBlobs, struct CStrings outBlobNames) {
+void Net_ForwardLayers(Net net, struct Mats* outputBlobs, struct CStrings outBlobNames) {
     std::vector< cv::Mat > blobs;
-    for (int i = 0; i < outputBlobs.length; ++i) {
-        blobs.push_back(*outputBlobs.mats[i]);
-    }
 
     std::vector< cv::String > names;
     for (int i = 0; i < outBlobNames.length; ++i) {
         names.push_back(cv::String(outBlobNames.strs[i]));
     }
     net->forward(blobs, names);
+
+    // copy blobs into outputBlobs
+    outputBlobs->mats = new Mat[blobs.size()];
+
+    for (size_t i = 0; i < blobs.size(); ++i) {
+        outputBlobs->mats[i] = new cv::Mat(blobs[i]);
+    }
+
+    outputBlobs->length = (int)blobs.size();
 }
 
 void Net_SetPreferableBackend(Net net, int backend) {

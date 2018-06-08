@@ -137,17 +137,14 @@ func (net *Net) Forward(outputName string) Mat {
 // For further details, please see:
 // https://docs.opencv.org/3.4.1/db/d30/classcv_1_1dnn_1_1Net.html#adb34d7650e555264c7da3b47d967311b
 //
-func (net *Net) ForwardLayers(outputBlobs []Mat, outBlobNames []string) {
-	cMatArray := make([]C.Mat, len(outputBlobs))
-	for i, r := range outputBlobs {
-		cMatArray[i] = r.p
+func (net *Net) ForwardLayers(outBlobNames []string) (blobs []Mat) {
+	cMats := C.struct_Mats{}
+	C.Net_ForwardLayers((C.Net)(net.p), &(cMats), toCStrings(outBlobNames))
+	blobs = make([]Mat, cMats.length)
+	for i := C.int(0); i < cMats.length; i++ {
+		blobs[i].p = C.Mats_get(cMats, i)
 	}
-	cMats := C.struct_Mats{
-		mats:   (*C.Mat)(&cMatArray[0]),
-		length: C.int(len(outputBlobs)),
-	}
-
-	C.Net_ForwardLayers((C.Net)(net.p), cMats, toCStrings(outBlobNames))
+	return
 }
 
 // SetPreferableBackend ask network to use specific computation backend.

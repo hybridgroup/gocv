@@ -26,7 +26,7 @@ void Net_Close(Net net);
 bool Net_Empty(Net net);
 void Net_SetInput(Net net, Mat blob, const char* name);
 Mat Net_Forward(Net net, const char* outputName);
-void Net_ForwardLayers(Net net, struct Mats outputBlobs, struct CStrings outBlobNames);
+void Net_ForwardLayers(Net net, struct Mats* outputBlobs, struct CStrings outBlobNames);
 void Net_SetPreferableBackend(Net net, int backend);
 void Net_SetPreferableTarget(Net net, int target);
 

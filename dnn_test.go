@@ -23,35 +23,39 @@ func TestReadNet(t *testing.T) {
 
 	img := IMRead("images/space_shuttle.jpg", IMReadColor)
 	if img.Empty() {
-		t.Error("Invalid Mat in Caffe test")
+		t.Error("Invalid Mat in ReadNet test")
 	}
 	defer img.Close()
 
 	blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(104, 117, 123, 0), false, false)
 	if blob.Empty() {
-		t.Error("Invalid blob in Caffe test")
+		t.Error("Invalid blob in ReadNet test")
 	}
 	defer blob.Close()
 
 	net.SetInput(blob, "data")
-	prob := net.Forward("prob")
-	if prob.Empty() {
-		t.Error("Invalid prob in Caffe test")
+	prob := net.ForwardLayers([]string{"prob"})
+	if len(prob) == 0 {
+		t.Error("Invalid len prob in ReadNet test")
 	}
 
-	probMat := prob.Reshape(1, 1)
+	if prob[0].Empty() {
+		t.Error("Invalid prob[0] in ReadNet test")
+	}
+
+	probMat := prob[0].Reshape(1, 1)
 	_, maxVal, minLoc, maxLoc := MinMaxLoc(probMat)
 
 	if round(float64(maxVal), 0.00005) != 0.99995 {
-		t.Errorf("Caffe maxVal incorrect: %v\n", round(float64(maxVal), 0.00005))
+		t.Errorf("ReadNet maxVal incorrect: %v\n", round(float64(maxVal), 0.00005))
 	}
 
 	if minLoc.X != 793 || minLoc.Y != 0 {
-		t.Errorf("Caffe minLoc incorrect: %v\n", minLoc)
+		t.Errorf("ReadNet minLoc incorrect: %v\n", minLoc)
 	}
 
 	if maxLoc.X != 812 || maxLoc.Y != 0 {
-		t.Errorf("Caffe maxLoc incorrect: %v\n", maxLoc)
+		t.Errorf("ReadNet maxLoc incorrect: %v\n", maxLoc)
 	}
 }
 
