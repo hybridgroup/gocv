@@ -295,8 +295,8 @@ func (vw *VideoWriter) Write(img Mat) error {
 }
 
 // OpenVideoCapture return VideoCapture specified by device ID if v is a
-// number. Return VideoCapture created from video file or v4l2 pipeline if v is
-// a string.
+// number. Return VideoCapture created from video file, URL, or GStreamer
+// pipeline if v is a string.
 func OpenVideoCapture(v interface{}) (*VideoCapture, error) {
 	switch vv := v.(type) {
 	case int:
