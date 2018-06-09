@@ -871,11 +871,27 @@ func Vconcat(src1, src2 Mat, dst *Mat) {
 	C.Mat_Vconcat(src1.p, src2.p, dst.p)
 }
 
+// RotateFlag for image rotation
+//
+
+// For further details please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6f45d55c0b1cc9d97f5353a7c8a7aac2
+type RotateFlag int
+
+const (
+	// Rotate90Clockwise allows to rotate image 90 degrees clockwise
+	Rotate90Clockwise RotateFlag = 0
+	// Rotate180Clockwise allows to rotate image 180 degrees clockwise
+	Rotate180Clockwise = 1
+	// Rotate90CounterClockwise allows to rotate 270 degrees clockwise
+	Rotate90CounterClockwise = 2
+)
+
 // Rotate rotates a 2D array in multiples of 90 degrees
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4ad01c0978b0ce64baa246811deeac24
-func Rotate(src Mat, dst *Mat, code int) {
+func Rotate(src Mat, dst *Mat, code RotateFlag) {
 	C.Rotate(src.p, dst.p, C.int(code))
 }
 
