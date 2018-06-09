@@ -27,7 +27,6 @@ import (
 	"strconv"
 
 	"gocv.io/x/gocv"
-	"gocv.io/x/gocv/cmd/internal/capture"
 	"gocv.io/x/gocv/openvino/pvl"
 )
 
@@ -47,7 +46,7 @@ func main() {
 	fileName := os.Args[2]
 
 	// open webcam
-	webcam, err := capture.Open(deviceID)
+	webcam, err := gocv.OpenVideoCapture(deviceID)
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
@@ -102,7 +101,7 @@ func main() {
 MainLoop:
 	for {
 		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("cannot read device %d\n", deviceID)
+			fmt.Printf("cannot read device %v\n", deviceID)
 			return
 		}
 		if img.Empty() {

@@ -24,7 +24,6 @@ import (
 
 	"github.com/hybridgroup/mjpeg"
 	"gocv.io/x/gocv"
-	"gocv.io/x/gocv/cmd/internal/capture"
 )
 
 var (
@@ -45,7 +44,7 @@ func main() {
 	host := os.Args[2]
 
 	// open webcam
-	webcam, err = capture.Open(deviceID)
+	webcam, err = gocv.OpenVideoCapture(deviceID)
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
@@ -71,7 +70,7 @@ func mjpegCapture() {
 
 	for {
 		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("cannot read device %d\n", deviceID)
+			fmt.Printf("cannot read device %v\n", deviceID)
 			return
 		}
 		if img.Empty() {

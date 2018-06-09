@@ -6,7 +6,9 @@ package gocv
 */
 import "C"
 import (
+	"errors"
 	"fmt"
+	"strconv"
 	"sync"
 	"unsafe"
 )
@@ -290,4 +292,22 @@ func (vw *VideoWriter) Write(img Mat) error {
 	defer vw.mu.Unlock()
 	C.VideoWriter_Write(vw.p, img.p)
 	return nil
+}
+
+// OpenVideoCapture return VideoCapture specified by device ID if v is a
+// number. Return VideoCapture created from video file or v4l2 pipeline if v is
+// a string.
+func OpenVideoCapture(v interface{}) (*VideoCapture, error) {
+	switch vv := v.(type) {
+	case int:
+		return VideoCaptureDevice(vv)
+	case string:
+		id, err := strconv.Atoi(vv)
+		if err == nil {
+			return VideoCaptureDevice(id)
+		}
+		return VideoCaptureFile(vv)
+	default:
+		return nil, errors.New("argument must be int or string")
+	}
 }

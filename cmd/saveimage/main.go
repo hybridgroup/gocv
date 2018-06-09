@@ -18,7 +18,6 @@ import (
 	"os"
 
 	"gocv.io/x/gocv"
-	"gocv.io/x/gocv/cmd/internal/capture"
 )
 
 func main() {
@@ -30,7 +29,7 @@ func main() {
 	deviceID := os.Args[1]
 	saveFile := os.Args[2]
 
-	webcam, err := capture.Open(deviceID)
+	webcam, err := gocv.OpenVideoCapture(deviceID)
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
@@ -41,11 +40,11 @@ func main() {
 	defer img.Close()
 
 	if ok := webcam.Read(&img); !ok {
-		fmt.Printf("cannot read device %d\n", deviceID)
+		fmt.Printf("cannot read device %v\n", deviceID)
 		return
 	}
 	if img.Empty() {
-		fmt.Printf("no image on device %d\n", deviceID)
+		fmt.Printf("no image on device %v\n", deviceID)
 		return
 	}
 

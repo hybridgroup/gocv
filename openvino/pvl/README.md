@@ -52,7 +52,7 @@ func main() {
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
 		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("cannot read device %d\n", deviceID)
+			fmt.Printf("cannot read device %v\n", deviceID)
 			return
 		}
 		if img.Empty() {
