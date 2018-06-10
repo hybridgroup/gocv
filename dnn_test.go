@@ -34,6 +34,23 @@ func TestReadNet(t *testing.T) {
 	defer blob.Close()
 
 	net.SetInput(blob, "data")
+
+	layer := net.GetLayer(0)
+	if layer.OutputNameToIndex("notthere") != -1 {
+		t.Error("Invalid layer in ReadNet test")
+	}
+	if layer.GetName() != "" {
+		t.Errorf("Invalid layer name in ReadNet test: %s\n", layer.GetName())
+	}
+	if layer.GetType() != "" {
+		t.Errorf("Invalid layer type in ReadNet test: %s\n", layer.GetType())
+	}
+
+	ids := net.GetUnconnectedOutLayers()
+	if len(ids) != 2 {
+		t.Errorf("Invalid len output layers in ReadNet test: %d\n", len(ids))
+	}
+
 	prob := net.ForwardLayers([]string{"prob"})
 	if len(prob) == 0 {
 		t.Error("Invalid len prob in ReadNet test")

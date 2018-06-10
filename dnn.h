@@ -13,8 +13,10 @@ extern "C" {
 
 #ifdef __cplusplus
 typedef cv::dnn::Net* Net;
+typedef cv::Ptr<cv::dnn::Layer>* Layer;
 #else
 typedef void* Net;
+typedef void* Layer;
 #endif
 
 Net Net_ReadNet(const char* model, const char* config);
@@ -29,9 +31,15 @@ Mat Net_Forward(Net net, const char* outputName);
 void Net_ForwardLayers(Net net, struct Mats* outputBlobs, struct CStrings outBlobNames);
 void Net_SetPreferableBackend(Net net, int backend);
 void Net_SetPreferableTarget(Net net, int target);
+void Net_GetUnconnectedOutLayers(Net net, IntVector* res);
 
 Mat Net_GetBlobChannel(Mat blob, int imgidx, int chnidx);
 Scalar Net_GetBlobSize(Mat blob);
+
+Layer Net_GetLayer(Net net, int layerid);
+int Layer_OutputNameToIndex(Layer layer, const char* name);
+const char* Layer_GetName(Layer layer);
+const char* Layer_GetType(Layer layer);
 
 #ifdef __cplusplus
 }

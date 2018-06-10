@@ -58,6 +58,19 @@ void Net_SetPreferableTarget(Net net, int target) {
     net->setPreferableTarget(target);
 }
 
+void Net_GetUnconnectedOutLayers(Net net, IntVector* res) {
+    std::vector< int > cids(net->getUnconnectedOutLayers());
+    int* ids = new int[cids.size()];
+    
+    for (size_t i = 0; i < cids.size(); ++i) {
+        ids[i] = cids[i];
+    }
+
+    res->length = cids.size();
+    res->val = ids;
+    return;
+}
+
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
                       bool crop) {
     cv::Size sz(size.width, size.height);
@@ -80,4 +93,20 @@ Scalar Net_GetBlobSize(Mat blob) {
     scal.val3 = blob->size[2];
     scal.val4 = blob->size[3];
     return scal;
+}
+
+Layer Net_GetLayer(Net net, int layerid) {
+    return new cv::Ptr<cv::dnn::Layer>(net->getLayer(layerid));
+}
+
+int Layer_OutputNameToIndex(Layer layer, const char* name) {
+    return (*layer)->outputNameToIndex(name);
+}
+
+const char* Layer_GetName(Layer layer) {
+    return (*layer)->name.c_str();
+}
+
+const char* Layer_GetType(Layer layer) {
+    return (*layer)->type.c_str();
 }

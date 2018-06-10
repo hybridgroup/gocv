@@ -7,6 +7,7 @@ package gocv
 import "C"
 import (
 	"image"
+	"reflect"
 	"unsafe"
 )
 
@@ -244,4 +245,59 @@ func GetBlobChannel(blob Mat, imgidx int, chnidx int) Mat {
 func GetBlobSize(blob Mat) Scalar {
 	s := C.Net_GetBlobSize(blob.p)
 	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
+}
+
+// Layer is a wrapper around the cv::dnn::Layer algorithm.
+type Layer struct {
+	// C.Layer
+	p unsafe.Pointer
+}
+
+// GetLayer returns pointer to layer with specified id from the network.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d30/classcv_1_1dnn_1_1Net.html#a70aec7f768f38c32b1ee25f3a56526df
+//
+func (net *Net) GetLayer(layer int) Layer {
+	return Layer{p: unsafe.Pointer(C.Net_GetLayer((C.Net)(net.p), C.int(layer)))}
+}
+
+// GetUnconnectedOutLayers returns indexes of layers with unconnected outputs.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d30/classcv_1_1dnn_1_1Net.html#ae62a73984f62c49fd3e8e689405b056a
+//
+func (net *Net) GetUnconnectedOutLayers() (ids []int) {
+	cids := C.IntVector{}
+	C.Net_GetUnconnectedOutLayers((C.Net)(net.p), &cids)
+
+	h := &reflect.SliceHeader{uintptr(unsafe.Pointer(cids.val)), int(cids.length), int(cids.length)}
+	pcids := *(*[]int)(unsafe.Pointer(h))
+
+	ids = make([]int, cids.length)
+	for i := 0; i < int(cids.length); i++ {
+		ids = append(ids, int(pcids[i]))
+	}
+	return
+}
+
+// GetName returns name for this layer.
+func (l *Layer) GetName() string {
+	return C.GoString(C.Layer_GetName((C.Layer)(l.p)))
+}
+
+// GetType returns type for this layer.
+func (l *Layer) GetType() string {
+	return C.GoString(C.Layer_GetType((C.Layer)(l.p)))
+}
+
+// OutputNameToIndex returns index of output blob in output array.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d6c/classcv_1_1dnn_1_1Layer.html#a60ffc8238f3fa26cd3f49daa7ac0884b
+//
+func (l *Layer) OutputNameToIndex(name string) int {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	return int(C.Layer_OutputNameToIndex((C.Layer)(l.p), cName))
 }
