@@ -60,7 +60,7 @@ if [[ ! -d "${HOME}/testdata" ]]; then
 fi
 
 #if [[ ! -f "${HOME}/testdata/bvlc_googlenet.prototxt" ]]; then
-  cp ../../opencv-${OPENCV_VERSION}/samples/data/dnn/bvlc_googlenet.prototxt ${HOME}/testdata/bvlc_googlenet.prototxt
+  curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/master/testdata/dnn/bvlc_googlenet.prototxt > ${HOME}/testdata/bvlc_googlenet.prototxt
 #fi
 
 #if [[ ! -f "${HOME}/testdata/bvlc_googlenet.caffemodel" ]]; then
