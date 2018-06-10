@@ -37,6 +37,7 @@ Mat Net_GetBlobChannel(Mat blob, int imgidx, int chnidx);
 Scalar Net_GetBlobSize(Mat blob);
 
 Layer Net_GetLayer(Net net, int layerid);
+int Layer_InputNameToIndex(Layer layer, const char* name);
 int Layer_OutputNameToIndex(Layer layer, const char* name);
 const char* Layer_GetName(Layer layer);
 const char* Layer_GetType(Layer layer);

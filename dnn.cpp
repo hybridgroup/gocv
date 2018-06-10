@@ -99,6 +99,10 @@ Layer Net_GetLayer(Net net, int layerid) {
     return new cv::Ptr<cv::dnn::Layer>(net->getLayer(layerid));
 }
 
+int Layer_InputNameToIndex(Layer layer, const char* name) {
+    return (*layer)->inputNameToIndex(name);
+}
+
 int Layer_OutputNameToIndex(Layer layer, const char* name) {
     return (*layer)->outputNameToIndex(name);
 }

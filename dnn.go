@@ -291,6 +291,17 @@ func (l *Layer) GetType() string {
 	return C.GoString(C.Layer_GetType((C.Layer)(l.p)))
 }
 
+// InputNameToIndex returns index of input blob in input array.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d6c/classcv_1_1dnn_1_1Layer.html#a60ffc8238f3fa26cd3f49daa7ac0884b
+//
+func (l *Layer) InputNameToIndex(name string) int {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+	return int(C.Layer_InputNameToIndex((C.Layer)(l.p), cName))
+}
+
 // OutputNameToIndex returns index of output blob in output array.
 //
 // For further details, please see:

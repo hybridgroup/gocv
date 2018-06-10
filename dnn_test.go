@@ -36,6 +36,9 @@ func TestReadNet(t *testing.T) {
 	net.SetInput(blob, "data")
 
 	layer := net.GetLayer(0)
+	if layer.InputNameToIndex("notthere") != -1 {
+		t.Error("Invalid layer in ReadNet test")
+	}
 	if layer.OutputNameToIndex("notthere") != -1 {
 		t.Error("Invalid layer in ReadNet test")
 	}
