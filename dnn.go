@@ -281,6 +281,13 @@ func (net *Net) GetUnconnectedOutLayers() (ids []int) {
 	return
 }
 
+// Close Layer
+func (l *Layer) Close() error {
+	C.Layer_Close((C.Layer)(l.p))
+	l.p = nil
+	return nil
+}
+
 // GetName returns name for this layer.
 func (l *Layer) GetName() string {
 	return C.GoString(C.Layer_GetName((C.Layer)(l.p)))
