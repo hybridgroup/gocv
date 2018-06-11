@@ -938,9 +938,17 @@ func TestRotate(t *testing.T) {
 	dst := NewMat()
 	defer dst.Close()
 
-	Rotate(src, &dst, 0)
+	Rotate(src, &dst, Rotate90Clockwise)
 	if dst.Rows() != 2 {
 		t.Errorf("expected rows: %d got %d", src.Cols(), dst.Rows())
+	}
+
+	dst2src := NewMat()
+	defer dst2src.Close()
+
+	Rotate(dst, &dst2src, Rotate90CounterClockwise)
+	if dst2src.Rows() != 1 {
+		t.Errorf("expected rows: %d got %d", src.Rows(), dst2src.Rows())
 	}
 }
 
