@@ -22,7 +22,6 @@ import (
 	"image"
 	"image/color"
 	"os"
-	"strconv"
 
 	"gocv.io/x/gocv"
 )
@@ -48,12 +47,12 @@ func main() {
 	}
 
 	// parse args
-	deviceID, _ := strconv.Atoi(os.Args[1])
+	deviceID := os.Args[1]
 	proto := os.Args[2]
 	model := os.Args[3]
 
 	// open capture device
-	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.OpenVideoCapture(deviceID)
 	if err != nil {
 		fmt.Printf("Error opening video capture device: %v\n", deviceID)
 		return
@@ -79,7 +78,7 @@ func main() {
 
 	for {
 		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("Error cannot read device %d\n", deviceID)
+			fmt.Printf("Error cannot read device %v\n", deviceID)
 			return
 		}
 		if img.Empty() {

@@ -20,7 +20,6 @@ import (
 	"image"
 	"image/color"
 	"os"
-	"strconv"
 
 	"gocv.io/x/gocv"
 	"gocv.io/x/gocv/openvino/pvl"
@@ -33,10 +32,10 @@ func main() {
 	}
 
 	// parse args
-	deviceID, _ := strconv.Atoi(os.Args[1])
+	deviceID := os.Args[1]
 
 	// open webcam
-	webcam, err := gocv.VideoCaptureDevice(deviceID)
+	webcam, err := gocv.OpenVideoCapture(deviceID)
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
@@ -69,7 +68,7 @@ func main() {
 	fmt.Printf("start reading camera device: %v\n", deviceID)
 	for {
 		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("cannot read device %d\n", deviceID)
+			fmt.Printf("cannot read device %v\n", deviceID)
 			return
 		}
 		if img.Empty() {

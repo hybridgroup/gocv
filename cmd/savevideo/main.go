@@ -16,7 +16,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 
 	"gocv.io/x/gocv"
 )
@@ -27,10 +26,10 @@ func main() {
 		return
 	}
 
-	deviceID, _ := strconv.Atoi(os.Args[1])
+	deviceID := os.Args[1]
 	saveFile := os.Args[2]
 
-	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.OpenVideoCapture(deviceID)
 	if err != nil {
 		fmt.Printf("error opening video capture device: %v\n", deviceID)
 		return
@@ -41,7 +40,7 @@ func main() {
 	defer img.Close()
 
 	if ok := webcam.Read(&img); !ok {
-		fmt.Printf("cannot read device %d\n", deviceID)
+		fmt.Printf("cannot read device %v\n", deviceID)
 		return
 	}
 
@@ -54,7 +53,7 @@ func main() {
 
 	for i := 0; i < 100; i++ {
 		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("cannot read device %d\n", deviceID)
+			fmt.Printf("cannot read device %v\n", deviceID)
 			return
 		}
 		if img.Empty() {
