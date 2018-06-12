@@ -200,6 +200,15 @@ func (m *Mat) ConvertTo(dst *Mat, mt MatType) {
 	return
 }
 
+// Total returns the total number of array elements.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#aa4d317d43fb0cba9c2503f3c61b866c8
+//
+func (m *Mat) Total() int {
+	return int(C.Mat_Total(m.p))
+}
+
 // ToBytes copies the underlying Mat data to a byte array.
 //
 // For further details, please see:

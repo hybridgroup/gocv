@@ -74,6 +74,10 @@ func TestMatWithSizeFromScalar(t *testing.T) {
 		t.Errorf("NewMatWithSizeFromScalar incorrect type: %v\n", mat.Type())
 	}
 
+	if mat.Total() != 6 {
+		t.Errorf("incorrect total: %v\n", mat.Total())
+	}
+
 	matChans := Split(mat)
 	scalarByte := []byte{255, 105, 180}
 	for c := 0; c < mat.Channels(); c++ {

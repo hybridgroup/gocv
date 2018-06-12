@@ -128,6 +128,10 @@ int Mat_Step(Mat m) {
     return m->step;
 }
 
+int Mat_Total(Mat m) {
+    return m->total();
+}
+
 // Mat_GetUChar returns a specific row/col value from this Mat expecting
 // each element to contain a schar aka CV_8U.
 uint8_t Mat_GetUChar(Mat m, int row, int col) {
