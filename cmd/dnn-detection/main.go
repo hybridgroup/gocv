@@ -28,7 +28,7 @@ import (
 
 func main() {
 	if len(os.Args) < 4 {
-		fmt.Println("How to run:\ndnn-detection [camera ID] [modelfile] [configfile] [descriptionsfile] ([backend] [device])")
+		fmt.Println("How to run:\ndnn-detection [camera ID] [modelfile] [configfile] ([backend] [device])")
 		return
 	}
 
@@ -92,15 +92,18 @@ func main() {
 			continue
 		}
 
-		// convert image Mat to 300x300 blob that the classifier can analyze
+		// convert image Mat to 300x300 blob that the object detector can analyze
 		blob := gocv.BlobFromImage(img, 1.0, image.Pt(300, 300), gocv.NewScalar(104, 177, 123, 0), false, false)
 
-		// feed the blob into the classifier
+		// feed the blob into the detector
 		net.SetInput(blob, "")
 
 		// run a forward pass thru the network
 		prob := net.Forward("detection_out")
 
+		// detector network produces an output blob with a shape 1x1xNx7
+		// where N is the number of detections, and each detection is a vector of float values
+		// [batchId, classId, confidence, left, top, right, bottom]
 		for i := 0; i < prob.Total(); i += 7 {
 			confidence := prob.GetFloatAt(0, i+2)
 			if confidence > 0.5 {
