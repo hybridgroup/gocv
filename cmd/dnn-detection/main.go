@@ -133,11 +133,11 @@ func main() {
 		for i := 0; i < probs[0].Total(); i += 7 {
 			confidence := probs[0].GetFloatAt(0, i+2)
 			if confidence > 0.5 {
-				left := int(probs[0].GetFloatAt(0, i+3) * float32(img.Cols()))   //(int)(data[i + 3] * frame.cols);
-				top := int(probs[0].GetFloatAt(0, i+4) * float32(img.Rows()))    //(int)(data[i + 4] * frame.rows);
-				right := int(probs[0].GetFloatAt(0, i+5) * float32(img.Cols()))  //(int)(data[i + 5] * frame.cols);
-				bottom := int(probs[0].GetFloatAt(0, i+6) * float32(img.Rows())) //(int)(data[i + 6] * frame.rows);
-				classId := probs[0].GetFloatAt(0, i+1) - 1                       // (int)(data[i + 1]) - 1;  // Skip 0th background class id.
+				classId := probs[0].GetFloatAt(0, i+1) - 1
+				left := int(probs[0].GetFloatAt(0, i+3) * float32(img.Cols()))
+				top := int(probs[0].GetFloatAt(0, i+4) * float32(img.Rows()))
+				right := int(probs[0].GetFloatAt(0, i+5) * float32(img.Cols()))
+				bottom := int(probs[0].GetFloatAt(0, i+6) * float32(img.Rows()))
 				fmt.Println(classId, confidence, left, top, right, bottom)
 				gocv.Rectangle(&img, image.Rect(left, top, right, bottom), statusColor, 2)
 			}
