@@ -1,6 +1,6 @@
 // What it does:
 //
-// This example uses a deep neural network to perform object detection
+// This example uses a deep neural network to perform face detection
 // of whatever is in front of the camera.
 //
 // Download the model file from:
@@ -9,19 +9,15 @@
 // Also, you will need the prototxt file:
 // ...
 //
-// And the words text file with the class descriptions:
-//
-//
 // How to run:
 //
-// 		go run ./cmd/dnn-detection/main.go 0 [modelfile] [configfile] [descriptionsfile] [backend] [device]
+// 		go run ./cmd/dnn-detection/main.go 0 [modelfile] [configfile] [backend] [device]
 //
 // +build example
 
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"image"
 	"image/color"
@@ -30,25 +26,8 @@ import (
 	"gocv.io/x/gocv"
 )
 
-// readDescriptions reads the descriptions from a file
-// and returns a slice of its lines.
-func readDescriptions(path string) ([]string, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	var lines []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	return lines, scanner.Err()
-}
-
 func main() {
-	if len(os.Args) < 5 {
+	if len(os.Args) < 4 {
 		fmt.Println("How to run:\ndnn-detection [camera ID] [modelfile] [configfile] [descriptionsfile] ([backend] [device])")
 		return
 	}
@@ -57,21 +36,14 @@ func main() {
 	deviceID := os.Args[1]
 	proto := os.Args[2]
 	model := os.Args[3]
-	//descr := os.Args[4]
-	// descriptions, err := readDescriptions(descr)
-	// if err != nil {
-	// 	fmt.Printf("Error reading descriptions file: %v\n", descr)
-	// 	return
-	// }
-
 	backend := gocv.NetBackendDefault
-	if len(os.Args) > 5 {
-		backend = gocv.ParseNetBackend(os.Args[5])
+	if len(os.Args) > 4 {
+		backend = gocv.ParseNetBackend(os.Args[4])
 	}
 
 	target := gocv.NetTargetCPU
-	if len(os.Args) > 6 {
-		target = gocv.ParseNetTarget(os.Args[6])
+	if len(os.Args) > 5 {
+		target = gocv.ParseNetTarget(os.Args[5])
 	}
 
 	// open capture device
@@ -88,7 +60,7 @@ func main() {
 	img := gocv.NewMat()
 	defer img.Close()
 
-	// open DNN classifier
+	// open DNN face tracking model
 	net := gocv.ReadNet(model, proto)
 	if net.Empty() {
 		fmt.Printf("Error reading network model from : %v %v\n", model, proto)
@@ -98,7 +70,6 @@ func main() {
 	net.SetPreferableBackend(gocv.NetBackendType(backend))
 	net.SetPreferableTarget(gocv.NetTargetType(target))
 
-	// status := "Ready"
 	statusColor := color.RGBA{0, 255, 0, 0}
 	fmt.Printf("Start reading camera device: %v\n", deviceID)
 
@@ -118,7 +89,7 @@ func main() {
 		net.SetInput(blob, "")
 
 		// run a forward pass thru the network
-		probs := net.ForwardLayers([]string{"detection_out"})
+		prob := net.Forward("detection_out")
 
 		// make sure we have valid output layer type
 		outs := net.GetUnconnectedOutLayers()
@@ -130,20 +101,18 @@ func main() {
 			continue
 		}
 
-		for i := 0; i < probs[0].Total(); i += 7 {
-			confidence := probs[0].GetFloatAt(0, i+2)
+		for i := 0; i < prob.Total(); i += 7 {
+			confidence := prob.GetFloatAt(0, i+2)
 			if confidence > 0.5 {
-				classId := probs[0].GetFloatAt(0, i+1) - 1
-				left := int(probs[0].GetFloatAt(0, i+3) * float32(img.Cols()))
-				top := int(probs[0].GetFloatAt(0, i+4) * float32(img.Rows()))
-				right := int(probs[0].GetFloatAt(0, i+5) * float32(img.Cols()))
-				bottom := int(probs[0].GetFloatAt(0, i+6) * float32(img.Rows()))
-				fmt.Println(classId, confidence, left, top, right, bottom)
+				left := int(prob.GetFloatAt(0, i+3) * float32(img.Cols()))
+				top := int(prob.GetFloatAt(0, i+4) * float32(img.Rows()))
+				right := int(prob.GetFloatAt(0, i+5) * float32(img.Cols()))
+				bottom := int(prob.GetFloatAt(0, i+6) * float32(img.Rows()))
 				gocv.Rectangle(&img, image.Rect(left, top, right, bottom), statusColor, 2)
 			}
 		}
 
-		probs[0].Close()
+		prob.Close()
 		blob.Close()
 
 		window.IMShow(img)
