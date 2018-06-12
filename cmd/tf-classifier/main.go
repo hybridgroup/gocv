@@ -12,7 +12,7 @@
 //
 // How to run:
 //
-// 		go run ./cmd/tf-classifier/main.go 0 [modelfile] [descriptionsfile]
+// 		go run ./cmd/tf-classifier/main.go 0 [modelfile] [descriptionsfile] ([backend] [device])
 //
 // +build example
 
@@ -61,6 +61,16 @@ func main() {
 		return
 	}
 
+	backend := gocv.NetBackendDefault
+	if len(os.Args) > 4 {
+		backend = gocv.ParseNetBackend(os.Args[4])
+	}
+
+	target := gocv.NetTargetCPU
+	if len(os.Args) > 5 {
+		target = gocv.ParseNetTarget(os.Args[5])
+	}
+
 	// open capture device
 	webcam, err := gocv.OpenVideoCapture(deviceID)
 	if err != nil {
@@ -82,6 +92,8 @@ func main() {
 		return
 	}
 	defer net.Close()
+	net.SetPreferableBackend(gocv.NetBackendType(backend))
+	net.SetPreferableTarget(gocv.NetTargetType(target))
 
 	status := "Ready"
 	statusColor := color.RGBA{0, 255, 0, 0}

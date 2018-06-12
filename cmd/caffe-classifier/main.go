@@ -14,8 +14,7 @@
 //
 // How to run:
 //
-// 		go run ./cmd/caffe-classifier/main.go 0 [modelfile] [configfile] [descriptionsfile] [backend] [device]
-//
+// 		go run ./cmd/caffe-classifier/main.go 0 [modelfile] [configfile] [descriptionsfile]
 //
 // You can also use this sample with the Intel OpenVINO Inference Engine, if you have it installed.
 //
