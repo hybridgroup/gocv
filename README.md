@@ -318,6 +318,8 @@ Now, scroll down the list and change the following settings as follows:
 - `ENABLE_PRECOMPILED_HEADERS` should be unchecked.
 - `ENABLE_CXX11` should be checked.
 - `OPENCV_EXTRA_MODULES_PATH` should be set to `C:\opencv\opencv_contrib-3.4.1\modules`
+- `WITH_IPP` should be unchecked (aka disabled).
+- `WITH_MSMF` should be unchecked (aka disabled).
 
 Click on the "Configure" button again, and wait for the configuration step.
 
