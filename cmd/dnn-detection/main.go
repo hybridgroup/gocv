@@ -70,6 +70,16 @@ func main() {
 	net.SetPreferableBackend(gocv.NetBackendType(backend))
 	net.SetPreferableTarget(gocv.NetTargetType(target))
 
+	// make sure we have valid output layer type
+	outs := net.GetUnconnectedOutLayers()
+	layer := net.GetLayer(outs[1])
+	layerType := layer.GetType()
+	layer.Close()
+	if layerType != "DetectionOutput" {
+		fmt.Printf("Error unknown output layer type %v\n", layerType)
+		return
+	}
+
 	statusColor := color.RGBA{0, 255, 0, 0}
 	fmt.Printf("Start reading camera device: %v\n", deviceID)
 
@@ -90,16 +100,6 @@ func main() {
 
 		// run a forward pass thru the network
 		prob := net.Forward("detection_out")
-
-		// make sure we have valid output layer type
-		outs := net.GetUnconnectedOutLayers()
-		layer := net.GetLayer(outs[1])
-		layerType := layer.GetType()
-		layer.Close()
-		if layerType != "DetectionOutput" {
-			fmt.Printf("Error unknown output layer type %v\n", layerType)
-			continue
-		}
 
 		for i := 0; i < prob.Total(); i += 7 {
 			confidence := prob.GetFloatAt(0, i+2)
