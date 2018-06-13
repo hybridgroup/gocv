@@ -134,14 +134,13 @@ func main() {
 
 		select {
 		case pose = <-poses:
-			// send next frame for detection
+			// we've received the next pose from channel, so send next image frame for detection
 			images <- &img
 
 		default:
-			// just show current frame
+			// show current frame without blocking
 		}
 
-		// draw the pose
 		drawPose(&img)
 
 		window.IMShow(img)
@@ -156,7 +155,7 @@ func main() {
 // of a body part being in location x,y
 func performDetection() {
 	for {
-		// get next frame
+		// get next frame from channel
 		frame := <-images
 
 		// convert image Mat to 368x368 blob that the pose detector can analyze
@@ -168,70 +167,69 @@ func performDetection() {
 		// run a forward pass thru the network
 		prob := net.Forward("")
 
-		var midx, npairs int
+		var midx int
 		s := prob.Size()
-		nparts := s[1]
-		h := s[2]
-		w := s[3]
+		nparts, h, w := s[1], s[2], s[3]
 
 		// find out, which model we have
 		switch nparts {
 		case 19:
 			// COCO body
 			midx = 0
-			npairs = 17
 			nparts = 18 // skip background
 		case 16:
 			// MPI body
 			midx = 1
-			npairs = 14
 		case 22:
 			// hand
 			midx = 2
-			npairs = 20
 		default:
 			fmt.Println("there should be 19 parts for the COCO model, 16 for MPI, or 22 for the hand model")
 			return
 		}
 
+		// find the most likely match for each part
 		pts := make([]image.Point, 22)
 		for i := 0; i < nparts; i++ {
-			pt := image.Pt(-1, -1)
+			pts[i] = image.Pt(-1, -1)
 			heatmap, _ := prob.FromPtr(h, w, gocv.MatTypeCV32F, 0, i)
 
-			// 1 maximum per heatmap
 			_, maxVal, _, maxLoc := gocv.MinMaxLoc(heatmap)
 			if maxVal > 0.1 {
-				pt = maxLoc
+				pts[i] = maxLoc
 			}
-			pts[i] = pt
 		}
 
-		// connect body parts and draw
-		sX := float32(frame.Cols()) / float32(w)
-		sY := float32(frame.Rows()) / float32(h)
+		// determine scale factor
+		sX := int(float32(frame.Cols()) / float32(w))
+		sY := int(float32(frame.Rows()) / float32(h))
 
+		// create the results array of pairs of points with the lines that best fit
+		// each body part, e.g.
+		// [[point A for body part 1, point B for body part 1],
+		//  [point A for body part 2, point B for body part 2], ...]
 		results := [][]image.Point{}
-		for i := 0; i < npairs; i++ {
-			a := pts[PosePairs[midx][i][0]]
-			b := pts[PosePairs[midx][i][1]]
+		for _, p := range PosePairs[midx] {
+			a := pts[p[0]]
+			b := pts[p[1]]
 
-			// we did not find enough confidence before
+			// high enough confidence in this pose?
 			if a.X <= 0 || a.Y <= 0 || b.X <= 0 || b.Y <= 0 {
 				continue
 			}
 
 			// scale to image size
-			a.X *= int(sX)
-			a.Y *= int(sY)
-			b.X *= int(sX)
-			b.Y *= int(sY)
+			a.X *= sX
+			a.Y *= sY
+			b.X *= sX
+			b.Y *= sY
 
 			results = append(results, []image.Point{a, b})
 		}
 		prob.Close()
 		blob.Close()
 
+		// send pose results in channel
 		poses <- results
 	}
 }
