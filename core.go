@@ -484,8 +484,8 @@ func (m *Mat) ToImage() (image.Image, error) {
 		return img, nil
 	}
 
-	img := image.NewNRGBA(image.Rect(0, 0, width, height))
-	c := color.NRGBA{
+	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	c := color.RGBA{
 		R: uint8(0),
 		G: uint8(0),
 		B: uint8(0),
@@ -500,7 +500,7 @@ func (m *Mat) ToImage() (image.Image, error) {
 			if channels == 4 {
 				c.A = uint8(data[y*step+x+3])
 			}
-			img.SetNRGBA(int(x/channels), y, c)
+			img.SetRGBA(int(x/channels), y, c)
 		}
 	}
 
