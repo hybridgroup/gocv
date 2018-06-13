@@ -1,17 +1,16 @@
 // What it does:
 //
-// This example uses a deep neural network to perform face detection
-// of whatever is in front of the camera.
+// This example uses a deep neural network to perform face detection.
 //
 // Download the model file from:
-// ...
+// https://github.com/opencv/opencv_3rdparty/raw/dnn_samples_face_detector_20170830/res10_300x300_ssd_iter_140000.caffemodel
 //
-// Also, you will need the prototxt file:
-// ...
+// You will also need the prototxt file:
+// https://raw.githubusercontent.com/opencv/opencv/master/samples/dnn/face_detector/deploy.prototxt
 //
 // How to run:
 //
-// 		go run ./cmd/dnn-detection/main.go 0 [modelfile] [configfile] [backend] [device]
+// 		go run ./cmd/dnn-detection/main.go [videosource] [modelfile] [configfile] ([backend] [device])
 //
 // +build example
 
@@ -28,7 +27,7 @@ import (
 
 func main() {
 	if len(os.Args) < 4 {
-		fmt.Println("How to run:\ndnn-detection [camera ID] [modelfile] [configfile] ([backend] [device])")
+		fmt.Println("How to run:\ndnn-detection [videosource] [modelfile] [configfile] ([backend] [device])")
 		return
 	}
 
@@ -80,7 +79,6 @@ func main() {
 		return
 	}
 
-	statusColor := color.RGBA{0, 255, 0, 0}
 	fmt.Printf("Start reading camera device: %v\n", deviceID)
 
 	for {
@@ -101,19 +99,7 @@ func main() {
 		// run a forward pass thru the network
 		prob := net.Forward("detection_out")
 
-		// detector network produces an output blob with a shape 1x1xNx7
-		// where N is the number of detections, and each detection is a vector of float values
-		// [batchId, classId, confidence, left, top, right, bottom]
-		for i := 0; i < prob.Total(); i += 7 {
-			confidence := prob.GetFloatAt(0, i+2)
-			if confidence > 0.5 {
-				left := int(prob.GetFloatAt(0, i+3) * float32(img.Cols()))
-				top := int(prob.GetFloatAt(0, i+4) * float32(img.Rows()))
-				right := int(prob.GetFloatAt(0, i+5) * float32(img.Cols()))
-				bottom := int(prob.GetFloatAt(0, i+6) * float32(img.Rows()))
-				gocv.Rectangle(&img, image.Rect(left, top, right, bottom), statusColor, 2)
-			}
-		}
+		performDetection(&img, prob)
 
 		prob.Close()
 		blob.Close()
@@ -121,6 +107,24 @@ func main() {
 		window.IMShow(img)
 		if window.WaitKey(1) >= 0 {
 			break
+		}
+	}
+}
+
+// performDetection analyzes the results from the detector network,
+// which produces an output blob with a shape 1x1xNx7
+// where N is the number of detections, and each detection
+// is a vector of float values
+// [batchId, classId, confidence, left, top, right, bottom]
+func performDetection(frame *gocv.Mat, results gocv.Mat) {
+	for i := 0; i < results.Total(); i += 7 {
+		confidence := results.GetFloatAt(0, i+2)
+		if confidence > 0.5 {
+			left := int(results.GetFloatAt(0, i+3) * float32(frame.Cols()))
+			top := int(results.GetFloatAt(0, i+4) * float32(frame.Rows()))
+			right := int(results.GetFloatAt(0, i+5) * float32(frame.Cols()))
+			bottom := int(results.GetFloatAt(0, i+6) * float32(frame.Rows()))
+			gocv.Rectangle(frame, image.Rect(left, top, right, bottom), color.RGBA{0, 255, 0, 0}, 2)
 		}
 	}
 }
