@@ -37,9 +37,7 @@ import (
 // please look at the nice explanation at the bottom of:
 // https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/output.md
 //
-//PosePairs := make(map[string]int)
-
-var POSE_PAIRS = [3][20][2]int{
+var PosePairs = [3][20][2]int{
 	{ // COCO body
 		{1, 2}, {1, 5}, {2, 3},
 		{3, 4}, {5, 6}, {6, 7},
@@ -61,6 +59,11 @@ var POSE_PAIRS = [3][20][2]int{
 		{0, 13}, {13, 14}, {14, 15}, {15, 16}, // ring
 		{0, 17}, {17, 18}, {18, 19}, {19, 20}, // small
 	}}
+
+var net *gocv.Net
+var images chan *gocv.Mat
+var poses chan [][]image.Point
+var pose [][]image.Point
 
 func main() {
 	if len(os.Args) < 4 {
@@ -97,7 +100,8 @@ func main() {
 	defer img.Close()
 
 	// open OpenPose model
-	net := gocv.ReadNet(model, proto)
+	n := gocv.ReadNet(model, proto)
+	net = &n
 	if net.Empty() {
 		fmt.Printf("Error reading network model from : %v %v\n", model, proto)
 		return
@@ -108,6 +112,17 @@ func main() {
 
 	fmt.Printf("Start reading camera device: %v\n", deviceID)
 
+	images = make(chan *gocv.Mat, 1)
+	poses = make(chan [][]image.Point)
+
+	if ok := webcam.Read(&img); !ok {
+		fmt.Printf("Error cannot read device %v\n", deviceID)
+		return
+	}
+	images <- &img
+
+	go performDetection()
+
 	for {
 		if ok := webcam.Read(&img); !ok {
 			fmt.Printf("Error cannot read device %v\n", deviceID)
@@ -117,19 +132,17 @@ func main() {
 			continue
 		}
 
-		// convert image Mat to 368x368 blob that the pose detector can analyze
-		blob := gocv.BlobFromImage(img, 1.0/255.0, image.Pt(368, 368), gocv.NewScalar(0, 0, 0, 0), false, false)
+		select {
+		case pose = <-poses:
+			// send next frame for detection
+			images <- &img
 
-		// feed the blob into the detector
-		net.SetInput(blob, "")
+		default:
+			// just show current frame
+		}
 
-		// run a forward pass thru the network
-		prob := net.Forward("")
-
-		performDetection(&img, prob)
-
-		prob.Close()
-		blob.Close()
+		// draw the pose
+		drawPose(&img)
 
 		window.IMShow(img)
 		if window.WaitKey(1) >= 0 {
@@ -141,67 +154,92 @@ func main() {
 // performDetection analyzes the results from the detector network.
 // the result is an array of "heatmaps" which are the probability
 // of a body part being in location x,y
-func performDetection(frame *gocv.Mat, results gocv.Mat) {
-	var midx, npairs int
-	s := results.Size()
-	nparts := s[1]
-	h := s[2]
-	w := s[3]
+func performDetection() {
+	for {
+		// get next frame
+		frame := <-images
 
-	// find out, which model we have
-	switch nparts {
-	case 19:
-		// COCO body
-		midx = 0
-		npairs = 17
-		nparts = 18 // skip background
-	case 16:
-		// MPI body
-		midx = 1
-		npairs = 14
-	case 22:
-		// hand
-		midx = 2
-		npairs = 20
-	default:
-		fmt.Println("there should be 19 parts for the COCO model, 16 for MPI, or 22 for the hand model")
-		return
-	}
+		// convert image Mat to 368x368 blob that the pose detector can analyze
+		blob := gocv.BlobFromImage(*frame, 1.0/255.0, image.Pt(368, 368), gocv.NewScalar(0, 0, 0, 0), false, false)
 
-	points := make([]image.Point, 22)
-	for i := 0; i < nparts; i++ {
-		pt := image.Pt(-1, -1)
-		heatmap, _ := results.FromPtr(h, w, gocv.MatTypeCV32F, 0, i)
+		// feed the blob into the detector
+		net.SetInput(blob, "")
 
-		// 1 maximum per heatmap
-		_, maxVal, _, maxLoc := gocv.MinMaxLoc(heatmap)
-		if maxVal > 0.1 {
-			pt = maxLoc
-		}
-		points[i] = pt
-	}
+		// run a forward pass thru the network
+		prob := net.Forward("")
 
-	// connect body parts and draw
-	sX := float32(frame.Cols()) / float32(w)
-	sY := float32(frame.Rows()) / float32(h)
+		var midx, npairs int
+		s := prob.Size()
+		nparts := s[1]
+		h := s[2]
+		w := s[3]
 
-	for i := 0; i < npairs; i++ {
-		a := points[POSE_PAIRS[midx][i][0]]
-		b := points[POSE_PAIRS[midx][i][1]]
-
-		// we did not find enough confidence before
-		if a.X <= 0 || a.Y <= 0 || b.X <= 0 || b.Y <= 0 {
-			continue
+		// find out, which model we have
+		switch nparts {
+		case 19:
+			// COCO body
+			midx = 0
+			npairs = 17
+			nparts = 18 // skip background
+		case 16:
+			// MPI body
+			midx = 1
+			npairs = 14
+		case 22:
+			// hand
+			midx = 2
+			npairs = 20
+		default:
+			fmt.Println("there should be 19 parts for the COCO model, 16 for MPI, or 22 for the hand model")
+			return
 		}
 
-		// scale to image size
-		a.X *= int(sX)
-		a.Y *= int(sY)
-		b.X *= int(sX)
-		b.Y *= int(sY)
+		pts := make([]image.Point, 22)
+		for i := 0; i < nparts; i++ {
+			pt := image.Pt(-1, -1)
+			heatmap, _ := prob.FromPtr(h, w, gocv.MatTypeCV32F, 0, i)
 
-		gocv.Line(frame, a, b, color.RGBA{0, 255, 0, 0}, 2)
-		gocv.Circle(frame, a, 3, color.RGBA{0, 0, 200, 0}, -1)
-		gocv.Circle(frame, b, 3, color.RGBA{0, 0, 200, 0}, -1)
+			// 1 maximum per heatmap
+			_, maxVal, _, maxLoc := gocv.MinMaxLoc(heatmap)
+			if maxVal > 0.1 {
+				pt = maxLoc
+			}
+			pts[i] = pt
+		}
+
+		// connect body parts and draw
+		sX := float32(frame.Cols()) / float32(w)
+		sY := float32(frame.Rows()) / float32(h)
+
+		results := [][]image.Point{}
+		for i := 0; i < npairs; i++ {
+			a := pts[PosePairs[midx][i][0]]
+			b := pts[PosePairs[midx][i][1]]
+
+			// we did not find enough confidence before
+			if a.X <= 0 || a.Y <= 0 || b.X <= 0 || b.Y <= 0 {
+				continue
+			}
+
+			// scale to image size
+			a.X *= int(sX)
+			a.Y *= int(sY)
+			b.X *= int(sX)
+			b.Y *= int(sY)
+
+			results = append(results, []image.Point{a, b})
+		}
+		prob.Close()
+		blob.Close()
+
+		poses <- results
+	}
+}
+
+func drawPose(frame *gocv.Mat) {
+	for _, pts := range pose {
+		gocv.Line(frame, pts[0], pts[1], color.RGBA{0, 255, 0, 0}, 2)
+		gocv.Circle(frame, pts[0], 3, color.RGBA{0, 0, 200, 0}, -1)
+		gocv.Circle(frame, pts[1], 3, color.RGBA{0, 0, 200, 0}, -1)
 	}
 }
