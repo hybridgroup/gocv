@@ -28,6 +28,10 @@ Mat Mat_NewFromBytes(int rows, int cols, int type, struct ByteArray buf) {
     return new cv::Mat(rows, cols, type, buf.data);
 }
 
+Mat Mat_FromPtr(Mat m, int rows, int cols, int type, int prow, int pcol) {
+    return new cv::Mat(rows, cols, type, m->ptr(prow, pcol));
+}
+
 // Mat_Close deletes an existing Mat
 void Mat_Close(Mat m) {
     delete m;
@@ -130,6 +134,19 @@ int Mat_Step(Mat m) {
 
 int Mat_Total(Mat m) {
     return m->total();
+}
+
+void Mat_Size(Mat m, IntVector* res) {
+    cv::MatSize ms(m->size);
+    int* ids = new int[ms.dims()];
+
+    for (size_t i = 0; i < ms.dims(); ++i) {
+        ids[i] = ms[i];
+    }
+
+    res->length = ms.dims();
+    res->val = ids;
+    return;
 }
 
 // Mat_GetUChar returns a specific row/col value from this Mat expecting

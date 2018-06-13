@@ -147,6 +147,11 @@ func NewMatFromBytes(rows int, cols int, mt MatType, data []byte) (Mat, error) {
 	return Mat{p: C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), *cBytes)}, nil
 }
 
+// FromPtr returns a new Mat with a specific size and type, initialized from a Mat Ptr.
+func (m *Mat) FromPtr(rows int, cols int, mt MatType, prow int, pcol int) (Mat, error) {
+	return Mat{p: C.Mat_FromPtr(m.p, C.int(rows), C.int(cols), C.int(mt), C.int(prow), C.int(pcol))}, nil
+}
+
 // Close the Mat object.
 func (m *Mat) Close() error {
 	C.Mat_Close(m.p)
@@ -207,6 +212,24 @@ func (m *Mat) ConvertTo(dst *Mat, mt MatType) {
 //
 func (m *Mat) Total() int {
 	return int(C.Mat_Total(m.p))
+}
+
+// Size returns an array with one element for each dimension containing the size of that dimension for the Mat.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#aa4d317d43fb0cba9c2503f3c61b866c8
+//
+func (m *Mat) Size() (dims []int) {
+	cdims := C.IntVector{}
+	C.Mat_Size(m.p, &cdims)
+
+	h := &reflect.SliceHeader{uintptr(unsafe.Pointer(cdims.val)), int(cdims.length), int(cdims.length)}
+	pdims := *(*[]C.int)(unsafe.Pointer(h))
+
+	for i := 0; i < int(cdims.length); i++ {
+		dims = append(dims, int(pdims[i]))
+	}
+	return
 }
 
 // ToBytes copies the underlying Mat data to a byte array.

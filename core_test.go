@@ -78,6 +78,11 @@ func TestMatWithSizeFromScalar(t *testing.T) {
 		t.Errorf("incorrect total: %v\n", mat.Total())
 	}
 
+	sz := mat.Size()
+	if sz[0] != 2 && sz[1] != 3 {
+		t.Errorf("NewMatWithSize incorrect size: %v\n", sz)
+	}
+
 	matChans := Split(mat)
 	scalarByte := []byte{255, 105, 180}
 	for c := 0; c < mat.Channels(); c++ {
@@ -88,6 +93,21 @@ func TestMatWithSizeFromScalar(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+func TestMatFromPtr(t *testing.T) {
+	mat := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat.Close()
+	pmat, _ := mat.FromPtr(11, 12, MatTypeCV8U, 10, 10)
+	defer pmat.Close()
+
+	if pmat.Rows() != 11 {
+		t.Errorf("Mat copy incorrect row count: %v\n", pmat.Rows())
+	}
+
+	if pmat.Cols() != 12 {
+		t.Errorf("Mat copy incorrect col count: %v\n", pmat.Cols())
 	}
 }
 
