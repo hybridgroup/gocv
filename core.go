@@ -507,6 +507,68 @@ func (m *Mat) ToImage() (image.Image, error) {
 	return img, nil
 }
 
+//ImageToMatRGBA converts image.Image to gocv.Mat,
+//which represents RGBA image having 8bit for each component.
+//Type of Mat is gocv.MatTypeCV8UC4.
+func ImageToMatRGBA(img image.Image) (Mat, error) {
+	bounds := img.Bounds()
+	x := bounds.Dx()
+	y := bounds.Dy()
+	data := make([]byte, 0, x*y*4)
+	for j := bounds.Min.Y; j < bounds.Max.Y; j++ {
+		for i := bounds.Min.X; i < bounds.Max.X; i++ {
+			r, g, b, a := img.At(i, j).RGBA()
+			data = append(data, byte(b>>8), byte(g>>8), byte(r>>8), byte(a>>8))
+		}
+	}
+	return NewMatFromBytes(y, x, MatTypeCV8UC4, data)
+}
+
+//ImageToMatRGB converts image.Image to gocv.Mat,
+//which represents RGB image having 8bit for each component.
+//Type of Mat is gocv.MatTypeCV8UC3.
+func ImageToMatRGB(img image.Image) (Mat, error) {
+	bounds := img.Bounds()
+	x := bounds.Dx()
+	y := bounds.Dy()
+	data := make([]byte, 0, x*y*3)
+	for j := bounds.Min.Y; j < bounds.Max.Y; j++ {
+		for i := bounds.Min.X; i < bounds.Max.X; i++ {
+			r, g, b, _ := img.At(i, j).RGBA()
+			data = append(data, byte(b>>8), byte(g>>8), byte(r>>8))
+		}
+	}
+	return NewMatFromBytes(y, x, MatTypeCV8UC3, data)
+}
+
+//ImageToMatGray converts image.Image to gocv.Mat,
+//which represents grayscale image 8bit.
+//Type of Mat is gocv.MatTypeCV8UC1.
+func ImageToMatGray(img image.Image) (Mat, error) {
+	bounds := img.Bounds()
+	x := bounds.Dx()
+	y := bounds.Dy()
+	data := make([]byte, 0, x*y)
+	switch img.(type) {
+	case *image.Gray:
+		imgG := img.(*image.Gray)
+		for j := bounds.Min.Y; j < bounds.Max.Y; j++ {
+			for i := bounds.Min.X; i < bounds.Max.X; i++ {
+				data = append(data, imgG.GrayAt(x, y).Y)
+			}
+		}
+	default:
+		for j := bounds.Min.Y; j < bounds.Max.Y; j++ {
+			for i := bounds.Min.X; i < bounds.Max.X; i++ {
+				r, g, b, _ := img.At(i, j).RGBA()
+				y := byte(0.21*float64(r>>8) + 0.72*float64(g>>8) + 0.07*float64(b>>8))
+				data = append(data, y)
+			}
+		}
+	}
+	return NewMatFromBytes(y, x, MatTypeCV8UC1, data)
+}
+
 // AbsDiff calculates the per-element absolute difference between two arrays
 // or between an array and a scalar.
 //
