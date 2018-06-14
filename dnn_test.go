@@ -52,7 +52,7 @@ func TestReadNet(t *testing.T) {
 	}
 
 	ids := net.GetUnconnectedOutLayers()
-	if len(ids) != 2 {
+	if len(ids) != 1 {
 		t.Errorf("Invalid len output layers in ReadNet test: %d\n", len(ids))
 	}
 
