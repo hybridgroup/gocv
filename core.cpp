@@ -594,7 +594,7 @@ struct ByteArray toByteArray(const char* buf, int len) {
     return ret;
 }
 
-int64 GetTickCount() {
+int64 GetCVTickCount() {
     return cv::getTickCount();
 }
 
