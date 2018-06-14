@@ -20,7 +20,7 @@
 //
 // 		go run ./cmd/dnn-pose-detection/main.go [videosource] [modelfile] [configfile] ([backend] [device])
 //
-// +   build example
+// +build example
 
 package main
 
@@ -119,7 +119,8 @@ func main() {
 		fmt.Printf("Error cannot read device %v\n", deviceID)
 		return
 	}
-	images <- &img
+
+	processFrame(&img)
 
 	go performDetection()
 
@@ -135,7 +136,7 @@ func main() {
 		select {
 		case pose = <-poses:
 			// we've received the next pose from channel, so send next image frame for detection
-			images <- &img
+			processFrame(&img)
 
 		default:
 			// show current frame without blocking
@@ -148,6 +149,12 @@ func main() {
 			break
 		}
 	}
+}
+
+func processFrame(i *gocv.Mat) {
+	frame := gocv.NewMat()
+	i.CopyTo(&frame)
+	images <- &frame
 }
 
 // performDetection analyzes the results from the detector network.
@@ -180,6 +187,7 @@ func performDetection() {
 		case 16:
 			// MPI body
 			midx = 1
+			nparts = 15 // skip background
 		case 22:
 			// hand
 			midx = 2
@@ -198,6 +206,7 @@ func performDetection() {
 			if maxVal > 0.1 {
 				pts[i] = maxLoc
 			}
+			heatmap.Close()
 		}
 
 		// determine scale factor
@@ -228,6 +237,7 @@ func performDetection() {
 		}
 		prob.Close()
 		blob.Close()
+		frame.Close()
 
 		// send pose results in channel
 		poses <- results
