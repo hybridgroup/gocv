@@ -1325,6 +1325,15 @@ func (m *Mat) GetVeciAt(row int, col int) Veci {
 	return v
 }
 
+// GetTickCount returns the number of ticks.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/de0/group__core__utils.html#gae73f58000611a1af25dd36d496bf4487
+//
+func GetTickCount() float64 {
+	return float64(C.GetTickCount())
+}
+
 // GetTickFrequency returns the number of ticks per second.
 //
 // For further details, please see:

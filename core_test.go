@@ -1202,9 +1202,14 @@ func TestGetVeciAt(t *testing.T) {
 	}
 }
 
-func TestGetTickFrequency(t *testing.T) {
-	val := GetTickFrequency()
-	if val == 0 {
+func TestGetTickFrequencyCount(t *testing.T) {
+	freq := GetTickFrequency()
+	if freq == 0 {
 		t.Error("GetTickFrequency expected non zero.")
+	}
+
+	count := GetTickCount()
+	if count == 0 {
+		t.Error("GetTickCount expected non zero.")
 	}
 }
