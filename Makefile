@@ -29,14 +29,14 @@ endif
 deps: $(distro_deps)
 
 deps_rh_centos:
-	sudo yum install $(RPMS)
+	sudo yum -y install $(RPMS)
 
 deps_fedora:
-	sudo dnf install $(RPMS)
+	sudo dnf install $(RPMS) -y
 
 deps_debian:
-	sudo apt-get update
-	sudo apt-get install $(DEBS)
+	sudo apt-get -y update
+	sudo apt-get -y install $(DEBS)
 
 
 # Download OpenCV source tarballs.
