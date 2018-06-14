@@ -1325,6 +1325,15 @@ func (m *Mat) GetVeciAt(row int, col int) Veci {
 	return v
 }
 
+// GetTickFrequency returns the number of ticks per second.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/de0/group__core__utils.html#ga705441a9ef01f47acdc55d87fbe5090c
+//
+func GetTickFrequency() float64 {
+	return float64(C.GetTickFrequency())
+}
+
 func toByteArray(b []byte) (*C.struct_ByteArray, error) {
 	if len(b) == 0 {
 		return nil, ErrEmptyByteSlice

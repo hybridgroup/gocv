@@ -294,6 +294,8 @@ Scalar Mat_Sum(Mat src1);
 
 TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon);
 
+double GetTickFrequency();
+
 #ifdef __cplusplus
 }
 #endif

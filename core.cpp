@@ -593,3 +593,7 @@ struct ByteArray toByteArray(const char* buf, int len) {
     memcpy(ret.data, buf, len);
     return ret;
 }
+
+double GetTickFrequency() {
+    return cv::getTickFrequency();
+}
