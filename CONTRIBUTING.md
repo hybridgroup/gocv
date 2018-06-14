@@ -61,17 +61,15 @@ XYZWithParams(p2, p2, p3, p4)
 
 ## How to run tests
 
-You will need to run `source env.sh` or `env.cmd` depending on your OS one time before you can run the Go unit tests.
-
-Then you can run:
+To run the tests:
 
 ```
 go test .
 go test ./contrib/.
 ```
 
-If you are using the Intel CV SDK, you can run those tests using:
+If you are using Intel OpenVINO, you can run those tests using:
 
 ```
-go test ./pvl/.
+go test ./openvino/...
 ```
