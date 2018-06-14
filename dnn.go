@@ -274,7 +274,6 @@ func (net *Net) GetUnconnectedOutLayers() (ids []int) {
 	h := &reflect.SliceHeader{uintptr(unsafe.Pointer(cids.val)), int(cids.length), int(cids.length)}
 	pcids := *(*[]int)(unsafe.Pointer(h))
 
-	ids = make([]int, cids.length)
 	for i := 0; i < int(cids.length); i++ {
 		ids = append(ids, int(pcids[i]))
 	}
