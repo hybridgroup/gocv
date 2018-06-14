@@ -129,7 +129,7 @@ func TestMatCopyTo(t *testing.T) {
 	copy := NewMat()
 	defer copy.Close()
 
-	mat.CopyTo(copy)
+	mat.CopyTo(&copy)
 	if copy.Rows() != 101 {
 		t.Errorf("Mat copy incorrect row count: %v\n", copy.Rows())
 	}

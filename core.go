@@ -180,7 +180,7 @@ func (m *Mat) Clone() Mat {
 // For further details, please see:
 // https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#a33fd5d125b4c302b0c9aa86980791a77
 //
-func (m *Mat) CopyTo(dst Mat) {
+func (m *Mat) CopyTo(dst *Mat) {
 	C.Mat_CopyTo(m.p, dst.p)
 	return
 }

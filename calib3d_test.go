@@ -85,7 +85,7 @@ func TestFisheyeUndistorImageWithParams(t *testing.T) {
 	knew := NewMat()
 	defer knew.Close()
 
-	k.CopyTo(knew)
+	k.CopyTo(&knew)
 
 	knew.SetDoubleAt(0, 0, 0.4*k.GetDoubleAt(0, 0))
 	knew.SetDoubleAt(1, 1, 0.4*k.GetDoubleAt(1, 1))
