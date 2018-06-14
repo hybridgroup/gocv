@@ -554,7 +554,7 @@ func ImageToMatGray(img image.Image) (Mat, error) {
 		imgG := img.(*image.Gray)
 		for j := bounds.Min.Y; j < bounds.Max.Y; j++ {
 			for i := bounds.Min.X; i < bounds.Max.X; i++ {
-				data = append(data, imgG.GrayAt(x, y).Y)
+				data = append(data, imgG.GrayAt(i, j).Y)
 			}
 		}
 	default:

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"image"
 	"image/color"
+	"image/draw"
 	_ "image/jpeg"
 	_ "image/png"
 	"log"
@@ -1167,6 +1168,33 @@ func TestImageToMatRGB(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	mat, err := ImageToMatRGB(img0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	img1, err := mat.ToImage()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if !compareImages(img0, img1) {
+		t.Errorf("Image after converting to Mat and back to Image isn't the same")
+	}
+}
+
+func TestImageToMatGray(t *testing.T) {
+	file, err := os.Open("images/gocvlogo.jpg")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+	imgSrc, _, err := image.Decode(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+	img0 := image.NewGray(imgSrc.Bounds())
+	draw.Draw(img0, imgSrc.Bounds(), imgSrc, image.ZP, draw.Src)
 
 	mat, err := ImageToMatRGB(img0)
 	if err != nil {
