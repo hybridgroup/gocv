@@ -79,6 +79,11 @@ func TestReadNet(t *testing.T) {
 	if maxLoc.X != 812 || maxLoc.Y != 0 {
 		t.Errorf("ReadNet maxLoc incorrect: %v\n", maxLoc)
 	}
+
+	perf := net.GetPerfProfile()
+	if perf == 0 {
+		t.Error("ReadNet GetPerfProfile error")
+	}
 }
 
 func TestCaffe(t *testing.T) {

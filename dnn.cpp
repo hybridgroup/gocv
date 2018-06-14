@@ -58,6 +58,11 @@ void Net_SetPreferableTarget(Net net, int target) {
     net->setPreferableTarget(target);
 }
 
+int64_t Net_GetPerfProfile(Net net) {
+    std::vector<double> layersTimes;
+    return net->getPerfProfile(layersTimes);
+}
+
 void Net_GetUnconnectedOutLayers(Net net, IntVector* res) {
     std::vector< int > cids(net->getUnconnectedOutLayers());
     int* ids = new int[cids.size()];

@@ -31,6 +31,7 @@ Mat Net_Forward(Net net, const char* outputName);
 void Net_ForwardLayers(Net net, struct Mats* outputBlobs, struct CStrings outBlobNames);
 void Net_SetPreferableBackend(Net net, int backend);
 void Net_SetPreferableTarget(Net net, int target);
+int64_t Net_GetPerfProfile(Net net);
 void Net_GetUnconnectedOutLayers(Net net, IntVector* res);
 
 Mat Net_GetBlobChannel(Mat blob, int imgidx, int chnidx);

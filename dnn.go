@@ -262,6 +262,15 @@ func (net *Net) GetLayer(layer int) Layer {
 	return Layer{p: unsafe.Pointer(C.Net_GetLayer((C.Net)(net.p), C.int(layer)))}
 }
 
+// GetPerfProfile returns overall time for inference and timings (in ticks) for layers
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d30/classcv_1_1dnn_1_1Net.html#a06ce946f675f75d1c020c5ddbc78aedc
+//
+func (net *Net) GetPerfProfile() float64 {
+	return float64(C.Net_GetPerfProfile((C.Net)(net.p)))
+}
+
 // GetUnconnectedOutLayers returns indexes of layers with unconnected outputs.
 //
 // For further details, please see:
