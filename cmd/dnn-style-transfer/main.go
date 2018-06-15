@@ -82,24 +82,25 @@ func main() {
 		net.SetInput(blob, "")
 
 		// run a forward pass thru the network
-		prob := net.Forward("")
-
+		probMat := net.Forward("")
+		sz := probMat.Size()
+		dims := sz[2] * sz[3]
 		out := gocv.NewMatWithSize(480, 640, gocv.MatTypeCV8UC3)
-		probMat := prob
 
-		for i := 0; i < probMat.Total(); i += 3 {
+		// take blob and obtain displayable Mat image from it
+		for i := 0; i < dims; i++ {
 			r := probMat.GetFloatAt(0, i)
 			r += 103.939
 
-			g := probMat.GetFloatAt(0, i+1)
+			g := probMat.GetFloatAt(0, i+dims)
 			g += 116.779
 
-			b := probMat.GetFloatAt(0, i+2)
+			b := probMat.GetFloatAt(0, i+dims*2)
 			b += 123.68
 
-			out.SetUCharAt(0, i, uint8(b))
-			out.SetUCharAt(0, i+1, uint8(g))
-			out.SetUCharAt(0, i+2, uint8(r))
+			out.SetUCharAt(0, i*3, uint8(r))
+			out.SetUCharAt(0, i*3+1, uint8(g))
+			out.SetUCharAt(0, i*3+2, uint8(b))
 		}
 
 		window.IMShow(out)
@@ -107,7 +108,7 @@ func main() {
 			break
 		}
 
-		prob.Close()
+		probMat.Close()
 		blob.Close()
 		out.Close()
 	}
