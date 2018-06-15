@@ -1,13 +1,16 @@
 // What it does:
 //
-// This example uses a deep neural network to perform style transfer.
+// This example performs real-time style transfer using a deep neural network.
+//
+// For more information about the model used by this example, go to:
+// https://github.com/jcjohnson/fast-neural-style
 //
 // Download the model file from:
 // http://cs.stanford.edu/people/jcjohns/fast-neural-style/models/eccv16/starry_night.t7
 //
 // How to run:
 //
-// 		go run ./cmd/dnn-style-transfer/main.go [videosource] [modelfile] ([backend] [device])
+// 		go run ./cmd/dnn-style-transfer/main.go 0 ~/Downloads/starry_night.t7 openvino fp16
 //
 // +build example
 
