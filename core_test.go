@@ -1196,7 +1196,7 @@ func TestImageToMatGray(t *testing.T) {
 	img0 := image.NewGray(imgSrc.Bounds())
 	draw.Draw(img0, imgSrc.Bounds(), imgSrc, image.ZP, draw.Src)
 
-	mat, err := ImageToMatRGB(img0)
+	mat, err := ImageToMatGray(img0)
 	if err != nil {
 		log.Fatal(err)
 	}
