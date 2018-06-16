@@ -541,29 +541,17 @@ func ImageToMatRGB(img image.Image) (Mat, error) {
 	return NewMatFromBytes(y, x, MatTypeCV8UC3, data)
 }
 
-//ImageToMatGray converts image.Image to gocv.Mat,
+//ImageToMatGray converts image.Gray to gocv.Mat,
 //which represents grayscale image 8bit.
 //Type of Mat is gocv.MatTypeCV8UC1.
-func ImageToMatGray(img image.Image) (Mat, error) {
+func ImageToMatGray(img *image.Gray) (Mat, error) {
 	bounds := img.Bounds()
 	x := bounds.Dx()
 	y := bounds.Dy()
 	data := make([]byte, 0, x*y)
-	switch img.(type) {
-	case *image.Gray:
-		imgG := img.(*image.Gray)
-		for j := bounds.Min.Y; j < bounds.Max.Y; j++ {
-			for i := bounds.Min.X; i < bounds.Max.X; i++ {
-				data = append(data, imgG.GrayAt(i, j).Y)
-			}
-		}
-	default:
-		for j := bounds.Min.Y; j < bounds.Max.Y; j++ {
-			for i := bounds.Min.X; i < bounds.Max.X; i++ {
-				r, g, b, _ := img.At(i, j).RGBA()
-				y := byte(0.21*float64(r>>8) + 0.72*float64(g>>8) + 0.07*float64(b>>8))
-				data = append(data, y)
-			}
+	for j := bounds.Min.Y; j < bounds.Max.Y; j++ {
+		for i := bounds.Min.X; i < bounds.Max.X; i++ {
+			data = append(data, img.GrayAt(i, j).Y)
 		}
 	}
 	return NewMatFromBytes(y, x, MatTypeCV8UC1, data)
