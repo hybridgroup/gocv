@@ -541,10 +541,10 @@ func ImageToMatRGB(img image.Image) (Mat, error) {
 	return NewMatFromBytes(y, x, MatTypeCV8UC3, data)
 }
 
-//ImageToMatGray converts image.Gray to gocv.Mat,
+//ImageGrayToMatGray converts image.Gray to gocv.Mat,
 //which represents grayscale image 8bit.
 //Type of Mat is gocv.MatTypeCV8UC1.
-func ImageToMatGray(img *image.Gray) (Mat, error) {
+func ImageGrayToMatGray(img *image.Gray) (Mat, error) {
 	bounds := img.Bounds()
 	x := bounds.Dx()
 	y := bounds.Dy()

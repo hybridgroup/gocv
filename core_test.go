@@ -1183,7 +1183,7 @@ func TestImageToMatRGB(t *testing.T) {
 	}
 }
 
-func TestImageToMatGray(t *testing.T) {
+func TestImageGrayToMatGray(t *testing.T) {
 	file, err := os.Open("images/gocvlogo.jpg")
 	if err != nil {
 		log.Fatal(err)
@@ -1196,7 +1196,7 @@ func TestImageToMatGray(t *testing.T) {
 	img0 := image.NewGray(imgSrc.Bounds())
 	draw.Draw(img0, imgSrc.Bounds(), imgSrc, image.ZP, draw.Src)
 
-	mat, err := ImageToMatGray(img0)
+	mat, err := ImageGrayToMatGray(img0)
 	if err != nil {
 		log.Fatal(err)
 	}
