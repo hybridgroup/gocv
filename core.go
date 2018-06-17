@@ -516,8 +516,8 @@ func (m *Mat) ToImage() (image.Image, error) {
 		return img, nil
 	}
 
-	img := image.NewNRGBA(image.Rect(0, 0, width, height))
-	c := color.NRGBA{
+	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	c := color.RGBA{
 		R: uint8(0),
 		G: uint8(0),
 		B: uint8(0),
@@ -532,11 +532,61 @@ func (m *Mat) ToImage() (image.Image, error) {
 			if channels == 4 {
 				c.A = uint8(data[y*step+x+3])
 			}
-			img.SetNRGBA(int(x/channels), y, c)
+			img.SetRGBA(int(x/channels), y, c)
 		}
 	}
 
 	return img, nil
+}
+
+//ImageToMatRGBA converts image.Image to gocv.Mat,
+//which represents RGBA image having 8bit for each component.
+//Type of Mat is gocv.MatTypeCV8UC4.
+func ImageToMatRGBA(img image.Image) (Mat, error) {
+	bounds := img.Bounds()
+	x := bounds.Dx()
+	y := bounds.Dy()
+	data := make([]byte, 0, x*y*4)
+	for j := bounds.Min.Y; j < bounds.Max.Y; j++ {
+		for i := bounds.Min.X; i < bounds.Max.X; i++ {
+			r, g, b, a := img.At(i, j).RGBA()
+			data = append(data, byte(b>>8), byte(g>>8), byte(r>>8), byte(a>>8))
+		}
+	}
+	return NewMatFromBytes(y, x, MatTypeCV8UC4, data)
+}
+
+//ImageToMatRGB converts image.Image to gocv.Mat,
+//which represents RGB image having 8bit for each component.
+//Type of Mat is gocv.MatTypeCV8UC3.
+func ImageToMatRGB(img image.Image) (Mat, error) {
+	bounds := img.Bounds()
+	x := bounds.Dx()
+	y := bounds.Dy()
+	data := make([]byte, 0, x*y*3)
+	for j := bounds.Min.Y; j < bounds.Max.Y; j++ {
+		for i := bounds.Min.X; i < bounds.Max.X; i++ {
+			r, g, b, _ := img.At(i, j).RGBA()
+			data = append(data, byte(b>>8), byte(g>>8), byte(r>>8))
+		}
+	}
+	return NewMatFromBytes(y, x, MatTypeCV8UC3, data)
+}
+
+//ImageGrayToMatGray converts image.Gray to gocv.Mat,
+//which represents grayscale image 8bit.
+//Type of Mat is gocv.MatTypeCV8UC1.
+func ImageGrayToMatGray(img *image.Gray) (Mat, error) {
+	bounds := img.Bounds()
+	x := bounds.Dx()
+	y := bounds.Dy()
+	data := make([]byte, 0, x*y)
+	for j := bounds.Min.Y; j < bounds.Max.Y; j++ {
+		for i := bounds.Min.X; i < bounds.Max.X; i++ {
+			data = append(data, img.GrayAt(i, j).Y)
+		}
+	}
+	return NewMatFromBytes(y, x, MatTypeCV8UC1, data)
 }
 
 // AbsDiff calculates the per-element absolute difference between two arrays
