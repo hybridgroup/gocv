@@ -33,33 +33,6 @@ import (
 	"gocv.io/x/gocv"
 )
 
-// connection table, in the format [model_id][pair_id][from/to]
-// please look at the nice explanation at the bottom of:
-// https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/output.md
-//
-var PosePairs = [3][20][2]int{
-	{ // COCO body
-		{1, 2}, {1, 5}, {2, 3},
-		{3, 4}, {5, 6}, {6, 7},
-		{1, 8}, {8, 9}, {9, 10},
-		{1, 11}, {11, 12}, {12, 13},
-		{1, 0}, {0, 14},
-		{14, 16}, {0, 15}, {15, 17},
-	},
-	{ // MPI body
-		{0, 1}, {1, 2}, {2, 3},
-		{3, 4}, {1, 5}, {5, 6},
-		{6, 7}, {1, 14}, {14, 8}, {8, 9},
-		{9, 10}, {14, 11}, {11, 12}, {12, 13},
-	},
-	{ // hand
-		{0, 1}, {1, 2}, {2, 3}, {3, 4}, // thumb
-		{0, 5}, {5, 6}, {6, 7}, {7, 8}, // pinkie
-		{0, 9}, {9, 10}, {10, 11}, {11, 12}, // middle
-		{0, 13}, {13, 14}, {14, 15}, {15, 16}, // ring
-		{0, 17}, {17, 18}, {18, 19}, {19, 20}, // small
-	}}
-
 var net *gocv.Net
 var images chan *gocv.Mat
 var poses chan [][]image.Point
@@ -139,7 +112,7 @@ func main() {
 			processFrame(&img)
 
 		default:
-			// show current frame without blocking
+			// show current frame without blocking, so do nothing here
 		}
 
 		drawPose(&img)
@@ -251,3 +224,30 @@ func drawPose(frame *gocv.Mat) {
 		gocv.Circle(frame, pts[1], 3, color.RGBA{0, 0, 200, 0}, -1)
 	}
 }
+
+// PosePairs is a table of the body part connections in the format [model_id][pair_id][from/to]
+// For details please see:
+// https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/output.md
+//
+var PosePairs = [3][20][2]int{
+	{ // COCO body
+		{1, 2}, {1, 5}, {2, 3},
+		{3, 4}, {5, 6}, {6, 7},
+		{1, 8}, {8, 9}, {9, 10},
+		{1, 11}, {11, 12}, {12, 13},
+		{1, 0}, {0, 14},
+		{14, 16}, {0, 15}, {15, 17},
+	},
+	{ // MPI body
+		{0, 1}, {1, 2}, {2, 3},
+		{3, 4}, {1, 5}, {5, 6},
+		{6, 7}, {1, 14}, {14, 8}, {8, 9},
+		{9, 10}, {14, 11}, {11, 12}, {12, 13},
+	},
+	{ // hand
+		{0, 1}, {1, 2}, {2, 3}, {3, 4}, // thumb
+		{0, 5}, {5, 6}, {6, 7}, {7, 8}, // pinkie
+		{0, 9}, {9, 10}, {10, 11}, {11, 12}, // middle
+		{0, 13}, {13, 14}, {14, 15}, {15, 16}, // ring
+		{0, 17}, {17, 18}, {18, 19}, {19, 20}, // small
+	}}
