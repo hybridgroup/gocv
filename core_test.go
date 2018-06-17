@@ -4,6 +4,11 @@ import (
 	"bytes"
 	"image"
 	"image/color"
+	"image/draw"
+	_ "image/jpeg"
+	_ "image/png"
+	"log"
+	"os"
 	"strings"
 	"testing"
 )
@@ -1126,6 +1131,85 @@ func TestMatToImage(t *testing.T) {
 	}
 }
 
+//Tests that image is the same after converting to Mat and back to Image
+func TestImageToMatRGBA(t *testing.T) {
+	file, err := os.Open("images/gocvlogo.png")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+	img0, _, err := image.Decode(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mat, err := ImageToMatRGBA(img0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	img1, err := mat.ToImage()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if !compareImages(img0, img1) {
+		t.Errorf("Image after converting to Mat and back to Image isn't the same")
+	}
+}
+
+//Tests that image is the same after converting to Mat and back to Image
+func TestImageToMatRGB(t *testing.T) {
+	file, err := os.Open("images/gocvlogo.jpg")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+	img0, _, err := image.Decode(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mat, err := ImageToMatRGB(img0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	img1, err := mat.ToImage()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if !compareImages(img0, img1) {
+		t.Errorf("Image after converting to Mat and back to Image isn't the same")
+	}
+}
+
+func TestImageGrayToMatGray(t *testing.T) {
+	file, err := os.Open("images/gocvlogo.jpg")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+	imgSrc, _, err := image.Decode(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+	img0 := image.NewGray(imgSrc.Bounds())
+	draw.Draw(img0, imgSrc.Bounds(), imgSrc, image.ZP, draw.Src)
+
+	mat, err := ImageGrayToMatGray(img0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	img1, err := mat.ToImage()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if !compareImages(img0, img1) {
+		t.Errorf("Image after converting to Mat and back to Image isn't the same")
+	}
+}
+
 func TestGetVecfAt(t *testing.T) {
 	var cases = []struct {
 		m            Mat
@@ -1162,4 +1246,39 @@ func TestGetVeciAt(t *testing.T) {
 			t.Errorf("TestGetVeciAt: expected %d, got: %d.", c.expectedSize, len)
 		}
 	}
+}
+
+func compareImages(img0, img1 image.Image) bool {
+	bounds0 := img0.Bounds()
+	bounds1 := img1.Bounds()
+	dx0 := bounds0.Dx()
+	dy0 := bounds0.Dy()
+	if dx0 != bounds1.Dx() || dy0 != bounds1.Dy() {
+		return false
+	}
+	xMin0 := bounds0.Min.X
+	xMin1 := bounds1.Min.X
+	yMin0 := bounds0.Min.Y
+	yMin1 := bounds1.Min.Y
+	for i := 0; i < dx0; i++ {
+		for j := 0; j < dy0; j++ {
+			point0 := img0.At(xMin0+i, yMin0+j)
+			point1 := img1.At(xMin1+i, yMin1+j)
+			r0, g0, b0, a0 := point0.RGBA()
+			r1, g1, b1, a1 := point1.RGBA()
+			r0 >>= 8
+			g0 >>= 8
+			b0 >>= 8
+			a0 >>= 8
+			r1 >>= 8
+			g1 >>= 8
+			b1 >>= 8
+			a1 >>= 8
+			if r0 != r1 || g0 != g1 || b0 != b1 || a0 != a1 {
+				return false
+			}
+		}
+	}
+
+	return true
 }
