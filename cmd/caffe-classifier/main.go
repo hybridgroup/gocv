@@ -14,11 +14,11 @@
 //
 // How to run:
 //
-// 		go run ./cmd/caffe-classifier/main.go 0 [modelfile] [configfile] [descriptionsfile]
+// 		go run ./cmd/caffe-classifier/main.go 0 ~/Downloads/bvlc_googlenet.caffemodel ~/Downloads/bvlc_googlenet.prototxt ~/Downloads/synset_words.txt
 //
 // You can also use this sample with the Intel OpenVINO Inference Engine, if you have it installed.
 //
-// 		go run ./cmd/caffe-classifier/main.go 0 [modelfile] [configfile] [descriptionsfile] [backend] [device]
+// 		go run ./cmd/caffe-classifier/main.go 0 ~/Downloads/bvlc_googlenet.caffemodel ~/Downloads/bvlc_googlenet.prototxt ~/Downloads/synset_words.txt openvino fp16
 //
 // +build example
 
@@ -34,23 +34,6 @@ import (
 	"gocv.io/x/gocv"
 )
 
-// readDescriptions reads the descriptions from a file
-// and returns a slice of its lines.
-func readDescriptions(path string) ([]string, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	var lines []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	return lines, scanner.Err()
-}
-
 func main() {
 	if len(os.Args) < 5 {
 		fmt.Println("How to run:\ncaffe-classifier [camera ID] [modelfile] [configfile] [descriptionsfile] ([backend] [device])")
@@ -59,8 +42,8 @@ func main() {
 
 	// parse args
 	deviceID := os.Args[1]
-	proto := os.Args[2]
-	model := os.Args[3]
+	model := os.Args[2]
+	config := os.Args[3]
 	descr := os.Args[4]
 	descriptions, err := readDescriptions(descr)
 	if err != nil {
@@ -93,9 +76,9 @@ func main() {
 	defer img.Close()
 
 	// open DNN classifier
-	net := gocv.ReadNet(model, proto)
+	net := gocv.ReadNet(model, config)
 	if net.Empty() {
-		fmt.Printf("Error reading network model from : %v %v\n", model, proto)
+		fmt.Printf("Error reading network model from : %v %v\n", model, config)
 		return
 	}
 	defer net.Close()
@@ -143,4 +126,21 @@ func main() {
 			break
 		}
 	}
+}
+
+// readDescriptions reads the descriptions from a file
+// and returns a slice of its lines.
+func readDescriptions(path string) ([]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines, scanner.Err()
 }
