@@ -381,6 +381,14 @@ Please note that you will need to run these 2 lines of code one time in your cur
 
 	go run -tags customenv .\cmd\version\main.go
 
+## Android
+
+There is some work in progress for running GoCV on Android using Gomobile. For information on how to install OpenCV/GoCV for Android, please see:
+https://gist.github.com/ogero/c19458cf64bd3e91faae85c3ac887481
+
+See original discussion here:
+https://github.com/hybridgroup/gocv/issues/235
+
 ## How to contribute
 
 Please take a look at our [CONTRIBUTING.md](./CONTRIBUTING.md) document to understand our contribution guidelines.
