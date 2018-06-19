@@ -12,7 +12,7 @@
 //
 // How to run:
 //
-// 		go run ./cmd/tf-classifier/main.go 0 [modelfile] [descriptionsfile] ([backend] [device])
+// 		go run ./cmd/tf-classifier/main.go 0 ~/Downloads/tensorflow_inception_graph.pb ~/Downloads/imagenet_comp_graph_label_strings.txt opencv cpu
 //
 // +build example
 
@@ -27,23 +27,6 @@ import (
 
 	"gocv.io/x/gocv"
 )
-
-// readDescriptions reads the descriptions from a file
-// and returns a slice of its lines.
-func readDescriptions(path string) ([]string, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	var lines []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	return lines, scanner.Err()
-}
 
 func main() {
 	if len(os.Args) < 4 {
@@ -86,7 +69,7 @@ func main() {
 	defer img.Close()
 
 	// open DNN classifier
-	net := gocv.ReadNetFromTensorflow(model)
+	net := gocv.ReadNet(model, "")
 	if net.Empty() {
 		fmt.Printf("Error reading network model : %v\n", model)
 		return
@@ -140,4 +123,21 @@ func main() {
 			break
 		}
 	}
+}
+
+// readDescriptions reads the descriptions from a file
+// and returns a slice of its lines.
+func readDescriptions(path string) ([]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines, scanner.Err()
 }

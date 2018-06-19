@@ -1,24 +1,25 @@
 // What it does:
 //
-// This example uses pre-trained deep neural network models from OpenPose to perform body pose detection.
-// it can be used for body pose detection, using either the COCO model(18 parts):
+// This example shows how to perform pose detection using models from OpenPose, an open source
+// human body, hand, and facial keypoint detector.
+//
+// For more information about OpenPose, please go to:
+// https://github.com/CMU-Perceptual-Computing-Lab/openpose
+//
+// Before using running this example, you'll need to download a pretrained Caffe model,
+// and the respective prototxt config file.
+//
 // http://posefs1.perception.cs.cmu.edu/OpenPose/models/pose/coco/pose_iter_440000.caffemodel
 // https://raw.githubusercontent.com/opencv/opencv_extra/master/testdata/dnn/openpose_pose_coco.prototxt
 //
-// or the MPI model(16 parts):
-// http://posefs1.perception.cs.cmu.edu/OpenPose/models/pose/mpi/pose_iter_160000.caffemodel
-// https://raw.githubusercontent.com/opencv/opencv_extra/master/testdata/dnn/openpose_pose_mpi_faster_4_stages.prototxt
-//
-// (to simplify this sample, the body models are restricted to a single person.)
-//
-// you can also try the hand pose model:
+// You can also try the hand pose model:
 // http://posefs1.perception.cs.cmu.edu/OpenPose/models/hand/pose_iter_102000.caffemodel
 // https://raw.githubusercontent.com/CMU-Perceptual-Computing-Lab/openpose/master/models/hand/pose_deploy.prototxt
 //
 //
 // How to run:
 //
-// 		go run ./cmd/dnn-pose-detection/main.go [videosource] [modelfile] [configfile] ([backend] [device])
+// go run ./cmd/dnn-pose-detection/main.go 0 ~/Downloads/pose_iter_440000.caffemodel ~/Downloads/openpose_pose_coco.prototxt openvino fp16
 //
 // +build example
 
