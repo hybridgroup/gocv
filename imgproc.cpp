@@ -38,6 +38,36 @@ void EqualizeHist(Mat src, Mat dst) {
     cv::equalizeHist(*src, *dst);
 }
 
+void CalcHist(struct Mats mats, IntVector chans, Mat mask, Mat hist, IntVector sz, FloatVector rng, bool acc) {
+        std::vector<cv::Mat> images;
+
+        for (int i = 0; i < mats.length; ++i) {
+            images.push_back(*mats.mats[i]);
+        }
+
+        std::vector<int> channels;
+
+        for (int i = 0, *v = chans.val; i < chans.length; ++v, ++i) {
+            channels.push_back(*v);
+        }
+
+        std::vector<int> histSize;
+
+        for (int i = 0, *v = sz.val; i < sz.length; ++v, ++i) {
+            histSize.push_back(*v);
+        }
+
+        std::vector<float> ranges;
+
+        float* f;
+        int i;
+        for (i = 0, f = rng.val; i < rng.length; ++f, ++i) {
+            ranges.push_back(*f);
+        }
+
+        cv::calcHist(images, channels, *mask, *hist, histSize, ranges, acc);
+}
+
 void ConvexHull(Contour points, Mat hull, bool clockwise, bool returnPoints) {
     std::vector<cv::Point> pts;
 
