@@ -630,6 +630,28 @@ func TestEqualizeHist(t *testing.T) {
 	}
 }
 
+func TestCalcHist(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in EqualizeHist test")
+	}
+	defer img.Close()
+
+	gray := NewMat()
+	CvtColor(img, &gray, ColorBGRToGray)
+
+	hist := NewMat()
+	defer hist.Close()
+
+	mask := NewMat()
+	defer mask.Close()
+
+	CalcHist([]Mat{gray}, []int{0}, mask, &hist, []int{256}, []float64{0.0, 256.0}, false)
+	if hist.Empty() || hist.Rows() != 256 || img.Cols() != 1 {
+		t.Error("Invalid CalcHist test")
+	}
+}
+
 func TestDrawing(t *testing.T) {
 	img := NewMatWithSize(150, 150, MatTypeCV8U)
 	if img.Empty() {
