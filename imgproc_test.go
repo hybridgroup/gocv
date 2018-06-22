@@ -637,17 +637,14 @@ func TestCalcHist(t *testing.T) {
 	}
 	defer img.Close()
 
-	gray := NewMat()
-	CvtColor(img, &gray, ColorBGRToGray)
-
 	hist := NewMat()
 	defer hist.Close()
 
 	mask := NewMat()
 	defer mask.Close()
 
-	CalcHist([]Mat{gray}, []int{0}, mask, &hist, []int{256}, []float64{0.0, 256.0}, false)
-	if hist.Empty() || hist.Rows() != 256 || img.Cols() != 1 {
+	CalcHist([]Mat{img}, []int{0}, mask, &hist, []int{256}, []float64{0.0, 256.0}, false)
+	if hist.Empty() || hist.Rows() != 256 || hist.Cols() != 1 {
 		t.Error("Invalid CalcHist test")
 	}
 }
