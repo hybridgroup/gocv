@@ -21,6 +21,12 @@ typedef struct IntVector {
     int length;
 } IntVector;
 
+// Wrapper for std::vector<float>
+typedef struct FloatVector {
+    float* val;
+    int length;
+} FloatVector;
+
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
 extern "C" {
