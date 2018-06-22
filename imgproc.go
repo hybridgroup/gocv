@@ -89,6 +89,48 @@ func EqualizeHist(src Mat, dst *Mat) {
 	C.EqualizeHist(src.p, dst.p)
 }
 
+// CalcHist Calculates a histogram of a set of images
+//
+// For futher details, please see:
+// https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga6ca1876785483836f72a77ced8ea759a
+func CalcHist(src []Mat, channels []int, mask Mat, hist *Mat, size []int, ranges []float64, acc bool) {
+	cMatArray := make([]C.Mat, len(src))
+	for i, r := range src {
+		cMatArray[i] = r.p
+	}
+
+	cMats := C.struct_Mats{
+		mats:   (*C.Mat)(&cMatArray[0]),
+		length: C.int(len(src)),
+	}
+
+	chansInts := []C.int{}
+	for _, v := range channels {
+		chansInts = append(chansInts, C.int(v))
+	}
+	chansVector := C.struct_IntVector{}
+	chansVector.val = (*C.int)(&chansInts[0])
+	chansVector.length = (C.int)(len(chansInts))
+
+	sizeInts := []C.int{}
+	for _, v := range size {
+		sizeInts = append(sizeInts, C.int(v))
+	}
+	sizeVector := C.struct_IntVector{}
+	sizeVector.val = (*C.int)(&sizeInts[0])
+	sizeVector.length = (C.int)(len(sizeInts))
+
+	rangeFloats := []C.float{}
+	for _, v := range ranges {
+		rangeFloats = append(rangeFloats, C.float(v))
+	}
+	rangeVector := C.struct_FloatVector{}
+	rangeVector.val = (*C.float)(&rangeFloats[0])
+	rangeVector.length = (C.int)(len(rangeFloats))
+
+	C.CalcHist(cMats, chansVector, mask.p, hist.p, sizeVector, rangeVector, C.bool(acc))
+}
+
 // BilateralFilter applies a bilateral filter to an image.
 //
 // Bilateral filtering is described here:
