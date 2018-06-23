@@ -923,7 +923,7 @@ func Vconcat(src1, src2 Mat, dst *Mat) {
 
 // RotateFlag for image rotation
 //
-
+//
 // For further details please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6f45d55c0b1cc9d97f5353a7c8a7aac2
 type RotateFlag int

@@ -633,7 +633,7 @@ func TestEqualizeHist(t *testing.T) {
 func TestCalcHist(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
-		t.Error("Invalid read of Mat in EqualizeHist test")
+		t.Error("Invalid read of Mat in CalcHist test")
 	}
 	defer img.Close()
 

@@ -1,6 +1,7 @@
 package gocv
 
 import (
+	"image/color"
 	"testing"
 )
 
@@ -262,5 +263,24 @@ func TestBFMatcher(t *testing.T) {
 		if len(dMatches[i]) != k {
 			t.Errorf("Length does not match k cluster amount in BFMatcher")
 		}
+	}
+}
+
+func TestDrawKeyPoints(t *testing.T) {
+	keypointsFile := "images/simple.jpg"
+	img := IMRead(keypointsFile, IMReadColor)
+	if img.Empty() {
+		t.Error("keypoints file is empty in DrawKeyPoints test")
+	}
+	defer img.Close()
+
+	ffd := NewFastFeatureDetector()
+	kp := ffd.Detect(img)
+
+	simpleKP := NewMat()
+	DrawKeyPoints(img, kp, &simpleKP, color.RGBA{255, 0, 0, 0}, DrawDefault)
+
+	if simpleKP.Rows() != img.Rows() || simpleKP.Cols() != img.Cols() {
+		t.Error("Invalid DrawKeyPoints test")
 	}
 }
