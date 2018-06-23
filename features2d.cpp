@@ -349,3 +349,19 @@ struct MultiDMatches BFMatcher_KnnMatchWithParams(BFMatcher b, Mat query, Mat tr
     MultiDMatches ret = {dms, (int) matches.size()};
     return ret;
 }
+
+void DrawKeyPoints(Mat src, struct KeyPoints kp, Mat dst, Scalar s, int flags) {
+        std::vector<cv::KeyPoint> keypts;
+        cv::KeyPoint keypt;
+
+        for (int i = 0; i < kp.length; ++i) {
+                keypt = cv::KeyPoint(kp.keypoints[i].x, kp.keypoints[i].y,
+                                kp.keypoints[i].size, kp.keypoints[i].angle, kp.keypoints[i].response,
+                                kp.keypoints[i].octave, kp.keypoints[i].classID);
+                keypts.push_back(keypt);
+        }
+
+        cv::Scalar color = cv::Scalar(s.val1, s.val2, s.val3, s.val4);
+
+        cv::drawKeypoints(*src, keypts, *dst, color, flags);
+}
