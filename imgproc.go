@@ -81,6 +81,16 @@ func CvtColor(src Mat, dst *Mat, code ColorConversionCode) {
 	C.CvtColor(src.p, dst.p, C.int(code))
 }
 
+// EqualizeHist 3qualizes the histogram of a grayscale image.
+// The input image must be a grayscale Mat image
+// 
+// For further details, please see:
+// https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga7e54091f0c937d49bf84152a16f76d6e
+//
+func EqualizeHist(src Mat, dst *Mat) {
+	C.EqualizeHist(src.p, dst.p)
+}
+
 // BilateralFilter applies a bilateral filter to an image.
 //
 // Bilateral filtering is described here:
