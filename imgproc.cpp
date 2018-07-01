@@ -34,6 +34,10 @@ void CvtColor(Mat src, Mat dst, int code) {
     cv::cvtColor(*src, *dst, code);
 }
 
+void EqualizeHist(Mat src, Mat dst) {
+    cv::equalizeHist(*src, *dst);
+}
+
 void ConvexHull(Contour points, Mat hull, bool clockwise, bool returnPoints) {
     std::vector<cv::Point> pts;
 

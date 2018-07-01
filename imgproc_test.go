@@ -87,6 +87,22 @@ func TestCvtColor(t *testing.T) {
 	}
 }
 
+func TestEqualizeHist(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in TestEqualizeHist test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	EqualizeHist(img, &dest)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid convert in TestEqualizeHist test")
+	}
+}
+
 func TestBilateralFilter(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
