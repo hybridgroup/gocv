@@ -6,6 +6,7 @@ package gocv
 */
 import "C"
 import (
+	"image/color"
 	"reflect"
 	"unsafe"
 )
@@ -464,4 +465,53 @@ func getDMatches(ret C.DMatches) []DMatch {
 			float64(r.distance)}
 	}
 	return keys
+}
+
+// DrawMatchesFlag are the flags setting drawing feature
+//
+// For further details please see:
+// https://docs.opencv.org/master/de/d30/structcv_1_1DrawMatchesFlags.html
+type DrawMatchesFlag int
+
+const (
+	// DrawDefault creates new image and for each keypoint only the center point will be drawn
+	DrawDefault DrawMatchesFlag = 0
+	// DrawOverOutImg draws matches on existing content of image
+	DrawOverOutImg = 1
+	// NotDrawSinglePoints will not draw single points
+	NotDrawSinglePoints = 2
+	// DrawRichKeyPoints draws the circle around each keypoint with keypoint size and orientation
+	DrawRichKeyPoints = 3
+)
+
+// DrawKeypPints draws keypoints
+//
+// For further details please see:
+// https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html#gab958f8900dd10f14316521c149a60433
+func DrawKeyPoints(src Mat, keyPoints []KeyPoint, dst *Mat, color color.RGBA, flag DrawMatchesFlag) {
+	cKeyPointArray := make([]C.struct_KeyPoint, len(keyPoints))
+
+	for i, kp := range keyPoints {
+		cKeyPointArray[i].x = C.double(kp.X)
+		cKeyPointArray[i].y = C.double(kp.Y)
+		cKeyPointArray[i].size = C.double(kp.Size)
+		cKeyPointArray[i].angle = C.double(kp.Angle)
+		cKeyPointArray[i].response = C.double(kp.Response)
+		cKeyPointArray[i].octave = C.int(kp.Octave)
+		cKeyPointArray[i].classID = C.int(kp.ClassID)
+	}
+
+	cKeyPoints := C.struct_KeyPoints{
+		keypoints: (*C.struct_KeyPoint)(&cKeyPointArray[0]),
+		length:    (C.int)(len(keyPoints)),
+	}
+
+	scalar := C.struct_Scalar{
+		val1: C.double(color.R),
+		val2: C.double(color.G),
+		val3: C.double(color.B),
+		val4: C.double(color.A),
+	}
+
+	C.DrawKeyPoints(src.p, cKeyPoints, dst.p, scalar, C.int(flag))
 }

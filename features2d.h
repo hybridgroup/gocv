@@ -77,6 +77,8 @@ BFMatcher BFMatcher_CreateWithParams(int normType, bool crossCheck);
 void BFMatcher_Close(BFMatcher b);
 struct MultiDMatches BFMatcher_KnnMatch(BFMatcher b, Mat query, Mat train, int k);
 
+void DrawKeyPoints(Mat src, struct KeyPoints kp, Mat dst, const Scalar s, int flags);
+
 #ifdef __cplusplus
 }
 #endif
