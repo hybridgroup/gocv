@@ -19,6 +19,6 @@ if net.Empty() {
     return
 }
 
-net.SetPreferableBackend(gocv.NetBackendType("openvino"))
-net.SetPreferableTarget(gocv.NetTargetType("fp16"))
+net.SetPreferableBackend(gocv.NetBackendType(gocv.NetBackendOpenVINO))
+net.SetPreferableTarget(gocv.NetTargetType(gocv.NetBackendFP16))
 ```

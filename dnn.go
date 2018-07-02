@@ -63,14 +63,14 @@ const (
 	// NetTargetCPU is the default CPU device target.
 	NetTargetCPU NetTargetType = 0
 
-	// NetBackendFP32 is the 32-bit OpenCL backend.
-	NetBackendFP32 NetTargetType = 1
+	// NetTargetFP32 is the 32-bit OpenCL target.
+	NetTargetFP32 NetTargetType = 1
 
-	// NetBackendFP16 is the 16-bit OpenCL backend.
-	NetBackendFP16 NetTargetType = 2
+	// NetTargetFP16 is the 16-bit OpenCL target.
+	NetTargetFP16 NetTargetType = 2
 
-	// NetBackendVPU is the Movidius VPU backend.
-	NetBackendVPU NetTargetType = 3
+	// NetTargetVPU is the Movidius VPU target.
+	NetTargetVPU NetTargetType = 3
 )
 
 // ParseNetTarget returns a valid NetTargetType given a string. Valid values are:
@@ -83,11 +83,11 @@ func ParseNetTarget(target string) NetTargetType {
 	case "cpu":
 		return NetTargetCPU
 	case "fp32":
-		return NetBackendFP32
+		return NetTargetFP32
 	case "fp16":
-		return NetBackendFP16
+		return NetTargetFP16
 	case "vpu":
-		return NetBackendVPU
+		return NetTargetVPU
 	default:
 		return NetTargetCPU
 	}
