@@ -368,6 +368,7 @@ func (b *SimpleBlobDetector) Detect(src Mat) []KeyPoint {
 	return getKeyPoints(ret)
 }
 
+// getKeyPoints returns a slice of KeyPoint given a pointer to a C.KeyPoints
 func getKeyPoints(ret C.KeyPoints) []KeyPoint {
 	cArray := ret.keypoints
 	length := int(ret.length)

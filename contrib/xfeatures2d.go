@@ -42,7 +42,6 @@ func (d *SIFT) Close() error {
 //
 func (d *SIFT) Detect(src gocv.Mat) []gocv.KeyPoint {
 	ret := C.SIFT_Detect((C.SIFT)(d.p), C.Mat(src.Ptr()))
-	//defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
 }
@@ -56,7 +55,6 @@ func (d *SIFT) DetectAndCompute(src gocv.Mat, mask gocv.Mat) ([]gocv.KeyPoint, g
 	desc := gocv.NewMat()
 	ret := C.SIFT_DetectAndCompute((C.SIFT)(d.p), C.Mat(src.Ptr()), C.Mat(mask.Ptr()),
 		C.Mat(desc.Ptr()))
-	//defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret), desc
 }
@@ -90,7 +88,6 @@ func (d *SURF) Close() error {
 //
 func (d *SURF) Detect(src gocv.Mat) []gocv.KeyPoint {
 	ret := C.SURF_Detect((C.SURF)(d.p), C.Mat(src.Ptr()))
-	//defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
 }
@@ -104,13 +101,13 @@ func (d *SURF) DetectAndCompute(src gocv.Mat, mask gocv.Mat) ([]gocv.KeyPoint, g
 	desc := gocv.NewMat()
 	ret := C.SURF_DetectAndCompute((C.SURF)(d.p), C.Mat(src.Ptr()), C.Mat(mask.Ptr()),
 		C.Mat(desc.Ptr()))
-	//defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret), desc
 }
 
 func getKeyPoints(ret C.KeyPoints) []gocv.KeyPoint {
 	cArray := ret.keypoints
+	defer C.free(unsafe.Pointer(cArray))
 	length := int(ret.length)
 	hdr := reflect.SliceHeader{
 		Data: uintptr(unsafe.Pointer(cArray)),
