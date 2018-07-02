@@ -2,11 +2,15 @@
 
 The [Intel OpenVINO toolkit](https://software.intel.com/en-us/openvino-toolkit) is a set of tools and libraries for computer vision applications, that uses computer vision and imaging algorithms developed at Intel. It also includes a complete build of OpenCV.
 
-GoCV support for the Intel OpenVINO Photography Vision Library (PVL) which can be found in the "gocv.io/x/gocv/openvino/pvl" package. Check out the README.md in the `pvl` directory for more information.
+GoCV supports using the Intel OpenVINO Inference Engine as a backend for the OpenCV deep neural network (DNN) module. For details, please see:
+https://github.com/hybridgroup/gocv/blob/master/openvino/ie/README.md
+
+GoCV also supports the Intel OpenVINO Photography Vision Library (PVL) which can be found in the "gocv.io/x/gocv/openvino/pvl" package. For details, please see:
+https://github.com/hybridgroup/gocv/blob/master/openvino/pvl/README.md
 
 ## Installing Intel OpenVINO toolkit
 
-The most recent version of the Intel OpenVINO toolkit is currently R1. You can obtain it from here:
+The most recent version of the Intel OpenVINO toolkit is currently R2. You can obtain it from here:
 
 https://software.intel.com/en-us/openvino-toolkit
 
@@ -33,9 +37,9 @@ Now you can run the version command example to make sure you are compiling/linki
 ```
 $ go run -tags openvino ./cmd/version/main.go
 gocv version: 0.13.0
-opencv lib version: 3.4.1-cvsdk_2018_1.0.5
+opencv lib version: 3.4.2-openvino_2018_R2.0.0
 ```
 
-Note the use of `-tags openvino` is needed when using `go run` or `go build` with OpenVINO, so the CGo compiler can pickup the correct settings for the environment, and ignore the usual defaults.
+Note the use of `-tags openvino` is needed when using `go run`, `go build`, and `go test` with OpenVINO, so the CGo compiler can pickup the correct settings for the environment, and ignore the usual defaults.
 
 Examples that use the Intel OpenVINO toolkit can be found in the `cmd/openvino` directory of this repository.
