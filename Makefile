@@ -2,7 +2,7 @@
 .PHONY: test deps download build clean astyle cmds
 
 # OpenCV version to use.
-OPENCV_VERSION?=3.4.1
+OPENCV_VERSION?=3.4.2
 
 # Temporary directory to put files into.
 TMP_DIR?=/tmp/

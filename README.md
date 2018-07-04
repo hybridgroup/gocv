@@ -11,7 +11,7 @@
 
 The GoCV package provides Go language bindings for the [OpenCV 3](http://opencv.org/) computer vision library.
 
-The GoCV package supports the latest releases of Go and OpenCV (v3.4.1) on Linux, macOS, and Windows. We intend to make the Go language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
+The GoCV package supports the latest releases of Go and OpenCV (v3.4.2) on Linux, macOS, and Windows. We intend to make the Go language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
 
 GoCV also supports [Intel OpenVINO](https://software.intel.com/en-us/openvino-toolkit). Check out the [OpenVINO README](./openvino/README.md) for more info on how to use GoCV with the Intel OpenVINO toolkit.
 
@@ -30,7 +30,7 @@ import (
 
 func main() {
 	webcam, _ := gocv.VideoCaptureDevice(0)
-	window := gocv.NewWindow("Hello")	
+	window := gocv.NewWindow("Hello")
 	img := gocv.NewMat()
 
 	for {
@@ -126,17 +126,17 @@ To install GoCV, run the following command:
 go get -u -d gocv.io/x/gocv
 ```
 
-To run code that uses the GoCV package, you must also install OpenCV 3.4.1 on your system. Here are instructions for Ubuntu, OS X, and Windows.
+To run code that uses the GoCV package, you must also install OpenCV 3.4.2 on your system. Here are instructions for Ubuntu, OS X, and Windows.
 
 ## Ubuntu/Linux
 
 ### Installation
 
-You can use `make` to install OpenCV 3.4.1 with the handy `Makefile` included with this repo. If you already have installed OpenCV, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options such as Python or Java wrappers if you have already installed OpenCV some other way.
+You can use `make` to install OpenCV 3.4.2 with the handy `Makefile` included with this repo. If you already have installed OpenCV, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options such as Python or Java wrappers if you have already installed OpenCV some other way.
 
 #### Quick Install
 
-The following commands should do everything to download and install OpenCV 3.4.1 on Linux:
+The following commands should do everything to download and install OpenCV 3.4.2 on Linux:
 
 	cd $GOPATH/src/gocv.io/x/gocv
 	make install
@@ -144,7 +144,7 @@ The following commands should do everything to download and install OpenCV 3.4.1
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
 	gocv version: 0.13.0
-	opencv lib version: 3.4.1
+	opencv lib version: 3.4.2
 
 That's it, now you are ready to use GoCV.
 
@@ -164,7 +164,7 @@ Next, you need to update the system, and install any required packages:
 
 #### Download source
 
-Now, download the OpenCV 3.4.1 and OpenCV Contrib source code:
+Now, download the OpenCV 3.4.2 and OpenCV Contrib source code:
 
 	make download
 
@@ -195,7 +195,7 @@ Now you should be able to build or run any of the examples:
 The version program should output the following:
 
 	gocv version: 0.13.0
-	opencv lib version: 3.4.1
+	opencv lib version: 3.4.2
 
 #### Cleanup extra files
 
@@ -230,7 +230,7 @@ There is a Docker image with Alpine 3.7 that has been created by project contrib
 
 ### Installation
 
-You can install OpenCV 3.4.1 using Homebrew:
+You can install OpenCV 3.4.2 using Homebrew:
 
 	brew install opencv
 
@@ -253,7 +253,7 @@ Now you should be able to build or run any of the examples:
 The version program should output the following:
 
 	gocv version: 0.13.0
-	opencv lib version: 3.4.1
+	opencv lib version: 3.4.2
 
 ### Cache builds
 
@@ -268,8 +268,8 @@ By default, pkg-config is used to determine the correct flags for compiling and 
 For example:
 
 	export CGO_CXXFLAGS="--std=c++11"
-	export CGO_CPPFLAGS="-I/usr/local/Cellar/opencv/3.4.1_5/include"
-	export CGO_LDFLAGS="-L/usr/local/Cellar/opencv/3.4.1_5/lib -lopencv_stitching -lopencv_superres -lopencv_videostab -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dnn_objdetect -lopencv_dpm -lopencv_face -lopencv_photo -lopencv_fuzzy -lopencv_hfs -lopencv_img_hash -lopencv_line_descriptor -lopencv_optflow -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_dnn -lopencv_plot -lopencv_xfeatures2d -lopencv_shape -lopencv_video -lopencv_ml -lopencv_ximgproc -lopencv_calib3d -lopencv_features2d -lopencv_highgui -lopencv_videoio -lopencv_flann -lopencv_xobjdetect -lopencv_imgcodecs -lopencv_objdetect -lopencv_xphoto -lopencv_imgproc -lopencv_core"
+	export CGO_CPPFLAGS="-I/usr/local/Cellar/opencv/3.4.2/include"
+	export CGO_LDFLAGS="-L/usr/local/Cellar/opencv/3.4.2/lib -lopencv_stitching -lopencv_superres -lopencv_videostab -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dnn_objdetect -lopencv_dpm -lopencv_face -lopencv_photo -lopencv_fuzzy -lopencv_hfs -lopencv_img_hash -lopencv_line_descriptor -lopencv_optflow -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_dnn -lopencv_plot -lopencv_xfeatures2d -lopencv_shape -lopencv_video -lopencv_ml -lopencv_ximgproc -lopencv_calib3d -lopencv_features2d -lopencv_highgui -lopencv_videoio -lopencv_flann -lopencv_xobjdetect -lopencv_imgcodecs -lopencv_objdetect -lopencv_xphoto -lopencv_imgproc -lopencv_core"
 
 Please note that you will need to run these 3 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables. Once you have done so, you can execute code that uses GoCV with your custom environment like this:
 
@@ -281,7 +281,7 @@ Please note that you will need to run these 3 lines of code one time in your cur
 
 The following assumes that you are running a 64-bit version of Windows 10.
 
-In order to build and install OpenCV 3.4.1 on Windows, you must first download and install MinGW-W64 and CMake, as follows.
+In order to build and install OpenCV 3.4.2 on Windows, you must first download and install MinGW-W64 and CMake, as follows.
 
 #### MinGW-W64
 
@@ -297,15 +297,15 @@ Add the `C:\Program Files\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev2\mingw64\bi
 
 Download and install CMake [https://cmake.org/download/](https://cmake.org/download/) to the default location. CMake installer will add CMake to your system path.
 
-#### Download OpenCV 3.4.1 and OpenCV Contrib Modules
+#### Download OpenCV 3.4.2 and OpenCV Contrib Modules
 
-Download the source code for the latest OpenCV release from [https://github.com/opencv/opencv/archive/3.4.1.zip](https://github.com/opencv/opencv/archive/3.4.1.zip) and extract it to the directory `C:\opencv\opencv-3.4.1`
+Download the source code for the latest OpenCV release from [https://github.com/opencv/opencv/archive/3.4.2.zip](https://github.com/opencv/opencv/archive/3.4.2.zip) and extract it to the directory `C:\opencv\opencv-3.4.2`
 
-Download the source code for the latest OpenCV Contrib release from [https://github.com/opencv/opencv_contrib/archive/3.4.1.zip](https://github.com/opencv/opencv_contrib/archive/3.4.1.zip) and extract it to the directory `C:\opencv\opencv_contrib-3.4.1`
+Download the source code for the latest OpenCV Contrib release from [https://github.com/opencv/opencv_contrib/archive/3.4.2.zip](https://github.com/opencv/opencv_contrib/archive/3.4.2.zip) and extract it to the directory `C:\opencv\opencv_contrib-3.4.2`
 
 Create the directory `C:\opencv\build` as the build directory.
 
-Now launch the `cmake-gui` program, and set the "Where is the source code" to `C:\opencv\opencv-3.4.1`, and the "Where to build the binaries" to `C:\opencv\build`.
+Now launch the `cmake-gui` program, and set the "Where is the source code" to `C:\opencv\opencv-3.4.2`, and the "Where to build the binaries" to `C:\opencv\build`.
 
 Click on "Configure" and select "MinGW MakeFile" from the window, then click on the  "Next" button.
 
@@ -317,7 +317,7 @@ Now, scroll down the list and change the following settings as follows:
 - `BUILD_PERF_TESTS` should be unchecked (aka disabled).
 - `ENABLE_PRECOMPILED_HEADERS` should be unchecked.
 - `ENABLE_CXX11` should be checked.
-- `OPENCV_EXTRA_MODULES_PATH` should be set to `C:\opencv\opencv_contrib-3.4.1\modules`
+- `OPENCV_EXTRA_MODULES_PATH` should be set to `C:\opencv\opencv_contrib-3.4.2\modules`
 - `WITH_IPP` should be unchecked (aka disabled).
 - `WITH_MSMF` should be unchecked (aka disabled).
 
@@ -341,7 +341,7 @@ The build should start. It will probably take a very long time. When it is finis
 
 Last, add `C:\opencv\build\install\x64\mingw\bin` to your System Path.
 
-You should now have OpenCV 3.4 installed on your Windows 10 machine.
+You should now have OpenCV 3.4.2 installed on your Windows 10 machine.
 
 ### Verifying the installation
 
@@ -358,7 +358,7 @@ Now you should be able to build or run any of the command examples:
 The version program should output the following:
 
 	gocv version: 0.13.0
-	opencv lib version: 3.4.1
+	opencv lib version: 3.4.2
 
 ### Cache builds
 
@@ -375,7 +375,7 @@ Due to the way OpenCV produces DLLs, including the version in the name, using th
 For example:
 
 	set CGO_CPPFLAGS=-IC:\opencv\build\install\include
-	set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core341 -lopencv_face341 -lopencv_videoio341 -lopencv_imgproc341 -lopencv_highgui341 -lopencv_imgcodecs341 -lopencv_objdetect341 -lopencv_features2d341 -lopencv_video341 -lopencv_dnn341 -lopencv_xfeatures2d341 -lopencv_plot341 -lopencv_tracking341 -lopencv_img_hash341
+	set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core342 -lopencv_face342 -lopencv_videoio342 -lopencv_imgproc342 -lopencv_highgui342 -lopencv_imgcodecs342 -lopencv_objdetect342 -lopencv_features2d342 -lopencv_video342 -lopencv_dnn342 -lopencv_xfeatures2d342 -lopencv_plot342 -lopencv_tracking342 -lopencv_img_hash342
 
 Please note that you will need to run these 2 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables. Once you have done so, you can execute code that uses GoCV with your custom environment like this:
 
