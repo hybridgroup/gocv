@@ -16,7 +16,7 @@ Please open a Github issue with your problem, and we will be happy to assist.
 
 We probably have not implemented it yet. Please take a look at our [ROADMAP.md](ROADMAP.md). Your pull request adding the functionality to GoCV would be greatly appreciated.
 
-### You found some Python code on the Internet that performs some computer vision task, and you want to do it using GoCV 
+### You found some Python code on the Internet that performs some computer vision task, and you want to do it using GoCV
 
 Please open a Github issue with your needs, and we can see what we can do.
 
@@ -73,3 +73,59 @@ If you are using Intel OpenVINO, you can run those tests using:
 ```
 go test ./openvino/...
 ```
+
+## Contributing workflow
+
+This section provides a short description of one of many possible workflows you can follow to contribute to `CoCV`. This workflow is based on multiple [git remotes](https://git-scm.com/docs/git-remote) and it's by no means the only workflow you can use to contribute to `GoCV`. However, it's an option that might help you get started quickly without too much hassle as this workflow lets you work off the `gocv` repo directory path!
+
+Assuming you have already forked the `gocv` repo, you need to add a new `git remote` which will point to your GitHub fork. Notice below that you **must** `cd` to `gocv` repo directory before you add the new `git remote`:
+
+```shell
+cd $GOPATH/src/gocv.io/x/gocv
+git remote add gocv-fork https://github.com/YOUR_GH_HANDLE/gocv.git
+```
+
+Note, that in the command above we called our new `git remote`, **gocv-fork** for convenience so we can easily recognize it. You are free to choose any remote name of your liking.
+
+You should now see your new `git remote` when running the command below:
+
+```shell
+git remote -v
+
+gocv-fork	https://github.com/YOUR_GH_HANDLE/gocv.git (fetch)
+gocv-fork	https://github.com/YOUR_GH_HANDLE/gocv.git (push)
+origin	        https://github.com/hybridgroup/gocv (fetch)
+origin	        https://github.com/hybridgroup/gocv (push)
+```
+
+Before you create a new branch from `dev` you should fetch the latests commits from the `dev` branch:
+
+```shell
+git fetch origin dev
+```
+
+You want the `dev` branch in your `gocv` fork to be in sync with the `dev` branch of `gocv`, so push the earlier fetched commits to your GitHub fork as shown below. Note, the `-f` force switch might not be needed:
+
+```shell
+git push gocv-fork dev -f
+```
+
+Create a new feature branch from `dev`:
+
+```shell
+git checkout -b new-feature
+```
+
+After you've made your changes you can run the tests using the `make` command listed below. Note, you're still working off the `gocv` project root directory, hence running the command below does not require complicated `$GOPATH` rewrites or whatnot:
+
+```shell
+make test
+```
+
+Once the tests have passed, commit your new code to the `new-feature` branch and push it to your fork running the command below:
+
+```shell
+git push gocv-fork new-feature
+```
+
+You can now open a new PR from `new-feature` branch in your forked repo against the `dev` branch of `gocv`.
