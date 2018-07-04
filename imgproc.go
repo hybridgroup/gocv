@@ -13,7 +13,11 @@ import (
 )
 
 func getPoints(pts *C.Point, l int) []C.Point {
-	h := &reflect.SliceHeader{uintptr(unsafe.Pointer(pts)), l, l}
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(pts)),
+		Len:  l,
+		Cap:  l,
+	}
 	return *(*[]C.Point)(unsafe.Pointer(h))
 }
 

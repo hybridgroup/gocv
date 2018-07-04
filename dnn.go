@@ -280,7 +280,11 @@ func (net *Net) GetUnconnectedOutLayers() (ids []int) {
 	cids := C.IntVector{}
 	C.Net_GetUnconnectedOutLayers((C.Net)(net.p), &cids)
 
-	h := &reflect.SliceHeader{uintptr(unsafe.Pointer(cids.val)), int(cids.length), int(cids.length)}
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cids.val)),
+		Len:  int(cids.length),
+		Cap:  int(cids.length),
+	}
 	pcids := *(*[]int)(unsafe.Pointer(h))
 
 	for i := 0; i < int(cids.length); i++ {

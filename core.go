@@ -223,7 +223,11 @@ func (m *Mat) Size() (dims []int) {
 	cdims := C.IntVector{}
 	C.Mat_Size(m.p, &cdims)
 
-	h := &reflect.SliceHeader{uintptr(unsafe.Pointer(cdims.val)), int(cdims.length), int(cdims.length)}
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cdims.val)),
+		Len:  int(cdims.length),
+		Cap:  int(cdims.length),
+	}
 	pdims := *(*[]C.int)(unsafe.Pointer(h))
 
 	for i := 0; i < int(cdims.length); i++ {
