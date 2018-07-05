@@ -1,12 +1,12 @@
 if not exist "C:\opencv" mkdir "C:\opencv"
 if not exist "C:\opencv\build" mkdir "C:\opencv\build"
 
-bitsadmin /transfer opencv https://github.com/opencv/opencv/archive/3.4.2.zip c:\opencv\opencv-3.4.2.zip
-7z x c:\opencv\opencv-3.4.2.zip -oc:\opencv -y
+powershell -command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $clnt = new-object System.Net.WebClient; $clnt.DownloadFile('https://github.com/opencv/opencv/archive/3.4.2.zip', 'c:\opencv\opencv-3.4.2.zip')"
+powershell -command "Expand-Archive -Path c:\opencv\opencv-3.4.2.zip -DestinationPath c:\opencv"
 del c:\opencv\opencv-3.4.2.zip /q
 
-bitsadmin /transfer opencv-contrib https://github.com/opencv/opencv_contrib/archive/3.4.2.zip c:\opencv\opencv_contrib-3.4.2.zip
-7z x c:\opencv\opencv_contrib-3.4.2.zip -oc:\opencv -y
+powershell -command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $clnt = new-object System.Net.WebClient; $clnt.DownloadFile('https://github.com/opencv/opencv_contrib/archive/3.4.2.zip', 'c:\opencv\opencv_contrib-3.4.2.zip')"
+powershell -command "Expand-Archive -Path c:\opencv\opencv_contrib-3.4.2.zip -DestinationPath c:\opencv"
 del c:\opencv\opencv_contrib-3.4.2.zip /q
 
 cd C:\opencv\build
