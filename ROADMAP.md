@@ -101,7 +101,6 @@ Your pull requests will be greatly appreciated!
         - [ ] [calcHist](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga4b2b5fd75503ff9e6844cc4dcdaed35d)
         - [ ] [compareHist](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#gaf4190090efa5c47cb367cf97a9a519bd)
         - [ ] [EMD](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga902b8e60cc7075c8947345489221e0e0)
-        - [X] [equalizeHist](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga7e54091f0c937d49bf84152a16f76d6e)
         - [ ] [wrapperEMD](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga31fdda0864e64ca6b9de252a2611758b)
 
     - [ ] **Structural Analysis and Shape Descriptors - WORK STARTED** The following functions still need implementation:
@@ -159,18 +158,23 @@ Your pull requests will be greatly appreciated!
         - [ ] [projectPoints](https://docs.opencv.org/3.4.1/db/d58/group__calib3d__fisheye.html#gab1ad1dc30c42ee1a50ce570019baf2c4)
         - [ ] [stereoCalibrate](https://docs.opencv.org/3.4.1/db/d58/group__calib3d__fisheye.html#gadbb3a6ca6429528ef302c784df47949b)
         - [ ] [stereoRectify](https://docs.opencv.org/3.4.1/db/d58/group__calib3d__fisheye.html#gac1af58774006689056b0f2ef1db55ecc)
-        - [X] [undistortImage](https://docs.opencv.org/3.4.1/db/d58/group__calib3d__fisheye.html#ga167df4b00a6fd55287ba829fbf9913b9)
         - [ ] [undistortPoints](https://docs.opencv.org/3.4.1/db/d58/group__calib3d__fisheye.html#gab738cdf90ceee97b2b52b0d0e7511541)
 
 - [ ] **features2d. 2D Features Framework - WORK STARTED**
     - [X] **Feature Detection and Description**
     - [ ] **Descriptor Matchers - WORK STARTED** The following functions still need implementation:
         - [ ] [FlannBasedMatcher](https://docs.opencv.org/master/dc/de2/classcv_1_1FlannBasedMatcher.html)
-    - [ ] Drawing Function of Keypoints and Matches (https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html)
-    - [ ] Object Categorization (https://docs.opencv.org/master/de/d24/group__features2d__category.html)
+    - [ ] **Drawing Function of Keypoints and Matches - WORK STARTED** The following function still needs implementation:
+        - [ ] [drawMatches](https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html#ga7421b3941617d7267e3f2311582f49e1)
+    - [ ] Object Categorization
+        - [ ] [BOWImgDescriptorExtractor](https://docs.opencv.org/master/d2/d6b/classcv_1_1BOWImgDescriptorExtractor.html)
+        - [ ] [BOWKMeansTrainer](https://docs.opencv.org/master/d4/d72/classcv_1_1BOWKMeansTrainer.html)
 
 - [X] **objdetect. Object Detection**
-- [ ] **dnn. Deep Neural Network module - WORK STARTED**
+- [ ] **dnn. Deep Neural Network module - WORK STARTED** The following functions still need implementation:
+        - [ ] [imagesFromBlob](https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga4051b5fa2ed5f54b76c059a8625df9f5)
+        - [ ] [NMSBoxes](https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga9d118d70a1659af729d01b10233213ee)
+
 - [ ] ml. Machine Learning
 - [ ] flann. Clustering and Search in Multi-Dimensional Spaces
 - [ ] photo. Computational Photography

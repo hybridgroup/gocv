@@ -36,7 +36,7 @@ Now you can run the version command example to make sure you are compiling/linki
 
 ```
 $ go run -tags openvino ./cmd/version/main.go
-gocv version: 0.13.0
+gocv version: 0.14.0
 opencv lib version: 3.4.2-openvino_2018_R2.0.0
 ```
 

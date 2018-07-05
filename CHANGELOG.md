@@ -1,3 +1,77 @@
+0.14.0
+---
+* **build**
+    * Add -lopencv_calib3d341 to the linker
+    * auto-confirm on package installs from make deps command
+    * display PowerShell download status for OpenCV files
+    * obtain caffe test config file from new location in Travis build
+    * remove VS only dependencies from OpenCV build, copy caffe test config file from new location
+    * return back to GoCV directory after OpenCV install
+    * update for release of OpenCV v3.4.2
+    * use PowerShell for scripted OpenCV install for Windows
+    * win32 version number has not changed yet
+* **calib3d**
+    * Add Calibrate for Fisheye model(WIP)
+* **core**
+    * add GetTickCount function
+    * add GetTickFrequency function
+    * add Size() and FromPtr() methods to Mat
+    * add Total method to Mat
+    * Added RotateFlag type
+    * correct CopyTo to use pointer to Mat as destination
+    * functions converting Image to Mat
+    * rename implementation to avoid conflicts with Windows
+    * stricter use of reflect.SliceHeader
+* **dnn**
+    * add backend/device options to caffe and tensorflow DNN examples
+    * add Close to Layer
+    * add first version of dnn-pose-detection example
+    * add further comments to object detection/tracking DNN example
+    * add GetPerfProfile function to Net
+    * add initial Layer implementation alongside enhancements to Net
+    * add InputNameToIndex to Layer
+    * add new functions allowing DNN backends such as OpenVINO
+    * additional refactoring and comments in dnn-pose-detection example
+    * cleanup DNN face detection example
+    * correct const for device targets to be called Target
+    * correct test that expected init slice with blank entries
+    * do not init slice with blank entries, since added via append
+    * further cleanup of DNN face detection example
+    * make dnn-pose-detection example use Go channels for async operation
+    * refactoring and additional comments for object detection/tracking DNN example
+    * refine comment in header for style transfer example
+    * working style transfer example
+    * added ForwardLayers() to accomodate models with multiple output layers
+* **docs**
+    * add scripted Windows install info to README
+    * Added a sample gocv workflow contributing guideline
+    * mention docker image in README.
+    * mention work in progress on Android
+    * simplify and add missing step in Linux installation in README
+    * update contributing instructions to match latest version
+    * update ROADMAP from recent calib3d module contribution
+    * update ROADMAP from recent imgproc histogram contribution
+* **examples**
+    * cleanup header for caffe dnn classifier
+    * show how to use either Caffe or Tensorflow for DNN object detection
+    * further improve dnn samples
+    * rearrange and add comments to dnn style transfer example
+    * remove old copy of pose detector
+    * remove unused example
+* **features2d**
+    * free memory allocation bug for C.KeyPoints as pointed out by @tzununbekov
+    * Adding opencv::drawKeypoints() support
+* **imgproc**
+    * add equalizeHist function
+    * Added opencv::calcHist implementation
+* **openvino**
+    * add needed environment config to execute examples
+    * further details in README explaining how to use
+    * remove opencv contrib references as they are not included in OpenVINO
+* **videoio**
+    * Add OpenVideoCapture
+    * Use gocv.VideoCaptureFile if string is specified for device.
+
 0.13.0
 ---
 * **build**
