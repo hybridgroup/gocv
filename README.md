@@ -176,7 +176,7 @@ Build everything. This will take quite a while:
 
 #### Install
 
-Once the code is buikt, you are ready to install:
+Once the code is built, you are ready to install:
 
 	make sudo_install
 
@@ -304,7 +304,7 @@ The following commands should do everything to download and install OpenCV 3.4.2
 	cd %USERPROFILE%\go\src\gocv.io\x\gocv
 	.\win_build_opencv.cmd
 
-It will probably take a very long time to download and build.
+It will probably take at least 1 hour to download and build.
 
 Last, add `C:\opencv\build\install\x64\mingw\bin` to your System Path.
 
