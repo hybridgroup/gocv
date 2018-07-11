@@ -29,7 +29,7 @@ import (
 )
 
 func main() {
-	webcam, _ := gocv.VideoCaptureDevice(0)
+	webcam, _ := gocv.OpenVideoCapture(0)
 	window := gocv.NewWindow("Hello")
 	img := gocv.NewMat()
 
@@ -58,10 +58,8 @@ import (
 )
 
 func main() {
-	deviceID := 0
-
 	// open webcam
-	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.OpenVideoCapture(0)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -150,7 +148,7 @@ That's it, now you are ready to use GoCV.
 
 #### Complete Install
 
-Here are details for each of the steps that are performed during the "Quick Install". If you have already run `make install` as described above, you do not need to run any of these commands.
+If you have already done the "Quick Install" as described above, you do not need to run any further commands. For the curious, or for custom installations, here are the details for each of the steps that are performed when you run `make install`.
 
 ##### Install required packages
 
