@@ -20,7 +20,7 @@ func TestVideoCaptureEmptyNumericalParameters(t *testing.T) {
 }
 
 func TestVideoCaptureCodecString(t *testing.T) {
-	vc, err := VideoCaptureFile("images/small.mp4")
+	vc, err := OpenVideoCapture("images/small.mp4")
 	if err != nil {
 		t.Errorf("TestVideoCaptureCodecString: error loading a file: %v", err)
 	}
