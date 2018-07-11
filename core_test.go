@@ -213,6 +213,99 @@ func TestMatToBytes(t *testing.T) {
 	}
 }
 
+func TestMatDataPtr(t *testing.T) {
+	t.Run("Uint8", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV8U)
+		b := mat.DataPtrUint8()
+		if len(b) != 101*102 {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+
+		mat = NewMatWithSize(3, 9, MatTypeCV32F)
+		b = mat.DataPtrUint8()
+		if len(b) != 3*9*4 {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+	})
+	t.Run("Int8", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV8S)
+		b := mat.DataPtrInt8()
+		if len(b) != 101*102 {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+
+		mat = NewMatWithSize(3, 9, MatTypeCV32F)
+		b = mat.DataPtrInt8()
+		if len(b) != 3*9*4 {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+	})
+	t.Run("Uint16", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV16U)
+		b, err := mat.DataPtrUint16()
+		if err != nil {
+			t.Error(err)
+		}
+		if len(b) != 101*102 {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+
+		mat = NewMatWithSize(3, 9, MatTypeCV32F)
+		_, err = mat.DataPtrUint16()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
+	})
+	t.Run("Int16", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV16S)
+		b, err := mat.DataPtrInt16()
+		if err != nil {
+			t.Error(err)
+		}
+		if len(b) != 101*102 {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+
+		mat = NewMatWithSize(3, 9, MatTypeCV32F)
+		_, err = mat.DataPtrInt16()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
+	})
+	t.Run("Float32", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV32F)
+		b, err := mat.DataPtrFloat32()
+		if err != nil {
+			t.Error(err)
+		}
+		if len(b) != 101*102 {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+
+		mat = NewMatWithSize(3, 9, MatTypeCV16S)
+		_, err = mat.DataPtrFloat32()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
+	})
+	t.Run("Float64", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV64F)
+		b, err := mat.DataPtrFloat64()
+		if err != nil {
+			t.Error(err)
+		}
+		if len(b) != 101*102 {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+
+		mat = NewMatWithSize(3, 9, MatTypeCV16S)
+		_, err = mat.DataPtrFloat64()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
+	})
+}
+
 func TestMatRegion(t *testing.T) {
 	mat := NewMatWithSize(100, 100, MatTypeCV8U)
 	region := mat.Region(image.Rect(20, 25, 80, 75))
