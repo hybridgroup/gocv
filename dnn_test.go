@@ -208,3 +208,25 @@ func TestGetBlobSize(t *testing.T) {
 		t.Errorf("GetBlobSize retrieved wrong values")
 	}
 }
+
+func TestParseNetBackend(t *testing.T) {
+	val := ParseNetBackend("opencv")
+	if val != NetBackendOpenCV {
+		t.Errorf("ParseNetBackend invalid")
+	}
+	val = ParseNetBackend("crazytrain")
+	if val != NetBackendDefault {
+		t.Errorf("ParseNetBackend invalid")
+	}
+}
+
+func TestParseNetTarget(t *testing.T) {
+	val := ParseNetTarget("vpu")
+	if val != NetTargetVPU {
+		t.Errorf("ParseNetTarget invalid")
+	}
+	val = ParseNetTarget("idk")
+	if val != NetTargetCPU {
+		t.Errorf("ParseNetTarget invalid")
+	}
+}
