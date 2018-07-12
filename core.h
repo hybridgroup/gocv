@@ -198,6 +198,7 @@ void Mat_Size(Mat m, IntVector* res);
 void Mat_CopyToWithMask(Mat m, Mat dst, Mat mask);
 void Mat_ConvertTo(Mat m, Mat dst, int type);
 struct ByteArray Mat_ToBytes(Mat m);
+struct ByteArray Mat_DataPtr(Mat m);
 Mat Mat_Region(Mat m, Rect r);
 Mat Mat_Reshape(Mat m, int cn, int rows);
 void Mat_PatchNaNs(Mat m);

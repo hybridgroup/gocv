@@ -213,6 +213,217 @@ func TestMatToBytes(t *testing.T) {
 	}
 }
 
+func TestMatDataPtr(t *testing.T) {
+	const (
+		rows = 101
+		cols = 102
+	)
+	t.Run("Uint8", func(t *testing.T) {
+		testPoints := []struct {
+			row int
+			col int
+			val uint8
+		}{
+			{row: 0, col: 0, val: 10},
+			{row: 30, col: 31, val: 20},
+			{row: rows - 1, col: cols - 1, val: 30},
+		}
+
+		mat := NewMatWithSize(rows, cols, MatTypeCV8U)
+
+		b := mat.DataPtrUint8()
+		if len(b) != 101*102 {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+
+		for _, p := range testPoints {
+			mat.SetUCharAt(p.row, p.col, p.val)
+
+			if got := b[p.row*cols+p.col]; got != p.val {
+				t.Errorf("Expected %d,%d = %d, but it was %d", p.row, p.col, p.val, got)
+			}
+		}
+
+		mat = NewMatWithSize(3, 9, MatTypeCV32F)
+		b = mat.DataPtrUint8()
+		if len(b) != 3*9*4 {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+	})
+	t.Run("Int8", func(t *testing.T) {
+		testPoints := []struct {
+			row int
+			col int
+			val int8
+		}{
+			{row: 0, col: 0, val: 10},
+			{row: 30, col: 31, val: 20},
+			{row: rows - 1, col: cols - 1, val: 30},
+		}
+
+		mat := NewMatWithSize(101, 102, MatTypeCV8S)
+
+		b := mat.DataPtrInt8()
+		if len(b) != rows*cols {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+
+		for _, p := range testPoints {
+			mat.SetSCharAt(p.row, p.col, p.val)
+
+			if got := b[p.row*cols+p.col]; got != p.val {
+				t.Errorf("Expected %d,%d = %d, but it was %d", p.row, p.col, p.val, got)
+			}
+		}
+
+		mat = NewMatWithSize(3, 9, MatTypeCV32F)
+		b = mat.DataPtrInt8()
+		if len(b) != 3*9*4 {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+	})
+	t.Run("Uint16", func(t *testing.T) {
+		testPoints := []struct {
+			row int
+			col int
+			val uint16
+		}{
+			{row: 0, col: 0, val: 10},
+			{row: 30, col: 31, val: 20},
+			{row: rows - 1, col: cols - 1, val: 30},
+		}
+
+		mat := NewMatWithSize(rows, cols, MatTypeCV16U)
+
+		b, err := mat.DataPtrUint16()
+		if err != nil {
+			t.Error(err)
+		}
+		if len(b) != rows*cols {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+
+		for _, p := range testPoints {
+			mat.SetShortAt(p.row, p.col, int16(p.val))
+
+			if got := b[p.row*cols+p.col]; got != p.val {
+				t.Errorf("Expected %d,%d = %d, but it was %d", p.row, p.col, p.val, got)
+			}
+		}
+
+		mat = NewMatWithSize(3, 9, MatTypeCV32F)
+		_, err = mat.DataPtrUint16()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
+	})
+	t.Run("Int16", func(t *testing.T) {
+		testPoints := []struct {
+			row int
+			col int
+			val int16
+		}{
+			{row: 0, col: 0, val: 10},
+			{row: 30, col: 31, val: 20},
+			{row: rows - 1, col: cols - 1, val: 30},
+		}
+
+		mat := NewMatWithSize(rows, cols, MatTypeCV16S)
+
+		b, err := mat.DataPtrInt16()
+		if err != nil {
+			t.Error(err)
+		}
+		if len(b) != rows*cols {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+
+		for _, p := range testPoints {
+			mat.SetShortAt(p.row, p.col, p.val)
+
+			if got := b[p.row*cols+p.col]; got != p.val {
+				t.Errorf("Expected %d,%d = %d, but it was %d", p.row, p.col, p.val, got)
+			}
+		}
+
+		mat = NewMatWithSize(3, 9, MatTypeCV32F)
+		_, err = mat.DataPtrInt16()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
+	})
+	t.Run("Float32", func(t *testing.T) {
+		testPoints := []struct {
+			row int
+			col int
+			val float32
+		}{
+			{row: 0, col: 0, val: 10.5},
+			{row: 30, col: 31, val: 20.5},
+			{row: rows - 1, col: cols - 1, val: 30.5},
+		}
+
+		mat := NewMatWithSize(rows, cols, MatTypeCV32F)
+
+		b, err := mat.DataPtrFloat32()
+		if err != nil {
+			t.Error(err)
+		}
+		if len(b) != rows*cols {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+
+		for _, p := range testPoints {
+			mat.SetFloatAt(p.row, p.col, p.val)
+
+			if got := b[p.row*cols+p.col]; got != p.val {
+				t.Errorf("Expected %d,%d = %f, but it was %f", p.row, p.col, p.val, got)
+			}
+		}
+
+		mat = NewMatWithSize(3, 9, MatTypeCV16S)
+		_, err = mat.DataPtrFloat32()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
+	})
+	t.Run("Float64", func(t *testing.T) {
+		testPoints := []struct {
+			row int
+			col int
+			val float64
+		}{
+			{row: 0, col: 0, val: 10.5},
+			{row: 30, col: 31, val: 20.5},
+			{row: rows - 1, col: cols - 1, val: 30.5},
+		}
+
+		mat := NewMatWithSize(rows, cols, MatTypeCV64F)
+
+		b, err := mat.DataPtrFloat64()
+		if err != nil {
+			t.Error(err)
+		}
+		if len(b) != rows*cols {
+			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
+		}
+
+		for _, p := range testPoints {
+			mat.SetDoubleAt(p.row, p.col, p.val)
+
+			if got := b[p.row*cols+p.col]; got != p.val {
+				t.Errorf("Expected %d,%d = %f, but it was %f", p.row, p.col, p.val, got)
+			}
+		}
+
+		mat = NewMatWithSize(3, 9, MatTypeCV16S)
+		_, err = mat.DataPtrFloat64()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
+	})
+}
+
 func TestMatRegion(t *testing.T) {
 	mat := NewMatWithSize(100, 100, MatTypeCV8U)
 	region := mat.Region(image.Rect(20, 25, 80, 75))

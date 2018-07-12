@@ -66,6 +66,10 @@ struct ByteArray Mat_ToBytes(Mat m) {
     return toByteArray(reinterpret_cast<const char*>(m->data), m->total() * m->elemSize());
 }
 
+struct ByteArray Mat_DataPtr(Mat m) {
+    return ByteArray {reinterpret_cast<char*>(m->data), static_cast<int>(m->total() * m->elemSize())};
+}
+
 // Mat_Region returns a Mat of a region of another Mat
 Mat Mat_Region(Mat m, Rect r) {
     return new cv::Mat(*m, cv::Rect(r.x, r.y, r.width, r.height));

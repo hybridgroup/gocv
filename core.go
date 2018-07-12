@@ -241,9 +241,108 @@ func (m *Mat) Size() (dims []int) {
 // For further details, please see:
 // https://docs.opencv.org/3.3.1/d3/d63/classcv_1_1Mat.html#a4d33bed1c850265370d2af0ff02e1564
 func (m *Mat) ToBytes() []byte {
-	b := C.Mat_ToBytes(m.p)
-	defer C.ByteArray_Release(b)
+	b := C.Mat_DataPtr(m.p)
 	return toGoBytes(b)
+}
+
+// DataPtrUint8 returns a slice that references the OpenCV allocated data.
+//
+// The data is no longer valid once the Mat has been closed. Any data that
+// needs to be accessed after the Mat is closed must be copied into Go memory.
+func (m *Mat) DataPtrUint8() []uint8 {
+	p := C.Mat_DataPtr(m.p)
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(p.data)),
+		Len:  int(p.length),
+		Cap:  int(p.length),
+	}
+	return *(*[]uint8)(unsafe.Pointer(h))
+}
+
+// DataPtrInt8 returns a slice that references the OpenCV allocated data.
+//
+// The data is no longer valid once the Mat has been closed. Any data that
+// needs to be accessed after the Mat is closed must be copied into Go memory.
+func (m *Mat) DataPtrInt8() []int8 {
+	p := C.Mat_DataPtr(m.p)
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(p.data)),
+		Len:  int(p.length),
+		Cap:  int(p.length),
+	}
+	return *(*[]int8)(unsafe.Pointer(h))
+}
+
+// DataPtrUint16 returns a slice that references the OpenCV allocated data.
+//
+// The data is no longer valid once the Mat has been closed. Any data that
+// needs to be accessed after the Mat is closed must be copied into Go memory.
+func (m *Mat) DataPtrUint16() ([]uint16, error) {
+	if m.Type()&MatTypeCV16U != MatTypeCV16U {
+		return nil, errors.New("DataPtrUint16 only supports MatTypeCV16U")
+	}
+
+	p := C.Mat_DataPtr(m.p)
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(p.data)),
+		Len:  int(p.length) / 2,
+		Cap:  int(p.length) / 2,
+	}
+	return *(*[]uint16)(unsafe.Pointer(h)), nil
+}
+
+// DataPtrInt16 returns a slice that references the OpenCV allocated data.
+//
+// The data is no longer valid once the Mat has been closed. Any data that
+// needs to be accessed after the Mat is closed must be copied into Go memory.
+func (m *Mat) DataPtrInt16() ([]int16, error) {
+	if m.Type()&MatTypeCV16S != MatTypeCV16S {
+		return nil, errors.New("DataPtrInt16 only supports MatTypeCV16S")
+	}
+
+	p := C.Mat_DataPtr(m.p)
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(p.data)),
+		Len:  int(p.length) / 2,
+		Cap:  int(p.length) / 2,
+	}
+	return *(*[]int16)(unsafe.Pointer(h)), nil
+}
+
+// DataPtrFloat32 returns a slice that references the OpenCV allocated data.
+//
+// The data is no longer valid once the Mat has been closed. Any data that
+// needs to be accessed after the Mat is closed must be copied into Go memory.
+func (m *Mat) DataPtrFloat32() ([]float32, error) {
+	if m.Type()&MatTypeCV32F != MatTypeCV32F {
+		return nil, errors.New("DataPtrUint16 only supports MatTypeCV32F")
+	}
+
+	p := C.Mat_DataPtr(m.p)
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(p.data)),
+		Len:  int(p.length) / 4,
+		Cap:  int(p.length) / 4,
+	}
+	return *(*[]float32)(unsafe.Pointer(h)), nil
+}
+
+// DataPtrFloat64 returns a slice that references the OpenCV allocated data.
+//
+// The data is no longer valid once the Mat has been closed. Any data that
+// needs to be accessed after the Mat is closed must be copied into Go memory.
+func (m *Mat) DataPtrFloat64() ([]float64, error) {
+	if m.Type()&MatTypeCV64F != MatTypeCV64F {
+		return nil, errors.New("DataPtrUint16 only supports MatTypeCV64F")
+	}
+
+	p := C.Mat_DataPtr(m.p)
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(p.data)),
+		Len:  int(p.length) / 8,
+		Cap:  int(p.length) / 8,
+	}
+	return *(*[]float64)(unsafe.Pointer(h)), nil
 }
 
 // Region returns a new Mat that points to a region of this Mat. Changes made to the
