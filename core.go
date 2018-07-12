@@ -251,13 +251,12 @@ func (m *Mat) ToBytes() []byte {
 // The data is no longer valid once the Mat has been closed. Any data that
 // needs to be accessed after the Mat is closed must be copied into Go memory.
 func (m *Mat) DataPtrUint8() []uint8 {
-	b := C.Mat_ToBytes(m.p)
+	p := C.Mat_DataPtr(m.p)
 	h := &reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(b.data)),
-		Len:  int(b.length),
-		Cap:  int(b.length),
+		Data: uintptr(unsafe.Pointer(p.data)),
+		Len:  int(p.length),
+		Cap:  int(p.length),
 	}
-	C.ByteArray_Release(b)
 	return *(*[]uint8)(unsafe.Pointer(h))
 }
 
@@ -266,13 +265,12 @@ func (m *Mat) DataPtrUint8() []uint8 {
 // The data is no longer valid once the Mat has been closed. Any data that
 // needs to be accessed after the Mat is closed must be copied into Go memory.
 func (m *Mat) DataPtrInt8() []int8 {
-	b := C.Mat_ToBytes(m.p)
+	p := C.Mat_DataPtr(m.p)
 	h := &reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(b.data)),
-		Len:  int(b.length),
-		Cap:  int(b.length),
+		Data: uintptr(unsafe.Pointer(p.data)),
+		Len:  int(p.length),
+		Cap:  int(p.length),
 	}
-	C.ByteArray_Release(b)
 	return *(*[]int8)(unsafe.Pointer(h))
 }
 
@@ -285,13 +283,12 @@ func (m *Mat) DataPtrUint16() ([]uint16, error) {
 		return nil, errors.New("DataPtrUint16 only supports MatTypeCV16U")
 	}
 
-	b := C.Mat_ToBytes(m.p)
+	p := C.Mat_DataPtr(m.p)
 	h := &reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(b.data)),
-		Len:  int(b.length) / 2,
-		Cap:  int(b.length) / 2,
+		Data: uintptr(unsafe.Pointer(p.data)),
+		Len:  int(p.length) / 2,
+		Cap:  int(p.length) / 2,
 	}
-	C.ByteArray_Release(b)
 	return *(*[]uint16)(unsafe.Pointer(h)), nil
 }
 
@@ -304,13 +301,12 @@ func (m *Mat) DataPtrInt16() ([]int16, error) {
 		return nil, errors.New("DataPtrInt16 only supports MatTypeCV16S")
 	}
 
-	b := C.Mat_ToBytes(m.p)
+	p := C.Mat_DataPtr(m.p)
 	h := &reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(b.data)),
-		Len:  int(b.length) / 2,
-		Cap:  int(b.length) / 2,
+		Data: uintptr(unsafe.Pointer(p.data)),
+		Len:  int(p.length) / 2,
+		Cap:  int(p.length) / 2,
 	}
-	C.ByteArray_Release(b)
 	return *(*[]int16)(unsafe.Pointer(h)), nil
 }
 
@@ -323,13 +319,12 @@ func (m *Mat) DataPtrFloat32() ([]float32, error) {
 		return nil, errors.New("DataPtrUint16 only supports MatTypeCV32F")
 	}
 
-	b := C.Mat_ToBytes(m.p)
+	p := C.Mat_DataPtr(m.p)
 	h := &reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(b.data)),
-		Len:  int(b.length) / 4,
-		Cap:  int(b.length) / 4,
+		Data: uintptr(unsafe.Pointer(p.data)),
+		Len:  int(p.length) / 4,
+		Cap:  int(p.length) / 4,
 	}
-	C.ByteArray_Release(b)
 	return *(*[]float32)(unsafe.Pointer(h)), nil
 }
 
@@ -342,13 +337,12 @@ func (m *Mat) DataPtrFloat64() ([]float64, error) {
 		return nil, errors.New("DataPtrUint16 only supports MatTypeCV64F")
 	}
 
-	b := C.Mat_ToBytes(m.p)
+	p := C.Mat_DataPtr(m.p)
 	h := &reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(b.data)),
-		Len:  int(b.length) / 8,
-		Cap:  int(b.length) / 8,
+		Data: uintptr(unsafe.Pointer(p.data)),
+		Len:  int(p.length) / 8,
+		Cap:  int(p.length) / 8,
 	}
-	C.ByteArray_Release(b)
 	return *(*[]float64)(unsafe.Pointer(h)), nil
 }
 
