@@ -79,6 +79,15 @@ typedef struct Size {
     int height;
 } Size;
 
+// Wrapper for an individual cv::RotatedRect
+typedef struct RotatedRect {
+    Contour pts;
+    Rect boundingRect;
+    Point center;
+    Size size;
+    double angle;
+} RotatedRect;
+
 // Wrapper for an individual cv::cvScalar
 typedef struct Scalar {
     double val1;
