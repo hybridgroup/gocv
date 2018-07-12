@@ -29,6 +29,7 @@ void PyrDown(Mat src, Mat dst, Size dstsize, int borderType);
 void PyrUp(Mat src, Mat dst, Size dstsize, int borderType);
 struct Rect BoundingRect(Contour con);
 double ContourArea(Contour con);
+struct RotatedRect MinAreaRect(Points points);
 struct Contours FindContours(Mat src, int mode, int method);
 void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt);
 void Laplacian(Mat src, Mat dst, int dDepth, int kSize, double scale, double delta, int borderType);

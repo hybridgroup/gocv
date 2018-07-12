@@ -160,6 +160,33 @@ double ContourArea(Contour con) {
     return cv::contourArea(pts);
 }
 
+struct RotatedRect MinAreaRect(Points points){
+    std::vector<cv::Point> pts;
+
+    for (size_t i = 0; i < points.length; i++) {
+        pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
+    }
+
+    cv::RotatedRect cvrect = cv::minAreaRect(pts);
+
+    Point* rpts = new Point[4];
+    cv::Point2f* pts4 = new cv::Point2f[4];
+    cvrect.points(pts4);
+
+    for (size_t j = 0; j < 4; j++) {
+        Point pt = {int(lroundf(pts4[j].x)), int(lroundf(pts4[j].y))};
+        rpts[j] = pt;
+    }
+
+    cv::Rect bRect = cvrect.boundingRect();
+    Rect r = {bRect.x, bRect.y, bRect.width, bRect.height};
+    Point centrpt = {int(lroundf(cvrect.center.x)), int(lroundf(cvrect.center.y))};
+    Size szsz = {int(lroundf(cvrect.size.width)), int(lroundf(cvrect.size.height))};
+
+    RotatedRect retrect = {(Contour){rpts, 4}, r, centrpt, szsz, cvrect.angle};
+    return retrect;
+}
+
 struct Contours FindContours(Mat src, int mode, int method) {
     std::vector<std::vector<cv::Point> > contours;
     cv::findContours(*src, contours, mode, method);
