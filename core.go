@@ -315,7 +315,7 @@ func (m *Mat) DataPtrInt16() ([]int16, error) {
 // needs to be accessed after the Mat is closed must be copied into Go memory.
 func (m *Mat) DataPtrFloat32() ([]float32, error) {
 	if m.Type()&MatTypeCV32F != MatTypeCV32F {
-		return nil, errors.New("DataPtrUint16 only supports MatTypeCV32F")
+		return nil, errors.New("DataPtrFloat32 only supports MatTypeCV32F")
 	}
 
 	p := C.Mat_DataPtr(m.p)
@@ -333,7 +333,7 @@ func (m *Mat) DataPtrFloat32() ([]float32, error) {
 // needs to be accessed after the Mat is closed must be copied into Go memory.
 func (m *Mat) DataPtrFloat64() ([]float64, error) {
 	if m.Type()&MatTypeCV64F != MatTypeCV64F {
-		return nil, errors.New("DataPtrUint16 only supports MatTypeCV64F")
+		return nil, errors.New("DataPtrFloat64 only supports MatTypeCV64F")
 	}
 
 	p := C.Mat_DataPtr(m.p)
