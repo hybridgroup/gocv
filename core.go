@@ -241,8 +241,7 @@ func (m *Mat) Size() (dims []int) {
 // For further details, please see:
 // https://docs.opencv.org/3.3.1/d3/d63/classcv_1_1Mat.html#a4d33bed1c850265370d2af0ff02e1564
 func (m *Mat) ToBytes() []byte {
-	b := C.Mat_ToBytes(m.p)
-	defer C.ByteArray_Release(b)
+	b := C.Mat_DataPtr(m.p)
 	return toGoBytes(b)
 }
 

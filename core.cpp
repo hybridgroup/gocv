@@ -66,8 +66,8 @@ struct ByteArray Mat_ToBytes(Mat m) {
     return toByteArray(reinterpret_cast<const char*>(m->data), m->total() * m->elemSize());
 }
 
-struct DataPtr Mat_DataPtr(Mat m) {
-    return DataPtr {reinterpret_cast<const char*>(m->data), m->total() * m->elemSize()};
+struct ByteArray Mat_DataPtr(Mat m) {
+    return ByteArray {reinterpret_cast<char*>(m->data), static_cast<int>(m->total() * m->elemSize())};
 }
 
 // Mat_Region returns a Mat of a region of another Mat
