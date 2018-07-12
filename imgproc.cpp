@@ -178,6 +178,8 @@ struct RotatedRect MinAreaRect(Points points){
         rpts[j] = pt;
     }
 
+    delete[] pts4;
+
     cv::Rect bRect = cvrect.boundingRect();
     Rect r = {bRect.x, bRect.y, bRect.width, bRect.height};
     Point centrpt = {int(lroundf(cvrect.center.x)), int(lroundf(cvrect.center.y))};

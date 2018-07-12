@@ -301,7 +301,9 @@ func MinAreaRect(points []image.Point) RotatedRect {
 	result := C.MinAreaRect(cPoints)
 
 	pArray := result.pts.points
+	defer C.Points_Close(pArray);
 	pLength := int(result.pts.length)
+	
 	pHdr := reflect.SliceHeader{
 		Data: uintptr(unsafe.Pointer(pArray)),
 		Len:  pLength,
