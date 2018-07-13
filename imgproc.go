@@ -282,6 +282,50 @@ func ContourArea(contour []image.Point) float64 {
 	return float64(result)
 }
 
+type RotatedRect struct {
+	Contour      []image.Point
+	BoundingRect image.Rectangle
+	Center       image.Point
+	Width        int
+	Height       int
+	Angle        float64
+}
+
+// MinAreaRect finds a rotated rectangle of the minimum area enclosing the input 2D point set.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga3d476a3417130ae5154aea421ca7ead9
+//
+func MinAreaRect(points []image.Point) RotatedRect {
+	cPoints := toCPoints(points)
+	result := C.MinAreaRect(cPoints)
+
+	defer C.Points_Close(result.pts)
+	pArray := result.pts.points
+	pLength := int(result.pts.length)
+
+	pHdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(pArray)),
+		Len:  pLength,
+		Cap:  pLength,
+	}
+	sPoints := *(*[]C.Point)(unsafe.Pointer(&pHdr))
+
+	points4 := make([]image.Point, pLength)
+	for j, pt := range sPoints {
+		points4[j] = image.Pt(int(pt.x), int(pt.y))
+	}
+
+	return RotatedRect{
+		Contour:      points4,
+		BoundingRect: image.Rect(int(result.boundingRect.x), int(result.boundingRect.y), int(result.boundingRect.x)+int(result.boundingRect.width), int(result.boundingRect.y)+int(result.boundingRect.height)),
+		Center:       image.Pt(int(result.center.x), int(result.center.y)),
+		Width:        int(result.size.width),
+		Height:       int(result.size.height),
+		Angle:        float64(result.angle),
+	}
+}
+
 // FindContours finds contours in a binary image.
 //
 // For further details, please see:

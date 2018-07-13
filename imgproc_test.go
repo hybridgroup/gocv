@@ -235,6 +235,26 @@ func TestPyrUp(t *testing.T) {
 	}
 }
 
+func TestMinAreaRect(t *testing.T) {
+	src := []image.Point{
+		image.Pt(0, 2),
+		image.Pt(2, 0),
+		image.Pt(4, 2),
+		image.Pt(2, 4),
+	}
+	m := MinAreaRect(src)
+
+	if m.Center.X != 2 {
+		t.Errorf("TestMinAreaRect(): unexpected center.X = %v, want = %v", m.Center.X, 2)
+	}
+	if m.Center.Y != 2 {
+		t.Errorf("TestMinAreaRect(): unexpected center.Y = %v, want = %v", m.Center.Y, 2)
+	}
+	if m.Angle != -45.0 {
+		t.Errorf("TestMinAreaRect(): unexpected angle = %v, want = %v", m.Angle, -45.0)
+	}
+}
+
 func TestFindContours(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
