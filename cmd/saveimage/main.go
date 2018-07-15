@@ -7,7 +7,7 @@
 //
 // saveimage [camera ID] [image file]
 //
-// 		go run ./cmd/saveimage/main.go filename.jpg
+// 		go run ./cmd/saveimage/main.go 0 filename.jpg
 //
 // +build example
 

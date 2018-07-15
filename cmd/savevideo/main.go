@@ -1,13 +1,13 @@
 // What it does:
 //
-// This example uses the VideoCapture class to capture video from a connected webcam,
+// This example uses the VideoCapture class to capture AVI video from a connected webcam,
 // then saves 100 frames to a video file on disk.
 //
 // How to run:
 //
 // savevideo [camera ID] [video file]
 //
-// 		go run ./cmd/savevideo/main.go 0 testvideo.mp4
+// 		go run ./cmd/savevideo/main.go 0 testvideo.avi
 //
 // +build example
 
@@ -44,7 +44,7 @@ func main() {
 		return
 	}
 
-	writer, err := gocv.VideoWriterFile(saveFile, "MJPG", 25, img.Cols(), img.Rows())
+	writer, err := gocv.VideoWriterFile(saveFile, "MJPG", 25, img.Cols(), img.Rows(), true)
 	if err != nil {
 		fmt.Printf("error opening video writer device: %v\n", saveFile)
 		return
@@ -53,7 +53,7 @@ func main() {
 
 	for i := 0; i < 100; i++ {
 		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("cannot read device %v\n", deviceID)
+			fmt.Printf("Device closed: %v\n", deviceID)
 			return
 		}
 		if img.Empty() {

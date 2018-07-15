@@ -100,7 +100,7 @@ func main() {
 
 	for {
 		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("Error cannot read device %v\n", deviceID)
+			fmt.Printf("Device closed: %v\n", deviceID)
 			return
 		}
 		if img.Empty() {
