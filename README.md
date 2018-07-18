@@ -299,8 +299,8 @@ Download and install CMake [https://cmake.org/download/](https://cmake.org/downl
 
 The following commands should do everything to download and install OpenCV 3.4.2 on Windows:
 
-	cd %USERPROFILE%\go\src\gocv.io\x\gocv
-	.\win_build_opencv.cmd
+	chdir %USERPROFILE%\go\src\gocv.io\x\gocv
+	win_build_opencv.cmd
 
 It will probably take at least 1 hour to download and build.
 
@@ -310,11 +310,11 @@ Last, add `C:\opencv\build\install\x64\mingw\bin` to your System Path.
 
 Change the current directory to the location of the GoCV repo:
 
-	cd %USERPROFILE%\go\src\gocv.io\x\gocv
+	chdir %USERPROFILE%\go\src\gocv.io\x\gocv
 
 Now you should be able to build or run any of the command examples:
 
-	go run .\cmd\version\main.go
+	go run cmd\version\main.go
 
 The version program should output the following:
 
@@ -343,7 +343,7 @@ For example:
 
 Please note that you will need to run these 3 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables. Once you have done so, you can execute code that uses GoCV with your custom environment like this:
 
-	go run -tags customenv .\cmd\version\main.go
+	go run -tags customenv cmd\version\main.go
 
 ## Android
 
