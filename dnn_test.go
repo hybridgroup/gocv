@@ -210,7 +210,15 @@ func TestGetBlobSize(t *testing.T) {
 }
 
 func TestParseNetBackend(t *testing.T) {
-	val := ParseNetBackend("opencv")
+	val := ParseNetBackend("halide")
+	if val != NetBackendHalide {
+		t.Errorf("ParseNetBackend invalid")
+	}
+	val = ParseNetBackend("openvino")
+	if val != NetBackendOpenVINO {
+		t.Errorf("ParseNetBackend invalid")
+	}
+	val = ParseNetBackend("opencv")
 	if val != NetBackendOpenCV {
 		t.Errorf("ParseNetBackend invalid")
 	}
@@ -221,7 +229,19 @@ func TestParseNetBackend(t *testing.T) {
 }
 
 func TestParseNetTarget(t *testing.T) {
-	val := ParseNetTarget("vpu")
+	val := ParseNetTarget("cpu")
+	if val != NetTargetCPU {
+		t.Errorf("ParseNetTarget invalid")
+	}
+	val = ParseNetTarget("fp32")
+	if val != NetTargetFP32 {
+		t.Errorf("ParseNetTarget invalid")
+	}
+	val = ParseNetTarget("fp16")
+	if val != NetTargetFP16 {
+		t.Errorf("ParseNetTarget invalid")
+	}
+	val = ParseNetTarget("vpu")
 	if val != NetTargetVPU {
 		t.Errorf("ParseNetTarget invalid")
 	}
