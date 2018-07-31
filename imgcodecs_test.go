@@ -71,4 +71,9 @@ func TestIMDecode(t *testing.T) {
 	if dec.Empty() {
 		t.Error("Invalid Mat in IMDecode")
 	}
+
+	dec, err = IMDecode([]byte{}, IMReadColor)
+	if err == nil {
+		t.Error("Should not decode empty array")
+	}
 }

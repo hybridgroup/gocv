@@ -29,6 +29,13 @@ func TestVideoCaptureCodecString(t *testing.T) {
 	}
 }
 
+func TestVideoCaptureInvalid(t *testing.T) {
+	_, err := OpenVideoCapture(1.1)
+	if err == nil {
+		t.Errorf("Should return error with invalid param")
+	}
+}
+
 func TestVideoCaptureFile(t *testing.T) {
 	vc, _ := VideoCaptureFile("images/small.mp4")
 	defer vc.Close()
