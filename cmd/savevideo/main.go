@@ -31,7 +31,7 @@ func main() {
 
 	webcam, err := gocv.OpenVideoCapture(deviceID)
 	if err != nil {
-		fmt.Printf("error opening video capture device: %v\n", deviceID)
+		fmt.Printf("Error opening video capture device: %v\n", deviceID)
 		return
 	}
 	defer webcam.Close()
@@ -40,7 +40,7 @@ func main() {
 	defer img.Close()
 
 	if ok := webcam.Read(&img); !ok {
-		fmt.Printf("cannot read device %v\n", deviceID)
+		fmt.Printf("Cannot read device %v\n", deviceID)
 		return
 	}
 

@@ -39,7 +39,7 @@ func main() {
 	// open webcam
 	webcam, err := gocv.OpenVideoCapture(deviceID)
 	if err != nil {
-		fmt.Printf("error opening video capture device: %v\n", deviceID)
+		fmt.Printf("Error opening video capture device: %v\n", deviceID)
 		return
 	}
 	defer webcam.Close()
@@ -79,7 +79,7 @@ func main() {
 
 	// color for the rect to draw
 	blue := color.RGBA{0, 0, 255, 0}
-	fmt.Printf("start reading camera device: %v\n", deviceID)
+	fmt.Printf("Start reading device: %v\n", deviceID)
 	for {
 		if ok := webcam.Read(&img); !ok {
 			fmt.Printf("Device closed: %v\n", deviceID)

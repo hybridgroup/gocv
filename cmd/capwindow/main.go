@@ -40,7 +40,7 @@ func main() {
 	img := gocv.NewMat()
 	defer img.Close()
 
-	fmt.Printf("Start reading camera device: %v\n", deviceID)
+	fmt.Printf("Start reading device: %v\n", deviceID)
 	for {
 		if ok := webcam.Read(&img); !ok {
 			fmt.Printf("Device closed: %v\n", deviceID)

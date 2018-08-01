@@ -74,7 +74,7 @@ func main() {
 	defer net.Close()
 
 	green := color.RGBA{0, 255, 0, 0}
-	fmt.Printf("Start reading camera device: %v\n", deviceID)
+	fmt.Printf("Start reading device: %v\n", deviceID)
 
 	for {
 		if ok := webcam.Read(&img); !ok {

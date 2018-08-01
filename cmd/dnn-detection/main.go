@@ -96,7 +96,7 @@ func main() {
 		swapRGB = true
 	}
 
-	fmt.Printf("Start reading camera device: %v\n", deviceID)
+	fmt.Printf("Start reading device: %v\n", deviceID)
 
 	for {
 		if ok := webcam.Read(&img); !ok {

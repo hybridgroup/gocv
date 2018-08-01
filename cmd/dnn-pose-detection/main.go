@@ -84,7 +84,7 @@ func main() {
 	net.SetPreferableBackend(gocv.NetBackendType(backend))
 	net.SetPreferableTarget(gocv.NetTargetType(target))
 
-	fmt.Printf("Start reading camera device: %v\n", deviceID)
+	fmt.Printf("Start reading device: %v\n", deviceID)
 
 	images = make(chan *gocv.Mat, 1)
 	poses = make(chan [][]image.Point)
