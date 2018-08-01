@@ -16,4 +16,4 @@ mingw32-make
 mingw32-make install
 rmdir c:\opencv\opencv-3.4.2 /s /q
 rmdir c:\opencv\opencv_contrib-3.4.2 /s /q
-cd %USERPROFILE%\go\src\gocv.io\x\gocv
+chdir %GOPATH%\src\gocv.io\x\gocv
