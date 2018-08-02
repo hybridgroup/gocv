@@ -1,3 +1,30 @@
+0.15.0
+---
+* **build**
+    * add max to make -j
+    * improve path for Windows to use currently configured GOPATH
+* **core**
+    * Add Mat.DataPtr methods for direct access to OpenCV data
+    * Avoid extra copy in Mat.ToBytes + code review feedback
+* **dnn**
+    * add test coverage for ParseNetBackend and ParseNetTarget
+    * complete test coverage
+* **docs**
+    * minor cleanup of language for install
+    * use chdir instead of cd in Windows instructions
+* **examples**
+    * add 'hello, video' example to repo
+    * add HoughLinesP example
+    * correct message on device close to match actual event
+    * small change in display message for when file is input source
+    * use DrawContours in motion detect example
+* **imgproc**
+    * Add MinAreaRect() function
+* **test**
+    * filling test coverage gaps
+* **videoio**
+    * add test coverage for OpenVideoCapture
+
 0.14.0
 ---
 * **build**
