@@ -60,12 +60,25 @@ build:
 	$(MAKE) preinstall
 	cd -
 
+# Build OpenCV on Raspbian with ARM hardware optimizations.
+build_raspi:
+	cd $(TMP_DIR)opencv/opencv-$(OPENCV_VERSION)
+	mkdir build
+	cd build
+	cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=$(TMP_DIR)opencv/opencv_contrib-$(OPENCV_VERSION)/modules -D BUILD_DOCS=OFF BUILD_EXAMPLES=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_opencv_java=OFF -D BUILD_opencv_python=OFF -D BUILD_opencv_python2=OFF -D BUILD_opencv_python3=OFF -D ENABLE_NEON=ON -D ENABLE_VFPV3=ON WITH_JASPER=OFF ..
+	$(MAKE) -j $(shell nproc --all)
+	$(MAKE) preinstall
+	cd -
+
 # Cleanup temporary build files.
 clean:
 	rm -rf $(TMP_DIR)opencv
 
 # Do everything.
 install: deps download build sudo_install clean verify
+
+# Do everything on Raspbian.
+install_raspi: deps download build_raspi sudo_install clean verify
 
 # Install system wide.
 sudo_install:
