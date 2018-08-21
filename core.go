@@ -520,6 +520,18 @@ func (m *Mat) GetDoubleAt3(x, y, z int) float64 {
 	return float64(C.Mat_GetDouble3(m.p, C.int(x), C.int(y), C.int(z)))
 }
 
+// SetTo sets all or some of the array elements to the specified scalar value.
+func (m *Mat) SetTo(s Scalar) {
+	sVal := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
+	}
+
+	C.Mat_SetTo(m.p, sVal)
+}
+
 // SetUCharAt sets a value at a specific row/col
 // in this Mat expecting it to be of type uchar aka CV_8U.
 func (m *Mat) SetUCharAt(row int, col int, val uint8) {

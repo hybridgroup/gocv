@@ -233,6 +233,7 @@ float Mat_GetFloat3(Mat m, int x, int y, int z);
 double Mat_GetDouble(Mat m, int row, int col);
 double Mat_GetDouble3(Mat m, int x, int y, int z);
 
+void Mat_SetTo(Mat m, Scalar value);
 void Mat_SetUChar(Mat m, int row, int col, uint8_t val);
 void Mat_SetUChar3(Mat m, int x, int y, int z, uint8_t val);
 void Mat_SetSChar(Mat m, int row, int col, int8_t val);
