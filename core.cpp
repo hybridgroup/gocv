@@ -213,6 +213,11 @@ double Mat_GetDouble3(Mat m, int x, int y, int z) {
     return m->at<double>(x, y, z);
 }
 
+void Mat_SetTo(Mat m, Scalar value) {
+    cv::Scalar c_value(value.val1, value.val2, value.val3, value.val4);
+    m->setTo(c_value);
+}
+
 // Mat_SetUChar set a specific row/col value from this Mat expecting
 // each element to contain a schar aka CV_8U.
 void Mat_SetUChar(Mat m, int row, int col, uint8_t val) {

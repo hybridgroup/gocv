@@ -571,6 +571,16 @@ func TestMatAccessors(t *testing.T) {
 }
 
 func TestMatMutators(t *testing.T) {
+	t.Run("SetTo", func(t *testing.T) {
+		mat := NewMatWithSizeFromScalar(NewScalar(0, 0, 0, 0), 1, 1, MatTypeCV8U)
+		mat.SetTo(NewScalar(255, 255, 255, 255))
+		for z := 0; z < mat.Channels(); z++ {
+			if mat.GetUCharAt3(0, 0, z) != 255 {
+				t.Errorf("SetTo incorrect value: z=%v: %v\n", z, mat.GetUCharAt3(0, 0, z))
+			}
+		}
+		mat.Close()
+	})
 	t.Run("SetUCharAt", func(t *testing.T) {
 		mat := NewMatWithSize(101, 102, MatTypeCV8U)
 		mat.SetUCharAt(50, 50, 25)
