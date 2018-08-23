@@ -822,12 +822,23 @@ func TestMatMerge(t *testing.T) {
 }
 
 func TestMatMultiply(t *testing.T) {
-	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
-	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	mat1 := NewMatWithSize(101, 102, MatTypeCV64F)
+	mat2 := NewMatWithSize(101, 102, MatTypeCV64F)
 	mat3 := NewMat()
 	Multiply(mat1, mat2, &mat3)
 	if mat3.Empty() {
 		t.Error("TestMatMultiply dest mat3 should not be empty.")
+	}
+
+	// since this is a single channel Mat, only the first value in the scalar is used
+	mat4 := NewMatWithSizeFromScalar(NewScalar(2.0, 0.0, 0.0, 0.0), 101, 102, MatTypeCV64F)
+	mat5 := NewMatWithSizeFromScalar(NewScalar(3.0, 0.0, 0.0, 0.0), 101, 102, MatTypeCV64F)
+	Multiply(mat4, mat5, &mat3)
+	if mat3.Empty() {
+		t.Error("TestMatMultiply dest mat3 should not be empty.")
+	}
+	if mat3.GetDoubleAt(0, 0) != 6.0 {
+		t.Error("TestMatMultiply invalue value in dest mat3.")
 	}
 }
 

@@ -1260,8 +1260,8 @@ func MinMaxLoc(input Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
 	return float32(cMinVal), float32(cMaxVal), minLoc, maxLoc
 }
 
-// Multiply performs the per-element multiplication
-// on two arrays or an array and a scalar.
+// Multiply calculates the per-element scaled product of two arrays.
+// Both input arrays must be of the same size and the same type.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga979d898a58d7f61c53003e162e7ad89f
