@@ -58,12 +58,15 @@ import (
 )
 
 func main() {
+    // set to use a video capture device 0
+    deviceID := 0
+
 	// open webcam
-	webcam, err := gocv.OpenVideoCapture(0)
+	webcam, err := gocv.OpenVideoCapture(deviceID)
 	if err != nil {
 		fmt.Println(err)
 		return
-	}	
+	}
 	defer webcam.Close()
 
 	// open display window
@@ -311,7 +314,7 @@ Choose the options for "posix" threads, and for "seh" exceptions handling, then 
 
 Add the `C:\Program Files\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev2\mingw64\bin` path to your System Path.
 
-#### CMake 
+#### CMake
 
 Download and install CMake [https://cmake.org/download/](https://cmake.org/download/) to the default location. CMake installer will add CMake to your system path.
 
