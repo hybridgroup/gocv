@@ -604,6 +604,54 @@ func (m *Mat) SetDoubleAt3(x, y, z int, val float64) {
 	C.Mat_SetDouble3(m.p, C.int(x), C.int(y), C.int(z), C.double(val))
 }
 
+// AddUChar adds a uchar value to each element in the Mat. Performs a
+// mat += val operation.
+func (m *Mat) AddUChar(val uint8) {
+	C.Mat_AddUChar(m.p, C.uint8_t(val))
+}
+
+// SubtractUChar subtracts a uchar value from each element in the Mat. Performs a
+// mat -= val operation.
+func (m *Mat) SubtractUChar(val uint8) {
+	C.Mat_SubtractUChar(m.p, C.uint8_t(val))
+}
+
+// MultiplyUChar multiplies each element in the Mat by a uint value. Performs a
+// mat *= val operation.
+func (m *Mat) MultiplyUChar(val uint8) {
+	C.Mat_MultiplyUChar(m.p, C.uint8_t(val))
+}
+
+// DivideUChar divides each element in the Mat by a uint value. Performs a
+// mat /= val operation.
+func (m *Mat) DivideUChar(val uint8) {
+	C.Mat_DivideUChar(m.p, C.uint8_t(val))
+}
+
+// AddFloat adds a float value to each element in the Mat. Performs a
+// mat += val operation.
+func (m *Mat) AddFloat(val float32) {
+	C.Mat_AddFloat(m.p, C.float(val))
+}
+
+// SubtractFloat subtracts a float value from each element in the Mat. Performs a
+// mat -= val operation.
+func (m *Mat) SubtractFloat(val float32) {
+	C.Mat_SubtractFloat(m.p, C.float(val))
+}
+
+// MultiplyFloat multiplies each element in the Mat by a float value. Performs a
+// mat *= val operation.
+func (m *Mat) MultiplyFloat(val float32) {
+	C.Mat_MultiplyFloat(m.p, C.float(val))
+}
+
+// DivideFloat divides each element in the Mat by a float value. Performs a
+// mat /= val operation.
+func (m *Mat) DivideFloat(val float32) {
+	C.Mat_DivideFloat(m.p, C.float(val))
+}
+
 // ToImage converts a Mat to a image.Image.
 func (m *Mat) ToImage() (image.Image, error) {
 	t := m.Type()

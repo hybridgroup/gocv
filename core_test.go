@@ -677,6 +677,70 @@ func TestMatMutators(t *testing.T) {
 		}
 		mat.Close()
 	})
+	t.Run("AddUChar", func(t *testing.T) {
+		mat := NewMatWithSize(101, 102, MatTypeCV8U)
+		mat.AddUChar(42)
+		if mat.GetUCharAt(50, 50) != 42 {
+			t.Errorf("AddUChar incorrect value: %v\n", mat.GetUCharAt(50, 50))
+		}
+		mat.Close()
+	})
+	t.Run("SubtractUChar", func(t *testing.T) {
+		mat := NewMatWithSizeFromScalar(NewScalar(42.0, 0, 0, 0), 101, 102, MatTypeCV8U)
+		mat.SubtractUChar(40)
+		if mat.GetUCharAt(50, 50) != 2 {
+			t.Errorf("SubtractUChar incorrect value: %v\n", mat.GetUCharAt(50, 50))
+		}
+		mat.Close()
+	})
+	t.Run("MultiplyUChar", func(t *testing.T) {
+		mat := NewMatWithSizeFromScalar(NewScalar(5.0, 0, 0, 0), 101, 102, MatTypeCV8U)
+		mat.MultiplyUChar(5)
+		if mat.GetUCharAt(50, 50) != 25 {
+			t.Errorf("MultiplyUChar incorrect value: %v\n", mat.GetUCharAt(50, 50))
+		}
+		mat.Close()
+	})
+	t.Run("DivideUChar", func(t *testing.T) {
+		mat := NewMatWithSizeFromScalar(NewScalar(25.0, 0, 0, 0), 101, 102, MatTypeCV8U)
+		mat.DivideUChar(5)
+		if mat.GetUCharAt(50, 50) != 5 {
+			t.Errorf("DivideUChar incorrect value: %v\n", mat.GetUCharAt(50, 50))
+		}
+		mat.Close()
+	})
+	t.Run("AddFloat", func(t *testing.T) {
+		mat := NewMatWithSizeFromScalar(NewScalar(30.0, 0, 0, 0), 101, 102, MatTypeCV32F)
+		mat.AddFloat(1.0)
+		if mat.GetFloatAt(50, 50) != 31.0 {
+			t.Errorf("AddFloat incorrect value: %v\n", mat.GetFloatAt(50, 50))
+		}
+		mat.Close()
+	})
+	t.Run("SubtractFloat", func(t *testing.T) {
+		mat := NewMatWithSizeFromScalar(NewScalar(30.0, 0, 0, 0), 101, 102, MatTypeCV32F)
+		mat.SubtractFloat(1.0)
+		if mat.GetFloatAt(50, 50) != 29.0 {
+			t.Errorf("SubtractFloat incorrect value: %v\n", mat.GetFloatAt(50, 50))
+		}
+		mat.Close()
+	})
+	t.Run("MultiplyFloat", func(t *testing.T) {
+		mat := NewMatWithSizeFromScalar(NewScalar(30.0, 0, 0, 0), 101, 102, MatTypeCV32F)
+		mat.MultiplyFloat(2.0)
+		if mat.GetFloatAt(50, 50) != 60.0 {
+			t.Errorf("MultiplyFloat incorrect value: %v\n", mat.GetFloatAt(50, 50))
+		}
+		mat.Close()
+	})
+	t.Run("DivideFloat", func(t *testing.T) {
+		mat := NewMatWithSizeFromScalar(NewScalar(30.0, 0, 0, 0), 101, 102, MatTypeCV32F)
+		mat.DivideFloat(2.0)
+		if mat.GetFloatAt(50, 50) != 15.0 {
+			t.Errorf("DivideFloat incorrect value: %v\n", mat.GetFloatAt(50, 50))
+		}
+		mat.Close()
+	})
 }
 
 func TestMatAbsDiff(t *testing.T) {

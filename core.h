@@ -247,6 +247,15 @@ void Mat_SetFloat3(Mat m, int x, int y, int z, float val);
 void Mat_SetDouble(Mat m, int row, int col, double val);
 void Mat_SetDouble3(Mat m, int x, int y, int z, double val);
 
+void Mat_AddUChar(Mat m, uint8_t val);
+void Mat_SubtractUChar(Mat m, uint8_t val);
+void Mat_MultiplyUChar(Mat m, uint8_t val);
+void Mat_DivideUChar(Mat m, uint8_t val);
+void Mat_AddFloat(Mat m, float val);
+void Mat_SubtractFloat(Mat m, float val);
+void Mat_MultiplyFloat(Mat m, float val);
+void Mat_DivideFloat(Mat m, float val);
+
 void LUT(Mat src, Mat lut, Mat dst);
 
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst);

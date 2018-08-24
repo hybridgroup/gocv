@@ -278,6 +278,38 @@ void Mat_SetDouble3(Mat m, int x, int y, int z, double val) {
     m->at<double>(x, y, z) = val;
 }
 
+void Mat_AddUChar(Mat m, uint8_t val) {
+    *m += val;
+}
+
+void Mat_SubtractUChar(Mat m, uint8_t val) {
+    *m -= val;
+}
+
+void Mat_MultiplyUChar(Mat m, uint8_t val) {
+    *m *= val;
+}
+
+void Mat_DivideUChar(Mat m, uint8_t val) {
+    *m /= val;
+}
+
+void Mat_AddFloat(Mat m, float val) {
+    *m += val;
+}
+
+void Mat_SubtractFloat(Mat m, float val) {
+    *m -= val;
+}
+
+void Mat_MultiplyFloat(Mat m, float val) {
+    *m *= val;
+}
+
+void Mat_DivideFloat(Mat m, float val) {
+    *m /= val;
+}
+
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
     cv::absdiff(*src1, *src2, *dst);
 }
