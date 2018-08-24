@@ -5,7 +5,7 @@ if not exist "C:\opencv\build" mkdir "C:\opencv\build"
 
 echo Downloading OpenCV sources
 echo.
-echo For monitor the download progress please check the C:\opencv directory.
+echo For monitoring the download progress please check the C:\opencv directory.
 echo Not progress bar is provided here.
 echo.
 
