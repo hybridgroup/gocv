@@ -302,7 +302,7 @@ The following commands should do everything to download and install OpenCV 3.4.2
 	chdir %GOPATH%\src\gocv.io\x\gocv
 	win_build_opencv.cmd
 
-It might take up to one hour depending on your download and disk speed.
+It might take up to one hour.
 
 Last, add `C:\opencv\build\install\x64\mingw\bin` to your System Path.
 
