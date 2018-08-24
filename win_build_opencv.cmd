@@ -6,7 +6,6 @@ if not exist "C:\opencv\build" mkdir "C:\opencv\build"
 echo Downloading OpenCV sources
 echo.
 echo For monitoring the download progress please check the C:\opencv directory.
-echo Not progress bar is provided here.
 echo.
 
 REM This is why there is no progress bar:
