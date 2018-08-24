@@ -909,7 +909,7 @@ func TestMatMultiply(t *testing.T) {
 func TestMatNormalize(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
 	dst := NewMat()
-	Normalize(src, &dst, 0.0, 255.0, NormMixMax)
+	Normalize(src, &dst, 0.0, 255.0, NormMinMax)
 	if dst.Empty() {
 		t.Error("TestMatNormalize dst should not be empty.")
 	}

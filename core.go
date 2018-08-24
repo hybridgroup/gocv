@@ -1350,8 +1350,8 @@ const (
 	// NormRelative indicates use relative normalization.
 	NormRelative = 8
 
-	// NormMixMax indicates use min/max normalization.
-	NormMixMax = 32
+	// NormMinMax indicates use min/max normalization.
+	NormMinMax = 32
 )
 
 // Normalize normalizes the norm or value range of an array.
