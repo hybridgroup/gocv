@@ -1,13 +1,35 @@
+echo off
+
 if not exist "C:\opencv" mkdir "C:\opencv"
 if not exist "C:\opencv\build" mkdir "C:\opencv\build"
 
-powershell -command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri https://github.com/opencv/opencv/archive/3.4.2.zip -OutFile c:\opencv\opencv-3.4.2.zip"
-powershell -command "Expand-Archive -Path c:\opencv\opencv-3.4.2.zip -DestinationPath c:\opencv"
-del c:\opencv\opencv-3.4.2.zip /q
+echo Downloading OpenCV sources
+echo.
+echo For monitor the download progress please check the C:\opencv directory.
+echo Not progress bar is provided here.
+echo.
 
-powershell -command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri https://github.com/opencv/opencv_contrib/archive/3.4.2.zip -OutFile c:\opencv\opencv_contrib-3.4.2.zip"
-powershell -command "Expand-Archive -Path c:\opencv\opencv_contrib-3.4.2.zip -DestinationPath c:\opencv"
+REM This is why there is no progress bar:
+REM https://github.com/PowerShell/PowerShell/issues/2138
+
+echo Downloading: opencv-3.4.2.zip [91MB]
+powershell -command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://github.com/opencv/opencv/archive/3.4.2.zip -OutFile c:\opencv\opencv-3.4.2.zip"
+echo Extracting...
+powershell -command "$ProgressPreference = 'SilentlyContinue'; Expand-Archive -Path c:\opencv\opencv-3.4.2.zip -DestinationPath c:\opencv"
+del c:\opencv\opencv-3.4.2.zip /q
+echo.
+
+echo Downloading: opencv_contrib-3.4.2.zip [58MB]
+powershell -command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://github.com/opencv/opencv_contrib/archive/3.4.2.zip -OutFile c:\opencv\opencv_contrib-3.4.2.zip"
+echo Extracting...
+powershell -command "$ProgressPreference = 'SilentlyContinue'; Expand-Archive -Path c:\opencv\opencv_contrib-3.4.2.zip -DestinationPath c:\opencv"
 del c:\opencv\opencv_contrib-3.4.2.zip /q
+echo.
+
+echo Done with downloading and extracting sources.
+echo.
+
+echo on
 
 cd C:\opencv\build
 set PATH=%PATH%;C:\Program Files (x86)\CMake\bin;C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin
