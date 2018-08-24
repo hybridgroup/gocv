@@ -250,3 +250,14 @@ func TestParseNetTarget(t *testing.T) {
 		t.Errorf("ParseNetTarget invalid")
 	}
 }
+
+func TestFP16BlobFromImage(t *testing.T) {
+	img := NewMatWithSize(100, 100, 5+16)
+	defer img.Close()
+
+	data := FP16BlobFromImage(img, 1.0, image.Pt(100, 100), 0, false, false)
+
+	if len(data) != 60000 {
+		t.Errorf("FP16BlobFromImage incorrect length: %v\n", len(data))
+	}
+}
