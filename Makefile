@@ -8,7 +8,7 @@ OPENCV_VERSION?=3.4.2
 TMP_DIR?=/tmp/
 
 # Package list for each well-known Linux distribution
-RPMS=cmake git gtk2-devel libpng-devel libjpeg-devel libtiff-devel tbb tbb-devel libdc1394-devel
+RPMS=cmake git gtk2-devel libpng-devel libjpeg-devel libtiff-devel tbb tbb-devel libdc1394-devel unzip
 DEBS=unzip build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
 
 # Detect Linux distribution
@@ -43,9 +43,9 @@ deps_debian:
 download:
 	mkdir $(TMP_DIR)opencv
 	cd $(TMP_DIR)opencv
-	wget --quiet -O opencv.zip https://github.com/opencv/opencv/archive/$(OPENCV_VERSION).zip
+	curl -Lo opencv.zip https://github.com/opencv/opencv/archive/$(OPENCV_VERSION).zip
 	unzip -q opencv.zip
-	wget --quiet -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/$(OPENCV_VERSION).zip
+	curl -Lo opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/$(OPENCV_VERSION).zip
 	unzip -q opencv_contrib.zip
 	rm opencv.zip opencv_contrib.zip
 	cd -
