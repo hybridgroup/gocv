@@ -1308,6 +1308,15 @@ func MinMaxLoc(input Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
 	return float32(cMinVal), float32(cMaxVal), minLoc, maxLoc
 }
 
+//Mulspectrums performs the per-element multiplication of two Fourier spectrums.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga3ab38646463c59bf0ce962a9d51db64f
+//
+func MulSpectrums(a Mat, b Mat, dst *Mat, flags DftFlags) {
+	C.Mat_MulSpectrums(a.p, b.p, dst.p, C.int(flags))
+}
+
 // Multiply calculates the per-element scaled product of two arrays.
 // Both input arrays must be of the same size and the same type.
 //

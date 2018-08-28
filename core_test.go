@@ -885,6 +885,22 @@ func TestMatMerge(t *testing.T) {
 	}
 }
 
+func TestMatMulSpectrums(t *testing.T) {
+	a := NewMatWithSize(101, 102, MatTypeCV32F)
+	b := NewMatWithSize(101, 102, MatTypeCV32F)
+	dst := NewMat()
+	MulSpectrums(a, b, &dst, 0)
+	if dst.Empty() {
+		t.Error("TestMatMulSpectrums dst should not be empty.")
+	}
+	dst2 := NewMat()
+	//test with dftrows flag (the only flag accepted in addition to 0)
+	MulSpectrums(a, b, &dst2, DftRows)
+	if dst2.Empty() {
+		t.Error("TestMatMulSpectrums dst should not be empty.")
+	}
+}
+
 func TestMatMultiply(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV64F)
 	mat2 := NewMatWithSize(101, 102, MatTypeCV64F)

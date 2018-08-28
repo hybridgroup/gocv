@@ -514,6 +514,10 @@ void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* 
     maxLoc->y = cMaxLoc.y;
 }
 
+void Mat_MulSpectrums(Mat a, Mat b, Mat c, int flags) {
+    cv::mulSpectrums(*a, *b, *c, flags);
+}
+
 void Mat_Multiply(Mat src1, Mat src2, Mat dst) {
     cv::multiply(*src1, *src2, *dst);
 }
