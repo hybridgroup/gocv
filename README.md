@@ -144,7 +144,7 @@ The following commands should do everything to download and install OpenCV 3.4.2
 
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
-	gocv version: 0.15.0
+	gocv version: 0.16.0
 	opencv lib version: 3.4.2
 
 That's it, now you are ready to use GoCV.
@@ -195,7 +195,7 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-	gocv version: 0.15.0
+	gocv version: 0.16.0
 	opencv lib version: 3.4.2
 
 #### Cleanup extra files
@@ -242,7 +242,7 @@ The following commands should do everything to download and install OpenCV 3.4.2
 
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
-	gocv version: 0.15.0
+	gocv version: 0.16.0
 	opencv lib version: 3.4.2
 
 That's it, now you are ready to use GoCV.
@@ -273,7 +273,7 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-	gocv version: 0.15.0
+	gocv version: 0.16.0
 	opencv lib version: 3.4.2
 
 ### Cache builds
@@ -341,7 +341,7 @@ Now you should be able to build or run any of the command examples:
 
 The version program should output the following:
 
-	gocv version: 0.15.0
+	gocv version: 0.16.0
 	opencv lib version: 3.4.2
 
 That's it, now you are ready to use GoCV.

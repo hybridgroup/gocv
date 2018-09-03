@@ -1,3 +1,20 @@
+0.16.0
+---
+* **build**
+    * add make task for Raspbian install with ARM hardware optimizations
+    * use all available cores to compile OpenCV on Windows as discussed in issue #275
+    * download performance improvements for OpenCV installs on Windows
+    * correct various errors and issues with OpenCV installs on Fedora and CentOS
+* **core**
+    * correct spelling error in constant to fix issue #269
+    * implemented & added test for Mat.SetTo
+    * improve Multiply() GoDoc and test showing Scalar() multiplication
+    * mutator functions for Mat add, subtract, multiply, and divide for uint8 and float32 values.
+* **dnn**
+    * add FP16BlobFromImage() function to convert an image Mat to a half-float aka FP16 slice of bytes
+* **docs**
+    * fix a varible error in example code in README
+
 0.15.0
 ---
 * **build**
