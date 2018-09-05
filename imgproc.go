@@ -566,6 +566,15 @@ func GaussianBlur(src Mat, dst *Mat, ksize image.Point, sigmaX float64,
 	C.GaussianBlur(src.p, dst.p, pSize, C.double(sigmaX), C.double(sigmaY), C.int(borderType))
 }
 
+// Sobel calculates the first, second, third, or mixed image derivatives using an extended Sobel operator
+//
+// For firther details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gacea54f142e81b6758cb6f375ce782c8d
+//
+func Sobel(src Mat, dst *Mat, ddepth, dx, dy, ksize int, scale, delta float64, borderType BorderType) {
+	C.Sobel(src.p, dst.p, C.int(ddepth), C.int(dx), C.int(dy), C.int(ksize), C.double(scale), C.double(delta), C.int(borderType))
+}
+
 // Laplacian calculates the Laplacian of an image.
 //
 // For further details, please see:
