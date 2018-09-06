@@ -135,6 +135,25 @@ func TestSobel(t *testing.T) {
 	}
 }
 
+func TestSpatialGradient(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in SpatialGradient test")
+	}
+	defer img.Close()
+
+	dx := NewMat()
+	defer dx.Close()
+
+	dy := NewMat()
+	defer dy.Close()
+
+	SpatialGradient(img, &dx, &dy, MatTypeCV16S, BorderDefault)
+	if dx.Empty() || dy.Empty() || img.Rows() != dx.Rows() || img.Rows() != dy.Rows() || img.Cols() != dx.Cols() || img.Cols() != dy.Cols() {
+		t.Error("Invalid SpatialGradient test")
+	}
+}
+
 func TestBoxFilter(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
