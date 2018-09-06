@@ -432,3 +432,7 @@ void DrawContours(Mat src, Contours contours, int contourIdx, Scalar color, int 
 void Sobel(Mat src, Mat dst, int ddepth, int dx, int dy, int ksize, double scale, double delta, int borderType) {
 	cv::Sobel(*src, *dst, ddepth, dx, dy, ksize, scale, delta, borderType);
 }
+
+void SpatialGradient(Mat src, Mat dx, Mat dy, int ksize, int borderType) {
+	cv::spatialGradient(*src, *dx, *dy, ksize, borderType);
+}

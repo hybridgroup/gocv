@@ -568,11 +568,20 @@ func GaussianBlur(src Mat, dst *Mat, ksize image.Point, sigmaX float64,
 
 // Sobel calculates the first, second, third, or mixed image derivatives using an extended Sobel operator
 //
-// For firther details, please see:
+// For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gacea54f142e81b6758cb6f375ce782c8d
 //
 func Sobel(src Mat, dst *Mat, ddepth, dx, dy, ksize int, scale, delta float64, borderType BorderType) {
 	C.Sobel(src.p, dst.p, C.int(ddepth), C.int(dx), C.int(dy), C.int(ksize), C.double(scale), C.double(delta), C.int(borderType))
+}
+
+// SpatialGradient calculates the first order image derivative in both x and y using a Sobel operator.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga405d03b20c782b65a4daf54d233239a2
+//
+func SpatialGradient(src Mat, dx, dy *Mat, ksize int, borderType BorderType) {
+	C.SpatialGradient(src.p, dx.p, dy.p, C.int(ksize), C.int(borderType))
 }
 
 // Laplacian calculates the Laplacian of an image.
