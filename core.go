@@ -1460,6 +1460,15 @@ func Pow(src Mat, power float64, dst *Mat) {
 	C.Mat_Pow(src.p, C.double(power), dst.p)
 }
 
+// Phase calculates the rotation angle of 2D vectors.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9db9ca9b4d81c3bde5677b8f64dc0137
+//
+func Phase(x, y Mat, angle *Mat, angleInDegrees bool) {
+	C.Mat_Phase(x.p, y.p, angle.p, C.bool(angleInDegrees))
+}
+
 // TermCriteria is the criteria for iterative algorithms.
 //
 // For further details, please see:

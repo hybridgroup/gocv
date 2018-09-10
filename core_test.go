@@ -1230,6 +1230,27 @@ func TestMatFlip(t *testing.T) {
 	}
 }
 
+func TestMatPhase(t *testing.T) {
+	x := NewMatFromScalar(NewScalar(1.2, 2.3, 3.4, 4.5), MatTypeCV32F)
+	defer x.Close()
+
+	y := NewMatFromScalar(NewScalar(5.6, 6.7, 7.8, 8.9), MatTypeCV32F)
+	defer y.Close()
+
+	angle := NewMatWithSize(4, 5, MatTypeCV32F)
+	defer angle.Close()
+
+	Phase(x, y, &angle, false)
+
+	if angle.Empty() {
+		t.Error("TestMatPhase angle should not be empty.")
+	}
+
+	if angle.Rows() != x.Rows() {
+		t.Error("TestMatPhase x and angle size should be same.")
+	}
+}
+
 func TestMatGemm(t *testing.T) {
 	src1 := NewMatWithSize(3, 4, MatTypeCV32F)
 	defer src1.Close()

@@ -562,6 +562,10 @@ void Mat_Pow(Mat src, double power, Mat dst) {
     cv::pow(*src, power, *dst);
 }
 
+void Mat_Phase(Mat x, Mat y, Mat angle, bool angleInDegrees) {
+	cv::phase(*x, *y, *angle, angleInDegrees);
+}
+
 
 Scalar Mat_Sum(Mat src) {
     cv::Scalar c = cv::sum(*src);
