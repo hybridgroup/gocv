@@ -218,7 +218,10 @@ func TestMatchTemplate(t *testing.T) {
 	defer imgTemplate.Close()
 
 	result := NewMat()
-	MatchTemplate(imgScene, imgTemplate, &result, TmCcoeffNormed, NewMat())
+	defer result.Close()
+	m := NewMat()
+	MatchTemplate(imgScene, imgTemplate, &result, TmCcoeffNormed, m)
+	m.Close()
 	_, maxConfidence, _, _ := MinMaxLoc(result)
 	if maxConfidence < 0.95 {
 		t.Errorf("Max confidence of %f is too low. MatchTemplate could not find template in scene.", maxConfidence)
@@ -820,18 +823,26 @@ func TestGetRotationMatrix2D(t *testing.T) {
 
 func TestWarpAffine(t *testing.T) {
 	src := NewMatWithSize(256, 256, MatTypeCV8UC1)
+	defer src.Close()
 	rot := GetRotationMatrix2D(image.Point{0, 0}, 1.0, 1.0)
 	dst := src.Clone()
+	defer dst.Close()
 
 	WarpAffine(src, &dst, rot, image.Point{256, 256})
 	result := Norm(dst, NormL2)
 	if result != 0.0 {
 		t.Errorf("WarpAffine() = %v, want %v", result, 0.0)
 	}
-	src = IMRead("images/gocvlogo.jpg", IMReadUnchanged)
-	dst = src.Clone()
+}
+
+func TestWarpAffineGocvLogo(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+	rot := GetRotationMatrix2D(image.Point{0, 0}, 1.0, 1.0)
+	dst := src.Clone()
+	defer dst.Close()
 	WarpAffine(src, &dst, rot, image.Point{343, 400})
-	result = Norm(dst, NormL2)
+	result := Norm(dst, NormL2)
 
 	if !floatEquals(round(result, 0.05), round(111111.05, 0.05)) {
 		t.Errorf("WarpAffine() = %v, want %v", round(result, 0.05), round(111111.05, 0.05))
@@ -840,19 +851,26 @@ func TestWarpAffine(t *testing.T) {
 
 func TestWarpAffineWithParams(t *testing.T) {
 	src := NewMatWithSize(256, 256, MatTypeCV8UC1)
+	defer src.Close()
 	rot := GetRotationMatrix2D(image.Point{0, 0}, 1.0, 1.0)
 	dst := src.Clone()
+	defer dst.Close()
 
 	WarpAffineWithParams(src, &dst, rot, image.Point{256, 256}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
 	result := Norm(dst, NormL2)
 	if !floatEquals(result, 0.0) {
 		t.Errorf("WarpAffineWithParams() = %v, want %v", result, 0.0)
 	}
+}
 
-	src = IMRead("images/gocvlogo.jpg", IMReadUnchanged)
-	dst = src.Clone()
+func TestWarpAffineWithParamsGocvLogo(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+	rot := GetRotationMatrix2D(image.Point{0, 0}, 1.0, 1.0)
+	dst := src.Clone()
+	defer dst.Close()
 	WarpAffineWithParams(src, &dst, rot, image.Point{343, 400}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
-	result = Norm(dst, NormL2)
+	result := Norm(dst, NormL2)
 	if !floatEquals(round(result, 0.05), round(111111.05, 0.05)) {
 		t.Errorf("WarpAffine() = %v, want %v", round(result, 0.05), round(111111.05, 0.05))
 	}
@@ -886,6 +904,7 @@ func TestApplyColorMap(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			dst := src.Clone()
+			defer dst.Close()
 			ApplyColorMap(src, &dst, tt.args.colormapType)
 			result := Norm(dst, NormL2)
 			if !floatEquals(result, tt.args.want) {
@@ -897,9 +916,12 @@ func TestApplyColorMap(t *testing.T) {
 
 func TestApplyCustomColorMap(t *testing.T) {
 	src := IMRead("images/gocvlogo.jpg", IMReadGrayScale)
+	defer src.Close()
 	customColorMap := NewMatWithSize(256, 1, MatTypeCV8UC1)
+	defer customColorMap.Close()
 
 	dst := src.Clone()
+	defer dst.Close()
 	ApplyCustomColorMap(src, &dst, customColorMap)
 	result := Norm(dst, NormL2)
 	if !floatEquals(result, 0.0) {

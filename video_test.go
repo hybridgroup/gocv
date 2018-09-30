@@ -58,6 +58,7 @@ func TestCalcOpticalFlowFarneback(t *testing.T) {
 	CvtColor(img1, &dest, ColorBGRAToGray)
 
 	img2 := dest.Clone()
+	defer img2.Close()
 
 	flow := NewMat()
 	defer flow.Close()
@@ -88,6 +89,7 @@ func TestCalcOpticalFlowPyrLK(t *testing.T) {
 	CvtColor(img1, &dest, ColorBGRAToGray)
 
 	img2 := dest.Clone()
+	defer img2.Close()
 
 	prevPts := NewMat()
 	defer prevPts.Close()
