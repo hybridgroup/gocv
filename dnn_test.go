@@ -66,6 +66,7 @@ func TestReadNet(t *testing.T) {
 	}
 
 	probMat := prob[0].Reshape(1, 1)
+	defer probMat.Close()
 	_, maxVal, minLoc, maxLoc := MinMaxLoc(probMat)
 
 	if round(float64(maxVal), 0.00005) != 0.99995 {
@@ -117,6 +118,7 @@ func TestCaffe(t *testing.T) {
 	}
 
 	probMat := prob.Reshape(1, 1)
+	defer probMat.Close()
 	_, maxVal, minLoc, maxLoc := MinMaxLoc(probMat)
 
 	if round(float64(maxVal), 0.00005) != 0.99995 {
@@ -163,6 +165,7 @@ func TestTensorflow(t *testing.T) {
 	}
 
 	probMat := prob.Reshape(1, 1)
+	defer probMat.Close()
 	_, maxVal, minLoc, maxLoc := MinMaxLoc(probMat)
 
 	if round(float64(maxVal), 0.00005) != 1.0 {

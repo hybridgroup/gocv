@@ -19,7 +19,7 @@ func TestMain(m *testing.M) {
 	if MatProfile.Count() != 0 {
 		var b bytes.Buffer
 		MatProfile.WriteTo(&b, 1)
-		fmt.Printf("Not all Mat's in tests were closed:%v", b.String())
+		fmt.Printf("Not all Mat's in tests were closed: %v", b.String())
 		os.Exit(1)
 	}
 	os.Exit(ret)
