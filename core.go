@@ -1409,6 +1409,31 @@ const (
 	EPS = 2
 )
 
+type SortFlags int
+
+const (
+	// Each matrix row is sorted independently
+	SortEveryRow SortFlags = 0
+
+	// Each matrix column is sorted independently; this flag and the previous one are mutually exclusive.
+	SortEveryColumn SortFlags = 1
+
+	// Each matrix row is sorted in the ascending order.
+	SortAscending SortFlags = 0
+
+	// Each matrix row is sorted in the descending order; this flag and the previous one are also mutually exclusive.
+	SortDescending SortFlags = 16
+)
+
+// Sort sorts each row or each column of a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga45dd56da289494ce874be2324856898f
+//
+func Sort(src Mat, dst *Mat, flags SortFlags) {
+	C.Mat_Sort(src.p, dst.p, C.int(flags))
+}
+
 // Split creates an array of single channel images from a multi-channel image
 //
 // For further details, please see:
