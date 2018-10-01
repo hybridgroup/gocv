@@ -534,6 +534,10 @@ void Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm) {
     cv::perspectiveTransform(*src, *dst, *tm);
 }
 
+void Mat_Sort(Mat src, Mat dst, int flags) {
+    cv::sort(*src, *dst, flags);
+}
+
 void Mat_Split(Mat src, struct Mats* mats) {
     std::vector<cv::Mat> channels;
     cv::split(*src, channels);

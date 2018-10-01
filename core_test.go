@@ -941,6 +941,36 @@ func TestMatPerspectiveTransform(t *testing.T) {
 	}
 }
 
+func TestMatSortEveryRowDescending(t *testing.T) {
+	rows := 2
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col))
+		}
+	}
+
+	dst := NewMat()
+	flags := SortEveryRow + SortDescending
+	Sort(src, &dst, flags)
+
+	if dst.Empty() {
+		t.Error("TestMatSortEveryRowDescending dst should not be empty.")
+	}
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			expected := cols - col - 1
+			result := dst.GetUCharAt(row, col)
+			if result != uint8(expected) {
+				t.Errorf("TestMatSortEveryRowDescending dst at row=%d col=%d should be %d and got %d.", row, col, expected, result)
+			}
+		}
+	}
+}
+
 func TestMatSplit(t *testing.T) {
 	src := IMRead("images/face.jpg", 1)
 	chans := Split(src)
