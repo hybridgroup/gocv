@@ -968,6 +968,28 @@ func TestMatSubtract(t *testing.T) {
 	}
 }
 
+func TestMatTrace(t *testing.T) {
+	rows := 3
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+
+	// Create and identity eye matrix
+	for row := 0; row <= rows; row++ {
+		for col := 0; col <= cols; col++ {
+			if row == col {
+				src.SetUCharAt(row, col, uint8(1))
+			}
+		}
+	}
+
+	trace := Trace(src)
+	expected := NewScalar(3, 0, 0, 0)
+
+	if trace.Val1 != expected.Val1 || trace.Val2 != expected.Val2 || trace.Val3 != expected.Val3 || trace.Val4 != expected.Val4 {
+		t.Errorf("Trace values should be %v and was %v", expected, trace)
+	}
+}
+
 func TestMatTransform(t *testing.T) {
 	src := IMRead("images/lut.png", 1)
 	dst := NewMat()
