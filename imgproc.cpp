@@ -428,3 +428,11 @@ void DrawContours(Mat src, Contours contours, int contourIdx, Scalar color, int 
     cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
     cv::drawContours(*src, cntrs, contourIdx, c, thickness);
 }
+
+void Sobel(Mat src, Mat dst, int ddepth, int dx, int dy, int ksize, double scale, double delta, int borderType) {
+	cv::Sobel(*src, *dst, ddepth, dx, dy, ksize, scale, delta, borderType);
+}
+
+void SpatialGradient(Mat src, Mat dx, Mat dy, int ksize, int borderType) {
+	cv::spatialGradient(*src, *dx, *dy, ksize, borderType);
+}

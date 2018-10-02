@@ -1308,6 +1308,15 @@ func MinMaxLoc(input Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
 	return float32(cMinVal), float32(cMaxVal), minLoc, maxLoc
 }
 
+//Mulspectrums performs the per-element multiplication of two Fourier spectrums.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga3ab38646463c59bf0ce962a9d51db64f
+//
+func MulSpectrums(a Mat, b Mat, dst *Mat, flags DftFlags) {
+	C.Mat_MulSpectrums(a.p, b.p, dst.p, C.int(flags))
+}
+
 // Multiply calculates the per-element scaled product of two arrays.
 // Both input arrays must be of the same size and the same type.
 //
@@ -1400,6 +1409,41 @@ const (
 	EPS = 2
 )
 
+type SortFlags int
+
+const (
+	// Each matrix row is sorted independently
+	SortEveryRow SortFlags = 0
+
+	// Each matrix column is sorted independently; this flag and the previous one are mutually exclusive.
+	SortEveryColumn SortFlags = 1
+
+	// Each matrix row is sorted in the ascending order.
+	SortAscending SortFlags = 0
+
+	// Each matrix row is sorted in the descending order; this flag and the previous one are also mutually exclusive.
+	SortDescending SortFlags = 16
+)
+
+// Sort sorts each row or each column of a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga45dd56da289494ce874be2324856898f
+//
+func Sort(src Mat, dst *Mat, flags SortFlags) {
+	C.Mat_Sort(src.p, dst.p, C.int(flags))
+}
+
+// SortIdx sorts each row or each column of a matrix.
+// Instead of reordering the elements themselves, it stores the indices of sorted elements in the output array
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gadf35157cbf97f3cb85a545380e383506
+//
+func SortIdx(src Mat, dst *Mat, flags SortFlags) {
+	C.Mat_SortIdx(src.p, dst.p, C.int(flags))
+}
+
 // Split creates an array of single channel images from a multi-channel image
 //
 // For further details, please see:
@@ -1449,6 +1493,15 @@ func Transpose(src Mat, dst *Mat) {
 //
 func Pow(src Mat, power float64, dst *Mat) {
 	C.Mat_Pow(src.p, C.double(power), dst.p)
+}
+
+// Phase calculates the rotation angle of 2D vectors.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9db9ca9b4d81c3bde5677b8f64dc0137
+//
+func Phase(x, y Mat, angle *Mat, angleInDegrees bool) {
+	C.Mat_Phase(x.p, y.p, angle.p, C.bool(angleInDegrees))
 }
 
 // TermCriteria is the criteria for iterative algorithms.

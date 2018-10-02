@@ -514,6 +514,10 @@ void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* 
     maxLoc->y = cMaxLoc.y;
 }
 
+void Mat_MulSpectrums(Mat a, Mat b, Mat c, int flags) {
+    cv::mulSpectrums(*a, *b, *c, flags);
+}
+
 void Mat_Multiply(Mat src1, Mat src2, Mat dst) {
     cv::multiply(*src1, *src2, *dst);
 }
@@ -528,6 +532,14 @@ double Norm(Mat src1, int normType) {
 
 void Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm) {
     cv::perspectiveTransform(*src, *dst, *tm);
+}
+
+void Mat_Sort(Mat src, Mat dst, int flags) {
+    cv::sort(*src, *dst, flags);
+}
+
+void Mat_SortIdx(Mat src, Mat dst, int flags) {
+    cv::sortIdx(*src, *dst, flags);
 }
 
 void Mat_Split(Mat src, struct Mats* mats) {
@@ -556,6 +568,10 @@ void Mat_Transpose(Mat src, Mat dst) {
 
 void Mat_Pow(Mat src, double power, Mat dst) {
     cv::pow(*src, power, *dst);
+}
+
+void Mat_Phase(Mat x, Mat y, Mat angle, bool angleInDegrees) {
+	cv::phase(*x, *y, *angle, angleInDegrees);
 }
 
 

@@ -885,6 +885,22 @@ func TestMatMerge(t *testing.T) {
 	}
 }
 
+func TestMatMulSpectrums(t *testing.T) {
+	a := NewMatWithSize(101, 102, MatTypeCV32F)
+	b := NewMatWithSize(101, 102, MatTypeCV32F)
+	dst := NewMat()
+	MulSpectrums(a, b, &dst, 0)
+	if dst.Empty() {
+		t.Error("TestMatMulSpectrums dst should not be empty.")
+	}
+	dst2 := NewMat()
+	//test with dftrows flag (the only flag accepted in addition to 0)
+	MulSpectrums(a, b, &dst2, DftRows)
+	if dst2.Empty() {
+		t.Error("TestMatMulSpectrums dst should not be empty.")
+	}
+}
+
 func TestMatMultiply(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV64F)
 	mat2 := NewMatWithSize(101, 102, MatTypeCV64F)
@@ -922,6 +938,56 @@ func TestMatPerspectiveTransform(t *testing.T) {
 	PerspectiveTransform(src, &dst, tm)
 	if dst.Empty() {
 		t.Error("PerspectiveTransform error")
+	}
+}
+
+func TestMatSortEveryRowDescending(t *testing.T) {
+	rows := 2
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col))
+		}
+	}
+
+	dst := NewMat()
+	flags := SortEveryRow + SortDescending
+	Sort(src, &dst, flags)
+
+	if dst.Empty() {
+		t.Error("TestMatSortEveryRowDescending dst should not be empty.")
+	}
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			expected := cols - col - 1
+			result := dst.GetUCharAt(row, col)
+			if result != uint8(expected) {
+				t.Errorf("TestMatSortEveryRowDescending dst at row=%d col=%d should be %d and got %d.", row, col, expected, result)
+			}
+		}
+	}
+}
+
+func TestMatSortIdxEveryRowDescending(t *testing.T) {
+	rows := 2
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col))
+		}
+	}
+
+	dst := NewMat()
+	flags := SortEveryRow + SortDescending
+	SortIdx(src, &dst, flags)
+
+	if dst.Empty() {
+		t.Error("TestMatSortIdxEveryRowDescending dst should not be empty.")
 	}
 }
 
@@ -1211,6 +1277,27 @@ func TestMatFlip(t *testing.T) {
 	}
 	if dst.Rows() != src.Rows() {
 		t.Error("TestMatFlip src and dst size should be same.")
+	}
+}
+
+func TestMatPhase(t *testing.T) {
+	x := NewMatFromScalar(NewScalar(1.2, 2.3, 3.4, 4.5), MatTypeCV32F)
+	defer x.Close()
+
+	y := NewMatFromScalar(NewScalar(5.6, 6.7, 7.8, 8.9), MatTypeCV32F)
+	defer y.Close()
+
+	angle := NewMatWithSize(4, 5, MatTypeCV32F)
+	defer angle.Close()
+
+	Phase(x, y, &angle, false)
+
+	if angle.Empty() {
+		t.Error("TestMatPhase angle should not be empty.")
+	}
+
+	if angle.Rows() != x.Rows() {
+		t.Error("TestMatPhase x and angle size should be same.")
 	}
 }
 

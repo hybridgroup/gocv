@@ -119,6 +119,41 @@ func TestBlur(t *testing.T) {
 	}
 }
 
+func TestSobel(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in Sobel test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	Sobel(img, &dest, MatTypeCV16S, 0, 1, 3, 1, 0, BorderDefault)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid Sober test")
+	}
+}
+
+func TestSpatialGradient(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in SpatialGradient test")
+	}
+	defer img.Close()
+
+	dx := NewMat()
+	defer dx.Close()
+
+	dy := NewMat()
+	defer dy.Close()
+
+	SpatialGradient(img, &dx, &dy, MatTypeCV16S, BorderDefault)
+	if dx.Empty() || dy.Empty() || img.Rows() != dx.Rows() || img.Rows() != dy.Rows() || img.Cols() != dx.Cols() || img.Cols() != dy.Cols() {
+		t.Error("Invalid SpatialGradient test")
+	}
+}
+
 func TestBoxFilter(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {

@@ -259,6 +259,12 @@ If you already have an earlier version of OpenCV installed, you should probably 
 
 	brew upgrade opencv
 
+### pkgconfig Installation
+pkg-config is used to determine the correct flags for compiling and linking OpenCV.
+You can install it by using Homebrew:
+    
+    brew install pkgconfig
+
 ### Verifying the installation
 
 To verify your installation you can run one of the included examples.
