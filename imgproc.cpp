@@ -436,3 +436,8 @@ void Sobel(Mat src, Mat dst, int ddepth, int dx, int dy, int ksize, double scale
 void SpatialGradient(Mat src, Mat dx, Mat dy, int ksize, int borderType) {
 	cv::spatialGradient(*src, *dx, *dy, ksize, borderType);
 }
+
+void Filter2D(Mat src, Mat dst, int ddepth, Mat kernel, Point anchor, double delta, int borderType) {
+        cv::Point anchorPt(anchor.x, anchor.y);
+        cv::filter2D(*src, *dst, ddepth, *kernel, anchorPt, delta, borderType);
+}

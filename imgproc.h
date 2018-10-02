@@ -74,6 +74,7 @@ Mat GetPerspectiveTransform(Contour src, Contour dst);
 void DrawContours(Mat src, Contours contours, int contourIdx, Scalar color, int thickness);
 void Sobel(Mat src, Mat dst, int ddepth, int dx, int dy, int ksize, double scale, double delta, int borderType);
 void SpatialGradient(Mat src, Mat dx, Mat dy, int ksize, int borderType);
+void Filter2D(Mat src, Mat dst, int ddepth, Mat kernel, Point anchor, double delta, int borderType);
 #ifdef __cplusplus
 }
 #endif
