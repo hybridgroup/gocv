@@ -436,3 +436,8 @@ void Sobel(Mat src, Mat dst, int ddepth, int dx, int dy, int ksize, double scale
 void SpatialGradient(Mat src, Mat dx, Mat dy, int ksize, int borderType) {
 	cv::spatialGradient(*src, *dx, *dy, ksize, borderType);
 }
+
+void Remap(Mat src, Mat dst, Mat map1, Mat map2, int interpolation, int borderMode, Scalar borderValue) {
+        cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
+        cv::remap(*src, *dst, *map1, *map2, interpolation, borderMode, c);
+}
