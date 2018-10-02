@@ -554,6 +554,16 @@ void Mat_Subtract(Mat src1, Mat src2, Mat dst) {
     cv::subtract(*src1, *src2, *dst);
 }
 
+Scalar Mat_Trace(Mat src) {
+    cv::Scalar c = cv::trace(*src);
+    Scalar scal = Scalar();
+    scal.val1 = c.val[0];
+    scal.val2 = c.val[1];
+    scal.val3 = c.val[2];
+    scal.val4 = c.val[3];
+    return scal;
+}
+
 void Mat_Transform(Mat src, Mat dst, Mat tm) {
     cv::transform(*src, *dst, *tm);
 }

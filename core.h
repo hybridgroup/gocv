@@ -315,6 +315,7 @@ void Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm);
 void Mat_Sort(Mat src, Mat dst, int flags);
 void Mat_Split(Mat src, struct Mats* mats);
 void Mat_Subtract(Mat src1, Mat src2, Mat dst);
+Scalar Mat_Trace(Mat src);
 void Mat_Transform(Mat src, Mat dst, Mat tm);
 void Mat_Transpose(Mat src, Mat dst);
 void Mat_Pow(Mat src, double power, Mat dst);

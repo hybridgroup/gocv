@@ -1458,6 +1458,16 @@ func Subtract(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_Subtract(src1.p, src2.p, dst.p)
 }
 
+// Trace returns the trace of a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga3419ac19c7dcd2be4bd552a23e147dd8
+//
+func Trace(src Mat) Scalar {
+	s := C.Mat_Trace(src.p)
+	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
+}
+
 // Transform performs the matrix transformation of every array element.
 //
 // For further details, please see:
