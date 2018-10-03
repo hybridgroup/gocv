@@ -941,6 +941,56 @@ func TestMatPerspectiveTransform(t *testing.T) {
 	}
 }
 
+func TestMatReduceToSingleRow(t *testing.T) {
+	rows := 2
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	dst := NewMat()
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col+1))
+		}
+	}
+
+	Reduce(src, &dst, 0, ReduceSum, MatTypeCV32F)
+
+	sz := dst.Size()
+	if sz[0] != 1 && sz[1] != 3 {
+		t.Errorf("TestMatReduceToSingleRow incorrect size: %v\n", sz)
+	}
+
+	if dst.GetFloatAt(0, 0) != 2 || dst.GetFloatAt(0, 1) != 4 || dst.GetFloatAt(0, 2) != 6 {
+		t.Errorf("TestMatReduceToSingleRow incorrect reduce result: %v at (0, 0) expected 2, %v at (0, 1) expected 4, %v at (0, 2) expected 6",
+			dst.GetFloatAt(0, 0), dst.GetFloatAt(0, 1), dst.GetFloatAt(0, 2))
+	}
+}
+
+func TestMatReduceToSingleColumn(t *testing.T) {
+	rows := 2
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	dst := NewMat()
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col+1))
+		}
+	}
+
+	Reduce(src, &dst, 1, ReduceSum, MatTypeCV32F)
+
+	sz := dst.Size()
+	if sz[0] != 3 && sz[1] != 1 {
+		t.Errorf("TestMatReduceToSingleColumn incorrect size: %v\n", sz)
+	}
+
+	if dst.GetFloatAt(0, 0) != 6 || dst.GetFloatAt(1, 0) != 6 {
+		t.Errorf("TestMatReduceToSingleColumn incorrect reduce result: %v at (0, 0) expected 6, %v at (1, 0) expected 6",
+			dst.GetFloatAt(0, 0), dst.GetFloatAt(1, 0))
+	}
+}
+
 func TestMatSortEveryRowDescending(t *testing.T) {
 	rows := 2
 	cols := 3

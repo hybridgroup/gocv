@@ -534,6 +534,10 @@ void Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm) {
     cv::perspectiveTransform(*src, *dst, *tm);
 }
 
+void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType) {
+    cv::reduce(*src, *dst, dim, rType, dType);
+}
+
 void Mat_Sort(Mat src, Mat dst, int flags) {
     cv::sort(*src, *dst, flags);
 }

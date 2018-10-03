@@ -312,6 +312,7 @@ void Mat_Subtract(Mat src1, Mat src2, Mat dst);
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ);
 double Norm(Mat src1, int normType);
 void Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm);
+void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType);
 void Mat_Sort(Mat src, Mat dst, int flags);
 void Mat_SortIdx(Mat src, Mat dst, int flags);
 void Mat_Split(Mat src, struct Mats* mats);
