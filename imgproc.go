@@ -1216,3 +1216,15 @@ func DrawContours(img *Mat, contours [][]image.Point, contourIdx int, c color.RG
 
 	C.DrawContours(img.p, cContours, C.int(contourIdx), sColor, C.int(thickness))
 }
+
+// Filter2D applies an arbitrary linear filter to an image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga27c049795ce870216ddfb366086b5a04
+func Filter2D(src Mat, dst *Mat, ddepth int, kernel Mat, anchor image.Point, delta float64, borderType BorderType) {
+	anchorP := C.struct_Point{
+		x: C.int(anchor.X),
+		y: C.int(anchor.Y),
+	}
+	C.Filter2D(src.p, dst.p, C.int(ddepth), kernel.p, anchorP, C.double(delta), C.int(borderType))
+}
