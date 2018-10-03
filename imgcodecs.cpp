@@ -27,6 +27,18 @@ struct ByteArray Image_IMEncode(const char* fileExt, Mat img) {
     return toByteArray(reinterpret_cast<const char*>(&data[0]), data.size());
 }
 
+struct ByteArray Image_IMEncode_WithParams(const char* fileExt, Mat img, IntVector params) {
+    std::vector<uchar> data;
+    std::vector<int> compression_params;
+
+    for (int i = 0, *v = params.val; i < params.length; ++v, ++i) {
+        compression_params.push_back(*v);
+    }
+
+    cv::imencode(fileExt, *img, data, compression_params);
+    return toByteArray(reinterpret_cast<const char*>(&data[0]), data.size());
+}
+
 Mat Image_IMDecode(ByteArray buf, int flags) {
     std::vector<char> data;
 
