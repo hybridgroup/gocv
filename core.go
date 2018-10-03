@@ -43,6 +43,9 @@ const (
 	// MatTypeCV16S is a Mat of 16-bit signed int
 	MatTypeCV16S = 3
 
+	// MatTypeCV16SC2 is a Mat of 16-bit signed int with 2 channels
+	MatTypeCV16SC2 = MatTypeCV16S + MatChannels2
+
 	// MatTypeCV32S is a Mat of 32-bit signed int
 	MatTypeCV32S = 4
 

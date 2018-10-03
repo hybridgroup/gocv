@@ -1217,6 +1217,20 @@ func DrawContours(img *Mat, contours [][]image.Point, contourIdx int, c color.RG
 	C.DrawContours(img.p, cContours, C.int(contourIdx), sColor, C.int(thickness))
 }
 
+// Remap applies a generic geometrical transformation to an image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gab75ef31ce5cdfb5c44b6da5f3b908ea4
+func Remap(src Mat, dst, map1, map2 *Mat, interpolation InterpolationFlags, borderMode BorderType, borderValue color.RGBA) {
+	bv := C.struct_Scalar{
+		val1: C.double(borderValue.B),
+		val2: C.double(borderValue.G),
+		val3: C.double(borderValue.R),
+		val4: C.double(borderValue.A),
+	}
+	C.Remap(src.p, dst.p, map1.p, map2.p, C.int(interpolation), C.int(borderMode), bv)
+}
+
 // Filter2D applies an arbitrary linear filter to an image.
 //
 // For further details, please see:
