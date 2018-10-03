@@ -1,8 +1,15 @@
 package gocv
 
 import (
+	"fmt"
+	"io"
 	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
+	"path"
 	"path/filepath"
+	"strconv"
 	"testing"
 )
 
@@ -55,6 +62,60 @@ func TestIMEncode(t *testing.T) {
 	}
 	if len(buf) < 43000 {
 		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", len(buf))
+	}
+}
+
+func ExampleIMEncodeWithParams() {
+	img := IMRead(path.Join(os.Getenv("GOPATH"), "src/gocv.io/x/gocv/images/face-detect.jpg"), IMReadColor)
+	if img.Empty() {
+		log.Fatal("Invalid Mat")
+	}
+
+	imgHandler := func(w http.ResponseWriter, req *http.Request) {
+		quality := 75
+		if q, err := strconv.Atoi(req.URL.Query().Get("q")); err == nil {
+			quality = q
+		}
+		buffer, err := IMEncodeWithParams(JPEGFileExt, img, []int{IMWriteJpegQuality, quality})
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			io.WriteString(w, err.Error())
+			return
+		}
+		w.Header().Set("Content-Type", "image/jpeg")
+		w.WriteHeader(http.StatusOK)
+		w.Write(buffer)
+	}
+
+	http.HandleFunc("/img", imgHandler)
+	fmt.Println("Open in browser http://127.0.0.1:8080/img?q=10 where q is a JPEG quality parameter")
+	log.Fatal(http.ListenAndServe("127.0.0.1:8080", nil))
+}
+
+func TestIMEncodeWithParams(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in IMEncode test")
+	}
+
+	buf, err := IMEncodeWithParams(JPEGFileExt, img, []int{IMWriteJpegQuality, 75})
+	if err != nil {
+		t.Error(err)
+	}
+	if len(buf) < 18000 {
+		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", len(buf))
+	}
+
+	buf2, err := IMEncodeWithParams(JPEGFileExt, img, []int{IMWriteJpegQuality, 100})
+	if err != nil {
+		t.Error(err)
+	}
+	if len(buf2) < 18000 {
+		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", len(buf))
+	}
+
+	if len(buf) >= len(buf2) {
+		t.Errorf("Jpeg quality parameter does not work correctly\n")
 	}
 }
 
