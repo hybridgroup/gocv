@@ -1254,3 +1254,15 @@ func SepFilter2D(src Mat, dst *Mat, ddepth int, kernelX, kernelY Mat, anchor ima
 	}
 	C.SepFilter2D(src.p, dst.p, C.int(ddepth), kernelX.p, kernelY.p, anchorP, C.double(delta), C.int(borderType))
 }
+
+// LogPolar remaps an image to semilog-polar coordinates space.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gaec3a0b126a85b5ca2c667b16e0ae022d
+func LogPolar(src Mat, dst *Mat, center image.Point, m float64, flags InterpolationFlags) {
+	centerP := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+	C.LogPolar(src.p, dst.p, centerP, C.double(m), C.int(flags))
+}

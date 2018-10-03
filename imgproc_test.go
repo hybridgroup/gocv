@@ -1076,3 +1076,17 @@ func TestSepFilter2D(t *testing.T) {
 		t.Errorf("Filter2D(): dst is empty")
 	}
 }
+
+func TestLogPolar(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := src.Clone()
+	defer dst.Close()
+
+	LogPolar(src, &dst, image.Pt(22, 22), 1, InterpolationDefault)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("TestLogPolar(): dst is empty")
+	}
+}

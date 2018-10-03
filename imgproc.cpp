@@ -452,3 +452,8 @@ void SepFilter2D(Mat src, Mat dst, int ddepth, Mat kernelX, Mat kernelY, Point a
 	cv::Point anchorPt(anchor.x, anchor.y);
 	cv::sepFilter2D(*src, *dst, ddepth, *kernelX, *kernelY, anchorPt, delta, borderType);
 }
+
+void LogPolar(Mat src, Mat dst, Point center, double m, int flags) {
+	cv::Point2f centerPt(center.x, center.y);
+	cv::logPolar(*src, *dst, centerPt, m, flags);
+}

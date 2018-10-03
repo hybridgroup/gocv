@@ -73,7 +73,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [initWideAngleProjMap](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gaceb049ec48898d1dadd5b50c604429c8)
         - [ ] [invertAffineTransform](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga57d3505a878a7e1a636645727ca08f51)
         - [ ] [linearPolar](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gaa38a6884ac8b6e0b9bed47939b5362f3)
-        - [ ] [logPolar](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gaec3a0b126a85b5ca2c667b16e0ae022d)
+        - [X] [logPolar](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gaec3a0b126a85b5ca2c667b16e0ae022d)
         - [X] [remap](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gab75ef31ce5cdfb5c44b6da5f3b908ea4)
         - [ ] [undistort](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga69f2545a8b62a6b0fc2ee060dc30559d)
         - [ ] [undistortPoints](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga55c716492470bfe86b0ee9bf3a1f0f7e)
