@@ -941,6 +941,40 @@ func TestMatPerspectiveTransform(t *testing.T) {
 	}
 }
 
+func TestMatSolve(t *testing.T) {
+	a := NewMatWithSize(3, 3, MatTypeCV32F)
+	b := NewMatWithSize(3, 1, MatTypeCV32F)
+	solve := NewMat()
+
+	testPoints := []struct {
+		x2 float32
+		x  float32
+		c  float32
+		y  float32
+	}{
+		{x2: 1, x: 2, c: 1},
+		{x2: 0, x: 2, c: 1},
+		{x2: 9, x: 4, c: 1},
+	}
+
+	for row, p := range testPoints {
+		a.SetFloatAt(row, 0, p.x2)
+		a.SetFloatAt(row, 1, p.x)
+		a.SetFloatAt(row, 2, p.c)
+		b.SetFloatAt(row, 0, p.y)
+
+	}
+
+	Solve(a, b, &solve, SolveDecompositionLu)
+
+	if solve.GetFloatAt(0, 0) != 1 || solve.GetFloatAt(1, 0) != -3 || solve.GetFloatAt(2, 0) != 2 {
+		t.Errorf("TestMatSolve incorrect results: %v expected %v, %v expected %v, %v expected %v",
+			solve.GetFloatAt(0, 0), 1,
+			solve.GetFloatAt(1, 0), -3,
+			solve.GetFloatAt(2, 0), 2)
+	}
+}
+
 func TestMatSortEveryRowDescending(t *testing.T) {
 	rows := 2
 	cols := 3

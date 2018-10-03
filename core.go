@@ -1409,6 +1409,39 @@ const (
 	EPS = 2
 )
 
+type SolveDecompositionFlags int
+
+const (
+	// Gaussian elimination with the optimal pivot element chosen.
+	SolveDecompositionLu = 0
+
+	// Singular value decomposition (SVD) method. The system can be over-defined and/or the matrix src1 can be singular.
+	SolveDecompositionSvd = 1
+
+	// Eigenvalue decomposition. The matrix src1 must be symmetrical.
+	SolveDecompositionEing = 2
+
+	// Cholesky LL^T factorization. The matrix src1 must be symmetrical and positively defined.
+	SolveDecompositionCholesky = 3
+
+	// QR factorization. The system can be over-defined and/or the matrix src1 can be singular.
+	SolveDecompositionQr = 4
+
+	// While all the previous flags are mutually exclusive, this flag can be used together with any of the previous.
+	// It means that the normal equations 𝚜𝚛𝚌𝟷^T⋅𝚜𝚛𝚌𝟷⋅𝚍𝚜𝚝=𝚜𝚛𝚌𝟷^T𝚜𝚛𝚌𝟸 are solved instead of the original system
+	// 𝚜𝚛𝚌𝟷⋅𝚍𝚜𝚝=𝚜𝚛𝚌𝟸.
+	SolveDecompositionNormal = 5
+)
+
+// Solve solves one or more linear systems or least-squares problems.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga12b43690dbd31fed96f213eefead2373
+//
+func Solve(src1 Mat, src2 Mat, dst *Mat, flags SolveDecompositionFlags) {
+	C.Mat_Solve(src1.p, src2.p, dst.p, C.int(flags))
+}
+
 type SortFlags int
 
 const (
