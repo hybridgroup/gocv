@@ -1445,6 +1445,15 @@ func Solve(src1 Mat, src2 Mat, dst *Mat, flags SolveDecompositionFlags) bool {
 	return bool(C.Mat_Solve(src1.p, src2.p, dst.p, C.int(flags)))
 }
 
+// SolveCubic finds the real roots of a cubic equation.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga1c3b0b925b085b6e96931ee309e6a1da
+//
+func SolveCubic(coeffs Mat, roots *Mat) int {
+	return int(C.Mat_SolveCubic(coeffs.p, roots.p))
+}
+
 type ReduceTypes int
 
 const (
