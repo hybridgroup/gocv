@@ -43,6 +43,9 @@ const (
 	// MatTypeCV16S is a Mat of 16-bit signed int
 	MatTypeCV16S = 3
 
+	// MatTypeCV16SC2 is a Mat of 16-bit signed int with 2 channels
+	MatTypeCV16SC2 = MatTypeCV16S + MatChannels2
+
 	// MatTypeCV32S is a Mat of 32-bit signed int
 	MatTypeCV32S = 4
 
@@ -1440,6 +1443,31 @@ const (
 //
 func Solve(src1 Mat, src2 Mat, dst *Mat, flags SolveDecompositionFlags) bool {
 	return bool(C.Mat_Solve(src1.p, src2.p, dst.p, C.int(flags)))
+}
+
+type ReduceTypes int
+
+const (
+	// The output is the sum of all rows/columns of the matrix.
+	ReduceSum ReduceTypes = 0
+
+	// The output is the mean vector of all rows/columns of the matrix.
+	ReduceAvg ReduceTypes = 1
+
+	// The output is the maximum (column/row-wise) of all rows/columns of the matrix.
+	ReduceMax ReduceTypes = 2
+
+	// The output is the minimum (column/row-wise) of all rows/columns of the matrix.
+	ReduceMin ReduceTypes = 3
+)
+
+// Reduce reduces a matrix to a vector.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4b78072a303f29d9031d56e5638da78e
+//
+func Reduce(src Mat, dst *Mat, dim int, rType ReduceTypes, dType int) {
+	C.Mat_Reduce(src.p, dst.p, C.int(dim), C.int(rType), C.int(dType))
 }
 
 type SortFlags int

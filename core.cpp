@@ -538,6 +538,10 @@ bool Mat_Solve(Mat src1, Mat src2, Mat dst, int flags) {
     return cv::solve(*src1, *src2, *dst, flags);
 }
 
+void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType) {
+    cv::reduce(*src, *dst, dim, rType, dType);
+}
+
 void Mat_Sort(Mat src, Mat dst, int flags) {
     cv::sort(*src, *dst, flags);
 }

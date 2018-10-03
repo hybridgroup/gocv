@@ -1025,3 +1025,37 @@ func TestFillPoly(t *testing.T) {
 		t.Errorf("TestFillPoly(): wrong pixel value = %v, want = %v", v, 255)
 	}
 }
+
+func TestRemap(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	map1 := NewMatWithSize(256, 256, MatTypeCV16SC2)
+	map1.SetFloatAt(50, 50, 25.4)
+	map2 := NewMat()
+
+	Remap(src, &dst, &map1, &map2, InterpolationDefault, BorderConstant, color.RGBA{0, 0, 0, 0})
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("Remap(): dst is empty")
+	}
+}
+
+func TestFilter2D(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := src.Clone()
+	defer dst.Close()
+
+	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
+
+	Filter2D(src, &dst, -1, kernel, image.Pt(-1, -1), 0, BorderDefault)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("Filter2D(): dst is empty")
+	}
+}
