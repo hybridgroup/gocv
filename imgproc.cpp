@@ -447,3 +447,8 @@ void Filter2D(Mat src, Mat dst, int ddepth, Mat kernel, Point anchor, double del
         cv::Point anchorPt(anchor.x, anchor.y);
         cv::filter2D(*src, *dst, ddepth, *kernel, anchorPt, delta, borderType);
 }
+
+void SepFilter2D(Mat src, Mat dst, int ddepth, Mat kernelX, Mat kernelY, Point anchor, double delta, int borderType) {
+	cv::Point anchorPt(anchor.x, anchor.y);
+	cv::sepFilter2D(*src, *dst, ddepth, *kernelX, *kernelY, anchorPt, delta, borderType);
+}

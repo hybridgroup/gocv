@@ -1059,3 +1059,20 @@ func TestFilter2D(t *testing.T) {
 		t.Errorf("Filter2D(): dst is empty")
 	}
 }
+
+func TestSepFilter2D(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := src.Clone()
+	defer dst.Close()
+
+	kernelX := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	kernelY := GetStructuringElement(MorphRect, image.Pt(1, 1))
+
+	SepFilter2D(src, &dst, -1, kernelX, kernelY, image.Pt(-1, -1), 0, BorderDefault)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("Filter2D(): dst is empty")
+	}
+}
