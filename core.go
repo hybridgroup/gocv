@@ -1437,6 +1437,16 @@ func Sort(src Mat, dst *Mat, flags SortFlags) {
 	C.Mat_Sort(src.p, dst.p, C.int(flags))
 }
 
+// SortIdx sorts each row or each column of a matrix.
+// Instead of reordering the elements themselves, it stores the indices of sorted elements in the output array
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gadf35157cbf97f3cb85a545380e383506
+//
+func SortIdx(src Mat, dst *Mat, flags SortFlags) {
+	C.Mat_SortIdx(src.p, dst.p, C.int(flags))
+}
+
 // Split creates an array of single channel images from a multi-channel image
 //
 // For further details, please see:

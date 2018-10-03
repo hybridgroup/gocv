@@ -538,6 +538,10 @@ void Mat_Sort(Mat src, Mat dst, int flags) {
     cv::sort(*src, *dst, flags);
 }
 
+void Mat_SortIdx(Mat src, Mat dst, int flags) {
+    cv::sortIdx(*src, *dst, flags);
+}
+
 void Mat_Split(Mat src, struct Mats* mats) {
     std::vector<cv::Mat> channels;
     cv::split(*src, channels);
