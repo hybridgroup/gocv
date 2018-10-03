@@ -1438,8 +1438,8 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga12b43690dbd31fed96f213eefead2373
 //
-func Solve(src1 Mat, src2 Mat, dst *Mat, flags SolveDecompositionFlags) {
-	C.Mat_Solve(src1.p, src2.p, dst.p, C.int(flags))
+func Solve(src1 Mat, src2 Mat, dst *Mat, flags SolveDecompositionFlags) bool {
+	return bool(C.Mat_Solve(src1.p, src2.p, dst.p, C.int(flags)))
 }
 
 type SortFlags int

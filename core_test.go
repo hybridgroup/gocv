@@ -952,23 +952,27 @@ func TestMatSolve(t *testing.T) {
 		c  float32
 		y  float32
 	}{
-		{x2: 1, x: 2, c: 1},
-		{x2: 0, x: 2, c: 1},
-		{x2: 9, x: 4, c: 1},
+		{x2: 1, x: 1, c: 1, y: 0},
+		{x2: 0, x: 0, c: 1, y: 2},
+		{x2: 9, x: 3, c: 1, y: 2},
 	}
 
 	for row, p := range testPoints {
 		a.SetFloatAt(row, 0, p.x2)
 		a.SetFloatAt(row, 1, p.x)
 		a.SetFloatAt(row, 2, p.c)
-		b.SetFloatAt(row, 0, p.y)
 
+		b.SetFloatAt(row, 0, p.y)
 	}
 
-	Solve(a, b, &solve, SolveDecompositionLu)
+	solved := Solve(a, b, &solve, SolveDecompositionLu)
+
+	if !solved {
+		t.Errorf("TestMatSolve could not solve linear equations")
+	}
 
 	if solve.GetFloatAt(0, 0) != 1 || solve.GetFloatAt(1, 0) != -3 || solve.GetFloatAt(2, 0) != 2 {
-		t.Errorf("TestMatSolve incorrect results: %v expected %v, %v expected %v, %v expected %v",
+		t.Errorf("TestMatSolve incorrect results: got %v expected %v, got %v expected %v, got %v expected %v",
 			solve.GetFloatAt(0, 0), 1,
 			solve.GetFloatAt(1, 0), -3,
 			solve.GetFloatAt(2, 0), 2)
