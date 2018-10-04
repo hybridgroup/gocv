@@ -979,6 +979,30 @@ func TestMatSolve(t *testing.T) {
 	}
 }
 
+func TestSolveCubic(t *testing.T) {
+	coeffs := NewMatWithSize(1, 4, MatTypeCV32F)
+	roots := NewMat()
+
+	coeffs.SetFloatAt(0, 0, 2.0)
+	coeffs.SetFloatAt(0, 1, 3.0)
+	coeffs.SetFloatAt(0, 2, -11.0)
+	coeffs.SetFloatAt(0, 3, -6.0)
+
+	rootsCount := SolveCubic(coeffs, &roots)
+
+	expectedRootsCount := 3
+	if rootsCount != expectedRootsCount {
+		t.Errorf("TestSolveCubic incorrect numbers of roots %d, expected %d", rootsCount, expectedRootsCount)
+	}
+
+	if roots.GetFloatAt(0, 0) != -3.0 || roots.GetFloatAt(0, 1) != 2.0 || roots.GetFloatAt(0, 0) != -3.0 {
+		t.Errorf("TestSolveCubic incorrect roots: got %f expected %f, got %f expected %f, got %f expected %f",
+			roots.GetFloatAt(0, 0), -3.0,
+			roots.GetFloatAt(0, 1), -0.5,
+			roots.GetFloatAt(0, 0), -3.0)
+	}
+}
+
 func TestMatReduceToSingleRow(t *testing.T) {
 	rows := 2
 	cols := 3

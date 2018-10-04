@@ -538,6 +538,10 @@ bool Mat_Solve(Mat src1, Mat src2, Mat dst, int flags) {
     return cv::solve(*src1, *src2, *dst, flags);
 }
 
+int Mat_SolveCubic(Mat coeffs, Mat roots) {
+    return cv::solveCubic(*coeffs, *roots);
+}
+
 void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType) {
     cv::reduce(*src, *dst, dim, rType, dType);
 }
