@@ -1087,6 +1087,19 @@ func TestLogPolar(t *testing.T) {
 	LogPolar(src, &dst, image.Pt(22, 22), 1, InterpolationDefault)
 
 	if ok := dst.Empty(); ok {
-		t.Errorf("TestLogPolar(): dst is empty")
+		t.Errorf("LogPolar(): dst is empty")
+	}
+}
+
+func TestFitLine(t *testing.T) {
+	points := []image.Point{image.Pt(125, 24), image.Pt(124, 75), image.Pt(175, 76), image.Pt(176, 25)}
+
+	line := NewMat()
+	defer line.Close()
+
+	FitLine(points, &line, DistL2, 0, 0.01, 0.01)
+
+	if ok := line.Empty(); ok {
+		t.Errorf("FitLine(): line is empty")
 	}
 }
