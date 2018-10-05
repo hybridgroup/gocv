@@ -1021,7 +1021,7 @@ func TestSolvePoly(t *testing.T) {
 
 	if roots.GetFloatAt(0, 0) != 7.0 {
 		t.Errorf("TestSolvePoly incorrect roots: got %f expected %f",
-			roots.GetFloatAt(0, 0), 7)
+			roots.GetFloatAt(0, 0), 7.0)
 	}
 }
 
