@@ -314,6 +314,7 @@ double Norm(Mat src1, int normType);
 void Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm);
 bool Mat_Solve(Mat src1, Mat src2, Mat dst, int flags);
 int Mat_SolveCubic(Mat coeffs, Mat roots);
+double Mat_SolvePoly(Mat coeffs, Mat roots, int maxIters);
 void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType);
 void Mat_Sort(Mat src, Mat dst, int flags);
 void Mat_SortIdx(Mat src, Mat dst, int flags);

@@ -1454,6 +1454,15 @@ func SolveCubic(coeffs Mat, roots *Mat) int {
 	return int(C.Mat_SolveCubic(coeffs.p, roots.p))
 }
 
+// SolvePoly finds the real or complex roots of a polynomial equation.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gac2f5e953016fabcdf793d762f4ec5dce
+//
+func SolvePoly(coeffs Mat, roots *Mat, maxIters int) float64 {
+	return float64(C.Mat_SolvePoly(coeffs.p, roots.p, C.int(maxIters)))
+}
+
 type ReduceTypes int
 
 const (
