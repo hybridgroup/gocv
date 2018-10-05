@@ -78,6 +78,7 @@ void Remap(Mat src, Mat dst, Mat map1, Mat map2, int interpolation, int borderMo
 void Filter2D(Mat src, Mat dst, int ddepth, Mat kernel, Point anchor, double delta, int borderType);
 void SepFilter2D(Mat src, Mat dst, int ddepth, Mat kernelX, Mat kernelY, Point anchor, double delta, int borderType);
 void LogPolar(Mat src, Mat dst, Point center, double m, int flags);
+void FitLine(Contour points, Mat line, int distType, double param, double reps, double aeps);
 #ifdef __cplusplus
 }
 #endif

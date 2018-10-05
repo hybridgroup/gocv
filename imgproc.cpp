@@ -457,3 +457,11 @@ void LogPolar(Mat src, Mat dst, Point center, double m, int flags) {
 	cv::Point2f centerPt(center.x, center.y);
 	cv::logPolar(*src, *dst, centerPt, m, flags);
 }
+
+void FitLine(Contour points, Mat line, int distType, double param, double reps, double aeps) {
+	std::vector<cv::Point> pts;
+	for (size_t i = 0; i < points.length; i++) {
+		pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
+	}
+	cv::fitLine(pts, *line, distType, param, reps, aeps);
+}

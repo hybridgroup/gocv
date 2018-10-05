@@ -1266,3 +1266,29 @@ func LogPolar(src Mat, dst *Mat, center image.Point, m float64, flags Interpolat
 	}
 	C.LogPolar(src.p, dst.p, centerP, C.double(m), C.int(flags))
 }
+
+// DistanceTypes types for Distance Transform and M-estimatorss
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#gaa2bfbebbc5c320526897996aafa1d8eb
+type DistanceTypes int
+
+const (
+	DistUser   DistanceTypes = 0
+	DistL1                   = 1
+	DistL2                   = 2
+	DistC                    = 3
+	DistL12                  = 4
+	DistFair                 = 5
+	DistWelsch               = 6
+	DistHuber                = 7
+)
+
+// FitLine fits a line to a 2D or 3D point set.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf849da1fdafa67ee84b1e9a23b93f91f
+func FitLine(pts []image.Point, line *Mat, distType DistanceTypes, param, reps, aeps float64) {
+	cPoints := toCPoints(pts)
+	C.FitLine(cPoints, line.p, C.int(distType), C.double(param), C.double(reps), C.double(aeps))
+}
