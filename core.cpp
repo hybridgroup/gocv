@@ -542,6 +542,10 @@ int Mat_SolveCubic(Mat coeffs, Mat roots) {
     return cv::solveCubic(*coeffs, *roots);
 }
 
+double Mat_SolvePoly(Mat coeffs, Mat roots, int maxIters) {
+    return cv::solvePoly(*coeffs, *roots, maxIters);
+}
+
 void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType) {
     cv::reduce(*src, *dst, dim, rType, dType);
 }

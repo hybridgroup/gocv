@@ -1003,6 +1003,28 @@ func TestSolveCubic(t *testing.T) {
 	}
 }
 
+func TestSolvePoly(t *testing.T) {
+	coeffs := NewMatWithSize(1, 3, MatTypeCV32F)
+	roots := NewMat()
+
+	// x² - 14x + 49 = 0
+	coeffs.SetFloatAt(0, 0, 49.0)
+	coeffs.SetFloatAt(0, 1, -14.0)
+	coeffs.SetFloatAt(0, 2, 1)
+
+	diffError := SolvePoly(coeffs, &roots, 300)
+
+	expectedDiffError := 0.0
+	if diffError != expectedDiffError {
+		t.Errorf("TestSolvePoly was not exact, got an error of %f and should have been %f", diffError, expectedDiffError)
+	}
+
+	if roots.GetFloatAt(0, 0) != 7.0 {
+		t.Errorf("TestSolvePoly incorrect roots: got %f expected %f",
+			roots.GetFloatAt(0, 0), 7.0)
+	}
+}
+
 func TestMatReduceToSingleRow(t *testing.T) {
 	rows := 2
 	cols := 3
