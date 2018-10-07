@@ -1584,6 +1584,15 @@ func Pow(src Mat, power float64, dst *Mat) {
 	C.Mat_Pow(src.p, C.double(power), dst.p)
 }
 
+// PolatToCart calculates x and y coordinates of 2D vectors from their magnitude and angle.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga581ff9d44201de2dd1b40a50db93d665
+//
+func PolarToCart(magnitude Mat, degree Mat, x *Mat, y *Mat, angleInDegrees bool) {
+	C.Mat_PolarToCart(magnitude.p, degree.p, x.p, y.p, C.bool(angleInDegrees))
+}
+
 // Phase calculates the rotation angle of 2D vectors.
 //
 // For further details, please see:
