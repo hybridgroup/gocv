@@ -1227,6 +1227,24 @@ func TestMatTranspose(t *testing.T) {
 	}
 }
 
+func TestPolarToCart(t *testing.T) {
+	magnitude := NewMatWithSize(101, 102, MatTypeCV32F)
+	angle := NewMatWithSize(101, 102, MatTypeCV32F)
+	x := NewMat()
+	y := NewMat()
+
+	PolarToCart(magnitude, angle, &x, &y, false)
+
+	if x.Empty() || y.Empty() {
+		t.Error("TestPolarToCart neither x nor y should be empty.")
+	}
+
+	x.Close()
+	y.Close()
+	magnitude.Close()
+	angle.Close()
+}
+
 func TestMatPow(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
 	dst := NewMat()

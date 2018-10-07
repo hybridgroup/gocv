@@ -596,6 +596,10 @@ void Mat_Transpose(Mat src, Mat dst) {
     cv::transpose(*src, *dst);
 }
 
+void Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees) {
+    cv::polarToCart(*magnitude, *degree, *x, *y, angleInDegrees);
+}
+
 void Mat_Pow(Mat src, double power, Mat dst) {
     cv::pow(*src, power, *dst);
 }

@@ -324,6 +324,7 @@ void Mat_Subtract(Mat src1, Mat src2, Mat dst);
 Scalar Mat_Trace(Mat src);
 void Mat_Transform(Mat src, Mat dst, Mat tm);
 void Mat_Transpose(Mat src, Mat dst);
+void Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees);
 void Mat_Pow(Mat src, double power, Mat dst);
 void Mat_Phase(Mat x, Mat y, Mat angle, bool angleInDegrees);
 Scalar Mat_Sum(Mat src1);
