@@ -1488,6 +1488,15 @@ func Reduce(src Mat, dst *Mat, dim int, rType ReduceTypes, dType int) {
 	C.Mat_Reduce(src.p, dst.p, C.int(dim), C.int(rType), C.int(dType))
 }
 
+// Repeat fills the output array with repeated copies of the input array.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga496c3860f3ac44c40b48811333cfda2d
+//
+func Repeat(src Mat, nY int, nX int, dst *Mat) {
+	C.Mat_Repeat(src.p, C.int(nY), C.int(nX), dst.p)
+}
+
 type SortFlags int
 
 const (

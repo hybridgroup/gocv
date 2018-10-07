@@ -316,6 +316,7 @@ bool Mat_Solve(Mat src1, Mat src2, Mat dst, int flags);
 int Mat_SolveCubic(Mat coeffs, Mat roots);
 double Mat_SolvePoly(Mat coeffs, Mat roots, int maxIters);
 void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType);
+void Mat_Repeat(Mat src, int nY, int nX, Mat dst);
 void Mat_Sort(Mat src, Mat dst, int flags);
 void Mat_SortIdx(Mat src, Mat dst, int flags);
 void Mat_Split(Mat src, struct Mats* mats);

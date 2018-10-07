@@ -1075,6 +1075,40 @@ func TestMatReduceToSingleColumn(t *testing.T) {
 	}
 }
 
+func TestRepeat(t *testing.T) {
+	rows := 1
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col))
+		}
+	}
+
+	dst := NewMat()
+	Repeat(src, 3, 1, &dst)
+
+	size := dst.Size()
+	expectedRows := 3
+	expectedCols := 3
+
+	if size[0] != expectedRows || size[1] != expectedCols {
+		t.Errorf("TestRepeat incorrect size, got y=%d x=%d, expected y=%d x=%d.", size[0], size[1], expectedRows, expectedCols)
+	}
+
+	for row := 0; row < expectedRows; row++ {
+		for col := 0; col < expectedCols; col++ {
+
+			result := dst.GetUCharAt(row, col)
+
+			if result != uint8(col) {
+				t.Errorf("TestRepeat dst at row=%d col=%d should be %d and got %d.", row, col, col, result)
+			}
+		}
+	}
+}
+
 func TestMatSortEveryRowDescending(t *testing.T) {
 	rows := 2
 	cols := 3
