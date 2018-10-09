@@ -1,3 +1,45 @@
+0.17.0
+---
+* **build** 
+    * Update Makefile
+    * update version of OpenCV used to 3.4.3
+    * use link to OpenCV 3.4.3 for Windows builds
+* **core** 
+    * add mulSpectrums wrapper
+    * add PolarToCart() method to Mat
+    * add Reduce() method to Mat
+    * add Repeat() method to Mat
+    * add Solve() method to Mat
+    * add SolveCubic() method to Mat
+    * add SolvePoly() method to Mat
+    * add Sort() method to Mat
+    * add SortIdx() method to Mat
+    * add Trace() method to Mat
+    * Added new MatType
+    * Added Phase function
+* **dnn** 
+    * update test to match OpenCV 3.4.3 behavior
+* **docs**
+    * Add example of how to run individual test
+    * adding instructions for installing pkgconfig for macOS
+    * fixed GOPATH bug.
+    * update ROADMAP from recent contributions
+* **examples**
+    * add condition to handle no circle found in circle detection example
+* **imgcodecs**
+    * Added IMEncodeWithParams function
+* **imgproc**
+    * Added Filter2D function
+    * Added fitLine function
+    * Added logPolar function
+    * Added Remap function
+    * Added SepFilter2D function
+    * Added Sobel function
+    * Added SpatialGradient function
+* **xfeatures2d**
+    * do not run SIFT test unless OpenCV was built using OPENCV_ENABLE_NONFREE
+    * do not run SURF test unless OpenCV was built using OPENCV_ENABLE_NONFREE
+
 0.16.0
 ---
 * **build**
