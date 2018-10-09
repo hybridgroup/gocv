@@ -14,6 +14,8 @@ import (
 )
 
 // SIFT is a wrapper around the cv::SIFT algorithm.
+// Due to being a patented algorithm you must set the OpenCV contrib build flag OPENCV_ENABLE_NONFREE=1
+// in order to use it.
 type SIFT struct {
 	// C.SIFT
 	p unsafe.Pointer
