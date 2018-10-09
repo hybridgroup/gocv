@@ -8,6 +8,6 @@ package gocv
 #cgo !windows pkg-config: opencv
 #cgo CXXFLAGS:   --std=c++11
 #cgo windows  CPPFLAGS:   -IC:/opencv/build/install/include
-#cgo windows  LDFLAGS:    -LC:/opencv/build/install/x64/mingw/lib -lopencv_core342 -lopencv_face342 -lopencv_videoio342 -lopencv_imgproc342 -lopencv_highgui342 -lopencv_imgcodecs342 -lopencv_objdetect342 -lopencv_features2d342 -lopencv_video342 -lopencv_dnn342 -lopencv_xfeatures2d342 -lopencv_plot342 -lopencv_tracking342 -lopencv_img_hash342 -lopencv_calib3d342
+#cgo windows  LDFLAGS:    -LC:/opencv/build/install/x64/mingw/lib -lopencv_core343 -lopencv_face343 -lopencv_videoio343 -lopencv_imgproc343 -lopencv_highgui343 -lopencv_imgcodecs343 -lopencv_objdetect343 -lopencv_features2d343 -lopencv_video343 -lopencv_dnn343 -lopencv_xfeatures2d343 -lopencv_plot343 -lopencv_tracking343 -lopencv_img_hash343 -lopencv_calib3d343
 */
 import "C"
