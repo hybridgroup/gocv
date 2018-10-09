@@ -62,6 +62,8 @@ func (d *SIFT) DetectAndCompute(src gocv.Mat, mask gocv.Mat) ([]gocv.KeyPoint, g
 }
 
 // SURF is a wrapper around the cv::SURF algorithm.
+// Due to being a patented algorithm you must set the OpenCV contrib build flag OPENCV_ENABLE_NONFREE=1
+// in order to use it.
 type SURF struct {
 	// C.SURF
 	p unsafe.Pointer
