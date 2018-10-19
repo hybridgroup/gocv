@@ -1139,10 +1139,10 @@ func TestScaleAdd(t *testing.T) {
 
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
-			expected := float64(col) * alpha + 1.0
+			expected := float64(col)*alpha + 1.0
 			result := dst.GetDoubleAt(row, col)
 			if result != expected {
-				t.Errorf("TestScaleAdd dst at row=%d col=%d should be %d and got %d.", row, col, expected, result)
+				t.Errorf("TestScaleAdd dst at row=%d col=%d should be %f and got %f.", row, col, expected, result)
 			}
 		}
 	}
