@@ -1497,6 +1497,15 @@ func Repeat(src Mat, nY int, nX int, dst *Mat) {
 	C.Mat_Repeat(src.p, C.int(nY), C.int(nX), dst.p)
 }
 
+// Calculates the sum of a scaled array and another array.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9e0845db4135f55dcf20227402f00d98
+//
+func ScaleAdd(src1 Mat, alpha float64, src2 Mat, dst *Mat) {
+	C.Mat_ScaleAdd(src1.p, C.double(alpha), src2.p, dst.p);
+}
+
 type SortFlags int
 
 const (
