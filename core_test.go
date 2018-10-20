@@ -1109,6 +1109,45 @@ func TestRepeat(t *testing.T) {
 	}
 }
 
+func TestScaleAdd(t *testing.T) {
+	rows := 2
+	cols := 3
+	src1 := NewMatWithSize(rows, cols, MatTypeCV64F)
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src1.SetDoubleAt(row, col, float64(col))
+		}
+	}
+
+	src2 := NewMatWithSize(rows, cols, MatTypeCV64F)
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src2.SetDoubleAt(row, col, 1.0)
+		}
+	}
+
+	dst := NewMat()
+
+	alpha := 1.5
+	ScaleAdd(src1, alpha, src2, &dst)
+
+	if dst.Empty() {
+		t.Error("TestScaleAdd dst should not be empty.")
+	}
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			expected := float64(col)*alpha + 1.0
+			result := dst.GetDoubleAt(row, col)
+			if result != expected {
+				t.Errorf("TestScaleAdd dst at row=%d col=%d should be %f and got %f.", row, col, expected, result)
+			}
+		}
+	}
+}
+
 func TestMatSortEveryRowDescending(t *testing.T) {
 	rows := 2
 	cols := 3
