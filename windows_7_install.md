@@ -105,7 +105,8 @@ chdir /D %GOPATH%\src\gocv.io\x\gocv
 
 
 >百度云连接，正在上传中
-
+链接：https://pan.baidu.com/s/1_Xarxv6owXVfNwJ1KKfGAA 
+提取码：oqqq
 
 
 
