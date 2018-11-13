@@ -2,7 +2,7 @@ if not exist "C:\opencv" mkdir "C:\opencv"
 if not exist "C:\opencv\build" mkdir "C:\opencv\build"
 if not exist "C:\opencv\testdata" mkdir "C:\opencv\testdata"
 
-appveyor DownloadFile https://github.com/opencv/opencv/archive/4.0.0-rc.zip -FileName c:\opencv\opencv-4.0.0-rc.zip
+appveyor DownloadFile https://github.com/opencv/opencv/archive/4eff79827094c4d9f5624f2e41449b0336107154.zip -FileName c:\opencv\opencv-4.0.0-rc.zip
 7z x c:\opencv\opencv-4.0.0-rc.zip -oc:\opencv -y
 del c:\opencv\opencv-4.0.0-rc.zip /q
 appveyor DownloadFile https://github.com/opencv/opencv_contrib/archive/4.0.0-rc.zip -FileName c:\opencv\opencv_contrib-4.0.0-rc.zip
