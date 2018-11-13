@@ -49,6 +49,7 @@ cmake -D WITH_IPP=${GRAPHICAL} \
       -D BUILD_opencv_python=OFF \
       -D BUILD_opencv_python2=OFF \
       -D BUILD_opencv_python3=OFF \
+      -D OPENCV_GENERATE_PKGCONFIG=ON \
       -D CMAKE_INSTALL_PREFIX=$HOME/usr \
       -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules ..
 make -j8
