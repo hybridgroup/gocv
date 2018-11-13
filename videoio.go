@@ -169,7 +169,10 @@ func VideoCaptureFile(uri string) (vc *VideoCapture, err error) {
 	cURI := C.CString(uri)
 	defer C.free(unsafe.Pointer(cURI))
 
-	C.VideoCapture_Open(vc.p, cURI)
+	if !C.VideoCapture_Open(vc.p, cURI) {
+		err = fmt.Errorf("Error opening file: %s", uri)
+	}
+
 	return
 }
 
@@ -177,7 +180,11 @@ func VideoCaptureFile(uri string) (vc *VideoCapture, err error) {
 // to start capturing.
 func VideoCaptureDevice(device int) (vc *VideoCapture, err error) {
 	vc = &VideoCapture{p: C.VideoCapture_New()}
-	C.VideoCapture_OpenDevice(vc.p, C.int(device))
+
+	if !C.VideoCapture_OpenDevice(vc.p, C.int(device)) {
+		err = fmt.Errorf("Error opening device: %d", device)
+	}
+
 	return
 }
 
