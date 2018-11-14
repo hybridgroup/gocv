@@ -9,11 +9,11 @@ void VideoCapture_Close(VideoCapture v) {
     delete v;
 }
 
-int VideoCapture_Open(VideoCapture v, const char* uri) {
+bool VideoCapture_Open(VideoCapture v, const char* uri) {
     return v->open(uri);
 }
 
-int VideoCapture_OpenDevice(VideoCapture v, int device) {
+bool VideoCapture_OpenDevice(VideoCapture v, int device) {
     return v->open(device);
 }
 
