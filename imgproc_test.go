@@ -1056,8 +1056,10 @@ func TestRemap(t *testing.T) {
 	defer dst.Close()
 
 	map1 := NewMatWithSize(256, 256, MatTypeCV16SC2)
+	defer map1.Close()
 	map1.SetFloatAt(50, 50, 25.4)
 	map2 := NewMat()
+	defer map2.Close()
 
 	Remap(src, &dst, &map1, &map2, InterpolationDefault, BorderConstant, color.RGBA{0, 0, 0, 0})
 

@@ -1054,8 +1054,11 @@ func TestMatPerspectiveTransform(t *testing.T) {
 
 func TestMatSolve(t *testing.T) {
 	a := NewMatWithSize(3, 3, MatTypeCV32F)
+	defer a.Close()
 	b := NewMatWithSize(3, 1, MatTypeCV32F)
+	defer b.Close()
 	solve := NewMat()
+	defer solve.Close()
 
 	testPoints := []struct {
 		x2 float32
@@ -1092,7 +1095,9 @@ func TestMatSolve(t *testing.T) {
 
 func TestSolveCubic(t *testing.T) {
 	coeffs := NewMatWithSize(1, 4, MatTypeCV32F)
+	defer coeffs.Close()
 	roots := NewMat()
+	defer roots.Close()
 
 	coeffs.SetFloatAt(0, 0, 2.0)
 	coeffs.SetFloatAt(0, 1, 3.0)
@@ -1116,7 +1121,9 @@ func TestSolveCubic(t *testing.T) {
 
 func TestSolvePoly(t *testing.T) {
 	coeffs := NewMatWithSize(1, 3, MatTypeCV32F)
+	defer coeffs.Close()
 	roots := NewMat()
+	defer roots.Close()
 
 	// x² - 14x + 49 = 0
 	coeffs.SetFloatAt(0, 0, 49.0)
@@ -1140,7 +1147,9 @@ func TestMatReduceToSingleRow(t *testing.T) {
 	rows := 2
 	cols := 3
 	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
 	dst := NewMat()
+	defer dst.Close()
 
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
@@ -1165,7 +1174,9 @@ func TestMatReduceToSingleColumn(t *testing.T) {
 	rows := 2
 	cols := 3
 	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
 	dst := NewMat()
+	defer dst.Close()
 
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
@@ -1190,6 +1201,7 @@ func TestRepeat(t *testing.T) {
 	rows := 1
 	cols := 3
 	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
 
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
@@ -1198,6 +1210,7 @@ func TestRepeat(t *testing.T) {
 	}
 
 	dst := NewMat()
+	defer dst.Close()
 	Repeat(src, 3, 1, &dst)
 
 	size := dst.Size()
@@ -1224,6 +1237,7 @@ func TestScaleAdd(t *testing.T) {
 	rows := 2
 	cols := 3
 	src1 := NewMatWithSize(rows, cols, MatTypeCV64F)
+	defer src1.Close()
 
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
@@ -1232,6 +1246,7 @@ func TestScaleAdd(t *testing.T) {
 	}
 
 	src2 := NewMatWithSize(rows, cols, MatTypeCV64F)
+	defer src2.Close()
 
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
@@ -1240,6 +1255,7 @@ func TestScaleAdd(t *testing.T) {
 	}
 
 	dst := NewMat()
+	defer dst.Close()
 
 	alpha := 1.5
 	ScaleAdd(src1, alpha, src2, &dst)
@@ -1263,6 +1279,7 @@ func TestMatSortEveryRowDescending(t *testing.T) {
 	rows := 2
 	cols := 3
 	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
 
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
@@ -1271,6 +1288,8 @@ func TestMatSortEveryRowDescending(t *testing.T) {
 	}
 
 	dst := NewMat()
+	defer dst.Close()
+
 	flags := SortEveryRow + SortDescending
 	Sort(src, &dst, flags)
 
@@ -1293,6 +1312,7 @@ func TestMatSortIdxEveryRowDescending(t *testing.T) {
 	rows := 2
 	cols := 3
 	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
 
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
@@ -1301,6 +1321,7 @@ func TestMatSortIdxEveryRowDescending(t *testing.T) {
 	}
 
 	dst := NewMat()
+	defer dst.Close()
 	flags := SortEveryRow + SortDescending
 	SortIdx(src, &dst, flags)
 
@@ -1346,6 +1367,7 @@ func TestMatTrace(t *testing.T) {
 	rows := 3
 	cols := 3
 	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
 
 	// Create and identity eye matrix
 	for row := 0; row <= rows; row++ {
