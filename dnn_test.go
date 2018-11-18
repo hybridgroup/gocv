@@ -113,6 +113,7 @@ func TestCaffe(t *testing.T) {
 
 	net.SetInput(blob, "data")
 	prob := net.Forward("prob")
+	defer prob.Close()
 	if prob.Empty() {
 		t.Error("Invalid prob in Caffe test")
 	}
@@ -160,6 +161,7 @@ func TestTensorflow(t *testing.T) {
 
 	net.SetInput(blob, "input")
 	prob := net.Forward("softmax2")
+	defer prob.Close()
 	if prob.Empty() {
 		t.Error("Invalid softmax2 in Tensorflow test")
 	}
