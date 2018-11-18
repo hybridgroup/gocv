@@ -136,7 +136,7 @@ func IMRead(name string, flags IMReadFlag) Mat {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 
-	return Mat{p: C.Image_IMRead(cName, C.int(flags))}
+	return newMat(C.Image_IMRead(cName, C.int(flags)))
 }
 
 // IMWrite writes a Mat to an image file.
@@ -244,5 +244,5 @@ func IMDecode(buf []byte, flags IMReadFlag) (Mat, error) {
 	if err != nil {
 		return Mat{}, err
 	}
-	return Mat{p: C.Image_IMDecode(*data, C.int(flags))}, nil
+	return newMat(C.Image_IMDecode(*data, C.int(flags))), nil
 }

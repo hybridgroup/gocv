@@ -197,6 +197,7 @@ func TestDilate(t *testing.T) {
 	defer dest.Close()
 
 	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	defer kernel.Close()
 
 	Dilate(img, &dest, kernel)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
@@ -337,6 +338,7 @@ func TestErode(t *testing.T) {
 	defer dest.Close()
 
 	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	defer kernel.Close()
 
 	Erode(img, &dest, kernel)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
@@ -355,6 +357,7 @@ func TestMorphologyEx(t *testing.T) {
 	defer dest.Close()
 
 	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	defer kernel.Close()
 
 	MorphologyEx(img, &dest, MorphOpen, kernel)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
@@ -817,6 +820,7 @@ func TestGetRotationMatrix2D(t *testing.T) {
 					}
 				}
 			}
+			got.Close()
 		})
 	}
 }
@@ -825,6 +829,7 @@ func TestWarpAffine(t *testing.T) {
 	src := NewMatWithSize(256, 256, MatTypeCV8UC1)
 	defer src.Close()
 	rot := GetRotationMatrix2D(image.Point{0, 0}, 1.0, 1.0)
+	defer rot.Close()
 	dst := src.Clone()
 	defer dst.Close()
 
@@ -839,6 +844,7 @@ func TestWarpAffineGocvLogo(t *testing.T) {
 	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
 	defer src.Close()
 	rot := GetRotationMatrix2D(image.Point{0, 0}, 1.0, 1.0)
+	defer rot.Close()
 	dst := src.Clone()
 	defer dst.Close()
 	WarpAffine(src, &dst, rot, image.Point{343, 400})
@@ -853,6 +859,7 @@ func TestWarpAffineWithParams(t *testing.T) {
 	src := NewMatWithSize(256, 256, MatTypeCV8UC1)
 	defer src.Close()
 	rot := GetRotationMatrix2D(image.Point{0, 0}, 1.0, 1.0)
+	defer rot.Close()
 	dst := src.Clone()
 	defer dst.Close()
 
@@ -867,6 +874,7 @@ func TestWarpAffineWithParamsGocvLogo(t *testing.T) {
 	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
 	defer src.Close()
 	rot := GetRotationMatrix2D(image.Point{0, 0}, 1.0, 1.0)
+	defer rot.Close()
 	dst := src.Clone()
 	defer dst.Close()
 	WarpAffineWithParams(src, &dst, rot, image.Point{343, 400}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
@@ -900,6 +908,7 @@ func TestApplyColorMap(t *testing.T) {
 		{name: "COLORMAP_PARULA", args: args{colormapType: ColormapParula, want: 111483.33555738274}},
 	}
 	src := IMRead("images/gocvlogo.jpg", IMReadGrayScale)
+	defer src.Close()
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -944,6 +953,7 @@ func TestGetPerspectiveTransform(t *testing.T) {
 	}
 
 	m := GetPerspectiveTransform(src, dst)
+	defer m.Close()
 
 	if m.Cols() != 3 {
 		t.Errorf("TestWarpPerspective(): unexpected cols = %v, want = %v", m.Cols(), 3)
@@ -973,6 +983,7 @@ func TestWarpPerspective(t *testing.T) {
 		image.Pt(0, 10),
 	}
 	m := GetPerspectiveTransform(s, d)
+	defer m.Close()
 
 	dst := NewMat()
 	defer dst.Close()
@@ -1076,6 +1087,7 @@ func TestFilter2D(t *testing.T) {
 	defer dst.Close()
 
 	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	defer kernel.Close()
 
 	Filter2D(src, &dst, -1, kernel, image.Pt(-1, -1), 0, BorderDefault)
 
@@ -1092,7 +1104,9 @@ func TestSepFilter2D(t *testing.T) {
 	defer dst.Close()
 
 	kernelX := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	defer kernelX.Close()
 	kernelY := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	defer kernelY.Close()
 
 	SepFilter2D(src, &dst, -1, kernelX, kernelY, image.Pt(-1, -1), 0, BorderDefault)
 
