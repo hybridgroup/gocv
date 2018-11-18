@@ -1216,3 +1216,79 @@ func DrawContours(img *Mat, contours [][]image.Point, contourIdx int, c color.RG
 
 	C.DrawContours(img.p, cContours, C.int(contourIdx), sColor, C.int(thickness))
 }
+
+// Remap applies a generic geometrical transformation to an image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gab75ef31ce5cdfb5c44b6da5f3b908ea4
+func Remap(src Mat, dst, map1, map2 *Mat, interpolation InterpolationFlags, borderMode BorderType, borderValue color.RGBA) {
+	bv := C.struct_Scalar{
+		val1: C.double(borderValue.B),
+		val2: C.double(borderValue.G),
+		val3: C.double(borderValue.R),
+		val4: C.double(borderValue.A),
+	}
+	C.Remap(src.p, dst.p, map1.p, map2.p, C.int(interpolation), C.int(borderMode), bv)
+}
+
+// Filter2D applies an arbitrary linear filter to an image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga27c049795ce870216ddfb366086b5a04
+func Filter2D(src Mat, dst *Mat, ddepth int, kernel Mat, anchor image.Point, delta float64, borderType BorderType) {
+	anchorP := C.struct_Point{
+		x: C.int(anchor.X),
+		y: C.int(anchor.Y),
+	}
+	C.Filter2D(src.p, dst.p, C.int(ddepth), kernel.p, anchorP, C.double(delta), C.int(borderType))
+}
+
+// SepFilter2D applies a separable linear filter to the image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga910e29ff7d7b105057d1625a4bf6318d
+func SepFilter2D(src Mat, dst *Mat, ddepth int, kernelX, kernelY Mat, anchor image.Point, delta float64, borderType BorderType) {
+	anchorP := C.struct_Point{
+		x: C.int(anchor.X),
+		y: C.int(anchor.Y),
+	}
+	C.SepFilter2D(src.p, dst.p, C.int(ddepth), kernelX.p, kernelY.p, anchorP, C.double(delta), C.int(borderType))
+}
+
+// LogPolar remaps an image to semilog-polar coordinates space.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gaec3a0b126a85b5ca2c667b16e0ae022d
+func LogPolar(src Mat, dst *Mat, center image.Point, m float64, flags InterpolationFlags) {
+	centerP := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+	C.LogPolar(src.p, dst.p, centerP, C.double(m), C.int(flags))
+}
+
+// DistanceTypes types for Distance Transform and M-estimatorss
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#gaa2bfbebbc5c320526897996aafa1d8eb
+type DistanceTypes int
+
+const (
+	DistUser   DistanceTypes = 0
+	DistL1                   = 1
+	DistL2                   = 2
+	DistC                    = 3
+	DistL12                  = 4
+	DistFair                 = 5
+	DistWelsch               = 6
+	DistHuber                = 7
+)
+
+// FitLine fits a line to a 2D or 3D point set.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf849da1fdafa67ee84b1e9a23b93f91f
+func FitLine(pts []image.Point, line *Mat, distType DistanceTypes, param, reps, aeps float64) {
+	cPoints := toCPoints(pts)
+	C.FitLine(cPoints, line.p, C.int(distType), C.double(param), C.double(reps), C.double(aeps))
+}

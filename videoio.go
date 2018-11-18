@@ -162,22 +162,29 @@ type VideoCapture struct {
 }
 
 // VideoCaptureFile opens a VideoCapture from a file and prepares
-// to start capturing.
+// to start capturing. It returns error if it fails to open the file stored in uri path.
 func VideoCaptureFile(uri string) (vc *VideoCapture, err error) {
 	vc = &VideoCapture{p: C.VideoCapture_New()}
 
 	cURI := C.CString(uri)
 	defer C.free(unsafe.Pointer(cURI))
 
-	C.VideoCapture_Open(vc.p, cURI)
+	if !C.VideoCapture_Open(vc.p, cURI) {
+		err = fmt.Errorf("Error opening file: %s", uri)
+	}
+
 	return
 }
 
 // VideoCaptureDevice opens a VideoCapture from a device and prepares
-// to start capturing.
+// to start capturing. It returns error if it fails to open the video device.
 func VideoCaptureDevice(device int) (vc *VideoCapture, err error) {
 	vc = &VideoCapture{p: C.VideoCapture_New()}
-	C.VideoCapture_OpenDevice(vc.p, C.int(device))
+
+	if !C.VideoCapture_OpenDevice(vc.p, C.int(device)) {
+		err = fmt.Errorf("Error opening device: %d", device)
+	}
+
 	return
 }
 

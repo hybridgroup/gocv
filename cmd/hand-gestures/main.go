@@ -104,7 +104,7 @@ func main() {
 			}
 		}
 
-		status := fmt.Sprintf("defectCount: %d", defectCount)
+		status := fmt.Sprintf("defectCount: %d", defectCount+1)
 
 		rect := gocv.BoundingRect(c)
 		gocv.Rectangle(&img, rect, color.RGBA{255, 255, 255, 0}, 2)

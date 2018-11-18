@@ -44,7 +44,7 @@ func TestReadNet(t *testing.T) {
 	if layer.OutputNameToIndex("notthere") != -1 {
 		t.Error("Invalid layer in ReadNet test")
 	}
-	if layer.GetName() != "" {
+	if layer.GetName() != "_input" {
 		t.Errorf("Invalid layer name in ReadNet test: %s\n", layer.GetName())
 	}
 	if layer.GetType() != "" {

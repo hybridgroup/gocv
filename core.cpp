@@ -534,6 +534,38 @@ void Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm) {
     cv::perspectiveTransform(*src, *dst, *tm);
 }
 
+bool Mat_Solve(Mat src1, Mat src2, Mat dst, int flags) {
+    return cv::solve(*src1, *src2, *dst, flags);
+}
+
+int Mat_SolveCubic(Mat coeffs, Mat roots) {
+    return cv::solveCubic(*coeffs, *roots);
+}
+
+double Mat_SolvePoly(Mat coeffs, Mat roots, int maxIters) {
+    return cv::solvePoly(*coeffs, *roots, maxIters);
+}
+
+void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType) {
+    cv::reduce(*src, *dst, dim, rType, dType);
+}
+
+void Mat_Repeat(Mat src, int nY, int nX, Mat dst) {
+    cv::repeat(*src, nY, nX, *dst);
+}
+
+void Mat_ScaleAdd(Mat src1, double alpha, Mat src2, Mat dst) {
+    cv::scaleAdd(*src1, alpha, *src2, *dst);
+}
+
+void Mat_Sort(Mat src, Mat dst, int flags) {
+    cv::sort(*src, *dst, flags);
+}
+
+void Mat_SortIdx(Mat src, Mat dst, int flags) {
+    cv::sortIdx(*src, *dst, flags);
+}
+
 void Mat_Split(Mat src, struct Mats* mats) {
     std::vector<cv::Mat> channels;
     cv::split(*src, channels);
@@ -550,12 +582,26 @@ void Mat_Subtract(Mat src1, Mat src2, Mat dst) {
     cv::subtract(*src1, *src2, *dst);
 }
 
+Scalar Mat_Trace(Mat src) {
+    cv::Scalar c = cv::trace(*src);
+    Scalar scal = Scalar();
+    scal.val1 = c.val[0];
+    scal.val2 = c.val[1];
+    scal.val3 = c.val[2];
+    scal.val4 = c.val[3];
+    return scal;
+}
+
 void Mat_Transform(Mat src, Mat dst, Mat tm) {
     cv::transform(*src, *dst, *tm);
 }
 
 void Mat_Transpose(Mat src, Mat dst) {
     cv::transpose(*src, *dst);
+}
+
+void Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees) {
+    cv::polarToCart(*magnitude, *degree, *x, *y, angleInDegrees);
 }
 
 void Mat_Pow(Mat src, double power, Mat dst) {

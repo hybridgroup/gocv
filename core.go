@@ -44,6 +44,9 @@ const (
 	// MatTypeCV16S is a Mat of 16-bit signed int
 	MatTypeCV16S = 3
 
+	// MatTypeCV16SC2 is a Mat of 16-bit signed int with 2 channels
+	MatTypeCV16SC2 = MatTypeCV16S + MatChannels2
+
 	// MatTypeCV32S is a Mat of 32-bit signed int
 	MatTypeCV32S = 4
 
@@ -1458,6 +1461,135 @@ const (
 	EPS = 2
 )
 
+type SolveDecompositionFlags int
+
+const (
+	// Gaussian elimination with the optimal pivot element chosen.
+	SolveDecompositionLu = 0
+
+	// Singular value decomposition (SVD) method. The system can be over-defined and/or the matrix src1 can be singular.
+	SolveDecompositionSvd = 1
+
+	// Eigenvalue decomposition. The matrix src1 must be symmetrical.
+	SolveDecompositionEing = 2
+
+	// Cholesky LL^T factorization. The matrix src1 must be symmetrical and positively defined.
+	SolveDecompositionCholesky = 3
+
+	// QR factorization. The system can be over-defined and/or the matrix src1 can be singular.
+	SolveDecompositionQr = 4
+
+	// While all the previous flags are mutually exclusive, this flag can be used together with any of the previous.
+	// It means that the normal equations 𝚜𝚛𝚌𝟷^T⋅𝚜𝚛𝚌𝟷⋅𝚍𝚜𝚝=𝚜𝚛𝚌𝟷^T𝚜𝚛𝚌𝟸 are solved instead of the original system
+	// 𝚜𝚛𝚌𝟷⋅𝚍𝚜𝚝=𝚜𝚛𝚌𝟸.
+	SolveDecompositionNormal = 5
+)
+
+// Solve solves one or more linear systems or least-squares problems.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga12b43690dbd31fed96f213eefead2373
+//
+func Solve(src1 Mat, src2 Mat, dst *Mat, flags SolveDecompositionFlags) bool {
+	return bool(C.Mat_Solve(src1.p, src2.p, dst.p, C.int(flags)))
+}
+
+// SolveCubic finds the real roots of a cubic equation.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga1c3b0b925b085b6e96931ee309e6a1da
+//
+func SolveCubic(coeffs Mat, roots *Mat) int {
+	return int(C.Mat_SolveCubic(coeffs.p, roots.p))
+}
+
+// SolvePoly finds the real or complex roots of a polynomial equation.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gac2f5e953016fabcdf793d762f4ec5dce
+//
+func SolvePoly(coeffs Mat, roots *Mat, maxIters int) float64 {
+	return float64(C.Mat_SolvePoly(coeffs.p, roots.p, C.int(maxIters)))
+}
+
+type ReduceTypes int
+
+const (
+	// The output is the sum of all rows/columns of the matrix.
+	ReduceSum ReduceTypes = 0
+
+	// The output is the mean vector of all rows/columns of the matrix.
+	ReduceAvg ReduceTypes = 1
+
+	// The output is the maximum (column/row-wise) of all rows/columns of the matrix.
+	ReduceMax ReduceTypes = 2
+
+	// The output is the minimum (column/row-wise) of all rows/columns of the matrix.
+	ReduceMin ReduceTypes = 3
+)
+
+// Reduce reduces a matrix to a vector.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4b78072a303f29d9031d56e5638da78e
+//
+func Reduce(src Mat, dst *Mat, dim int, rType ReduceTypes, dType int) {
+	C.Mat_Reduce(src.p, dst.p, C.int(dim), C.int(rType), C.int(dType))
+}
+
+// Repeat fills the output array with repeated copies of the input array.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga496c3860f3ac44c40b48811333cfda2d
+//
+func Repeat(src Mat, nY int, nX int, dst *Mat) {
+	C.Mat_Repeat(src.p, C.int(nY), C.int(nX), dst.p)
+}
+
+// Calculates the sum of a scaled array and another array.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9e0845db4135f55dcf20227402f00d98
+//
+func ScaleAdd(src1 Mat, alpha float64, src2 Mat, dst *Mat) {
+	C.Mat_ScaleAdd(src1.p, C.double(alpha), src2.p, dst.p)
+}
+
+type SortFlags int
+
+const (
+	// Each matrix row is sorted independently
+	SortEveryRow SortFlags = 0
+
+	// Each matrix column is sorted independently; this flag and the previous one are mutually exclusive.
+	SortEveryColumn SortFlags = 1
+
+	// Each matrix row is sorted in the ascending order.
+	SortAscending SortFlags = 0
+
+	// Each matrix row is sorted in the descending order; this flag and the previous one are also mutually exclusive.
+	SortDescending SortFlags = 16
+)
+
+// Sort sorts each row or each column of a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga45dd56da289494ce874be2324856898f
+//
+func Sort(src Mat, dst *Mat, flags SortFlags) {
+	C.Mat_Sort(src.p, dst.p, C.int(flags))
+}
+
+// SortIdx sorts each row or each column of a matrix.
+// Instead of reordering the elements themselves, it stores the indices of sorted elements in the output array
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gadf35157cbf97f3cb85a545380e383506
+//
+func SortIdx(src Mat, dst *Mat, flags SortFlags) {
+	C.Mat_SortIdx(src.p, dst.p, C.int(flags))
+}
+
 // Split creates an array of single channel images from a multi-channel image
 //
 // For further details, please see:
@@ -1480,6 +1612,16 @@ func Split(src Mat) (mv []Mat) {
 //
 func Subtract(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_Subtract(src1.p, src2.p, dst.p)
+}
+
+// Trace returns the trace of a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga3419ac19c7dcd2be4bd552a23e147dd8
+//
+func Trace(src Mat) Scalar {
+	s := C.Mat_Trace(src.p)
+	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
 }
 
 // Transform performs the matrix transformation of every array element.
@@ -1507,6 +1649,15 @@ func Transpose(src Mat, dst *Mat) {
 //
 func Pow(src Mat, power float64, dst *Mat) {
 	C.Mat_Pow(src.p, C.double(power), dst.p)
+}
+
+// PolatToCart calculates x and y coordinates of 2D vectors from their magnitude and angle.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga581ff9d44201de2dd1b40a50db93d665
+//
+func PolarToCart(magnitude Mat, degree Mat, x *Mat, y *Mat, angleInDegrees bool) {
+	C.Mat_PolarToCart(magnitude.p, degree.p, x.p, y.p, C.bool(angleInDegrees))
 }
 
 // Phase calculates the rotation angle of 2D vectors.

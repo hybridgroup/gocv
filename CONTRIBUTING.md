@@ -68,6 +68,11 @@ go test .
 go test ./contrib/.
 ```
 
+If you want to run an individual test, you can provide a RegExp to the `-run` argument:
+```
+go test -run TestMat
+```
+
 If you are using Intel OpenVINO, you can run those tests using:
 
 ```

@@ -1047,3 +1047,81 @@ func TestFillPoly(t *testing.T) {
 		t.Errorf("TestFillPoly(): wrong pixel value = %v, want = %v", v, 255)
 	}
 }
+
+func TestRemap(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	map1 := NewMatWithSize(256, 256, MatTypeCV16SC2)
+	map1.SetFloatAt(50, 50, 25.4)
+	map2 := NewMat()
+
+	Remap(src, &dst, &map1, &map2, InterpolationDefault, BorderConstant, color.RGBA{0, 0, 0, 0})
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("Remap(): dst is empty")
+	}
+}
+
+func TestFilter2D(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := src.Clone()
+	defer dst.Close()
+
+	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
+
+	Filter2D(src, &dst, -1, kernel, image.Pt(-1, -1), 0, BorderDefault)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("Filter2D(): dst is empty")
+	}
+}
+
+func TestSepFilter2D(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := src.Clone()
+	defer dst.Close()
+
+	kernelX := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	kernelY := GetStructuringElement(MorphRect, image.Pt(1, 1))
+
+	SepFilter2D(src, &dst, -1, kernelX, kernelY, image.Pt(-1, -1), 0, BorderDefault)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("Filter2D(): dst is empty")
+	}
+}
+
+func TestLogPolar(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := src.Clone()
+	defer dst.Close()
+
+	LogPolar(src, &dst, image.Pt(22, 22), 1, InterpolationDefault)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("LogPolar(): dst is empty")
+	}
+}
+
+func TestFitLine(t *testing.T) {
+	points := []image.Point{image.Pt(125, 24), image.Pt(124, 75), image.Pt(175, 76), image.Pt(176, 25)}
+
+	line := NewMat()
+	defer line.Close()
+
+	FitLine(points, &line, DistL2, 0, 0.01, 0.01)
+
+	if ok := line.Empty(); ok {
+		t.Errorf("FitLine(): line is empty")
+	}
+}

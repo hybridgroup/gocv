@@ -1052,6 +1052,263 @@ func TestMatPerspectiveTransform(t *testing.T) {
 	}
 }
 
+func TestMatSolve(t *testing.T) {
+	a := NewMatWithSize(3, 3, MatTypeCV32F)
+	b := NewMatWithSize(3, 1, MatTypeCV32F)
+	solve := NewMat()
+
+	testPoints := []struct {
+		x2 float32
+		x  float32
+		c  float32
+		y  float32
+	}{
+		{x2: 1, x: 1, c: 1, y: 0},
+		{x2: 0, x: 0, c: 1, y: 2},
+		{x2: 9, x: 3, c: 1, y: 2},
+	}
+
+	for row, p := range testPoints {
+		a.SetFloatAt(row, 0, p.x2)
+		a.SetFloatAt(row, 1, p.x)
+		a.SetFloatAt(row, 2, p.c)
+
+		b.SetFloatAt(row, 0, p.y)
+	}
+
+	solved := Solve(a, b, &solve, SolveDecompositionLu)
+
+	if !solved {
+		t.Errorf("TestMatSolve could not solve linear equations")
+	}
+
+	if solve.GetFloatAt(0, 0) != 1 || solve.GetFloatAt(1, 0) != -3 || solve.GetFloatAt(2, 0) != 2 {
+		t.Errorf("TestMatSolve incorrect results: got %v expected %v, got %v expected %v, got %v expected %v",
+			solve.GetFloatAt(0, 0), 1,
+			solve.GetFloatAt(1, 0), -3,
+			solve.GetFloatAt(2, 0), 2)
+	}
+}
+
+func TestSolveCubic(t *testing.T) {
+	coeffs := NewMatWithSize(1, 4, MatTypeCV32F)
+	roots := NewMat()
+
+	coeffs.SetFloatAt(0, 0, 2.0)
+	coeffs.SetFloatAt(0, 1, 3.0)
+	coeffs.SetFloatAt(0, 2, -11.0)
+	coeffs.SetFloatAt(0, 3, -6.0)
+
+	rootsCount := SolveCubic(coeffs, &roots)
+
+	expectedRootsCount := 3
+	if rootsCount != expectedRootsCount {
+		t.Errorf("TestSolveCubic incorrect numbers of roots %d, expected %d", rootsCount, expectedRootsCount)
+	}
+
+	if roots.GetFloatAt(0, 0) != -3.0 || roots.GetFloatAt(0, 1) != 2.0 || roots.GetFloatAt(0, 0) != -3.0 {
+		t.Errorf("TestSolveCubic incorrect roots: got %f expected %f, got %f expected %f, got %f expected %f",
+			roots.GetFloatAt(0, 0), -3.0,
+			roots.GetFloatAt(0, 1), -0.5,
+			roots.GetFloatAt(0, 0), -3.0)
+	}
+}
+
+func TestSolvePoly(t *testing.T) {
+	coeffs := NewMatWithSize(1, 3, MatTypeCV32F)
+	roots := NewMat()
+
+	// x² - 14x + 49 = 0
+	coeffs.SetFloatAt(0, 0, 49.0)
+	coeffs.SetFloatAt(0, 1, -14.0)
+	coeffs.SetFloatAt(0, 2, 1)
+
+	diffError := SolvePoly(coeffs, &roots, 300)
+
+	expectedDiffError := 0.0
+	if diffError != expectedDiffError {
+		t.Errorf("TestSolvePoly was not exact, got an error of %f and should have been %f", diffError, expectedDiffError)
+	}
+
+	if roots.GetFloatAt(0, 0) != 7.0 {
+		t.Errorf("TestSolvePoly incorrect roots: got %f expected %f",
+			roots.GetFloatAt(0, 0), 7.0)
+	}
+}
+
+func TestMatReduceToSingleRow(t *testing.T) {
+	rows := 2
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	dst := NewMat()
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col+1))
+		}
+	}
+
+	Reduce(src, &dst, 0, ReduceSum, MatTypeCV32F)
+
+	sz := dst.Size()
+	if sz[0] != 1 && sz[1] != 3 {
+		t.Errorf("TestMatReduceToSingleRow incorrect size: %v\n", sz)
+	}
+
+	if dst.GetFloatAt(0, 0) != 2 || dst.GetFloatAt(0, 1) != 4 || dst.GetFloatAt(0, 2) != 6 {
+		t.Errorf("TestMatReduceToSingleRow incorrect reduce result: %v at (0, 0) expected 2, %v at (0, 1) expected 4, %v at (0, 2) expected 6",
+			dst.GetFloatAt(0, 0), dst.GetFloatAt(0, 1), dst.GetFloatAt(0, 2))
+	}
+}
+
+func TestMatReduceToSingleColumn(t *testing.T) {
+	rows := 2
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	dst := NewMat()
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col+1))
+		}
+	}
+
+	Reduce(src, &dst, 1, ReduceSum, MatTypeCV32F)
+
+	sz := dst.Size()
+	if sz[0] != 3 && sz[1] != 1 {
+		t.Errorf("TestMatReduceToSingleColumn incorrect size: %v\n", sz)
+	}
+
+	if dst.GetFloatAt(0, 0) != 6 || dst.GetFloatAt(1, 0) != 6 {
+		t.Errorf("TestMatReduceToSingleColumn incorrect reduce result: %v at (0, 0) expected 6, %v at (1, 0) expected 6",
+			dst.GetFloatAt(0, 0), dst.GetFloatAt(1, 0))
+	}
+}
+
+func TestRepeat(t *testing.T) {
+	rows := 1
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col))
+		}
+	}
+
+	dst := NewMat()
+	Repeat(src, 3, 1, &dst)
+
+	size := dst.Size()
+	expectedRows := 3
+	expectedCols := 3
+
+	if size[0] != expectedRows || size[1] != expectedCols {
+		t.Errorf("TestRepeat incorrect size, got y=%d x=%d, expected y=%d x=%d.", size[0], size[1], expectedRows, expectedCols)
+	}
+
+	for row := 0; row < expectedRows; row++ {
+		for col := 0; col < expectedCols; col++ {
+
+			result := dst.GetUCharAt(row, col)
+
+			if result != uint8(col) {
+				t.Errorf("TestRepeat dst at row=%d col=%d should be %d and got %d.", row, col, col, result)
+			}
+		}
+	}
+}
+
+func TestScaleAdd(t *testing.T) {
+	rows := 2
+	cols := 3
+	src1 := NewMatWithSize(rows, cols, MatTypeCV64F)
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src1.SetDoubleAt(row, col, float64(col))
+		}
+	}
+
+	src2 := NewMatWithSize(rows, cols, MatTypeCV64F)
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src2.SetDoubleAt(row, col, 1.0)
+		}
+	}
+
+	dst := NewMat()
+
+	alpha := 1.5
+	ScaleAdd(src1, alpha, src2, &dst)
+
+	if dst.Empty() {
+		t.Error("TestScaleAdd dst should not be empty.")
+	}
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			expected := float64(col)*alpha + 1.0
+			result := dst.GetDoubleAt(row, col)
+			if result != expected {
+				t.Errorf("TestScaleAdd dst at row=%d col=%d should be %f and got %f.", row, col, expected, result)
+			}
+		}
+	}
+}
+
+func TestMatSortEveryRowDescending(t *testing.T) {
+	rows := 2
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col))
+		}
+	}
+
+	dst := NewMat()
+	flags := SortEveryRow + SortDescending
+	Sort(src, &dst, flags)
+
+	if dst.Empty() {
+		t.Error("TestMatSortEveryRowDescending dst should not be empty.")
+	}
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			expected := cols - col - 1
+			result := dst.GetUCharAt(row, col)
+			if result != uint8(expected) {
+				t.Errorf("TestMatSortEveryRowDescending dst at row=%d col=%d should be %d and got %d.", row, col, expected, result)
+			}
+		}
+	}
+}
+
+func TestMatSortIdxEveryRowDescending(t *testing.T) {
+	rows := 2
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col))
+		}
+	}
+
+	dst := NewMat()
+	flags := SortEveryRow + SortDescending
+	SortIdx(src, &dst, flags)
+
+	if dst.Empty() {
+		t.Error("TestMatSortIdxEveryRowDescending dst should not be empty.")
+	}
+}
+
 func TestMatSplit(t *testing.T) {
 	src := IMRead("images/face.jpg", 1)
 	defer src.Close()
@@ -1085,6 +1342,28 @@ func TestMatSubtract(t *testing.T) {
 	}
 }
 
+func TestMatTrace(t *testing.T) {
+	rows := 3
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+
+	// Create and identity eye matrix
+	for row := 0; row <= rows; row++ {
+		for col := 0; col <= cols; col++ {
+			if row == col {
+				src.SetUCharAt(row, col, uint8(1))
+			}
+		}
+	}
+
+	trace := Trace(src)
+	expected := NewScalar(3, 0, 0, 0)
+
+	if trace.Val1 != expected.Val1 || trace.Val2 != expected.Val2 || trace.Val3 != expected.Val3 || trace.Val4 != expected.Val4 {
+		t.Errorf("Trace values should be %v and was %v", expected, trace)
+	}
+}
+
 func TestMatTransform(t *testing.T) {
 	src := IMRead("images/lut.png", 1)
 	defer src.Close()
@@ -1107,6 +1386,24 @@ func TestMatTranspose(t *testing.T) {
 	if dst.Empty() {
 		t.Error("Transpose error")
 	}
+}
+
+func TestPolarToCart(t *testing.T) {
+	magnitude := NewMatWithSize(101, 102, MatTypeCV32F)
+	angle := NewMatWithSize(101, 102, MatTypeCV32F)
+	x := NewMat()
+	y := NewMat()
+
+	PolarToCart(magnitude, angle, &x, &y, false)
+
+	if x.Empty() || y.Empty() {
+		t.Error("TestPolarToCart neither x nor y should be empty.")
+	}
+
+	x.Close()
+	y.Close()
+	magnitude.Close()
+	angle.Close()
 }
 
 func TestMatPow(t *testing.T) {

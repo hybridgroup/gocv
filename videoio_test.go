@@ -37,8 +37,12 @@ func TestVideoCaptureInvalid(t *testing.T) {
 }
 
 func TestVideoCaptureFile(t *testing.T) {
-	vc, _ := VideoCaptureFile("images/small.mp4")
+	vc, err := VideoCaptureFile("images/small.mp4")
 	defer vc.Close()
+
+	if err != nil {
+		t.Errorf("%s", err)
+	}
 
 	if !vc.IsOpened() {
 		t.Error("Unable to open VideoCaptureFile")
@@ -61,6 +65,13 @@ func TestVideoCaptureFile(t *testing.T) {
 	vc.Read(&img)
 	if img.Empty() {
 		t.Error("Unable to read VideoCaptureFile")
+	}
+
+	vc2, err := VideoCaptureFile("nonexistent.mp4")
+	defer vc2.Close()
+
+	if err == nil {
+		t.Errorf("Expected error when opening invalid file")
 	}
 }
 
