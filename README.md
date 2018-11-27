@@ -382,6 +382,105 @@ https://gist.github.com/ogero/c19458cf64bd3e91faae85c3ac887481
 See original discussion here:
 https://github.com/hybridgroup/gocv/issues/235
 
+## Profiling
+
+Since memory allocations for images in GoCV are done through C based code, the go garbage collector will not clean all resources associated with a `Mat`.  As a result, any `Mat` created *must* be closed to avoid memory leaks.
+
+To ease the detection and repair of the resource leaks, GoCV provides a `Mat` profiler that records when each `Mat` is created and closed.  Each time a `Mat` is allocated, the stack trace is added to the profile.  When it is closed, the stack trace is removed. See the [runtime/pprof documentation](https://golang.org/pkg/runtime/pprof/#Profile).
+
+You can get the profile's count at any time using:
+
+```go
+gocv.MatProfile.Count()
+```
+
+You can display the current entries (the stack traces) with: 
+
+```go
+var b bytes.Buffer
+gocv.MatProfile.WriteTo(&b, 1)
+fmt.Print(b.String())
+```
+
+This can be very helpful to track down a leak.  For example, suppose you have
+the following nonsense program:
+
+```go
+package main
+
+import (
+	"bytes"
+	"fmt"
+
+	"gocv.io/x/gocv"
+)
+
+func leak() {
+	gocv.NewMat()
+}
+
+func main() {
+	fmt.Printf("initial MatProfile count: %v\n", gocv.MatProfile.Count())
+	leak()
+
+	fmt.Printf("final MatProfile count: %v\n", gocv.MatProfile.Count())
+	var b bytes.Buffer
+	gocv.MatProfile.WriteTo(&b, 1)
+	fmt.Print(b.String())
+}
+```
+
+Running this program produces the following output:
+
+```
+initial MatProfile count: 0
+final MatProfile count: 1
+gocv.io/x/gocv.Mat profile: total 1
+1 @ 0x40b936c 0x40b93b7 0x40b94e2 0x40b95af 0x402cd87 0x40558e1
+#	0x40b936b	gocv.io/x/gocv.newMat+0x4b	/go/src/gocv.io/x/gocv/core.go:153
+#	0x40b93b6	gocv.io/x/gocv.NewMat+0x26	/go/src/gocv.io/x/gocv/core.go:159
+#	0x40b94e1	main.leak+0x21			/go/src/github.com/dougnd/gocvprofexample/main.go:11
+#	0x40b95ae	main.main+0xae			/go/src/github.com/dougnd/gocvprofexample/main.go:16
+#	0x402cd86	runtime.main+0x206		/usr/local/Cellar/go/1.11.1/libexec/src/runtime/proc.go:201
+```
+
+We can see that this program would leak memory.  As it exited, it had one `Mat` that was never closed.  The stack trace points to exactly which line the allocation happened on (line 11, the `gocv.NewMat()`).
+
+
+Furthermore, if the program is a long running process or if GoCV is being used on a web server, it may be helpful to install the HTTP interface )). For example:
+
+```go
+package main
+
+import (
+	"net/http"
+	_ "net/http/pprof"
+	"time"
+
+	"gocv.io/x/gocv"
+)
+
+func leak() {
+	gocv.NewMat()
+}
+
+func main() {
+	go func() {
+		ticker := time.NewTicker(time.Second)
+		for {
+			<-ticker.C
+			leak()
+		}
+	}()
+
+	http.ListenAndServe("localhost:6060", nil)
+}
+
+```
+
+This will leak a `Mat` once per second.  You can see the current profile count and stack traces by going to the installed HTTP debug interface: [http://localhost:6060/debug/pprof/gocv.io/x/gocv.Mat](http://localhost:6060/debug/pprof/gocv.io/x/gocv.Mat?debug=1).
+
+
 ## How to contribute
 
 Please take a look at our [CONTRIBUTING.md](./CONTRIBUTING.md) document to understand our contribution guidelines.
