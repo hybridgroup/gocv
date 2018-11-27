@@ -251,13 +251,17 @@ That's it, now you are ready to use GoCV.
 
 ### Installation
 
-You can install OpenCV 4.0.0 using Homebrew:
+You can install OpenCV 4.0.0 using Homebrew.
 
-	brew install opencv
+If you already have an earlier version of OpenCV (3.4.x) installed, you should probably remove it before installing the new version:
 
-If you already have an earlier version of OpenCV installed, you should probably upgrade it to the latest version, instead of installing:
+	brew uninstall opencv
 
-	brew upgrade opencv
+You can then install OpenCV 4.0.0:
+
+	brew install hybridgroup/tools/opencv
+
+This new Homebrew recipe will install only OpenCV 4.0.0 without all of the Python dependencies.
 
 ### pkgconfig Installation
 pkg-config is used to determine the correct flags for compiling and linking OpenCV.
