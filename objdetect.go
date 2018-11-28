@@ -146,7 +146,7 @@ func (h *HOGDescriptor) DetectMultiScaleWithParams(img Mat, hitThresh float64,
 // https://docs.opencv.org/master/d5/d33/structcv_1_1HOGDescriptor.html#a660e5cd036fd5ddf0f5767b352acd948
 //
 func HOGDefaultPeopleDetector() Mat {
-	return Mat{p: C.HOG_GetDefaultPeopleDetector()}
+	return newMat(C.HOG_GetDefaultPeopleDetector())
 }
 
 // SetSVMDetector sets the data for the HOGDescriptor.

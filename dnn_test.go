@@ -66,6 +66,7 @@ func TestReadNet(t *testing.T) {
 	}
 
 	probMat := prob[0].Reshape(1, 1)
+	defer probMat.Close()
 	_, maxVal, minLoc, maxLoc := MinMaxLoc(probMat)
 
 	if round(float64(maxVal), 0.00005) != 0.99995 {
@@ -112,11 +113,13 @@ func TestCaffe(t *testing.T) {
 
 	net.SetInput(blob, "data")
 	prob := net.Forward("prob")
+	defer prob.Close()
 	if prob.Empty() {
 		t.Error("Invalid prob in Caffe test")
 	}
 
 	probMat := prob.Reshape(1, 1)
+	defer probMat.Close()
 	_, maxVal, minLoc, maxLoc := MinMaxLoc(probMat)
 
 	if round(float64(maxVal), 0.00005) != 0.99995 {
@@ -158,11 +161,13 @@ func TestTensorflow(t *testing.T) {
 
 	net.SetInput(blob, "input")
 	prob := net.Forward("softmax2")
+	defer prob.Close()
 	if prob.Empty() {
 		t.Error("Invalid softmax2 in Tensorflow test")
 	}
 
 	probMat := prob.Reshape(1, 1)
+	defer probMat.Close()
 	_, maxVal, minLoc, maxLoc := MinMaxLoc(probMat)
 
 	if round(float64(maxVal), 0.00005) != 1.0 {

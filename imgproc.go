@@ -491,7 +491,7 @@ func GetStructuringElement(shape MorphShape, ksize image.Point) Mat {
 		height: C.int(ksize.Y),
 	}
 
-	return Mat{p: C.GetStructuringElement(C.int(shape), sz)}
+	return newMat(C.GetStructuringElement(C.int(shape), sz))
 }
 
 // MorphType type of morphological operation.
@@ -1076,7 +1076,7 @@ func GetRotationMatrix2D(center image.Point, angle, scale float64) Mat {
 		x: C.int(center.X),
 		y: C.int(center.Y),
 	}
-	return Mat{p: C.GetRotationMatrix2D(pc, C.double(angle), C.double(scale))}
+	return newMat(C.GetRotationMatrix2D(pc, C.double(angle), C.double(scale)))
 }
 
 // WarpAffine applies an affine transformation to an image. For more parameters please check WarpAffineWithParams
@@ -1173,7 +1173,7 @@ func ApplyCustomColorMap(src Mat, dst *Mat, customColormap Mat) {
 func GetPerspectiveTransform(src, dst []image.Point) Mat {
 	srcPoints := toCPoints(src)
 	dstPoints := toCPoints(dst)
-	return Mat{p: C.GetPerspectiveTransform(srcPoints, dstPoints)}
+	return newMat(C.GetPerspectiveTransform(srcPoints, dstPoints))
 }
 
 // DrawContours draws contours outlines or filled contours.

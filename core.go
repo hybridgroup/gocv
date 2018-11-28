@@ -10,6 +10,7 @@ import (
 	"image"
 	"image/color"
 	"reflect"
+	"runtime/pprof"
 	"unsafe"
 )
 
@@ -106,14 +107,61 @@ type Mat struct {
 	p C.Mat
 }
 
+// MatProfile a pprof.Profile that contains stack traces that led to (currently)
+// unclosed Mat's creations.  Every time a Mat is created, the stack trace is
+// added to this profile and every time the Mat is closed the trace is removed.
+// In a program that is not leaking, this profile's count should not
+// continuously increase and ideally when a program is terminated the count
+// should be zero.  You can get the count at any time with:
+//
+//	gocv.MatProfile.Count()
+//
+// and you can display the current entries with:
+//
+// 	var b bytes.Buffer
+//	gocv.MatProfile.WriteTo(&b, 1)
+//	fmt.Print(b.String())
+//
+// This will display stack traces of where the unclosed Mats were instantiated.
+// For example, the results could look something like this:
+//
+//	1 @ 0x4146a0c 0x4146a57 0x4119666 0x40bb18f 0x405a841
+//	#	0x4146a0b	gocv.io/x/gocv.newMat+0x4b	/go/src/gocv.io/x/gocv/core.go:120
+//	#	0x4146a56	gocv.io/x/gocv.NewMat+0x26	/go/src/gocv.io/x/gocv/core.go:126
+//	#	0x4119665	gocv.io/x/gocv.TestMat+0x25	/go/src/gocv.io/x/gocv/core_test.go:29
+//	#	0x40bb18e	testing.tRunner+0xbe		/usr/local/Cellar/go/1.11/libexec/src/testing/testing.go:827
+//
+// Furthermore, if the program is a long running process or if gocv is being used on a
+// web server, it may be helpful to install the HTTP interface using:
+//
+//	import _ "net/http/pprof"
+//
+// For more information, see the runtime/pprof package documentation.
+var MatProfile *pprof.Profile
+
+func init() {
+	profName := "gocv.io/x/gocv.Mat"
+	MatProfile = pprof.Lookup(profName)
+	if MatProfile == nil {
+		MatProfile = pprof.NewProfile(profName)
+	}
+}
+
+// newMat returns a new Mat from a C Mat and records it to the MatProfile.
+func newMat(p C.Mat) Mat {
+	m := Mat{p: p}
+	MatProfile.Add(p, 1)
+	return m
+}
+
 // NewMat returns a new empty Mat.
 func NewMat() Mat {
-	return Mat{p: C.Mat_New()}
+	return newMat(C.Mat_New())
 }
 
 // NewMatWithSize returns a new Mat with a specific size and type.
 func NewMatWithSize(rows int, cols int, mt MatType) Mat {
-	return Mat{p: C.Mat_NewWithSize(C.int(rows), C.int(cols), C.int(mt))}
+	return newMat(C.Mat_NewWithSize(C.int(rows), C.int(cols), C.int(mt)))
 }
 
 // NewMatFromScalar returns a new Mat for a specific Scalar value
@@ -125,7 +173,7 @@ func NewMatFromScalar(s Scalar, mt MatType) Mat {
 		val4: C.double(s.Val4),
 	}
 
-	return Mat{p: C.Mat_NewFromScalar(sVal, C.int(mt))}
+	return newMat(C.Mat_NewFromScalar(sVal, C.int(mt)))
 }
 
 // NewMatWithSizeFromScalar returns a new Mat for a specific Scala value with a specific size and type
@@ -138,7 +186,7 @@ func NewMatWithSizeFromScalar(s Scalar, rows int, cols int, mt MatType) Mat {
 		val4: C.double(s.Val4),
 	}
 
-	return Mat{p: C.Mat_NewWithSizeFromScalar(sVal, C.int(rows), C.int(cols), C.int(mt))}
+	return newMat(C.Mat_NewWithSizeFromScalar(sVal, C.int(rows), C.int(cols), C.int(mt)))
 }
 
 // NewMatFromBytes returns a new Mat with a specific size and type, initialized from a []byte.
@@ -147,17 +195,18 @@ func NewMatFromBytes(rows int, cols int, mt MatType, data []byte) (Mat, error) {
 	if err != nil {
 		return Mat{}, err
 	}
-	return Mat{p: C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), *cBytes)}, nil
+	return newMat(C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), *cBytes)), nil
 }
 
 // FromPtr returns a new Mat with a specific size and type, initialized from a Mat Ptr.
 func (m *Mat) FromPtr(rows int, cols int, mt MatType, prow int, pcol int) (Mat, error) {
-	return Mat{p: C.Mat_FromPtr(m.p, C.int(rows), C.int(cols), C.int(mt), C.int(prow), C.int(pcol))}, nil
+	return newMat(C.Mat_FromPtr(m.p, C.int(rows), C.int(cols), C.int(mt), C.int(prow), C.int(pcol))), nil
 }
 
 // Close the Mat object.
 func (m *Mat) Close() error {
 	C.Mat_Close(m.p)
+	MatProfile.Remove(m.p)
 	m.p = nil
 	return nil
 }
@@ -175,7 +224,7 @@ func (m *Mat) Empty() bool {
 
 // Clone returns a cloned full copy of the Mat.
 func (m *Mat) Clone() Mat {
-	return Mat{p: C.Mat_Clone(m.p)}
+	return newMat(C.Mat_Clone(m.p))
 }
 
 // CopyTo copies Mat into destination Mat.
@@ -359,7 +408,7 @@ func (m *Mat) Region(rio image.Rectangle) Mat {
 		height: C.int(rio.Size().Y),
 	}
 
-	return Mat{p: C.Mat_Region(m.p, cRect)}
+	return newMat(C.Mat_Region(m.p, cRect))
 }
 
 // Reshape changes the shape and/or the number of channels of a 2D matrix without copying the data.
@@ -368,7 +417,7 @@ func (m *Mat) Region(rio image.Rectangle) Mat {
 // https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#a4eb96e3251417fa88b78e2abd6cfd7d8
 //
 func (m *Mat) Reshape(cn int, rows int) Mat {
-	return Mat{p: C.Mat_Reshape(m.p, C.int(cn), C.int(rows))}
+	return newMat(C.Mat_Reshape(m.p, C.int(cn), C.int(rows)))
 }
 
 // ConvertFp16 converts a Mat to half-precision floating point.
@@ -377,7 +426,7 @@ func (m *Mat) Reshape(cn int, rows int) Mat {
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9c25d9ef44a2a48ecc3774b30cb80082
 //
 func (m *Mat) ConvertFp16() Mat {
-	return Mat{p: C.Mat_ConvertFp16(m.p)}
+	return newMat(C.Mat_ConvertFp16(m.p))
 }
 
 // Mean calculates the mean value M of array elements, independently for each channel, and return it as Scalar
@@ -393,7 +442,7 @@ func (m *Mat) Mean() Scalar {
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga186222c3919657890f88df5a1f64a7d7
 //
 func (m *Mat) Sqrt() Mat {
-	return Mat{p: C.Mat_Sqrt(m.p)}
+	return newMat(C.Mat_Sqrt(m.p))
 }
 
 // Sum calculates the per-channel pixel sum of an image.
