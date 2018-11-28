@@ -43,8 +43,8 @@ script:
   - export GOCV_CAFFE_TEST_FILES="${HOME}/testdata"
   - export GOCV_TENSORFLOW_TEST_FILES="${HOME}/testdata"
   - echo "Ensuring code is well formatted"; ! gofmt -s -d . | read
-  - go test -v -coverprofile=coverage.txt -covermode=atomic
-  - go test ./contrib -coverprofile=contrib.txt -covermode=atomic; cat contrib.txt >> coverage.txt; rm contrib.txt;
+  - go test -v -coverprofile=coverage.txt -covermode=atomic -tags matprofile .
+  - go test -tags matprofile ./contrib -coverprofile=contrib.txt -covermode=atomic; cat contrib.txt >> coverage.txt; rm contrib.txt;
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

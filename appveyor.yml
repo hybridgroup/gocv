@@ -30,5 +30,5 @@ install:
   - go env
 
 build_script:
-  - go test -v .
-  - go test -v ./contrib
+  - go test -tags matprofile -v .
+  - go test -tags matprofile -v ./contrib
