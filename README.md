@@ -392,6 +392,10 @@ Since memory allocations for images in GoCV are done through C based code, the g
 
 To ease the detection and repair of the resource leaks, GoCV provides a `Mat` profiler that records when each `Mat` is created and closed.  Each time a `Mat` is allocated, the stack trace is added to the profile.  When it is closed, the stack trace is removed. See the [runtime/pprof documentation](https://golang.org/pkg/runtime/pprof/#Profile).
 
+In order to include the MatProfile custom profiler, you MUST build or run your application or tests using the `-tags matprofile` build tag. For example:
+
+	go run -tags matprofile cmd/version/main.go
+
 You can get the profile's count at any time using:
 
 ```go
@@ -449,7 +453,6 @@ gocv.io/x/gocv.Mat profile: total 1
 ```
 
 We can see that this program would leak memory.  As it exited, it had one `Mat` that was never closed.  The stack trace points to exactly which line the allocation happened on (line 11, the `gocv.NewMat()`).
-
 
 Furthermore, if the program is a long running process or if GoCV is being used on a web server, it may be helpful to install the HTTP interface )). For example:
 
