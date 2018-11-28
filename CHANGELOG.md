@@ -1,3 +1,38 @@
+0.18.0
+---
+* **build**
+    * add OPENCV_GENERATE_PKGCONFIG flag to generate pkg-config file
+    * Add required curl package to the RPM and DEBS
+    * correct name for zip directory used for code download
+    * Removing linking against face contrib module
+    * update CI to use 4.0.0 release
+    * update Makefile and Windows build command file to OpenCV 4.0.0
+    * use opencv4 file for pkg-config
+* **core**
+    * add ScaleAdd() method to Mat
+* **docs**
+    * replace OpenCV 3.4.3 references with OpenCV 4
+    * update macOS installation info to refer to new OpenCV 4.0 brew
+    * Updated function documentation with information about errors.
+* **examples**
+    * Improve accuracy in hand gesture sample
+* **features2d**
+    * update drawKeypoints() to use new stricter enum
+* **openvino**
+    * changes to accommodate release 2018R4
+* **profile**
+    * add build tag matprofile to allow for conditional inclusion of custom profile
+    * Add Mat profile wrapper in other areas of the library.
+    * Add MatProfile.
+    * Add MatProfileTest.
+    * move MatProfile tests into separate test file so they only run when custom profiler active
+* **test**
+    * Close images in tests.
+    * More Closes in tests.
+    * test that we are using 4.0.x version now
+* **videoio**
+    * Return the right type and error when opening VideoCapture fails
+
 0.17.0
 ---
 * **build** 
