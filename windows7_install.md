@@ -61,7 +61,7 @@ Download and install CMake [https://cmake.org/download/](https://cmake.org/down
 
 
 The following commands should do everything to download and install OpenCV 4.0.0 on Windows:
-以下命令应该可以在Windows上下载和安装OpenCV 4.0.0(进到%GOPATH\src\gocv.io\x\gocv %)：
+以下命令应该可以在Windows上下载和安装OpenCV 4.0.0(进到%GOPATH%\src\gocv.io\x\gocv)：
 
     chdir %GOPATH%\src\gocv.io\x\gocv        
     win7_build_opencv.cmd
