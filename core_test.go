@@ -15,6 +15,7 @@ import (
 
 func TestMat(t *testing.T) {
 	mat := NewMat()
+	defer mat.Close()
 	if !mat.Empty() {
 		t.Error("New Mat should be empty")
 	}
@@ -35,6 +36,7 @@ func TestMatFromBytesWithEmptyByteSlise(t *testing.T) {
 
 func TestMatWithSize(t *testing.T) {
 	mat := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat.Close()
 	if mat.Empty() {
 		t.Error("NewMatWithSize should not be empty")
 	}
@@ -59,6 +61,7 @@ func TestMatWithSize(t *testing.T) {
 func TestMatWithSizeFromScalar(t *testing.T) {
 	s := NewScalar(255.0, 105.0, 180.0, 0.0)
 	mat := NewMatWithSizeFromScalar(s, 2, 3, MatTypeCV8UC3)
+	defer mat.Close()
 	if mat.Empty() {
 		t.Error("NewMatWithSizeFromScalar should not be empty")
 	}
@@ -118,7 +121,9 @@ func TestMatFromPtr(t *testing.T) {
 
 func TestMatClone(t *testing.T) {
 	mat := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat.Close()
 	clone := mat.Clone()
+	defer clone.Close()
 	if clone.Rows() != 101 {
 		t.Errorf("Mat clone incorrect row count: %v\n", clone.Rows())
 	}
@@ -180,8 +185,9 @@ func TestMatCopyToWithMask(t *testing.T) {
 }
 
 func TestMatToBytes(t *testing.T) {
-	mat := NewMatWithSize(101, 102, MatTypeCV8U)
-	b := mat.ToBytes()
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat1.Close()
+	b := mat1.ToBytes()
 	if len(b) != 101*102 {
 		t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 	}
@@ -190,6 +196,7 @@ func TestMatToBytes(t *testing.T) {
 	if err != nil {
 		t.Error(err.Error())
 	}
+	defer copy.Close()
 	if copy.Rows() != 101 {
 		t.Errorf("Mat from bytes incorrect row count: %v\n", copy.Rows())
 	}
@@ -197,14 +204,16 @@ func TestMatToBytes(t *testing.T) {
 		t.Errorf("Mat region incorrect col count: %v\n", copy.Cols())
 	}
 
-	mat = NewMatWithSize(101, 102, MatTypeCV16S)
-	b = mat.ToBytes()
+	mat2 := NewMatWithSize(101, 102, MatTypeCV16S)
+	defer mat2.Close()
+	b = mat2.ToBytes()
 	if len(b) != 101*102*2 {
 		t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 	}
 
-	mat = NewMatFromScalar(NewScalar(255.0, 105.0, 180.0, 0.0), MatTypeCV8UC3)
-	b = mat.ToBytes()
+	mat3 := NewMatFromScalar(NewScalar(255.0, 105.0, 180.0, 0.0), MatTypeCV8UC3)
+	defer mat3.Close()
+	b = mat3.ToBytes()
 	if len(b) != 3 {
 		t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 	}
@@ -229,23 +238,25 @@ func TestMatDataPtr(t *testing.T) {
 			{row: rows - 1, col: cols - 1, val: 30},
 		}
 
-		mat := NewMatWithSize(rows, cols, MatTypeCV8U)
+		mat1 := NewMatWithSize(rows, cols, MatTypeCV8U)
+		defer mat1.Close()
 
-		b := mat.DataPtrUint8()
+		b := mat1.DataPtrUint8()
 		if len(b) != 101*102 {
 			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 		}
 
 		for _, p := range testPoints {
-			mat.SetUCharAt(p.row, p.col, p.val)
+			mat1.SetUCharAt(p.row, p.col, p.val)
 
 			if got := b[p.row*cols+p.col]; got != p.val {
 				t.Errorf("Expected %d,%d = %d, but it was %d", p.row, p.col, p.val, got)
 			}
 		}
 
-		mat = NewMatWithSize(3, 9, MatTypeCV32F)
-		b = mat.DataPtrUint8()
+		mat2 := NewMatWithSize(3, 9, MatTypeCV32F)
+		defer mat2.Close()
+		b = mat2.DataPtrUint8()
 		if len(b) != 3*9*4 {
 			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 		}
@@ -261,23 +272,25 @@ func TestMatDataPtr(t *testing.T) {
 			{row: rows - 1, col: cols - 1, val: 30},
 		}
 
-		mat := NewMatWithSize(101, 102, MatTypeCV8S)
+		mat1 := NewMatWithSize(101, 102, MatTypeCV8S)
+		defer mat1.Close()
 
-		b := mat.DataPtrInt8()
+		b := mat1.DataPtrInt8()
 		if len(b) != rows*cols {
 			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 		}
 
 		for _, p := range testPoints {
-			mat.SetSCharAt(p.row, p.col, p.val)
+			mat1.SetSCharAt(p.row, p.col, p.val)
 
 			if got := b[p.row*cols+p.col]; got != p.val {
 				t.Errorf("Expected %d,%d = %d, but it was %d", p.row, p.col, p.val, got)
 			}
 		}
 
-		mat = NewMatWithSize(3, 9, MatTypeCV32F)
-		b = mat.DataPtrInt8()
+		mat2 := NewMatWithSize(3, 9, MatTypeCV32F)
+		defer mat2.Close()
+		b = mat2.DataPtrInt8()
 		if len(b) != 3*9*4 {
 			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 		}
@@ -293,9 +306,10 @@ func TestMatDataPtr(t *testing.T) {
 			{row: rows - 1, col: cols - 1, val: 30},
 		}
 
-		mat := NewMatWithSize(rows, cols, MatTypeCV16U)
+		mat1 := NewMatWithSize(rows, cols, MatTypeCV16U)
+		defer mat1.Close()
 
-		b, err := mat.DataPtrUint16()
+		b, err := mat1.DataPtrUint16()
 		if err != nil {
 			t.Error(err)
 		}
@@ -304,15 +318,16 @@ func TestMatDataPtr(t *testing.T) {
 		}
 
 		for _, p := range testPoints {
-			mat.SetShortAt(p.row, p.col, int16(p.val))
+			mat1.SetShortAt(p.row, p.col, int16(p.val))
 
 			if got := b[p.row*cols+p.col]; got != p.val {
 				t.Errorf("Expected %d,%d = %d, but it was %d", p.row, p.col, p.val, got)
 			}
 		}
 
-		mat = NewMatWithSize(3, 9, MatTypeCV32F)
-		_, err = mat.DataPtrUint16()
+		mat2 := NewMatWithSize(3, 9, MatTypeCV32F)
+		defer mat2.Close()
+		_, err = mat2.DataPtrUint16()
 		if err == nil {
 			t.Errorf("Expected error.")
 		}
@@ -328,9 +343,10 @@ func TestMatDataPtr(t *testing.T) {
 			{row: rows - 1, col: cols - 1, val: 30},
 		}
 
-		mat := NewMatWithSize(rows, cols, MatTypeCV16S)
+		mat1 := NewMatWithSize(rows, cols, MatTypeCV16S)
+		defer mat1.Close()
 
-		b, err := mat.DataPtrInt16()
+		b, err := mat1.DataPtrInt16()
 		if err != nil {
 			t.Error(err)
 		}
@@ -339,15 +355,16 @@ func TestMatDataPtr(t *testing.T) {
 		}
 
 		for _, p := range testPoints {
-			mat.SetShortAt(p.row, p.col, p.val)
+			mat1.SetShortAt(p.row, p.col, p.val)
 
 			if got := b[p.row*cols+p.col]; got != p.val {
 				t.Errorf("Expected %d,%d = %d, but it was %d", p.row, p.col, p.val, got)
 			}
 		}
 
-		mat = NewMatWithSize(3, 9, MatTypeCV32F)
-		_, err = mat.DataPtrInt16()
+		mat2 := NewMatWithSize(3, 9, MatTypeCV32F)
+		defer mat2.Close()
+		_, err = mat2.DataPtrInt16()
 		if err == nil {
 			t.Errorf("Expected error.")
 		}
@@ -363,9 +380,10 @@ func TestMatDataPtr(t *testing.T) {
 			{row: rows - 1, col: cols - 1, val: 30.5},
 		}
 
-		mat := NewMatWithSize(rows, cols, MatTypeCV32F)
+		mat1 := NewMatWithSize(rows, cols, MatTypeCV32F)
+		defer mat1.Close()
 
-		b, err := mat.DataPtrFloat32()
+		b, err := mat1.DataPtrFloat32()
 		if err != nil {
 			t.Error(err)
 		}
@@ -374,15 +392,16 @@ func TestMatDataPtr(t *testing.T) {
 		}
 
 		for _, p := range testPoints {
-			mat.SetFloatAt(p.row, p.col, p.val)
+			mat1.SetFloatAt(p.row, p.col, p.val)
 
 			if got := b[p.row*cols+p.col]; got != p.val {
 				t.Errorf("Expected %d,%d = %f, but it was %f", p.row, p.col, p.val, got)
 			}
 		}
 
-		mat = NewMatWithSize(3, 9, MatTypeCV16S)
-		_, err = mat.DataPtrFloat32()
+		mat2 := NewMatWithSize(3, 9, MatTypeCV16S)
+		defer mat2.Close()
+		_, err = mat2.DataPtrFloat32()
 		if err == nil {
 			t.Errorf("Expected error.")
 		}
@@ -398,9 +417,10 @@ func TestMatDataPtr(t *testing.T) {
 			{row: rows - 1, col: cols - 1, val: 30.5},
 		}
 
-		mat := NewMatWithSize(rows, cols, MatTypeCV64F)
+		mat1 := NewMatWithSize(rows, cols, MatTypeCV64F)
+		defer mat1.Close()
 
-		b, err := mat.DataPtrFloat64()
+		b, err := mat1.DataPtrFloat64()
 		if err != nil {
 			t.Error(err)
 		}
@@ -409,15 +429,16 @@ func TestMatDataPtr(t *testing.T) {
 		}
 
 		for _, p := range testPoints {
-			mat.SetDoubleAt(p.row, p.col, p.val)
+			mat1.SetDoubleAt(p.row, p.col, p.val)
 
 			if got := b[p.row*cols+p.col]; got != p.val {
 				t.Errorf("Expected %d,%d = %f, but it was %f", p.row, p.col, p.val, got)
 			}
 		}
 
-		mat = NewMatWithSize(3, 9, MatTypeCV16S)
-		_, err = mat.DataPtrFloat64()
+		mat2 := NewMatWithSize(3, 9, MatTypeCV16S)
+		defer mat2.Close()
+		_, err = mat2.DataPtrFloat64()
 		if err == nil {
 			t.Errorf("Expected error.")
 		}
@@ -426,7 +447,9 @@ func TestMatDataPtr(t *testing.T) {
 
 func TestMatRegion(t *testing.T) {
 	mat := NewMatWithSize(100, 100, MatTypeCV8U)
+	defer mat.Close()
 	region := mat.Region(image.Rect(20, 25, 80, 75))
+	defer region.Close()
 	if region.Rows() != 50 {
 		t.Errorf("Mat region incorrect row count: %v\n", region.Rows())
 	}
@@ -441,6 +464,7 @@ func TestMatReshape(t *testing.T) {
 	defer mat.Close()
 
 	r := mat.Reshape(1, 1)
+	defer r.Close()
 	if r.Rows() != 1 {
 		t.Errorf("Mat reshape incorrect row count: %v\n", r.Rows())
 	}
@@ -462,7 +486,9 @@ func TestMatPatchNaNs(t *testing.T) {
 
 func TestMatConvert(t *testing.T) {
 	src := NewMatWithSize(100, 100, MatTypeCV32F)
+	defer src.Close()
 	dst := NewMat()
+	defer dst.Close()
 	src.ConvertTo(&dst, MatTypeCV16S)
 	if dst.Empty() {
 		t.Error("TestConvert dst should not be empty.")
@@ -471,7 +497,9 @@ func TestMatConvert(t *testing.T) {
 
 func TestMatConvertFp16(t *testing.T) {
 	src := NewMatWithSize(100, 100, MatTypeCV32F)
+	defer src.Close()
 	dst := src.ConvertFp16()
+	defer dst.Close()
 	if dst.Empty() {
 		t.Error("TestConvertFp16 dst should not be empty.")
 	}
@@ -479,13 +507,17 @@ func TestMatConvertFp16(t *testing.T) {
 
 func TestMatSqrt(t *testing.T) {
 	src := NewMatWithSize(100, 100, MatTypeCV32F)
+	defer src.Close()
+
 	dst := src.Sqrt()
+	defer dst.Close()
 	if dst.Empty() {
 		t.Error("TestSqrt dst should not be empty.")
 	}
 }
 func TestMatMean(t *testing.T) {
 	mat := NewMatWithSize(100, 100, MatTypeCV8U)
+	defer mat.Close()
 	mean := mat.Mean()
 	if mean.Val1 != 0 {
 		t.Errorf("Mat Mean incorrect Val1")
@@ -745,8 +777,11 @@ func TestMatMutators(t *testing.T) {
 
 func TestMatAbsDiff(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat1.Close()
 	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat2.Close()
 	mat3 := NewMat()
+	defer mat3.Close()
 	AbsDiff(mat1, mat2, &mat3)
 	if mat3.Empty() {
 		t.Error("TestMatAbsDiff dest mat3 should not be empty.")
@@ -755,8 +790,11 @@ func TestMatAbsDiff(t *testing.T) {
 
 func TestMatAdd(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat1.Close()
 	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat2.Close()
 	mat3 := NewMat()
+	defer mat3.Close()
 	Add(mat1, mat2, &mat3)
 	if mat3.Empty() {
 		t.Error("TestMatAdd dest mat3 should not be empty.")
@@ -765,8 +803,11 @@ func TestMatAdd(t *testing.T) {
 
 func TestMatAddWeighted(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat1.Close()
 	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat2.Close()
 	mat3 := NewMat()
+	defer mat3.Close()
 	AddWeighted(mat1, 2.0, mat2, 3.0, 4.0, &mat3)
 	if mat3.Empty() {
 		t.Error("TestMatAddWeighted dest mat3 should not be empty.")
@@ -775,8 +816,11 @@ func TestMatAddWeighted(t *testing.T) {
 
 func TestMatBitwiseOperations(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat1.Close()
 	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat2.Close()
 	mat3 := NewMat()
+	defer mat3.Close()
 	BitwiseAnd(mat1, mat2, &mat3)
 	if mat3.Empty() {
 		t.Error("TestMatBitwiseAnd dest mat3 should not be empty.")
@@ -801,9 +845,13 @@ func TestMatBitwiseOperations(t *testing.T) {
 
 func TestMatInRange(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat1.Close()
 	lb := NewMatFromScalar(NewScalar(20.0, 100.0, 100.0, 0.0), MatTypeCV8U)
+	defer lb.Close()
 	ub := NewMatFromScalar(NewScalar(20.0, 100.0, 100.0, 0.0), MatTypeCV8U)
+	defer ub.Close()
 	dst := NewMat()
+	defer dst.Close()
 	InRange(mat1, lb, ub, &dst)
 	if dst.Empty() {
 		t.Error("TestMatAddWeighted dest mat3 should not be empty.")
@@ -812,9 +860,11 @@ func TestMatInRange(t *testing.T) {
 
 func TestMatInRangeWithScalar(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat1.Close()
 	lb := NewScalar(20.0, 100.0, 100.0, 0.0)
 	ub := NewScalar(20.0, 100.0, 100.0, 0.0)
 	dst := NewMat()
+	defer dst.Close()
 	InRangeWithScalar(mat1, lb, ub, &dst)
 	if dst.Empty() {
 		t.Error("TestMatAddWeighted dest mat3 should not be empty.")
@@ -823,7 +873,9 @@ func TestMatInRangeWithScalar(t *testing.T) {
 
 func TestMatDCT(t *testing.T) {
 	src := NewMatWithSize(64, 64, MatTypeCV32F)
+	defer src.Close()
 	dst := NewMat()
+	defer dst.Close()
 
 	DCT(src, &dst, DftForward)
 	if dst.Empty() {
@@ -833,7 +885,9 @@ func TestMatDCT(t *testing.T) {
 
 func TestMatDFT(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV32F)
+	defer src.Close()
 	dst := NewMat()
+	defer dst.Close()
 
 	m := GetOptimalDFTSize(101)
 	n := GetOptimalDFTSize(102)
@@ -853,8 +907,11 @@ func TestMatDFT(t *testing.T) {
 
 func TestMatDivide(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat1.Close()
 	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat2.Close()
 	mat3 := NewMat()
+	defer mat3.Close()
 	Divide(mat1, mat2, &mat3)
 	if mat3.Empty() {
 		t.Error("TestMatDivide dest mat3 should not be empty.")
@@ -863,8 +920,11 @@ func TestMatDivide(t *testing.T) {
 
 func TestMeanStdDev(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer src.Close()
 	dst := NewMat()
+	defer dst.Close()
 	dstStdDev := NewMat()
+	defer dstStdDev.Close()
 	MeanStdDev(src, &dst, &dstStdDev)
 	if dst.Empty() {
 		t.Error("TestMeanStdDev dst should not be empty.")
@@ -876,9 +936,13 @@ func TestMeanStdDev(t *testing.T) {
 
 func TestMatMerge(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer src.Close()
 	src2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer src2.Close()
 	src3 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer src3.Close()
 	dst := NewMat()
+	defer dst.Close()
 	Merge([]Mat{src, src2, src3}, &dst)
 	if dst.Empty() {
 		t.Error("TestMatMerge dst should not be empty.")
@@ -887,13 +951,17 @@ func TestMatMerge(t *testing.T) {
 
 func TestMatMulSpectrums(t *testing.T) {
 	a := NewMatWithSize(101, 102, MatTypeCV32F)
+	defer a.Close()
 	b := NewMatWithSize(101, 102, MatTypeCV32F)
+	defer b.Close()
 	dst := NewMat()
+	defer dst.Close()
 	MulSpectrums(a, b, &dst, 0)
 	if dst.Empty() {
 		t.Error("TestMatMulSpectrums dst should not be empty.")
 	}
 	dst2 := NewMat()
+	defer dst2.Close()
 	//test with dftrows flag (the only flag accepted in addition to 0)
 	MulSpectrums(a, b, &dst2, DftRows)
 	if dst2.Empty() {
@@ -903,8 +971,11 @@ func TestMatMulSpectrums(t *testing.T) {
 
 func TestMatMultiply(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV64F)
+	defer mat1.Close()
 	mat2 := NewMatWithSize(101, 102, MatTypeCV64F)
+	defer mat2.Close()
 	mat3 := NewMat()
+	defer mat3.Close()
 	Multiply(mat1, mat2, &mat3)
 	if mat3.Empty() {
 		t.Error("TestMatMultiply dest mat3 should not be empty.")
@@ -912,7 +983,9 @@ func TestMatMultiply(t *testing.T) {
 
 	// since this is a single channel Mat, only the first value in the scalar is used
 	mat4 := NewMatWithSizeFromScalar(NewScalar(2.0, 0.0, 0.0, 0.0), 101, 102, MatTypeCV64F)
+	defer mat4.Close()
 	mat5 := NewMatWithSizeFromScalar(NewScalar(3.0, 0.0, 0.0, 0.0), 101, 102, MatTypeCV64F)
+	defer mat5.Close()
 	Multiply(mat4, mat5, &mat3)
 	if mat3.Empty() {
 		t.Error("TestMatMultiply dest mat3 should not be empty.")
@@ -924,7 +997,9 @@ func TestMatMultiply(t *testing.T) {
 
 func TestMatNormalize(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer src.Close()
 	dst := NewMat()
+	defer dst.Close()
 	Normalize(src, &dst, 0.0, 255.0, NormMinMax)
 	if dst.Empty() {
 		t.Error("TestMatNormalize dst should not be empty.")
@@ -933,8 +1008,11 @@ func TestMatNormalize(t *testing.T) {
 
 func TestMatPerspectiveTransform(t *testing.T) {
 	src := NewMatWithSize(100, 1, MatTypeCV32F+MatChannels2)
+	defer src.Close()
 	dst := NewMat()
+	defer dst.Close()
 	tm := NewMatWithSize(3, 3, MatTypeCV32F)
+	defer tm.Close()
 	PerspectiveTransform(src, &dst, tm)
 	if dst.Empty() {
 		t.Error("PerspectiveTransform error")
@@ -943,8 +1021,11 @@ func TestMatPerspectiveTransform(t *testing.T) {
 
 func TestMatSolve(t *testing.T) {
 	a := NewMatWithSize(3, 3, MatTypeCV32F)
+	defer a.Close()
 	b := NewMatWithSize(3, 1, MatTypeCV32F)
+	defer b.Close()
 	solve := NewMat()
+	defer solve.Close()
 
 	testPoints := []struct {
 		x2 float32
@@ -981,7 +1062,9 @@ func TestMatSolve(t *testing.T) {
 
 func TestSolveCubic(t *testing.T) {
 	coeffs := NewMatWithSize(1, 4, MatTypeCV32F)
+	defer coeffs.Close()
 	roots := NewMat()
+	defer roots.Close()
 
 	coeffs.SetFloatAt(0, 0, 2.0)
 	coeffs.SetFloatAt(0, 1, 3.0)
@@ -1005,7 +1088,9 @@ func TestSolveCubic(t *testing.T) {
 
 func TestSolvePoly(t *testing.T) {
 	coeffs := NewMatWithSize(1, 3, MatTypeCV32F)
+	defer coeffs.Close()
 	roots := NewMat()
+	defer roots.Close()
 
 	// x² - 14x + 49 = 0
 	coeffs.SetFloatAt(0, 0, 49.0)
@@ -1029,7 +1114,9 @@ func TestMatReduceToSingleRow(t *testing.T) {
 	rows := 2
 	cols := 3
 	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
 	dst := NewMat()
+	defer dst.Close()
 
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
@@ -1054,7 +1141,9 @@ func TestMatReduceToSingleColumn(t *testing.T) {
 	rows := 2
 	cols := 3
 	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
 	dst := NewMat()
+	defer dst.Close()
 
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
@@ -1079,6 +1168,7 @@ func TestRepeat(t *testing.T) {
 	rows := 1
 	cols := 3
 	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
 
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
@@ -1087,6 +1177,7 @@ func TestRepeat(t *testing.T) {
 	}
 
 	dst := NewMat()
+	defer dst.Close()
 	Repeat(src, 3, 1, &dst)
 
 	size := dst.Size()
@@ -1109,10 +1200,53 @@ func TestRepeat(t *testing.T) {
 	}
 }
 
+func TestScaleAdd(t *testing.T) {
+	rows := 2
+	cols := 3
+	src1 := NewMatWithSize(rows, cols, MatTypeCV64F)
+	defer src1.Close()
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src1.SetDoubleAt(row, col, float64(col))
+		}
+	}
+
+	src2 := NewMatWithSize(rows, cols, MatTypeCV64F)
+	defer src2.Close()
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src2.SetDoubleAt(row, col, 1.0)
+		}
+	}
+
+	dst := NewMat()
+	defer dst.Close()
+
+	alpha := 1.5
+	ScaleAdd(src1, alpha, src2, &dst)
+
+	if dst.Empty() {
+		t.Error("TestScaleAdd dst should not be empty.")
+	}
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			expected := float64(col)*alpha + 1.0
+			result := dst.GetDoubleAt(row, col)
+			if result != expected {
+				t.Errorf("TestScaleAdd dst at row=%d col=%d should be %f and got %f.", row, col, expected, result)
+			}
+		}
+	}
+}
+
 func TestMatSortEveryRowDescending(t *testing.T) {
 	rows := 2
 	cols := 3
 	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
 
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
@@ -1121,6 +1255,8 @@ func TestMatSortEveryRowDescending(t *testing.T) {
 	}
 
 	dst := NewMat()
+	defer dst.Close()
+
 	flags := SortEveryRow + SortDescending
 	Sort(src, &dst, flags)
 
@@ -1143,6 +1279,7 @@ func TestMatSortIdxEveryRowDescending(t *testing.T) {
 	rows := 2
 	cols := 3
 	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
 
 	for row := 0; row < rows; row++ {
 		for col := 0; col < cols; col++ {
@@ -1151,6 +1288,7 @@ func TestMatSortIdxEveryRowDescending(t *testing.T) {
 	}
 
 	dst := NewMat()
+	defer dst.Close()
 	flags := SortEveryRow + SortDescending
 	SortIdx(src, &dst, flags)
 
@@ -1161,13 +1299,16 @@ func TestMatSortIdxEveryRowDescending(t *testing.T) {
 
 func TestMatSplit(t *testing.T) {
 	src := IMRead("images/face.jpg", 1)
+	defer src.Close()
 	chans := Split(src)
 	if len(chans) != src.Channels() {
 		t.Error("Split Channel count differs")
 	}
 	dst := NewMat()
+	defer dst.Close()
 	Merge(chans, &dst)
 	diff := NewMat()
+	defer diff.Close()
 	AbsDiff(src, dst, &diff)
 	sum := diff.Sum()
 	if sum.Val1 != 0 || sum.Val2 != 0 || sum.Val3 != 0 {
@@ -1177,8 +1318,11 @@ func TestMatSplit(t *testing.T) {
 
 func TestMatSubtract(t *testing.T) {
 	src1 := IMRead("images/lut.png", 1)
+	defer src1.Close()
 	src2 := IMRead("images/lut.png", 1)
+	defer src2.Close()
 	dst := NewMat()
+	defer dst.Close()
 	Subtract(src1, src2, &dst)
 	sum := dst.Sum()
 	if sum.Val1 != 0 || sum.Val2 != 0 || sum.Val3 != 0 {
@@ -1190,6 +1334,7 @@ func TestMatTrace(t *testing.T) {
 	rows := 3
 	cols := 3
 	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
 
 	// Create and identity eye matrix
 	for row := 0; row <= rows; row++ {
@@ -1210,8 +1355,11 @@ func TestMatTrace(t *testing.T) {
 
 func TestMatTransform(t *testing.T) {
 	src := IMRead("images/lut.png", 1)
+	defer src.Close()
 	dst := NewMat()
+	defer dst.Close()
 	tm := NewMatWithSize(4, 4, MatTypeCV8UC4)
+	defer tm.Close()
 	Transform(src, &dst, tm)
 	if dst.Empty() {
 		t.Error("Transform error")
@@ -1220,7 +1368,9 @@ func TestMatTransform(t *testing.T) {
 
 func TestMatTranspose(t *testing.T) {
 	src := IMRead("images/lut.png", 1)
+	defer src.Close()
 	dst := NewMat()
+	defer dst.Close()
 	Transpose(src, &dst)
 	if dst.Empty() {
 		t.Error("Transpose error")
@@ -1247,7 +1397,9 @@ func TestPolarToCart(t *testing.T) {
 
 func TestMatPow(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer src.Close()
 	dst := NewMat()
+	defer dst.Close()
 	power := 2.0
 	Pow(src, power, &dst)
 
@@ -1258,6 +1410,7 @@ func TestMatPow(t *testing.T) {
 
 func TestMatSum(t *testing.T) {
 	src := NewMatFromScalar(NewScalar(1, 2, 3, 4), MatTypeCV8UC4)
+	defer src.Close()
 	sum := src.Sum()
 	if sum.Val1 != 1 || sum.Val2 != 2 || sum.Val3 != 3 || sum.Val4 != 4 {
 		t.Error("Sum values do not match constructor")
@@ -1359,6 +1512,7 @@ func TestMatCartToPolar(t *testing.T) {
 
 func TestMatCheckRange(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat1.Close()
 	ret := CheckRange(mat1)
 	if !ret {
 		t.Error("TestCheckRange error.")
@@ -1398,6 +1552,7 @@ func TestMatCopyMakeBorder(t *testing.T) {
 
 func TestMatDeterminant(t *testing.T) {
 	mat1 := NewMatWithSize(101, 101, MatTypeCV32F)
+	defer mat1.Close()
 	ret := Determinant(mat1)
 	if ret != 0 {
 		t.Error("TestMatDeterminant error.")
@@ -1776,6 +1931,7 @@ func TestImageToMatRGBA(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer mat.Close()
 	img1, err := mat.ToImage()
 	if err != nil {
 		log.Fatal(err)
@@ -1802,6 +1958,7 @@ func TestImageToMatRGB(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer mat.Close()
 	img1, err := mat.ToImage()
 	if err != nil {
 		log.Fatal(err)
@@ -1829,6 +1986,7 @@ func TestImageGrayToMatGray(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer mat.Close()
 	img1, err := mat.ToImage()
 	if err != nil {
 		log.Fatal(err)
@@ -1855,6 +2013,7 @@ func TestGetVecfAt(t *testing.T) {
 		if len := len(vec); len != c.expectedSize {
 			t.Errorf("TestGetVecfAt: expected %d, got: %d.", c.expectedSize, len)
 		}
+		c.m.Close()
 	}
 }
 
@@ -1874,6 +2033,7 @@ func TestGetVeciAt(t *testing.T) {
 		if len := len(vec); len != c.expectedSize {
 			t.Errorf("TestGetVeciAt: expected %d, got: %d.", c.expectedSize, len)
 		}
+		c.m.Close()
 	}
 }
 

@@ -27,6 +27,7 @@ func TestAKAZE(t *testing.T) {
 	defer mask.Close()
 
 	kp2, desc := ak.DetectAndCompute(img, mask)
+	defer desc.Close()
 	if len(kp2) < 512 {
 		t.Errorf("Invalid KeyPoint array in AKAZE DetectAndCompute: %d", len(kp2))
 	}
@@ -77,6 +78,7 @@ func TestBRISK(t *testing.T) {
 	defer mask.Close()
 
 	kp2, desc := br.DetectAndCompute(img, mask)
+	defer desc.Close()
 	if len(kp2) != 1105 {
 		t.Errorf("Invalid KeyPoint array in BRISK DetectAndCompute: %d", len(kp2))
 	}
@@ -146,6 +148,7 @@ func TestKAZE(t *testing.T) {
 	defer mask.Close()
 
 	kp2, desc := k.DetectAndCompute(img, mask)
+	defer desc.Close()
 	if len(kp2) < 512 {
 		t.Errorf("Invalid KeyPoint array in KAZE DetectAndCompute: %d", len(kp2))
 	}
@@ -196,6 +199,7 @@ func TestORB(t *testing.T) {
 	defer mask.Close()
 
 	kp2, desc := od.DetectAndCompute(img, mask)
+	defer desc.Close()
 	if len(kp2) != 500 {
 		t.Errorf("Invalid KeyPoint array in ORB DetectAndCompute: %d", len(kp2))
 	}
@@ -278,6 +282,7 @@ func TestDrawKeyPoints(t *testing.T) {
 	kp := ffd.Detect(img)
 
 	simpleKP := NewMat()
+	defer simpleKP.Close()
 	DrawKeyPoints(img, kp, &simpleKP, color.RGBA{255, 0, 0, 0}, DrawDefault)
 
 	if simpleKP.Rows() != img.Rows() || simpleKP.Cols() != img.Cols() {

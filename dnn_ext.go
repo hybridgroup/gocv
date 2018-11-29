@@ -39,7 +39,6 @@ func FP16BlobFromImage(img Mat, scaleFactor float32, size image.Point, mean floa
 		roi.Max.Y = size.Y
 	}
 
-	square.Region(roi)
 	Resize(img, &square, roi.Max, 0, 0, InterpolationDefault)
 
 	if swapRB {

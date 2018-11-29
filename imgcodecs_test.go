@@ -15,6 +15,7 @@ import (
 
 func TestIMRead(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
+	defer img.Close()
 	if img.Empty() {
 		t.Error("Invalid Mat in IMRead")
 	}
@@ -25,6 +26,7 @@ func TestIMWrite(t *testing.T) {
 	tmpfn := filepath.Join(dir, "test.jpg")
 
 	img := IMRead("images/face-detect.jpg", IMReadColor)
+	defer img.Close()
 	if img.Empty() {
 		t.Error("Invalid read of Mat in IMWrite test")
 	}
@@ -40,6 +42,7 @@ func TestIMWriteWithParams(t *testing.T) {
 	tmpfn := filepath.Join(dir, "test.jpg")
 
 	img := IMRead("images/face-detect.jpg", IMReadColor)
+	defer img.Close()
 	if img.Empty() {
 		t.Error("Invalid read of Mat in IMWrite test")
 	}
@@ -52,6 +55,7 @@ func TestIMWriteWithParams(t *testing.T) {
 
 func TestIMEncode(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
+	defer img.Close()
 	if img.Empty() {
 		t.Error("Invalid Mat in IMEncode test")
 	}
@@ -94,6 +98,7 @@ func ExampleIMEncodeWithParams() {
 
 func TestIMEncodeWithParams(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
+	defer img.Close()
 	if img.Empty() {
 		t.Error("Invalid Mat in IMEncode test")
 	}
@@ -132,6 +137,7 @@ func TestIMDecode(t *testing.T) {
 	if dec.Empty() {
 		t.Error("Invalid Mat in IMDecode")
 	}
+	dec.Close()
 
 	dec, err = IMDecode([]byte{}, IMReadColor)
 	if err == nil {

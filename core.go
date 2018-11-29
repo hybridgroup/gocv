@@ -108,12 +108,12 @@ type Mat struct {
 
 // NewMat returns a new empty Mat.
 func NewMat() Mat {
-	return Mat{p: C.Mat_New()}
+	return newMat(C.Mat_New())
 }
 
 // NewMatWithSize returns a new Mat with a specific size and type.
 func NewMatWithSize(rows int, cols int, mt MatType) Mat {
-	return Mat{p: C.Mat_NewWithSize(C.int(rows), C.int(cols), C.int(mt))}
+	return newMat(C.Mat_NewWithSize(C.int(rows), C.int(cols), C.int(mt)))
 }
 
 // NewMatFromScalar returns a new Mat for a specific Scalar value
@@ -125,7 +125,7 @@ func NewMatFromScalar(s Scalar, mt MatType) Mat {
 		val4: C.double(s.Val4),
 	}
 
-	return Mat{p: C.Mat_NewFromScalar(sVal, C.int(mt))}
+	return newMat(C.Mat_NewFromScalar(sVal, C.int(mt)))
 }
 
 // NewMatWithSizeFromScalar returns a new Mat for a specific Scala value with a specific size and type
@@ -138,7 +138,7 @@ func NewMatWithSizeFromScalar(s Scalar, rows int, cols int, mt MatType) Mat {
 		val4: C.double(s.Val4),
 	}
 
-	return Mat{p: C.Mat_NewWithSizeFromScalar(sVal, C.int(rows), C.int(cols), C.int(mt))}
+	return newMat(C.Mat_NewWithSizeFromScalar(sVal, C.int(rows), C.int(cols), C.int(mt)))
 }
 
 // NewMatFromBytes returns a new Mat with a specific size and type, initialized from a []byte.
@@ -147,19 +147,12 @@ func NewMatFromBytes(rows int, cols int, mt MatType, data []byte) (Mat, error) {
 	if err != nil {
 		return Mat{}, err
 	}
-	return Mat{p: C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), *cBytes)}, nil
+	return newMat(C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), *cBytes)), nil
 }
 
 // FromPtr returns a new Mat with a specific size and type, initialized from a Mat Ptr.
 func (m *Mat) FromPtr(rows int, cols int, mt MatType, prow int, pcol int) (Mat, error) {
-	return Mat{p: C.Mat_FromPtr(m.p, C.int(rows), C.int(cols), C.int(mt), C.int(prow), C.int(pcol))}, nil
-}
-
-// Close the Mat object.
-func (m *Mat) Close() error {
-	C.Mat_Close(m.p)
-	m.p = nil
-	return nil
+	return newMat(C.Mat_FromPtr(m.p, C.int(rows), C.int(cols), C.int(mt), C.int(prow), C.int(pcol))), nil
 }
 
 // Ptr returns the Mat's underlying object pointer.
@@ -175,7 +168,7 @@ func (m *Mat) Empty() bool {
 
 // Clone returns a cloned full copy of the Mat.
 func (m *Mat) Clone() Mat {
-	return Mat{p: C.Mat_Clone(m.p)}
+	return newMat(C.Mat_Clone(m.p))
 }
 
 // CopyTo copies Mat into destination Mat.
@@ -359,7 +352,7 @@ func (m *Mat) Region(rio image.Rectangle) Mat {
 		height: C.int(rio.Size().Y),
 	}
 
-	return Mat{p: C.Mat_Region(m.p, cRect)}
+	return newMat(C.Mat_Region(m.p, cRect))
 }
 
 // Reshape changes the shape and/or the number of channels of a 2D matrix without copying the data.
@@ -368,7 +361,7 @@ func (m *Mat) Region(rio image.Rectangle) Mat {
 // https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#a4eb96e3251417fa88b78e2abd6cfd7d8
 //
 func (m *Mat) Reshape(cn int, rows int) Mat {
-	return Mat{p: C.Mat_Reshape(m.p, C.int(cn), C.int(rows))}
+	return newMat(C.Mat_Reshape(m.p, C.int(cn), C.int(rows)))
 }
 
 // ConvertFp16 converts a Mat to half-precision floating point.
@@ -377,7 +370,7 @@ func (m *Mat) Reshape(cn int, rows int) Mat {
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9c25d9ef44a2a48ecc3774b30cb80082
 //
 func (m *Mat) ConvertFp16() Mat {
-	return Mat{p: C.Mat_ConvertFp16(m.p)}
+	return newMat(C.Mat_ConvertFp16(m.p))
 }
 
 // Mean calculates the mean value M of array elements, independently for each channel, and return it as Scalar
@@ -393,7 +386,7 @@ func (m *Mat) Mean() Scalar {
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga186222c3919657890f88df5a1f64a7d7
 //
 func (m *Mat) Sqrt() Mat {
-	return Mat{p: C.Mat_Sqrt(m.p)}
+	return newMat(C.Mat_Sqrt(m.p))
 }
 
 // Sum calculates the per-channel pixel sum of an image.
@@ -1495,6 +1488,15 @@ func Reduce(src Mat, dst *Mat, dim int, rType ReduceTypes, dType int) {
 //
 func Repeat(src Mat, nY int, nX int, dst *Mat) {
 	C.Mat_Repeat(src.p, C.int(nY), C.int(nX), dst.p)
+}
+
+// Calculates the sum of a scaled array and another array.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga9e0845db4135f55dcf20227402f00d98
+//
+func ScaleAdd(src1 Mat, alpha float64, src2 Mat, dst *Mat) {
+	C.Mat_ScaleAdd(src1.p, C.double(alpha), src2.p, dst.p)
 }
 
 type SortFlags int

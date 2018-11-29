@@ -363,5 +363,5 @@ void DrawKeyPoints(Mat src, struct KeyPoints kp, Mat dst, Scalar s, int flags) {
 
         cv::Scalar color = cv::Scalar(s.val1, s.val2, s.val3, s.val4);
 
-        cv::drawKeypoints(*src, keypts, *dst, color, flags);
+        cv::drawKeypoints(*src, keypts, *dst, color, static_cast<cv::DrawMatchesFlags>(flags));
 }

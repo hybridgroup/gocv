@@ -54,7 +54,9 @@ func TestHOGDescriptor(t *testing.T) {
 	hog := NewHOGDescriptor()
 	defer hog.Close()
 
-	hog.SetSVMDetector(HOGDefaultPeopleDetector())
+	d := HOGDefaultPeopleDetector()
+	defer d.Close()
+	hog.SetSVMDetector(d)
 
 	rects := hog.DetectMultiScale(img)
 	if len(rects) != 1 {
@@ -73,7 +75,9 @@ func TestHOGDescriptorWithParams(t *testing.T) {
 	hog := NewHOGDescriptor()
 	defer hog.Close()
 
-	hog.SetSVMDetector(HOGDefaultPeopleDetector())
+	d := HOGDefaultPeopleDetector()
+	defer d.Close()
+	hog.SetSVMDetector(d)
 
 	rects := hog.DetectMultiScaleWithParams(img, 0, image.Pt(0, 0), image.Pt(0, 0),
 		1.05, 2.0, false)
