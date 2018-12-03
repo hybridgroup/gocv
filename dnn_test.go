@@ -183,6 +183,54 @@ func TestTensorflow(t *testing.T) {
 	}
 }
 
+func TestReadNetFromModelOptimizer(t *testing.T) {
+	path := os.Getenv("GOCV_MODELOPTIMIZER_TEST_FILES")
+	if path == "" {
+		t.Skip("Unable to locate Caffe model files for tests")
+	}
+
+	net := ReadNetFromModelOptimizer(path+"/bvlc_googlenet.xml", path+"/bvlc_googlenet.bin")
+	if net.Empty() {
+		t.Errorf("Unable to load intermediate representation of Caffe model")
+	}
+	defer net.Close()
+
+	img := IMRead("images/space_shuttle.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in ReadNetFromModelOptimizer test")
+	}
+	defer img.Close()
+
+	blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(104, 117, 123, 0), false, false)
+	if blob.Empty() {
+		t.Error("Invalid blob in ReadNetFromModelOptimizer test")
+	}
+	defer blob.Close()
+
+	net.SetInput(blob, "data")
+	prob := net.Forward("prob")
+	defer prob.Close()
+	if prob.Empty() {
+		t.Error("Invalid prob in ReadNetFromModelOptimizer test")
+	}
+
+	probMat := prob.Reshape(1, 1)
+	defer probMat.Close()
+	_, maxVal, minLoc, maxLoc := MinMaxLoc(probMat)
+
+	if round(float64(maxVal), 0.00005) != 0.99995 {
+		t.Errorf("ReadNetFromModelOptimizer Caffe maxVal incorrect: %v\n", round(float64(maxVal), 0.00005))
+	}
+
+	if minLoc.X != 793 || minLoc.Y != 0 {
+		t.Errorf("ReadNetFromModelOptimizer Caffe minLoc incorrect: %v\n", minLoc)
+	}
+
+	if maxLoc.X != 812 || maxLoc.Y != 0 {
+		t.Errorf("ReadNetFromModelOptimizer Caffe maxLoc incorrect: %v\n", maxLoc)
+	}
+}
+
 func TestGetBlobChannel(t *testing.T) {
 	img := NewMatWithSize(100, 100, 5+16)
 	defer img.Close()

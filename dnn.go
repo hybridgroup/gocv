@@ -207,6 +207,20 @@ func ReadNetFromTensorflow(model string) Net {
 	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTensorflow(cmodel))}
 }
 
+// ReadNetFromTensorflow reads a model from Intel's Model Optimizer intermediate representation.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga4f3b552113d2bff48a54e168791c448e
+//
+func ReadNetFromModelOptimizer(xml string, bin string) Net {
+	cxml := C.CString(xml)
+	defer C.free(unsafe.Pointer(cxml))
+
+	cbin := C.CString(bin)
+	defer C.free(unsafe.Pointer(cbin))
+	return Net{p: unsafe.Pointer(C.Net_ReadNetFromModelOptimizer(cxml, cbin))}
+}
+
 // BlobFromImage creates 4-dimensional blob from image. Optionally resizes and crops
 // image from center, subtract mean values, scales values by scalefactor,
 // swap Blue and Red channels.

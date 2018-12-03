@@ -15,6 +15,11 @@ Net Net_ReadNetFromTensorflow(const char* model) {
     return n;
 }
 
+Net Net_ReadNetFromModelOptimizer(const char* xml, const char* bin) {
+    Net n = new cv::dnn::Net(cv::dnn::readNetFromModelOptimizer(xml, bin));
+    return n;
+}
+
 void Net_Close(Net net) {
     delete net;
 }
