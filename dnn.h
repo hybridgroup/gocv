@@ -20,8 +20,11 @@ typedef void* Layer;
 #endif
 
 Net Net_ReadNet(const char* model, const char* config);
+Net Net_ReadNetBytes(const char* framework, struct ByteArray model, struct ByteArray config);
 Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel);
+Net Net_ReadNetFromCaffeBytes(struct ByteArray prototxt, struct ByteArray caffeModel);
 Net Net_ReadNetFromTensorflow(const char* model);
+Net Net_ReadNetFromTensorflowBytes(struct ByteArray model);
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
                       bool crop);
 void Net_Close(Net net);

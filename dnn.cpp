@@ -5,13 +5,31 @@ Net Net_ReadNet(const char* model, const char* config) {
     return n;
 }
 
+Net Net_ReadNetBytes(const char* framework, struct ByteArray model, struct ByteArray config) {
+    std::vector<uchar> modelv(model.data, model.data + model.length);
+    std::vector<uchar> configv(config.data, config.data + config.length);
+    Net n = new cv::dnn::Net(cv::dnn::readNet(framework, modelv, configv));
+    return n;
+}
+
 Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel) {
     Net n = new cv::dnn::Net(cv::dnn::readNetFromCaffe(prototxt, caffeModel));
     return n;
 }
 
+Net Net_ReadNetFromCaffeBytes(struct ByteArray prototxt, struct ByteArray caffeModel) {
+    Net n = new cv::dnn::Net(cv::dnn::readNetFromCaffe(prototxt.data, prototxt.length,
+                            caffeModel.data, caffeModel.length));
+    return n;
+}
+
 Net Net_ReadNetFromTensorflow(const char* model) {
     Net n = new cv::dnn::Net(cv::dnn::readNetFromTensorflow(model));
+    return n;
+}
+
+Net Net_ReadNetFromTensorflowBytes(struct ByteArray model) {
+    Net n = new cv::dnn::Net(cv::dnn::readNetFromTensorflow(model.data, model.length));
     return n;
 }
 
