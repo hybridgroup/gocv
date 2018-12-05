@@ -223,6 +223,56 @@ Please note that you will need to run these 2 lines of code one time in your cur
 
 	go run -tags customenv ./cmd/version/main.go
 
+### Docker
+
+The project now provides `Dockerfile` which lets you build [GoCV](https://gocv.io/) Docker image which you can then use to build and run `GoCV` applications in Docker containers. The `Makefile` contains `docker` target which lets you build Docker image with a single command:
+
+```
+make docker
+```
+
+By default Docker image built by running the command above ships [Go](https://golang.org/) version `1.11.2`, but if you would like to build an image which uses different version of `Go` you can override the default value when running the target command:
+
+```
+make docker GOVERSION='1.11.1'
+```
+
+#### Running GUI programs in Docker on macOS
+
+Sometimes your `GoCV` programs create graphical interfaces like windows eg. when you use `gocv.Window` type when you display an image or video stream. Running the programs which create graphical interfaces in Docker container on macOS is unfortunately a bit elaborate, but not impossible. First you need to satisfy the following prerequisites:
+* install [xquartz](https://www.xquartz.org/). You can also install xquartz using [homebrew](https://brew.sh/) by running `brew install cask xquartz`
+* install [socat](https://linux.die.net/man/1/socat) `brew install socat`
+
+Note, you will have to log out and log back in to your machine once you have installed `xquartz`. This is so the X window system is reloaded.
+
+Once you have installed all the prerequisites you need to allow connections from network clients to `xquartz`. Here is how you do that. First run the following command to open `xquart` so you can configure it:
+
+```shell
+open -a xquartz
+```
+Click on *Security* tab in preferences and check the "Allow connections" box:
+
+![app image](./images/xquartz.png)
+
+Next, you need to create a TCP proxy using `socat` which will stream [X Window](https://en.wikipedia.org/wiki/X_Window_System) data into `xquart`. Before you start the proxy you need to make sure that there is no process listening in port `6000`. The following command should **not** return any results:
+
+```shell
+lsof -i TCP:6000
+```
+Now you can start a local proxy which will proxy the X Window traffic into xquartz which acts a your local X server:
+
+```shell
+socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\"
+```
+
+You are now finally ready to run your `GoCV` GUI programs in Docker containers. In order to make everything work you must set `DISPLAY` environment variables as shown in a sample command below:
+
+```shell
+docker run -it --rm -e DISPLAY=docker.for.mac.host.internal:0 your-gocv-app
+```
+
+**Note, since Docker for MacOS does not provide any video device support, you won't be able run GoCV apps which require camera.**
+
 ### Alpine 3.7 Docker image
 
 There is a Docker image with Alpine 3.7 that has been created by project contributor [@denismakogon](https://github.com/denismakogon). You can find it located at [https://github.com/denismakogon/gocv-alpine](https://github.com/denismakogon/gocv-alpine).
@@ -266,7 +316,7 @@ This new Homebrew recipe will install only OpenCV 4.0.0 without all of the Pytho
 ### pkgconfig Installation
 pkg-config is used to determine the correct flags for compiling and linking OpenCV.
 You can install it by using Homebrew:
-    
+
     brew install pkgconfig
 
 ### Verifying the installation
@@ -402,7 +452,7 @@ You can get the profile's count at any time using:
 gocv.MatProfile.Count()
 ```
 
-You can display the current entries (the stack traces) with: 
+You can display the current entries (the stack traces) with:
 
 ```go
 var b bytes.Buffer

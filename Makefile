@@ -1,8 +1,11 @@
 .ONESHELL:
-.PHONY: test deps download build clean astyle cmds
+.PHONY: test deps download build clean astyle cmds docker
 
 # OpenCV version to use.
 OPENCV_VERSION?=4.0.0
+
+# Go version to use when building Docker image
+GOVERSION?=1.11.2
 
 # Temporary directory to put files into.
 TMP_DIR?=/tmp/
@@ -56,7 +59,7 @@ build:
 	cd $(TMP_DIR)opencv/opencv-$(OPENCV_VERSION)
 	mkdir build
 	cd build
-	cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=$(TMP_DIR)opencv/opencv_contrib-$(OPENCV_VERSION)/modules -D BUILD_DOCS=OFF BUILD_EXAMPLES=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_opencv_java=OFF -D BUILD_opencv_python=OFF -D BUILD_opencv_python2=OFF -D BUILD_opencv_python3=OFF WITH_JASPER=OFF -DOPENCV_GENERATE_PKGCONFIG=ON ..
+	cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=$(TMP_DIR)opencv/opencv_contrib-$(OPENCV_VERSION)/modules -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_opencv_java=NO -D BUILD_opencv_python=NO -D BUILD_opencv_python2=NO -D BUILD_opencv_python3=NO -D WITH_JASPER=OFF -DOPENCV_GENERATE_PKGCONFIG=ON ..
 	$(MAKE) -j $(shell nproc --all)
 	$(MAKE) preinstall
 	cd -
@@ -66,7 +69,7 @@ build_raspi:
 	cd $(TMP_DIR)opencv/opencv-$(OPENCV_VERSION)
 	mkdir build
 	cd build
-	cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=$(TMP_DIR)opencv/opencv_contrib-$(OPENCV_VERSION)/modules -D BUILD_DOCS=OFF BUILD_EXAMPLES=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_opencv_java=OFF -D BUILD_opencv_python=OFF -D BUILD_opencv_python2=OFF -D BUILD_opencv_python3=OFF -D ENABLE_NEON=ON -D ENABLE_VFPV3=ON WITH_JASPER=OFF -DOPENCV_GENERATE_PKGCONFIG=ON ..
+	cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=$(TMP_DIR)opencv/opencv_contrib-$(OPENCV_VERSION)/modules -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_opencv_java=OFF -D BUILD_opencv_python=NO -D BUILD_opencv_python2=NO -D BUILD_opencv_python3=NO -D ENABLE_NEON=ON -D ENABLE_VFPV3=ON -D WITH_JASPER=OFF -D OPENCV_GENERATE_PKGCONFIG=ON ..
 	$(MAKE) -j $(shell nproc --all)
 	$(MAKE) preinstall
 	cd -
@@ -98,6 +101,8 @@ verify:
 test:
 	go test . ./contrib
 
+docker:
+	docker build --build-arg OPENCV_VERSION=$(OPENCV_VERSION) --build-arg GOVERSION=$(GOVERSION) .
 
 astyle:
 	astyle --project=.astylerc --recursive *.cpp,*.h
