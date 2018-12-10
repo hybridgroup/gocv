@@ -1,5 +1,5 @@
 FROM ubuntu:16.04 AS opencv
-LABEL maintainer="Hybridgroup"
+LABEL maintainer="hybridgroup"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
             git build-essential cmake pkg-config unzip libgtk2.0-dev \
@@ -39,7 +39,7 @@ RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSIO
 #  Go + OpenCV  #
 #################
 FROM opencv AS gocv
-LABEL maintainer="Hybridgroup"
+LABEL maintainer="hybridgroup"
 
 ARG GOVERSION="1.11.2"
 ENV GOVERSION $GOVERSION
