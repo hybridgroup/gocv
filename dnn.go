@@ -36,12 +36,16 @@ const (
 
 	// NetBackendOpenCV is the OpenCV backend.
 	NetBackendOpenCV NetBackendType = 3
+
+	// NetBackendVKCOM is the Vulkan backend.
+	NetBackendVKCOM NetBackendType = 4
 )
 
 // ParseNetBackend returns a valid NetBackendType given a string. Valid values are:
 // - halide
 // - openvino
 // - opencv
+// - vulkan
 // - default
 func ParseNetBackend(backend string) NetBackendType {
 	switch backend {
@@ -51,6 +55,8 @@ func ParseNetBackend(backend string) NetBackendType {
 		return NetBackendOpenVINO
 	case "opencv":
 		return NetBackendOpenCV
+	case "vulkan":
+		return NetBackendVKCOM
 	default:
 		return NetBackendDefault
 	}
@@ -71,6 +77,12 @@ const (
 
 	// NetTargetVPU is the Movidius VPU target.
 	NetTargetVPU NetTargetType = 3
+
+	// NetTargetVulkan is the NVIDIA Vulkan target.
+	NetTargetVulkan NetTargetType = 4
+
+	// NetTargetFPGA is the FPGA target.
+	NetTargetFPGA NetTargetType = 5
 )
 
 // ParseNetTarget returns a valid NetTargetType given a string. Valid values are:
@@ -78,6 +90,8 @@ const (
 // - fp32
 // - fp16
 // - vpu
+// - vulkan
+// - fpga
 func ParseNetTarget(target string) NetTargetType {
 	switch target {
 	case "cpu":
@@ -88,6 +102,10 @@ func ParseNetTarget(target string) NetTargetType {
 		return NetTargetFP16
 	case "vpu":
 		return NetTargetVPU
+	case "vulkan":
+		return NetTargetVulkan
+	case "fpga":
+		return NetTargetFPGA
 	default:
 		return NetTargetCPU
 	}
