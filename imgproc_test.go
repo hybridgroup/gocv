@@ -640,7 +640,61 @@ func TestHoughLinesPWithParams(t *testing.T) {
 	}
 
 	if dest.GetIntAt(434, 0) != 43 && dest.GetIntAt(434, 1) != 316 && dest.GetIntAt(434, 2) != 43 && dest.GetIntAt(434, 3) != 316 {
-		t.Errorf("Invalid HoughLinesP last test element: %v, %v, %v, %v", dest.GetIntAt(434, 0), dest.GetIntAt(434, 1), dest.GetIntAt(434, 2), dest.GetIntAt(434, 3))
+		t.Errorf("Invalid HoughLinesPWithParams last test element: %v, %v, %v, %v", dest.GetIntAt(434, 0), dest.GetIntAt(434, 1), dest.GetIntAt(434, 2), dest.GetIntAt(434, 3))
+	}
+}
+
+func TestHoughLinesPointSet(t *testing.T) {
+
+	points := [][2]int{
+		{0, 369}, {10, 364}, {20, 358}, {30, 352},
+		{40, 346}, {50, 341}, {60, 335}, {70, 329},
+		{80, 323}, {90, 318}, {100, 312}, {110, 306},
+		{120, 300}, {130, 295}, {140, 289}, {150, 284},
+		{160, 277}, {170, 271}, {180, 266}, {190, 260},
+	}
+
+	img := NewMatWithSize(len(points), 1, MatTypeCV32F+MatChannels2)
+	defer img.Close()
+	for i, p := range points {
+		img.SetFloatAt(i, 0, float32(p[0]))
+		img.SetFloatAt(i, 1, float32(p[1]))
+	}
+
+	dest := NewMat()
+	defer dest.Close()
+
+	rhoMin, rhoMax, rhoStep := float32(0), float32(360), float32(1)
+	thetaMin, thetaMax, thetaStep := float32(0), float32(math.Pi/2), float32(math.Pi/180)
+
+	HoughLinesPointSet(img, &dest, 20, 1,
+		rhoMin, rhoMax, rhoStep,
+		thetaMin, thetaMax, thetaStep)
+
+	if dest.Empty() {
+		t.Error("Empty HoughLinesPointSet test")
+	}
+	if dest.Rows() != 20 {
+		t.Errorf("Invalid HoughLinesPointSet test rows: %v", dest.Rows())
+	}
+	if dest.Cols() != 1 {
+		t.Errorf("Invalid HoughLinesPointSet test cols: %v", dest.Cols())
+	}
+
+	if dest.GetDoubleAt(0, 0) != 19 && dest.GetDoubleAt(0, 1) != 320 && dest.GetDoubleAt(0, 2) != 1.0471975803375244 {
+		t.Errorf("Invalid HoughLinesPointSet first test element: %v, %v, %v", dest.GetDoubleAt(0, 0), dest.GetDoubleAt(0, 1), dest.GetDoubleAt(0, 2))
+	}
+
+	if dest.GetDoubleAt(1, 0) != 7 && dest.GetDoubleAt(1, 1) != 321 && dest.GetDoubleAt(1, 2) != 1.0646508932113647 {
+		t.Errorf("Invalid HoughLinesPointSet second test element: %v, %v, %v", dest.GetDoubleAt(1, 0), dest.GetDoubleAt(1, 1), dest.GetDoubleAt(1, 2))
+	}
+
+	if dest.GetDoubleAt(18, 0) != 2 && dest.GetDoubleAt(18, 1) != 317 && dest.GetDoubleAt(18, 2) != 0 {
+		t.Errorf("Invalid HoughLinesPointSet penultimate test element: %v, %v, %v", dest.GetDoubleAt(18, 0), dest.GetDoubleAt(18, 1), dest.GetDoubleAt(18, 2))
+	}
+
+	if dest.GetDoubleAt(19, 0) != 2 && dest.GetDoubleAt(19, 1) != 330 && dest.GetDoubleAt(19, 2) != 0 {
+		t.Errorf("Invalid HoughLinesPointSet last test element: %v, %v, %v", dest.GetDoubleAt(19, 0), dest.GetDoubleAt(19, 1), dest.GetDoubleAt(19, 1))
 	}
 }
 

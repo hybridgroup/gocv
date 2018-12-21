@@ -724,6 +724,21 @@ func HoughLinesPWithParams(src Mat, lines *Mat, rho float32, theta float32, thre
 	C.HoughLinesPWithParams(src.p, lines.p, C.double(rho), C.double(theta), C.int(threshold), C.double(minLineLength), C.double(maxLineGap))
 }
 
+// HoughLinesPointSet implements the Hough transform algorithm for line
+// detection on a set of points. For a good explanation of Hough transform, see:
+// http://homepages.inf.ed.ac.uk/rbf/HIPR2/hough.htm
+//
+// For further details, please see:
+// https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga2858ef61b4e47d1919facac2152a160e
+//
+func HoughLinesPointSet(points Mat, lines *Mat, linesMax int, threshold int,
+	minRho float32, maxRho float32, rhoStep float32,
+	minTheta float32, maxTheta float32, thetaStep float32) {
+	C.HoughLinesPointSet(points.p, lines.p, C.int(linesMax), C.int(threshold),
+		C.double(minRho), C.double(maxRho), C.double(rhoStep),
+		C.double(minTheta), C.double(maxTheta), C.double(thetaStep))
+}
+
 // ThresholdType type of threshold operation.
 type ThresholdType int
 
