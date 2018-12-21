@@ -432,7 +432,7 @@ func TestMedianBlur(t *testing.T) {
 func TestCanny(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
-		t.Error("Invalid read of Mat in HoughLines test")
+		t.Error("Invalid read of Mat in Canny test")
 	}
 	defer img.Close()
 
@@ -571,7 +571,7 @@ func TestHoughLines(t *testing.T) {
 func TestHoughLinesP(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
-		t.Error("Invalid read of Mat in HoughLines test")
+		t.Error("Invalid read of Mat in HoughLinesP test")
 	}
 	defer img.Close()
 
@@ -609,7 +609,7 @@ func TestHoughLinesP(t *testing.T) {
 func TestHoughLinesPWithParams(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
-		t.Error("Invalid read of Mat in HoughLines test")
+		t.Error("Invalid read of Mat in HoughLinesPWithParams test")
 	}
 	defer img.Close()
 
@@ -618,25 +618,25 @@ func TestHoughLinesPWithParams(t *testing.T) {
 
 	HoughLinesPWithParams(img, &dest, math.Pi/180, 1, 1, 0, 0)
 	if dest.Empty() {
-		t.Error("Empty HoughLinesP test")
+		t.Error("Empty HoughLinesPWithParams test")
 	}
 	if dest.Rows() != 435 {
-		t.Errorf("Invalid HoughLinesP test rows: %v", dest.Rows())
+		t.Errorf("Invalid HoughLinesPWithParams test rows: %v", dest.Rows())
 	}
 	if dest.Cols() != 1 {
-		t.Errorf("Invalid HoughLinesP test cols: %v", dest.Cols())
+		t.Errorf("Invalid HoughLinesPWithParams test cols: %v", dest.Cols())
 	}
 
 	if dest.GetIntAt(0, 0) != 197 && dest.GetIntAt(0, 1) != 319 && dest.GetIntAt(0, 2) != 197 && dest.GetIntAt(0, 3) != 197 {
-		t.Errorf("Invalid HoughLinesP first test element: %v, %v, %v, %v", dest.GetIntAt(0, 0), dest.GetIntAt(0, 1), dest.GetIntAt(0, 2), dest.GetIntAt(0, 3))
+		t.Errorf("Invalid HoughLinesPWithParams first test element: %v, %v, %v, %v", dest.GetIntAt(0, 0), dest.GetIntAt(0, 1), dest.GetIntAt(0, 2), dest.GetIntAt(0, 3))
 	}
 
 	if dest.GetIntAt(1, 0) != 62 && dest.GetIntAt(1, 1) != 319 && dest.GetIntAt(1, 2) != 197 && dest.GetIntAt(1, 3) != 197 {
-		t.Errorf("Invalid HoughLinesP second test element: %v, %v, %v, %v", dest.GetIntAt(1, 0), dest.GetIntAt(1, 1), dest.GetIntAt(1, 2), dest.GetIntAt(1, 3))
+		t.Errorf("Invalid HoughLinesPWithParams second test element: %v, %v, %v, %v", dest.GetIntAt(1, 0), dest.GetIntAt(1, 1), dest.GetIntAt(1, 2), dest.GetIntAt(1, 3))
 	}
 
 	if dest.GetIntAt(433, 0) != 357 && dest.GetIntAt(433, 1) != 316 && dest.GetIntAt(433, 2) != 357 && dest.GetIntAt(433, 3) != 316 {
-		t.Errorf("Invalid HoughLinesP penultimate test element: %v, %v, %v, %v", dest.GetIntAt(433, 0), dest.GetIntAt(433, 1), dest.GetIntAt(433, 2), dest.GetIntAt(433, 3))
+		t.Errorf("Invalid HoughLinesPWithParams penultimate test element: %v, %v, %v, %v", dest.GetIntAt(433, 0), dest.GetIntAt(433, 1), dest.GetIntAt(433, 2), dest.GetIntAt(433, 3))
 	}
 
 	if dest.GetIntAt(434, 0) != 43 && dest.GetIntAt(434, 1) != 316 && dest.GetIntAt(434, 2) != 43 && dest.GetIntAt(434, 3) != 316 {
@@ -701,7 +701,7 @@ func TestHoughLinesPointSet(t *testing.T) {
 func TestThreshold(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
-		t.Error("Invalid read of Mat in Erode test")
+		t.Error("Invalid read of Mat in Threshold test")
 	}
 	defer img.Close()
 
