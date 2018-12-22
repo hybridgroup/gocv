@@ -48,6 +48,9 @@ void HoughCirclesWithParams(Mat src, Mat circles, int method, double dp, double 
 void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold);
 void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold);
 void HoughLinesPWithParams(Mat src, Mat lines, double rho, double theta, int threshold, double minLineLength, double maxLineGap);
+void HoughLinesPointSet(Mat points, Mat lines, int lines_max, int threshold,
+                        double min_rho, double  max_rho, double rho_step,
+                        double min_theta, double max_theta, double theta_step);
 void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ);
 void AdaptiveThreshold(Mat src, Mat dst, double maxValue, int adaptiveTyp, int typ, int blockSize,
                        double c);
