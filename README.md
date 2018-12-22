@@ -127,7 +127,7 @@ To install GoCV, run the following command:
 go get -u -d gocv.io/x/gocv
 ```
 
-To run code that uses the GoCV package, you must also install OpenCV 3.4.3 on your system. Here are instructions for Ubuntu, Raspian, macOS, and Windows.
+To run code that uses the GoCV package, you must also install OpenCV 4.0.0 on your system. Here are instructions for Ubuntu, Raspian, macOS, and Windows.
 
 ## Ubuntu/Linux
 
