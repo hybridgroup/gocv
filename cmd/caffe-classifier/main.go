@@ -14,11 +14,11 @@
 //
 // How to run:
 //
-// 		go run ./cmd/caffe-classifier/main.go 0 ~/Downloads/bvlc_googlenet.caffemodel ~/Downloads/bvlc_googlenet.prototxt ~/Downloads/synset_words.txt
+// 		go run ./cmd/caffe-classifier/main.go 0 ~/Downloads/bvlc_googlenet.caffemodel ~/Downloads/bvlc_googlenet.prototxt ~/Downloads/classification_classes_ILSVRC2012.txt
 //
 // You can also use this sample with the Intel OpenVINO Inference Engine, if you have it installed.
 //
-// 		go run ./cmd/caffe-classifier/main.go 0 ~/Downloads/bvlc_googlenet.caffemodel ~/Downloads/bvlc_googlenet.prototxt ~/Downloads/synset_words.txt openvino fp16
+// 		go run ./cmd/caffe-classifier/main.go 0 ~/Downloads/bvlc_googlenet.caffemodel ~/Downloads/bvlc_googlenet.prototxt ~/Downloads/classification_classes_ILSVRC2012.txt openvino fp16
 //
 // +build example
 
