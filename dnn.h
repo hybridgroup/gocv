@@ -39,6 +39,7 @@ void Net_SetPreferableBackend(Net net, int backend);
 void Net_SetPreferableTarget(Net net, int target);
 int64_t Net_GetPerfProfile(Net net);
 void Net_GetUnconnectedOutLayers(Net net, IntVector* res);
+void Net_GetLayerNames(Net net, CStrings* names);
 
 Mat Net_GetBlobChannel(Mat blob, int imgidx, int chnidx);
 Scalar Net_GetBlobSize(Mat blob);
