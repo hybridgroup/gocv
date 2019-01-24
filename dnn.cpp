@@ -94,6 +94,19 @@ void Net_GetUnconnectedOutLayers(Net net, IntVector* res) {
     return;
 }
 
+void Net_GetLayerNames(Net net, CStrings* names) {
+    std::vector< cv::String > cstrs(net->getLayerNames());
+    const char **strs = new const char*[cstrs.size()];
+
+    for (size_t i = 0; i < cstrs.size(); ++i) {
+        strs[i] = cstrs[i].c_str();
+    }
+
+    names->length = cstrs.size();
+    names->strs = strs;
+    return;
+}
+
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
                       bool crop) {
     cv::Size sz(size.width, size.height);

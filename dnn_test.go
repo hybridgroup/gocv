@@ -47,6 +47,11 @@ func TestReadNet(t *testing.T) {
 			t.Errorf("Invalid len output layers in ReadNet test: %d\n", len(ids))
 		}
 
+		lnames := net.GetLayerNames()
+		if len(lnames) != 1 {
+			t.Errorf("Invalid len layer names in ReadNet test: %d\n", len(lnames))
+		}
+
 		prob := net.ForwardLayers([]string{"prob"})
 		if len(prob) == 0 {
 			t.Error("Invalid len prob in ReadNet test")
