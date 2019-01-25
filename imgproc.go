@@ -1292,3 +1292,47 @@ func FitLine(pts []image.Point, line *Mat, distType DistanceTypes, param, reps, 
 	cPoints := toCPoints(pts)
 	C.FitLine(cPoints, line.p, C.int(distType), C.double(param), C.double(reps), C.double(aeps))
 }
+
+// CLAHE is a wrapper around the cv::CLAHE algorithm.
+type CLAHE struct {
+	// C.CLAHE
+	p unsafe.Pointer
+}
+
+// NewCLAHE returns a new CLAHE algorithm
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/db6/classcv_1_1CLAHE.html
+//
+func NewCLAHE() CLAHE {
+	return CLAHE{p: unsafe.Pointer(C.CLAHE_Create())}
+}
+
+// NewCLAHEWithParams returns a new CLAHE algorithm
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/db6/classcv_1_1CLAHE.html
+//
+func NewCLAHEWithParams(clipLimit float64, tileGridSize image.Point) CLAHE {
+	pSize := C.struct_Size{
+		width:  C.int(tileGridSize.X),
+		height: C.int(tileGridSize.Y),
+	}
+	return CLAHE{p: unsafe.Pointer(C.CLAHE_CreateWithParams(C.double(clipLimit), pSize))}
+}
+
+// Close CLAHE.
+func (c *CLAHE) Close() error {
+	C.CLAHE_Close((C.CLAHE)(c.p))
+	c.p = nil
+	return nil
+}
+
+// Apply CLAHE.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/db6/classcv_1_1CLAHE.html#a4e92e0e427de21be8d1fae8dcd862c5e
+//
+func (c *CLAHE) Apply(src Mat, dst *Mat) {
+	C.CLAHE_Apply((C.CLAHE)(c.p), src.p, dst.p)
+}

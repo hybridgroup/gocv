@@ -465,3 +465,20 @@ void FitLine(Contour points, Mat line, int distType, double param, double reps, 
 	}
 	cv::fitLine(pts, *line, distType, param, reps, aeps);
 }
+
+CLAHE CLAHE_Create() {
+    return new cv::Ptr<cv::CLAHE>(cv::createCLAHE());
+}
+
+CLAHE CLAHE_CreateWithParams(double clipLimit, Size tileGridSize) {
+    cv::Size sz(tileGridSize.width, tileGridSize.height);
+    return new cv::Ptr<cv::CLAHE>(cv::createCLAHE(clipLimit, sz));
+}
+
+void CLAHE_Close(CLAHE c) {
+    delete c;
+}
+
+void CLAHE_Apply(CLAHE c, Mat src, Mat dst) {
+    (*c)->apply(*src, *dst);
+}
