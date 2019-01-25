@@ -1178,10 +1178,10 @@ func TestCLAHEWithParams(t *testing.T) {
 	dst := NewMat()
 	defer dst.Close()
 
-	c := NewCLAHE()
+	c := NewCLAHEWithParams(2.0, image.Pt(10, 10))
 	defer c.Close()
 	c.Apply(src, &dst)
 	if dst.Empty() || img.Rows() != dst.Rows() || img.Cols() != dst.Cols() {
-		t.Error("Invalid NewCLAHE test")
+		t.Error("Invalid NewCLAHEWithParams test")
 	}
 }
