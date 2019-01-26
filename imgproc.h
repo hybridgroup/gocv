@@ -14,7 +14,6 @@ typedef cv::Ptr<cv::CLAHE>* CLAHE;
 typedef void* CLAHE;
 #endif
 
-
 #include "core.h"
 
 double ArcLength(Contour curve, bool is_closed);
