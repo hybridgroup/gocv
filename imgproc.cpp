@@ -210,6 +210,16 @@ struct Contours FindContours(Mat src, int mode, int method) {
     return cons;
 }
 
+int ConnectedComponents(Mat src, Mat labels, int connectivity, int ltype, int ccltype){
+    return cv::connectedComponents(*src, *labels, connectivity, ltype, ccltype);
+}
+
+
+int ConnectedComponentsWithStats(Mat src, Mat labels, Mat stats, Mat centroids,
+    int connectivity, int ltype, int ccltype){
+    return cv::connectedComponentsWithStats(*src, *labels, *stats, *centroids, connectivity, ltype, ccltype);
+}
+
 Mat GetStructuringElement(int shape, Size ksize) {
     cv::Size sz(ksize.width, ksize.height);
     return new cv::Mat(cv::getStructuringElement(shape, sz));

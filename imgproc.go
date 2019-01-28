@@ -365,6 +365,84 @@ func FindContours(src Mat, mode RetrievalMode, method ContourApproximationMode) 
 	return contours
 }
 
+//ConnectedComponentsAlgorithmType specifies the type for ConnectedComponents
+type ConnectedComponentsAlgorithmType int
+
+const (
+	// SAUF algorithm for 8-way connectivity, SAUF algorithm for 4-way connectivity.
+	CCL_WU ConnectedComponentsAlgorithmType = 0
+
+	// BBDT algorithm for 8-way connectivity, SAUF algorithm for 4-way connectivity.
+	CCL_DEFAULT = 1
+
+	// BBDT algorithm for 8-way connectivity, SAUF algorithm for 4-way connectivity
+	CCL_GRANA = 2
+)
+
+// ConnectedComponents computes the connected components labeled image of boolean image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaedef8c7340499ca391d459122e51bef5
+//
+func ConnectedComponents(src Mat, labels *Mat, conn int, ltype MatType,
+	ccltype ConnectedComponentsAlgorithmType) int {
+	return int(C.ConnectedComponents(src.p, labels.p, C.int(conn), C.int(ltype), C.int(ccltype)))
+}
+
+// ConnectedComponents computes the connected components labeled image of boolean image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaedef8c7340499ca391d459122e51bef5
+//
+func ConnectedComponentsWithParams(src Mat, labels *Mat) int {
+	return int(C.ConnectedComponents(src.p, labels.p, C.int(8), C.int(MatTypeCV32S), C.int(CCL_DEFAULT)))
+}
+
+// ConnectedComponentsTypes are the connected components algorithm output formats
+type ConnectedComponentsTypes int
+
+const (
+	//The leftmost (x) coordinate which is the inclusive start of the bounding box in the horizontal direction.
+	CC_STAT_LEFT = 0
+
+	//The topmost (y) coordinate which is the inclusive start of the bounding box in the vertical direction.
+	CC_STAT_TOP = 1
+
+	// The horizontal size of the bounding box.
+	CC_STAT_WIDTH = 2
+
+	// The vertical size of the bounding box.
+	CC_STAT_HEIGHT = 3
+
+	// The total area (in pixels) of the connected component.
+	CC_STAT_AREA = 4
+
+	CC_STAT_MAX = 5
+)
+
+// ConnectedComponentsWithStats computes the connected components labeled image of boolean
+// image and also produces a statistics output for each label.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga107a78bf7cd25dec05fb4dfc5c9e765f
+//
+func ConnectedComponentsWithStats(src Mat, labels *Mat, stats *Mat, centroids *Mat,
+	conn int, ltype MatType, ccltype ConnectedComponentsAlgorithmType) int {
+	return int(C.ConnectedComponentsWithStats(src.p, labels.p, stats.p, centroids.p, C.int(conn),
+		C.int(ltype), C.int(ccltype)))
+}
+
+// ConnectedComponentsWithStats computes the connected components labeled image of boolean
+// image and also produces a statistics output for each label.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga107a78bf7cd25dec05fb4dfc5c9e765f
+//
+func ConnectedComponentsWithStatsWithParams(src Mat, labels *Mat, stats *Mat, centroids *Mat) int {
+	return int(C.ConnectedComponentsWithStats(src.p, labels.p, stats.p, centroids.p,
+		C.int(8), C.int(MatTypeCV32S), C.int(CCL_DEFAULT)))
+}
+
 // TemplateMatchMode is the type of the template matching operation.
 type TemplateMatchMode int
 

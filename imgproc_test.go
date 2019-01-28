@@ -327,6 +327,80 @@ func TestFindContours(t *testing.T) {
 	}
 }
 
+func TestConnectedComponents(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in FindContours test")
+	}
+	defer img.Close()
+
+	labels := NewMat()
+	defer labels.Close()
+	res := ConnectedComponents(img, &labels, 8, MatTypeCV32S, CCL_DEFAULT)
+	if res < 1 || labels.Empty() {
+		t.Error("Invalid ConnectedComponents test")
+	}
+}
+
+func TestConnectedComponentsWithParams(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in FindContours test")
+	}
+	defer img.Close()
+
+	labels := NewMat()
+	defer labels.Close()
+	res := ConnectedComponentsWithParams(img, &labels)
+	if res < 1 || labels.Empty() {
+		t.Error("Invalid ConnectedComponentsWithParams test")
+	}
+}
+
+func TestConnectedComponentsWithStats(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in FindContours test")
+	}
+	defer img.Close()
+
+	labels := NewMat()
+	defer labels.Close()
+
+	stats := NewMat()
+	defer stats.Close()
+
+	centroids := NewMat()
+	defer centroids.Close()
+
+	res := ConnectedComponentsWithStats(img, &labels, &stats, &centroids, 8, MatTypeCV32S, CCL_DEFAULT)
+	if res < 1 || labels.Empty() || stats.Empty() || centroids.Empty() {
+		t.Error("Invalid ConnectedComponentsWithStats test")
+	}
+}
+
+func TestConnectedComponentsWithStatsWithParams(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in FindContours test")
+	}
+	defer img.Close()
+
+	labels := NewMat()
+	defer labels.Close()
+
+	stats := NewMat()
+	defer stats.Close()
+
+	centroids := NewMat()
+	defer centroids.Close()
+
+	res := ConnectedComponentsWithStatsWithParams(img, &labels, &stats, &centroids)
+	if res < 1 || labels.Empty() || stats.Empty() || centroids.Empty() {
+		t.Error("Invalid ConnectedComponentsWithStatsWithParams test")
+	}
+}
+
 func TestErode(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
