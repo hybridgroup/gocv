@@ -384,9 +384,8 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaedef8c7340499ca391d459122e51bef5
 //
-func ConnectedComponents(src Mat, labels *Mat, conn int, ltype MatType,
-	ccltype ConnectedComponentsAlgorithmType) int {
-	return int(C.ConnectedComponents(src.p, labels.p, C.int(conn), C.int(ltype), C.int(ccltype)))
+func ConnectedComponents(src Mat, labels *Mat) int {
+	return int(C.ConnectedComponents(src.p, labels.p, C.int(8), C.int(MatTypeCV32S), C.int(CCL_DEFAULT)))
 }
 
 // ConnectedComponents computes the connected components labeled image of boolean image.
@@ -394,8 +393,9 @@ func ConnectedComponents(src Mat, labels *Mat, conn int, ltype MatType,
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaedef8c7340499ca391d459122e51bef5
 //
-func ConnectedComponentsWithParams(src Mat, labels *Mat) int {
-	return int(C.ConnectedComponents(src.p, labels.p, C.int(8), C.int(MatTypeCV32S), C.int(CCL_DEFAULT)))
+func ConnectedComponentsWithParams(src Mat, labels *Mat, conn int, ltype MatType,
+	ccltype ConnectedComponentsAlgorithmType) int {
+	return int(C.ConnectedComponents(src.p, labels.p, C.int(conn), C.int(ltype), C.int(ccltype)))
 }
 
 // ConnectedComponentsTypes are the connected components algorithm output formats
@@ -426,10 +426,9 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga107a78bf7cd25dec05fb4dfc5c9e765f
 //
-func ConnectedComponentsWithStats(src Mat, labels *Mat, stats *Mat, centroids *Mat,
-	conn int, ltype MatType, ccltype ConnectedComponentsAlgorithmType) int {
-	return int(C.ConnectedComponentsWithStats(src.p, labels.p, stats.p, centroids.p, C.int(conn),
-		C.int(ltype), C.int(ccltype)))
+func ConnectedComponentsWithStats(src Mat, labels *Mat, stats *Mat, centroids *Mat) int {
+	return int(C.ConnectedComponentsWithStats(src.p, labels.p, stats.p, centroids.p,
+		C.int(8), C.int(MatTypeCV32S), C.int(CCL_DEFAULT)))
 }
 
 // ConnectedComponentsWithStats computes the connected components labeled image of boolean
@@ -438,9 +437,10 @@ func ConnectedComponentsWithStats(src Mat, labels *Mat, stats *Mat, centroids *M
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga107a78bf7cd25dec05fb4dfc5c9e765f
 //
-func ConnectedComponentsWithStatsWithParams(src Mat, labels *Mat, stats *Mat, centroids *Mat) int {
-	return int(C.ConnectedComponentsWithStats(src.p, labels.p, stats.p, centroids.p,
-		C.int(8), C.int(MatTypeCV32S), C.int(CCL_DEFAULT)))
+func ConnectedComponentsWithStatsWithParams(src Mat, labels *Mat, stats *Mat, centroids *Mat,
+	conn int, ltype MatType, ccltype ConnectedComponentsAlgorithmType) int {
+	return int(C.ConnectedComponentsWithStats(src.p, labels.p, stats.p, centroids.p, C.int(conn),
+		C.int(ltype), C.int(ccltype)))
 }
 
 // TemplateMatchMode is the type of the template matching operation.

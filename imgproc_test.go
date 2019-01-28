@@ -336,7 +336,7 @@ func TestConnectedComponents(t *testing.T) {
 
 	labels := NewMat()
 	defer labels.Close()
-	res := ConnectedComponents(img, &labels, 8, MatTypeCV32S, CCL_DEFAULT)
+	res := ConnectedComponents(img, &labels)
 	if res < 1 || labels.Empty() {
 		t.Error("Invalid ConnectedComponents test")
 	}
@@ -351,7 +351,7 @@ func TestConnectedComponentsWithParams(t *testing.T) {
 
 	labels := NewMat()
 	defer labels.Close()
-	res := ConnectedComponentsWithParams(img, &labels)
+	res := ConnectedComponentsWithParams(img, &labels, 8, MatTypeCV32S, CCL_DEFAULT)
 	if res < 1 || labels.Empty() {
 		t.Error("Invalid ConnectedComponentsWithParams test")
 	}
@@ -373,7 +373,7 @@ func TestConnectedComponentsWithStats(t *testing.T) {
 	centroids := NewMat()
 	defer centroids.Close()
 
-	res := ConnectedComponentsWithStats(img, &labels, &stats, &centroids, 8, MatTypeCV32S, CCL_DEFAULT)
+	res := ConnectedComponentsWithStats(img, &labels, &stats, &centroids)
 	if res < 1 || labels.Empty() || stats.Empty() || centroids.Empty() {
 		t.Error("Invalid ConnectedComponentsWithStats test")
 	}
@@ -395,7 +395,8 @@ func TestConnectedComponentsWithStatsWithParams(t *testing.T) {
 	centroids := NewMat()
 	defer centroids.Close()
 
-	res := ConnectedComponentsWithStatsWithParams(img, &labels, &stats, &centroids)
+	res := ConnectedComponentsWithStatsWithParams(img, &labels, &stats, &centroids,
+		8, MatTypeCV32S, CCL_DEFAULT)
 	if res < 1 || labels.Empty() || stats.Empty() || centroids.Empty() {
 		t.Error("Invalid ConnectedComponentsWithStatsWithParams test")
 	}
