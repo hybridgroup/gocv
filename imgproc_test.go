@@ -1195,3 +1195,47 @@ func TestFitLine(t *testing.T) {
 		t.Errorf("FitLine(): line is empty")
 	}
 }
+
+func TestCLAHE(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in NewCLAHE test")
+	}
+	defer img.Close()
+
+	src := NewMat()
+	defer src.Close()
+	img.ConvertTo(&src, MatTypeCV8UC1)
+
+	dst := NewMat()
+	defer dst.Close()
+
+	c := NewCLAHE()
+	defer c.Close()
+	c.Apply(src, &dst)
+	if dst.Empty() || img.Rows() != dst.Rows() || img.Cols() != dst.Cols() {
+		t.Error("Invalid NewCLAHE test")
+	}
+}
+
+func TestCLAHEWithParams(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in CLAHEWithParams test")
+	}
+	defer img.Close()
+
+	src := NewMat()
+	defer src.Close()
+	img.ConvertTo(&src, MatTypeCV8UC1)
+
+	dst := NewMat()
+	defer dst.Close()
+
+	c := NewCLAHEWithParams(2.0, image.Pt(10, 10))
+	defer c.Close()
+	c.Apply(src, &dst)
+	if dst.Empty() || img.Rows() != dst.Rows() || img.Cols() != dst.Cols() {
+		t.Error("Invalid NewCLAHEWithParams test")
+	}
+}
