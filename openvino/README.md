@@ -37,7 +37,7 @@ Now you can run the version command example to make sure you are compiling/linki
 ```
 $ go run -tags openvino ./cmd/version/main.go
 gocv version: 0.18.0
-opencv lib version: 4.0.0-pre
+opencv lib version: 4.0.1
 ```
 
 Note the use of `-tags openvino` is needed when using `go run`, `go build`, and `go test` with OpenVINO, so the CGo compiler can pickup the correct settings for the environment, and ignore the usual defaults.
