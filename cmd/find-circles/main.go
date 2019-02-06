@@ -47,12 +47,12 @@ func main() {
 		img,
 		&circles,
 		gocv.HoughGradient,
-		1, // dp
+		1,                     // dp
 		float64(img.Rows()/8), // minDist
-		75, // param1
-		20, // param2
-		10, // minRadius
-		0,  // maxRadius
+		75,                    // param1
+		20,                    // param2
+		10,                    // minRadius
+		0,                     // maxRadius
 	)
 
 	blue := color.RGBA{0, 0, 255, 0}
