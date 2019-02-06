@@ -200,10 +200,29 @@ func ReadNet(model string, config string) Net {
 	return Net{p: unsafe.Pointer(C.Net_ReadNet(cModel, cConfig))}
 }
 
+// ReadNetBytes reads a deep learning network represented in one of the supported formats.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga138439da76f26266fdefec9723f6c5cd
+//
+func ReadNetBytes(framework string, model []byte, config []byte) (Net, error) {
+	cFramework := C.CString(framework)
+	defer C.free(unsafe.Pointer(cFramework))
+	bModel, err := toByteArray(model)
+	if err != nil {
+		return Net{}, err
+	}
+	bConfig, err := toByteArray(config)
+	if err != nil {
+		return Net{}, err
+	}
+	return Net{p: unsafe.Pointer(C.Net_ReadNetBytes(cFramework, *bModel, *bConfig))}, nil
+}
+
 // ReadNetFromCaffe reads a network model stored in Caffe framework's format.
 //
 // For further details, please see:
-// https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga946b342af1355185a7107640f868b64a
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga29d0ea5e52b1d1a6c2681e3f7d68473a
 //
 func ReadNetFromCaffe(prototxt string, caffeModel string) Net {
 	cprototxt := C.CString(prototxt)
@@ -212,6 +231,23 @@ func ReadNetFromCaffe(prototxt string, caffeModel string) Net {
 	cmodel := C.CString(caffeModel)
 	defer C.free(unsafe.Pointer(cmodel))
 	return Net{p: unsafe.Pointer(C.Net_ReadNetFromCaffe(cprototxt, cmodel))}
+}
+
+// ReadNetFromCaffeBytes reads a network model stored in Caffe model in memory.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga946b342af1355185a7107640f868b64a
+//
+func ReadNetFromCaffeBytes(prototxt []byte, caffeModel []byte) (Net, error) {
+	bPrototxt, err := toByteArray(prototxt)
+	if err != nil {
+		return Net{}, err
+	}
+	bCaffeModel, err := toByteArray(caffeModel)
+	if err != nil {
+		return Net{}, err
+	}
+	return Net{p: unsafe.Pointer(C.Net_ReadNetFromCaffeBytes(*bPrototxt, *bCaffeModel))}, nil
 }
 
 // ReadNetFromTensorflow reads a network model stored in Tensorflow framework's format.
@@ -223,6 +259,19 @@ func ReadNetFromTensorflow(model string) Net {
 	cmodel := C.CString(model)
 	defer C.free(unsafe.Pointer(cmodel))
 	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTensorflow(cmodel))}
+}
+
+// ReadNetFromTensorflowBytes reads a network model stored in Tensorflow framework's format.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#gacdba30a7c20db2788efbf5bb16a7884d
+//
+func ReadNetFromTensorflowBytes(model []byte) (Net, error) {
+	bModel, err := toByteArray(model)
+	if err != nil {
+		return Net{}, err
+	}
+	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTensorflowBytes(*bModel))}, nil
 }
 
 // BlobFromImage creates 4-dimensional blob from image. Optionally resizes and crops
