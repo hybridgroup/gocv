@@ -36,6 +36,7 @@ void PyrUp(Mat src, Mat dst, Size dstsize, int borderType);
 struct Rect BoundingRect(Contour con);
 double ContourArea(Contour con);
 struct RotatedRect MinAreaRect(Points points);
+void MinEnclosingCircle(Points points, Point2f* center, float* radius);
 struct Contours FindContours(Mat src, int mode, int method);
 int ConnectedComponents(Mat src, Mat dst, int connectivity, int ltype, int ccltype);
 int ConnectedComponentsWithStats(Mat src, Mat labels, Mat stats, Mat centroids, int connectivity, int ltype, int ccltype);

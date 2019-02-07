@@ -189,6 +189,19 @@ struct RotatedRect MinAreaRect(Points points){
     return retrect;
 }
 
+void MinEnclosingCircle(Points points, Point2f* center, float* radius){
+    std::vector<cv::Point> pts;
+
+    for (size_t i = 0; i < points.length; i++) {
+        pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
+    }
+
+    cv::Point2f center2f;
+    cv::minEnclosingCircle(pts, center2f, *radius);
+    center->x = center2f.x;
+    center->y = center2f.y;
+}
+
 struct Contours FindContours(Mat src, int mode, int method) {
     std::vector<std::vector<cv::Point> > contours;
     cv::findContours(*src, contours, mode, method);

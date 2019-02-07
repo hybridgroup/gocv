@@ -326,6 +326,28 @@ func MinAreaRect(points []image.Point) RotatedRect {
 	}
 }
 
+type Point2f struct {
+	X float32
+	Y float32
+}
+
+type CircleStruct struct {
+	Center Point2f
+	Radius float32
+}
+
+func MinEnclosingCircle(points []image.Point) CircleStruct {
+	cPoints := toCPoints(points)
+	cCenterPoint := C.struct_Point2f{}
+	var radius C.float
+	C.MinEnclosingCircle(cPoints, &cCenterPoint, &radius)
+
+	return CircleStruct{
+		Center: Point2f{float32(cCenterPoint.x), float32(cCenterPoint.y)},
+		Radius: float32(radius),
+	}
+}
+
 // FindContours finds contours in a binary image.
 //
 // For further details, please see:

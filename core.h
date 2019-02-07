@@ -38,6 +38,12 @@ typedef struct RawData {
     struct ByteArray data;
 } RawData;
 
+// Wrapper for an individual cv::Point2f
+typedef struct Point2f {
+    float x;
+    float y;
+} Point2f;
+
 // Wrapper for an individual cv::cvPoint
 typedef struct Point {
     int x;

@@ -71,6 +71,24 @@ func TestConvexity(t *testing.T) {
 	}
 }
 
+const epsilon = 0.001
+
+func TestMinEnclosingCircle(t *testing.T) {
+	pts := []image.Point{
+		image.Pt(0, 2),
+		image.Pt(2, 0),
+		image.Pt(0, -2),
+		image.Pt(-2, 0),
+		image.Pt(1, -1),
+	}
+	circle := MinEnclosingCircle(pts)
+	if math.Abs(float64(circle.Radius-2.0)) > epsilon ||
+		math.Abs(float64(circle.Center.X-0.0)) > epsilon ||
+		math.Abs(float64(circle.Center.Y-0.0)) > epsilon {
+		t.Error("Invalid circle returned in MinEnclosingCircle test")
+	}
+}
+
 func TestCvtColor(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
