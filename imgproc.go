@@ -326,26 +326,18 @@ func MinAreaRect(points []image.Point) RotatedRect {
 	}
 }
 
-type Point2f struct {
-	X float32
-	Y float32
-}
-
-type CircleStruct struct {
-	Center Point2f
-	Radius float32
-}
-
-func MinEnclosingCircle(points []image.Point) CircleStruct {
+// MinEnclosingCircle finds a circle of the minimum area enclosing the input 2D point set.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4/d3/dc0/group__imgproc__shape.html#ga8ce13c24081bbc7151e9326f412190f1
+func MinEnclosingCircle(points []image.Point) (x, y, radius float32) {
 	cPoints := toCPoints(points)
 	cCenterPoint := C.struct_Point2f{}
-	var radius C.float
-	C.MinEnclosingCircle(cPoints, &cCenterPoint, &radius)
-
-	return CircleStruct{
-		Center: Point2f{float32(cCenterPoint.x), float32(cCenterPoint.y)},
-		Radius: float32(radius),
-	}
+	var cRadius C.float
+	C.MinEnclosingCircle(cPoints, &cCenterPoint, &cRadius)
+	x, y = float32(cCenterPoint.x), float32(cCenterPoint.y)
+	radius = float32(cRadius)
+	return x, y, radius
 }
 
 // FindContours finds contours in a binary image.
