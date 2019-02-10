@@ -138,12 +138,12 @@ func TestInitUndistortRectifyMap(t *testing.T) {
 	d.SetDoubleAt(0, 4, -2.35021914e-02)
 	//FisheyeUndistortImage(img, &dest, k, d)
 	//img.Reshape()
-	newC,roi :=GetOptimalNewCameraMatrixWithParams(k,d,image.Point{X:img.Cols(),Y:img.Rows()},(float64)(1),image.Point{X:img.Cols(),Y:img.Rows()},false)
+	newC, roi := GetOptimalNewCameraMatrixWithParams(k, d, image.Point{X: img.Cols(), Y: img.Rows()}, (float64)(1), image.Point{X: img.Cols(), Y: img.Rows()}, false)
 	if newC.Empty() {
 		t.Error("final image is empty")
 		return
 	}
-	fmt.Printf("roi:%+v\n",roi)
+	fmt.Printf("roi:%+v\n", roi)
 	defer newC.Close()
 	r := NewMat()
 	defer r.Close()
@@ -152,8 +152,11 @@ func TestInitUndistortRectifyMap(t *testing.T) {
 	mapy := NewMat()
 	defer mapy.Close()
 	//dest := NewMat()
-	InitUndistortRectifyMap(k,d,r,newC,image.Point{X:img.Cols(),Y:img.Rows()},5,mapx,mapy)
+	InitUndistortRectifyMap(k, d, r, newC, image.Point{X: img.Cols(), Y: img.Rows()}, 5, mapx, mapy)
 
-	Remap(img,&dest,&mapx,&mapy,InterpolationDefault, BorderConstant, color.RGBA{0, 0, 0, 0})
-	IMWrite("images/distortion-correct.jpg", dest)
+	Remap(img, &dest, &mapx, &mapy, InterpolationDefault, BorderConstant, color.RGBA{0, 0, 0, 0})
+	flg := IMWrite("images/distortion-correct.jpg", dest)
+	if !flg {
+		t.Error("IMWrite failed")
+	}
 }

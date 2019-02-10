@@ -66,18 +66,19 @@ func FisheyeUndistortImageWithParams(distorted Mat, undistorted *Mat, k, d, knew
 	}
 	C.Fisheye_UndistortImageWithParams(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr(), knew.Ptr(), sz)
 }
+
 // https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga7dfb72c9cf9780a347fbe3d1c47e5d5a
-func InitUndistortRectifyMap(cameraMatrix Mat,distCoeffs Mat,r Mat,newCameraMatrix Mat,size image.Point,m1type int ,map1 Mat ,map2 Mat) {
+func InitUndistortRectifyMap(cameraMatrix Mat, distCoeffs Mat, r Mat, newCameraMatrix Mat, size image.Point, m1type int, map1 Mat, map2 Mat) {
 	sz := C.struct_Size{
 		width:  C.int(size.X),
 		height: C.int(size.Y),
 	}
-	C.InitUndistortRectifyMap(cameraMatrix.Ptr(),distCoeffs.Ptr(),r.Ptr(),newCameraMatrix.Ptr(),sz,C.int(m1type),map1.Ptr(),map2.Ptr())
+	C.InitUndistortRectifyMap(cameraMatrix.Ptr(), distCoeffs.Ptr(), r.Ptr(), newCameraMatrix.Ptr(), sz, C.int(m1type), map1.Ptr(), map2.Ptr())
 }
 
 // remember Close the Mat object
 // https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga7a6c4e032c97f03ba747966e6ad862b1
-func GetOptimalNewCameraMatrixWithParams(cameraMatrix Mat,distCoeffs Mat,imageSize image.Point,alpha float64,newImgSize image.Point,centerPrincipalPoint bool) (Mat, image.Rectangle) {
+func GetOptimalNewCameraMatrixWithParams(cameraMatrix Mat, distCoeffs Mat, imageSize image.Point, alpha float64, newImgSize image.Point, centerPrincipalPoint bool) (Mat, image.Rectangle) {
 	sz := C.struct_Size{
 		width:  C.int(imageSize.X),
 		height: C.int(imageSize.Y),
@@ -86,7 +87,6 @@ func GetOptimalNewCameraMatrixWithParams(cameraMatrix Mat,distCoeffs Mat,imageSi
 		width:  C.int(newImgSize.X),
 		height: C.int(newImgSize.Y),
 	}
-	rt := C.struct_Rect {
-	}
-	return newMat(C.GetOptimalNewCameraMatrixWithParams(cameraMatrix.Ptr(),distCoeffs.Ptr(),sz,C.double(alpha),newSize, &rt,C.bool(centerPrincipalPoint))),toRect(rt)
+	rt := C.struct_Rect{}
+	return newMat(C.GetOptimalNewCameraMatrixWithParams(cameraMatrix.Ptr(), distCoeffs.Ptr(), sz, C.double(alpha), newSize, &rt, C.bool(centerPrincipalPoint))), toRect(rt)
 }
