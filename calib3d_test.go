@@ -51,7 +51,7 @@ func TestFisheyeUndistorImage(t *testing.T) {
 }
 
 func TestFisheyeUndistorImageWithParams(t *testing.T) {
-	img := IMRead("images/distortion.jpg", IMReadUnchanged)
+	img := IMRead("images/fisheye_sample.jpg", IMReadUnchanged)
 	if img.Empty() {
 		t.Error("Invalid read of Mat test")
 		return
