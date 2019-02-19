@@ -1,5 +1,6 @@
 profile.cov
 count.out
+.idea/*
 *.swp
 *.snap
 /parts

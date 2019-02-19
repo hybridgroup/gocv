@@ -201,6 +201,16 @@ func (m *Mat) ConvertTo(dst *Mat, mt MatType) {
 	return
 }
 
+// ConvertTo converts Mat into destination Mat with scale.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#adf88c60c5b4980e05bb556080916978b
+//
+func (m *Mat) ConvertToWithScale(dst *Mat, mt MatType, alpha, beta float64) {
+	C.Mat_ConvertToWithScale(m.p, dst.p, C.int(mt), C.double(alpha), C.double(beta))
+	return
+}
+
 // Total returns the total number of array elements.
 //
 // For further details, please see:
