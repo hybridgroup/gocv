@@ -67,10 +67,11 @@ func FisheyeUndistortImageWithParams(distorted Mat, undistorted *Mat, k, d, knew
 	C.Fisheye_UndistortImageWithParams(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr(), knew.Ptr(), sz)
 }
 
-// initUndistortRectifyMap computes the joint undistortion and rectification transformation and represents the result in the form of maps for remap
-// For more details, please see:
-
+// InitUndistortRectifyMap computes the joint undistortion and rectification transformation and represents the result in the form of maps for remap
+//
+// For further details, please see:
 // https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga7dfb72c9cf9780a347fbe3d1c47e5d5a
+//
 func InitUndistortRectifyMap(cameraMatrix Mat, distCoeffs Mat, r Mat, newCameraMatrix Mat, size image.Point, m1type int, map1 Mat, map2 Mat) {
 	sz := C.struct_Size{
 		width:  C.int(size.X),
@@ -80,10 +81,10 @@ func InitUndistortRectifyMap(cameraMatrix Mat, distCoeffs Mat, r Mat, newCameraM
 }
 
 // GetOptimalNewCameraMatrixWithParams computes and returns the optimal new camera matrix based on the free scaling parameter.
-// please remember Close the Mat object which returns
-// For more details, please see:
-
+//
+// For further details, please see:
 // https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga7a6c4e032c97f03ba747966e6ad862b1
+//
 func GetOptimalNewCameraMatrixWithParams(cameraMatrix Mat, distCoeffs Mat, imageSize image.Point, alpha float64, newImgSize image.Point, centerPrincipalPoint bool) (Mat, image.Rectangle) {
 	sz := C.struct_Size{
 		width:  C.int(imageSize.X),
