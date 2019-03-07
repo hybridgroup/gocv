@@ -1749,6 +1749,10 @@ func toRectangles(ret C.Rects) []image.Rectangle {
 	return rects
 }
 
+func toRect(rect C.Rect) image.Rectangle {
+	return image.Rect(int(rect.x), int(rect.y), int(rect.x+rect.width), int(rect.y+rect.height))
+}
+
 func toCPoints(points []image.Point) C.struct_Points {
 	cPointSlice := make([]C.struct_Point, len(points))
 	for i, point := range points {
