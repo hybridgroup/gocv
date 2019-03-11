@@ -484,7 +484,7 @@ const (
 	DrawRichKeyPoints = 3
 )
 
-// DrawKeypPints draws keypoints
+// DrawKeyPoints draws keypoints
 //
 // For further details please see:
 // https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html#gab958f8900dd10f14316521c149a60433
