@@ -1,3 +1,38 @@
+0.19.0
+---
+* **build**
+    * Adds Dockerfile. Updates Makefile and README.
+    * make maintainer tag same as dockerhub organization name
+    * make sure to run tests for non-free contrib algorithms
+    * update Appveyor build to use Go 1.12
+* **calib3d**
+    * add func InitUndistortRectifyMap (#405)
+* **cmd**
+    * correct formatting of code in example
+* **core**
+    * Added Bitwise Operations With Masks
+    * update to OpenCV4.0.1
+* **dnn**
+    * add new backend and target types for NVIDIA and FPGA
+    * Added blobFromImages in ROADMAP.md (#403)
+    * Implement dnn methods for loading in-memory models.
+* **docker**
+    * update Dockerfile to use OpenCV 4.0.1
+* **docs**
+    * update ROADMAP from recent contributions
+* **examples**
+    * Fixing filename in caffe-classifier example
+* **imgproc**
+    * Add 'MinEnclosingCircle' function
+    * added BoxPoints function and BorderIsolated const
+    * Added Connected Components
+    * Added the HoughLinesPointSet function.
+    * Implement CLAHE to imgproc
+* **openvino**
+    * remove lib no longer included during non-FPGA installations
+* **test**
+    * Add len(kp) == 232 to TestMSER, seems this is necessary for MacOS for some reason.
+
 0.18.0
 ---
 * **build**
