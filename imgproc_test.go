@@ -291,6 +291,41 @@ func TestPyrUp(t *testing.T) {
 	}
 }
 
+func TestBoxPoints(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in BoxPoints test")
+	}
+	defer img.Close()
+
+	threshImg := NewMat()
+	defer threshImg.Close()
+
+	Threshold(img, &threshImg, 25, 255, ThresholdBinary)
+
+	contours := FindContours(threshImg, RetrievalExternal, ChainApproxSimple)
+	contour := contours[0]
+
+	hull := NewMat()
+	defer hull.Close()
+	ConvexHull(contour, &hull, false, false)
+	hullPoints := []image.Point{}
+	for i := 0; i < hull.Cols(); i++ {
+		for j := 0; j < hull.Rows(); j++ {
+			p := hull.GetIntAt(j, i)
+			hullPoints = append(hullPoints, contour[p])
+		}
+	}
+	rect := MinAreaRect(hullPoints)
+	pts := NewMat()
+	defer pts.Close()
+	BoxPoints(rect, &pts)
+
+	if pts.Empty() || pts.Rows() != 4 || pts.Cols() != 2 {
+		t.Error("Invalid BoxPoints test")
+	}
+}
+
 func TestMinAreaRect(t *testing.T) {
 	src := []image.Point{
 		image.Pt(0, 2),

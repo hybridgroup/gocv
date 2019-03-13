@@ -150,6 +150,13 @@ struct Rect BoundingRect(Contour con) {
     return r;
 }
 
+void BoxPoints(RotatedRect rect, Mat boxPts){
+    cv::Point2f centerPt(rect.center.x , rect.center.y);
+    cv::Size2f rSize(rect.size.width, rect.size.height);
+    cv::RotatedRect rotatedRectangle(centerPt, rSize, rect.angle);
+     cv::boxPoints(rotatedRectangle, *boxPts);
+}
+
 double ContourArea(Contour con) {
     std::vector<cv::Point> pts;
 
