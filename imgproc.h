@@ -34,6 +34,7 @@ struct Moment Moments(Mat src, bool binaryImage);
 void PyrDown(Mat src, Mat dst, Size dstsize, int borderType);
 void PyrUp(Mat src, Mat dst, Size dstsize, int borderType);
 struct Rect BoundingRect(Contour con);
+void BoxPoints(RotatedRect rect, Mat boxPts);
 double ContourArea(Contour con);
 struct RotatedRect MinAreaRect(Points points);
 void MinEnclosingCircle(Points points, Point2f* center, float* radius);
