@@ -74,6 +74,16 @@ build_raspi:
 	$(MAKE) preinstall
 	cd -
 
+# Build OpenCV with non-free contrib modules.
+build_nonfree:
+	cd $(TMP_DIR)opencv/opencv-$(OPENCV_VERSION)
+	mkdir build
+	cd build
+	cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=$(TMP_DIR)opencv/opencv_contrib-$(OPENCV_VERSION)/modules -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_opencv_java=NO -D BUILD_opencv_python=NO -D BUILD_opencv_python2=NO -D BUILD_opencv_python3=NO -D WITH_JASPER=OFF -DOPENCV_GENERATE_PKGCONFIG=ON -DOPENCV_ENABLE_NONFREE=ON ..
+	$(MAKE) -j $(shell nproc --all)
+	$(MAKE) preinstall
+	cd -
+
 # Cleanup temporary build files.
 clean:
 	rm -rf $(TMP_DIR)opencv
