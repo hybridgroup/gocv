@@ -268,9 +268,13 @@ void Mat_AbsDiff(Mat src1, Mat src2, Mat dst);
 void Mat_Add(Mat src1, Mat src2, Mat dst);
 void Mat_AddWeighted(Mat src1, double alpha, Mat src2, double beta, double gamma, Mat dst);
 void Mat_BitwiseAnd(Mat src1, Mat src2, Mat dst);
+void Mat_BitwiseAndWithMask(Mat src1, Mat src2, Mat dst, Mat mask);
 void Mat_BitwiseNot(Mat src1, Mat dst);
+void Mat_BitwiseNotWithMask(Mat src1, Mat dst, Mat mask);
 void Mat_BitwiseOr(Mat src1, Mat src2, Mat dst);
+void Mat_BitwiseOrWithMask(Mat src1, Mat src2, Mat dst, Mat mask);
 void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst);
+void Mat_BitwiseXorWithMask(Mat src1, Mat src2, Mat dst, Mat mask);
 void Mat_Compare(Mat src1, Mat src2, Mat dst, int ct);
 void Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int normType, int K,
                        Mat mask, int update, bool crosscheck);
