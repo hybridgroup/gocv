@@ -788,6 +788,17 @@ func BitwiseAnd(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_BitwiseAnd(src1.p, src2.p, dst.p)
 }
 
+// BitwiseAndWithMask computes bitwise conjunction of the two arrays (dst = src1 & src2).
+// Calculates the per-element bit-wise conjunction of two arrays
+// or an array and a scalar. It has an additional parameter for a mask.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga60b4d04b251ba5eb1392c34425497e14
+//
+func BitwiseAndWithMask(src1 Mat, src2 Mat, dst *Mat, mask Mat) {
+	C.Mat_BitwiseAndWithMask(src1.p, src2.p, dst.p, mask.p)
+}
+
 // BitwiseNot inverts every bit of an array.
 //
 // For further details, please see:
@@ -795,6 +806,15 @@ func BitwiseAnd(src1 Mat, src2 Mat, dst *Mat) {
 //
 func BitwiseNot(src1 Mat, dst *Mat) {
 	C.Mat_BitwiseNot(src1.p, dst.p)
+}
+
+// BitwiseNotWithMask inverts every bit of an array. It has an additional parameter for a mask.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga0002cf8b418479f4cb49a75442baee2f
+//
+func BitwiseNotWithMask(src1 Mat, dst *Mat, mask Mat) {
+	C.Mat_BitwiseNotWithMask(src1.p, dst.p, mask.p)
 }
 
 // BitwiseOr calculates the per-element bit-wise disjunction of two arrays
@@ -807,6 +827,16 @@ func BitwiseOr(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_BitwiseOr(src1.p, src2.p, dst.p)
 }
 
+// BitwiseOrWithMask calculates the per-element bit-wise disjunction of two arrays
+// or an array and a scalar. It has an additional parameter for a mask.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gab85523db362a4e26ff0c703793a719b4
+//
+func BitwiseOrWithMask(src1 Mat, src2 Mat, dst *Mat, mask Mat) {
+	C.Mat_BitwiseOrWithMask(src1.p, src2.p, dst.p, mask.p)
+}
+
 // BitwiseXor calculates the per-element bit-wise "exclusive or" operation
 // on two arrays or an array and a scalar.
 //
@@ -815,6 +845,16 @@ func BitwiseOr(src1 Mat, src2 Mat, dst *Mat) {
 //
 func BitwiseXor(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_BitwiseXor(src1.p, src2.p, dst.p)
+}
+
+// BitwiseXorWithMask calculates the per-element bit-wise "exclusive or" operation
+// on two arrays or an array and a scalar. It has an additional parameter for a mask.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga84b2d8188ce506593dcc3f8cd00e8e2c
+//
+func BitwiseXorWithMask(src1 Mat, src2 Mat, dst *Mat, mask Mat) {
+	C.Mat_BitwiseXorWithMask(src1.p, src2.p, dst.p, mask.p)
 }
 
 // BatchDistance is a naive nearest neighbor finder.

@@ -843,6 +843,35 @@ func TestMatBitwiseOperations(t *testing.T) {
 
 }
 
+func TestMatBitwiseOperationsWithMasks(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat1.Close()
+	mat2 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat2.Close()
+	mat3 := NewMat()
+	defer mat3.Close()
+	mat4 := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat4.Close()
+	BitwiseAndWithMask(mat1, mat2, &mat3, mat4)
+	if mat3.Empty() {
+		t.Error("TestMatBitwiseAndWithMask dest mat3 should not be empty.")
+	}
+
+	BitwiseOrWithMask(mat1, mat2, &mat3, mat4)
+	if mat3.Empty() {
+		t.Error("TestMatBitwiseOrWithMask dest mat3 should not be empty.")
+	}
+
+	BitwiseXorWithMask(mat1, mat2, &mat3, mat4)
+	if mat3.Empty() {
+		t.Error("TestMatBitwiseXorWithMask dest mat3 should not be empty.")
+	}
+	BitwiseNotWithMask(mat1, &mat3, mat4)
+	if mat3.Empty() {
+		t.Error("TestMatBitwiseNotWithMask dest mat3 should not be empty.")
+	}
+}
+
 func TestMatInRange(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8U)
 	defer mat1.Close()
