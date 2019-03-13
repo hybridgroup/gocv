@@ -27,3 +27,5 @@ Then you will be able to use the functions within the `contrib` subpackage. For 
 si := contrib.NewSIFT()
 kp := si.Detect(img)
 ```
+
+Note that some of the features in this package require building OpenCV with the `OPENCV_ENABLE_NONFREE=ON` option. You can run `make build_nonfree` to build with this option.
