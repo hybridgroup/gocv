@@ -88,7 +88,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [wrapperEMD](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga31fdda0864e64ca6b9de252a2611758b)
 
     - [ ] **Structural Analysis and Shape Descriptors - WORK STARTED** The following functions still need implementation:
-        - [ ] [boxPoints](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf78d467e024b4d7936cf9397185d2f5c)
+        - [X] [boxPoints](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf78d467e024b4d7936cf9397185d2f5c)
         - [X] [connectedComponents](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaedef8c7340499ca391d459122e51bef5)
         - [X] [connectedComponentsWithStats](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga107a78bf7cd25dec05fb4dfc5c9e765f)
         - [ ] [fitEllipse](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf259efaad93098103d6c27b9e4900ffa)
@@ -98,7 +98,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [intersectConvexConvex](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8e840f3f3695613d32c052bec89e782c)
         - [ ] [isContourConvex](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8abf8010377b58cbc16db6734d92941b)
         - [ ] [matchShapes](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaadc90cb16e2362c9bd6e7363e6e4c317)
-        - [ ] [minEnclosingCircle](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8ce13c24081bbc7151e9326f412190f1)
+        - [X] [minEnclosingCircle](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8ce13c24081bbc7151e9326f412190f1)
         - [ ] [minEnclosingTriangle](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga1513e72f6bbdfc370563664f71e0542f)
         - [ ] [pointPolygonTest](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga1a539e8db2135af2566103705d7a5722)
         - [ ] [rotatedRectangleIntersection](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8740e7645628c59d238b0b22c2abe2d4)
@@ -135,7 +135,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [calibrate](https://docs.opencv.org/3.4.1/db/d58/group__calib3d__fisheye.html#gad626a78de2b1dae7489e152a5a5a89e1)
         - [ ] [distortPoints](https://docs.opencv.org/3.4.1/db/d58/group__calib3d__fisheye.html#ga75d8877a98e38d0b29b6892c5f8d7765)
         - [ ] [estimateNewCameraMatrixForUndistortRectify](https://docs.opencv.org/3.4.1/db/d58/group__calib3d__fisheye.html#ga384940fdf04c03e362e94b6eb9b673c9)
-        - [ ] [initUndistortRectifyMap](https://docs.opencv.org/3.4.1/db/d58/group__calib3d__fisheye.html#ga0d37b45f780b32f63ed19c21aa9fd333)
+        - [X] [initUndistortRectifyMap](https://docs.opencv.org/3.4.1/db/d58/group__calib3d__fisheye.html#ga0d37b45f780b32f63ed19c21aa9fd333)
         - [ ] [projectPoints](https://docs.opencv.org/3.4.1/db/d58/group__calib3d__fisheye.html#gab1ad1dc30c42ee1a50ce570019baf2c4)
         - [ ] [stereoCalibrate](https://docs.opencv.org/3.4.1/db/d58/group__calib3d__fisheye.html#gadbb3a6ca6429528ef302c784df47949b)
         - [ ] [stereoRectify](https://docs.opencv.org/3.4.1/db/d58/group__calib3d__fisheye.html#gac1af58774006689056b0f2ef1db55ecc)
