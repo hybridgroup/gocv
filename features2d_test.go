@@ -228,6 +228,151 @@ func TestSimpleBlobDetector(t *testing.T) {
 	}
 }
 
+func TestSimpleBlobDetectorWithParams(t *testing.T) {
+	img := IMRead("images/circles.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in SimpleBlobDetector test")
+	}
+	defer img.Close()
+
+	params := NewSimpleBlobDetectorParams()
+	params.SetMaxArea(27500.0)
+
+	bdp := NewSimpleBlobDetectorWithParams(params)
+	defer bdp.Close()
+
+	kp := bdp.Detect(img)
+	if len(kp) != 4 {
+		t.Errorf("Invalid KeyPoint array in SimpleBlobDetector test: %d", len(kp))
+	}
+}
+
+func TestSimpleBlobDetectorParams(t *testing.T) {
+	float64EqualityThreshold := 1e-5
+	knownBlobColor := 235
+	knownFilterByArea := false
+	knownFilterByCircularity := true
+	knownFilterByColor := false
+	knownFilterByConvexity := false
+	knownFilterByInertia := false
+	knownMaxArea := 20000.0
+	knownMaxCircularity := 0.99
+	knownMaxConvexity := 0.98
+	knownMaxInertiaRatio := 0.97
+	knownMaxThreshold := 233.0
+	knownMinArea := 230.0
+	knownMinCircularity := 0.9
+	knownMinConvexity := 0.89
+	knownMinDistBetweenBlobs := 15.5
+	knownMinInertiaRatio := 0.88
+	knownMinRepeatability := 5
+	knownMinThreshold := 200.0
+	knownThresholdStep := 2.0
+
+	params := NewSimpleBlobDetectorParams()
+	params.SetBlobColor(knownBlobColor)
+	params.SetFilterByArea(knownFilterByArea)
+	params.SetFilterByCircularity(knownFilterByCircularity)
+	params.SetFilterByColor(knownFilterByColor)
+	params.SetFilterByConvexity(knownFilterByConvexity)
+	params.SetFilterByInertia(knownFilterByInertia)
+	params.SetMaxArea(knownMaxArea)
+	params.SetMaxCircularity(knownMaxCircularity)
+	params.SetMaxConvexity(knownMaxConvexity)
+	params.SetMaxInertiaRatio(knownMaxInertiaRatio)
+	params.SetMaxThreshold(knownMaxThreshold)
+	params.SetMinArea(knownMinArea)
+	params.SetMinCircularity(knownMinCircularity)
+	params.SetMinConvexity(knownMinConvexity)
+	params.SetMinDistBetweenBlobs(knownMinDistBetweenBlobs)
+	params.SetMinInertiaRatio(knownMinInertiaRatio)
+	params.SetMinRepeatability(knownMinRepeatability)
+	params.SetMinThreshold(knownMinThreshold)
+	params.SetThresholdStep(knownThresholdStep)
+
+	if params.GetBlobColor() != knownBlobColor {
+		t.Error("BlobColor incorrect in SimpleBlobDetectorParams test")
+	}
+
+	if params.GetFilterByArea() != knownFilterByArea {
+		t.Error("FilterByArea incorrect in SimpleBlobDetectorParams test")
+	}
+
+	if params.GetFilterByCircularity() != knownFilterByCircularity {
+		t.Error("FilterByCircularity incorrect in SimpleBlobDetectorParams test")
+	}
+
+	if params.GetFilterByColor() != knownFilterByColor {
+		t.Error("FilterByColor incorrect in SimpleBlobDetectorParams test")
+	}
+
+	if params.GetFilterByConvexity() != knownFilterByConvexity {
+		t.Error("FilterByConvexity incorrect in SimpleBlobDetectorParams test")
+	}
+
+	if params.GetFilterByInertia() != knownFilterByInertia {
+		t.Error("FilterByInertia incorrect in SimpleBlobDetectorParams test")
+	}
+
+	if params.GetMaxArea() != knownMaxArea {
+		t.Error("MaxArea incorrect in SimpleBlobDetectorParams test")
+	}
+
+	diffMaxCircularity := params.GetMaxCircularity() - knownMaxCircularity
+	if diffMaxCircularity > float64EqualityThreshold {
+		t.Errorf("DiffMaxCircularity greater than float64EqualityThreshold in SimpleBlobDetectorParams test. Diff: %f", diffMaxCircularity)
+	}
+
+	diffMaxConvexity := params.GetMaxConvexity() - knownMaxConvexity
+	if diffMaxConvexity > float64EqualityThreshold {
+		t.Errorf("DiffMaxConvexity greater than float64EqualityThreshold in SimpleBlobDetectorParams test. Diff: %f", diffMaxConvexity)
+	}
+
+	diffMaxInertiaRatio := params.GetMaxInertiaRatio() - knownMaxInertiaRatio
+	if diffMaxInertiaRatio > float64EqualityThreshold {
+		t.Errorf("DiffMaxInertiaRatio greater than float64EqualityThreshold in SimpleBlobDetectorParams test. Diff: %f", diffMaxInertiaRatio)
+	}
+
+	if params.GetMaxThreshold() != knownMaxThreshold {
+		t.Error("MaxThreshold incorrect in SimpleBlobDetectorParams test")
+	}
+
+	if params.GetMinArea() != knownMinArea {
+		t.Error("MinArea incorrect in SimpleBlobDetectorParams test")
+	}
+
+	diffMinCircularity := params.GetMinCircularity() - knownMinCircularity
+	if diffMinCircularity > float64EqualityThreshold {
+		t.Errorf("DiffMinCircularity greater than float64EqualityThreshold in SimpleBlobDetectorParams test. Diff %f", diffMinCircularity)
+	}
+
+	diffMinConvexity := params.GetMinConvexity() - knownMinConvexity
+	if diffMinConvexity > float64EqualityThreshold {
+		t.Errorf("DiffMinConvexity greater than float64EqualityThreshold in SimpleBlobDetectorParams test. Diff: %f", diffMinConvexity)
+	}
+
+	if params.GetMinDistBetweenBlobs() != knownMinDistBetweenBlobs {
+		t.Error("MinDistBetweenBlobs incorrect in SimpleBlobDetectorParams test")
+	}
+
+	diffMinInertiaRatio := params.GetMinInertiaRatio() - knownMinInertiaRatio
+	if diffMinInertiaRatio > float64EqualityThreshold {
+		t.Errorf("DiffMinInertiaRatio greater than float64EqualityThreshold in SimpleBlobDetectorParams test. Diff: %f", diffMinInertiaRatio)
+	}
+
+	if params.GetMinRepeatability() != knownMinRepeatability {
+		t.Error("MinRepeatability incorrect in SimpleBlobDetectorParams test")
+	}
+
+	if params.GetMinThreshold() != knownMinThreshold {
+		t.Error("MinThreshold incorrect in SimpleBlobDetectorParams test")
+	}
+
+	if params.GetThresholdStep() != knownThresholdStep {
+		t.Error("ThresholdStep incorrect in SimpleBlobDetectorParams test")
+	}
+}
+
 func TestBFMatcher(t *testing.T) {
 	descriptorFile := "images/sift_descriptor.png"
 	desc1 := IMRead(descriptorFile, IMReadGrayScale)
