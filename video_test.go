@@ -25,6 +25,26 @@ func TestMOG2(t *testing.T) {
 	}
 }
 
+func TestMOG2WithParams(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in MOG2 test")
+	}
+	defer img.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	mog2 := NewBackgroundSubtractorMOG2WithParams(250, 8, false)
+	defer mog2.Close()
+
+	mog2.Apply(img, &dst)
+
+	if dst.Empty() {
+		t.Error("Error in TestMOG2WithParams test")
+	}
+}
+
 func TestKNN(t *testing.T) {
 	img := IMRead("images/face.jpg", IMReadColor)
 	if img.Empty() {
@@ -42,6 +62,26 @@ func TestKNN(t *testing.T) {
 
 	if dst.Empty() {
 		t.Error("Error in TestKNN test")
+	}
+}
+
+func TestKNNWithParams(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in KNN test")
+	}
+	defer img.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	knn := NewBackgroundSubtractorKNNWithParams(250, 200, false)
+	defer knn.Close()
+
+	knn.Apply(img, &dst)
+
+	if dst.Empty() {
+		t.Error("Error in TestKNNWithParams test")
 	}
 }
 

@@ -4,8 +4,16 @@ BackgroundSubtractorMOG2 BackgroundSubtractorMOG2_Create() {
     return new cv::Ptr<cv::BackgroundSubtractorMOG2>(cv::createBackgroundSubtractorMOG2());
 }
 
+BackgroundSubtractorMOG2 BackgroundSubtractorMOG2_CreateWithParams(int history, double varThreshold, bool detectShadows) {
+    return new cv::Ptr<cv::BackgroundSubtractorMOG2>(cv::createBackgroundSubtractorMOG2(history,varThreshold,detectShadows));
+}
+
 BackgroundSubtractorKNN BackgroundSubtractorKNN_Create() {
     return new cv::Ptr<cv::BackgroundSubtractorKNN>(cv::createBackgroundSubtractorKNN());
+}
+
+BackgroundSubtractorKNN BackgroundSubtractorKNN_CreateWithParams(int history, double dist2Threshold, bool detectShadows) {
+    return new cv::Ptr<cv::BackgroundSubtractorKNN>(cv::createBackgroundSubtractorKNN(history,dist2Threshold,detectShadows));
 }
 
 void BackgroundSubtractorMOG2_Close(BackgroundSubtractorMOG2 b) {

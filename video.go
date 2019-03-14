@@ -18,10 +18,23 @@ type BackgroundSubtractorMOG2 struct {
 // Segmentation Algorithm.
 //
 // For further details, please see:
+// https://docs.opencv.org/master/de/de1/group__video__motion.html#ga2beb2dee7a073809ccec60f145b6b29c
 // https://docs.opencv.org/master/d7/d7b/classcv_1_1BackgroundSubtractorMOG2.html
 //
 func NewBackgroundSubtractorMOG2() BackgroundSubtractorMOG2 {
 	return BackgroundSubtractorMOG2{p: unsafe.Pointer(C.BackgroundSubtractorMOG2_Create())}
+}
+
+// NewBackgroundSubtractorMOG2WithParams returns a new BackgroundSubtractor algorithm
+// of type MOG2 with customized parameters. MOG2 is a Gaussian Mixture-based Background/Foreground
+// Segmentation Algorithm.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/de/de1/group__video__motion.html#ga2beb2dee7a073809ccec60f145b6b29c
+// https://docs.opencv.org/master/d7/d7b/classcv_1_1BackgroundSubtractorMOG2.html
+//
+func NewBackgroundSubtractorMOG2WithParams(history int, varThreshold float64, detectShadows bool) BackgroundSubtractorMOG2 {
+	return BackgroundSubtractorMOG2{p: unsafe.Pointer(C.BackgroundSubtractorMOG2_CreateWithParams(C.int(history), C.double(varThreshold), C.bool(detectShadows)))}
 }
 
 // Close BackgroundSubtractorMOG2.
@@ -52,10 +65,23 @@ type BackgroundSubtractorKNN struct {
 // Segmentation Algorithm
 //
 // For further details, please see:
+// https://docs.opencv.org/master/de/de1/group__video__motion.html#gac9be925771f805b6fdb614ec2292006d
 // https://docs.opencv.org/master/db/d88/classcv_1_1BackgroundSubtractorKNN.html
 //
 func NewBackgroundSubtractorKNN() BackgroundSubtractorKNN {
 	return BackgroundSubtractorKNN{p: unsafe.Pointer(C.BackgroundSubtractorKNN_Create())}
+}
+
+// NewBackgroundSubtractorKNNWithParams returns a new BackgroundSubtractor algorithm
+// of type KNN with customized parameters. K-Nearest Neighbors (KNN) uses a Background/Foreground
+// Segmentation Algorithm
+//
+// For further details, please see:
+// https://docs.opencv.org/master/de/de1/group__video__motion.html#gac9be925771f805b6fdb614ec2292006d
+// https://docs.opencv.org/master/db/d88/classcv_1_1BackgroundSubtractorKNN.html
+//
+func NewBackgroundSubtractorKNNWithParams(history int, dist2Threshold float64, detectShadows bool) BackgroundSubtractorKNN {
+	return BackgroundSubtractorKNN{p: unsafe.Pointer(C.BackgroundSubtractorKNN_CreateWithParams(C.int(history), C.double(dist2Threshold), C.bool(detectShadows)))}
 }
 
 // Close BackgroundSubtractorKNN.
