@@ -144,7 +144,7 @@ The following commands should do everything to download and install OpenCV 4.0.1
 
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
-	gocv version: 0.17.0
+	gocv version: 0.19.0
 	opencv lib version: 4.0.1
 
 That's it, now you are ready to use GoCV.
@@ -195,7 +195,7 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-	gocv version: 0.17.0
+	gocv version: 0.19.0
 	opencv lib version: 4.0.1
 
 #### Cleanup extra files
@@ -292,7 +292,7 @@ The following commands should do everything to download and install OpenCV 4.0.1
 
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
-	gocv version: 0.17.0
+	gocv version: 0.19.0
 	opencv lib version: 4.0.1
 
 That's it, now you are ready to use GoCV.
@@ -309,9 +309,13 @@ If you already have an earlier version of OpenCV (3.4.x) installed, you should p
 
 You can then install OpenCV 4.0.1:
 
+	brew install opencv
+
+If you prefer, there is also an alternative Homebrew recipe will install only OpenCV 4.0.1 without all of the Python dependencies:
+
 	brew install hybridgroup/tools/opencv
 
-This new Homebrew recipe will install only OpenCV 4.0.1 without all of the Python dependencies.
+NOTE: Do not install both of these. Choose one.
 
 ### pkgconfig Installation
 pkg-config is used to determine the correct flags for compiling and linking OpenCV.
@@ -333,7 +337,7 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-	gocv version: 0.17.0
+	gocv version: 0.19.0
 	opencv lib version: 4.0.1
 
 ### Cache builds
@@ -401,7 +405,7 @@ Now you should be able to build or run any of the command examples:
 
 The version program should output the following:
 
-	gocv version: 0.17.0
+	gocv version: 0.19.0
 	opencv lib version: 4.0.1
 
 That's it, now you are ready to use GoCV.
