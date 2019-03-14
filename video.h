@@ -17,10 +17,13 @@ typedef void* BackgroundSubtractorKNN;
 #endif
 
 BackgroundSubtractorMOG2 BackgroundSubtractorMOG2_Create();
+BackgroundSubtractorMOG2 BackgroundSubtractorMOG2_CreateWithParams(int history, double varThreshold, bool detectShadows);
 void BackgroundSubtractorMOG2_Close(BackgroundSubtractorMOG2 b);
 void BackgroundSubtractorMOG2_Apply(BackgroundSubtractorMOG2 b, Mat src, Mat dst);
 
 BackgroundSubtractorKNN BackgroundSubtractorKNN_Create();
+BackgroundSubtractorKNN BackgroundSubtractorKNN_CreateWithParams(int history, double dist2Threshold, bool detectShadows);
+
 void BackgroundSubtractorKNN_Close(BackgroundSubtractorKNN b);
 void BackgroundSubtractorKNN_Apply(BackgroundSubtractorKNN b, Mat src, Mat dst);
 
