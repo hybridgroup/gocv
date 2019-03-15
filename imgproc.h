@@ -47,6 +47,7 @@ void Laplacian(Mat src, Mat dst, int dDepth, int kSize, double scale, double del
 void Scharr(Mat src, Mat dst, int dDepth, int dx, int dy, double scale, double delta,
             int borderType);
 Mat GetStructuringElement(int shape, Size ksize);
+Scalar MorphologyDefaultBorderValue();
 void MorphologyEx(Mat src, Mat dst, int op, Mat kernel);
 void MedianBlur(Mat src, Mat dst, int ksize);
 

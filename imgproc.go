@@ -585,6 +585,17 @@ func PyrUp(src Mat, dst *Mat, ksize image.Point, borderType BorderType) {
 	C.PyrUp(src.p, dst.p, pSize, C.int(borderType))
 }
 
+// MorphologyDefaultBorder returns "magic" border value for erosion and dilation.
+// It is automatically transformed to Scalar::all(-DBL_MAX) for dilation.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga94756fad83d9d24d29c9bf478558c40a
+//
+func MorphologyDefaultBorderValue() Scalar {
+	var scalar C.Scalar = C.MorphologyDefaultBorderValue()
+	return NewScalar(float64(scalar.val1), float64(scalar.val2), float64(scalar.val3), float64(scalar.val4))
+}
+
 // MorphologyEx performs advanced morphological transformations.
 //
 // For further details, please see:

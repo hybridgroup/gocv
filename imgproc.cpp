@@ -245,6 +245,11 @@ Mat GetStructuringElement(int shape, Size ksize) {
     return new cv::Mat(cv::getStructuringElement(shape, sz));
 }
 
+Scalar MorphologyDefaultBorderValue(){
+    cv::Scalar cs = cv::morphologyDefaultBorderValue();
+    return (Scalar){cs[0],cs[1],cs[2],cs[3]};
+}
+
 void MorphologyEx(Mat src, Mat dst, int op, Mat kernel) {
     cv::morphologyEx(*src, *dst, op, *kernel);
 }
