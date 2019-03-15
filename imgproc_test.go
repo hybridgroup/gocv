@@ -473,6 +473,16 @@ func TestErode(t *testing.T) {
 	}
 }
 
+func TestMorphologyDefaultBorderValue(t *testing.T) {
+	zeroScalar := Scalar{}
+	morphologyDefaultBorderValue := MorphologyDefaultBorderValue()
+
+	if reflect.DeepEqual(zeroScalar, morphologyDefaultBorderValue) {
+		t.Error("Got zero valued scalar")
+	}
+
+}
+
 func TestMorphologyEx(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
