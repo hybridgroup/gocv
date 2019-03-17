@@ -1,8 +1,8 @@
 // +build !customenv,!openvino
 
-package gocv
+package cuda
 
-// Changes here should be mirrored in contrib/cgo.go and cuda/cgo.go.
+// Changes here should be mirrored in gocv/cgo.go and contrib/cgo.go.
 
 /*
 #cgo !windows pkg-config: opencv4
