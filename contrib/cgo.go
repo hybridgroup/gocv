@@ -2,7 +2,7 @@
 
 package contrib
 
-// Changes here should be mirrored in gocv/cgo.go.
+// Changes here should be mirrored in gocv/cgo.go and cuda/cgo.go
 
 /*
 #cgo !windows pkg-config: opencv4
