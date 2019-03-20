@@ -175,7 +175,7 @@ Your pull requests will be greatly appreciated!
 ## Contrib modules list
 
 - [ ] aruco. ArUco Marker Detection
-- [ ] bgsegm. Improved Background-Foreground Segmentation Methods
+- [X] bgsegm. Improved Background-Foreground Segmentation Methods
 - [ ] bioinspired. Biologically inspired vision models and derivated tools
 - [ ] ccalib. Custom Calibration Pattern for 3D reconstruction
 - [ ] cnn_3dobj. 3D object recognition and pose estimation API
