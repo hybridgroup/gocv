@@ -267,6 +267,7 @@ void LUT(Mat src, Mat lut, Mat dst);
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst);
 void Mat_Add(Mat src1, Mat src2, Mat dst);
 void Mat_AddWeighted(Mat src1, double alpha, Mat src2, double beta, double gamma, Mat dst);
+void Mat_Paste(Mat src1, int x, int y,  double alpha, Mat src2, double beta, double gamma);
 void Mat_BitwiseAnd(Mat src1, Mat src2, Mat dst);
 void Mat_BitwiseAndWithMask(Mat src1, Mat src2, Mat dst, Mat mask);
 void Mat_BitwiseNot(Mat src1, Mat dst);

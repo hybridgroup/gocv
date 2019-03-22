@@ -712,3 +712,10 @@ int64 GetCVTickCount() {
 double GetTickFrequency() {
     return cv::getTickFrequency();
 }
+
+void Mat_Paste(Mat src1, int x, int y,  double alpha, Mat src2, double beta, double gamma) {
+    cv::Mat roiImage;
+    cv::Rect rect(x, y, src2->cols, src2->rows);
+    roiImage = cv::Mat(*src1, rect);
+    cv::addWeighted(roiImage, alpha, *src2, beta, gamma, roiImage);
+}
