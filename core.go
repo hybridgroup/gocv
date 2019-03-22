@@ -780,7 +780,7 @@ func AddWeighted(src1 Mat, alpha float64, src2 Mat, beta float64, gamma float64,
 //void Mat_Paste(Mat src1, int x, int y,  double alpha, Mat src2, double beta, double gamma);
 // use AddWeighted adding two images for different size, example: add logo to image
 //
-func Mat_Paste(src1 Mat, x int,y int, alpha float64, src2 Mat, beta float64, gamma float64) {
+func Mat_Paste(src1 Mat, x int, y int, alpha float64, src2 Mat, beta float64, gamma float64) {
 	C.Mat_Paste(src1.p, C.int(x), C.int(y), C.double(alpha),
 		src2.p, C.double(beta), C.double(gamma))
 }
