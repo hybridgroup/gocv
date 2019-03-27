@@ -719,3 +719,34 @@ void Mat_Paste(Mat src1, int x, int y,  double alpha, Mat src2, double beta, dou
     roiImage = cv::Mat(*src1, rect);
     cv::addWeighted(roiImage, alpha, *src2, beta, gamma, roiImage);
 }
+
+void Mat_PasteChannel(Mat src1, int _x, int _y,  Mat foreground, double opacity = 1.0) {
+    for (int y = _y; y < src1->rows; ++y) {
+        int fY = y - _y; // because of the translation
+
+        // we are done of we have processed all rows of the foreground image.
+        if (fY >= foreground->rows)
+            break;
+
+        // start at the column indicated by location, or at column 0 if location.x is negative.
+        for (int x = _x; x < src1->cols; ++x) {
+            int fX = x - _x; // because of the translation.
+
+            // we are done with this row if the column is outside of the foreground image.
+            if (fX >= foreground->cols)
+                break;
+
+            // determine the opacity of the foregrond pixel, using its fourth (alpha) channel.
+            double opacity_level = ((double)foreground->data[fY * foreground->step + fX * foreground->channels() + 3]) / 255.;
+            if (opacity >= 0.0 && opacity < 1.0)
+                opacity_level *= opacity;
+
+            // and now combine the background and foreground pixel, using the opacity, but only if opacity > 0.
+            for (int c = 0; opacity_level > 0 && c < src1->channels(); ++c) {
+                unsigned char foregroundPx = foreground->data[fY * foreground->step + fX * foreground->channels() + c];
+                unsigned char backgroundPx = src1->data[y * src1->step + x * src1->channels() + c];
+                src1->data[y*src1->step + src1->channels()*x + c] = backgroundPx * (1.-opacity_level) + foregroundPx * opacity_level;
+            }
+        }
+    }
+}

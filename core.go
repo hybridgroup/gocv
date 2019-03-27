@@ -784,6 +784,9 @@ func Mat_Paste(src1 Mat, x int, y int, alpha float64, src2 Mat, beta float64, ga
 	C.Mat_Paste(src1.p, C.int(x), C.int(y), C.double(alpha),
 		src2.p, C.double(beta), C.double(gamma))
 }
+func Mat_PasteChannel(src1 Mat, x int, y int, src2 Mat, opacity float64) {
+	C.Mat_PasteChannel(src1.p, C.int(x), C.int(y), src2.p, C.double(opacity))
+}
 
 // BitwiseAnd computes bitwise conjunction of the two arrays (dst = src1 & src2).
 // Calculates the per-element bit-wise conjunction of two arrays
