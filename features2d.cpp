@@ -208,12 +208,15 @@ struct KeyPoints MSER_Detect(MSER a, Mat src) {
 }
 
 FastFeatureDetector FastFeatureDetector_Create() {
-    // TODO: params
     return new cv::Ptr<cv::FastFeatureDetector>(cv::FastFeatureDetector::create());
 }
 
 void FastFeatureDetector_Close(FastFeatureDetector f) {
     delete f;
+}
+
+FastFeatureDetector FastFeatureDetector_CreateWithParams(int threshold, bool nonmaxSuppression, int type) {
+    return new cv::Ptr<cv::FastFeatureDetector>(cv::FastFeatureDetector::create(threshold,nonmaxSuppression,static_cast<cv::FastFeatureDetector::DetectorType>(type)));
 }
 
 struct KeyPoints FastFeatureDetector_Detect(FastFeatureDetector f, Mat src) {

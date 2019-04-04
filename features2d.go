@@ -139,6 +139,21 @@ func (b *BRISK) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
 	return getKeyPoints(ret), desc
 }
 
+// FastFeatureDetectorType defines the detector type
+//
+// For further details, please see:
+// https://docs.opencv.org/master/df/d74/classcv_1_1FastFeatureDetector.html#a4654f6fb0aa4b8e9123b223bfa0e2a08
+type FastFeatureDetectorType int
+
+const (
+	//FastFeatureDetectorType58 is an alias of FastFeatureDetector::TYPE_5_8
+	FastFeatureDetectorType58 FastFeatureDetectorType = 0
+	//FastFeatureDetectorType712 is an alias of FastFeatureDetector::TYPE_7_12
+	FastFeatureDetectorType712 = 1
+	//FastFeatureDetectorType916 is an alias of FastFeatureDetector::TYPE_9_16
+	FastFeatureDetectorType916 = 2
+)
+
 // FastFeatureDetector is a wrapper around the cv::FastFeatureDetector.
 type FastFeatureDetector struct {
 	// C.FastFeatureDetector
@@ -152,6 +167,15 @@ type FastFeatureDetector struct {
 //
 func NewFastFeatureDetector() FastFeatureDetector {
 	return FastFeatureDetector{p: unsafe.Pointer(C.FastFeatureDetector_Create())}
+}
+
+// NewFastFeatureDetectorWithParams returns a new FastFeatureDetector algorithm with parameters
+//
+// For further details, please see:
+// https://docs.opencv.org/master/df/d74/classcv_1_1FastFeatureDetector.html#ab986f2ff8f8778aab1707e2642bc7f8e
+//
+func NewFastFeatureDetectorWithParams(threshold int, nonmaxSuppression bool, typ FastFeatureDetectorType) FastFeatureDetector {
+	return FastFeatureDetector{p: unsafe.Pointer(C.FastFeatureDetector_CreateWithParams(C.int(threshold), C.bool(nonmaxSuppression), C.int(typ)))}
 }
 
 // Close FastFeatureDetector.
@@ -484,7 +508,7 @@ const (
 	DrawRichKeyPoints = 3
 )
 
-// DrawKeypPints draws keypoints
+// DrawKeyPoints draws keypoints
 //
 // For further details please see:
 // https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html#gab958f8900dd10f14316521c149a60433
