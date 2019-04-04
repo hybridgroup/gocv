@@ -356,6 +356,10 @@ func NewSimpleBlobDetector() SimpleBlobDetector {
 }
 
 // NewSimpleBlobDetectorWithParams returns a new SimpleBlobDetector with custom parameters
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d7a/classcv_1_1SimpleBlobDetector.html
+//
 func NewSimpleBlobDetectorWithParams(params SimpleBlobDetectorParams) SimpleBlobDetector {
 	return SimpleBlobDetector{p: unsafe.Pointer(C.SimpleBlobDetector_Create_WithParams(params.p))}
 }
