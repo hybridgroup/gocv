@@ -47,6 +47,7 @@ struct KeyPoints BRISK_Detect(BRISK b, Mat src);
 struct KeyPoints BRISK_DetectAndCompute(BRISK b, Mat src, Mat mask, Mat desc);
 
 FastFeatureDetector FastFeatureDetector_Create();
+FastFeatureDetector FastFeatureDetector_CreateWithParams(int threshold, bool nonmaxSuppression, int type);
 void FastFeatureDetector_Close(FastFeatureDetector f);
 struct KeyPoints FastFeatureDetector_Detect(FastFeatureDetector f, Mat src);
 
