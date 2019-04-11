@@ -20,6 +20,7 @@ install:
   - set PATH=C:\Perl\site\bin;C:\Perl\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\7-Zip;C:\Program Files\Microsoft\Web Platform Installer\;C:\Tools\PsTools;C:\Program Files (x86)\CMake\bin;C:\go\bin;C:\Tools\NuGet;C:\Program Files\LLVM\bin;C:\Tools\curl\bin;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\Yarn\bin;C:\Users\appveyor\AppData\Local\Yarn\bin;C:\Program Files\AppVeyor\BuildAgent\
   - set PATH=%PATH%;C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin
   - set PATH=%PATH%;C:\Tools\GitVersion;C:\Program Files\Git LFS;C:\Program Files\Git\cmd;C:\Program Files\Git\usr\bin;C:\opencv\build\install\x64\mingw\bin;
+  - set PATH=%PATH%;C:\gopath\bin;
   - echo %PATH%
   - echo %GOPATH%
   - go version
