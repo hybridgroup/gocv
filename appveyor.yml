@@ -22,7 +22,6 @@ install:
   - set PATH=%PATH%;C:\Tools\GitVersion;C:\Program Files\Git LFS;C:\Program Files\Git\cmd;C:\Program Files\Git\usr\bin;C:\opencv\build\install\x64\mingw\bin;
   - set PATH=%PATH%;C:\gopath\bin;
   - set PKG_CONFIG_PATH=C:\gopath\src\gocv.io\x\gocv\contrib\pkgconfig
-  - cd
   - echo %PATH%
   - echo %GOPATH%
   - go version
