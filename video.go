@@ -5,7 +5,22 @@ package gocv
 #include "video.h"
 */
 import "C"
-import "unsafe"
+import (
+	"image"
+	"unsafe"
+)
+
+/**
+  cv::OPTFLOW_USE_INITIAL_FLOW = 4,
+  cv::OPTFLOW_LK_GET_MIN_EIGENVALS = 8,
+  cv::OPTFLOW_FARNEBACK_GAUSSIAN = 256
+  For further details, please see: https://docs.opencv.org/master/dc/d6b/group__video__track.html#gga2c6cc144c9eee043575d5b311ac8af08a9d4430ac75199af0cf6fcdefba30eafe
+*/
+const (
+	OptflowUseInitialFlow    = 4
+	OptflowLkGetMinEigenvals = 8
+	OptflowFarnebackGaussian = 256
+)
 
 // BackgroundSubtractorMOG2 is a wrapper around the cv::BackgroundSubtractorMOG2.
 type BackgroundSubtractorMOG2 struct {
@@ -122,5 +137,21 @@ func CalcOpticalFlowFarneback(prevImg Mat, nextImg Mat, flow *Mat, pyrScale floa
 //
 func CalcOpticalFlowPyrLK(prevImg Mat, nextImg Mat, prevPts Mat, nextPts Mat, status *Mat, err *Mat) {
 	C.CalcOpticalFlowPyrLK(prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p, err.p)
+	return
+}
+
+// CalcOpticalFlowPyrLKWithParams calculates an optical flow for a sparse feature set using
+// the iterative Lucas-Kanade method with pyramids.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga473e4b886d0bcc6b65831eb88ed93323
+//
+func CalcOpticalFlowPyrLKWithParams(prevImg Mat, nextImg Mat, prevPts Mat, nextPts Mat, status *Mat, err *Mat,
+	winSize image.Point, maxLevel int, criteria TermCriteria, flags int, minEigThreshold float64) {
+	winSz := C.struct_Size{
+		width:  C.int(winSize.X),
+		height: C.int(winSize.Y),
+	}
+	C.CalcOpticalFlowPyrLKWithParams(prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p, err.p, winSz, C.int(maxLevel), criteria.p, C.int(flags), C.double(minEigThreshold))
 	return
 }
