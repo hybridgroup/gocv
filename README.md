@@ -240,7 +240,7 @@ make docker GOVERSION='1.11.1'
 #### Running GUI programs in Docker on macOS
 
 Sometimes your `GoCV` programs create graphical interfaces like windows eg. when you use `gocv.Window` type when you display an image or video stream. Running the programs which create graphical interfaces in Docker container on macOS is unfortunately a bit elaborate, but not impossible. First you need to satisfy the following prerequisites:
-* install [xquartz](https://www.xquartz.org/). You can also install xquartz using [homebrew](https://brew.sh/) by running `brew install cask xquartz`
+* install [xquartz](https://www.xquartz.org/). You can also install xquartz using [homebrew](https://brew.sh/) by running `brew cask install xquartz`
 * install [socat](https://linux.die.net/man/1/socat) `brew install socat`
 
 Note, you will have to log out and log back in to your machine once you have installed `xquartz`. This is so the X window system is reloaded.
