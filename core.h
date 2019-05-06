@@ -119,6 +119,29 @@ typedef struct KeyPoints {
     int length;
 } KeyPoints;
 
+// Wrapper for SimpleBlobDetectorParams aka SimpleBlobDetector::Params
+typedef struct SimpleBlobDetectorParams {
+    unsigned char   blobColor;
+    bool    filterByArea;
+    bool    filterByCircularity;
+    bool    filterByColor;
+    bool    filterByConvexity;
+    bool    filterByInertia;
+    float   maxArea;
+    float   maxCircularity;
+    float   maxConvexity;
+    float   maxInertiaRatio;
+    float   maxThreshold;
+    float   minArea;
+    float   minCircularity;
+    float   minConvexity;
+    float   minDistBetweenBlobs;
+    float   minInertiaRatio;
+    size_t  minRepeatability;
+    float   minThreshold;
+    float   thresholdStep;
+} SimpleBlobDetectorParams;
+
 // Wrapper for an individual cv::DMatch
 typedef struct DMatch {
     int queryIdx;

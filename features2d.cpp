@@ -279,9 +279,69 @@ struct KeyPoints ORB_DetectAndCompute(ORB o, Mat src, Mat mask, Mat desc) {
     return ret;
 }
 
+cv::SimpleBlobDetector::Params ConvertCParamsToCPPParams(SimpleBlobDetectorParams params) {
+    cv::SimpleBlobDetector::Params converted;
+
+    converted.blobColor = params.blobColor;
+    converted.filterByArea = params.filterByArea;
+    converted.filterByCircularity = params.filterByCircularity;
+    converted.filterByColor = params.filterByColor;
+    converted.filterByConvexity = params.filterByConvexity;
+    converted.filterByInertia = params.filterByInertia;
+    converted.maxArea = params.maxArea;
+    converted.maxCircularity = params.maxCircularity;
+    converted.maxConvexity = params.maxConvexity;
+    converted.maxInertiaRatio = params.maxInertiaRatio;
+    converted.maxThreshold = params.maxThreshold;
+    converted.minArea = params.minArea;
+    converted.minCircularity = params.minCircularity;
+    converted.minConvexity = params.minConvexity;
+    converted.minDistBetweenBlobs = params.minDistBetweenBlobs;
+    converted.minInertiaRatio = params.minInertiaRatio;
+    converted.minRepeatability = params.minRepeatability;
+    converted.minThreshold = params.minThreshold;
+    converted.thresholdStep = params.thresholdStep;
+
+    return converted;
+}
+
+SimpleBlobDetectorParams ConvertCPPParamsToCParams(cv::SimpleBlobDetector::Params params) {
+    SimpleBlobDetectorParams converted;
+
+    converted.blobColor = params.blobColor;
+    converted.filterByArea = params.filterByArea;
+    converted.filterByCircularity = params.filterByCircularity;
+    converted.filterByColor = params.filterByColor;
+    converted.filterByConvexity = params.filterByConvexity;
+    converted.filterByInertia = params.filterByInertia;
+    converted.maxArea = params.maxArea;
+    converted.maxCircularity = params.maxCircularity;
+    converted.maxConvexity = params.maxConvexity;
+    converted.maxInertiaRatio = params.maxInertiaRatio;
+    converted.maxThreshold = params.maxThreshold;
+    converted.minArea = params.minArea;
+    converted.minCircularity = params.minCircularity;
+    converted.minConvexity = params.minConvexity;
+    converted.minDistBetweenBlobs = params.minDistBetweenBlobs;
+    converted.minInertiaRatio = params.minInertiaRatio;
+    converted.minRepeatability = params.minRepeatability;
+    converted.minThreshold = params.minThreshold;
+    converted.thresholdStep = params.thresholdStep;
+
+    return converted;
+}
+
+SimpleBlobDetector SimpleBlobDetector_Create_WithParams(SimpleBlobDetectorParams params){
+    cv::SimpleBlobDetector::Params actualParams;
+    return new cv::Ptr<cv::SimpleBlobDetector>(cv::SimpleBlobDetector::create(ConvertCParamsToCPPParams(params)));
+}
+
 SimpleBlobDetector SimpleBlobDetector_Create() {
-    // TODO: params
     return new cv::Ptr<cv::SimpleBlobDetector>(cv::SimpleBlobDetector::create());
+}
+
+SimpleBlobDetectorParams SimpleBlobDetectorParams_Create() {
+    return ConvertCPPParamsToCParams(cv::SimpleBlobDetector::Params());
 }
 
 void SimpleBlobDetector_Close(SimpleBlobDetector b) {

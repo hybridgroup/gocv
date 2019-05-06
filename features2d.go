@@ -365,6 +365,11 @@ type SimpleBlobDetector struct {
 	p unsafe.Pointer
 }
 
+// SimpleBlobDetector_Params is a wrapper around the cv::SimpleBlobdetector::Params
+type SimpleBlobDetectorParams struct {
+	p C.SimpleBlobDetectorParams
+}
+
 // NewSimpleBlobDetector returns a new SimpleBlobDetector algorithm
 //
 // For further details, please see:
@@ -374,11 +379,215 @@ func NewSimpleBlobDetector() SimpleBlobDetector {
 	return SimpleBlobDetector{p: unsafe.Pointer(C.SimpleBlobDetector_Create())}
 }
 
+// NewSimpleBlobDetectorWithParams returns a new SimpleBlobDetector with custom parameters
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d7a/classcv_1_1SimpleBlobDetector.html
+//
+func NewSimpleBlobDetectorWithParams(params SimpleBlobDetectorParams) SimpleBlobDetector {
+	return SimpleBlobDetector{p: unsafe.Pointer(C.SimpleBlobDetector_Create_WithParams(params.p))}
+}
+
 // Close SimpleBlobDetector.
 func (b *SimpleBlobDetector) Close() error {
 	C.SimpleBlobDetector_Close((C.SimpleBlobDetector)(b.p))
 	b.p = nil
 	return nil
+}
+
+// NewSimpleBlobDetectorParams returns the default parameters for the SimpleBobDetector
+func NewSimpleBlobDetectorParams() SimpleBlobDetectorParams {
+	return SimpleBlobDetectorParams{p: C.SimpleBlobDetectorParams_Create()}
+}
+
+// SetBlobColor sets the blobColor field
+func (p *SimpleBlobDetectorParams) SetBlobColor(blobColor int) {
+	p.p.blobColor = C.uchar(blobColor)
+}
+
+// GetBlobColor gets the blobColor field
+func (p *SimpleBlobDetectorParams) GetBlobColor() int {
+	return int(p.p.blobColor)
+}
+
+// SetFilterByArea sets the filterByArea field
+func (p *SimpleBlobDetectorParams) SetFilterByArea(filterByArea bool) {
+	p.p.filterByArea = C.bool(filterByArea)
+}
+
+// GetFilterByArea gets the filterByArea field
+func (p *SimpleBlobDetectorParams) GetFilterByArea() bool {
+	return bool(p.p.filterByArea)
+}
+
+// SetFilterByCircularity sets the filterByCircularity field
+func (p *SimpleBlobDetectorParams) SetFilterByCircularity(filterByCircularity bool) {
+	p.p.filterByCircularity = C.bool(filterByCircularity)
+}
+
+// GetFilterByCircularity gets the filterByCircularity field
+func (p *SimpleBlobDetectorParams) GetFilterByCircularity() bool {
+	return bool(p.p.filterByCircularity)
+}
+
+// SetFilterByColor sets the filterByColor field
+func (p *SimpleBlobDetectorParams) SetFilterByColor(filterByColor bool) {
+	p.p.filterByColor = C.bool(filterByColor)
+}
+
+// GetFilterByColor gets the filterByColor field
+func (p *SimpleBlobDetectorParams) GetFilterByColor() bool {
+	return bool(p.p.filterByColor)
+}
+
+// SetFilterByConvexity sets the filterByConvexity field
+func (p *SimpleBlobDetectorParams) SetFilterByConvexity(filterByConvexity bool) {
+	p.p.filterByConvexity = C.bool(filterByConvexity)
+}
+
+// GetFilterByConvexity gets the filterByConvexity field
+func (p *SimpleBlobDetectorParams) GetFilterByConvexity() bool {
+	return bool(p.p.filterByConvexity)
+}
+
+// SetFilterByInertia sets the filterByInertia field
+func (p *SimpleBlobDetectorParams) SetFilterByInertia(filterByInertia bool) {
+	p.p.filterByInertia = C.bool(filterByInertia)
+}
+
+// GetFilterByInertia gets the filterByInertia field
+func (p *SimpleBlobDetectorParams) GetFilterByInertia() bool {
+	return bool(p.p.filterByInertia)
+}
+
+// SetMaxArea sets the maxArea parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) SetMaxArea(maxArea float64) {
+	p.p.maxArea = C.float(maxArea)
+}
+
+// GetMaxArea sets the maxArea parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) GetMaxArea() float64 {
+	return float64(p.p.maxArea)
+}
+
+// SetMaxCircularity sets the maxCircularity parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) SetMaxCircularity(maxCircularity float64) {
+	p.p.maxCircularity = C.float(maxCircularity)
+}
+
+// GetMaxCircularity sets the maxCircularity parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) GetMaxCircularity() float64 {
+	return float64(p.p.maxCircularity)
+}
+
+// SetMaxConvexity sets the maxConvexity parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) SetMaxConvexity(maxConvexity float64) {
+	p.p.maxConvexity = C.float(maxConvexity)
+}
+
+// GetMaxConvexity sets the maxConvexity parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) GetMaxConvexity() float64 {
+	return float64(p.p.maxConvexity)
+}
+
+// SetMaxInertiaRatio sets the maxInertiaRatio parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) SetMaxInertiaRatio(maxInertiaRatio float64) {
+	p.p.maxInertiaRatio = C.float(maxInertiaRatio)
+}
+
+// GetMaxInertiaRatio sets the maxCConvexity parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) GetMaxInertiaRatio() float64 {
+	return float64(p.p.maxInertiaRatio)
+}
+
+// SetMaxThreshold sets the maxThreshold parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) SetMaxThreshold(maxThreshold float64) {
+	p.p.maxThreshold = C.float(maxThreshold)
+}
+
+// GetMaxThreshold sets the maxCConvexity parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) GetMaxThreshold() float64 {
+	return float64(p.p.maxThreshold)
+}
+
+// SetMinArea sets the minArea parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) SetMinArea(minArea float64) {
+	p.p.minArea = C.float(minArea)
+}
+
+// GetMinArea sets theinArea parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) GetMinArea() float64 {
+	return float64(p.p.minArea)
+}
+
+// SetMinCircularity sets the minCircularity parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) SetMinCircularity(minCircularity float64) {
+	p.p.minCircularity = C.float(minCircularity)
+}
+
+// GetMinCircularity sets the minCircularity parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) GetMinCircularity() float64 {
+	return float64(p.p.minCircularity)
+}
+
+// SetMinConvexity sets the minConvexity parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) SetMinConvexity(minConvexity float64) {
+	p.p.minConvexity = C.float(minConvexity)
+}
+
+// GetMinConvexity sets the minConvexity parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) GetMinConvexity() float64 {
+	return float64(p.p.minConvexity)
+}
+
+// SetMinDistBetweenBlobs sets the minDistBetweenBlobs parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) SetMinDistBetweenBlobs(minDistBetweenBlobs float64) {
+	p.p.minDistBetweenBlobs = C.float(minDistBetweenBlobs)
+}
+
+// GetMinDistBetweenBlobs sets the minDistBetweenBlobs parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) GetMinDistBetweenBlobs() float64 {
+	return float64(p.p.minDistBetweenBlobs)
+}
+
+// SetMinInertiaRatio sets the minInertiaRatio parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) SetMinInertiaRatio(minInertiaRatio float64) {
+	p.p.minInertiaRatio = C.float(minInertiaRatio)
+}
+
+// GetMinInertiaRatio sets the minInertiaRatio parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) GetMinInertiaRatio() float64 {
+	return float64(p.p.minInertiaRatio)
+}
+
+// SetMinRepeatability sets the minRepeatability parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) SetMinRepeatability(minRepeatability int) {
+	p.p.minRepeatability = C.size_t(minRepeatability)
+}
+
+// GetMinInertiaRatio sets the minRepeatability parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) GetMinRepeatability() int {
+	return int(p.p.minRepeatability)
+}
+
+// SetMinThreshold sets the minThreshold parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) SetMinThreshold(minThreshold float64) {
+	p.p.minThreshold = C.float(minThreshold)
+}
+
+// GetMinThreshold sets the minInertiaRatio parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) GetMinThreshold() float64 {
+	return float64(p.p.minThreshold)
+}
+
+// SetMinThreshold sets the minThreshold parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) SetThresholdStep(thresholdStep float64) {
+	p.p.thresholdStep = C.float(thresholdStep)
+}
+
+// GetMinThreshold sets the minInertiaRatio parameter for SimpleBlobDetector_Params
+func (p *SimpleBlobDetectorParams) GetThresholdStep() float64 {
+	return float64(p.p.thresholdStep)
 }
 
 // Detect keypoints in an image using SimpleBlobDetector.
