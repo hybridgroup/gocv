@@ -44,8 +44,9 @@ func TestSingleTrackers(t *testing.T) {
 	}
 
 	for _, test := range tab {
-		defer test.tracker.Close()
-
-		BaseTestTracker(t, test.tracker, test.name)
+		func() {
+			defer test.tracker.Close()
+			BaseTestTracker(t, test.tracker, test.name)
+		}()
 	}
 }
