@@ -343,4 +343,13 @@ func TestFP16BlobFromImage(t *testing.T) {
 	if len(data) != 60000 {
 		t.Errorf("FP16BlobFromImage incorrect length: %v\n", len(data))
 	}
+
+	img2 := NewMatWithSize(100, 50, 5+16)
+	defer img2.Close()
+
+	data = FP16BlobFromImage(img2, 2.0, image.Pt(50, 100), 0, false, false)
+
+	if len(data) != 30000 {
+		t.Errorf("FP16BlobFromImage incorrect length: %v\n", len(data))
+	}
 }
