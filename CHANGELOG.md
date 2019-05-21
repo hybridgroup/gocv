@@ -1,3 +1,23 @@
+0.20.0
+---
+* **build**
+    * Use Go 1.12.x for build
+    * Update to OpenCV 4.1.0
+* **cuda**
+    * Initial cuda implementation
+* **docs**
+    * Fix the command to install xquartz via brew/cask
+* **features2d**
+    * Add support for SimpleBlobDetectorParams (#434)
+    * Added FastFeatureDetectorWithParams
+* **imgproc**
+    * Added function call to cv::morphologyDefaultBorderValue
+* **test**
+    * Increase test coverage for FP16BlobFromImage()
+* **video**
+    * Added calcOpticalFlowPyrLKWithParams
+    * Addition of MOG2/KNN constructor with options
+
 0.19.0
 ---
 * **build**
