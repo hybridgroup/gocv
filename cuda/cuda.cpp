@@ -4,6 +4,10 @@ GpuMat GpuMat_New() {
     return new cv::cuda::GpuMat();
 }
 
+GpuMat GpuMat_NewFromMat(Mat mat) {
+    return new cv::cuda::GpuMat(*mat);
+}
+
 void GpuMat_Upload(GpuMat m,Mat data){
     m->upload(*data);
 }
