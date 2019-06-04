@@ -50,9 +50,14 @@ func (g *GpuMat) Close() error {
 	return nil
 }
 
-// NewGpuMat Returns a new empty GpuMat
+// NewGpuMat returns a new empty GpuMat
 func NewGpuMat() GpuMat {
 	return newGpuMat(C.GpuMat_New())
+}
+
+// NewGpuMatFromMat returns a new GpuMat based on a Mat
+func NewGpuMatFromMat(mat gocv.Mat) GpuMat {
+	return newGpuMat(C.GpuMat_NewFromMat(C.Mat(mat.Ptr())))
 }
 
 func newGpuMat(p C.GpuMat) GpuMat {

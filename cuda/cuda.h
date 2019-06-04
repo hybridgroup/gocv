@@ -17,6 +17,7 @@ typedef void* GpuMat;
 #endif
 
 GpuMat GpuMat_New();
+GpuMat GpuMat_NewFromMat(Mat mat);
 void GpuMat_Upload(GpuMat m,Mat data);
 void GpuMat_Download(GpuMat m,Mat dst);
 void GpuMat_Close(GpuMat m);
