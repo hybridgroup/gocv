@@ -9,11 +9,11 @@ void VideoCapture_Close(VideoCapture v) {
     delete v;
 }
 
-int VideoCapture_Open(VideoCapture v, const char* uri) {
+bool VideoCapture_Open(VideoCapture v, const char* uri) {
     return v->open(uri);
 }
 
-int VideoCapture_OpenDevice(VideoCapture v, int device) {
+bool VideoCapture_OpenDevice(VideoCapture v, int device) {
     return v->open(device);
 }
 
@@ -49,9 +49,9 @@ void VideoWriter_Close(VideoWriter vw) {
 }
 
 void VideoWriter_Open(VideoWriter vw, const char* name, const char* codec, double fps, int width,
-                      int height) {
+                      int height, bool isColor) {
     int codecCode = cv::VideoWriter::fourcc(codec[0], codec[1], codec[2], codec[3]);
-    vw->open(name, codecCode, fps, cv::Size(width, height), true);
+    vw->open(name, codecCode, fps, cv::Size(width, height), isColor);
 }
 
 int VideoWriter_IsOpened(VideoWriter vw) {

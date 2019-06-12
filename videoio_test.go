@@ -3,12 +3,46 @@ package gocv
 import (
 	"io/ioutil"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
+func TestVideoCaptureEmptyNumericalParameters(t *testing.T) {
+	_, err := VideoWriterFile(
+		"images/small.mp4", "MJPEG", 0, 0, 0, true)
+	if err == nil {
+		t.Error("Must fail due to an empty numerical parameters.")
+	}
+	if !strings.Contains(err.Error(), "one of the numerical parameters is equal to zero") {
+		t.Errorf("Must fail due to an empty numerical "+
+			"parameters, but have different error: %v", err)
+	}
+}
+
+func TestVideoCaptureCodecString(t *testing.T) {
+	vc, err := OpenVideoCapture("images/small.mp4")
+	if err != nil {
+		t.Errorf("TestVideoCaptureCodecString: error loading a file: %v", err)
+	}
+	if vc.CodecString() == "" {
+		t.Fatal("TestVideoCaptureCodecString: empty codec string")
+	}
+}
+
+func TestVideoCaptureInvalid(t *testing.T) {
+	_, err := OpenVideoCapture(1.1)
+	if err == nil {
+		t.Errorf("Should return error with invalid param")
+	}
+}
+
 func TestVideoCaptureFile(t *testing.T) {
-	vc, _ := VideoCaptureFile("images/small.mp4")
+	vc, err := VideoCaptureFile("images/small.mp4")
 	defer vc.Close()
+
+	if err != nil {
+		t.Errorf("%s", err)
+	}
 
 	if !vc.IsOpened() {
 		t.Error("Unable to open VideoCaptureFile")
@@ -32,6 +66,13 @@ func TestVideoCaptureFile(t *testing.T) {
 	if img.Empty() {
 		t.Error("Unable to read VideoCaptureFile")
 	}
+
+	vc2, err := VideoCaptureFile("nonexistent.mp4")
+	defer vc2.Close()
+
+	if err == nil {
+		t.Errorf("Expected error when opening invalid file")
+	}
 }
 
 func TestVideoWriterFile(t *testing.T) {
@@ -44,7 +85,7 @@ func TestVideoWriterFile(t *testing.T) {
 	}
 	defer img.Close()
 
-	vw, _ := VideoWriterFile(tmpfn, "MJPG", 25, img.Cols(), img.Rows())
+	vw, _ := VideoWriterFile(tmpfn, "MJPG", 25, img.Cols(), img.Rows(), true)
 	defer vw.Close()
 
 	if !vw.IsOpened() {

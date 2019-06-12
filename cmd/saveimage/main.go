@@ -7,7 +7,7 @@
 //
 // saveimage [camera ID] [image file]
 //
-// 		go run ./cmd/saveimage/main.go filename.jpg
+// 		go run ./cmd/saveimage/main.go 0 filename.jpg
 //
 // +build example
 
@@ -16,7 +16,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 
 	"gocv.io/x/gocv"
 )
@@ -27,12 +26,12 @@ func main() {
 		return
 	}
 
-	deviceID, _ := strconv.Atoi(os.Args[1])
+	deviceID := os.Args[1]
 	saveFile := os.Args[2]
 
-	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.OpenVideoCapture(deviceID)
 	if err != nil {
-		fmt.Printf("error opening video capture device: %v\n", deviceID)
+		fmt.Printf("Error opening video capture device: %v\n", deviceID)
 		return
 	}
 	defer webcam.Close()
@@ -41,11 +40,11 @@ func main() {
 	defer img.Close()
 
 	if ok := webcam.Read(&img); !ok {
-		fmt.Printf("cannot read device %d\n", deviceID)
+		fmt.Printf("cannot read device %v\n", deviceID)
 		return
 	}
 	if img.Empty() {
-		fmt.Printf("no image on device %d\n", deviceID)
+		fmt.Printf("no image on device %v\n", deviceID)
 		return
 	}
 

@@ -1,3 +1,313 @@
+0.20.0
+---
+* **build**
+    * Use Go 1.12.x for build
+    * Update to OpenCV 4.1.0
+* **cuda**
+    * Initial cuda implementation
+* **docs**
+    * Fix the command to install xquartz via brew/cask
+* **features2d**
+    * Add support for SimpleBlobDetectorParams (#434)
+    * Added FastFeatureDetectorWithParams
+* **imgproc**
+    * Added function call to cv::morphologyDefaultBorderValue
+* **test**
+    * Increase test coverage for FP16BlobFromImage()
+* **video**
+    * Added calcOpticalFlowPyrLKWithParams
+    * Addition of MOG2/KNN constructor with options
+
+0.19.0
+---
+* **build**
+    * Adds Dockerfile. Updates Makefile and README.
+    * make maintainer tag same as dockerhub organization name
+    * make sure to run tests for non-free contrib algorithms
+    * update Appveyor build to use Go 1.12
+* **calib3d**
+    * add func InitUndistortRectifyMap (#405)
+* **cmd**
+    * correct formatting of code in example
+* **core**
+    * Added Bitwise Operations With Masks
+    * update to OpenCV4.0.1
+* **dnn**
+    * add new backend and target types for NVIDIA and FPGA
+    * Added blobFromImages in ROADMAP.md (#403)
+    * Implement dnn methods for loading in-memory models.
+* **docker**
+    * update Dockerfile to use OpenCV 4.0.1
+* **docs**
+    * update ROADMAP from recent contributions
+* **examples**
+    * Fixing filename in caffe-classifier example
+* **imgproc**
+    * Add 'MinEnclosingCircle' function
+    * added BoxPoints function and BorderIsolated const
+    * Added Connected Components
+    * Added the HoughLinesPointSet function.
+    * Implement CLAHE to imgproc
+* **openvino**
+    * remove lib no longer included during non-FPGA installations
+* **test**
+    * Add len(kp) == 232 to TestMSER, seems this is necessary for MacOS for some reason.
+
+0.18.0
+---
+* **build**
+    * add OPENCV_GENERATE_PKGCONFIG flag to generate pkg-config file
+    * Add required curl package to the RPM and DEBS
+    * correct name for zip directory used for code download
+    * Removing linking against face contrib module
+    * update CI to use 4.0.0 release
+    * update Makefile and Windows build command file to OpenCV 4.0.0
+    * use opencv4 file for pkg-config
+* **core**
+    * add ScaleAdd() method to Mat
+* **docs**
+    * replace OpenCV 3.4.3 references with OpenCV 4
+    * update macOS installation info to refer to new OpenCV 4.0 brew
+    * Updated function documentation with information about errors.
+* **examples**
+    * Improve accuracy in hand gesture sample
+* **features2d**
+    * update drawKeypoints() to use new stricter enum
+* **openvino**
+    * changes to accommodate release 2018R4
+* **profile**
+    * add build tag matprofile to allow for conditional inclusion of custom profile
+    * Add Mat profile wrapper in other areas of the library.
+    * Add MatProfile.
+    * Add MatProfileTest.
+    * move MatProfile tests into separate test file so they only run when custom profiler active
+* **test**
+    * Close images in tests.
+    * More Closes in tests.
+    * test that we are using 4.0.x version now
+* **videoio**
+    * Return the right type and error when opening VideoCapture fails
+
+0.17.0
+---
+* **build** 
+    * Update Makefile
+    * update version of OpenCV used to 3.4.3
+    * use link to OpenCV 3.4.3 for Windows builds
+* **core** 
+    * add mulSpectrums wrapper
+    * add PolarToCart() method to Mat
+    * add Reduce() method to Mat
+    * add Repeat() method to Mat
+    * add Solve() method to Mat
+    * add SolveCubic() method to Mat
+    * add SolvePoly() method to Mat
+    * add Sort() method to Mat
+    * add SortIdx() method to Mat
+    * add Trace() method to Mat
+    * Added new MatType
+    * Added Phase function
+* **dnn** 
+    * update test to match OpenCV 3.4.3 behavior
+* **docs**
+    * Add example of how to run individual test
+    * adding instructions for installing pkgconfig for macOS
+    * fixed GOPATH bug.
+    * update ROADMAP from recent contributions
+* **examples**
+    * add condition to handle no circle found in circle detection example
+* **imgcodecs**
+    * Added IMEncodeWithParams function
+* **imgproc**
+    * Added Filter2D function
+    * Added fitLine function
+    * Added logPolar function
+    * Added Remap function
+    * Added SepFilter2D function
+    * Added Sobel function
+    * Added SpatialGradient function
+* **xfeatures2d**
+    * do not run SIFT test unless OpenCV was built using OPENCV_ENABLE_NONFREE
+    * do not run SURF test unless OpenCV was built using OPENCV_ENABLE_NONFREE
+
+0.16.0
+---
+* **build**
+    * add make task for Raspbian install with ARM hardware optimizations
+    * use all available cores to compile OpenCV on Windows as discussed in issue #275
+    * download performance improvements for OpenCV installs on Windows
+    * correct various errors and issues with OpenCV installs on Fedora and CentOS
+* **core**
+    * correct spelling error in constant to fix issue #269
+    * implemented & added test for Mat.SetTo
+    * improve Multiply() GoDoc and test showing Scalar() multiplication
+    * mutator functions for Mat add, subtract, multiply, and divide for uint8 and float32 values.
+* **dnn**
+    * add FP16BlobFromImage() function to convert an image Mat to a half-float aka FP16 slice of bytes
+* **docs**
+    * fix a varible error in example code in README
+
+0.15.0
+---
+* **build**
+    * add max to make -j
+    * improve path for Windows to use currently configured GOPATH
+* **core**
+    * Add Mat.DataPtr methods for direct access to OpenCV data
+    * Avoid extra copy in Mat.ToBytes + code review feedback
+* **dnn**
+    * add test coverage for ParseNetBackend and ParseNetTarget
+    * complete test coverage
+* **docs**
+    * minor cleanup of language for install
+    * use chdir instead of cd in Windows instructions
+* **examples**
+    * add 'hello, video' example to repo
+    * add HoughLinesP example
+    * correct message on device close to match actual event
+    * small change in display message for when file is input source
+    * use DrawContours in motion detect example
+* **imgproc**
+    * Add MinAreaRect() function
+* **test**
+    * filling test coverage gaps
+* **videoio**
+    * add test coverage for OpenVideoCapture
+
+0.14.0
+---
+* **build**
+    * Add -lopencv_calib3d341 to the linker
+    * auto-confirm on package installs from make deps command
+    * display PowerShell download status for OpenCV files
+    * obtain caffe test config file from new location in Travis build
+    * remove VS only dependencies from OpenCV build, copy caffe test config file from new location
+    * return back to GoCV directory after OpenCV install
+    * update for release of OpenCV v3.4.2
+    * use PowerShell for scripted OpenCV install for Windows
+    * win32 version number has not changed yet
+* **calib3d**
+    * Add Calibrate for Fisheye model(WIP)
+* **core**
+    * add GetTickCount function
+    * add GetTickFrequency function
+    * add Size() and FromPtr() methods to Mat
+    * add Total method to Mat
+    * Added RotateFlag type
+    * correct CopyTo to use pointer to Mat as destination
+    * functions converting Image to Mat
+    * rename implementation to avoid conflicts with Windows
+    * stricter use of reflect.SliceHeader
+* **dnn**
+    * add backend/device options to caffe and tensorflow DNN examples
+    * add Close to Layer
+    * add first version of dnn-pose-detection example
+    * add further comments to object detection/tracking DNN example
+    * add GetPerfProfile function to Net
+    * add initial Layer implementation alongside enhancements to Net
+    * add InputNameToIndex to Layer
+    * add new functions allowing DNN backends such as OpenVINO
+    * additional refactoring and comments in dnn-pose-detection example
+    * cleanup DNN face detection example
+    * correct const for device targets to be called Target
+    * correct test that expected init slice with blank entries
+    * do not init slice with blank entries, since added via append
+    * further cleanup of DNN face detection example
+    * make dnn-pose-detection example use Go channels for async operation
+    * refactoring and additional comments for object detection/tracking DNN example
+    * refine comment in header for style transfer example
+    * working style transfer example
+    * added ForwardLayers() to accomodate models with multiple output layers
+* **docs**
+    * add scripted Windows install info to README
+    * Added a sample gocv workflow contributing guideline
+    * mention docker image in README.
+    * mention work in progress on Android
+    * simplify and add missing step in Linux installation in README
+    * update contributing instructions to match latest version
+    * update ROADMAP from recent calib3d module contribution
+    * update ROADMAP from recent imgproc histogram contribution
+* **examples**
+    * cleanup header for caffe dnn classifier
+    * show how to use either Caffe or Tensorflow for DNN object detection
+    * further improve dnn samples
+    * rearrange and add comments to dnn style transfer example
+    * remove old copy of pose detector
+    * remove unused example
+* **features2d**
+    * free memory allocation bug for C.KeyPoints as pointed out by @tzununbekov
+    * Adding opencv::drawKeypoints() support
+* **imgproc**
+    * add equalizeHist function
+    * Added opencv::calcHist implementation
+* **openvino**
+    * add needed environment config to execute examples
+    * further details in README explaining how to use
+    * remove opencv contrib references as they are not included in OpenVINO
+* **videoio**
+    * Add OpenVideoCapture
+    * Use gocv.VideoCaptureFile if string is specified for device.
+
+0.13.0
+---
+* **build**
+    * Add cgo directives to contrib
+    * contrib subpackage also needs cpp 11 or greater for a warning free build on Linux
+    * Deprecate env scripts and update README
+    * Don't set --std=c++1z on non-macOS
+    * Remove CGO vars from CI and correct Windows cgo directives
+    * Support pkg-config via cgo directives
+    * we actually do need cpp 11 or greater for a warning free build on Linux
+* **docs**
+    * add a Github issue template to project
+    * provide specific examples of using custom environment
+* **imgproc**
+    * add HoughLinesPWithParams() function
+* **openvino**
+    * add build tag specific to openvino
+    * add roadmap info
+    * add smoke test for ie
+
+0.12.0
+---
+* **build**
+    * convert to CRLF
+    * Enable verbosity for travisCI
+    * Further improvements to Makefile
+* **core**
+    * Add Rotate, VConcat
+    * Adding InScalarRange and NewMatFromScalarWithSize functions
+    * Changed NewMatFromScalarWithSize to NewMatWithSizeFromScalar
+    * implement CheckRange(), Determinant(), EigenNonSymmetric(), Min(), and MinMaxIdx() functions
+    * implement PerspectiveTransform() and Sqrt() functions
+    * implement Transform() and Transpose() functions
+    * Make toByteArray safe for empty byte slices
+    * Renamed InScalarRange to InRangeWithScalar
+* **docs**
+    * nicer error if we can't read haarcascade_frontalface_default
+    * correct some ROADMAP links
+    * Fix example command.
+    * Fix executable name in help text.
+    * update ROADMAP from recent contributions
+* **imgproc** 
+    * add BoxFilter and SqBoxFilter functions
+    * Fix the hack to convert C arrays to Go slices.
+* **videoio** 
+    * Add isColor to VideoWriterFile
+    * Check numerical parameters for gocv.VideoWriterFile
+    * CodecString()
+* **features2d** 
+    * add BFMatcher
+* **img_hash** 
+    * Add contrib/img_hash module
+    * add GoDocs for new img_hash module
+    * Add img-similarity as an example for img_hash
+* **openvino** 
+    * adds support for Intel OpenVINO toolkit PVL
+    * starting experimental work on OpenVINO IE
+    * update README files for Intel OpenVINO toolkit support
+    * WIP on IE can load an IR network
+
 0.11.0
 ---
 * **build**

@@ -21,7 +21,8 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
+
+	_ "net/http/pprof"
 
 	"github.com/hybridgroup/mjpeg"
 	"gocv.io/x/gocv"
@@ -41,13 +42,13 @@ func main() {
 	}
 
 	// parse args
-	deviceID, _ = strconv.Atoi(os.Args[1])
+	deviceID := os.Args[1]
 	host := os.Args[2]
 
 	// open webcam
-	webcam, err = gocv.VideoCaptureDevice(deviceID)
+	webcam, err = gocv.OpenVideoCapture(deviceID)
 	if err != nil {
-		fmt.Printf("error opening video capture device: %v\n", deviceID)
+		fmt.Printf("Error opening capture device: %v\n", deviceID)
 		return
 	}
 	defer webcam.Close()
@@ -56,7 +57,7 @@ func main() {
 	stream = mjpeg.NewStream()
 
 	// start capturing
-	go capture()
+	go mjpegCapture()
 
 	fmt.Println("Capturing. Point your browser to " + host)
 
@@ -65,13 +66,13 @@ func main() {
 	log.Fatal(http.ListenAndServe(host, nil))
 }
 
-func capture() {
+func mjpegCapture() {
 	img := gocv.NewMat()
 	defer img.Close()
 
 	for {
 		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("cannot read device %d\n", deviceID)
+			fmt.Printf("Device closed: %v\n", deviceID)
 			return
 		}
 		if img.Empty() {

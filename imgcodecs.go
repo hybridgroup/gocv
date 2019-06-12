@@ -136,7 +136,7 @@ func IMRead(name string, flags IMReadFlag) Mat {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 
-	return Mat{p: C.Image_IMRead(cName, C.int(flags))}
+	return newMat(C.Image_IMRead(cName, C.int(flags)))
 }
 
 // IMWrite writes a Mat to an image file.
@@ -202,6 +202,35 @@ func IMEncode(fileExt FileExt, img Mat) (buf []byte, err error) {
 	return toGoBytes(b), nil
 }
 
+// IMEncodeWithParams encodes an image Mat into a memory buffer.
+// This function compresses the image and stores it in the returned memory buffer,
+// using the image format passed in in the form of a file extension string.
+//
+// Usage example:
+//  buffer, err := gocv.IMEncodeWithParams(gocv.JPEGFileExt, img, []int{gocv.IMWriteJpegQuality, quality})
+//
+// For further details, please see:
+// http://docs.opencv.org/master/d4/da8/group__imgcodecs.html#ga461f9ac09887e47797a54567df3b8b63
+//
+func IMEncodeWithParams(fileExt FileExt, img Mat, params []int) (buf []byte, err error) {
+	cfileExt := C.CString(string(fileExt))
+	defer C.free(unsafe.Pointer(cfileExt))
+
+	cparams := []C.int{}
+
+	for _, v := range params {
+		cparams = append(cparams, C.int(v))
+	}
+
+	paramsVector := C.struct_IntVector{}
+	paramsVector.val = (*C.int)(&cparams[0])
+	paramsVector.length = (C.int)(len(cparams))
+
+	b := C.Image_IMEncode_WithParams(cfileExt, img.Ptr(), paramsVector)
+	defer C.ByteArray_Release(b)
+	return toGoBytes(b), nil
+}
+
 // IMDecode reads an image from a buffer in memory.
 // The function IMDecode reads an image from the specified buffer in memory.
 // If the buffer is too short or contains invalid data, the function
@@ -210,7 +239,10 @@ func IMEncode(fileExt FileExt, img Mat) (buf []byte, err error) {
 // For further details, please see:
 // https://docs.opencv.org/master/d4/da8/group__imgcodecs.html#ga26a67788faa58ade337f8d28ba0eb19e
 //
-func IMDecode(buf []byte, flags IMReadFlag) Mat {
-	data := toByteArray(buf)
-	return Mat{p: C.Image_IMDecode(data, C.int(flags))}
+func IMDecode(buf []byte, flags IMReadFlag) (Mat, error) {
+	data, err := toByteArray(buf)
+	if err != nil {
+		return Mat{}, err
+	}
+	return newMat(C.Image_IMDecode(*data, C.int(flags))), nil
 }

@@ -16,7 +16,6 @@ import (
 	"image/color"
 	"math"
 	"os"
-	"strconv"
 
 	"gocv.io/x/gocv"
 )
@@ -30,9 +29,9 @@ func main() {
 	}
 
 	// parse args
-	deviceID, _ := strconv.Atoi(os.Args[1])
+	deviceID := os.Args[1]
 
-	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.OpenVideoCapture(deviceID)
 	if err != nil {
 		fmt.Printf("Error opening video capture device: %v\n", deviceID)
 		return
@@ -62,10 +61,10 @@ func main() {
 
 	green := color.RGBA{0, 255, 0, 0}
 
-	fmt.Printf("Start reading camera device: %v\n", deviceID)
+	fmt.Printf("Start reading device: %v\n", deviceID)
 	for {
 		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("Error cannot read device %d\n", deviceID)
+			fmt.Printf("Device closed: %v\n", deviceID)
 			return
 		}
 		if img.Empty() {
@@ -105,7 +104,7 @@ func main() {
 			}
 		}
 
-		status := fmt.Sprintf("defectCount: %d", defectCount)
+		status := fmt.Sprintf("defectCount: %d", defectCount+1)
 
 		rect := gocv.BoundingRect(c)
 		gocv.Rectangle(&img, rect, color.RGBA{255, 255, 255, 0}, 2)

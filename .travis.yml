@@ -4,6 +4,8 @@ dist: trusty
 
 # language is go
 language: go
+go:
+  - "1.12.x"
 go_import_path: gocv.io/x/gocv
 
 addons:
@@ -40,13 +42,12 @@ before_cache:
   - rm -f $HOME/fresh-cache
 
 script:
-  - export CGO_CPPFLAGS="-I${HOME}/usr/include"
-  - export CGO_LDFLAGS="-L${HOME}/usr/lib -lopencv_core -lopencv_videoio -lopencv_face -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_features2d -lopencv_video -lopencv_dnn -lopencv_xfeatures2d -lopencv_plot -lopencv_tracking"
   - export GOCV_CAFFE_TEST_FILES="${HOME}/testdata"
   - export GOCV_TENSORFLOW_TEST_FILES="${HOME}/testdata"
+  - export OPENCV_ENABLE_NONFREE=ON
   - echo "Ensuring code is well formatted"; ! gofmt -s -d . | read
-  - go test -coverprofile=coverage.txt -covermode=atomic
-  - go test ./contrib -coverprofile=contrib.txt -covermode=atomic; cat contrib.txt >> coverage.txt; rm contrib.txt;
+  - go test -v -coverprofile=coverage.txt -covermode=atomic -tags matprofile .
+  - go test -tags matprofile ./contrib -coverprofile=contrib.txt -covermode=atomic; cat contrib.txt >> coverage.txt; rm contrib.txt;
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

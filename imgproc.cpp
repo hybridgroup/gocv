@@ -24,14 +24,48 @@ Contour ApproxPolyDP(Contour curve, double epsilon, bool closed) {
     Point* points = new Point[length];
 
     for (size_t i = 0; i < length; i++) {
-        points[i] = Point{approxCurvePts[i].x, approxCurvePts[i].y};
+        points[i] = (Point){approxCurvePts[i].x, approxCurvePts[i].y};
     }
 
-    return Contour{points, length};
+    return (Contour){points, length};
 }
 
 void CvtColor(Mat src, Mat dst, int code) {
     cv::cvtColor(*src, *dst, code);
+}
+
+void EqualizeHist(Mat src, Mat dst) {
+    cv::equalizeHist(*src, *dst);
+}
+
+void CalcHist(struct Mats mats, IntVector chans, Mat mask, Mat hist, IntVector sz, FloatVector rng, bool acc) {
+        std::vector<cv::Mat> images;
+
+        for (int i = 0; i < mats.length; ++i) {
+            images.push_back(*mats.mats[i]);
+        }
+
+        std::vector<int> channels;
+
+        for (int i = 0, *v = chans.val; i < chans.length; ++v, ++i) {
+            channels.push_back(*v);
+        }
+
+        std::vector<int> histSize;
+
+        for (int i = 0, *v = sz.val; i < sz.length; ++v, ++i) {
+            histSize.push_back(*v);
+        }
+
+        std::vector<float> ranges;
+
+        float* f;
+        int i;
+        for (i = 0, f = rng.val; i < rng.length; ++f, ++i) {
+            ranges.push_back(*f);
+        }
+
+        cv::calcHist(images, channels, *mask, *hist, histSize, ranges, acc);
 }
 
 void ConvexHull(Contour points, Mat hull, bool clockwise, bool returnPoints) {
@@ -61,6 +95,16 @@ void BilateralFilter(Mat src, Mat dst, int d, double sc, double ss) {
 void Blur(Mat src, Mat dst, Size ps) {
     cv::Size sz(ps.width, ps.height);
     cv::blur(*src, *dst, sz);
+}
+
+void BoxFilter(Mat src, Mat dst, int ddepth, Size ps) {
+    cv::Size sz(ps.width, ps.height);
+    cv::boxFilter(*src, *dst, ddepth, sz);
+}
+
+void SqBoxFilter(Mat src, Mat dst, int ddepth, Size ps) {
+    cv::Size sz(ps.width, ps.height);
+    cv::sqrBoxFilter(*src, *dst, ddepth, sz);
 }
 
 void Dilate(Mat src, Mat dst, Mat kernel) {
@@ -106,6 +150,13 @@ struct Rect BoundingRect(Contour con) {
     return r;
 }
 
+void BoxPoints(RotatedRect rect, Mat boxPts){
+    cv::Point2f centerPt(rect.center.x , rect.center.y);
+    cv::Size2f rSize(rect.size.width, rect.size.height);
+    cv::RotatedRect rotatedRectangle(centerPt, rSize, rect.angle);
+     cv::boxPoints(rotatedRectangle, *boxPts);
+}
+
 double ContourArea(Contour con) {
     std::vector<cv::Point> pts;
 
@@ -114,6 +165,48 @@ double ContourArea(Contour con) {
     }
 
     return cv::contourArea(pts);
+}
+
+struct RotatedRect MinAreaRect(Points points){
+    std::vector<cv::Point> pts;
+
+    for (size_t i = 0; i < points.length; i++) {
+        pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
+    }
+
+    cv::RotatedRect cvrect = cv::minAreaRect(pts);
+
+    Point* rpts = new Point[4];
+    cv::Point2f* pts4 = new cv::Point2f[4];
+    cvrect.points(pts4);
+
+    for (size_t j = 0; j < 4; j++) {
+        Point pt = {int(lroundf(pts4[j].x)), int(lroundf(pts4[j].y))};
+        rpts[j] = pt;
+    }
+
+    delete[] pts4;
+
+    cv::Rect bRect = cvrect.boundingRect();
+    Rect r = {bRect.x, bRect.y, bRect.width, bRect.height};
+    Point centrpt = {int(lroundf(cvrect.center.x)), int(lroundf(cvrect.center.y))};
+    Size szsz = {int(lroundf(cvrect.size.width)), int(lroundf(cvrect.size.height))};
+
+    RotatedRect retrect = {(Contour){rpts, 4}, r, centrpt, szsz, cvrect.angle};
+    return retrect;
+}
+
+void MinEnclosingCircle(Points points, Point2f* center, float* radius){
+    std::vector<cv::Point> pts;
+
+    for (size_t i = 0; i < points.length; i++) {
+        pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
+    }
+
+    cv::Point2f center2f;
+    cv::minEnclosingCircle(pts, center2f, *radius);
+    center->x = center2f.x;
+    center->y = center2f.y;
 }
 
 struct Contours FindContours(Mat src, int mode, int method) {
@@ -130,16 +223,31 @@ struct Contours FindContours(Mat src, int mode, int method) {
             pts[j] = pt;
         }
 
-        points[i] = Contour{pts, (int)contours[i].size()};
+        points[i] = (Contour){pts, (int)contours[i].size()};
     }
 
     Contours cons = {points, (int)contours.size()};
     return cons;
 }
 
+int ConnectedComponents(Mat src, Mat labels, int connectivity, int ltype, int ccltype){
+    return cv::connectedComponents(*src, *labels, connectivity, ltype, ccltype);
+}
+
+
+int ConnectedComponentsWithStats(Mat src, Mat labels, Mat stats, Mat centroids,
+    int connectivity, int ltype, int ccltype){
+    return cv::connectedComponentsWithStats(*src, *labels, *stats, *centroids, connectivity, ltype, ccltype);
+}
+
 Mat GetStructuringElement(int shape, Size ksize) {
     cv::Size sz(ksize.width, ksize.height);
     return new cv::Mat(cv::getStructuringElement(shape, sz));
+}
+
+Scalar MorphologyDefaultBorderValue(){
+    cv::Scalar cs = cv::morphologyDefaultBorderValue();
+    return (Scalar){cs[0],cs[1],cs[2],cs[3]};
 }
 
 void MorphologyEx(Mat src, Mat dst, int op, Mat kernel) {
@@ -196,6 +304,17 @@ void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold) {
     cv::HoughLinesP(*src, *lines, rho, theta, threshold);
 }
 
+void HoughLinesPWithParams(Mat src, Mat lines, double rho, double theta, int threshold, double minLineLength, double maxLineGap) {
+    cv::HoughLinesP(*src, *lines, rho, theta, threshold, minLineLength, maxLineGap);
+}
+
+void HoughLinesPointSet(Mat points, Mat lines, int linesMax, int threshold,
+                        double minRho, double  maxRho, double rhoStep,
+                        double minTheta, double maxTheta, double thetaStep) {
+    cv::HoughLinesPointSet(*points, *lines, linesMax, threshold,
+                           minRho, maxRho, rhoStep, minTheta, maxTheta, thetaStep );
+}
+
 void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ) {
     cv::threshold(*src, *dst, thresh, maxvalue, typ);
 }
@@ -245,7 +364,7 @@ void Rectangle(Mat img, Rect r, Scalar color, int thickness) {
         cv::Point(r.x + r.width, r.y + r.height),
         c,
         thickness,
-        CV_AA
+        cv::LINE_AA
     );
 }
 
@@ -350,4 +469,58 @@ void DrawContours(Mat src, Contours contours, int contourIdx, Scalar color, int 
 
     cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
     cv::drawContours(*src, cntrs, contourIdx, c, thickness);
+}
+
+void Sobel(Mat src, Mat dst, int ddepth, int dx, int dy, int ksize, double scale, double delta, int borderType) {
+	cv::Sobel(*src, *dst, ddepth, dx, dy, ksize, scale, delta, borderType);
+}
+
+void SpatialGradient(Mat src, Mat dx, Mat dy, int ksize, int borderType) {
+	cv::spatialGradient(*src, *dx, *dy, ksize, borderType);
+}
+
+
+void Remap(Mat src, Mat dst, Mat map1, Mat map2, int interpolation, int borderMode, Scalar borderValue) {
+        cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
+        cv::remap(*src, *dst, *map1, *map2, interpolation, borderMode, c);
+}
+
+void Filter2D(Mat src, Mat dst, int ddepth, Mat kernel, Point anchor, double delta, int borderType) {
+        cv::Point anchorPt(anchor.x, anchor.y);
+        cv::filter2D(*src, *dst, ddepth, *kernel, anchorPt, delta, borderType);
+}
+
+void SepFilter2D(Mat src, Mat dst, int ddepth, Mat kernelX, Mat kernelY, Point anchor, double delta, int borderType) {
+	cv::Point anchorPt(anchor.x, anchor.y);
+	cv::sepFilter2D(*src, *dst, ddepth, *kernelX, *kernelY, anchorPt, delta, borderType);
+}
+
+void LogPolar(Mat src, Mat dst, Point center, double m, int flags) {
+	cv::Point2f centerPt(center.x, center.y);
+	cv::logPolar(*src, *dst, centerPt, m, flags);
+}
+
+void FitLine(Contour points, Mat line, int distType, double param, double reps, double aeps) {
+	std::vector<cv::Point> pts;
+	for (size_t i = 0; i < points.length; i++) {
+		pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
+	}
+	cv::fitLine(pts, *line, distType, param, reps, aeps);
+}
+
+CLAHE CLAHE_Create() {
+    return new cv::Ptr<cv::CLAHE>(cv::createCLAHE());
+}
+
+CLAHE CLAHE_CreateWithParams(double clipLimit, Size tileGridSize) {
+    cv::Size sz(tileGridSize.width, tileGridSize.height);
+    return new cv::Ptr<cv::CLAHE>(cv::createCLAHE(clipLimit, sz));
+}
+
+void CLAHE_Close(CLAHE c) {
+    delete c;
+}
+
+void CLAHE_Apply(CLAHE c, Mat src, Mat dst) {
+    (*c)->apply(*src, *dst);
 }

@@ -11,7 +11,7 @@
 //
 // How to run:
 //
-// 		go run ./cmd/dnn-ssd/main.go 0 [protofile] [modelfile]
+// 		go run ./cmd/ssd-facedetect/main.go 0 [protofile] [modelfile]
 //
 // +build example
 
@@ -22,7 +22,6 @@ import (
 	"image"
 	"image/color"
 	"os"
-	"strconv"
 
 	"gocv.io/x/gocv"
 )
@@ -43,17 +42,17 @@ func max(a, b float32) float32 {
 
 func main() {
 	if len(os.Args) < 4 {
-		fmt.Println("How to run:\ndnn-ssd [camera ID] [protofile] [modelfile]")
+		fmt.Println("How to run:\nssd-facedetect [camera ID] [protofile] [modelfile]")
 		return
 	}
 
 	// parse args
-	deviceID, _ := strconv.Atoi(os.Args[1])
+	deviceID := os.Args[1]
 	proto := os.Args[2]
 	model := os.Args[3]
 
 	// open capture device
-	webcam, err := gocv.VideoCaptureDevice(int(deviceID))
+	webcam, err := gocv.OpenVideoCapture(deviceID)
 	if err != nil {
 		fmt.Printf("Error opening video capture device: %v\n", deviceID)
 		return
@@ -75,11 +74,11 @@ func main() {
 	defer net.Close()
 
 	green := color.RGBA{0, 255, 0, 0}
-	fmt.Printf("Start reading camera device: %v\n", deviceID)
+	fmt.Printf("Start reading device: %v\n", deviceID)
 
 	for {
 		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("Error cannot read device %d\n", deviceID)
+			fmt.Printf("Device closed: %v\n", deviceID)
 			return
 		}
 		if img.Empty() {

@@ -26,6 +26,24 @@ Capture video from a pre-recorded file, and then count the number of detected ob
 
 https://github.com/hybridgroup/gocv/blob/master/cmd/counter/main.go
 
+## DNN Detection
+
+Use a Deep Neural Network to detect and track objects or faces.
+
+https://github.com/hybridgroup/gocv/blob/master/cmd/dnn-detection/main.go
+
+## DNN Pose Detection
+
+Use a Deep Neural Network trained using OpenPose to detect and track human body poses.
+
+https://github.com/hybridgroup/gocv/blob/master/cmd/dnn-pose-detection/main.go
+
+## DNN Style Transfer
+
+Use a Deep Neural Network to perform real-time style transfer.
+
+https://github.com/hybridgroup/gocv/blob/master/cmd/dnn-style-transfer/main.go
+
 ## Faceblur
 
 Captures video from a connected camera, then uses the CascadeClassifier to detect faces, blurs them using a Gaussian blur, then displays the blurred video in a window.
@@ -49,6 +67,12 @@ https://github.com/hybridgroup/gocv/blob/master/cmd/find-circles/main.go
 Count the number of fingers being held up in front of the camera by looking for convexity defects.
 
 https://github.com/hybridgroup/gocv/blob/master/cmd/hand-gestures/main.go
+
+## Img-similarity
+
+Compute and compare perceptual hashes for a pair of images, with a variety of algorithms.
+
+https://github.com/hybridgroup/gocv/blob/master/cmd/img-similarity/main.go
 
 ## MJPEG-Streamer
 

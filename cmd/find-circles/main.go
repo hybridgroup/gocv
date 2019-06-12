@@ -47,12 +47,12 @@ func main() {
 		img,
 		&circles,
 		gocv.HoughGradient,
-		1, // dp
+		1,                     // dp
 		float64(img.Rows()/8), // minDist
-		75, // param1
-		20, // param2
-		10, // minRadius
-		0,  // maxRadius
+		75,                    // param1
+		20,                    // param2
+		10,                    // minRadius
+		0,                     // maxRadius
 	)
 
 	blue := color.RGBA{0, 0, 255, 0}
@@ -60,12 +60,15 @@ func main() {
 
 	for i := 0; i < circles.Cols(); i++ {
 		v := circles.GetVecfAt(0, i)
-		x := int(v[0])
-		y := int(v[1])
-		r := int(v[2])
+		// if circles are found
+		if len(v) > 2 {
+			x := int(v[0])
+			y := int(v[1])
+			r := int(v[2])
 
-		gocv.Circle(&cimg, image.Pt(x, y), r, blue, 2)
-		gocv.Circle(&cimg, image.Pt(x, y), 2, red, 3)
+			gocv.Circle(&cimg, image.Pt(x, y), r, blue, 2)
+			gocv.Circle(&cimg, image.Pt(x, y), 2, red, 3)
+		}
 	}
 
 	for {

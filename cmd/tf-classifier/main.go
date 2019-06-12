@@ -12,7 +12,7 @@
 //
 // How to run:
 //
-// 		go run ./cmd/tf-classifier/main.go 0 [modelfile] [descriptionsfile]
+// 		go run ./cmd/tf-classifier/main.go 0 ~/Downloads/tensorflow_inception_graph.pb ~/Downloads/imagenet_comp_graph_label_strings.txt opencv cpu
 //
 // +build example
 
@@ -24,27 +24,9 @@ import (
 	"image"
 	"image/color"
 	"os"
-	"strconv"
 
 	"gocv.io/x/gocv"
 )
-
-// readDescriptions reads the descriptions from a file
-// and returns a slice of its lines.
-func readDescriptions(path string) ([]string, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	var lines []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	return lines, scanner.Err()
-}
 
 func main() {
 	if len(os.Args) < 4 {
@@ -53,7 +35,7 @@ func main() {
 	}
 
 	// parse args
-	deviceID, _ := strconv.Atoi(os.Args[1])
+	deviceID := os.Args[1]
 	model := os.Args[2]
 	descr := os.Args[3]
 	descriptions, err := readDescriptions(descr)
@@ -62,8 +44,18 @@ func main() {
 		return
 	}
 
+	backend := gocv.NetBackendDefault
+	if len(os.Args) > 4 {
+		backend = gocv.ParseNetBackend(os.Args[4])
+	}
+
+	target := gocv.NetTargetCPU
+	if len(os.Args) > 5 {
+		target = gocv.ParseNetTarget(os.Args[5])
+	}
+
 	// open capture device
-	webcam, err := gocv.VideoCaptureDevice(deviceID)
+	webcam, err := gocv.OpenVideoCapture(deviceID)
 	if err != nil {
 		fmt.Printf("Error opening video capture device: %v\n", deviceID)
 		return
@@ -77,20 +69,22 @@ func main() {
 	defer img.Close()
 
 	// open DNN classifier
-	net := gocv.ReadNetFromTensorflow(model)
+	net := gocv.ReadNet(model, "")
 	if net.Empty() {
 		fmt.Printf("Error reading network model : %v\n", model)
 		return
 	}
 	defer net.Close()
+	net.SetPreferableBackend(gocv.NetBackendType(backend))
+	net.SetPreferableTarget(gocv.NetTargetType(target))
 
 	status := "Ready"
 	statusColor := color.RGBA{0, 255, 0, 0}
-	fmt.Printf("Start reading camera device: %v\n", deviceID)
+	fmt.Printf("Start reading device: %v\n", deviceID)
 
 	for {
 		if ok := webcam.Read(&img); !ok {
-			fmt.Printf("Error cannot read device %d\n", deviceID)
+			fmt.Printf("Device closed: %v\n", deviceID)
 			return
 		}
 		if img.Empty() {
@@ -129,4 +123,21 @@ func main() {
 			break
 		}
 	}
+}
+
+// readDescriptions reads the descriptions from a file
+// and returns a slice of its lines.
+func readDescriptions(path string) ([]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines, scanner.Err()
 }

@@ -6,6 +6,9 @@ package gocv
 */
 import "C"
 import (
+	"errors"
+	"fmt"
+	"strconv"
 	"sync"
 	"unsafe"
 )
@@ -159,22 +162,29 @@ type VideoCapture struct {
 }
 
 // VideoCaptureFile opens a VideoCapture from a file and prepares
-// to start capturing.
+// to start capturing. It returns error if it fails to open the file stored in uri path.
 func VideoCaptureFile(uri string) (vc *VideoCapture, err error) {
 	vc = &VideoCapture{p: C.VideoCapture_New()}
 
 	cURI := C.CString(uri)
 	defer C.free(unsafe.Pointer(cURI))
 
-	C.VideoCapture_Open(vc.p, cURI)
+	if !C.VideoCapture_Open(vc.p, cURI) {
+		err = fmt.Errorf("Error opening file: %s", uri)
+	}
+
 	return
 }
 
 // VideoCaptureDevice opens a VideoCapture from a device and prepares
-// to start capturing.
+// to start capturing. It returns error if it fails to open the video device.
 func VideoCaptureDevice(device int) (vc *VideoCapture, err error) {
 	vc = &VideoCapture{p: C.VideoCapture_New()}
-	C.VideoCapture_OpenDevice(vc.p, C.int(device))
+
+	if !C.VideoCapture_OpenDevice(vc.p, C.int(device)) {
+		err = fmt.Errorf("Error opening device: %d", device)
+	}
+
 	return
 }
 
@@ -213,6 +223,16 @@ func (v *VideoCapture) Grab(skip int) {
 	C.VideoCapture_Grab(v.p, C.int(skip))
 }
 
+// CodecString returns a string representation of FourCC bytes, i.e. the name of a codec
+func (v *VideoCapture) CodecString() string {
+	res := ""
+	hexes := []int64{0xff, 0xff00, 0xff0000, 0xff000000}
+	for i, h := range hexes {
+		res += string(int64(v.Get(VideoCaptureFOURCC)) & h >> (uint(i * 8)))
+	}
+	return res
+}
+
 // VideoWriter is a wrapper around the OpenCV VideoWriter`class.
 //
 // For further details, please see:
@@ -230,7 +250,13 @@ type VideoWriter struct {
 // For further details, please see:
 // http://docs.opencv.org/master/dd/d9e/classcv_1_1VideoWriter.html#a0901c353cd5ea05bba455317dab81130
 //
-func VideoWriterFile(name string, codec string, fps float64, width int, height int) (vw *VideoWriter, err error) {
+func VideoWriterFile(name string, codec string, fps float64, width int, height int, isColor bool) (vw *VideoWriter, err error) {
+
+	if fps == 0 || width == 0 || height == 0 {
+		return nil, fmt.Errorf("one of the numerical parameters "+
+			"is equal to zero: FPS: %f, width: %d, height: %d", fps, width, height)
+	}
+
 	vw = &VideoWriter{
 		p:  C.VideoWriter_New(),
 		mu: &sync.RWMutex{},
@@ -242,7 +268,7 @@ func VideoWriterFile(name string, codec string, fps float64, width int, height i
 	cCodec := C.CString(codec)
 	defer C.free(unsafe.Pointer(cCodec))
 
-	C.VideoWriter_Open(vw.p, cName, cCodec, C.double(fps), C.int(width), C.int(height))
+	C.VideoWriter_Open(vw.p, cName, cCodec, C.double(fps), C.int(width), C.int(height), C.bool(isColor))
 	return
 }
 
@@ -273,4 +299,22 @@ func (vw *VideoWriter) Write(img Mat) error {
 	defer vw.mu.Unlock()
 	C.VideoWriter_Write(vw.p, img.p)
 	return nil
+}
+
+// OpenVideoCapture return VideoCapture specified by device ID if v is a
+// number. Return VideoCapture created from video file, URL, or GStreamer
+// pipeline if v is a string.
+func OpenVideoCapture(v interface{}) (*VideoCapture, error) {
+	switch vv := v.(type) {
+	case int:
+		return VideoCaptureDevice(vv)
+	case string:
+		id, err := strconv.Atoi(vv)
+		if err == nil {
+			return VideoCaptureDevice(id)
+		}
+		return VideoCaptureFile(vv)
+	default:
+		return nil, errors.New("argument must be int or string")
+	}
 }
