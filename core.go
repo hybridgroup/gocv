@@ -958,6 +958,14 @@ func CompleteSymm(m Mat, lowerToUpper bool) {
 	C.Mat_CompleteSymm(m.p, C.bool(lowerToUpper))
 }
 
+//decomposes matrix and stores the results to user-provided matrices
+//
+//The methods/functions perform SVD of matrix. Unlike SVD::SVD constructor and SVD::operator(), they store the results to the user-provided matrices:
+// https://docs.opencv.org/master/df/df7/classcv_1_1SVD.html#a76f0b2044df458160292045a3d3714c6
+func Compute(src Mat, w *Mat, u *Mat, vt *Mat, flags int) {
+	C.Mat_Compute(src.p, w.p, u.p, vt.p, C.int(flags))
+}
+
 // ConvertScaleAbs scales, calculates absolute values, and converts the result to 8-bit.
 //
 // For further details, please see:
@@ -1818,4 +1826,9 @@ func toCStrings(strs []string) C.struct_CStrings {
 		strs:   (**C.char)(&cStringsSlice[0]),
 		length: C.int(len(strs)),
 	}
+}
+
+// add by yoda.guo
+func SimilarityTransform(src Mat, dst Mat) (ret Mat) {
+	return newMat(C.Mat_SimilarityTransform(src.p, dst.p))
 }
