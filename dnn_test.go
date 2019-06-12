@@ -261,6 +261,27 @@ func TestTensorflow(t *testing.T) {
 	})
 }
 
+func TestBlobFromImages(t *testing.T) {
+	imgs := make([]Mat, 0)
+
+	img := IMRead("images/space_shuttle.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in BlobFromImages test")
+	}
+	defer img.Close()
+
+	imgs = append(imgs, img)
+	imgs = append(imgs, img)
+
+	blob := BlobFromImages(imgs, 1.0, image.Pt(25, 25), NewScalar(0, 0, 0, 0), false, false)
+	defer blob.Close()
+
+	sz := GetBlobSize(blob)
+	if sz.Val1 != 2 || sz.Val2 != 3 || sz.Val3 != 25 || sz.Val4 != 25 {
+		t.Errorf("GetBlobSize in BlobFromImages retrieved wrong values")
+	}
+}
+
 func TestGetBlobChannel(t *testing.T) {
 	img := NewMatWithSize(100, 100, 5+16)
 	defer img.Close()
