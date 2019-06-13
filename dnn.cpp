@@ -118,6 +118,17 @@ void Net_BlobFromImages(struct Mats images, Mat blob, double scalefactor, Size s
     cv::dnn::blobFromImages(imgs, *blob, scalefactor, sz, cm, swapRB, crop, ddepth);
 }
 
+void Net_ImagesFromBlob(Mat blob_, struct Mats* images_) {
+    std::vector<cv::Mat> imgs;
+    cv::dnn::imagesFromBlob(*blob_, imgs);
+    images_->mats = new Mat[imgs.size()];
+
+    for (size_t i = 0; i < imgs.size(); ++i) {
+        images_->mats[i] = new cv::Mat(imgs[i]);
+    }
+    images_->length = (int) imgs.size();
+}
+
 Mat Net_GetBlobChannel(Mat blob, int imgidx, int chnidx) {
     size_t w = blob->size[3];
     size_t h = blob->size[2];

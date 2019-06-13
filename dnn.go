@@ -334,6 +334,21 @@ func BlobFromImages(imgs []Mat, blob *Mat, scaleFactor float64, size image.Point
 	C.Net_BlobFromImages(cMats, blob.p, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop), C.int(ddepth))
 }
 
+// ImagesFromBlob Parse a 4D blob and output the images it contains as
+// 2D arrays through a simpler data structure (std::vector<cv::Mat>).
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga4051b5fa2ed5f54b76c059a8625df9f5
+//
+func ImagesFromBlob(blob Mat, imgs []Mat) {
+	cMats := C.struct_Mats{}
+	C.Net_ImagesFromBlob(blob.p, &(cMats))
+	// mv = make([]Mat, cMats.length)
+	for i := C.int(0); i < cMats.length; i++ {
+		imgs[i].p = C.Mats_get(cMats, i)
+	}
+}
+
 // GetBlobChannel extracts a single (2d)channel from a 4 dimensional blob structure
 // (this might e.g. contain the results of a SSD or YOLO detection,
 //  a bones structure from pose detection, or a color plane from Colorization)
