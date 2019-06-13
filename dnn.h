@@ -27,6 +27,8 @@ Net Net_ReadNetFromTensorflow(const char* model);
 Net Net_ReadNetFromTensorflowBytes(struct ByteArray model);
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
                       bool crop);
+void Net_BlobFromImages(struct Mats images, Mat blob,  double scalefactor, Size size, 
+                        Scalar mean, bool swapRB, bool crop, int ddepth);
 void Net_Close(Net net);
 bool Net_Empty(Net net);
 void Net_SetInput(Net net, Mat blob, const char* name);

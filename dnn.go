@@ -299,6 +299,41 @@ func BlobFromImage(img Mat, scaleFactor float64, size image.Point, mean Scalar,
 	return newMat(C.Net_BlobFromImage(img.p, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop)))
 }
 
+// BlobFromImages Creates 4-dimensional blob from series of images.
+// Optionally resizes and crops images from center, subtract mean values,
+// scales values by scalefactor, swap Blue and Red channels.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga2b89ed84432e4395f5a1412c2926293c
+//
+func BlobFromImages(imgs []Mat, blob *Mat, scaleFactor float64, size image.Point, mean Scalar,
+	swapRB bool, crop bool, ddepth int) {
+
+	cMatArray := make([]C.Mat, len(imgs))
+	for i, r := range imgs {
+		cMatArray[i] = r.p
+	}
+
+	cMats := C.struct_Mats{
+		mats:   (*C.Mat)(&cMatArray[0]),
+		length: C.int(len(imgs)),
+	}
+
+	sz := C.struct_Size{
+		width:  C.int(size.X),
+		height: C.int(size.Y),
+	}
+
+	sMean := C.struct_Scalar{
+		val1: C.double(mean.Val1),
+		val2: C.double(mean.Val2),
+		val3: C.double(mean.Val3),
+		val4: C.double(mean.Val4),
+	}
+
+	C.Net_BlobFromImages(cMats, blob.p, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop), C.int(ddepth))
+}
+
 // GetBlobChannel extracts a single (2d)channel from a 4 dimensional blob structure
 // (this might e.g. contain the results of a SSD or YOLO detection,
 //  a bones structure from pose detection, or a color plane from Colorization)
