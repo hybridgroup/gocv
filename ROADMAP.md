@@ -147,7 +147,7 @@ Your pull requests will be greatly appreciated!
 
 - [X] **objdetect. Object Detection**
 - [ ] **dnn. Deep Neural Network module - WORK STARTED** The following functions still need implementation:
-    - [ ] [imagesFromBlob](https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga4051b5fa2ed5f54b76c059a8625df9f5)
+    - [X] [imagesFromBlob](https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga4051b5fa2ed5f54b76c059a8625df9f5)
     - [X] [blobFromImages](https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga2b89ed84432e4395f5a1412c2926293c)
     - [ ] [NMSBoxes](https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga9d118d70a1659af729d01b10233213ee)
 
