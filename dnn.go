@@ -304,10 +304,10 @@ func BlobFromImage(img Mat, scaleFactor float64, size image.Point, mean Scalar,
 // scales values by scalefactor, swap Blue and Red channels.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4/d6/d0f/group__dnn.html#ga0b7b7c3c530b747ef738178835e1e70f
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga2b89ed84432e4395f5a1412c2926293c
 //
-func BlobFromImages(imgs []Mat, scaleFactor float64, size image.Point, mean Scalar,
-	swapRB bool, crop bool) Mat {
+func BlobFromImages(imgs []Mat, blob *Mat, scaleFactor float64, size image.Point, mean Scalar,
+	swapRB bool, crop bool, ddepth int) {
 
 	cMatArray := make([]C.Mat, len(imgs))
 	for i, r := range imgs {
@@ -331,7 +331,7 @@ func BlobFromImages(imgs []Mat, scaleFactor float64, size image.Point, mean Scal
 		val4: C.double(mean.Val4),
 	}
 
-	return newMat(C.Net_BlobFromImages(cMats, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop)))
+	C.Net_BlobFromImages(cMats, blob.p, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop), C.int(ddepth))
 }
 
 // GetBlobChannel extracts a single (2d)channel from a 4 dimensional blob structure

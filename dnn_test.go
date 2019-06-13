@@ -273,7 +273,8 @@ func TestBlobFromImages(t *testing.T) {
 	imgs = append(imgs, img)
 	imgs = append(imgs, img)
 
-	blob := BlobFromImages(imgs, 1.0, image.Pt(25, 25), NewScalar(0, 0, 0, 0), false, false)
+	blob := NewMat()
+	BlobFromImages(imgs, &blob, 1.0, image.Pt(25, 25), NewScalar(0, 0, 0, 0), false, false, MatTypeCV32F)
 	defer blob.Close()
 
 	sz := GetBlobSize(blob)

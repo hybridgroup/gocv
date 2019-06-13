@@ -103,8 +103,8 @@ Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, boo
     return new cv::Mat(cv::dnn::blobFromImage(*image, scalefactor, sz, cm, swapRB, crop));
 }
 
-Mat Net_BlobFromImages(struct Mats images, double scalefactor, Size size, Scalar mean,
-                        bool swapRB, bool crop) {
+void Net_BlobFromImages(struct Mats images, Mat blob, double scalefactor, Size size,
+                       Scalar mean, bool swapRB, bool crop, int ddepth) {
     std::vector<cv::Mat> imgs;
     
     for (int i = 0; i < images.length; ++i) {
@@ -115,8 +115,7 @@ Mat Net_BlobFromImages(struct Mats images, double scalefactor, Size size, Scalar
     cv::Scalar cm = cv::Scalar(mean.val1, mean.val2, mean.val3, mean.val4);
 
     // TODO: handle different version signatures of this function v2 vs v3.
-    // return new cv::Mat(cv::dnn::blobFromImages(cv::InputArrayOfArrays(images), scalefactor, sz, cm, swapRB, crop));
-    return new cv::Mat(cv::dnn::blobFromImages(imgs, scalefactor, sz, cm, swapRB, crop));
+    cv::dnn::blobFromImages(imgs, *blob, scalefactor, sz, cm, swapRB, crop, ddepth);
 }
 
 Mat Net_GetBlobChannel(Mat blob, int imgidx, int chnidx) {
