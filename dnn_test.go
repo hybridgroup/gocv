@@ -283,6 +283,41 @@ func TestBlobFromImages(t *testing.T) {
 	}
 }
 
+func TestImagesFromBlob(t *testing.T) {
+	imgs := make([]Mat, 0)
+
+	img := IMRead("images/space_shuttle.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid Mat in BlobFromImages test")
+	}
+	defer img.Close()
+
+	imgs = append(imgs, img)
+	imgs = append(imgs, img)
+
+	blob := NewMat()
+	defer blob.Close()
+	BlobFromImages(imgs, &blob, 1.0, image.Pt(img.Size()[0], img.Size()[1]), NewScalar(0, 0, 0, 0), false, false, MatTypeCV32F)
+
+	imgsFromBlob := make([]Mat, len(imgs))
+	ImagesFromBlob(blob, imgsFromBlob)
+
+	for i := 0; i < len(imgs); i++ {
+		func() {
+			imgFromBlob := NewMat()
+			defer imgFromBlob.Close()
+			imgsFromBlob[i].ConvertTo(&imgFromBlob, imgs[i].Type())
+			diff := NewMat()
+			defer diff.Close()
+			Compare(imgs[i], imgFromBlob, &diff, CompareNE)
+			nz := CountNonZero(diff)
+			if nz != 0 {
+				t.Error("imgFromBlob is different from img!")
+			}
+		}()
+	}
+}
+
 func TestGetBlobChannel(t *testing.T) {
 	img := NewMatWithSize(100, 100, 5+16)
 	defer img.Close()
