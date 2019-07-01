@@ -135,6 +135,41 @@ func CalcHist(src []Mat, channels []int, mask Mat, hist *Mat, size []int, ranges
 	C.CalcHist(cMats, chansVector, mask.p, hist.p, sizeVector, rangeVector, C.bool(acc))
 }
 
+// HistCompMethod is the method for Histogram comparison
+// For more information, see https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga994f53817d621e2e4228fc646342d386
+type HistCompMethod int
+
+const (
+	// HistCmpCorrel calculates the Correlation
+	HistCmpCorrel HistCompMethod = 0
+
+	// HistCmpChiSqr calculates the Chi-Square
+	HistCmpChiSqr = 1
+
+	// HistCmpIntersect calculates the Intersection
+	HistCmpIntersect = 2
+
+	// HistCmpBhattacharya applies the HistCmpBhattacharya by calculating the Bhattacharya distance.
+	HistCmpBhattacharya = 3
+
+	// HistCmpHellinger applies the HistCmpBhattacharya comparison. It is a synonym to HistCmpBhattacharya.
+	HistCmpHellinger = HistCmpBhattacharya
+
+	// HistCmpChiSqrAlt applies the Alternative Chi-Square (regularly used for texture comparsion).
+	HistCmpChiSqrAlt = 4
+
+	// HistCmpKlDiv applies the Kullback-Liebler divergence comparison.
+	HistCmpKlDiv = 5
+)
+
+// CompareHist Compares two histograms.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#gaf4190090efa5c47cb367cf97a9a519bd
+func CompareHist(hist1 Mat, hist2 Mat, method HistCompMethod) float32 {
+	return float32(C.CompareHist(hist1.p, hist2.p, C.int(method)))
+}
+
 // BilateralFilter applies a bilateral filter to an image.
 //
 // Bilateral filtering is described here:

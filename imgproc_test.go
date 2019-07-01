@@ -901,6 +901,31 @@ func TestCalcHist(t *testing.T) {
 	}
 }
 
+func TestCompareHist(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in CompareHist test")
+	}
+	defer img.Close()
+
+	hist1 := NewMat()
+	defer hist1.Close()
+
+	hist2 := NewMat()
+	defer hist2.Close()
+
+	mask := NewMat()
+	defer mask.Close()
+
+	CalcHist([]Mat{img}, []int{0}, mask, &hist1, []int{256}, []float64{0.0, 256.0}, false)
+	CalcHist([]Mat{img}, []int{0}, mask, &hist2, []int{256}, []float64{0.0, 256.0}, false)
+	dist := CompareHist(hist1, hist2, HistCmpCorrel)
+	if dist != 1 {
+		t.Error("Invalid CompareHist test")
+	}
+
+}
+
 func TestDrawing(t *testing.T) {
 	img := NewMatWithSize(150, 150, MatTypeCV8U)
 	if img.Empty() {

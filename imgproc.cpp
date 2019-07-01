@@ -68,6 +68,10 @@ void CalcHist(struct Mats mats, IntVector chans, Mat mask, Mat hist, IntVector s
         cv::calcHist(images, channels, *mask, *hist, histSize, ranges, acc);
 }
 
+double CompareHist(Mat hist1, Mat hist2, int method) {
+    return cv::compareHist(*hist1, *hist2, method);
+}
+
 void ConvexHull(Contour points, Mat hull, bool clockwise, bool returnPoints) {
     std::vector<cv::Point> pts;
 
