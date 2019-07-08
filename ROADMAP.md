@@ -63,11 +63,11 @@ Your pull requests will be greatly appreciated!
 
     - [ ] **Miscellaneous Image Transformations - WORK STARTED** The following functions still need implementation:
         - [ ] [cvtColorTwoPlane](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8e873314e72a1a6c0252375538fbf753)
-        - [ ] [distanceTransform](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8a0b7fdfcb7a13dde018988ba3a43042)
+        - [X] [distanceTransform](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8a0b7fdfcb7a13dde018988ba3a43042)
         - [ ] [floodFill](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#gaf1f55a048f8a45bc3383586e80b1f0d0)
         - [ ] [grabCut](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga909c1dda50efcbeaa3ce126be862b37f)
         - [ ] [integral](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga97b87bec26908237e8ba0f6e96d23e28)
-        - [ ] [watershed](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga3267243e4d3f95165d55a618c65ac6e1)
+        - [X] [watershed](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga3267243e4d3f95165d55a618c65ac6e1)
 
     - [ ] **Drawing Functions - WORK STARTED** The following functions still need implementation:
         - [ ] [clipLine](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf483cb46ad6b049bc35ec67052ef1c2c)
@@ -81,8 +81,8 @@ Your pull requests will be greatly appreciated!
     - [ ] Planar Subdivision
     - [ ] **Histograms  - WORK STARTED** The following functions still need implementation:
         - [ ] [calcBackProject](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga3a0af640716b456c3d14af8aee12e3ca)
-        - [ ] [calcHist](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga4b2b5fd75503ff9e6844cc4dcdaed35d)
-        - [ ] [compareHist](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#gaf4190090efa5c47cb367cf97a9a519bd)
+        - [X] [calcHist](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga4b2b5fd75503ff9e6844cc4dcdaed35d)
+        - [X] [compareHist](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#gaf4190090efa5c47cb367cf97a9a519bd)
         - [ ] [EMD](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga902b8e60cc7075c8947345489221e0e0)
         - [ ] [wrapperEMD](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga31fdda0864e64ca6b9de252a2611758b)
 

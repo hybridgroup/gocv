@@ -68,6 +68,10 @@ void CalcHist(struct Mats mats, IntVector chans, Mat mask, Mat hist, IntVector s
         cv::calcHist(images, channels, *mask, *hist, histSize, ranges, acc);
 }
 
+double CompareHist(Mat hist1, Mat hist2, int method) {
+    return cv::compareHist(*hist1, *hist2, method);
+}
+
 void ConvexHull(Contour points, Mat hull, bool clockwise, bool returnPoints) {
     std::vector<cv::Point> pts;
 
@@ -109,6 +113,10 @@ void SqBoxFilter(Mat src, Mat dst, int ddepth, Size ps) {
 
 void Dilate(Mat src, Mat dst, Mat kernel) {
     cv::dilate(*src, *dst, *kernel);
+}
+
+void DistanceTransform(Mat src, Mat dst, Mat labels, int distanceType, int maskSize, int labelType) {
+    cv::distanceTransform(*src, *dst, *labels, distanceType, maskSize, labelType);
 }
 
 void Erode(Mat src, Mat dst, Mat kernel) {
@@ -426,6 +434,10 @@ void WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, 
 void WarpPerspective(Mat src, Mat dst, Mat m, Size dsize) {
     cv::Size sz(dsize.width, dsize.height);
     cv::warpPerspective(*src, *dst, *m, sz);
+}
+
+void Watershed(Mat image, Mat markers) {
+    cv::watershed(*image, *markers);
 }
 
 void ApplyColorMap(Mat src, Mat dst, int colormap) {

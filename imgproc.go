@@ -135,6 +135,41 @@ func CalcHist(src []Mat, channels []int, mask Mat, hist *Mat, size []int, ranges
 	C.CalcHist(cMats, chansVector, mask.p, hist.p, sizeVector, rangeVector, C.bool(acc))
 }
 
+// HistCompMethod is the method for Histogram comparison
+// For more information, see https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga994f53817d621e2e4228fc646342d386
+type HistCompMethod int
+
+const (
+	// HistCmpCorrel calculates the Correlation
+	HistCmpCorrel HistCompMethod = 0
+
+	// HistCmpChiSqr calculates the Chi-Square
+	HistCmpChiSqr = 1
+
+	// HistCmpIntersect calculates the Intersection
+	HistCmpIntersect = 2
+
+	// HistCmpBhattacharya applies the HistCmpBhattacharya by calculating the Bhattacharya distance.
+	HistCmpBhattacharya = 3
+
+	// HistCmpHellinger applies the HistCmpBhattacharya comparison. It is a synonym to HistCmpBhattacharya.
+	HistCmpHellinger = HistCmpBhattacharya
+
+	// HistCmpChiSqrAlt applies the Alternative Chi-Square (regularly used for texture comparsion).
+	HistCmpChiSqrAlt = 4
+
+	// HistCmpKlDiv applies the Kullback-Liebler divergence comparison.
+	HistCmpKlDiv = 5
+)
+
+// CompareHist Compares two histograms.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#gaf4190090efa5c47cb367cf97a9a519bd
+func CompareHist(hist1 Mat, hist2 Mat, method HistCompMethod) float32 {
+	return float32(C.CompareHist(hist1.p, hist2.p, C.int(method)))
+}
+
 // BilateralFilter applies a bilateral filter to an image.
 //
 // Bilateral filtering is described here:
@@ -197,6 +232,41 @@ func SqBoxFilter(src Mat, dst *Mat, depth int, ksize image.Point) {
 //
 func Dilate(src Mat, dst *Mat, kernel Mat) {
 	C.Dilate(src.p, dst.p, kernel.p)
+}
+
+// DistanceTransformLabelTypes are the types of the DistanceTransform algorithm flag
+type DistanceTransformLabelTypes int
+
+const (
+	// DistanceLabelCComp assigns the same label to each connected component of zeros in the source image
+	// (as well as all the non-zero pixels closest to the connected component).
+	DistanceLabelCComp DistanceTransformLabelTypes = 0
+
+	// DistanceLabelPixel assigns its own label to each zero pixel (and all the non-zero pixels closest to it).
+	DistanceLabelPixel
+)
+
+// DistanceTransformMasks are the marsk sizes for distance transform
+type DistanceTransformMasks int
+
+const (
+	// DistanceMask3 is a mask of size 3
+	DistanceMask3 DistanceTransformMasks = 0
+
+	// DistanceMask5 is a mask of size 3
+	DistanceMask5
+
+	// DistanceMaskPrecise is not currently supported
+	DistanceMaskPrecise
+)
+
+// DistanceTransform Calculates the distance to the closest zero pixel for each pixel of the source image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8a0b7fdfcb7a13dde018988ba3a43042
+//
+func DistanceTransform(src Mat, dst *Mat, labels *Mat, distType DistanceTypes, maskSize DistanceTransformMasks, labelType DistanceTransformLabelTypes) {
+	C.DistanceTransform(src.p, dst.p, labels.p, C.int(distType), C.int(maskSize), C.int(labelType))
 }
 
 // Erode erodes an image by using a specific structuring element.
@@ -1279,6 +1349,14 @@ func WarpPerspective(src Mat, dst *Mat, m Mat, sz image.Point) {
 	}
 
 	C.WarpPerspective(src.p, dst.p, m.p, pSize)
+}
+
+// Watershed performs a marker-based image segmentation using the watershed algorithm.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga3267243e4d3f95165d55a618c65ac6e1
+func Watershed(image Mat, markers *Mat) {
+	C.Watershed(image.p, markers.p)
 }
 
 // ColormapTypes are the 12 GNU Octave/MATLAB equivalent colormaps.

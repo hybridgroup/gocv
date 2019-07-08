@@ -222,6 +222,33 @@ func TestDilate(t *testing.T) {
 	}
 }
 
+func TestDistanceTransform(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in DistanceTransform test")
+	}
+	defer img.Close()
+
+	gray := NewMat()
+	defer gray.Close()
+	CvtColor(img, &gray, ColorBGRToGray)
+
+	threshImg := NewMat()
+	defer threshImg.Close()
+	Threshold(gray, &threshImg, 25, 255, ThresholdBinary)
+
+	dest := NewMat()
+	defer dest.Close()
+
+	labels := NewMat()
+	defer labels.Close()
+
+	DistanceTransform(threshImg, &dest, &labels, DistL2, DistanceMask3, DistanceLabelCComp)
+	if dest.Empty() || dest.Rows() != img.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid DistanceTransform test")
+	}
+}
+
 func TestMatchTemplate(t *testing.T) {
 	imgScene := IMRead("images/face.jpg", IMReadGrayScale)
 	if imgScene.Empty() {
@@ -901,6 +928,31 @@ func TestCalcHist(t *testing.T) {
 	}
 }
 
+func TestCompareHist(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in CompareHist test")
+	}
+	defer img.Close()
+
+	hist1 := NewMat()
+	defer hist1.Close()
+
+	hist2 := NewMat()
+	defer hist2.Close()
+
+	mask := NewMat()
+	defer mask.Close()
+
+	CalcHist([]Mat{img}, []int{0}, mask, &hist1, []int{256}, []float64{0.0, 256.0}, false)
+	CalcHist([]Mat{img}, []int{0}, mask, &hist2, []int{256}, []float64{0.0, 256.0}, false)
+	dist := CompareHist(hist1, hist2, HistCmpCorrel)
+	if dist != 1 {
+		t.Error("Invalid CompareHist test")
+	}
+
+}
+
 func TestDrawing(t *testing.T) {
 	img := NewMatWithSize(150, 150, MatTypeCV8U)
 	if img.Empty() {
@@ -1072,6 +1124,31 @@ func TestWarpAffineWithParamsGocvLogo(t *testing.T) {
 	result := Norm(dst, NormL2)
 	if !floatEquals(round(result, 0.05), round(111111.05, 0.05)) {
 		t.Errorf("WarpAffine() = %v, want %v", round(result, 0.05), round(111111.05, 0.05))
+	}
+}
+
+func TestWatershed(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in Watershed test")
+	}
+	defer src.Close()
+
+	gray := NewMat()
+	defer gray.Close()
+	CvtColor(src, &gray, ColorBGRToGray)
+
+	imgThresh := NewMat()
+	defer imgThresh.Close()
+	Threshold(gray, &imgThresh, 5, 50, ThresholdOtsu+ThresholdBinary)
+
+	markers := NewMat()
+	defer markers.Close()
+	_ = ConnectedComponents(imgThresh, &markers)
+
+	Watershed(src, &markers)
+	if markers.Empty() || src.Cols() != markers.Cols() || src.Rows() != markers.Rows() {
+		t.Error("Invalid Watershed test")
 	}
 }
 
