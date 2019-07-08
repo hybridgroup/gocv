@@ -115,6 +115,10 @@ void Dilate(Mat src, Mat dst, Mat kernel) {
     cv::dilate(*src, *dst, *kernel);
 }
 
+void DistanceTransform(Mat src, Mat dst, Mat labels, int distanceType, int maskSize, int labelType) {
+    cv::distanceTransform(*src, *dst, *labels, distanceType, maskSize, labelType);
+}
+
 void Erode(Mat src, Mat dst, Mat kernel) {
     cv::erode(*src, *dst, *kernel);
 }
@@ -430,6 +434,10 @@ void WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, 
 void WarpPerspective(Mat src, Mat dst, Mat m, Size dsize) {
     cv::Size sz(dsize.width, dsize.height);
     cv::warpPerspective(*src, *dst, *m, sz);
+}
+
+void Watershed(Mat image, Mat markers) {
+    cv::watershed(*image, *markers);
 }
 
 void ApplyColorMap(Mat src, Mat dst, int colormap) {

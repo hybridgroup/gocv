@@ -29,6 +29,7 @@ void Blur(Mat src, Mat dst, Size ps);
 void BoxFilter(Mat src, Mat dst, int ddepth, Size ps);
 void SqBoxFilter(Mat src, Mat dst, int ddepth, Size ps);
 void Dilate(Mat src, Mat dst, Mat kernel);
+void DistanceTransform(Mat src, Mat dst, Mat labels, int distanceType, int maskSize, int labelType);
 void Erode(Mat src, Mat dst, Mat kernel);
 void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask);
 struct Moment Moments(Mat src, bool binaryImage);
@@ -84,6 +85,7 @@ void WarpAffine(Mat src, Mat dst, Mat rot_mat, Size dsize);
 void WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode,
                           Scalar borderValue);
 void WarpPerspective(Mat src, Mat dst, Mat m, Size dsize);
+void Watershed(Mat image, Mat markers);
 void ApplyColorMap(Mat src, Mat dst, int colormap);
 void ApplyCustomColorMap(Mat src, Mat dst, Mat colormap);
 Mat GetPerspectiveTransform(Contour src, Contour dst);
