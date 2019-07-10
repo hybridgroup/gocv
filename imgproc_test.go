@@ -502,6 +502,25 @@ func TestMorphologyEx(t *testing.T) {
 	}
 }
 
+func TestMorphologyExWithParams(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in MorphologyEx test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	defer kernel.Close()
+
+	MorphologyExWithParams(img, &dest, MorphOpen, kernel, 2, BorderConstant)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid MorphologyExWithParams test")
+	}
+}
+
 func TestGaussianBlur(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {

@@ -50,6 +50,7 @@ void Scharr(Mat src, Mat dst, int dDepth, int dx, int dy, double scale, double d
 Mat GetStructuringElement(int shape, Size ksize);
 Scalar MorphologyDefaultBorderValue();
 void MorphologyEx(Mat src, Mat dst, int op, Mat kernel);
+void MorphologyExWithParams(Mat src, Mat dst, int op, Mat kernel, Point pt, int iterations, int borderType);
 void MedianBlur(Mat src, Mat dst, int ksize);
 
 void Canny(Mat src, Mat edges, double t1, double t2);
