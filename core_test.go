@@ -1828,6 +1828,40 @@ func TestMatInvert(t *testing.T) {
 	}
 }
 
+func TestKMeans(t *testing.T) {
+	src := NewMatWithSize(4, 4, MatTypeCV32F) // only implemented for symm. Mats
+	defer src.Close()
+
+	bestLabels := NewMat()
+	defer bestLabels.Close()
+
+	centers := NewMat()
+	defer centers.Close()
+
+	criteria := NewTermCriteria(Count, 10, 1.0)
+	KMeans(src, 2, &bestLabels, criteria, 2, KMeansRandomCenters, &centers)
+	if bestLabels.Empty() {
+		t.Error("bla")
+	}
+}
+
+func TestKMeansPoints(t *testing.T) {
+	points := []image.Point{
+		image.Pt(0, 0),
+		image.Pt(1, 1),
+	}
+	bestLabels := NewMat()
+	defer bestLabels.Close()
+	centers := NewMat()
+	defer centers.Close()
+
+	criteria := NewTermCriteria(Count, 10, 1.0)
+	KMeansPoints(points, 2, &bestLabels, criteria, 2, KMeansRandomCenters, &centers)
+	if bestLabels.Empty() || bestLabels.Size()[0] != len(points) {
+		t.Error("Labels is not proper")
+	}
+}
+
 func TestMatLog(t *testing.T) {
 	src := NewMatWithSize(4, 3, MatTypeCV32F)
 	defer src.Close()

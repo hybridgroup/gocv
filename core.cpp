@@ -485,6 +485,21 @@ double Mat_Invert(Mat src, Mat dst, int flags) {
     return ret;
 }
 
+double KMeans(Mat data, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers) {
+    double ret = cv::kmeans(*data, k, *bestLabels, *criteria, attempts, flags, *centers);
+    return ret;
+}
+
+double KMeansPoints(Contour points, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers) {
+    std::vector<cv::Point2f> pts;
+
+    for (size_t i = 0; i < points.length; i++) {
+        pts.push_back(cv::Point2f(points.points[i].x, points.points[i].y));
+    }
+    double ret = cv::kmeans(pts, k, *bestLabels, *criteria, attempts, flags, *centers);
+    return ret;
+}
+
 void Mat_Log(Mat src, Mat dst) {
     cv::log(*src, *dst);
 }
