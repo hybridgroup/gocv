@@ -262,6 +262,11 @@ void MorphologyEx(Mat src, Mat dst, int op, Mat kernel) {
     cv::morphologyEx(*src, *dst, op, *kernel);
 }
 
+void MorphologyExWithParams(Mat src, Mat dst, int op, Mat kernel, Point pt, int iterations, int borderType) {
+    cv::Point pt1(pt.x, pt.y);
+    cv::morphologyEx(*src, *dst, op, *kernel, pt1, iterations, borderType);
+}
+
 void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt) {
     cv::Size sz(ps.width, ps.height);
     cv::GaussianBlur(*src, *dst, sz, sX, sY, bt);

@@ -675,6 +675,19 @@ func MorphologyEx(src Mat, dst *Mat, op MorphType, kernel Mat) {
 	C.MorphologyEx(src.p, dst.p, C.int(op), kernel.p)
 }
 
+// MorphologyExWithParams performs advanced morphological transformations.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga67493776e3ad1a3df63883829375201f
+//
+func MorphologyExWithParams(src Mat, dst *Mat, op MorphType, kernel Mat, iterations int, borderType BorderType) {
+	pt := C.struct_Point{
+		x: C.int(-1),
+		y: C.int(-1),
+	}
+	C.MorphologyExWithParams(src.p, dst.p, C.int(op), kernel.p, pt, C.int(iterations), C.int(borderType))
+}
+
 // MorphShape is the shape of the structuring element used for Morphing operations.
 type MorphShape int
 
