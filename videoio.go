@@ -236,7 +236,7 @@ func (v *VideoCapture) CodecString() string {
 // ToCodec returns an float64 representation of FourCC bytes
 func (v *VideoCapture) ToCodec(codec string) float64 {
 	if len(codec) != 4 {
-		panic("Invalid codec string")
+		return -1.0
 	}
 	c1 := []rune(string(codec[0]))[0]
 	c2 := []rune(string(codec[1]))[0]
