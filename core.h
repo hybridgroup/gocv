@@ -242,6 +242,7 @@ Mat Mat_Reshape(Mat m, int cn, int rows);
 void Mat_PatchNaNs(Mat m);
 Mat Mat_ConvertFp16(Mat m);
 Scalar Mat_Mean(Mat m);
+Scalar Mat_MeanWithMask(Mat m, Mat mask);
 Mat Mat_Sqrt(Mat m);
 int Mat_Rows(Mat m);
 int Mat_Cols(Mat m);

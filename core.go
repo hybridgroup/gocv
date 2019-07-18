@@ -374,9 +374,20 @@ func (m *Mat) ConvertFp16() Mat {
 }
 
 // Mean calculates the mean value M of array elements, independently for each channel, and return it as Scalar
-// TODO pass second paramter with mask
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga191389f8a0e58180bb13a727782cd461
+//
 func (m *Mat) Mean() Scalar {
 	s := C.Mat_Mean(m.p)
+	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
+}
+
+// MeanWithMask calculates the mean value M of array elements,independently for each channel,
+// and returns it as Scalar vector while applying the mask.
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga191389f8a0e58180bb13a727782cd461
+//
+func (m *Mat) MeanWithMask(mask Mat) Scalar {
+	s := C.Mat_Mean(m.p, mat.p)
 	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
 }
 
