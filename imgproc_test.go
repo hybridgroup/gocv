@@ -947,6 +947,29 @@ func TestCalcHist(t *testing.T) {
 	}
 }
 
+func TestCalcBackProject(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in CalcHist test")
+	}
+	defer img.Close()
+
+	hist := NewMat()
+	defer hist.Close()
+
+	backProject := NewMat()
+	defer backProject.Close()
+
+	mask := NewMat()
+	defer mask.Close()
+
+	CalcHist([]Mat{img}, []int{0}, mask, &hist, []int{256}, []float64{0.0, 256.0}, false)
+	CalcBackProject([]Mat{img}, []int{0}, hist, &backProject, []float64{0.0, 256.0}, false)
+	if backProject.Empty() {
+		t.Error("Invalid CalcBackProject test")
+	}
+}
+
 func TestCompareHist(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
