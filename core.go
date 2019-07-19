@@ -387,7 +387,7 @@ func (m *Mat) Mean() Scalar {
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga191389f8a0e58180bb13a727782cd461
 //
 func (m *Mat) MeanWithMask(mask Mat) Scalar {
-	s := C.Mat_Mean(m.p, mat.p)
+	s := C.Mat_MeanWithMask(m.p, mask.p)
 	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
 }
 
