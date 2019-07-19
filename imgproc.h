@@ -21,6 +21,7 @@ Contour ApproxPolyDP(Contour curve, double epsilon, bool closed);
 void CvtColor(Mat src, Mat dst, int code);
 void EqualizeHist(Mat src, Mat dst);
 void CalcHist(struct Mats mats, IntVector chans, Mat mask, Mat hist, IntVector sz, FloatVector rng, bool acc);
+void CalcBackProject(struct Mats mats, IntVector chans, Mat hist, Mat backProject, FloatVector rng, bool uniform);
 double CompareHist(Mat hist1, Mat hist2, int method);
 void ConvexHull(Contour points, Mat hull, bool clockwise, bool returnPoints);
 void ConvexityDefects(Contour points, Mat hull, Mat result);
