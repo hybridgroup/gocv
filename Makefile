@@ -96,6 +96,7 @@ build_cuda:
 
 # Cleanup temporary build files.
 clean:
+	go clean --cache
 	rm -rf $(TMP_DIR)opencv
 
 # Do everything.
