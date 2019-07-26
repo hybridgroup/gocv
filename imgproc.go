@@ -951,6 +951,14 @@ func HoughLinesPointSet(points Mat, lines *Mat, linesMax int, threshold int,
 		C.double(minTheta), C.double(maxTheta), C.double(thetaStep))
 }
 
+// Integral calculates one or more integral images for the source image.
+// For further details, please see:
+// https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga97b87bec26908237e8ba0f6e96d23e28
+//
+func Integral(src Mat, sum *Mat, sqsum *Mat, tilted *Mat) {
+	C.Integral(src.p, sum.p, sqsum.p, tilted.p)
+}
+
 // ThresholdType type of threshold operation.
 type ThresholdType int
 
