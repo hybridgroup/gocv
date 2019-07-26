@@ -356,6 +356,10 @@ void HoughLinesPointSet(Mat points, Mat lines, int linesMax, int threshold,
                            minRho, maxRho, rhoStep, minTheta, maxTheta, thetaStep );
 }
 
+void Integral(Mat src, Mat sum, Mat sqsum, Mat tilted) {
+    cv::integral(*src, *sum, *sqsum, *tilted);
+}
+
 void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ) {
     cv::threshold(*src, *dst, thresh, maxvalue, typ);
 }

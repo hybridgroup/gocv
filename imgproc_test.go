@@ -672,7 +672,7 @@ func TestGoodFeaturesToTrackAndCornerSubPix(t *testing.T) {
 func TestGrabCut(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
-		t.Error("Invalid read of Mat in HoughCircles test")
+		t.Error("Invalid read of Mat in GrabCut test")
 	}
 	defer img.Close()
 
@@ -908,6 +908,26 @@ func TestHoughLinesPointSet(t *testing.T) {
 
 	if dest.GetDoubleAt(19, 0) != 2 && dest.GetDoubleAt(19, 1) != 330 && dest.GetDoubleAt(19, 2) != 0 {
 		t.Errorf("Invalid HoughLinesPointSet last test element: %v, %v, %v", dest.GetDoubleAt(19, 0), dest.GetDoubleAt(19, 1), dest.GetDoubleAt(19, 1))
+	}
+}
+
+func TestIntegral(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in Integral test")
+	}
+	defer img.Close()
+
+	sum := NewMat()
+	defer sum.Close()
+	sqSum := NewMat()
+	defer sqSum.Close()
+	tilted := NewMat()
+	defer tilted.Close()
+
+	Integral(img, &sum, &sqSum, &tilted)
+	if sum.Empty() || sqSum.Empty() || tilted.Empty() {
+		t.Error("Invalid Integral test")
 	}
 }
 
