@@ -623,6 +623,36 @@ func TestGoodFeaturesToTrackAndCornerSubPix(t *testing.T) {
 	}
 }
 
+func TestGrabCut(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in HoughCircles test")
+	}
+	defer img.Close()
+
+	src := NewMat()
+	defer src.Close()
+	CvtColor(img, &img, ColorRGBAToBGR)
+	img.ConvertTo(&src, MatTypeCV8UC3)
+
+	mask := NewMatWithSize(img.Rows(), img.Cols(), MatTypeCV8U)
+	defer mask.Close()
+
+	bgdModel := NewMat()
+	defer bgdModel.Close()
+	fgdModel := NewMat()
+	defer fgdModel.Close()
+
+	r := image.Rect(0, 0, 50, 50)
+
+	GrabCut(src, &mask, r, &bgdModel, &fgdModel, 1, GCEval)
+	if bgdModel.Empty() {
+		t.Error("Empty bgdmodel")
+	} else if fgdModel.Empty() {
+		t.Error("Empty fgdmodel")
+	}
+}
+
 func TestHoughCircles(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
