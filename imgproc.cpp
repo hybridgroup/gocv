@@ -323,6 +323,11 @@ void GoodFeaturesToTrack(Mat img, Mat corners, int maxCorners, double quality, d
     cv::goodFeaturesToTrack(*img, *corners, maxCorners, quality, minDist);
 }
 
+void GrabCut(Mat img, Mat mask, Rect r, Mat bgdModel, Mat fgdModel, int iterCount, int mode) {
+    cv::Rect cvRect = cv::Rect(r.x, r.y, r.width, r.height);
+    cv::grabCut(*img, *mask, cvRect, *bgdModel, *fgdModel, iterCount, mode);
+}
+
 void HoughCircles(Mat src, Mat circles, int method, double dp, double minDist) {
     cv::HoughCircles(*src, *circles, method, dp, minDist);
 }

@@ -919,6 +919,40 @@ func GoodFeaturesToTrack(img Mat, corners *Mat, maxCorners int, quality float64,
 	C.GoodFeaturesToTrack(img.p, corners.p, C.int(maxCorners), C.double(quality), C.double(minDist))
 }
 
+// GrabCutMode is the flag for GrabCut algorithm.
+type GrabCutMode int
+
+const (
+	// GCInitWithRect makes the function initialize the state and the mask using the provided rectangle.
+	// After that it runs the itercount iterations of the algorithm.
+	GCInitWithRect GrabCutMode = 0
+	// GCInitWithMask makes the function initialize the state using the provided mask.
+	// GCInitWithMask and GCInitWithRect can be combined.
+	// Then all the pixels outside of the ROI are automatically initialized with GC_BGD.
+	GCInitWithMask = 1
+	// GCEval means that the algorithm should just resume.
+	GCEval = 2
+	// GCEvalFreezeModel means that the algorithm should just run a single iteration of the GrabCut algorithm
+	// with the fixed model
+	GCEvalFreezeModel = 3
+)
+
+// Grabcut runs the GrabCut algorithm.
+// The function implements the GrabCut image segmentation algorithm.
+// For further details, please see:
+// https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga909c1dda50efcbeaa3ce126be862b37f
+//
+func GrabCut(img Mat, mask *Mat, r image.Rectangle, bgdModel *Mat, fgdModel *Mat, iterCount int, mode GrabCutMode) {
+	cRect := C.struct_Rect{
+		x:      C.int(r.Min.X),
+		y:      C.int(r.Min.Y),
+		width:  C.int(r.Size().X),
+		height: C.int(r.Size().Y),
+	}
+
+	C.GrabCut(img.p, mask.p, cRect, bgdModel.p, fgdModel.p, C.int(iterCount), C.int(mode))
+}
+
 // HoughMode is the type for Hough transform variants.
 type HoughMode int
 
