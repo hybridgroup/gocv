@@ -233,6 +233,18 @@ func (v *VideoCapture) CodecString() string {
 	return res
 }
 
+// ToCodec returns an float64 representation of FourCC bytes
+func (v *VideoCapture) ToCodec(codec string) float64 {
+	if len(codec) != 4 {
+		return -1.0
+	}
+	c1 := []rune(string(codec[0]))[0]
+	c2 := []rune(string(codec[1]))[0]
+	c3 := []rune(string(codec[2]))[0]
+	c4 := []rune(string(codec[3]))[0]
+	return float64((c1 & 255) + ((c2 & 255) << 8) + ((c3 & 255) << 16) + ((c4 & 255) << 24))
+}
+
 // VideoWriter is a wrapper around the OpenCV VideoWriter`class.
 //
 // For further details, please see:
