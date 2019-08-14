@@ -515,10 +515,22 @@ func TestMatSqrt(t *testing.T) {
 		t.Error("TestSqrt dst should not be empty.")
 	}
 }
+
 func TestMatMean(t *testing.T) {
 	mat := NewMatWithSize(100, 100, MatTypeCV8U)
 	defer mat.Close()
 	mean := mat.Mean()
+	if mean.Val1 != 0 {
+		t.Errorf("Mat Mean incorrect Val1")
+	}
+}
+
+func TestMatMeanWithMask(t *testing.T) {
+	mat := NewMatWithSize(100, 100, MatTypeCV8U)
+	defer mat.Close()
+	mask := NewMatWithSize(100, 100, MatTypeCV8U)
+	defer mask.Close()
+	mean := mat.MeanWithMask(mask)
 	if mean.Val1 != 0 {
 		t.Errorf("Mat Mean incorrect Val1")
 	}

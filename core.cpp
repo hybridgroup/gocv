@@ -96,9 +96,22 @@ Mat Mat_Sqrt(Mat m) {
 }
 
 // Mat_Mean calculates the mean value M of array elements, independently for each channel, and return it as Scalar vector
-// TODO pass second paramter with mask
 Scalar Mat_Mean(Mat m) {
     cv::Scalar c = cv::mean(*m);
+    Scalar scal = Scalar();
+    scal.val1 = c.val[0];
+    scal.val2 = c.val[1];
+    scal.val3 = c.val[2];
+    scal.val4 = c.val[3];
+    return scal;
+}
+
+// Mat_MeanWithMask calculates the mean value M of array elements,
+// independently for each channel, and returns it as Scalar vector
+// while applying the mask.
+
+Scalar Mat_MeanWithMask(Mat m, Mat mask){
+    cv::Scalar c = cv::mean(*m, *mask);
     Scalar scal = Scalar();
     scal.val1 = c.val[0];
     scal.val2 = c.val[1];
