@@ -2,7 +2,7 @@
 .PHONY: test deps download build clean astyle cmds docker
 
 # OpenCV version to use.
-OPENCV_VERSION?=4.1.0
+OPENCV_VERSION?=4.1.1
 
 # Go version to use when building Docker image
 GOVERSION?=1.12.5
@@ -51,7 +51,7 @@ download:
 	unzip -q opencv.zip
 	curl -Lo opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/$(OPENCV_VERSION).zip
 	unzip -q opencv_contrib.zip
-	rm opencv.zip opencv_contrib.zip
+	#rm opencv.zip opencv_contrib.zip
 	cd -
 
 # Build OpenCV.
@@ -96,7 +96,7 @@ build_cuda:
 
 # Cleanup temporary build files.
 clean:
-	rm -rf $(TMP_DIR)opencv
+	rm -rf $(TMP_DIR)opencv1
 
 # Do everything.
 install: deps download build sudo_install clean verify
