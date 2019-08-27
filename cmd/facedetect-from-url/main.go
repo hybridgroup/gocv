@@ -7,7 +7,7 @@
 //
 // facedetect-from-url [image URL] [classifier XML file] [image file]
 //
-// 		go run ./cmd/facedetect/main.go https://raw.githubusercontent.com/hybridgroup/gocv/master/images/face.jpg data/haarcascade_frontalface_default.xml output.jpg
+// 		go run ./cmd/facedetect-from-url/main.go https://raw.githubusercontent.com/hybridgroup/gocv/master/images/face.jpg data/haarcascade_frontalface_default.xml output.jpg
 //
 // +build example
 
