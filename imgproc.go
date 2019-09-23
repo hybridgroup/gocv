@@ -1281,6 +1281,23 @@ func WarpPerspective(src Mat, dst *Mat, m Mat, sz image.Point) {
 	C.WarpPerspective(src.p, dst.p, m.p, pSize)
 }
 
+// GetRectSubPix retrieves a pixel rectangle from an image with sub-pixel accuracy.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga77576d06075c1a4b6ba1a608850cd614
+func GetRectSubPix(src Mat, size, center image.Point, dst *Mat, depth int) {
+	pc := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+	pSize := C.struct_Size{
+		width:  C.int(size.X),
+		height: C.int(size.Y),
+	}
+
+	C.GetRectSubPix(src.p, pSize, pc, dst.p, C.int(depth))
+}
+
 // ColormapTypes are the 12 GNU Octave/MATLAB equivalent colormaps.
 //
 // For further details, please see:

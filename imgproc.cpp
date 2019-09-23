@@ -428,6 +428,12 @@ void WarpPerspective(Mat src, Mat dst, Mat m, Size dsize) {
     cv::warpPerspective(*src, *dst, *m, sz);
 }
 
+void GetRectSubPix(Mat src, Size patchSize, Point center, Mat dst, int patchType) {
+	cv::Size sz(patchSize.width, patchSize.height);
+	cv::Point pc(center.x, center.y);
+	cv::getRectSubPix(*src, sz, pc, *dst, patchType);
+}
+
 void ApplyColorMap(Mat src, Mat dst, int colormap) {
     cv::applyColorMap(*src, *dst, colormap);
 }

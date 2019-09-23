@@ -83,6 +83,7 @@ void WarpAffine(Mat src, Mat dst, Mat rot_mat, Size dsize);
 void WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode,
                           Scalar borderValue);
 void WarpPerspective(Mat src, Mat dst, Mat m, Size dsize);
+void GetRectSubPix(Mat src, Size patchSize, Point center, Mat dst, int patchType);
 void ApplyColorMap(Mat src, Mat dst, int colormap);
 void ApplyCustomColorMap(Mat src, Mat dst, Mat colormap);
 Mat GetPerspectiveTransform(Contour src, Contour dst);
