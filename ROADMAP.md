@@ -32,7 +32,10 @@ Your pull requests will be greatly appreciated!
         - [ ] [SVDecomp](https://docs.opencv.org/master/d2/de8/group__core__array.html#gab477b5b7b39b370bb03e75b19d2d5109)
         - [ ] [theRNG](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga75843061d150ad6564b5447e38e57722)
     - [ ] XML/YAML Persistence
-    - [ ] Clustering
+    - [ ] **Clustering - WORK STARTED**. The following functions still need implementation:
+        - [X] [kmeans](https://docs.opencv.org/master/d5/d38/group__core__cluster.html#ga9a34dc06c6ec9460e90860f15bcd2f88)
+        - [ ] [partition](https://docs.opencv.org/master/d5/d38/group__core__cluster.html#ga2037c989e69b499c1aa271419f3a9b34)
+
     - [ ] Utility and system functions and macros
     - [ ] OpenGL interoperability
     - [ ] Intel IPP Asynchronous C/C++ Converters
@@ -65,8 +68,8 @@ Your pull requests will be greatly appreciated!
         - [ ] [cvtColorTwoPlane](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8e873314e72a1a6c0252375538fbf753)
         - [X] [distanceTransform](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8a0b7fdfcb7a13dde018988ba3a43042)
         - [ ] [floodFill](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#gaf1f55a048f8a45bc3383586e80b1f0d0)
-        - [ ] [grabCut](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga909c1dda50efcbeaa3ce126be862b37f)
-        - [ ] [integral](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga97b87bec26908237e8ba0f6e96d23e28)
+        - [X] [grabCut](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga909c1dda50efcbeaa3ce126be862b37f)
+        - [X] [integral](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga97b87bec26908237e8ba0f6e96d23e28)
         - [X] [watershed](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga3267243e4d3f95165d55a618c65ac6e1)
 
     - [ ] **Drawing Functions - WORK STARTED** The following functions still need implementation:
@@ -80,7 +83,7 @@ Your pull requests will be greatly appreciated!
     - [ ] ColorMaps in OpenCV
     - [ ] Planar Subdivision
     - [ ] **Histograms  - WORK STARTED** The following functions still need implementation:
-        - [ ] [calcBackProject](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga3a0af640716b456c3d14af8aee12e3ca)
+        - [X] [calcBackProject](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga3a0af640716b456c3d14af8aee12e3ca)
         - [X] [calcHist](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga4b2b5fd75503ff9e6844cc4dcdaed35d)
         - [X] [compareHist](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#gaf4190090efa5c47cb367cf97a9a519bd)
         - [ ] [EMD](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga902b8e60cc7075c8947345489221e0e0)
@@ -163,9 +166,18 @@ Your pull requests will be greatly appreciated!
 - [ ] cudaimgproc. Image Processing
 - [ ] cudalegacy. Legacy support
 - [ ] cudaobjdetect. Object Detection
-- [ ] cudaoptflow. Optical Flow
+- [ ] **cudaoptflow. Optical Flow - WORK STARTED**
+    - [ ] [BroxOpticalFlow](https://docs.opencv.org/master/d7/d18/classcv_1_1cuda_1_1BroxOpticalFlow.html)
+    - [ ] [DenseOpticalFlow](https://docs.opencv.org/master/d6/d4a/classcv_1_1cuda_1_1DenseOpticalFlow.html)
+    - [ ] [DensePyrLKOpticalFlow](https://docs.opencv.org/master/d0/da4/classcv_1_1cuda_1_1DensePyrLKOpticalFlow.html)
+    - [ ] [FarnebackOpticalFlow](https://docs.opencv.org/master/d9/d30/classcv_1_1cuda_1_1FarnebackOpticalFlow.html)
+    - [ ] [NvidiaHWOpticalFlow](https://docs.opencv.org/master/d5/d26/classcv_1_1cuda_1_1NvidiaHWOpticalFlow.html)
+    - [ ] [NvidiaOpticalFlow_1_0](https://docs.opencv.org/master/dc/d9d/classcv_1_1cuda_1_1NvidiaOpticalFlow__1__0.html)
+    - [ ] [SparseOpticalFlow](https://docs.opencv.org/master/d5/dcf/classcv_1_1cuda_1_1SparseOpticalFlow.html)
+    - [ ] **[SparsePyrLKOpticalFlow](https://docs.opencv.org/master/d7/d05/classcv_1_1cuda_1_1SparsePyrLKOpticalFlow.html) - WORK STARTED**
+
 - [ ] cudastereo. Stereo Correspondence
-- [ ] cudawarping. Image Warping
+- [X] **cudawarping. Image Warping**
 - [ ] cudev. Device layer
 - [ ] shape. Shape Distance and Matching
 - [ ] superres. Super Resolution
