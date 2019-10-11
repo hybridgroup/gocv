@@ -6,7 +6,7 @@ GoCV support for the Intel OpenVINO Inference Engine will be able to be found he
 
 ## How It Works
 
-Support in GoCV for the Intel OpenVINO Inference Engine requires version R2+ in order to work.
+Support in GoCV for the Intel OpenVINO Inference Engine requires version 2019 R3+ in order to work.
 
 ## How to use
 
