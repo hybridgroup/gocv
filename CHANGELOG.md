@@ -1,3 +1,37 @@
+0.21.0
+---
+* **build**
+    * added go clean --cache to clean target, see issue 458
+* **core**
+    * Add KMeans function
+    * added MeanWithMask function for Mats (#487)
+    * Fix possible resource leak
+* **cuda**
+    * added cudaoptflow
+    * added NewGpuMatFromMat which creates a GpuMat from a Mat
+    * Support for CUDA Image Warping (#494)
+* **dnn**
+    * add BlobFromImages (#467)
+    * add ImagesFromBlob (#468)
+* **docs**
+    * update ROADMAP with all recent contributions. Thank you!
+* **examples**
+    * face detection from image url by using IMDecode (#499)
+    * better format
+* **imgproc**
+    * Add calcBackProject
+    * Add CompareHist
+    * Add DistanceTransform and Watershed
+    * Add GrabCut
+    * Add Integral
+    * Add MorphologyExWithParams
+* **opencv**
+    * update to version 4.1.2
+* **openvino**
+    * updates needed for 2019 R3
+* **videoio**
+    * Added ToCodec to convert FOURCC string to numeric representation (#485)
+
 0.20.0
 ---
 * **build**
