@@ -209,5 +209,5 @@ func TestUndistort(t *testing.T) {
 		t.Error("final image is empty")
 		return
 	}
-	 //IMWrite("images/distortion_up.jpg", dest)
+	//IMWrite("images/distortion_up.jpg", dest)
 }
