@@ -105,6 +105,7 @@ CLAHE CLAHE_Create();
 CLAHE CLAHE_CreateWithParams(double clipLimit, Size tileGridSize);
 void CLAHE_Close(CLAHE c);
 void CLAHE_Apply(CLAHE c, Mat src, Mat dst);
+void InvertAffineTransform(Mat src, Mat dst);
 
 #ifdef __cplusplus
 }
