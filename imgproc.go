@@ -1665,3 +1665,7 @@ func (c *CLAHE) Close() error {
 func (c *CLAHE) Apply(src Mat, dst *Mat) {
 	C.CLAHE_Apply((C.CLAHE)(c.p), src.p, dst.p)
 }
+
+func InvertAffineTransform(src Mat, dst *Mat) {
+	C.InvertAffineTransform(src.p, dst.p)
+}

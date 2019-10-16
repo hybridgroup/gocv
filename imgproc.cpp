@@ -573,3 +573,7 @@ void CLAHE_Close(CLAHE c) {
 void CLAHE_Apply(CLAHE c, Mat src, Mat dst) {
     (*c)->apply(*src, *dst);
 }
+
+void InvertAffineTransform(Mat src, Mat dst) {
+	cv::invertAffineTransform(*src, *dst);
+}

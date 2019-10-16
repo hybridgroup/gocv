@@ -1502,6 +1502,20 @@ func TestFitLine(t *testing.T) {
 	}
 }
 
+func TestInvertAffineTransform(t *testing.T) {
+	src := NewMatWithSize(2, 3, MatTypeCV32F)
+	defer src.Close()
+
+	dst := NewMatWithSize(2, 3, MatTypeCV32F)
+	defer dst.Close()
+
+	InvertAffineTransform(src, &dst)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("InvertAffineTransform(): dst is empty")
+	}
+}
+
 func TestCLAHE(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
