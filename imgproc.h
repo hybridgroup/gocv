@@ -101,6 +101,7 @@ void Filter2D(Mat src, Mat dst, int ddepth, Mat kernel, Point anchor, double del
 void SepFilter2D(Mat src, Mat dst, int ddepth, Mat kernelX, Mat kernelY, Point anchor, double delta, int borderType);
 void LogPolar(Mat src, Mat dst, Point center, double m, int flags);
 void FitLine(Contour points, Mat line, int distType, double param, double reps, double aeps);
+bool ClipLine(Size imgSize, Point pt1, Point pt2);
 CLAHE CLAHE_Create();
 CLAHE CLAHE_CreateWithParams(double clipLimit, Size tileGridSize);
 void CLAHE_Close(CLAHE c);
