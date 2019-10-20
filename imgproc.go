@@ -1339,6 +1339,34 @@ func PutText(img *Mat, text string, org image.Point, fontFace HersheyFont, fontS
 	return
 }
 
+// PutTextWithLineType draws a text string.
+// It renders the specified text string into the img Mat at the location
+// passed in the "org" param, using the desired font face, font scale,
+// color, and line thinkness.
+//
+// For further details, please see:
+// http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga5126f47f883d730f633d74f07456c576
+//
+func PutTextWithLineType(img *Mat, text string, org image.Point, fontFace HersheyFont, fontScale float64, c color.RGBA, thickness int, lineType int) {
+	cText := C.CString(text)
+	defer C.free(unsafe.Pointer(cText))
+
+	pOrg := C.struct_Point{
+		x: C.int(org.X),
+		y: C.int(org.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.PutText(img.p, cText, pOrg, C.int(fontFace), C.double(fontScale), sColor, C.int(thickness), C.int(lineType))
+	return
+}
+
 // InterpolationFlags are bit flags that control the interpolation algorithm
 // that is used.
 type InterpolationFlags int

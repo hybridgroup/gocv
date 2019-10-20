@@ -446,6 +446,13 @@ void PutText(Mat img, const char* text, Point org, int fontFace, double fontScal
     cv::putText(*img, text, pt, fontFace, fontScale, c, thickness);
 }
 
+void PutTextWithLineType(Mat img, const char* text, Point org, int fontFace, double fontScale,
+                         Scalar color, int thickness, int lineType) {
+    cv::Point pt(org.x, org.y);
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+    cv::putText(*img, text, pt, fontFace, fontScale, c, thickness, lineType);
+}
+
 void Resize(Mat src, Mat dst, Size dsize, double fx, double fy, int interp) {
     cv::Size sz(dsize.width, dsize.height);
     cv::resize(*src, *dst, sz, fx, fy, interp);
