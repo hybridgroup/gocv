@@ -204,6 +204,29 @@ func CompareHist(hist1 Mat, hist2 Mat, method HistCompMethod) float32 {
 	return float32(C.CompareHist(hist1.p, hist2.p, C.int(method)))
 }
 
+// ClipLine clips the line against the image rectangle.
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf483cb46ad6b049bc35ec67052ef1c2c
+//
+func ClipLine(imgSize image.Point, pt1 image.Point, pt2 image.Point) bool {
+	pSize := C.struct_Size{
+		width:  C.int(imgSize.X),
+		height: C.int(imgSize.Y),
+	}
+
+	rPt1 := C.struct_Point{
+		x: C.int(pt1.X),
+		y: C.int(pt1.Y),
+	}
+
+	rPt2 := C.struct_Point{
+		x: C.int(pt2.X),
+		y: C.int(pt2.Y),
+	}
+
+	return bool(C.ClipLine(pSize, rPt1, rPt2))
+}
+
 // BilateralFilter applies a bilateral filter to an image.
 //
 // Bilateral filtering is described here:
@@ -1676,4 +1699,8 @@ func (c *CLAHE) Close() error {
 //
 func (c *CLAHE) Apply(src Mat, dst *Mat) {
 	C.CLAHE_Apply((C.CLAHE)(c.p), src.p, dst.p)
+}
+
+func InvertAffineTransform(src Mat, dst *Mat) {
+	C.InvertAffineTransform(src.p, dst.p)
 }

@@ -1219,6 +1219,13 @@ func TestWarpAffineWithParamsGocvLogo(t *testing.T) {
 	}
 }
 
+func TestClipLine(t *testing.T) {
+
+	if ok := ClipLine(image.Point{20, 20}, image.Point{5, 5}, image.Point{5, 5}); !ok {
+		t.Error("ClipLine(): is false")
+	}
+}
+
 func TestWatershed(t *testing.T) {
 	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
 	if src.Empty() {
@@ -1513,6 +1520,20 @@ func TestFitLine(t *testing.T) {
 
 	if ok := line.Empty(); ok {
 		t.Errorf("FitLine(): line is empty")
+	}
+}
+
+func TestInvertAffineTransform(t *testing.T) {
+	src := NewMatWithSize(2, 3, MatTypeCV32F)
+	defer src.Close()
+
+	dst := NewMatWithSize(2, 3, MatTypeCV32F)
+	defer dst.Close()
+
+	InvertAffineTransform(src, &dst)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("InvertAffineTransform(): dst is empty")
 	}
 }
 

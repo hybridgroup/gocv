@@ -102,10 +102,12 @@ void SepFilter2D(Mat src, Mat dst, int ddepth, Mat kernelX, Mat kernelY, Point a
 void LogPolar(Mat src, Mat dst, Point center, double m, int flags);
 void FitLine(Contour points, Mat line, int distType, double param, double reps, double aeps);
 void LinearPolar(Mat src, Mat dst, Point center, double maxRadius, int flags);
+bool ClipLine(Size imgSize, Point pt1, Point pt2);
 CLAHE CLAHE_Create();
 CLAHE CLAHE_CreateWithParams(double clipLimit, Size tileGridSize);
 void CLAHE_Close(CLAHE c);
 void CLAHE_Apply(CLAHE c, Mat src, Mat dst);
+void InvertAffineTransform(Mat src, Mat dst);
 
 #ifdef __cplusplus
 }

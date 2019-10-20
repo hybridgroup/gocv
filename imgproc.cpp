@@ -377,6 +377,14 @@ void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
     cv::arrowedLine(*img, p1, p2, c, thickness);
 }
 
+bool ClipLine(Size imgSize, Point pt1, Point pt2) {
+	cv::Size sz(imgSize.width, imgSize.height);
+	cv::Point p1(pt1.x, pt1.y);
+	cv::Point p2(pt2.x, pt2.y);
+
+	return	cv::clipLine(sz, p1, p2);
+}
+
 void Circle(Mat img, Point center, int radius, Scalar color, int thickness) {
     cv::Point p1(center.x, center.y);
     cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
@@ -577,4 +585,8 @@ void CLAHE_Close(CLAHE c) {
 
 void CLAHE_Apply(CLAHE c, Mat src, Mat dst) {
     (*c)->apply(*src, *dst);
+}
+
+void InvertAffineTransform(Mat src, Mat dst) {
+	cv::invertAffineTransform(*src, *dst);
 }
