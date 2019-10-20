@@ -1296,6 +1296,24 @@ const (
 	FontItalic = 16
 )
 
+// LineType are the line libraries included in OpenCV.
+//
+// For more information, see:
+// https://vovkos.github.io/doxyrest-showcase/opencv/sphinx_rtd_theme/enum_cv_LineTypes.html
+//
+type LineType int
+
+const (
+	// Filled line
+	Filled LineType = -1
+	// Line4 4-connected line
+	Line4 = 4
+	// Line8 8-connected line
+	Line8 = 8
+	// LineAA antialiased line
+	LineAA = 16
+)
+
 // GetTextSize calculates the width and height of a text string.
 // It returns an image.Point with the size required to draw text using
 // a specific font face, scale, and thickness.
@@ -1347,7 +1365,7 @@ func PutText(img *Mat, text string, org image.Point, fontFace HersheyFont, fontS
 // For further details, please see:
 // http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga5126f47f883d730f633d74f07456c576
 //
-func PutTextWithLineType(img *Mat, text string, org image.Point, fontFace HersheyFont, fontScale float64, c color.RGBA, thickness int, lineType int) {
+func PutTextWithLineType(img *Mat, text string, org image.Point, fontFace HersheyFont, fontScale float64, c color.RGBA, thickness int, lineType LineType) {
 	cText := C.CString(text)
 	defer C.free(unsafe.Pointer(cText))
 
