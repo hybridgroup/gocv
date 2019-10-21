@@ -602,6 +602,10 @@ void Mat_ScaleAdd(Mat src1, double alpha, Mat src2, Mat dst) {
     cv::scaleAdd(*src1, alpha, *src2, *dst);
 }
 
+void Mat_SetIdentity(Mat src, double scalar) {
+    cv::setIdentity(*src, scalar);
+}
+
 void Mat_Sort(Mat src, Mat dst, int flags) {
     cv::sort(*src, *dst, flags);
 }

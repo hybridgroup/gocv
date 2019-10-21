@@ -354,6 +354,7 @@ double Mat_SolvePoly(Mat coeffs, Mat roots, int maxIters);
 void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType);
 void Mat_Repeat(Mat src, int nY, int nX, Mat dst);
 void Mat_ScaleAdd(Mat src1, double alpha, Mat src2, Mat dst);
+void Mat_SetIdentity(Mat src, double scalar);
 void Mat_Sort(Mat src, Mat dst, int flags);
 void Mat_SortIdx(Mat src, Mat dst, int flags);
 void Mat_Split(Mat src, struct Mats* mats);

@@ -1587,6 +1587,14 @@ func ScaleAdd(src1 Mat, alpha float64, src2 Mat, dst *Mat) {
 	C.Mat_ScaleAdd(src1.p, C.double(alpha), src2.p, dst.p)
 }
 
+// SetIdentity initializes a scaled identity matrix.
+// For further details, please see:
+//  https://docs.opencv.org/master/d2/de8/group__core__array.html#ga388d7575224a4a277ceb98ccaa327c99
+//
+func SetIdentity(src Mat, scalar float64) {
+	C.Mat_SetIdentity(src.p, C.double(scalar))
+}
+
 type SortFlags int
 
 const (

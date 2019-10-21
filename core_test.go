@@ -1283,6 +1283,32 @@ func TestScaleAdd(t *testing.T) {
 	}
 }
 
+func TestSetIdentity(t *testing.T) {
+	rows := 4
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV64F)
+	defer src.Close()
+	scalar := 2.5
+	SetIdentity(src, scalar)
+
+	if src.Empty() {
+		t.Error("TestSetIdentity src should not be empty.")
+	}
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			result := src.GetDoubleAt(row, col)
+			expected := 0.0
+			if row == col {
+				expected = scalar
+			}
+			if result != expected {
+				t.Errorf("TestSetIdentity src at row=%d col=%d should be %f and got %f.", row, col, expected, result)
+			}
+		}
+	}
+}
+
 func TestMatSortEveryRowDescending(t *testing.T) {
 	rows := 2
 	cols := 3
