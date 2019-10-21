@@ -1381,7 +1381,7 @@ func PutTextWithLineType(img *Mat, text string, org image.Point, fontFace Hershe
 		val4: C.double(c.A),
 	}
 
-	C.PutText(img.p, cText, pOrg, C.int(fontFace), C.double(fontScale), sColor, C.int(thickness), C.int(lineType))
+	C.PutTextWithLineType(img.p, cText, pOrg, C.int(fontFace), C.double(fontScale), sColor, C.int(thickness), C.int(lineType))
 	return
 }
 

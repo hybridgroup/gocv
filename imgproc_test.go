@@ -1086,6 +1086,20 @@ func TestPutText(t *testing.T) {
 		t.Error("Error in PutText test")
 	}
 }
+func TestPutTextWithLineType(t *testing.T) {
+	img := NewMatWithSize(150, 150, MatTypeCV8U)
+	if img.Empty() {
+		t.Error("Invalid Mat in IMRead")
+	}
+	defer img.Close()
+
+	pt := image.Pt(10, 10)
+	PutTextWithLineType(&img, "Testing", pt, FontHersheyPlain, 1.2, color.RGBA{255, 255, 255, 0}, 2, LineAA)
+
+	if img.Empty() {
+		t.Error("Error in PutText test")
+	}
+}
 
 func TestResize(t *testing.T) {
 	src := IMRead("images/gocvlogo.jpg", IMReadColor)
