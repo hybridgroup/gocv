@@ -459,6 +459,12 @@ void Resize(Mat src, Mat dst, Size dsize, double fx, double fy, int interp) {
     cv::resize(*src, *dst, sz, fx, fy, interp);
 }
 
+void GetRectSubPix(Mat src, Size patchSize, Point center, Mat dst) {
+    cv::Size sz(patchSize.width, patchSize.height);
+    cv::Point pt(center.x, center.y);
+    cv::getRectSubPix(*src, sz, pt, *dst);
+}
+
 Mat GetRotationMatrix2D(Point center, double angle, double scale) {
     cv::Point pt(center.x, center.y);
     return new  cv::Mat(cv::getRotationMatrix2D(pt, angle, scale));
