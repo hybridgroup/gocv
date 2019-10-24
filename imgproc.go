@@ -1386,6 +1386,22 @@ func Resize(src Mat, dst *Mat, sz image.Point, fx, fy float64, interp Interpolat
 	return
 }
 
+// GetRectSubPix retrieves a pixel rectangle from an image with sub-pixel accuracy.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga77576d06075c1a4b6ba1a608850cd614
+func GetRectSubPix(src Mat, patchSize image.Point, center image.Point, dst *Mat) {
+	sz := C.struct_Size{
+		width:  C.int(patchSize.X),
+		height: C.int(patchSize.Y),
+	}
+	pt := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+	C.GetRectSubPix(src.p, sz, pt, dst.p)
+}
+
 // GetRotationMatrix2D calculates an affine matrix of 2D rotation.
 //
 // For further details, please see:

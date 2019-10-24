@@ -1108,6 +1108,22 @@ func TestResize(t *testing.T) {
 	}
 }
 
+func TestGetRectSubPix(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadColor)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in Resize test")
+	}
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	GetRectSubPix(src, image.Point{20, 30}, image.Point{200, 172}, &dst)
+	if dst.Cols() != 20 || dst.Rows() != 30 {
+		t.Errorf("Expected dst size of 20x30 got %dx%d", dst.Cols(), dst.Rows())
+	}
+}
+
 func TestGetRotationMatrix2D(t *testing.T) {
 	type args struct {
 		center image.Point
