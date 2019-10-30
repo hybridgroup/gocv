@@ -571,6 +571,11 @@ void FitLine(Contour points, Mat line, int distType, double param, double reps, 
 	cv::fitLine(pts, *line, distType, param, reps, aeps);
 }
 
+void LinearPolar(Mat src, Mat dst, Point center, double maxRadius, int flags) {
+	cv::Point2f centerPt(center.x, center.y);
+	cv::linearPolar(*src, *dst, centerPt, maxRadius, flags);
+}
+
 CLAHE CLAHE_Create() {
     return new cv::Ptr<cv::CLAHE>(cv::createCLAHE());
 }

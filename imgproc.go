@@ -1635,6 +1635,18 @@ func LogPolar(src Mat, dst *Mat, center image.Point, m float64, flags Interpolat
 	C.LogPolar(src.p, dst.p, centerP, C.double(m), C.int(flags))
 }
 
+// LinearPolar remaps an image to polar coordinates space.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gaa38a6884ac8b6e0b9bed47939b5362f3
+func LinearPolar(src Mat, dst *Mat, center image.Point, maxRadius float64, flags InterpolationFlags) {
+	centerP := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+	C.LinearPolar(src.p, dst.p, centerP, C.double(maxRadius), C.int(flags))
+}
+
 // DistanceTypes types for Distance Transform and M-estimatorss
 //
 // For further details, please see:

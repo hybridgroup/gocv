@@ -1512,6 +1512,20 @@ func TestLogPolar(t *testing.T) {
 	}
 }
 
+func TestLinearPolar(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := src.Clone()
+	defer dst.Close()
+
+	LinearPolar(src, &dst, image.Pt(22, 22), 1, InterpolationDefault)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("LinearPolar(): dst is empty")
+	}
+}
+
 func TestFitLine(t *testing.T) {
 	points := []image.Point{image.Pt(125, 24), image.Pt(124, 75), image.Pt(175, 76), image.Pt(176, 25)}
 
