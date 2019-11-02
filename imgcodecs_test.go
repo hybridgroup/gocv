@@ -144,3 +144,19 @@ func TestIMDecode(t *testing.T) {
 		t.Error("Should not decode empty array")
 	}
 }
+func TestIMDecodeWebp(t *testing.T) {
+	content, err := ioutil.ReadFile("images/sample.webp")
+	if err != nil {
+		t.Error("Invalid ReadFile in IMDecodeWebp")
+	}
+
+	dec, err := IMDecode(content, IMReadColor)
+	if err != nil {
+		t.Error(err.Error())
+	}
+	if dec.Empty() {
+		t.Error("Invalid Mat in IMDecodeWebp")
+	}
+	dec.Close()
+
+}
