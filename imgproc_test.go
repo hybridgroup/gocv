@@ -373,6 +373,30 @@ func TestMinAreaRect(t *testing.T) {
 	}
 }
 
+func TestFitEllipse(t *testing.T) {
+	src := []image.Point{
+		image.Pt(1, 1),
+		image.Pt(0, 1),
+		image.Pt(0, 2),
+		image.Pt(1, 3),
+		image.Pt(2, 3),
+		image.Pt(4, 2),
+		image.Pt(4, 1),
+		image.Pt(0, 3),
+		image.Pt(0, 2),
+	}
+	rect := FitEllipse(src)
+	if rect.Center.X != 2 {
+		t.Errorf("TestFitEllipse(): unexpected center.X = %v, want = %v", rect.Center.X, 2)
+	}
+	if rect.Center.Y != 2 {
+		t.Errorf("TestFitEllipse(): unexpected center.Y = %v, want = %v", rect.Center.Y, 2)
+	}
+	if rect.Angle != 78.60807800292969 {
+		t.Errorf("TestFitEllipse(): unexpected angle = %v, want = %v", rect.Angle, 78.60807800292969)
+	}
+}
+
 func TestFindContours(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
