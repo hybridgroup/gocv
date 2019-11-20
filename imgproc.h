@@ -83,8 +83,8 @@ void FillPoly(Mat img, Contours points, Scalar color);
 struct Size GetTextSize(const char* text, int fontFace, double fontScale, int thickness);
 void PutText(Mat img, const char* text, Point org, int fontFace, double fontScale,
              Scalar color, int thickness);
-void PutTextWithLineType(Mat img, const char* text, Point org, int fontFace, double fontScale,
-                         Scalar color, int thickness, int lineType);
+void PutTextWithParams(Mat img, const char* text, Point org, int fontFace, double fontScale,
+                         Scalar color, int thickness, int lineType, bool bottomLeftOrigin);
 void Resize(Mat src, Mat dst, Size sz, double fx, double fy, int interp);
 Mat GetRotationMatrix2D(Point center, double angle, double scale);
 void WarpAffine(Mat src, Mat dst, Mat rot_mat, Size dsize);

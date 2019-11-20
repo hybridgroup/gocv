@@ -1086,7 +1086,7 @@ func TestPutText(t *testing.T) {
 		t.Error("Error in PutText test")
 	}
 }
-func TestPutTextWithLineType(t *testing.T) {
+func TestPutTextWithParams(t *testing.T) {
 	img := NewMatWithSize(150, 150, MatTypeCV8U)
 	if img.Empty() {
 		t.Error("Invalid Mat in IMRead")
@@ -1094,7 +1094,7 @@ func TestPutTextWithLineType(t *testing.T) {
 	defer img.Close()
 
 	pt := image.Pt(10, 10)
-	PutTextWithLineType(&img, "Testing", pt, FontHersheyPlain, 1.2, color.RGBA{255, 255, 255, 0}, 2, LineAA)
+	PutTextWithParams(&img, "Testing", pt, FontHersheyPlain, 1.2, color.RGBA{255, 255, 255, 0}, 2, LineAA, false)
 
 	if img.Empty() {
 		t.Error("Error in PutText test")
