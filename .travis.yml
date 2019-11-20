@@ -5,7 +5,7 @@ dist: trusty
 # language is go
 language: go
 go:
-  - "1.12.x"
+  - "1.13"
 go_import_path: gocv.io/x/gocv
 
 addons:
