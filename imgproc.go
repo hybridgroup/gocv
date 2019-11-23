@@ -1319,6 +1319,24 @@ const (
 	FontItalic = 16
 )
 
+// LineType are the line libraries included in OpenCV.
+//
+// For more information, see:
+// https://vovkos.github.io/doxyrest-showcase/opencv/sphinx_rtd_theme/enum_cv_LineTypes.html
+//
+type LineType int
+
+const (
+	// Filled line
+	Filled LineType = -1
+	// Line4 4-connected line
+	Line4 = 4
+	// Line8 8-connected line
+	Line8 = 8
+	// LineAA antialiased line
+	LineAA = 16
+)
+
 // GetTextSize calculates the width and height of a text string.
 // It returns an image.Point with the size required to draw text using
 // a specific font face, scale, and thickness.
@@ -1359,6 +1377,34 @@ func PutText(img *Mat, text string, org image.Point, fontFace HersheyFont, fontS
 	}
 
 	C.PutText(img.p, cText, pOrg, C.int(fontFace), C.double(fontScale), sColor, C.int(thickness))
+	return
+}
+
+// PutTextWithParams draws a text string.
+// It renders the specified text string into the img Mat at the location
+// passed in the "org" param, using the desired font face, font scale,
+// color, and line thinkness.
+//
+// For further details, please see:
+// http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga5126f47f883d730f633d74f07456c576
+//
+func PutTextWithParams(img *Mat, text string, org image.Point, fontFace HersheyFont, fontScale float64, c color.RGBA, thickness int, lineType LineType, bottomLeftOrigin bool) {
+	cText := C.CString(text)
+	defer C.free(unsafe.Pointer(cText))
+
+	pOrg := C.struct_Point{
+		x: C.int(org.X),
+		y: C.int(org.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.PutTextWithParams(img.p, cText, pOrg, C.int(fontFace), C.double(fontScale), sColor, C.int(thickness), C.int(lineType), C.bool(bottomLeftOrigin))
 	return
 }
 
