@@ -78,8 +78,6 @@ func (c BlockMeanHashMode) String() string {
 		return "block-mean-hash-mode0"
 	case BlockMeanHashMode1:
 		return "block-mean-hash-mode1"
-	case BlockMeanHashModeDefault:
-		return "block-mean-hash-mode-default"
 	}
 	return ""
 }
