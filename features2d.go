@@ -154,18 +154,6 @@ const (
 	FastFeatureDetectorType916 = 2
 )
 
-func (c FastFeatureDetectorType) String() string {
-	switch c {
-	case FastFeatureDetectorType58:
-		return "fast-feature-detector-type-58"
-	case FastFeatureDetectorType712:
-		return "fast-feature-detector-type-712"
-	case FastFeatureDetectorType916:
-		return "fast-feature-detector-type-916"
-	}
-	return ""
-}
-
 // FastFeatureDetector is a wrapper around the cv::FastFeatureDetector.
 type FastFeatureDetector struct {
 	// C.FastFeatureDetector
@@ -728,20 +716,6 @@ const (
 	// DrawRichKeyPoints draws the circle around each keypoint with keypoint size and orientation
 	DrawRichKeyPoints = 3
 )
-
-func (c DrawMatchesFlag) String() string {
-	switch c {
-	case DrawDefault:
-		return "draw-default"
-	case DrawOverOutImg:
-		return "draw-over-out-imt"
-	case NotDrawSinglePoints:
-		return "draw-single-points"
-	case DrawRichKeyPoints:
-		return "draw-rich-key-points"
-	}
-	return ""
-}
 
 // DrawKeyPoints draws keypoints
 //

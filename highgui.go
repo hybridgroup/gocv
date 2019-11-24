@@ -82,18 +82,6 @@ const (
 	WindowKeepRatio = 0
 )
 
-func (c WindowFlag) String() string {
-	switch c {
-	case WindowNormal:
-		return "window-normal"
-	case WindowFullscreen:
-		return "window-fullscreen"
-	case WindowFreeRatio:
-		return "window-free-ratio"
-	}
-	return ""
-}
-
 // WindowPropertyFlag flags for SetWindowProperty / GetWindowProperty.
 type WindowPropertyFlag int
 
@@ -116,22 +104,6 @@ const (
 	// WindowPropertyVisible or not.
 	WindowPropertyVisible = 4
 )
-
-func (c WindowPropertyFlag) String() string {
-	switch c {
-	case WindowPropertyFullscreen:
-		return "window-property-fullscreen"
-	case WindowPropertyAutosize:
-		return "window-property-autosize"
-	case WindowPropertyAspectRatio:
-		return "window-property-aspect-ratio"
-	case WindowPropertyOpenGL:
-		return "window-property-opengl"
-	case WindowPropertyVisible:
-		return "window-property-visible"
-	}
-	return ""
-}
 
 // GetWindowProperty returns properties of a window.
 //
