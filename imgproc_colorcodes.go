@@ -371,7 +371,7 @@ func (c ColorConversionCode) String() string {
 	case ColorGrayToBGR:
 		return "color-gray-to-bgr"
 	case ColorGrayToBGR:
-		return "color-gray-to-bgra"
+		return "color-gray-to-bgr"
 	case ColorBGRAToGray:
 		return "color-bgra-to-gray"
 	case ColorRGBAToGray:
@@ -487,7 +487,7 @@ func (c ColorConversionCode) String() string {
 	case ColorLRGBToLuv:
 		return "color-lrgb-to-luv"
 	case ColorLabToLBGR:
-		return "color-lab-to-bgr"
+		return "color-lab-to-lbgr"
 	case ColorLabToLRGB:
 		return "color-lab-to-lrgb"
 	case ColorLuvToLBGR:
@@ -534,7 +534,7 @@ func (c ColorConversionCode) String() string {
 	case ColorYUVToRGBAYV12:
 		return "color-yuv-to-rgbayv12"
 	case ColorYUVToBGRAYV12:
-		return "color-yuv-to-bgrayu12"
+		return "color-yuv-to-bgrayv12"
 	case ColorYUVToRGBAIYUV:
 		return "color-yuv-to-rgbaiyuv"
 	case ColorYUVToBGRAIYUV:

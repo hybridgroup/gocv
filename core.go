@@ -123,17 +123,17 @@ const (
 func (c CompareType) String() string {
 	switch c {
 	case CompareEQ:
-		return "EQ"
+		return "eq"
 	case CompareGT:
-		return "GT"
+		return "gt"
 	case CompareGE:
-		return "GE"
+		return "ge"
 	case CompareLT:
-		return "LT"
+		return "lt"
 	case CompareLE:
-		return "LE"
+		return "le"
 	case CompareNE:
-		return "NE"
+		return "ne"
 	}
 	return ""
 }
@@ -963,17 +963,17 @@ const (
 func (c CovarFlags) String() string {
 	switch c {
 	case CovarScrambled:
-		return "Scrambled"
+		return "covar-scrambled"
 	case CovarNormal:
-		return "Normal"
+		return "covar-normal"
 	case CovarUseAvg:
-		return "UseAvg"
+		return "covar-use-avg"
 	case CovarScale:
-		return "Scale"
+		return "covar-scale"
 	case CovarRows:
-		return "Rows"
+		return "covar-rows"
 	case CovarCols:
-		return "Cols"
+		return "covar-cols"
 	}
 	return ""
 }
@@ -1108,11 +1108,11 @@ func (c DftFlags) String() string {
 	case DftRows:
 		return "dft-rows"
 	case DftComplexOutput:
-		return "dft-complexoutput"
+		return "dft-complex-output"
 	case DftRealOutput:
-		return "dft-realoutput"
+		return "dft-real-output"
 	case DftComplexInput:
-		return "dft-complexinput"
+		return "dft-complex-input"
 	case DctInverse:
 		return "dct-inverse"
 	case DctRows:
@@ -1568,7 +1568,7 @@ func (c NormType) String() string {
 	case NormL2:
 		return "norm-l2"
 	case NormL2Sqr:
-		return "norm-2-squareroot"
+		return "norm-l2-sqr"
 	case NormHamming:
 		return "norm-hamming"
 	case NormHamming2:
@@ -1668,7 +1668,7 @@ const (
 func (c SolveDecompositionFlags) String() string {
 	switch c {
 	case SolveDecompositionLu:
-		return "solve-decomposition-gaussian"
+		return "solve-decomposition-lu"
 	case SolveDecompositionSvd:
 		return "solve-decomposition-svd"
 	case SolveDecompositionEing:
@@ -1731,7 +1731,7 @@ func (c ReduceTypes) String() string {
 	case ReduceSum:
 		return "reduce-sum"
 	case ReduceAvg:
-		return "reduce-average"
+		return "reduce-avg"
 	case ReduceMax:
 		return "reduce-max"
 	case ReduceMin:

@@ -87,9 +87,9 @@ func (c WindowFlag) String() string {
 	case WindowNormal:
 		return "window-normal"
 	case WindowFullscreen:
-		return "window-full-screen"
+		return "window-fullscreen"
 	case WindowAutosize:
-		return "window-auto-size"
+		return "window-autosize"
 	case WindowFreeRatio:
 		return "window-free-ratio"
 	case WindowKeepRatio:
@@ -124,9 +124,9 @@ const (
 func (c WindowPropertyFlag) String() string {
 	switch c {
 	case WindowPropertyFullscreen:
-		return "window-property-full-screen"
+		return "window-property-fullscreen"
 	case WindowPropertyAutosize:
-		return "window-property-auto-size"
+		return "window-property-autosize"
 	case WindowPropertyAspectRatio:
 		return "window-property-aspect-ratio"
 	case WindowPropertyOpenGL:

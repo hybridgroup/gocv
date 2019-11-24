@@ -155,7 +155,7 @@ const (
 func (c VideoCaptureProperties) String() string {
 	switch c {
 	case VideoCapturePosMsec:
-		return "video-capture-pos-mec"
+		return "video-capture-pos-msec"
 	case VideoCapturePosFrames:
 		return "video-capture-pos-frames"
 	case VideoCapturePosAVIRatio:
@@ -217,7 +217,7 @@ func (c VideoCaptureProperties) String() string {
 	case VideoCaptureISOSpeed:
 		return "video-capture-iso-speed"
 	case VideoCaptureBacklight:
-		return "video-capture-back-light"
+		return "video-capture-backlight"
 	case VideoCapturePan:
 		return "video-capture-pan"
 	case VideoCaptureTilt:

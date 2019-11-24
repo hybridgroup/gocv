@@ -199,19 +199,19 @@ const (
 func (c HistCompMethod) String() string {
 	switch c {
 	case HistCmpCorrel:
-		return "hist-comp-correl"
+		return "hist-cmp-correl"
 	case HistCmpChiSqr:
-		return "hist-comp-chi-sqr"
+		return "hist-cmp-chi-sqr"
 	case HistCmpIntersect:
-		return "hist-comp-intersect"
+		return "hist-cmp-intersect"
 	case HistCmpBhattacharya:
-		return "hist-comp-bhattacharya"
+		return "hist-cmp-bhattacharya"
 	case HistCmpHellinger:
-		return "hist-comp-hellinger"
+		return "hist-cmp-hellinger"
 	case HistCmpChiSqrAlt:
-		return "hist-comp-chi-sqr-alt"
+		return "hist-cmp-chi-sqr-alt"
 	case HistCmpKlDiv:
-		return "hist-comp-kl-div"
+		return "hist-cmp-kl-div"
 	}
 	return ""
 }

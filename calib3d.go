@@ -56,25 +56,25 @@ const (
 func (c CalibFlag) String() string {
 	switch c {
 	case CalibUseIntrinsicGuess:
-		return "UseIntrinsicGuess"
+		return "calib-use-intrinsec-guess"
 	case CalibRecomputeExtrinsic:
-		return "RecomputeExtrinsic"
+		return "calib-recompute-extrinsic"
 	case CalibCheckCond:
-		return "CheckCond"
+		return "calib-check-cond"
 	case CalibFixSkew:
-		return "FixSkew"
+		return "calib-fix-skew"
 	case CalibFixK1:
-		return "FixK1"
+		return "calib-fix-k1"
 	case CalibFixK2:
-		return "FixK2"
+		return "calib-fix-k2"
 	case CalibFixK3:
-		return "FixK3"
+		return "calib-fix-k3"
 	case CalibFixK4:
-		return "FixK4"
+		return "calib-fix-k4"
 	case CalibFixIntrinsic:
-		return "FixIntrinsic"
+		return "calib-fix-intrinsic"
 	case CalibFixPrincipalPoint:
-		return "FixPrincipalPoint"
+		return "calib-fix-principal-point"
 	}
 	return ""
 }
