@@ -41,6 +41,22 @@ const (
 	NetBackendVKCOM NetBackendType = 4
 )
 
+func (c NetBackendType) String() string {
+	switch c {
+	case NetBackendDefault:
+		return ""
+	case NetBackendHalide:
+		return "halide"
+	case NetBackendOpenVINO:
+		return "openvino"
+	case NetBackendOpenCV:
+		return "opencv"
+	case NetBackendVKCOM:
+		return "vulkan"
+	}
+	return ""
+}
+
 // ParseNetBackend returns a valid NetBackendType given a string. Valid values are:
 // - halide
 // - openvino
@@ -84,6 +100,24 @@ const (
 	// NetTargetFPGA is the FPGA target.
 	NetTargetFPGA NetTargetType = 5
 )
+
+func (c NetTargetType) String() string {
+	switch c {
+	case NetTargetCPU:
+		return "cpu"
+	case NetTargetFP32:
+		return "fp32"
+	case NetTargetFP16:
+		return "fp16"
+	case NetTargetVPU:
+		return "vpu"
+	case NetTargetVulkan:
+		return "vulkan"
+	case NetTargetFPGA:
+		return "fpga"
+	}
+	return ""
+}
 
 // ParseNetTarget returns a valid NetTargetType given a string. Valid values are:
 // - cpu

@@ -53,6 +53,32 @@ const (
 	CalibFixPrincipalPoint
 )
 
+func (c CalibFlag) String() string {
+	switch c {
+	case CalibUseIntrinsicGuess:
+		return "UseIntrinsicGuess"
+	case CalibRecomputeExtrinsic:
+		return "RecomputeExtrinsic"
+	case CalibCheckCond:
+		return "CheckCond"
+	case CalibFixSkew:
+		return "FixSkew"
+	case CalibFixK1:
+		return "FixK1"
+	case CalibFixK2:
+		return "FixK2"
+	case CalibFixK3:
+		return "FixK3"
+	case CalibFixK4:
+		return "FixK4"
+	case CalibFixIntrinsic:
+		return "FixIntrinsic"
+	case CalibFixPrincipalPoint:
+		return "FixPrincipalPoint"
+	}
+	return ""
+}
+
 // FisheyeUndistortImage transforms an image to compensate for fisheye lens distortion
 func FisheyeUndistortImage(distorted Mat, undistorted *Mat, k, d Mat) {
 	C.Fisheye_UndistortImage(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr())

@@ -68,6 +68,34 @@ const (
 	MatTypeCV8UC4 = MatTypeCV8U + MatChannels4
 )
 
+func (c MatType) String() string {
+	switch c {
+	case MatTypeCV8U:
+		return "CV8U"
+	case MatTypeCV16U:
+		return "CV16U"
+	case MatTypeCV16S:
+		return "CV16S"
+	case MatTypeCV16SC2:
+		return "CV16SC2"
+	case MatTypeCV32S:
+		return "CV32S"
+	case MatTypeCV32F:
+		return "CV32F"
+	case MatTypeCV64F:
+		return "CV64F"
+	case MatTypeCV8UC1:
+		return "CV8UC1"
+	case MatTypeCV8UC2:
+		return "CV8UC2"
+	case MatTypeCV8UC3:
+		return "CV8UC3"
+	case MatTypeCV8UC4:
+		return "CV8UC4"
+	}
+	return ""
+}
+
 // CompareType is used for Compare operations to indicate which kind of
 // comparison to use.
 type CompareType int
@@ -91,6 +119,24 @@ const (
 	// CompareNE src1 is unequal to src2.
 	CompareNE = 5
 )
+
+func (c CompareType) String() string {
+	switch c {
+	case CompareEQ:
+		return "EQ"
+	case CompareGT:
+		return "GT"
+	case CompareGE:
+		return "GE"
+	case CompareLT:
+		return "LT"
+	case CompareLE:
+		return "LE"
+	case CompareNE:
+		return "NE"
+	}
+	return ""
+}
 
 var ErrEmptyByteSlice = errors.New("empty byte array")
 
@@ -914,6 +960,24 @@ const (
 	CovarCols = 16
 )
 
+func (c CovarFlags) String() string {
+	switch c {
+	case CovarScrambled:
+		return "Scrambled"
+	case CovarNormal:
+		return "Normal"
+	case CovarUseAvg:
+		return "UseAvg"
+	case CovarScale:
+		return "Scale"
+	case CovarRows:
+		return "Rows"
+	case CovarCols:
+		return "Cols"
+	}
+	return ""
+}
+
 // CalcCovarMatrix calculates the covariance matrix of a set of vectors.
 //
 // For further details, please see:
@@ -1032,6 +1096,30 @@ const (
 	// DctRows performs a forward or inverse dct transform of every individual row of the input matrix.
 	DctRows = DftRows
 )
+
+func (c DftFlags) String() string {
+	switch c {
+	case DftForward:
+		return "dft-forward"
+	case DftInverse:
+		return "dft-inverse"
+	case DftScale:
+		return "dft-scale"
+	case DftRows:
+		return "dft-rows"
+	case DftComplexOutput:
+		return "dft-complexoutput"
+	case DftRealOutput:
+		return "dft-realoutput"
+	case DftComplexInput:
+		return "dft-complexinput"
+	case DctInverse:
+		return "dct-inverse"
+	case DctRows:
+		return "dct-rows"
+	}
+	return ""
+}
 
 // DCT performs a forward or inverse discrete Cosine transform of 1D or 2D array.
 //
@@ -1179,6 +1267,18 @@ const (
 	Rotate90CounterClockwise = 2
 )
 
+func (c RotateFlag) String() string {
+	switch c {
+	case Rotate90Clockwise:
+		return "rotate-90-clockwise"
+	case Rotate180Clockwise:
+		return "rotate-180-clockwise"
+	case Rotate90CounterClockwise:
+		return "rotate-90-counter-clockwise"
+	}
+	return ""
+}
+
 // Rotate rotates a 2D array in multiples of 90 degrees
 //
 // For further details, please see:
@@ -1272,6 +1372,18 @@ const (
 	// instead of computing them from the initial centers. For the second and further attempts, use the random or semi-random     // centers. Use one of KMEANS_*_CENTERS flag to specify the exact method.
 	KMeansUseInitialLabels = 2
 )
+
+func (c KMeansFlags) String() string {
+	switch c {
+	case KMeansRandomCenters:
+		return "kmeans-random-centers"
+	case KMeansPPCenters:
+		return "kmeans-pp-centers"
+	case KMeansUseInitialLabels:
+		return "kmeans-use-initial-labels"
+	}
+	return ""
+}
 
 // KMeans finds centers of clusters and groups input samples around the clusters.
 //
@@ -1447,6 +1559,30 @@ const (
 	NormMinMax = 32
 )
 
+func (c NormType) String() string {
+	switch c {
+	case NormInf:
+		return "norm-inf"
+	case NormL1:
+		return "norm-l1"
+	case NormL2:
+		return "norm-l2"
+	case NormL2Sqr:
+		return "norm-2-squareroot"
+	case NormHamming:
+		return "norm-hamming"
+	case NormHamming2:
+		return "norm-hamming2"
+	case NormTypeMask:
+		return "norm-type-mask"
+	case NormRelative:
+		return "norm-relative"
+	case NormMinMax:
+		return "norm-minmax"
+	}
+	return ""
+}
+
 // Normalize normalizes the norm or value range of an array.
 //
 // For further details, please see:
@@ -1493,6 +1629,18 @@ const (
 	EPS = 2
 )
 
+func (c TermCriteriaType) String() string {
+	switch c {
+	case Count:
+		return "count"
+	case MaxIter:
+		return "max-iter"
+	case EPS:
+		return "eps"
+	}
+	return ""
+}
+
 type SolveDecompositionFlags int
 
 const (
@@ -1516,6 +1664,24 @@ const (
 	// 𝚜𝚛𝚌𝟷⋅𝚍𝚜𝚝=𝚜𝚛𝚌𝟸.
 	SolveDecompositionNormal = 5
 )
+
+func (c SolveDecompositionFlags) String() string {
+	switch c {
+	case SolveDecompositionLu:
+		return "solve-decomposition-gaussian"
+	case SolveDecompositionSvd:
+		return "solve-decomposition-svd"
+	case SolveDecompositionEing:
+		return "solve-decomposition-eing"
+	case SolveDecompositionCholesky:
+		return "solve-decomposition-cholesky"
+	case SolveDecompositionQr:
+		return "solve-decomposition-qr"
+	case SolveDecompositionNormal:
+		return "solve-decomposition-normal"
+	}
+	return ""
+}
 
 // Solve solves one or more linear systems or least-squares problems.
 //
@@ -1559,6 +1725,20 @@ const (
 	// The output is the minimum (column/row-wise) of all rows/columns of the matrix.
 	ReduceMin ReduceTypes = 3
 )
+
+func (c ReduceTypes) String() string {
+	switch c {
+	case ReduceSum:
+		return "reduce-sum"
+	case ReduceAvg:
+		return "reduce-average"
+	case ReduceMax:
+		return "reduce-max"
+	case ReduceMin:
+		return "reduce-min"
+	}
+	return ""
+}
 
 // Reduce reduces a matrix to a vector.
 //
@@ -1610,6 +1790,20 @@ const (
 	// Each matrix row is sorted in the descending order; this flag and the previous one are also mutually exclusive.
 	SortDescending SortFlags = 16
 )
+
+func (c SortFlags) String() string {
+	switch c {
+	case SortEveryRow:
+		return "sort-every-row"
+	case SortEveryColumn:
+		return "sort-every-column"
+	case SortAscending:
+		return "sort-ascending"
+	case SortDescending:
+		return "sort-descending"
+	}
+	return ""
+}
 
 // Sort sorts each row or each column of a matrix.
 //
