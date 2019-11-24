@@ -206,8 +206,6 @@ func (c HistCompMethod) String() string {
 		return "hist-cmp-intersect"
 	case HistCmpBhattacharya:
 		return "hist-cmp-bhattacharya"
-	case HistCmpHellinger:
-		return "hist-cmp-hellinger"
 	case HistCmpChiSqrAlt:
 		return "hist-cmp-chi-sqr-alt"
 	case HistCmpKlDiv:
@@ -327,8 +325,6 @@ func (c DistanceTransformLabelTypes) String() string {
 	switch c {
 	case DistanceLabelCComp:
 		return "distance-label-ccomp"
-	case DistanceLabelPixel:
-		return "distance-label-pixel"
 	}
 	return ""
 }
@@ -351,10 +347,6 @@ func (c DistanceTransformMasks) String() string {
 	switch c {
 	case DistanceMask3:
 		return "distance-mask3"
-	case DistanceMask5:
-		return "distance-mask5"
-	case DistanceMaskPrecise:
-		return "distance-mask-precise"
 	}
 	return ""
 }
@@ -996,8 +988,6 @@ func (c BorderType) String() string {
 		return "border-reflect"
 	case BorderWrap:
 		return "border-wrap"
-	case BorderReflect101:
-		return "border-reflect101"
 	case BorderTransparent:
 		return "border-transparent"
 	case BorderDefault:
@@ -1342,9 +1332,9 @@ const (
 func (c AdaptiveThresholdType) String() string {
 	switch c {
 	case AdaptiveThresholdMean:
-		return "adaptative-treshold-mean"
+		return "adaptative-threshold-mean"
 	case AdaptiveThresholdGaussian:
-		return "adaptative-treshold-gaussian"
+		return "adaptative-threshold-gaussian"
 	}
 	return ""
 }
@@ -1708,8 +1698,6 @@ func (c InterpolationFlags) String() string {
 		return "interpolation-area"
 	case InterpolationLanczos4:
 		return "interpolation-lanczos4"
-	case InterpolationDefault:
-		return "interpolation-default"
 	case InterpolationMax:
 		return "interpolation-max"
 	}

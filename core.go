@@ -84,8 +84,6 @@ func (c MatType) String() string {
 		return "CV32F"
 	case MatTypeCV64F:
 		return "CV64F"
-	case MatTypeCV8UC1:
-		return "CV8UC1"
 	case MatTypeCV8UC2:
 		return "CV8UC2"
 	case MatTypeCV8UC3:
@@ -1113,10 +1111,6 @@ func (c DftFlags) String() string {
 		return "dft-real-output"
 	case DftComplexInput:
 		return "dft-complex-input"
-	case DctInverse:
-		return "dct-inverse"
-	case DctRows:
-		return "dct-rows"
 	}
 	return ""
 }
@@ -1573,8 +1567,6 @@ func (c NormType) String() string {
 		return "norm-hamming"
 	case NormHamming2:
 		return "norm-hamming2"
-	case NormTypeMask:
-		return "norm-type-mask"
 	case NormRelative:
 		return "norm-relative"
 	case NormMinMax:
@@ -1633,8 +1625,6 @@ func (c TermCriteriaType) String() string {
 	switch c {
 	case Count:
 		return "count"
-	case MaxIter:
-		return "max-iter"
 	case EPS:
 		return "eps"
 	}
@@ -1797,8 +1787,6 @@ func (c SortFlags) String() string {
 		return "sort-every-row"
 	case SortEveryColumn:
 		return "sort-every-column"
-	case SortAscending:
-		return "sort-ascending"
 	case SortDescending:
 		return "sort-descending"
 	}

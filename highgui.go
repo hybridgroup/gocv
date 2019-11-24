@@ -88,12 +88,8 @@ func (c WindowFlag) String() string {
 		return "window-normal"
 	case WindowFullscreen:
 		return "window-fullscreen"
-	case WindowAutosize:
-		return "window-autosize"
 	case WindowFreeRatio:
 		return "window-free-ratio"
-	case WindowKeepRatio:
-		return "window-keep-ratio"
 	}
 	return ""
 }
