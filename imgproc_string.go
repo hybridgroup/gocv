@@ -250,6 +250,20 @@ func (c HersheyFont) String() string {
 	return ""
 }
 
+func (c LineType) String() string {
+	switch c {
+	case Filled:
+		return "filled"
+	case Line4:
+		return "line4"
+	case Line8:
+		return "line8"
+	case LineAA:
+		return "line-aa"
+	}
+	return ""
+}
+
 func (c InterpolationFlags) String() string {
 	switch c {
 	case InterpolationNearestNeighbor:
