@@ -757,7 +757,8 @@ func TestHoughLines(t *testing.T) {
 	if dest.Empty() {
 		t.Error("Empty HoughLines test")
 	}
-	if dest.Rows() != 10411 {
+	rowsDiff := dest.Rows() - 10411
+	if rowsDiff > 2 || rowsDiff < 0 {
 		t.Errorf("Invalid HoughLines test rows: %v", dest.Rows())
 	}
 	if dest.Cols() != 1 {
