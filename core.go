@@ -1701,6 +1701,25 @@ func Phase(x, y Mat, angle *Mat, angleInDegrees bool) {
 	C.Mat_Phase(x.p, y.p, angle.p, C.bool(angleInDegrees))
 }
 
+// Creates a matrix header for the specified row span.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#aa6542193430356ad631a9beabc624107
+//
+func (m *Mat) RowRange(start, end int) Mat {
+	return newMat(C.Mat_rowRange(m.p, C.int(start), C.int(end)))
+}
+
+// Creates a matrix header for the specified column span.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#aadc8f9210fe4dec50513746c246fa8d9
+//
+
+func (m *Mat) ColRange(start, end int) Mat {
+	return newMat(C.Mat_colRange(m.p, C.int(start), C.int(end)))
+}
+
 // TermCriteria is the criteria for iterative algorithms.
 //
 // For further details, please see:

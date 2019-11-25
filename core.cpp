@@ -656,6 +656,14 @@ void Mat_Phase(Mat x, Mat y, Mat angle, bool angleInDegrees) {
 	cv::phase(*x, *y, *angle, angleInDegrees);
 }
 
+Mat Mat_rowRange(Mat m,int startrow,int endrow) {
+    return new cv::Mat(m->rowRange(startrow,endrow));
+}
+
+Mat Mat_colRange(Mat m,int startrow,int endrow) {
+    return new cv::Mat(m->colRange(startrow,endrow));
+}
+
 
 Scalar Mat_Sum(Mat src) {
     cv::Scalar c = cv::sum(*src);
