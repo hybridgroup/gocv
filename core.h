@@ -365,6 +365,8 @@ void Mat_Transpose(Mat src, Mat dst);
 void Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees);
 void Mat_Pow(Mat src, double power, Mat dst);
 void Mat_Phase(Mat x, Mat y, Mat angle, bool angleInDegrees);
+Mat Mat_rowRange(Mat m,int startrow,int endrow);
+Mat Mat_colRange(Mat m,int startrow,int endrow);
 Scalar Mat_Sum(Mat src1);
 
 TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon);
