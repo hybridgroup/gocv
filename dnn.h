@@ -50,6 +50,8 @@ int Layer_OutputNameToIndex(Layer layer, const char* name);
 const char* Layer_GetName(Layer layer);
 const char* Layer_GetType(Layer layer);
 
+AsyncArray Net_forwardAsync(Net net, const char* outputName);
+
 #ifdef __cplusplus
 }
 #endif

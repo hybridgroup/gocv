@@ -752,3 +752,7 @@ int64 GetCVTickCount() {
 double GetTickFrequency() {
     return cv::getTickFrequency();
 }
+
+void AsyncArray_GetAsync(AsyncArray async_out,Mat out) {
+    async_out->get(*out);
+}

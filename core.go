@@ -1894,3 +1894,11 @@ func toCStrings(strs []string) C.struct_CStrings {
 		length: C.int(len(strs)),
 	}
 }
+
+type AsyncArray struct {
+	p C.AsyncArray
+}
+
+func (m *AsyncArray) Get(mat *Mat) {
+	C.AsyncArray_GetAsync(m.p, mat.p)
+}

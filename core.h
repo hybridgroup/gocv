@@ -194,9 +194,13 @@ typedef struct Moment {
 
 #ifdef __cplusplus
 typedef cv::Mat* Mat;
+typedef cv::OutputArray OutputArray;
+typedef cv::AsyncArray* AsyncArray;
 typedef cv::TermCriteria* TermCriteria;
 #else
 typedef void* Mat;
+typedef void* AsyncArray;
+typedef void* OutputArray;
 typedef void* TermCriteria;
 #endif
 
@@ -373,6 +377,8 @@ TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon);
 
 int64_t GetCVTickCount();
 double GetTickFrequency();
+
+void AsyncArray_GetAsync(AsyncArray async_out,Mat out);
 
 #ifdef __cplusplus
 }

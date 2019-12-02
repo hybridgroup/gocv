@@ -167,3 +167,7 @@ const char* Layer_GetName(Layer layer) {
 const char* Layer_GetType(Layer layer) {
     return (*layer)->type.c_str();
 }
+
+AsyncArray Net_forwardAsync(Net net, const char* outputName) {
+    return new cv::AsyncArray(net->forwardAsync(outputName));
+}
