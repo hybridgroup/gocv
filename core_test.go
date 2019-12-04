@@ -785,6 +785,21 @@ func TestMatMutators(t *testing.T) {
 		}
 		mat.Close()
 	})
+	t.Run("MultiplyMatrix", func(t *testing.T) {
+		mat := NewMatWithSizeFromScalar(NewScalar(30.0, 0, 0, 0), 2, 1, MatTypeCV32F)
+		mat2 := NewMatWithSizeFromScalar(NewScalar(30.0, 0, 0, 0), 1, 2, MatTypeCV32F)
+		mat3 := mat.MultiplyMatrix(mat2)
+		for i := 0; i < mat3.Cols(); i++ {
+			for j := 0; j < mat3.Rows(); j++ {
+				if mat3.GetFloatAt(i, j) != 900.0 {
+					t.Errorf("MultiplyMatrix incorrect value: %v\n", mat3.GetFloatAt(i, j))
+				}
+			}
+		}
+		mat.Close()
+		mat2.Close()
+		mat3.Close()
+	})
 }
 
 func TestMatAbsDiff(t *testing.T) {

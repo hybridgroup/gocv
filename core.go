@@ -728,6 +728,11 @@ func (m *Mat) DivideFloat(val float32) {
 	C.Mat_DivideFloat(m.p, C.float(val))
 }
 
+// MultiplyMatrix multiplies matrix (m*x)
+func (m *Mat) MultiplyMatrix(x Mat) Mat {
+	return newMat(C.Mat_MultiplyMatrix(m.p, x.p))
+}
+
 // ToImage converts a Mat to a image.Image.
 func (m *Mat) ToImage() (image.Image, error) {
 	t := m.Type()

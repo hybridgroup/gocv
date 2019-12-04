@@ -323,6 +323,10 @@ void Mat_DivideFloat(Mat m, float val) {
     *m /= val;
 }
 
+Mat Mat_MultiplyMatrix(Mat x, Mat y) {
+    return new cv::Mat((*x) * (*y));
+}
+
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
     cv::absdiff(*src1, *src2, *dst);
 }
