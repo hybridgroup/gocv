@@ -753,6 +753,16 @@ double GetTickFrequency() {
     return cv::getTickFrequency();
 }
 
+// AsyncArray_New creates a new empty AsyncArray
+AsyncArray AsyncArray_New() {
+    return new cv::AsyncArray();
+}
+
+// AsyncArray_Close deletes an existing AsyncArray
+void AsyncArray_Close(AsyncArray a) {
+    delete a;
+}
+
 void AsyncArray_GetAsync(AsyncArray async_out,Mat out) {
     async_out->get(*out);
 }

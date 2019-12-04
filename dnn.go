@@ -448,15 +448,3 @@ func (l *Layer) OutputNameToIndex(name string) int {
 	defer C.free(unsafe.Pointer(cName))
 	return int(C.Layer_OutputNameToIndex((C.Layer)(l.p), cName))
 }
-
-// Forward runs forward pass to compute output of layer with name outputName.
-//
-// For further details, please see:
-// https://docs.opencv.org/trunk/db/d30/classcv_1_1dnn_1_1Net.html#a98ed94cb6ef7063d3697259566da310b
-//
-func (net *Net) ForwardAsync(outputName string) AsyncArray {
-	cName := C.CString(outputName)
-	defer C.free(unsafe.Pointer(cName))
-
-	return newAsyncArray(C.Net_forwardAsync((C.Net)(net.p), cName))
-}
