@@ -287,6 +287,8 @@ void Mat_MultiplyFloat(Mat m, float val);
 void Mat_DivideFloat(Mat m, float val);
 Mat Mat_MultiplyMatrix(Mat x, Mat y);
 
+Mat Mat_T(Mat x);
+
 void LUT(Mat src, Mat lut, Mat dst);
 
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst);

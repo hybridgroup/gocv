@@ -2165,6 +2165,30 @@ func TestGetTickFrequencyCount(t *testing.T) {
 	}
 }
 
+func TestMatT(t *testing.T) {
+	var q = []float32{1, 3, 2, 4}
+	src := NewMatWithSize(2, 2, MatTypeCV32F)
+	defer src.Close()
+	src.SetFloatAt(0, 0, 1)
+	src.SetFloatAt(0, 1, 2)
+	src.SetFloatAt(1, 0, 3)
+	src.SetFloatAt(1, 1, 4)
+
+	dst := src.T()
+	defer dst.Close()
+
+	ret, err := dst.DataPtrFloat32()
+	if err != nil {
+		t.Error(err)
+	}
+
+	for i := 0; i < len(ret); i++ {
+		if ret[i] != q[i] {
+			t.Errorf("MatT incorrect value: %v\n", ret[i])
+		}
+	}
+}
+
 func compareImages(img0, img1 image.Image) bool {
 	bounds0 := img0.Bounds()
 	bounds1 := img1.Bounds()

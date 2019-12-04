@@ -327,6 +327,10 @@ Mat Mat_MultiplyMatrix(Mat x, Mat y) {
     return new cv::Mat((*x) * (*y));
 }
 
+Mat Mat_T(Mat x) {
+    return new cv::Mat(x->t());
+}
+
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
     cv::absdiff(*src1, *src2, *dst);
 }
