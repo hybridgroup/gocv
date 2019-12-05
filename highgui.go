@@ -8,8 +8,11 @@ import "C"
 import (
 	"image"
 	"runtime"
+	"sync"
 	"unsafe"
 )
+
+var lock sync.Mutex
 
 // Window is a wrapper around OpenCV's "HighGUI" named windows.
 // While OpenCV was designed for use in full-scale applications and can be used
@@ -154,8 +157,9 @@ func (w *Window) SetWindowTitle(title string) {
 func (w *Window) IMShow(img Mat) {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
-
+	lock.Lock()
 	C.Window_IMShow(cName, img.p)
+	lock.Unlock()
 }
 
 // WaitKey waits for a pressed key.
@@ -167,7 +171,10 @@ func (w *Window) IMShow(img Mat) {
 // http://docs.opencv.org/master/d7/dfc/group__highgui.html#ga5628525ad33f52eab17feebcfba38bd7
 //
 func (w *Window) WaitKey(delay int) int {
-	return int(C.Window_WaitKey(C.int(delay)))
+	lock.Lock()
+	key := int(C.Window_WaitKey(C.int(delay)))
+	lock.Unlock()
+	return key
 }
 
 // MoveWindow moves window to the specified position.
