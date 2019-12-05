@@ -379,7 +379,7 @@ int64_t GetCVTickCount();
 double GetTickFrequency();
 
 AsyncArray AsyncArray_New();
-void AsyncArray_GetAsync(AsyncArray async_out,Mat out);
+const char* AsyncArray_GetAsync(AsyncArray async_out,Mat out);
 void AsyncArray_Close(AsyncArray a);
 
 #ifdef __cplusplus

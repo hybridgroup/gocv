@@ -2,6 +2,10 @@
 
 package gocv
 
+import (
+	"errors"
+)
+
 /*
 #include <stdlib.h>
 #include "core.h"
@@ -23,8 +27,14 @@ func (a *AsyncArray) Ptr() C.AsyncArray {
 }
 
 // Get async returns the Mat
-func (m *AsyncArray) Get(mat *Mat) {
-	C.AsyncArray_GetAsync(m.p, mat.p)
+func (m *AsyncArray) Get(mat *Mat) error {
+	result := C.AsyncArray_GetAsync(m.p, mat.p)
+	err := C.GoString(result)
+
+	if len(err) > 0 {
+		return errors.New(err)
+	}
+	return nil
 }
 
 // newAsyncArray returns a new AsyncArray from a C AsyncArray

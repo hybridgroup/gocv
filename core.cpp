@@ -763,6 +763,11 @@ void AsyncArray_Close(AsyncArray a) {
     delete a;
 }
 
-void AsyncArray_GetAsync(AsyncArray async_out,Mat out) {
-    async_out->get(*out);
+const char* AsyncArray_GetAsync(AsyncArray async_out,Mat out) {
+    try {
+       async_out->get(*out);
+    } catch(cv::Exception ex) {
+        return ex.err.c_str();
+    }
+    return "";
 }
