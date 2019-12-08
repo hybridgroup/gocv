@@ -4,24 +4,52 @@ func (c MatType) String() string {
 	switch c {
 	case MatTypeCV8U:
 		return "CV8U"
-	case MatTypeCV16U:
-		return "CV16U"
-	case MatTypeCV16S:
-		return "CV16S"
-	case MatTypeCV16SC2:
-		return "CV16SC2"
-	case MatTypeCV32S:
-		return "CV32S"
-	case MatTypeCV32F:
-		return "CV32F"
-	case MatTypeCV64F:
-		return "CV64F"
 	case MatTypeCV8UC2:
 		return "CV8UC2"
 	case MatTypeCV8UC3:
 		return "CV8UC3"
 	case MatTypeCV8UC4:
 		return "CV8UC4"
+	case MatTypeCV16U:
+		return "CV16U"
+	case MatTypeCV16UC2:
+		return "CV16UC2"
+	case MatTypeCV16UC3:
+		return "CV16UC3"
+	case MatTypeCV16UC4:
+		return "CV16UC4"
+	case MatTypeCV16S:
+		return "CV16S"
+	case MatTypeCV16SC2:
+		return "CV16SC2"
+	case MatTypeCV16SC3:
+		return "CV16SC3"
+	case MatTypeCV16SC4:
+		return "CV16SC4"
+	case MatTypeCV32S:
+		return "CV32S"
+	case MatTypeCV32SC2:
+		return "CV32SC2"
+	case MatTypeCV32SC3:
+		return "CV32SC3"
+	case MatTypeCV32SC4:
+		return "CV32SC4"
+	case MatTypeCV32F:
+		return "CV32F"
+	case MatTypeCV32FC2:
+		return "CV32FC2"
+	case MatTypeCV32FC3:
+		return "CV32FC3"
+	case MatTypeCV32FC4:
+		return "CV32FC4"
+	case MatTypeCV64F:
+		return "CV64F"
+	case MatTypeCV64FC2:
+		return "CV64FC2"
+	case MatTypeCV64FC3:
+		return "CV64FC3"
+	case MatTypeCV64FC4:
+		return "CV64FC4"
 	}
 	return ""
 }
