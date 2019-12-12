@@ -115,3 +115,33 @@ func TestGroupRectangles(t *testing.T) {
 		t.Errorf("Error in TestGroupRectangles test: %d", len(results))
 	}
 }
+
+func TestQRCodeDetector(t *testing.T) {
+	img := IMRead("images/qrcode.png", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in QRCodeDetector test")
+	}
+	defer img.Close()
+
+	// load QRCodeDetector to recognize people
+
+	detector := NewQRCodeDetector()
+	defer detector.Close()
+
+	bbox := NewMat()
+	qr := NewMat()
+	defer bbox.Close()
+	defer qr.Close()
+
+	res := detector.Detect(img, &bbox)
+	if !res {
+		t.Errorf("Error in TestQRCodeDetector test: res == false")
+	}
+	res2 := detector.Decode(img, bbox, &qr)
+
+	res3 := detector.DetectAndDecode(img, &bbox, &qr)
+
+	if res2 != res3 {
+		t.Errorf("Error in TestQRCodeDetector res2: %s != res3: %s", res2, res3)
+	}
+}
