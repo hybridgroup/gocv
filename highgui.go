@@ -8,8 +8,11 @@ import "C"
 import (
 	"image"
 	"runtime"
+	"sync"
 	"unsafe"
 )
+
+var lock sync.Mutex
 
 // Window is a wrapper around OpenCV's "HighGUI" named windows.
 // While OpenCV was designed for use in full-scale applications and can be used
@@ -47,6 +50,8 @@ func NewWindow(name string) *Window {
 // http://docs.opencv.org/master/d7/dfc/group__highgui.html#ga851ccdd6961022d1d5b4c4f255dbab34
 //
 func (w *Window) Close() error {
+	lock.Lock()
+	defer lock.Unlock()
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
@@ -111,6 +116,8 @@ const (
 // https://docs.opencv.org/master/d7/dfc/group__highgui.html#gaaf9504b8f9cf19024d9d44a14e461656
 //
 func (w *Window) GetWindowProperty(flag WindowPropertyFlag) float64 {
+	lock.Lock()
+	defer lock.Unlock()
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
@@ -123,6 +130,8 @@ func (w *Window) GetWindowProperty(flag WindowPropertyFlag) float64 {
 // https://docs.opencv.org/master/d7/dfc/group__highgui.html#ga66e4a6db4d4e06148bcdfe0d70a5df27
 //
 func (w *Window) SetWindowProperty(flag WindowPropertyFlag, value WindowFlag) {
+	lock.Lock()
+	defer lock.Unlock()
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
@@ -135,6 +144,8 @@ func (w *Window) SetWindowProperty(flag WindowPropertyFlag, value WindowFlag) {
 // https://docs.opencv.org/master/d7/dfc/group__highgui.html#ga56f8849295fd10d0c319724ddb773d96
 //
 func (w *Window) SetWindowTitle(title string) {
+	lock.Lock()
+	defer lock.Unlock()
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
@@ -152,6 +163,8 @@ func (w *Window) SetWindowTitle(title string) {
 // http://docs.opencv.org/master/d7/dfc/group__highgui.html#ga453d42fe4cb60e5723281a89973ee563
 //
 func (w *Window) IMShow(img Mat) {
+	lock.Lock()
+	defer lock.Unlock()
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
@@ -167,6 +180,8 @@ func (w *Window) IMShow(img Mat) {
 // http://docs.opencv.org/master/d7/dfc/group__highgui.html#ga5628525ad33f52eab17feebcfba38bd7
 //
 func (w *Window) WaitKey(delay int) int {
+	lock.Lock()
+	defer lock.Unlock()
 	return int(C.Window_WaitKey(C.int(delay)))
 }
 
@@ -176,6 +191,8 @@ func (w *Window) WaitKey(delay int) int {
 // https://docs.opencv.org/master/d7/dfc/group__highgui.html#ga8d86b207f7211250dbe6e28f76307ffb
 //
 func (w *Window) MoveWindow(x, y int) {
+	lock.Lock()
+	defer lock.Unlock()
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
@@ -188,6 +205,8 @@ func (w *Window) MoveWindow(x, y int) {
 // https://docs.opencv.org/master/d7/dfc/group__highgui.html#ga9e80e080f7ef33f897e415358aee7f7e
 //
 func (w *Window) ResizeWindow(width, height int) {
+	lock.Lock()
+	defer lock.Unlock()
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
@@ -237,6 +256,8 @@ func SelectROIs(name string, img Mat) []image.Rectangle {
 // Only use when no Window exists in your application, e.g. command line app.
 //
 func WaitKey(delay int) int {
+	lock.Lock()
+	defer lock.Unlock()
 	return int(C.Window_WaitKey(C.int(delay)))
 }
 
@@ -252,6 +273,8 @@ type Trackbar struct {
 // https://docs.opencv.org/master/d7/dfc/group__highgui.html#gaf78d2155d30b728fc413803745b67a9b
 //
 func (w *Window) CreateTrackbar(name string, max int) *Trackbar {
+	lock.Lock()
+	defer lock.Unlock()
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
