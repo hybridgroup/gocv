@@ -372,6 +372,9 @@ TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon);
 int64_t GetCVTickCount();
 double GetTickFrequency();
 
+Mat Mat_rowRange(Mat m,int startrow,int endrow);
+Mat Mat_colRange(Mat m,int startrow,int endrow);
+
 #ifdef __cplusplus
 }
 #endif

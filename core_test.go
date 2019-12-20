@@ -2184,3 +2184,31 @@ func compareImages(img0, img1 image.Image) bool {
 
 	return true
 }
+
+func TestColRowRange(t *testing.T) {
+	mat := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat.Close()
+	if mat.Empty() {
+		t.Error("TestColRowRange should not be empty")
+	}
+
+	if mat.Rows() != 101 {
+		t.Errorf("TestColRowRange incorrect row count: %v\n", mat.Rows())
+	}
+
+	if mat.Cols() != 102 {
+		t.Errorf("TestColRowRange incorrect col count: %v\n", mat.Cols())
+	}
+
+	submatRow := mat.RowRange(0, 50)
+	defer submatRow.Close()
+	if submatRow.Rows() != 50 {
+		t.Errorf("TestColRowRange incorrect submatRow count: %v\n", submatRow.Rows())
+	}
+
+	submatCols := mat.ColRange(0, 50)
+	defer submatCols.Close()
+	if submatCols.Cols() != 50 {
+		t.Errorf("TestColRowRange incorrect submatCols count: %v\n", submatCols.Cols())
+	}
+}
