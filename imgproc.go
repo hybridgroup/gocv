@@ -1279,24 +1279,22 @@ func FillPoly(img *Mat, pts [][]image.Point, c color.RGBA) {
 	points := make([]C.struct_Points, len(pts))
 
 	for i, pt := range pts {
-		func() {
-			p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
-			defer C.free(unsafe.Pointer(p))
+		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
+		defer C.free(unsafe.Pointer(p))
 
-			pa := getPoints(p, len(pt))
+		pa := getPoints(p, len(pt))
 
-			for j, point := range pt {
-				pa[j] = C.struct_Point{
-					x: C.int(point.X),
-					y: C.int(point.Y),
-				}
+		for j, point := range pt {
+			pa[j] = C.struct_Point{
+				x: C.int(point.X),
+				y: C.int(point.Y),
 			}
+		}
 
-			points[i] = C.struct_Points{
-				points: (*C.Point)(p),
-				length: C.int(len(pt)),
-			}
-		}()
+		points[i] = C.struct_Points{
+			points: (*C.Point)(p),
+			length: C.int(len(pt)),
+		}
 	}
 
 	cPoints := C.struct_Contours{
@@ -1622,24 +1620,22 @@ func DrawContours(img *Mat, contours [][]image.Point, contourIdx int, c color.RG
 	cntrs := make([]C.struct_Points, len(contours))
 
 	for i, contour := range contours {
-		func() {
-			p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(contour))))
-			defer C.free(unsafe.Pointer(p))
+		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(contour))))
+		defer C.free(unsafe.Pointer(p))
 
-			pa := getPoints(p, len(contour))
+		pa := getPoints(p, len(contour))
 
-			for j, point := range contour {
-				pa[j] = C.struct_Point{
-					x: C.int(point.X),
-					y: C.int(point.Y),
-				}
+		for j, point := range contour {
+			pa[j] = C.struct_Point{
+				x: C.int(point.X),
+				y: C.int(point.Y),
 			}
+		}
 
-			cntrs[i] = C.struct_Points{
-				points: (*C.Point)(p),
-				length: C.int(len(contour)),
-			}
-		}()
+		cntrs[i] = C.struct_Points{
+			points: (*C.Point)(p),
+			length: C.int(len(contour)),
+		}
 	}
 
 	cContours := C.struct_Contours{
