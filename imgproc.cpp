@@ -95,6 +95,28 @@ double CompareHist(Mat hist1, Mat hist2, int method) {
     return cv::compareHist(*hist1, *hist2, method);
 }
 
+struct RotatedRect FitEllipse(Points points)
+{
+  Point *rpts = new Point[points.length];
+  std::vector<cv::Point> pts;
+
+  for (size_t i = 0; i < points.length; i++)
+  {
+    pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
+    Point pt = {points.points[i].x, points.points[i].y};
+    rpts[i] = pt;
+  }
+
+  cv::RotatedRect bRect = cv::fitEllipse(pts);
+
+  Rect r = {bRect.boundingRect().x, bRect.boundingRect().y, bRect.boundingRect().width, bRect.boundingRect().height};
+  Point centrpt = {int(lroundf(bRect.center.x)), int(lroundf(bRect.center.y))};
+  Size szsz = {int(lroundf(bRect.size.width)), int(lroundf(bRect.size.height))};
+
+  RotatedRect rotRect = {(Contour){rpts, 4}, r, centrpt, szsz, bRect.angle};
+  return rotRect;
+}
+
 void ConvexHull(Contour points, Mat hull, bool clockwise, bool returnPoints) {
     std::vector<cv::Point> pts;
 

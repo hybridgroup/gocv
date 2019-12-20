@@ -125,3 +125,27 @@ struct Rects GroupRectangles(struct Rects rects, int groupThreshold, double eps)
     Rects ret = {results, (int)vRect.size()};
     return ret;
 }
+
+// QRCodeDetector
+
+QRCodeDetector QRCodeDetector_New() {
+    return new cv::QRCodeDetector();
+}
+
+void QRCodeDetector_Close(QRCodeDetector qr) {
+    delete qr;
+}
+
+const char* QRCodeDetector_DetectAndDecode(QRCodeDetector qr, Mat input,Mat points,Mat straight_qrcode) {
+  cv::String *str = new cv::String(qr->detectAndDecode(*input,*points,*straight_qrcode)); 
+  return str->c_str();
+}
+
+bool QRCodeDetector_Detect(QRCodeDetector qr, Mat input,Mat points) {
+  return qr->detect(*input,*points); 
+}
+
+const char* QRCodeDetector_Decode(QRCodeDetector qr, Mat input,Mat inputPoints,Mat straight_qrcode) {
+  cv::String *str = new cv::String(qr->detectAndDecode(*input,*inputPoints,*straight_qrcode)); 
+  return str->c_str();
+}

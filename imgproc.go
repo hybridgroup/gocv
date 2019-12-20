@@ -455,18 +455,11 @@ type RotatedRect struct {
 	Angle        float64
 }
 
-// MinAreaRect finds a rotated rectangle of the minimum area enclosing the input 2D point set.
+// toPoints converts C.Contour to []image.Points
 //
-// For further details, please see:
-// https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga3d476a3417130ae5154aea421ca7ead9
-//
-func MinAreaRect(points []image.Point) RotatedRect {
-	cPoints := toCPoints(points)
-	result := C.MinAreaRect(cPoints)
-
-	defer C.Points_Close(result.pts)
-	pArray := result.pts.points
-	pLength := int(result.pts.length)
+func toPoints(points C.Contour) []image.Point {
+	pArray := points.points
+	pLength := int(points.length)
 
 	pHdr := reflect.SliceHeader{
 		Data: uintptr(unsafe.Pointer(pArray)),
@@ -479,15 +472,48 @@ func MinAreaRect(points []image.Point) RotatedRect {
 	for j, pt := range sPoints {
 		points4[j] = image.Pt(int(pt.x), int(pt.y))
 	}
+	return points4
+}
 
+// MinAreaRect finds a rotated rectangle of the minimum area enclosing the input 2D point set.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga3d476a3417130ae5154aea421ca7ead9
+//
+func MinAreaRect(points []image.Point) RotatedRect {
+	cPoints := toCPoints(points)
+	result := C.MinAreaRect(cPoints)
+
+	defer C.Points_Close(result.pts)
 	return RotatedRect{
-		Contour:      points4,
+		Contour:      toPoints(result.pts),
 		BoundingRect: image.Rect(int(result.boundingRect.x), int(result.boundingRect.y), int(result.boundingRect.x)+int(result.boundingRect.width), int(result.boundingRect.y)+int(result.boundingRect.height)),
 		Center:       image.Pt(int(result.center.x), int(result.center.y)),
 		Width:        int(result.size.width),
 		Height:       int(result.size.height),
 		Angle:        float64(result.angle),
 	}
+}
+
+// FitEllipse Fits an ellipse around a set of 2D points.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf259efaad93098103d6c27b9e4900ffa
+//
+func FitEllipse(points []image.Point) RotatedRect {
+	cPoints := toCPoints(points)
+	cRect := C.FitEllipse(cPoints)
+	defer C.Points_Close(cRect.pts)
+
+	return RotatedRect{
+		Contour:      toPoints(cRect.pts),
+		BoundingRect: image.Rect(int(cRect.boundingRect.x), int(cRect.boundingRect.y), int(cRect.boundingRect.x)+int(cRect.boundingRect.width), int(cRect.boundingRect.y)+int(cRect.boundingRect.height)),
+		Center:       image.Pt(int(cRect.center.x), int(cRect.center.y)),
+		Width:        int(cRect.size.width),
+		Height:       int(cRect.size.height),
+		Angle:        float64(cRect.angle),
+	}
+
 }
 
 // MinEnclosingCircle finds a circle of the minimum area enclosing the input 2D point set.
@@ -1253,24 +1279,22 @@ func FillPoly(img *Mat, pts [][]image.Point, c color.RGBA) {
 	points := make([]C.struct_Points, len(pts))
 
 	for i, pt := range pts {
-		func() {
-			p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
-			defer C.free(unsafe.Pointer(p))
+		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
+		defer C.free(unsafe.Pointer(p))
 
-			pa := getPoints(p, len(pt))
+		pa := getPoints(p, len(pt))
 
-			for j, point := range pt {
-				pa[j] = C.struct_Point{
-					x: C.int(point.X),
-					y: C.int(point.Y),
-				}
+		for j, point := range pt {
+			pa[j] = C.struct_Point{
+				x: C.int(point.X),
+				y: C.int(point.Y),
 			}
+		}
 
-			points[i] = C.struct_Points{
-				points: (*C.Point)(p),
-				length: C.int(len(pt)),
-			}
-		}()
+		points[i] = C.struct_Points{
+			points: (*C.Point)(p),
+			length: C.int(len(pt)),
+		}
 	}
 
 	cPoints := C.struct_Contours{
@@ -1596,24 +1620,22 @@ func DrawContours(img *Mat, contours [][]image.Point, contourIdx int, c color.RG
 	cntrs := make([]C.struct_Points, len(contours))
 
 	for i, contour := range contours {
-		func() {
-			p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(contour))))
-			defer C.free(unsafe.Pointer(p))
+		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(contour))))
+		defer C.free(unsafe.Pointer(p))
 
-			pa := getPoints(p, len(contour))
+		pa := getPoints(p, len(contour))
 
-			for j, point := range contour {
-				pa[j] = C.struct_Point{
-					x: C.int(point.X),
-					y: C.int(point.Y),
-				}
+		for j, point := range contour {
+			pa[j] = C.struct_Point{
+				x: C.int(point.X),
+				y: C.int(point.Y),
 			}
+		}
 
-			cntrs[i] = C.struct_Points{
-				points: (*C.Point)(p),
-				length: C.int(len(contour)),
-			}
-		}()
+		cntrs[i] = C.struct_Points{
+			points: (*C.Point)(p),
+			length: C.int(len(contour)),
+		}
 	}
 
 	cContours := C.struct_Contours{
