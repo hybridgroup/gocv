@@ -744,3 +744,12 @@ int64 GetCVTickCount() {
 double GetTickFrequency() {
     return cv::getTickFrequency();
 }
+
+Mat Mat_rowRange(Mat m,int startrow,int endrow) {
+    return new cv::Mat(m->rowRange(startrow,endrow));
+}
+
+Mat Mat_colRange(Mat m,int startrow,int endrow) {
+    return new cv::Mat(m->colRange(startrow,endrow));
+}
+
