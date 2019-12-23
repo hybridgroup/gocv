@@ -785,6 +785,21 @@ func TestMatMutators(t *testing.T) {
 		}
 		mat.Close()
 	})
+	t.Run("MultiplyMatrix", func(t *testing.T) {
+		mat := NewMatWithSizeFromScalar(NewScalar(30.0, 0, 0, 0), 2, 1, MatTypeCV32F)
+		mat2 := NewMatWithSizeFromScalar(NewScalar(30.0, 0, 0, 0), 1, 2, MatTypeCV32F)
+		mat3 := mat.MultiplyMatrix(mat2)
+		for i := 0; i < mat3.Cols(); i++ {
+			for j := 0; j < mat3.Rows(); j++ {
+				if mat3.GetFloatAt(i, j) != 900.0 {
+					t.Errorf("MultiplyMatrix incorrect value: %v\n", mat3.GetFloatAt(i, j))
+				}
+			}
+		}
+		mat.Close()
+		mat2.Close()
+		mat3.Close()
+	})
 }
 
 func TestMatAbsDiff(t *testing.T) {
@@ -2147,6 +2162,30 @@ func TestGetTickFrequencyCount(t *testing.T) {
 	count := GetTickCount()
 	if count == 0 {
 		t.Error("GetTickCount expected non zero.")
+	}
+}
+
+func TestMatT(t *testing.T) {
+	var q = []float32{1, 3, 2, 4}
+	src := NewMatWithSize(2, 2, MatTypeCV32F)
+	defer src.Close()
+	src.SetFloatAt(0, 0, 1)
+	src.SetFloatAt(0, 1, 2)
+	src.SetFloatAt(1, 0, 3)
+	src.SetFloatAt(1, 1, 4)
+
+	dst := src.T()
+	defer dst.Close()
+
+	ret, err := dst.DataPtrFloat32()
+	if err != nil {
+		t.Error(err)
+	}
+
+	for i := 0; i < len(ret); i++ {
+		if ret[i] != q[i] {
+			t.Errorf("MatT incorrect value: %v\n", ret[i])
+		}
 	}
 }
 

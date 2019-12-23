@@ -728,6 +728,17 @@ func (m *Mat) DivideFloat(val float32) {
 	C.Mat_DivideFloat(m.p, C.float(val))
 }
 
+// MultiplyMatrix multiplies matrix (m*x)
+func (m *Mat) MultiplyMatrix(x Mat) Mat {
+	return newMat(C.Mat_MultiplyMatrix(m.p, x.p))
+}
+
+// T  transpose matrix
+// https://docs.opencv.org/4.1.2/d3/d63/classcv_1_1Mat.html#aaa428c60ccb6d8ea5de18f63dfac8e11
+func (m *Mat) T() Mat {
+	return newMat(C.Mat_T(m.p))
+}
+
 // ToImage converts a Mat to a image.Image.
 func (m *Mat) ToImage() (image.Image, error) {
 	t := m.Type()
