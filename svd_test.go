@@ -27,6 +27,7 @@ func TestSVDCompute(t *testing.T) {
 	src.SetFloatAt(0, 1, -0.90478725)
 	src.SetFloatAt(1, 0, 0.634576)
 	src.SetFloatAt(1, 1, 6.10002347)
+	defer src.Close()
 
 	w := NewMat()
 	defer w.Close()
