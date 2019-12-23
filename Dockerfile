@@ -41,7 +41,7 @@ RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSIO
 FROM opencv AS gocv
 LABEL maintainer="hybridgroup"
 
-ARG GOVERSION="1.11.2"
+ARG GOVERSION="1.13.5"
 ENV GOVERSION $GOVERSION
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
