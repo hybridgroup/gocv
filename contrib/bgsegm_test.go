@@ -2,8 +2,8 @@ package contrib
 
 import (
 	"testing"
+
 	"gocv.io/x/gocv"
-	v "gocv.io/x/gocv/contrib"
 )
 
 func TestCNT(t *testing.T) {
@@ -16,7 +16,7 @@ func TestCNT(t *testing.T) {
 	dst := gocv.NewMat()
 	defer dst.Close()
 
-	cnt := v.NewBackgroundSubtractorCNT()
+	cnt := NewBackgroundSubtractorCNT()
 	defer cnt.Close()
 
 	cnt.Apply(img, &dst)
@@ -25,4 +25,3 @@ func TestCNT(t *testing.T) {
 		t.Error("Error in TestCNT test")
 	}
 }
-

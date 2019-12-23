@@ -7,15 +7,15 @@ package contrib
 import "C"
 
 import (
-    "unsafe"
+	"unsafe"
 
-    "gocv.io/x/gocv"
+	"gocv.io/x/gocv"
 )
 
 // BackgroundSubtractorCNT is a wrapper around the cv::BackgroundSubtractorCNT.
 type BackgroundSubtractorCNT struct {
-    // C.BackgroundSubtractorCNT
-    p unsafe.Pointer
+	// C.BackgroundSubtractorCNT
+	p unsafe.Pointer
 }
 
 // NewBackgroundSubtractorCNT returns a new BackgroundSubtractor algorithm
@@ -27,15 +27,15 @@ type BackgroundSubtractorCNT struct {
 // https://docs.opencv.org/3.4/de/dca/classcv_1_1bgsegm_1_1BackgroundSubtractorCNT.html
 //
 func NewBackgroundSubtractorCNT() BackgroundSubtractorCNT {
-    return BackgroundSubtractorCNT{p: unsafe.Pointer(C.BackgroundSubtractorCNT_Create())}
+	return BackgroundSubtractorCNT{p: unsafe.Pointer(C.BackgroundSubtractorCNT_Create())}
 }
 
 // Close BackgroundSubtractorCNT.
 func (b *BackgroundSubtractorCNT) Close() error {
-    C.BackgroundSubtractorCNT_Close((C.BackgroundSubtractorCNT)(b.p))
-    b.p = nil
+	C.BackgroundSubtractorCNT_Close((C.BackgroundSubtractorCNT)(b.p))
+	b.p = nil
 
-    return nil
+	return nil
 }
 
 // Apply computes a foreground mask using the current BackgroundSubtractorCNT.
@@ -44,7 +44,7 @@ func (b *BackgroundSubtractorCNT) Close() error {
 // https://docs.opencv.org/3.4/de/dca/classcv_1_1bgsegm_1_1BackgroundSubtractorCNT.html
 //
 func (b *BackgroundSubtractorCNT) Apply(src gocv.Mat, dst *gocv.Mat) {
-    C.BackgroundSubtractorCNT_Apply((C.BackgroundSubtractorCNT)(b.p), (C.Mat)(src.Ptr()), (C.Mat)(dst.Ptr()))
+	C.BackgroundSubtractorCNT_Apply((C.BackgroundSubtractorCNT)(b.p), (C.Mat)(src.Ptr()), (C.Mat)(dst.Ptr()))
 
-    return
+	return
 }
