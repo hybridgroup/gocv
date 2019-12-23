@@ -48,7 +48,7 @@ func TestReadNet(t *testing.T) {
 		}
 
 		lnames := net.GetLayerNames()
-		if len(lnames) != 1 {
+		if len(lnames) != 142 {
 			t.Errorf("Invalid len layer names in ReadNet test: %d\n", len(lnames))
 		}
 
