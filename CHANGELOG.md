@@ -1,3 +1,44 @@
+0.22.0
+---
+* **bgsegm**
+    * Add BackgroundSubtractorCNT
+* **calib3d**
+    * Added undistort function (#520)
+* **core**
+    * add functions (singular value decomposition, multiply between matrices, transpose matrix) (#559)
+    * Add new funcs (#578)
+    * add setIdentity() method to Mat
+    * add String method (#552)
+    * MatType: add missing constants
+* **dnn**
+    * Adding GetLayerNames()
+    * respect the bit depth of the input image to set the expected output when converting an image to a blob
+* **doc**
+    * change opencv version 3.x to 4.x
+* **docker**
+    * use Go1.13.5 for image
+* **imgcodecs**
+    * Fix webp image decode error (#523)
+imgcodecs: optimize copy of data used for IMDecode method
+* **imgproc**
+    * Add GetRectSubPix
+    * Added ClipLine
+    * Added InvertAffineTransform
+    * Added LinearPolar function (#524)
+    * correct ksize param used for MedianBlur unit test
+    * Feature/put text with line type (#527)
+    * FitEllipse
+    * In FillPoly and DrawContours functions, remove func() wrap to avoid memory freed before calling opencv functions. (#543)
+* **objdetect**
+    * Add support QR codes
+* **opencv**
+    * update to OpenCV 4.2.0 release
+* **openvino**
+    * Add openvino async
+* **test**
+    * Tolerate imprecise result in SolvePoly
+    * Tolerate imprecision in TestHoughLines
+
 0.21.0
 ---
 * **build**
