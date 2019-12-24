@@ -287,6 +287,7 @@ func (m *Mat) Total() int {
 func (m *Mat) Size() (dims []int) {
 	cdims := C.IntVector{}
 	C.Mat_Size(m.p, &cdims)
+	defer C.IntVector_close(cdims)
 
 	h := &reflect.SliceHeader{
 		Data: uintptr(unsafe.Pointer(cdims.val)),
@@ -1718,6 +1719,7 @@ func SortIdx(src Mat, dst *Mat, flags SortFlags) {
 func Split(src Mat) (mv []Mat) {
 	cMats := C.struct_Mats{}
 	C.Mat_Split(src.p, &(cMats))
+	defer C.Mats_close(cMats)
 	mv = make([]Mat, cMats.length)
 	for i := C.int(0); i < cMats.length; i++ {
 		mv[i].p = C.Mats_get(cMats, i)
