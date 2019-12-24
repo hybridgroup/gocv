@@ -378,6 +378,8 @@ double GetTickFrequency();
 Mat Mat_rowRange(Mat m,int startrow,int endrow);
 Mat Mat_colRange(Mat m,int startrow,int endrow);
 
+void IntVector_close(struct IntVector ivec);
+
 #ifdef __cplusplus
 }
 #endif
