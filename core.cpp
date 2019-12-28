@@ -761,3 +761,6 @@ Mat Mat_colRange(Mat m,int startrow,int endrow) {
     return new cv::Mat(m->colRange(startrow,endrow));
 }
 
+void IntVector_Close(struct IntVector ivec) {
+    delete[] ivec.val;
+}
