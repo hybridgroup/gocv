@@ -410,6 +410,28 @@ func (net *Net) GetUnconnectedOutLayers() (ids []int) {
 	return
 }
 
+// GetLayerNames returns all layer names.
+//
+// For furtherdetails, please see:
+// https://docs.opencv.org/master/db/d30/classcv_1_1dnn_1_1Net.html#ae8be9806024a0d1d41aba687cce99e6b
+//
+func (net *Net) GetLayerNames() (names []string) {
+	cstrs := C.CStrings{}
+	C.Net_GetLayerNames((C.Net)(net.p), &cstrs)
+
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cstrs.strs)),
+		Len:  int(cstrs.length),
+		Cap:  int(cstrs.length),
+	}
+	pcstrs := *(*[]string)(unsafe.Pointer(h))
+
+	for i := 0; i < int(cstrs.length); i++ {
+		names = append(names, string(pcstrs[i]))
+	}
+	return
+}
+
 // Close Layer
 func (l *Layer) Close() error {
 	C.Layer_Close((C.Layer)(l.p))

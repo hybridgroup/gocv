@@ -287,6 +287,7 @@ func (m *Mat) Total() int {
 func (m *Mat) Size() (dims []int) {
 	cdims := C.IntVector{}
 	C.Mat_Size(m.p, &cdims)
+	defer C.IntVector_Close(cdims)
 
 	h := &reflect.SliceHeader{
 		Data: uintptr(unsafe.Pointer(cdims.val)),
@@ -726,6 +727,17 @@ func (m *Mat) MultiplyFloat(val float32) {
 // mat /= val operation.
 func (m *Mat) DivideFloat(val float32) {
 	C.Mat_DivideFloat(m.p, C.float(val))
+}
+
+// MultiplyMatrix multiplies matrix (m*x)
+func (m *Mat) MultiplyMatrix(x Mat) Mat {
+	return newMat(C.Mat_MultiplyMatrix(m.p, x.p))
+}
+
+// T  transpose matrix
+// https://docs.opencv.org/4.1.2/d3/d63/classcv_1_1Mat.html#aaa428c60ccb6d8ea5de18f63dfac8e11
+func (m *Mat) T() Mat {
+	return newMat(C.Mat_T(m.p))
 }
 
 // ToImage converts a Mat to a image.Image.
@@ -1707,6 +1719,7 @@ func SortIdx(src Mat, dst *Mat, flags SortFlags) {
 func Split(src Mat) (mv []Mat) {
 	cMats := C.struct_Mats{}
 	C.Mat_Split(src.p, &(cMats))
+	defer C.Mats_Close(cMats)
 	mv = make([]Mat, cMats.length)
 	for i := C.int(0); i < cMats.length; i++ {
 		mv[i].p = C.Mats_get(cMats, i)
@@ -1943,4 +1956,22 @@ func toCStrings(strs []string) C.struct_CStrings {
 		strs:   (**C.char)(&cStringsSlice[0]),
 		length: C.int(len(strs)),
 	}
+}
+
+// RowRange creates a matrix header for the specified row span.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#aa6542193430356ad631a9beabc624107
+//
+func (m *Mat) RowRange(start, end int) Mat {
+	return newMat(C.Mat_rowRange(m.p, C.int(start), C.int(end)))
+}
+
+// ColRange creates a matrix header for the specified column span.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#aadc8f9210fe4dec50513746c246fa8d9
+//
+func (m *Mat) ColRange(start, end int) Mat {
+	return newMat(C.Mat_colRange(m.p, C.int(start), C.int(end)))
 }

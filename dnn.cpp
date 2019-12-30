@@ -94,13 +94,33 @@ void Net_GetUnconnectedOutLayers(Net net, IntVector* res) {
     return;
 }
 
+void Net_GetLayerNames(Net net, CStrings* names) {
+    std::vector< cv::String > cstrs(net->getLayerNames());
+    const char **strs = new const char*[cstrs.size()];
+
+    for (size_t i = 0; i < cstrs.size(); ++i) {
+        strs[i] = cstrs[i].c_str();
+    }
+
+    names->length = cstrs.size();
+    names->strs = strs;
+    return;
+}
+
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
                       bool crop) {
     cv::Size sz(size.width, size.height);
-    cv::Scalar cm = cv::Scalar(mean.val1, mean.val2, mean.val3, mean.val4);
 
-    // TODO: handle different version signatures of this function v2 vs v3.
-    return new cv::Mat(cv::dnn::blobFromImage(*image, scalefactor, sz, cm, swapRB, crop));
+    // set the output ddepth to the input image depth
+    int ddepth = image->depth();
+    if (ddepth == CV_8U)
+    {
+        // no scalar mean adjustment allowed, so ignore
+        return new cv::Mat(cv::dnn::blobFromImage(*image, scalefactor, sz, NULL, swapRB, crop, ddepth));
+    }
+
+    cv::Scalar cm(mean.val1, mean.val2, mean.val3, mean.val4);
+    return new cv::Mat(cv::dnn::blobFromImage(*image, scalefactor, sz, cm, swapRB, crop, ddepth));
 }
 
 void Net_BlobFromImages(struct Mats images, Mat blob, double scalefactor, Size size,

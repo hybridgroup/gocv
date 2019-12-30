@@ -323,6 +323,14 @@ void Mat_DivideFloat(Mat m, float val) {
     *m /= val;
 }
 
+Mat Mat_MultiplyMatrix(Mat x, Mat y) {
+    return new cv::Mat((*x) * (*y));
+}
+
+Mat Mat_T(Mat x) {
+    return new cv::Mat(x->t());
+}
+
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
     cv::absdiff(*src1, *src2, *dst);
 }
@@ -743,4 +751,16 @@ int64 GetCVTickCount() {
 
 double GetTickFrequency() {
     return cv::getTickFrequency();
+}
+
+Mat Mat_rowRange(Mat m,int startrow,int endrow) {
+    return new cv::Mat(m->rowRange(startrow,endrow));
+}
+
+Mat Mat_colRange(Mat m,int startrow,int endrow) {
+    return new cv::Mat(m->colRange(startrow,endrow));
+}
+
+void IntVector_Close(struct IntVector ivec) {
+    delete[] ivec.val;
 }

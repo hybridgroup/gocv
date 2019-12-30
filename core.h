@@ -285,6 +285,9 @@ void Mat_AddFloat(Mat m, float val);
 void Mat_SubtractFloat(Mat m, float val);
 void Mat_MultiplyFloat(Mat m, float val);
 void Mat_DivideFloat(Mat m, float val);
+Mat Mat_MultiplyMatrix(Mat x, Mat y);
+
+Mat Mat_T(Mat x);
 
 void LUT(Mat src, Mat lut, Mat dst);
 
@@ -371,6 +374,11 @@ TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon);
 
 int64_t GetCVTickCount();
 double GetTickFrequency();
+
+Mat Mat_rowRange(Mat m,int startrow,int endrow);
+Mat Mat_colRange(Mat m,int startrow,int endrow);
+
+void IntVector_Close(struct IntVector ivec);
 
 #ifdef __cplusplus
 }

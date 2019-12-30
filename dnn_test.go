@@ -47,6 +47,11 @@ func TestReadNet(t *testing.T) {
 			t.Errorf("Invalid len output layers in ReadNet test: %d\n", len(ids))
 		}
 
+		lnames := net.GetLayerNames()
+		if len(lnames) != 142 {
+			t.Errorf("Invalid len layer names in ReadNet test: %d\n", len(lnames))
+		}
+
 		prob := net.ForwardLayers([]string{"prob"})
 		if len(prob) == 0 {
 			t.Error("Invalid len prob in ReadNet test")
@@ -60,11 +65,11 @@ func TestReadNet(t *testing.T) {
 		defer probMat.Close()
 		_, maxVal, minLoc, maxLoc := MinMaxLoc(probMat)
 
-		if round(float64(maxVal), 0.00005) != 0.99995 {
+		if round(float64(maxVal), 0.00005) != 0.9998 {
 			t.Errorf("ReadNet maxVal incorrect: %v\n", round(float64(maxVal), 0.00005))
 		}
 
-		if minLoc.X != 793 || minLoc.Y != 0 {
+		if minLoc.X != 955 || minLoc.Y != 0 {
 			t.Errorf("ReadNet minLoc incorrect: %v\n", minLoc)
 		}
 
@@ -140,11 +145,11 @@ func TestCaffe(t *testing.T) {
 		defer probMat.Close()
 		_, maxVal, minLoc, maxLoc := MinMaxLoc(probMat)
 
-		if round(float64(maxVal), 0.00005) != 0.99995 {
+		if round(float64(maxVal), 0.00005) != 0.9998 {
 			t.Errorf("Caffe maxVal incorrect: %v\n", round(float64(maxVal), 0.00005))
 		}
 
-		if minLoc.X != 793 || minLoc.Y != 0 {
+		if minLoc.X != 955 || minLoc.Y != 0 {
 			t.Errorf("Caffe minLoc incorrect: %v\n", minLoc)
 		}
 
@@ -198,7 +203,7 @@ func TestTensorflow(t *testing.T) {
 		}
 		defer img.Close()
 
-		blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(0, 0, 0, 0), true, false)
+		blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(127.5, 127.5, 127.5, 0), true, false)
 		if blob.Empty() {
 			t.Error("Invalid blob in Tensorflow test")
 		}
@@ -280,6 +285,21 @@ func TestBlobFromImages(t *testing.T) {
 	sz := GetBlobSize(blob)
 	if sz.Val1 != 2 || sz.Val2 != 3 || sz.Val3 != 25 || sz.Val4 != 25 {
 		t.Errorf("GetBlobSize in BlobFromImages retrieved wrong values")
+	}
+}
+
+func TestBlobFromImageGreyscale(t *testing.T) {
+	img := IMRead("images/space_shuttle.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid Mat in TestBlobFromImageGreyscale test")
+	}
+	defer img.Close()
+
+	blob := BlobFromImage(img, 1.0, image.Pt(100, 100), NewScalar(127.5, 127.5, 127.5, 0), false, false)
+	defer blob.Close()
+
+	if blob.Empty() {
+		t.Errorf("BlobFromImageGreyscale failed to create blob")
 	}
 }
 
