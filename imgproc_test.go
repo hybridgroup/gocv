@@ -1361,17 +1361,17 @@ func TestApplyCustomColorMap(t *testing.T) {
 }
 
 func TestGetPerspectiveTransform(t *testing.T) {
-	src := []image.Point{
-		image.Pt(0, 0),
-		image.Pt(10, 5),
-		image.Pt(10, 10),
-		image.Pt(5, 10),
+	src := []Point2f{
+		{0, 0},
+		{10, 5},
+		{10, 10},
+		{5, 10},
 	}
-	dst := []image.Point{
-		image.Pt(0, 0),
-		image.Pt(10, 0),
-		image.Pt(10, 10),
-		image.Pt(0, 10),
+	dst := []Point2f{
+		{0, 0},
+		{10, 0},
+		{10, 10},
+		{0, 10},
 	}
 
 	m := GetPerspectiveTransform(src, dst)
@@ -1392,17 +1392,17 @@ func TestWarpPerspective(t *testing.T) {
 	w := img.Cols()
 	h := img.Rows()
 
-	s := []image.Point{
-		image.Pt(0, 0),
-		image.Pt(10, 5),
-		image.Pt(10, 10),
-		image.Pt(5, 10),
+	s := []Point2f{
+		{0, 0},
+		{10, 5},
+		{10, 10},
+		{5, 10},
 	}
-	d := []image.Point{
-		image.Pt(0, 0),
-		image.Pt(10, 0),
-		image.Pt(10, 10),
-		image.Pt(0, 10),
+	d := []Point2f{
+		{0, 0},
+		{10, 0},
+		{10, 10},
+		{0, 10},
 	}
 	m := GetPerspectiveTransform(s, d)
 	defer m.Close()
