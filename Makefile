@@ -74,6 +74,17 @@ build_raspi:
 	$(MAKE) preinstall
 	cd -
 
+# Build OpenCV on Raspberry pi zero which has ARMv6.
+build_raspi_zero:
+    cd $(TMP_DIR)opencv/opencv-$(OPENCV_VERSION)
+    mkdir build
+    cd build
+    cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=$(TMP_DIR)opencv/opencv_contrib-$(OPENCV_VERSION)/modules -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_opencv_java=OFF -D BUILD_opencv_python=NO -D BUILD_opencv_python2=NO -D BUILD_opencv_python3=NO -D ENABLE_VFPV2=ON -D WITH_JASPER=OFF -D OPENCV_GENERATE_PKGCONFIG=ON ..
+    $(MAKE) -j $(shell nproc --all)
+    $(MAKE) preinstall
+    cd -
+
+
 # Build OpenCV with non-free contrib modules.
 build_nonfree:
 	cd $(TMP_DIR)opencv/opencv-$(OPENCV_VERSION)
@@ -104,6 +115,9 @@ install: deps download build sudo_install clean verify
 
 # Do everything on Raspbian.
 install_raspi: deps download build_raspi sudo_install clean verify
+
+# Do everything on the raspberry pi zero.
+install_raspi_zero: deps download build_raspi_zero sudo_install clean verify
 
 # Do everything with cuda.
 install_cuda: deps download build_cuda sudo_install clean verify
