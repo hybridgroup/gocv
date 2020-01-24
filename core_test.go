@@ -515,10 +515,22 @@ func TestMatSqrt(t *testing.T) {
 		t.Error("TestSqrt dst should not be empty.")
 	}
 }
+
 func TestMatMean(t *testing.T) {
 	mat := NewMatWithSize(100, 100, MatTypeCV8U)
 	defer mat.Close()
 	mean := mat.Mean()
+	if mean.Val1 != 0 {
+		t.Errorf("Mat Mean incorrect Val1")
+	}
+}
+
+func TestMatMeanWithMask(t *testing.T) {
+	mat := NewMatWithSize(100, 100, MatTypeCV8U)
+	defer mat.Close()
+	mask := NewMatWithSize(100, 100, MatTypeCV8U)
+	defer mask.Close()
+	mean := mat.MeanWithMask(mask)
 	if mean.Val1 != 0 {
 		t.Errorf("Mat Mean incorrect Val1")
 	}
@@ -772,6 +784,21 @@ func TestMatMutators(t *testing.T) {
 			t.Errorf("DivideFloat incorrect value: %v\n", mat.GetFloatAt(50, 50))
 		}
 		mat.Close()
+	})
+	t.Run("MultiplyMatrix", func(t *testing.T) {
+		mat := NewMatWithSizeFromScalar(NewScalar(30.0, 0, 0, 0), 2, 1, MatTypeCV32F)
+		mat2 := NewMatWithSizeFromScalar(NewScalar(30.0, 0, 0, 0), 1, 2, MatTypeCV32F)
+		mat3 := mat.MultiplyMatrix(mat2)
+		for i := 0; i < mat3.Cols(); i++ {
+			for j := 0; j < mat3.Rows(); j++ {
+				if mat3.GetFloatAt(i, j) != 900.0 {
+					t.Errorf("MultiplyMatrix incorrect value: %v\n", mat3.GetFloatAt(i, j))
+				}
+			}
+		}
+		mat.Close()
+		mat2.Close()
+		mat3.Close()
 	})
 }
 
@@ -1128,9 +1155,9 @@ func TestSolvePoly(t *testing.T) {
 
 	diffError := SolvePoly(coeffs, &roots, 300)
 
-	expectedDiffError := 0.0
-	if diffError != expectedDiffError {
-		t.Errorf("TestSolvePoly was not exact, got an error of %f and should have been %f", diffError, expectedDiffError)
+	diffTolerance := 1.0e-61
+	if diffError > diffTolerance {
+		t.Errorf("TestSolvePoly was not exact, got an error of %e and should have been less than %f", diffError, diffTolerance)
 	}
 
 	if roots.GetFloatAt(0, 0) != 7.0 {
@@ -1266,6 +1293,32 @@ func TestScaleAdd(t *testing.T) {
 			result := dst.GetDoubleAt(row, col)
 			if result != expected {
 				t.Errorf("TestScaleAdd dst at row=%d col=%d should be %f and got %f.", row, col, expected, result)
+			}
+		}
+	}
+}
+
+func TestSetIdentity(t *testing.T) {
+	rows := 4
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV64F)
+	defer src.Close()
+	scalar := 2.5
+	SetIdentity(src, scalar)
+
+	if src.Empty() {
+		t.Error("TestSetIdentity src should not be empty.")
+	}
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			result := src.GetDoubleAt(row, col)
+			expected := 0.0
+			if row == col {
+				expected = scalar
+			}
+			if result != expected {
+				t.Errorf("TestSetIdentity src at row=%d col=%d should be %f and got %f.", row, col, expected, result)
 			}
 		}
 	}
@@ -1828,6 +1881,40 @@ func TestMatInvert(t *testing.T) {
 	}
 }
 
+func TestKMeans(t *testing.T) {
+	src := NewMatWithSize(4, 4, MatTypeCV32F) // only implemented for symm. Mats
+	defer src.Close()
+
+	bestLabels := NewMat()
+	defer bestLabels.Close()
+
+	centers := NewMat()
+	defer centers.Close()
+
+	criteria := NewTermCriteria(Count, 10, 1.0)
+	KMeans(src, 2, &bestLabels, criteria, 2, KMeansRandomCenters, &centers)
+	if bestLabels.Empty() {
+		t.Error("bla")
+	}
+}
+
+func TestKMeansPoints(t *testing.T) {
+	points := []image.Point{
+		image.Pt(0, 0),
+		image.Pt(1, 1),
+	}
+	bestLabels := NewMat()
+	defer bestLabels.Close()
+	centers := NewMat()
+	defer centers.Close()
+
+	criteria := NewTermCriteria(Count, 10, 1.0)
+	KMeansPoints(points, 2, &bestLabels, criteria, 2, KMeansRandomCenters, &centers)
+	if bestLabels.Empty() || bestLabels.Size()[0] != len(points) {
+		t.Error("Labels is not proper")
+	}
+}
+
 func TestMatLog(t *testing.T) {
 	src := NewMatWithSize(4, 3, MatTypeCV32F)
 	defer src.Close()
@@ -2078,6 +2165,30 @@ func TestGetTickFrequencyCount(t *testing.T) {
 	}
 }
 
+func TestMatT(t *testing.T) {
+	var q = []float32{1, 3, 2, 4}
+	src := NewMatWithSize(2, 2, MatTypeCV32F)
+	defer src.Close()
+	src.SetFloatAt(0, 0, 1)
+	src.SetFloatAt(0, 1, 2)
+	src.SetFloatAt(1, 0, 3)
+	src.SetFloatAt(1, 1, 4)
+
+	dst := src.T()
+	defer dst.Close()
+
+	ret, err := dst.DataPtrFloat32()
+	if err != nil {
+		t.Error(err)
+	}
+
+	for i := 0; i < len(ret); i++ {
+		if ret[i] != q[i] {
+			t.Errorf("MatT incorrect value: %v\n", ret[i])
+		}
+	}
+}
+
 func compareImages(img0, img1 image.Image) bool {
 	bounds0 := img0.Bounds()
 	bounds1 := img1.Bounds()
@@ -2111,4 +2222,32 @@ func compareImages(img0, img1 image.Image) bool {
 	}
 
 	return true
+}
+
+func TestColRowRange(t *testing.T) {
+	mat := NewMatWithSize(101, 102, MatTypeCV8U)
+	defer mat.Close()
+	if mat.Empty() {
+		t.Error("TestColRowRange should not be empty")
+	}
+
+	if mat.Rows() != 101 {
+		t.Errorf("TestColRowRange incorrect row count: %v\n", mat.Rows())
+	}
+
+	if mat.Cols() != 102 {
+		t.Errorf("TestColRowRange incorrect col count: %v\n", mat.Cols())
+	}
+
+	submatRow := mat.RowRange(0, 50)
+	defer submatRow.Close()
+	if submatRow.Rows() != 50 {
+		t.Errorf("TestColRowRange incorrect submatRow count: %v\n", submatRow.Rows())
+	}
+
+	submatCols := mat.ColRange(0, 50)
+	defer submatCols.Close()
+	if submatCols.Cols() != 50 {
+		t.Errorf("TestColRowRange incorrect submatCols count: %v\n", submatCols.Cols())
+	}
 }

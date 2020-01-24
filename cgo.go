@@ -2,7 +2,7 @@
 
 package gocv
 
-// Changes here should be mirrored in contrib/cgo.go.
+// Changes here should be mirrored in contrib/cgo.go and cuda/cgo.go.
 
 /*
 #cgo pkg-config: opencv4

@@ -8,3 +8,4 @@ count.out
 .vscode/
 /build
 .idea/
+contrib/data.yaml

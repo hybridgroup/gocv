@@ -47,6 +47,7 @@ struct KeyPoints BRISK_Detect(BRISK b, Mat src);
 struct KeyPoints BRISK_DetectAndCompute(BRISK b, Mat src, Mat mask, Mat desc);
 
 FastFeatureDetector FastFeatureDetector_Create();
+FastFeatureDetector FastFeatureDetector_CreateWithParams(int threshold, bool nonmaxSuppression, int type);
 void FastFeatureDetector_Close(FastFeatureDetector f);
 struct KeyPoints FastFeatureDetector_Detect(FastFeatureDetector f, Mat src);
 
@@ -69,8 +70,10 @@ struct KeyPoints ORB_Detect(ORB o, Mat src);
 struct KeyPoints ORB_DetectAndCompute(ORB o, Mat src, Mat mask, Mat desc);
 
 SimpleBlobDetector SimpleBlobDetector_Create();
+SimpleBlobDetector SimpleBlobDetector_Create_WithParams(SimpleBlobDetectorParams params);
 void SimpleBlobDetector_Close(SimpleBlobDetector b);
 struct KeyPoints SimpleBlobDetector_Detect(SimpleBlobDetector b, Mat src);
+SimpleBlobDetectorParams SimpleBlobDetectorParams_Create();
 
 BFMatcher BFMatcher_Create();
 BFMatcher BFMatcher_CreateWithParams(int normType, bool crossCheck);

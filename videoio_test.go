@@ -29,6 +29,30 @@ func TestVideoCaptureCodecString(t *testing.T) {
 	}
 }
 
+func TestVideoCaptureCodecConversion(t *testing.T) {
+	vc, err := OpenVideoCapture("images/small.mp4")
+	if err != nil {
+		t.Errorf("TestVideoCaptureCodecConversion: error loading a file: %v", err)
+	}
+	if vc.CodecString() == "" {
+		t.Fatal("TestVideoCaptureCodecConversion: empty codec string")
+	}
+	if int64(vc.ToCodec(vc.CodecString())) != int64(vc.Get(VideoCaptureFOURCC)) {
+		t.Fatal("TestVideoCaptureCodecConversion: codec conversion failed")
+	}
+}
+
+func TestVideoCaptureCodecConversionBadInput(t *testing.T) {
+	vc, err := OpenVideoCapture("images/small.mp4")
+	if err != nil {
+		t.Errorf("TestVideoCaptureCodecConversionBadInput: error loading a file: %v", err)
+	}
+	codec := vc.ToCodec("BAD CODEC")
+	if int64(codec) != -1 {
+		t.Fatal("TestVideoCaptureCodecConversionBadInput: input validation failed")
+	}
+}
+
 func TestVideoCaptureInvalid(t *testing.T) {
 	_, err := OpenVideoCapture(1.1)
 	if err == nil {

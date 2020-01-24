@@ -184,3 +184,57 @@ func GroupRectangles(rects []image.Rectangle, groupThreshold int, eps float64) [
 
 	return toRectangles(ret)
 }
+
+// QRCodeDetector groups the object candidate rectangles.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html
+//
+type QRCodeDetector struct {
+	p C.QRCodeDetector
+}
+
+// newQRCodeDetector returns a new QRCodeDetector from a C QRCodeDetector
+func newQRCodeDetector(p C.QRCodeDetector) QRCodeDetector {
+	return QRCodeDetector{p: p}
+}
+
+func NewQRCodeDetector() QRCodeDetector {
+	return newQRCodeDetector(C.QRCodeDetector_New())
+}
+
+func (a *QRCodeDetector) Close() error {
+	C.QRCodeDetector_Close(a.p)
+	a.p = nil
+	return nil
+}
+
+// DetectAndDecode Both detects and decodes QR code.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#a7290bd6a5d59b14a37979c3a14fbf394
+//
+func (a *QRCodeDetector) DetectAndDecode(input Mat, points *Mat, straight_qrcode *Mat) string {
+	goResult := C.GoString(C.QRCodeDetector_DetectAndDecode(a.p, input.p, points.p, straight_qrcode.p))
+	return string(goResult)
+}
+
+// Detect detects QR code in image and returns the quadrangle containing the code.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#a64373f7d877d27473f64fe04bb57d22b
+//
+func (a *QRCodeDetector) Detect(input Mat, points *Mat) bool {
+	result := C.QRCodeDetector_Detect(a.p, input.p, points.p)
+	return bool(result)
+}
+
+// Decode decodes QR code in image once it's found by the detect() method. Returns UTF8-encoded output string or empty string if the code cannot be decoded.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#a4172c2eb4825c844fb1b0ae67202d329
+//
+func (a *QRCodeDetector) Decode(input Mat, points Mat, straight_qrcode *Mat) string {
+	goResult := C.GoString(C.QRCodeDetector_DetectAndDecode(a.p, input.p, points.p, straight_qrcode.p))
+	return string(goResult)
+}

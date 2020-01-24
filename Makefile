@@ -2,10 +2,10 @@
 .PHONY: test deps download build clean astyle cmds docker
 
 # OpenCV version to use.
-OPENCV_VERSION?=4.0.1
+OPENCV_VERSION?=4.2.0
 
 # Go version to use when building Docker image
-GOVERSION?=1.11.2
+GOVERSION?=1.13.1
 
 # Temporary directory to put files into.
 TMP_DIR?=/tmp/
@@ -84,8 +84,19 @@ build_nonfree:
 	$(MAKE) preinstall
 	cd -
 
+# Build OpenCV with cuda.
+build_cuda:
+	cd $(TMP_DIR)opencv/opencv-$(OPENCV_VERSION)
+	mkdir build
+	cd build
+	cmake -j $(shell nproc --all) -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=$(TMP_DIR)opencv/opencv_contrib-$(OPENCV_VERSION)/modules -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_opencv_java=NO -D BUILD_opencv_python=NO -D BUILD_opencv_python2=NO -D BUILD_opencv_python3=NO -D WITH_JASPER=OFF -DOPENCV_GENERATE_PKGCONFIG=ON -DWITH_CUDA=ON -DENABLE_FAST_MATH=1 -DCUDA_FAST_MATH=1 -DWITH_CUBLAS=1 -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda/ -DBUILD_opencv_cudacodec=OFF ..
+	$(MAKE) -j $(shell nproc --all)
+	$(MAKE) preinstall
+	cd -
+
 # Cleanup temporary build files.
 clean:
+	go clean --cache
 	rm -rf $(TMP_DIR)opencv
 
 # Do everything.
@@ -93,6 +104,9 @@ install: deps download build sudo_install clean verify
 
 # Do everything on Raspbian.
 install_raspi: deps download build_raspi sudo_install clean verify
+
+# Do everything with cuda.
+install_cuda: deps download build_cuda sudo_install clean verify
 
 # Install system wide.
 sudo_install:

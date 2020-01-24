@@ -96,9 +96,22 @@ Mat Mat_Sqrt(Mat m) {
 }
 
 // Mat_Mean calculates the mean value M of array elements, independently for each channel, and return it as Scalar vector
-// TODO pass second paramter with mask
 Scalar Mat_Mean(Mat m) {
     cv::Scalar c = cv::mean(*m);
+    Scalar scal = Scalar();
+    scal.val1 = c.val[0];
+    scal.val2 = c.val[1];
+    scal.val3 = c.val[2];
+    scal.val4 = c.val[3];
+    return scal;
+}
+
+// Mat_MeanWithMask calculates the mean value M of array elements,
+// independently for each channel, and returns it as Scalar vector
+// while applying the mask.
+
+Scalar Mat_MeanWithMask(Mat m, Mat mask){
+    cv::Scalar c = cv::mean(*m, *mask);
     Scalar scal = Scalar();
     scal.val1 = c.val[0];
     scal.val2 = c.val[1];
@@ -310,6 +323,14 @@ void Mat_DivideFloat(Mat m, float val) {
     *m /= val;
 }
 
+Mat Mat_MultiplyMatrix(Mat x, Mat y) {
+    return new cv::Mat((*x) * (*y));
+}
+
+Mat Mat_T(Mat x) {
+    return new cv::Mat(x->t());
+}
+
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
     cv::absdiff(*src1, *src2, *dst);
 }
@@ -485,6 +506,21 @@ double Mat_Invert(Mat src, Mat dst, int flags) {
     return ret;
 }
 
+double KMeans(Mat data, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers) {
+    double ret = cv::kmeans(*data, k, *bestLabels, *criteria, attempts, flags, *centers);
+    return ret;
+}
+
+double KMeansPoints(Contour points, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers) {
+    std::vector<cv::Point2f> pts;
+
+    for (size_t i = 0; i < points.length; i++) {
+        pts.push_back(cv::Point2f(points.points[i].x, points.points[i].y));
+    }
+    double ret = cv::kmeans(pts, k, *bestLabels, *criteria, attempts, flags, *centers);
+    return ret;
+}
+
 void Mat_Log(Mat src, Mat dst) {
     cv::log(*src, *dst);
 }
@@ -572,6 +608,10 @@ void Mat_Repeat(Mat src, int nY, int nX, Mat dst) {
 
 void Mat_ScaleAdd(Mat src1, double alpha, Mat src2, Mat dst) {
     cv::scaleAdd(*src1, alpha, *src2, *dst);
+}
+
+void Mat_SetIdentity(Mat src, double scalar) {
+    cv::setIdentity(*src, scalar);
 }
 
 void Mat_Sort(Mat src, Mat dst, int flags) {
@@ -712,3 +752,12 @@ int64 GetCVTickCount() {
 double GetTickFrequency() {
     return cv::getTickFrequency();
 }
+
+Mat Mat_rowRange(Mat m,int startrow,int endrow) {
+    return new cv::Mat(m->rowRange(startrow,endrow));
+}
+
+Mat Mat_colRange(Mat m,int startrow,int endrow) {
+    return new cv::Mat(m->colRange(startrow,endrow));
+}
+

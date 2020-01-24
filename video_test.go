@@ -25,6 +25,26 @@ func TestMOG2(t *testing.T) {
 	}
 }
 
+func TestMOG2WithParams(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in MOG2 test")
+	}
+	defer img.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	mog2 := NewBackgroundSubtractorMOG2WithParams(250, 8, false)
+	defer mog2.Close()
+
+	mog2.Apply(img, &dst)
+
+	if dst.Empty() {
+		t.Error("Error in TestMOG2WithParams test")
+	}
+}
+
 func TestKNN(t *testing.T) {
 	img := IMRead("images/face.jpg", IMReadColor)
 	if img.Empty() {
@@ -42,6 +62,26 @@ func TestKNN(t *testing.T) {
 
 	if dst.Empty() {
 		t.Error("Error in TestKNN test")
+	}
+}
+
+func TestKNNWithParams(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in KNN test")
+	}
+	defer img.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	knn := NewBackgroundSubtractorKNNWithParams(250, 200, false)
+	defer knn.Close()
+
+	knn.Apply(img, &dst)
+
+	if dst.Empty() {
+		t.Error("Error in TestKNNWithParams test")
 	}
 }
 
@@ -111,6 +151,53 @@ func TestCalcOpticalFlowPyrLK(t *testing.T) {
 	CornerSubPix(dest, &corners, image.Pt(10, 10), image.Pt(-1, -1), tc)
 
 	CalcOpticalFlowPyrLK(dest, img2, corners, nextPts, &status, &err)
+
+	if status.Empty() {
+		t.Error("Error in CalcOpticalFlowPyrLK test")
+	}
+	if status.Rows() != 323 {
+		t.Errorf("Invalid CalcOpticalFlowPyrLK test rows: %v", status.Rows())
+	}
+	if status.Cols() != 1 {
+		t.Errorf("Invalid CalcOpticalFlowPyrLK test cols: %v", status.Cols())
+	}
+}
+
+func TestCalcOpticalFlowPyrLKWithParams(t *testing.T) {
+	img1 := IMRead("images/face.jpg", IMReadColor)
+	if img1.Empty() {
+		t.Error("Invalid Mat in CalcOpticalFlowPyrLK test")
+	}
+	defer img1.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	CvtColor(img1, &dest, ColorBGRAToGray)
+
+	img2 := dest.Clone()
+	defer img2.Close()
+
+	prevPts := NewMat()
+	defer prevPts.Close()
+
+	nextPts := NewMat()
+	defer nextPts.Close()
+
+	status := NewMat()
+	defer status.Close()
+
+	err := NewMat()
+	defer err.Close()
+
+	corners := NewMat()
+	defer corners.Close()
+
+	GoodFeaturesToTrack(dest, &corners, 500, 0.01, 10)
+	tc := NewTermCriteria(Count|EPS, 30, 0.03)
+	CornerSubPix(dest, &corners, image.Pt(10, 10), image.Pt(-1, -1), tc)
+
+	CalcOpticalFlowPyrLKWithParams(dest, img2, corners, nextPts, &status, &err, image.Pt(21, 21), 3, tc, 0, 0.0001)
 
 	if status.Empty() {
 		t.Error("Error in CalcOpticalFlowPyrLK test")

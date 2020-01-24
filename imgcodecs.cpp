@@ -40,12 +40,7 @@ struct ByteArray Image_IMEncode_WithParams(const char* fileExt, Mat img, IntVect
 }
 
 Mat Image_IMDecode(ByteArray buf, int flags) {
-    std::vector<char> data;
-
-    for (size_t i = 0; i < buf.length; i++) {
-        data.push_back(buf.data[i]);
-    }
-
+    std::vector<uchar> data(buf.data, buf.data + buf.length);
     cv::Mat img = cv::imdecode(data, flags);
     return new cv::Mat(img);
 }

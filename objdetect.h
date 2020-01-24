@@ -13,9 +13,11 @@ extern "C" {
 #ifdef __cplusplus
 typedef cv::CascadeClassifier* CascadeClassifier;
 typedef cv::HOGDescriptor* HOGDescriptor;
+typedef cv::QRCodeDetector* QRCodeDetector;
 #else
 typedef void* CascadeClassifier;
 typedef void* HOGDescriptor;
+typedef void* QRCodeDetector;
 #endif
 
 // CascadeClassifier
@@ -37,6 +39,12 @@ Mat HOG_GetDefaultPeopleDetector();
 void HOGDescriptor_SetSVMDetector(HOGDescriptor hog, Mat det);
 
 struct Rects GroupRectangles(struct Rects rects, int groupThreshold, double eps);
+
+QRCodeDetector QRCodeDetector_New();
+const char* QRCodeDetector_DetectAndDecode(QRCodeDetector qr, Mat input,Mat points,Mat straight_qrcode);
+bool QRCodeDetector_Detect(QRCodeDetector qr, Mat input,Mat points);
+const char* QRCodeDetector_Decode(QRCodeDetector qr, Mat input,Mat inputPoints,Mat straight_qrcode);
+void QRCodeDetector_Close(QRCodeDetector qr);
 
 #ifdef __cplusplus
 }

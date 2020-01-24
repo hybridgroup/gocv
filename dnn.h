@@ -27,6 +27,9 @@ Net Net_ReadNetFromTensorflow(const char* model);
 Net Net_ReadNetFromTensorflowBytes(struct ByteArray model);
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
                       bool crop);
+void Net_BlobFromImages(struct Mats images, Mat blob,  double scalefactor, Size size, 
+                        Scalar mean, bool swapRB, bool crop, int ddepth);
+void Net_ImagesFromBlob(Mat blob_, struct Mats* images_);
 void Net_Close(Net net);
 bool Net_Empty(Net net);
 void Net_SetInput(Net net, Mat blob, const char* name);
@@ -36,6 +39,7 @@ void Net_SetPreferableBackend(Net net, int backend);
 void Net_SetPreferableTarget(Net net, int target);
 int64_t Net_GetPerfProfile(Net net);
 void Net_GetUnconnectedOutLayers(Net net, IntVector* res);
+void Net_GetLayerNames(Net net, CStrings* names);
 
 Mat Net_GetBlobChannel(Mat blob, int imgidx, int chnidx);
 Scalar Net_GetBlobSize(Mat blob);

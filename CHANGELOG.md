@@ -1,3 +1,98 @@
+0.22.0
+---
+* **bgsegm**
+    * Add BackgroundSubtractorCNT
+* **calib3d**
+    * Added undistort function (#520)
+* **core**
+    * add functions (singular value decomposition, multiply between matrices, transpose matrix) (#559)
+    * Add new funcs (#578)
+    * add setIdentity() method to Mat
+    * add String method (#552)
+    * MatType: add missing constants
+* **dnn**
+    * Adding GetLayerNames()
+    * respect the bit depth of the input image to set the expected output when converting an image to a blob
+* **doc**
+    * change opencv version 3.x to 4.x
+* **docker**
+    * use Go1.13.5 for image
+* **imgcodecs**
+    * Fix webp image decode error (#523)
+imgcodecs: optimize copy of data used for IMDecode method
+* **imgproc**
+    * Add GetRectSubPix
+    * Added ClipLine
+    * Added InvertAffineTransform
+    * Added LinearPolar function (#524)
+    * correct ksize param used for MedianBlur unit test
+    * Feature/put text with line type (#527)
+    * FitEllipse
+    * In FillPoly and DrawContours functions, remove func() wrap to avoid memory freed before calling opencv functions. (#543)
+* **objdetect**
+    * Add support QR codes
+* **opencv**
+    * update to OpenCV 4.2.0 release
+* **openvino**
+    * Add openvino async
+* **test**
+    * Tolerate imprecise result in SolvePoly
+    * Tolerate imprecision in TestHoughLines
+
+0.21.0
+---
+* **build**
+    * added go clean --cache to clean target, see issue 458
+* **core**
+    * Add KMeans function
+    * added MeanWithMask function for Mats (#487)
+    * Fix possible resource leak
+* **cuda**
+    * added cudaoptflow
+    * added NewGpuMatFromMat which creates a GpuMat from a Mat
+    * Support for CUDA Image Warping (#494)
+* **dnn**
+    * add BlobFromImages (#467)
+    * add ImagesFromBlob (#468)
+* **docs**
+    * update ROADMAP with all recent contributions. Thank you!
+* **examples**
+    * face detection from image url by using IMDecode (#499)
+    * better format
+* **imgproc**
+    * Add calcBackProject
+    * Add CompareHist
+    * Add DistanceTransform and Watershed
+    * Add GrabCut
+    * Add Integral
+    * Add MorphologyExWithParams
+* **opencv**
+    * update to version 4.1.2
+* **openvino**
+    * updates needed for 2019 R3
+* **videoio**
+    * Added ToCodec to convert FOURCC string to numeric representation (#485)
+
+0.20.0
+---
+* **build**
+    * Use Go 1.12.x for build
+    * Update to OpenCV 4.1.0
+* **cuda**
+    * Initial cuda implementation
+* **docs**
+    * Fix the command to install xquartz via brew/cask
+* **features2d**
+    * Add support for SimpleBlobDetectorParams (#434)
+    * Added FastFeatureDetectorWithParams
+* **imgproc**
+    * Added function call to cv::morphologyDefaultBorderValue
+* **test**
+    * Increase test coverage for FP16BlobFromImage()
+* **video**
+    * Added calcOpticalFlowPyrLKWithParams
+    * Addition of MOG2/KNN constructor with options
+
 0.19.0
 ---
 * **build**

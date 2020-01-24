@@ -66,6 +66,75 @@ const (
 
 	// MatTypeCV8UC4 is a Mat of 8-bit unsigned int with 4 channels
 	MatTypeCV8UC4 = MatTypeCV8U + MatChannels4
+
+	// MatTypeCV8SC1 is a Mat of 8-bit signed int with a single channel
+	MatTypeCV8SC1 = MatTypeCV8S + MatChannels1
+
+	// MatTypeCV8SC2 is a Mat of 8-bit signed int with 2 channels
+	MatTypeCV8SC2 = MatTypeCV8S + MatChannels2
+
+	// MatTypeCV8SC3 is a Mat of 8-bit signed int with 3 channels
+	MatTypeCV8SC3 = MatTypeCV8S + MatChannels3
+
+	// MatTypeCV8SC4 is a Mat of 8-bit signed int with 4 channels
+	MatTypeCV8SC4 = MatTypeCV8S + MatChannels4
+
+	// MatTypeCV16UC1 is a Mat of 16-bit unsigned int with a single channel
+	MatTypeCV16UC1 = MatTypeCV16U + MatChannels1
+
+	// MatTypeCV16UC2 is a Mat of 16-bit unsigned int with 2 channels
+	MatTypeCV16UC2 = MatTypeCV16U + MatChannels2
+
+	// MatTypeCV16UC3 is a Mat of 16-bit unsigned int with 3 channels
+	MatTypeCV16UC3 = MatTypeCV16U + MatChannels3
+
+	// MatTypeCV16UC4 is a Mat of 16-bit unsigned int with 4 channels
+	MatTypeCV16UC4 = MatTypeCV16U + MatChannels4
+
+	// MatTypeCV16SC1 is a Mat of 16-bit signed int with a single channel
+	MatTypeCV16SC1 = MatTypeCV16S + MatChannels1
+
+	// MatTypeCV16SC3 is a Mat of 16-bit signed int with 3 channels
+	MatTypeCV16SC3 = MatTypeCV16S + MatChannels3
+
+	// MatTypeCV16SC4 is a Mat of 16-bit signed int with 4 channels
+	MatTypeCV16SC4 = MatTypeCV16S + MatChannels4
+
+	// MatTypeCV32SC1 is a Mat of 32-bit signed int with a single channel
+	MatTypeCV32SC1 = MatTypeCV32S + MatChannels1
+
+	// MatTypeCV32SC2 is a Mat of 32-bit signed int with 2 channels
+	MatTypeCV32SC2 = MatTypeCV32S + MatChannels2
+
+	// MatTypeCV32SC3 is a Mat of 32-bit signed int with 3 channels
+	MatTypeCV32SC3 = MatTypeCV32S + MatChannels3
+
+	// MatTypeCV32SC4 is a Mat of 32-bit signed int with 4 channels
+	MatTypeCV32SC4 = MatTypeCV32S + MatChannels4
+
+	// MatTypeCV32FC1 is a Mat of 32-bit float int with a single channel
+	MatTypeCV32FC1 = MatTypeCV32F + MatChannels1
+
+	// MatTypeCV32FC2 is a Mat of 32-bit float int with 2 channels
+	MatTypeCV32FC2 = MatTypeCV32F + MatChannels2
+
+	// MatTypeCV32FC3 is a Mat of 32-bit float int with 3 channels
+	MatTypeCV32FC3 = MatTypeCV32F + MatChannels3
+
+	// MatTypeCV32FC4 is a Mat of 32-bit float int with 4 channels
+	MatTypeCV32FC4 = MatTypeCV32F + MatChannels4
+
+	// MatTypeCV64FC1 is a Mat of 64-bit float int with a single channel
+	MatTypeCV64FC1 = MatTypeCV64F + MatChannels1
+
+	// MatTypeCV64FC2 is a Mat of 64-bit float int with 2 channels
+	MatTypeCV64FC2 = MatTypeCV64F + MatChannels2
+
+	// MatTypeCV64FC3 is a Mat of 64-bit float int with 3 channels
+	MatTypeCV64FC3 = MatTypeCV64F + MatChannels3
+
+	// MatTypeCV64FC4 is a Mat of 64-bit float int with 4 channels
+	MatTypeCV64FC4 = MatTypeCV64F + MatChannels4
 )
 
 // CompareType is used for Compare operations to indicate which kind of
@@ -374,9 +443,20 @@ func (m *Mat) ConvertFp16() Mat {
 }
 
 // Mean calculates the mean value M of array elements, independently for each channel, and return it as Scalar
-// TODO pass second paramter with mask
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga191389f8a0e58180bb13a727782cd461
+//
 func (m *Mat) Mean() Scalar {
 	s := C.Mat_Mean(m.p)
+	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
+}
+
+// MeanWithMask calculates the mean value M of array elements,independently for each channel,
+// and returns it as Scalar vector while applying the mask.
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga191389f8a0e58180bb13a727782cd461
+//
+func (m *Mat) MeanWithMask(mask Mat) Scalar {
+	s := C.Mat_MeanWithMask(m.p, mask.p)
 	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
 }
 
@@ -646,6 +726,17 @@ func (m *Mat) MultiplyFloat(val float32) {
 // mat /= val operation.
 func (m *Mat) DivideFloat(val float32) {
 	C.Mat_DivideFloat(m.p, C.float(val))
+}
+
+// MultiplyMatrix multiplies matrix (m*x)
+func (m *Mat) MultiplyMatrix(x Mat) Mat {
+	return newMat(C.Mat_MultiplyMatrix(m.p, x.p))
+}
+
+// T  transpose matrix
+// https://docs.opencv.org/4.1.2/d3/d63/classcv_1_1Mat.html#aaa428c60ccb6d8ea5de18f63dfac8e11
+func (m *Mat) T() Mat {
+	return newMat(C.Mat_T(m.p))
 }
 
 // ToImage converts a Mat to a image.Image.
@@ -1246,6 +1337,43 @@ func Invert(src Mat, dst *Mat, flags int) float64 {
 	return float64(ret)
 }
 
+// KMeansFlags for kmeans center selection
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/de1/group__core.html#ga276000efe55ee2756e0c471c7b270949
+type KMeansFlags int
+
+const (
+	// KMeansRandomCenters selects random initial centers in each attempt.
+	KMeansRandomCenters KMeansFlags = 0
+	// KMeansPPCenters uses kmeans++ center initialization by Arthur and Vassilvitskii [Arthur2007].
+	KMeansPPCenters = 1
+	// KMeansUseInitialLabels uses the user-supplied lables during the first (and possibly the only) attempt
+	// instead of computing them from the initial centers. For the second and further attempts, use the random or semi-random     // centers. Use one of KMEANS_*_CENTERS flag to specify the exact method.
+	KMeansUseInitialLabels = 2
+)
+
+// KMeans finds centers of clusters and groups input samples around the clusters.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d5/d38/group__core__cluster.html#ga9a34dc06c6ec9460e90860f15bcd2f88
+//
+func KMeans(data Mat, k int, bestLabels *Mat, criteria TermCriteria, attempts int, flags KMeansFlags, centers *Mat) float64 {
+	ret := C.KMeans(data.p, C.int(k), bestLabels.p, criteria.p, C.int(attempts), C.int(flags), centers.p)
+	return float64(ret)
+}
+
+// KMeansPoints finds centers of clusters and groups input samples around the clusters.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d5/d38/group__core__cluster.html#ga9a34dc06c6ec9460e90860f15bcd2f88
+//
+func KMeansPoints(points []image.Point, k int, bestLabels *Mat, criteria TermCriteria, attempts int, flags KMeansFlags, centers *Mat) float64 {
+	cPoints := toCPoints(points)
+	ret := C.KMeansPoints(cPoints, C.int(k), bestLabels.p, criteria.p, C.int(attempts), C.int(flags), centers.p)
+	return float64(ret)
+}
+
 // Log calculates the natural logarithm of every array element.
 //
 // For further details, please see:
@@ -1539,6 +1667,14 @@ func ScaleAdd(src1 Mat, alpha float64, src2 Mat, dst *Mat) {
 	C.Mat_ScaleAdd(src1.p, C.double(alpha), src2.p, dst.p)
 }
 
+// SetIdentity initializes a scaled identity matrix.
+// For further details, please see:
+//  https://docs.opencv.org/master/d2/de8/group__core__array.html#ga388d7575224a4a277ceb98ccaa327c99
+//
+func SetIdentity(src Mat, scalar float64) {
+	C.Mat_SetIdentity(src.p, C.double(scalar))
+}
+
 type SortFlags int
 
 const (
@@ -1818,4 +1954,22 @@ func toCStrings(strs []string) C.struct_CStrings {
 		strs:   (**C.char)(&cStringsSlice[0]),
 		length: C.int(len(strs)),
 	}
+}
+
+// RowRange creates a matrix header for the specified row span.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#aa6542193430356ad631a9beabc624107
+//
+func (m *Mat) RowRange(start, end int) Mat {
+	return newMat(C.Mat_rowRange(m.p, C.int(start), C.int(end)))
+}
+
+// ColRange creates a matrix header for the specified column span.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#aadc8f9210fe4dec50513746c246fa8d9
+//
+func (m *Mat) ColRange(start, end int) Mat {
+	return newMat(C.Mat_colRange(m.p, C.int(start), C.int(end)))
 }

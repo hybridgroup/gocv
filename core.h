@@ -119,6 +119,29 @@ typedef struct KeyPoints {
     int length;
 } KeyPoints;
 
+// Wrapper for SimpleBlobDetectorParams aka SimpleBlobDetector::Params
+typedef struct SimpleBlobDetectorParams {
+    unsigned char   blobColor;
+    bool    filterByArea;
+    bool    filterByCircularity;
+    bool    filterByColor;
+    bool    filterByConvexity;
+    bool    filterByInertia;
+    float   maxArea;
+    float   maxCircularity;
+    float   maxConvexity;
+    float   maxInertiaRatio;
+    float   maxThreshold;
+    float   minArea;
+    float   minCircularity;
+    float   minConvexity;
+    float   minDistBetweenBlobs;
+    float   minInertiaRatio;
+    size_t  minRepeatability;
+    float   minThreshold;
+    float   thresholdStep;
+} SimpleBlobDetectorParams;
+
 // Wrapper for an individual cv::DMatch
 typedef struct DMatch {
     int queryIdx;
@@ -219,6 +242,7 @@ Mat Mat_Reshape(Mat m, int cn, int rows);
 void Mat_PatchNaNs(Mat m);
 Mat Mat_ConvertFp16(Mat m);
 Scalar Mat_Mean(Mat m);
+Scalar Mat_MeanWithMask(Mat m, Mat mask);
 Mat Mat_Sqrt(Mat m);
 int Mat_Rows(Mat m);
 int Mat_Cols(Mat m);
@@ -261,6 +285,9 @@ void Mat_AddFloat(Mat m, float val);
 void Mat_SubtractFloat(Mat m, float val);
 void Mat_MultiplyFloat(Mat m, float val);
 void Mat_DivideFloat(Mat m, float val);
+Mat Mat_MultiplyMatrix(Mat x, Mat y);
+
+Mat Mat_T(Mat x);
 
 void LUT(Mat src, Mat lut, Mat dst);
 
@@ -308,6 +335,8 @@ void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst);
 void Mat_InRangeWithScalar(Mat src, const Scalar lowerb, const Scalar upperb, Mat dst);
 void Mat_InsertChannel(Mat src, Mat dst, int coi);
 double Mat_Invert(Mat src, Mat dst, int flags);
+double KMeans(Mat data, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers);
+double KMeansPoints(Contour points, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers);
 void Mat_Log(Mat src, Mat dst);
 void Mat_Magnitude(Mat x, Mat y, Mat magnitude);
 void Mat_Max(Mat src1, Mat src2, Mat dst);
@@ -328,6 +357,7 @@ double Mat_SolvePoly(Mat coeffs, Mat roots, int maxIters);
 void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType);
 void Mat_Repeat(Mat src, int nY, int nX, Mat dst);
 void Mat_ScaleAdd(Mat src1, double alpha, Mat src2, Mat dst);
+void Mat_SetIdentity(Mat src, double scalar);
 void Mat_Sort(Mat src, Mat dst, int flags);
 void Mat_SortIdx(Mat src, Mat dst, int flags);
 void Mat_Split(Mat src, struct Mats* mats);
@@ -344,6 +374,9 @@ TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon);
 
 int64_t GetCVTickCount();
 double GetTickFrequency();
+
+Mat Mat_rowRange(Mat m,int startrow,int endrow);
+Mat Mat_colRange(Mat m,int startrow,int endrow);
 
 #ifdef __cplusplus
 }
