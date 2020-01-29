@@ -350,6 +350,7 @@ void Mat_Multiply(Mat src1, Mat src2, Mat dst);
 void Mat_Subtract(Mat src1, Mat src2, Mat dst);
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ);
 double Norm(Mat src1, int normType);
+double Norm2(Mat src1, Mat src2, int normType);
 void Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm);
 bool Mat_Solve(Mat src1, Mat src2, Mat dst, int flags);
 int Mat_SolveCubic(Mat coeffs, Mat roots);
