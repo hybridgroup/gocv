@@ -204,8 +204,8 @@ func (w *Window) ResizeWindow(width, height int) {
 // For further details, please see:
 // https://docs.opencv.org/master/d7/dfc/group__highgui.html#ga8daf4730d3adf7035b6de9be4c469af5
 //
-func SelectROI(name string, img Mat) image.Rectangle {
-	cName := C.CString(name)
+func (w *Window) SelectROI(img Mat) image.Rectangle {
+	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
 	r := C.Window_SelectROI(cName, img.p)
@@ -223,6 +223,27 @@ func SelectROI(name string, img Mat) image.Rectangle {
 // For further details, please see:
 // https://docs.opencv.org/master/d7/dfc/group__highgui.html#ga0f11fad74a6432b8055fb21621a0f893
 //
+func (w *Window) SelectROIs(img Mat) []image.Rectangle {
+	cName := C.CString(w.name)
+	defer C.free(unsafe.Pointer(cName))
+
+	ret := C.Window_SelectROIs(cName, img.p)
+	defer C.Rects_Close(ret)
+
+	return toRectangles(ret)
+}
+
+// Deprecated: use Window.SelectROI instead
+func SelectROI(name string, img Mat) image.Rectangle {
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+
+	r := C.Window_SelectROI(cName, img.p)
+	rect := image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
+	return rect
+}
+
+// Deprecated: use Window.SelectROIs instead
 func SelectROIs(name string, img Mat) []image.Rectangle {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
