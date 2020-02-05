@@ -30,8 +30,6 @@ func (c BorderType) String() string {
 		return "border-reflect101"
 	case BorderTransparent:
 		return "border-transparent"
-	case BorderDefault:
-		return "border-default"
 	case BorderIsolated:
 		return "border-isolated"
 	}
