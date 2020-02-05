@@ -607,6 +607,24 @@ func TestGaussianBlur(t *testing.T) {
 	}
 }
 
+func TestGetGaussianKernel(t *testing.T) {
+	kernel := GetGaussianKernel(1, 0.5)
+	defer kernel.Close()
+	if kernel.Empty() {
+		t.Error("Invalid GetGaussianKernel test")
+	}
+
+}
+
+func TestGetGaussianKernelWithParams(t *testing.T) {
+	kernel := GetGaussianKernelWithParams(1, 0.5, MatTypeCV64F)
+	defer kernel.Close()
+	if kernel.Empty() {
+		t.Error("Invalid GetGaussianKernel test")
+	}
+
+}
+
 func TestLaplacian(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
