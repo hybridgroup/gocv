@@ -875,6 +875,22 @@ func GaussianBlur(src Mat, dst *Mat, ksize image.Point, sigmaX float64,
 	C.GaussianBlur(src.p, dst.p, pSize, C.double(sigmaX), C.double(sigmaY), C.int(borderType))
 }
 
+// GetGaussianKernel returns Gaussian filter coefficients.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gac05a120c1ae92a6060dd0db190a61afa
+func GetGaussianKernel(ksize int, sigma float64) Mat {
+	return newMat(C.GetGaussianKernel(C.int(ksize), C.double(sigma), C.int(MatTypeCV64F)))
+}
+
+// GetGaussianKernelWithParams returns Gaussian filter coefficients.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gac05a120c1ae92a6060dd0db190a61afa
+func GetGaussianKernelWithParams(ksize int, sigma float64, ktype int) Mat {
+	return newMat(C.GetGaussianKernel(C.int(ksize), C.double(sigma), C.int(ktype)))
+}
+
 // Sobel calculates the first, second, third, or mixed image derivatives using an extended Sobel operator
 //
 // For further details, please see:

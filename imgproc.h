@@ -47,6 +47,7 @@ int ConnectedComponents(Mat src, Mat dst, int connectivity, int ltype, int cclty
 int ConnectedComponentsWithStats(Mat src, Mat labels, Mat stats, Mat centroids, int connectivity, int ltype, int ccltype);
 
 void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt);
+Mat GetGaussianKernel(int ksize, double sigma, int ktype);
 void Laplacian(Mat src, Mat dst, int dDepth, int kSize, double scale, double delta, int borderType);
 void Scharr(Mat src, Mat dst, int dDepth, int dx, int dy, double scale, double delta,
             int borderType);

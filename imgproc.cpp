@@ -317,6 +317,10 @@ void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt) {
     cv::GaussianBlur(*src, *dst, sz, sX, sY, bt);
 }
 
+Mat GetGaussianKernel(int ksize, double sigma, int ktype){
+    return new cv::Mat(cv::getGaussianKernel(ksize, sigma, ktype));
+}
+
 void Laplacian(Mat src, Mat dst, int dDepth, int kSize, double scale, double delta,
                int borderType) {
     cv::Laplacian(*src, *dst, dDepth, kSize, scale, delta, borderType);
