@@ -94,3 +94,10 @@ func TestTrackbar(t *testing.T) {
 		t.Error("Trackbar pos should have been 50")
 	}
 }
+
+func TestSetMouseCallback(t *testing.T) {
+	window := NewWindow("mouse callback")
+	defer window.Close()
+
+	window.SetMouseCallback(func(event MouseEventType, x, y int, flags MouseEventFlag) {})
+}
