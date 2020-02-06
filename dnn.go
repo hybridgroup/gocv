@@ -39,6 +39,9 @@ const (
 
 	// NetBackendVKCOM is the Vulkan backend.
 	NetBackendVKCOM NetBackendType = 4
+
+	// NetBackendCUDA is the Cuda backend.
+	NetBackendCUDA NetBackendType = 5
 )
 
 // ParseNetBackend returns a valid NetBackendType given a string. Valid values are:
@@ -46,6 +49,7 @@ const (
 // - openvino
 // - opencv
 // - vulkan
+// - cuda
 // - default
 func ParseNetBackend(backend string) NetBackendType {
 	switch backend {
@@ -57,6 +61,8 @@ func ParseNetBackend(backend string) NetBackendType {
 		return NetBackendOpenCV
 	case "vulkan":
 		return NetBackendVKCOM
+	case "cuda":
+		return NetBackendCUDA
 	default:
 		return NetBackendDefault
 	}
@@ -83,6 +89,12 @@ const (
 
 	// NetTargetFPGA is the FPGA target.
 	NetTargetFPGA NetTargetType = 5
+
+	// NetTargetCUDA is the CUDA target.
+	NetTargetCUDA NetTargetType = 6
+
+	// NetTargetCUDAFP16 is the CUDA target.
+	NetTargetCUDAFP16 NetTargetType = 7
 )
 
 // ParseNetTarget returns a valid NetTargetType given a string. Valid values are:
@@ -92,6 +104,8 @@ const (
 // - vpu
 // - vulkan
 // - fpga
+// - cuda
+// - cudafp16
 func ParseNetTarget(target string) NetTargetType {
 	switch target {
 	case "cpu":
@@ -105,6 +119,10 @@ func ParseNetTarget(target string) NetTargetType {
 	case "vulkan":
 		return NetTargetVulkan
 	case "fpga":
+		return NetTargetFPGA
+	case "cuda":
+		return NetTargetFPGA
+	case "cudafp16":
 		return NetTargetFPGA
 	default:
 		return NetTargetCPU
