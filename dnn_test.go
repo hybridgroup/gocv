@@ -382,6 +382,10 @@ func TestParseNetBackend(t *testing.T) {
 	if val != NetBackendOpenCV {
 		t.Errorf("ParseNetBackend invalid")
 	}
+	val = ParseNetBackend("cuda")
+	if val != NetBackendCUDA {
+		t.Errorf("ParseNetBackend invalid")
+	}
 	val = ParseNetBackend("crazytrain")
 	if val != NetBackendDefault {
 		t.Errorf("ParseNetBackend invalid")
@@ -403,6 +407,14 @@ func TestParseNetTarget(t *testing.T) {
 	}
 	val = ParseNetTarget("vpu")
 	if val != NetTargetVPU {
+		t.Errorf("ParseNetTarget invalid")
+	}
+	val = ParseNetTarget("cuda")
+	if val != NetTargetCUDA {
+		t.Errorf("ParseNetTarget invalid")
+	}
+	val = ParseNetTarget("cudafp16")
+	if val != NetTargetCUDAFP16 {
 		t.Errorf("ParseNetTarget invalid")
 	}
 	val = ParseNetTarget("idk")
