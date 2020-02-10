@@ -18,7 +18,11 @@ if net.Empty() {
     fmt.Println("Error reading network model")
     return
 }
-
+// GPU usage
 net.SetPreferableBackend(gocv.NetBackendType(gocv.NetBackendOpenVINO))
-net.SetPreferableTarget(gocv.NetTargetType(gocv.NetBackendFP16))
+net.SetPreferableTarget(gocv.NetTargetType(gocv.NetTargetFP16))
+
+// Intel Neural Compute Stick 2 usage
+net.SetPreferableBackend(gocv.NetBackendType(gocv.NetBackendOpenVINO))
+net.SetPreferableTarget(gocv.NetTargetType(gocv.NetTargetVPU))
 ```
