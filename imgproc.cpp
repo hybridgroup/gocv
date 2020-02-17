@@ -168,6 +168,12 @@ void Erode(Mat src, Mat dst, Mat kernel) {
     cv::erode(*src, *dst, *kernel);
 }
 
+void ErodeWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType) {
+    cv::Point pt1(anchor.x, anchor.y);
+
+    cv::erode(*src, *dst, *kernel, pt1, iterations, borderType, cv::morphologyDefaultBorderValue());
+}
+
 void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask) {
     cv::matchTemplate(*image, *templ, *result, method, *mask);
 }
