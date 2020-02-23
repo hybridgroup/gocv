@@ -70,7 +70,7 @@ void HoughLinesPointSet(Mat points, Mat lines, int lines_max, int threshold,
                         double min_rho, double  max_rho, double rho_step,
                         double min_theta, double max_theta, double theta_step);
 void Integral(Mat src, Mat sum, Mat sqsum, Mat tilted);
-void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ);
+double Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ);
 void AdaptiveThreshold(Mat src, Mat dst, double maxValue, int adaptiveTyp, int typ, int blockSize,
                        double c);
 

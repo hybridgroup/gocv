@@ -1124,8 +1124,8 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/3.3.0/d7/d1b/group__imgproc__misc.html#gae8a4a146d1ca78c626a53577199e9c57
 //
-func Threshold(src Mat, dst *Mat, thresh float32, maxvalue float32, typ ThresholdType) {
-	C.Threshold(src.p, dst.p, C.double(thresh), C.double(maxvalue), C.int(typ))
+func Threshold(src Mat, dst *Mat, thresh float32, maxvalue float32, typ ThresholdType) (threshold float32) {
+	return float32( C.Threshold(src.p, dst.p, C.double(thresh), C.double(maxvalue), C.int(typ)) )
 }
 
 // AdaptiveThresholdType type of adaptive threshold operation.
