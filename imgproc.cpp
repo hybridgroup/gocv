@@ -433,6 +433,26 @@ void FillPoly(Mat img, Contours points, Scalar color) {
     cv::fillPoly(*img, pts, c);
 }
 
+void Polylines(Mat img, Contours points, bool isClosed, Scalar color,int thickness) {
+    std::vector<std::vector<cv::Point> > pts;
+
+    for (size_t i = 0; i < points.length; i++) {
+        Contour contour = points.contours[i];
+
+        std::vector<cv::Point> cntr;
+
+        for (size_t i = 0; i < contour.length; i++) {
+            cntr.push_back(cv::Point(contour.points[i].x, contour.points[i].y));
+        }
+
+        pts.push_back(cntr);
+    }
+
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::polylines(*img, pts, isClosed, c, thickness);
+}
+
 struct Size GetTextSize(const char* text, int fontFace, double fontScale, int thickness) {
     cv::Size sz = cv::getTextSize(text, fontFace, fontScale, thickness, NULL);
     Size size = {sz.width, sz.height};
