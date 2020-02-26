@@ -1312,6 +1312,47 @@ func FillPoly(img *Mat, pts [][]image.Point, c color.RGBA) {
 	C.FillPoly(img.p, cPoints, sColor)
 }
 
+// Polylines draws several polygonal curves.
+//
+// For more information, see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga1ea127ffbbb7e0bfc4fd6fd2eb64263c
+func Polylines(img *Mat, pts [][]image.Point, isClosed bool, c color.RGBA, thickness int) {
+	points := make([]C.struct_Points, len(pts))
+
+	for i, pt := range pts {
+		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
+		defer C.free(unsafe.Pointer(p))
+
+		pa := getPoints(p, len(pt))
+
+		for j, point := range pt {
+			pa[j] = C.struct_Point{
+				x: C.int(point.X),
+				y: C.int(point.Y),
+			}
+		}
+
+		points[i] = C.struct_Points{
+			points: (*C.Point)(p),
+			length: C.int(len(pt)),
+		}
+	}
+
+	cPoints := C.struct_Contours{
+		contours: (*C.struct_Points)(&points[0]),
+		length:   C.int(len(pts)),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.Polylines(img.p, cPoints, C.bool(isClosed), sColor, C.int(thickness))
+}
+
 // HersheyFont are the font libraries included in OpenCV.
 // Only a subset of the available Hershey fonts are supported by OpenCV.
 //
