@@ -1,7 +1,6 @@
 package gocv
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 	"math"
@@ -1643,23 +1642,32 @@ func TestPhaseCorrelate(t *testing.T) {
 	notMatchedOrig := IMRead("images/space_shuttle.jpg", IMReadGrayScale)
 	notMatched := NewMat()
 
+	defer template.Close()
+	defer matched.Close()
+	defer notMatchedOrig.Close()
+	defer notMatched.Close()
+
 	Resize(notMatchedOrig, &notMatched, image.Point{X: matched.Size()[0], Y: matched.Size()[1]}, 0, 0, InterpolationLinear)
 
 	template32FC1 := NewMat()
 	matched32FC1 := NewMat()
 	notMatched32FC1 := NewMat()
 
+	defer template32FC1.Close()
+	defer matched32FC1.Close()
+	defer notMatched32FC1.Close()
+
 	template.ConvertTo(&template32FC1, MatTypeCV32FC1)
 	matched.ConvertTo(&matched32FC1, MatTypeCV32FC1)
 	notMatched.ConvertTo(&notMatched32FC1, MatTypeCV32FC1)
 
-	shiftTranslated, responseTranslated := PhaseCorrelate(template32FC1, matched32FC1, NewMat())
-	shiftDifferent, responseDifferent := PhaseCorrelate(template32FC1, notMatched32FC1, NewMat())
+	window := NewMat()
+	defer window.Close()
 
-	fmt.Println(shiftTranslated, responseTranslated)
-	fmt.Println(shiftDifferent, responseDifferent)
+	shiftTranslated, responseTranslated := PhaseCorrelate(template32FC1, matched32FC1, window)
+	_, responseDifferent := PhaseCorrelate(template32FC1, notMatched32FC1, window)
 
-	if !(shiftTranslated.X < 15) || !(shiftTranslated.Y < 15)  {
+	if !(shiftTranslated.X < 15) || !(shiftTranslated.Y < 15) {
 		t.Errorf("expected shift to be > 15 pixels, got %v", shiftTranslated)
 	}
 
