@@ -60,7 +60,7 @@ download:
 # Download dldt source tarballs.
 download_dldt:
 	sudo rm -rf /usr/local/dldt/
-	sudo git clone https://github.com/opencv/dldt /usr/local/dldt/
+	sudo git clone https://github.com/opencv/dldt -b 2019 /usr/local/dldt/
 
 # Build dldt.
 build_dldt:
