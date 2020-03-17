@@ -528,7 +528,20 @@ void ApplyCustomColorMap(Mat src, Mat dst, Mat colormap) {
     cv::applyColorMap(*src, *dst, *colormap);
 }
 
-Mat GetPerspectiveTransform(Contour2f src, Contour2f dst) {
+Mat GetPerspectiveTransform(Contour src, Contour dst) {
+  std::vector<cv::Point2f> src_pts;
+  for (size_t i = 0; i < src.length; i++) {
+    src_pts.push_back(cv::Point2f(src.points[i].x, src.points[i].y));
+  }
+  std::vector<cv::Point2f> dst_pts;
+  for (size_t i = 0; i < dst.length; i++) {
+    dst_pts.push_back(cv::Point2f(dst.points[i].x, dst.points[i].y));
+  }
+
+  return new cv::Mat(cv::getPerspectiveTransform(src_pts, dst_pts));
+}
+
+Mat GetPerspectiveTransform2f(Contour2f src, Contour2f dst) {
     std::vector<cv::Point2f> src_pts;
 
     for (size_t i = 0; i < src.length; i++) {
