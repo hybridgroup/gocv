@@ -128,7 +128,7 @@ func TestCaffe(t *testing.T) {
 		}
 		defer img.Close()
 
-		blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(104, 117, 123, 0), false, false)
+		blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(0, 0, 0, 0), false, false)
 		if blob.Empty() {
 			t.Error("Invalid blob in Caffe test")
 		}
@@ -203,7 +203,7 @@ func TestTensorflow(t *testing.T) {
 		}
 		defer img.Close()
 
-		blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(127.5, 127.5, 127.5, 0), true, false)
+		blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(0, 0, 0, 0), true, false)
 		if blob.Empty() {
 			t.Error("Invalid blob in Tensorflow test")
 		}
