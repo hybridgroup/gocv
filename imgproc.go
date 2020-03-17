@@ -1609,7 +1609,7 @@ func ApplyCustomColorMap(src Mat, dst *Mat, customColormap Mat) {
 func GetPerspectiveTransform(src, dst []image.Point) Mat {
 	srcPoints := toCPoints(src)
 	dstPoints := toCPoints(dst)
-	return Mat{p: C.GetPerspectiveTransform(srcPoints, dstPoints)}
+	return newMat(C.GetPerspectiveTransform(srcPoints, dstPoints))
 }
 
 // GetPerspectiveTransform2f returns 3x3 perspective transformation for the

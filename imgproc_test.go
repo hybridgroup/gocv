@@ -1388,14 +1388,14 @@ func TestGetPerspectiveTransform(t *testing.T) {
 func TestGetPerspectiveTransform2f(t *testing.T) {
 	src := []Point2f{
 		{0, 0},
-		{10, 5},
-		{10, 10},
-		{5, 10},
+		{10.5, 5.5},
+		{10.5, 10.5},
+		{5.5, 10.5},
 	}
 	dst := []Point2f{
 		{0, 0},
-		{10, 0},
-		{10, 10},
+		{590.20, 24.12},
+		{100.12, 150.21},
 		{0, 10},
 	}
 
