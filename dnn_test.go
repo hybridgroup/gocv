@@ -295,7 +295,7 @@ func TestBlobFromImageGreyscale(t *testing.T) {
 	}
 	defer img.Close()
 
-	blob := BlobFromImage(img, 1.0, image.Pt(100, 100), NewScalar(127.5, 127.5, 127.5, 0), false, false)
+	blob := BlobFromImage(img, 1.0, image.Pt(100, 100), NewScalar(0, 0, 0, 0), false, false)
 	defer blob.Close()
 
 	if blob.Empty() {

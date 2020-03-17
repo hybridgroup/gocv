@@ -113,12 +113,6 @@ Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, boo
 
     // set the output ddepth to the input image depth
     int ddepth = image->depth();
-    if (ddepth == CV_8U)
-    {
-        // no scalar mean adjustment allowed, so ignore
-        return new cv::Mat(cv::dnn::blobFromImage(*image, scalefactor, sz, NULL, swapRB, crop, ddepth));
-    }
-
     cv::Scalar cm(mean.val1, mean.val2, mean.val3, mean.val4);
     return new cv::Mat(cv::dnn::blobFromImage(*image, scalefactor, sz, cm, swapRB, crop, ddepth));
 }
