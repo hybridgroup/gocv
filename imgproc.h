@@ -100,6 +100,7 @@ void Watershed(Mat image, Mat markers);
 void ApplyColorMap(Mat src, Mat dst, int colormap);
 void ApplyCustomColorMap(Mat src, Mat dst, Mat colormap);
 Mat GetPerspectiveTransform(Contour src, Contour dst);
+Mat GetPerspectiveTransform2f(Contour2f src, Contour2f dst);
 void DrawContours(Mat src, Contours contours, int contourIdx, Scalar color, int thickness);
 void Sobel(Mat src, Mat dst, int ddepth, int dx, int dy, int ksize, double scale, double delta, int borderType);
 void SpatialGradient(Mat src, Mat dx, Mat dy, int ksize, int borderType);

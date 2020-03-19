@@ -1422,6 +1422,31 @@ func TestGetPerspectiveTransform(t *testing.T) {
 	}
 }
 
+func TestGetPerspectiveTransform2f(t *testing.T) {
+	src := []Point2f{
+		{0, 0},
+		{10.5, 5.5},
+		{10.5, 10.5},
+		{5.5, 10.5},
+	}
+	dst := []Point2f{
+		{0, 0},
+		{590.20, 24.12},
+		{100.12, 150.21},
+		{0, 10},
+	}
+
+	m := GetPerspectiveTransform2f(src, dst)
+	defer m.Close()
+
+	if m.Cols() != 3 {
+		t.Errorf("TestWarpPerspective(): unexpected cols = %v, want = %v", m.Cols(), 3)
+	}
+	if m.Rows() != 3 {
+		t.Errorf("TestWarpPerspective(): unexpected rows = %v, want = %v", m.Rows(), 3)
+	}
+}
+
 func TestWarpPerspective(t *testing.T) {
 	img := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
 	defer img.Close()

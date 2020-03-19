@@ -1673,7 +1673,7 @@ func ApplyCustomColorMap(src Mat, dst *Mat, customColormap Mat) {
 }
 
 // GetPerspectiveTransform returns 3x3 perspective transformation for the
-// corresponding 4 point pairs.
+// corresponding 4 point pairs as image.Point.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga8c1ae0e3589a9d77fffc962c49b22043
@@ -1681,6 +1681,17 @@ func GetPerspectiveTransform(src, dst []image.Point) Mat {
 	srcPoints := toCPoints(src)
 	dstPoints := toCPoints(dst)
 	return newMat(C.GetPerspectiveTransform(srcPoints, dstPoints))
+}
+
+// GetPerspectiveTransform2f returns 3x3 perspective transformation for the
+// corresponding 4 point pairs as gocv.Point2f.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga8c1ae0e3589a9d77fffc962c49b22043
+func GetPerspectiveTransform2f(src, dst []Point2f) Mat {
+	srcPoints := toCPoints2f(src)
+	dstPoints := toCPoints2f(dst)
+	return newMat(C.GetPerspectiveTransform2f(srcPoints, dstPoints))
 }
 
 // DrawContours draws contours outlines or filled contours.

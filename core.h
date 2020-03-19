@@ -56,8 +56,17 @@ typedef struct Points {
     int length;
 } Points;
 
+// Wrapper for the vector of Point2f structs aka std::vector<Point2f>
+typedef struct Points2f {
+    Point2f* points;
+    int length;
+} Points2f;
+
 // Contour is alias for Points
 typedef Points Contour;
+
+// Contour2f is alias for Points2f
+typedef Points2f Contour2f;
 
 // Wrapper for the vector of Points vectors aka std::vector< std::vector<Point> >
 typedef struct Contours {

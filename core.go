@@ -161,6 +161,11 @@ const (
 	CompareNE = 5
 )
 
+type Point2f struct {
+	X float32
+	Y float32
+}
+
 var ErrEmptyByteSlice = errors.New("empty byte array")
 
 // Mat represents an n-dimensional dense numerical single-channel
@@ -1942,6 +1947,21 @@ func toCPoints(points []image.Point) C.struct_Points {
 
 	return C.struct_Points{
 		points: (*C.Point)(&cPointSlice[0]),
+		length: C.int(len(points)),
+	}
+}
+
+func toCPoints2f(points []Point2f) C.struct_Points2f {
+	cPointSlice := make([]C.struct_Point2f, len(points))
+	for i, point := range points {
+		cPointSlice[i] = C.struct_Point2f{
+			x: C.float(point.X),
+			y: C.float(point.Y),
+		}
+	}
+
+	return C.struct_Points2f{
+		points: (*C.Point2f)(&cPointSlice[0]),
 		length: C.int(len(points)),
 	}
 }
