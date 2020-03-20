@@ -1697,13 +1697,13 @@ func GetPerspectiveTransform2f(src, dst []Point2f) Mat {
 // DrawContours draws contours outlines or filled contours.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.1/d6/d6e/group__imgproc__draw.html#ga746c0625f1781f1ffc9056259103edbc
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga746c0625f1781f1ffc9056259103edbc
+//
 func DrawContours(img *Mat, contours [][]image.Point, contourIdx int, c color.RGBA, thickness int) {
 	cntrs := make([]C.struct_Points, len(contours))
 
 	for i, contour := range contours {
 		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(contour))))
-		defer C.free(unsafe.Pointer(p))
 
 		pa := getPoints(p, len(contour))
 
@@ -1733,6 +1733,12 @@ func DrawContours(img *Mat, contours [][]image.Point, contourIdx int, c color.RG
 	}
 
 	C.DrawContours(img.p, cContours, C.int(contourIdx), sColor, C.int(thickness))
+
+	// now free the contour points
+	for i := 0; i < len(contours); i++ {
+		C.free(unsafe.Pointer(cntrs[i].points))
+
+	}
 }
 
 // Remap applies a generic geometrical transformation to an image.
