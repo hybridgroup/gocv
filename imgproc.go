@@ -1677,9 +1677,9 @@ func ApplyCustomColorMap(src Mat, dst *Mat, customColormap Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga8c1ae0e3589a9d77fffc962c49b22043
-func GetPerspectiveTransform(src, dst []Point2f) Mat {
-	srcPoints := toCPoints2f(src)
-	dstPoints := toCPoints2f(dst)
+func GetPerspectiveTransform(src, dst []image.Point) Mat {
+	srcPoints := toCPoints(src)
+	dstPoints := toCPoints(dst)
 	return newMat(C.GetPerspectiveTransform(srcPoints, dstPoints))
 }
 
