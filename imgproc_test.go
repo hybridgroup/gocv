@@ -524,6 +524,25 @@ func TestErode(t *testing.T) {
 	}
 }
 
+func TestErodeWithParams(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in ErodeWithParams test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	defer kernel.Close()
+
+	ErodeWithParams(img, &dest, kernel, image.Pt(-1, -1), 3, 0)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid ErodeWithParams test")
+	}
+}
+
 func TestMorphologyDefaultBorderValue(t *testing.T) {
 	zeroScalar := Scalar{}
 	morphologyDefaultBorderValue := MorphologyDefaultBorderValue()
@@ -586,6 +605,24 @@ func TestGaussianBlur(t *testing.T) {
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid Blur test")
 	}
+}
+
+func TestGetGaussianKernel(t *testing.T) {
+	kernel := GetGaussianKernel(1, 0.5)
+	defer kernel.Close()
+	if kernel.Empty() {
+		t.Error("Invalid GetGaussianKernel test")
+	}
+
+}
+
+func TestGetGaussianKernelWithParams(t *testing.T) {
+	kernel := GetGaussianKernelWithParams(1, 0.5, MatTypeCV64F)
+	defer kernel.Close()
+	if kernel.Empty() {
+		t.Error("Invalid GetGaussianKernel test")
+	}
+
 }
 
 func TestLaplacian(t *testing.T) {
@@ -1385,6 +1422,31 @@ func TestGetPerspectiveTransform(t *testing.T) {
 	}
 }
 
+func TestGetPerspectiveTransform2f(t *testing.T) {
+	src := []Point2f{
+		{0, 0},
+		{10.5, 5.5},
+		{10.5, 10.5},
+		{5.5, 10.5},
+	}
+	dst := []Point2f{
+		{0, 0},
+		{590.20, 24.12},
+		{100.12, 150.21},
+		{0, 10},
+	}
+
+	m := GetPerspectiveTransform2f(src, dst)
+	defer m.Close()
+
+	if m.Cols() != 3 {
+		t.Errorf("TestWarpPerspective(): unexpected cols = %v, want = %v", m.Cols(), 3)
+	}
+	if m.Rows() != 3 {
+		t.Errorf("TestWarpPerspective(): unexpected rows = %v, want = %v", m.Rows(), 3)
+	}
+}
+
 func TestWarpPerspective(t *testing.T) {
 	img := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
 	defer img.Close()
@@ -1478,6 +1540,26 @@ func TestFillPoly(t *testing.T) {
 
 	if v := img.GetUCharAt(10, 10); v != 255 {
 		t.Errorf("TestFillPoly(): wrong pixel value = %v, want = %v", v, 255)
+	}
+}
+
+func TestPolylines(t *testing.T) {
+	img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+	defer img.Close()
+
+	white := color.RGBA{255, 255, 255, 0}
+	pts := [][]image.Point{
+		{
+			image.Pt(10, 10),
+			image.Pt(10, 20),
+			image.Pt(20, 20),
+			image.Pt(20, 10),
+		},
+	}
+	Polylines(&img, pts, true, white, 1)
+
+	if v := img.GetUCharAt(10, 10); v != 255 {
+		t.Errorf("TestPolylines(): wrong pixel value = %v, want = %v", v, 255)
 	}
 }
 

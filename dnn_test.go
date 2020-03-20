@@ -18,7 +18,7 @@ func TestReadNet(t *testing.T) {
 		}
 		defer img.Close()
 
-		blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(104, 117, 123, 0), false, false)
+		blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(0, 0, 0, 0), false, false)
 		if blob.Empty() {
 			t.Error("Invalid blob in ReadNet test")
 		}
@@ -128,7 +128,7 @@ func TestCaffe(t *testing.T) {
 		}
 		defer img.Close()
 
-		blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(104, 117, 123, 0), false, false)
+		blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(0, 0, 0, 0), false, false)
 		if blob.Empty() {
 			t.Error("Invalid blob in Caffe test")
 		}
@@ -203,7 +203,7 @@ func TestTensorflow(t *testing.T) {
 		}
 		defer img.Close()
 
-		blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(127.5, 127.5, 127.5, 0), true, false)
+		blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(0, 0, 0, 0), true, false)
 		if blob.Empty() {
 			t.Error("Invalid blob in Tensorflow test")
 		}
@@ -295,7 +295,7 @@ func TestBlobFromImageGreyscale(t *testing.T) {
 	}
 	defer img.Close()
 
-	blob := BlobFromImage(img, 1.0, image.Pt(100, 100), NewScalar(127.5, 127.5, 127.5, 0), false, false)
+	blob := BlobFromImage(img, 1.0, image.Pt(100, 100), NewScalar(0, 0, 0, 0), false, false)
 	defer blob.Close()
 
 	if blob.Empty() {
@@ -382,6 +382,10 @@ func TestParseNetBackend(t *testing.T) {
 	if val != NetBackendOpenCV {
 		t.Errorf("ParseNetBackend invalid")
 	}
+	val = ParseNetBackend("cuda")
+	if val != NetBackendCUDA {
+		t.Errorf("ParseNetBackend invalid")
+	}
 	val = ParseNetBackend("crazytrain")
 	if val != NetBackendDefault {
 		t.Errorf("ParseNetBackend invalid")
@@ -403,6 +407,14 @@ func TestParseNetTarget(t *testing.T) {
 	}
 	val = ParseNetTarget("vpu")
 	if val != NetTargetVPU {
+		t.Errorf("ParseNetTarget invalid")
+	}
+	val = ParseNetTarget("cuda")
+	if val != NetTargetCUDA {
+		t.Errorf("ParseNetTarget invalid")
+	}
+	val = ParseNetTarget("cudafp16")
+	if val != NetTargetCUDAFP16 {
 		t.Errorf("ParseNetTarget invalid")
 	}
 	val = ParseNetTarget("idk")

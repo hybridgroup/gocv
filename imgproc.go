@@ -335,6 +335,20 @@ func Erode(src Mat, dst *Mat, kernel Mat) {
 	C.Erode(src.p, dst.p, kernel.p)
 }
 
+// ErodeWithParams erodes an image by using a specific structuring element.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaeb1e0c1033e3f6b891a25d0511362aeb
+//
+func ErodeWithParams(src Mat, dst *Mat, kernel Mat, anchor image.Point, iterations, borderType int) {
+	cAnchor := C.struct_Point{
+		x: C.int(anchor.X),
+		y: C.int(anchor.Y),
+	}
+
+	C.ErodeWithParams(src.p, dst.p, kernel.p, cAnchor, C.int(iterations), C.int(borderType))
+}
+
 // RetrievalMode is the mode of the contour retrieval algorithm.
 type RetrievalMode int
 
@@ -875,6 +889,22 @@ func GaussianBlur(src Mat, dst *Mat, ksize image.Point, sigmaX float64,
 	C.GaussianBlur(src.p, dst.p, pSize, C.double(sigmaX), C.double(sigmaY), C.int(borderType))
 }
 
+// GetGaussianKernel returns Gaussian filter coefficients.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gac05a120c1ae92a6060dd0db190a61afa
+func GetGaussianKernel(ksize int, sigma float64) Mat {
+	return newMat(C.GetGaussianKernel(C.int(ksize), C.double(sigma), C.int(MatTypeCV64F)))
+}
+
+// GetGaussianKernelWithParams returns Gaussian filter coefficients.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gac05a120c1ae92a6060dd0db190a61afa
+func GetGaussianKernelWithParams(ksize int, sigma float64, ktype int) Mat {
+	return newMat(C.GetGaussianKernel(C.int(ksize), C.double(sigma), C.int(ktype)))
+}
+
 // Sobel calculates the first, second, third, or mixed image derivatives using an extended Sobel operator
 //
 // For further details, please see:
@@ -1124,8 +1154,8 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/3.3.0/d7/d1b/group__imgproc__misc.html#gae8a4a146d1ca78c626a53577199e9c57
 //
-func Threshold(src Mat, dst *Mat, thresh float32, maxvalue float32, typ ThresholdType) {
-	C.Threshold(src.p, dst.p, C.double(thresh), C.double(maxvalue), C.int(typ))
+func Threshold(src Mat, dst *Mat, thresh float32, maxvalue float32, typ ThresholdType) (threshold float32) {
+	return float32(C.Threshold(src.p, dst.p, C.double(thresh), C.double(maxvalue), C.int(typ)))
 }
 
 // AdaptiveThresholdType type of adaptive threshold operation.
@@ -1310,6 +1340,47 @@ func FillPoly(img *Mat, pts [][]image.Point, c color.RGBA) {
 	}
 
 	C.FillPoly(img.p, cPoints, sColor)
+}
+
+// Polylines draws several polygonal curves.
+//
+// For more information, see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga1ea127ffbbb7e0bfc4fd6fd2eb64263c
+func Polylines(img *Mat, pts [][]image.Point, isClosed bool, c color.RGBA, thickness int) {
+	points := make([]C.struct_Points, len(pts))
+
+	for i, pt := range pts {
+		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
+		defer C.free(unsafe.Pointer(p))
+
+		pa := getPoints(p, len(pt))
+
+		for j, point := range pt {
+			pa[j] = C.struct_Point{
+				x: C.int(point.X),
+				y: C.int(point.Y),
+			}
+		}
+
+		points[i] = C.struct_Points{
+			points: (*C.Point)(p),
+			length: C.int(len(pt)),
+		}
+	}
+
+	cPoints := C.struct_Contours{
+		contours: (*C.struct_Points)(&points[0]),
+		length:   C.int(len(pts)),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.Polylines(img.p, cPoints, C.bool(isClosed), sColor, C.int(thickness))
 }
 
 // HersheyFont are the font libraries included in OpenCV.
@@ -1602,7 +1673,7 @@ func ApplyCustomColorMap(src Mat, dst *Mat, customColormap Mat) {
 }
 
 // GetPerspectiveTransform returns 3x3 perspective transformation for the
-// corresponding 4 point pairs.
+// corresponding 4 point pairs as image.Point.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga8c1ae0e3589a9d77fffc962c49b22043
@@ -1610,6 +1681,17 @@ func GetPerspectiveTransform(src, dst []Point2f) Mat {
 	srcPoints := toCPoints2f(src)
 	dstPoints := toCPoints2f(dst)
 	return newMat(C.GetPerspectiveTransform(srcPoints, dstPoints))
+}
+
+// GetPerspectiveTransform2f returns 3x3 perspective transformation for the
+// corresponding 4 point pairs as gocv.Point2f.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga8c1ae0e3589a9d77fffc962c49b22043
+func GetPerspectiveTransform2f(src, dst []Point2f) Mat {
+	srcPoints := toCPoints2f(src)
+	dstPoints := toCPoints2f(dst)
+	return newMat(C.GetPerspectiveTransform2f(srcPoints, dstPoints))
 }
 
 // DrawContours draws contours outlines or filled contours.

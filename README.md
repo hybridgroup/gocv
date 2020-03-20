@@ -142,12 +142,42 @@ The following commands should do everything to download and install OpenCV 4.2.0
 	cd $GOPATH/src/gocv.io/x/gocv
 	make install
 
+If you need static opencv libraries
+
+	make install BUILD_SHARED_LIBS=OFF
+
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
 	gocv version: 0.22.0
 	opencv lib version: 4.2.0
 
 That's it, now you are ready to use GoCV.
+
+#### Install Cuda
+
+	[cuda directory](./cuda)
+
+#### Install OpenVINO
+
+	[openvino directory](./openvino)
+	
+#### Install OpenVINO and Cuda
+
+	The following commands should do everything to download and install OpenCV 4.2.0 with Cuda and OpenVINO on Linux:
+
+	cd $GOPATH/src/gocv.io/x/gocv
+	make install_all
+
+If you need static opencv libraries
+
+	make install_all BUILD_SHARED_LIBS=OFF
+
+If it works correctly, at the end of the entire process, the following message should be displayed:
+
+	gocv version: 0.22.0
+	opencv lib version: 4.2.0-openvino
+    cuda information:
+      Device 0:  "GeForce MX150"  2003Mb, sm_61, Driver/Runtime ver.10.0/10.0
 
 #### Complete Install
 
@@ -174,6 +204,10 @@ Now, download the OpenCV 4.2.0 and OpenCV Contrib source code:
 Build everything. This will take quite a while:
 
 	make build
+
+If you need static opencv libraries
+
+	make build BUILD_SHARED_LIBS=OFF
 
 #### Install
 
