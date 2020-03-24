@@ -101,3 +101,40 @@ func GetOptimalNewCameraMatrixWithParams(cameraMatrix Mat, distCoeffs Mat, image
 func Undistort(src Mat, dst *Mat, cameraMatrix Mat, distCoeffs Mat, newCameraMatrix Mat) {
 	C.Undistort(src.Ptr(), dst.Ptr(), cameraMatrix.Ptr(), distCoeffs.Ptr(), newCameraMatrix.Ptr())
 }
+
+// CalibCBFlag value for chessboard calibration
+// For more details, please see:
+// https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a
+type CalibCBFlag int
+
+const (
+	// Various operation flags that can be zero or a combination of the following values:
+	//  Use adaptive thresholding to convert the image to black and white, rather than a fixed threshold level (computed from the average image brightness).
+	CalibCBAdaptiveThresh CalibCBFlag = 1 << iota
+	//  Normalize the image gamma with equalizeHist before applying fixed or adaptive thresholding.
+	CalibCBNormalizeImage
+	//  Use additional criteria (like contour area, perimeter, square-like shape) to filter out false quads extracted at the contour retrieval stage.
+	CalibCBFilterQuads
+	//  Run a fast check on the image that looks for chessboard corners, and shortcut the call if none is found. This can drastically speed up the call in the degenerate condition when no chessboard is observed.
+	CalibCBFastCheck
+	CalibCBExhaustive
+	CalibCBAccuracy
+	CalibCBLarger
+	CalibCBMarker
+)
+
+func FindChessboardCorners(image Mat, patternSize image.Point, corners *Mat, flags CalibCBFlag) bool {
+	sz := C.struct_Size{
+		width:  C.int(patternSize.X),
+		height: C.int(patternSize.Y),
+	}
+	return bool(C.FindChessboardCorners(image.Ptr(), sz, corners.Ptr(), C.int(flags)))
+}
+
+func DrawChessboardCorners(image *Mat, patternSize image.Point, corners Mat, patternWasFound bool) {
+	sz := C.struct_Size{
+		width:  C.int(patternSize.X),
+		height: C.int(patternSize.Y),
+	}
+	C.DrawChessboardCorners(image.Ptr(), sz, corners.Ptr(), C.bool(patternWasFound))
+}

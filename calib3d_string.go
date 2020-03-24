@@ -25,3 +25,25 @@ func (c CalibFlag) String() string {
 	}
 	return ""
 }
+
+func (c CalibCBFlag) String() string {
+	switch c {
+	case CalibCBAdaptiveThresh:
+		return "calib-cb-adaptive-thresh"
+	case CalibCBNormalizeImage:
+		return "calib-cb-normalize-image"
+	case CalibCBFilterQuads:
+		return "calib-cb-filter-quads"
+	case CalibCBFastCheck:
+		return "calib-cb-fast-check"
+	case CalibCBExhaustive:
+		return "calib-cb-exhaustive"
+	case CalibCBAccuracy:
+		return "calib-cb-accuracy"
+	case CalibCBLarger:
+		return "calib-cb-larger"
+	case CalibCBMarker:
+		return "calib-cb-marker"
+	}
+	return ""
+}

@@ -211,3 +211,25 @@ func TestUndistort(t *testing.T) {
 	}
 	//IMWrite("images/distortion_up.jpg", dest)
 }
+
+func TestFindChessboard(t *testing.T) {
+	img := IMRead("images/chessboard_4x6.png", IMReadUnchanged)
+	if img.Empty() {
+		t.Error("Invalid read of chessboard image")
+		return
+	}
+	defer img.Close()
+
+	corners := NewMat()
+	defer corners.Close()
+
+	found := FindChessboardCorners(img, image.Point{X: 4, Y: 6}, &corners, 0)
+	if found == false {
+		t.Error("chessboard pattern not found")
+		return
+	}
+	if corners.Empty() {
+		t.Error("chessboard pattern not found")
+		return
+	}
+}
