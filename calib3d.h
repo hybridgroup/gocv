@@ -18,6 +18,8 @@ void Fisheye_UndistortImageWithParams(Mat distorted, Mat undistorted, Mat k, Mat
 void InitUndistortRectifyMap(Mat cameraMatrix,Mat distCoeffs,Mat r,Mat newCameraMatrix,Size size,int m1type,Mat map1,Mat map2);
 Mat GetOptimalNewCameraMatrixWithParams(Mat cameraMatrix,Mat distCoeffs,Size size,double alpha,Size newImgSize,Rect* validPixROI,bool centerPrincipalPoint);
 void Undistort(Mat src, Mat dst, Mat cameraMatrix, Mat distCoeffs, Mat newCameraMatrix);
+bool FindChessboardCorners(Mat image, Size patternSize, Mat corners, int flags);
+void DrawChessboardCorners(Mat image, Size patternSize, Mat corners, bool patternWasFound);
 #ifdef __cplusplus
 }
 #endif
