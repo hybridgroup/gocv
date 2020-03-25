@@ -1717,3 +1717,47 @@ func TestCLAHEWithParams(t *testing.T) {
 		t.Error("Invalid NewCLAHEWithParams test")
 	}
 }
+
+func TestPhaseCorrelate(t *testing.T) {
+	template := IMRead("images/simple.jpg", IMReadGrayScale)
+	matched := IMRead("images/simple-translated.jpg", IMReadGrayScale)
+	notMatchedOrig := IMRead("images/space_shuttle.jpg", IMReadGrayScale)
+	notMatched := NewMat()
+
+	defer template.Close()
+	defer matched.Close()
+	defer notMatchedOrig.Close()
+	defer notMatched.Close()
+
+	Resize(notMatchedOrig, &notMatched, image.Point{X: matched.Size()[0], Y: matched.Size()[1]}, 0, 0, InterpolationLinear)
+
+	template32FC1 := NewMat()
+	matched32FC1 := NewMat()
+	notMatched32FC1 := NewMat()
+
+	defer template32FC1.Close()
+	defer matched32FC1.Close()
+	defer notMatched32FC1.Close()
+
+	template.ConvertTo(&template32FC1, MatTypeCV32FC1)
+	matched.ConvertTo(&matched32FC1, MatTypeCV32FC1)
+	notMatched.ConvertTo(&notMatched32FC1, MatTypeCV32FC1)
+
+	window := NewMat()
+	defer window.Close()
+
+	shiftTranslated, responseTranslated := PhaseCorrelate(template32FC1, matched32FC1, window)
+	_, responseDifferent := PhaseCorrelate(template32FC1, notMatched32FC1, window)
+
+	if !(shiftTranslated.X < 15) || !(shiftTranslated.Y < 15) {
+		t.Errorf("expected shift to be > 15 pixels, got %v", shiftTranslated)
+	}
+
+	if responseTranslated < 0.85 {
+		t.Errorf("expected response for translated image to be > 0.85, got %f", responseTranslated)
+	}
+
+	if responseDifferent > 0.05 {
+		t.Errorf("expected response for different image to be < 0.05, but got %f", responseDifferent)
+	}
+}

@@ -116,6 +116,7 @@ CLAHE CLAHE_CreateWithParams(double clipLimit, Size tileGridSize);
 void CLAHE_Close(CLAHE c);
 void CLAHE_Apply(CLAHE c, Mat src, Mat dst);
 void InvertAffineTransform(Mat src, Mat dst);
+Point2f PhaseCorrelate(Mat src1, Mat src2, Mat window, double* response);
 
 #ifdef __cplusplus
 }

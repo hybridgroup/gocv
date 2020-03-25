@@ -1870,3 +1870,18 @@ func (c *CLAHE) Apply(src Mat, dst *Mat) {
 func InvertAffineTransform(src Mat, dst *Mat) {
 	C.InvertAffineTransform(src.p, dst.p)
 }
+
+// Apply phaseCorrelate.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga552420a2ace9ef3fb053cd630fdb4952
+//
+func PhaseCorrelate(src1, src2, window Mat) (phaseShift Point2f, response float64) {
+	var responseDouble C.double
+	result := C.PhaseCorrelate(src1.p, src2.p, window.p, &responseDouble)
+
+	return Point2f{
+		X: float32(result.x),
+		Y: float32(result.y),
+	}, float64(responseDouble)
+}
