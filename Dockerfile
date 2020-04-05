@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
             libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev && \
             rm -rf /var/lib/apt/lists/*
 
-ARG OPENCV_VERSION="4.2.0"
+ARG OPENCV_VERSION="4.3.0"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
@@ -41,7 +41,7 @@ RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSIO
 FROM opencv AS gocv
 LABEL maintainer="hybridgroup"
 
-ARG GOVERSION="1.13.5"
+ARG GOVERSION="1.14.1"
 ENV GOVERSION $GOVERSION
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
