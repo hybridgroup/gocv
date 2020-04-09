@@ -1,7 +1,7 @@
 // Package cuda is the GoCV wrapper around OpenCV cuda.
 //
 // For further details, please see:
-// https://github.com/opencv/c
+// https://github.com/opencv/opencv
 //
 // import "gocv.io/x/gocv/cuda"
 package cuda
