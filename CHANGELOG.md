@@ -1,3 +1,44 @@
+0.23.0
+---
+* **build**
+    * update Makefile and README
+    * update to use go1.14
+* **calib3d**
+    * add draw chessboard
+* **core**
+    * fix memory leak in Mat.Size() and Mat.Split() (#580)
+* **cuda**
+    * add build support
+    * add cuda backend/target
+    * add support for:
+        * cv::cuda::CannyEdgeDetector
+        * cv::cuda::CascadeClassifier Class
+        * cv::cuda::HOG Class
+    * remove breaking case statement
+* **dnn**
+    * avoid parallel test runs
+    * remove attempt at providing grayscale image blog conversion that uses mean adjustment
+* **docker**
+    * docker file last command change (#505)
+* **docs**
+    * add recent contributions to ROADMAP
+* **imgproc**
+    * add ErodeWithParams function
+    * add getGaussianKernel function
+    * add Go Point2f type and update GetPerspectiveTransform() (#589)
+    * add PhaseCorrelate binding (#626)
+    * added Polylines feature
+    * do not free contours data until after we have drawn the needed contours
+    * Threshold() should return a value (#620)
+* **make**
+    * added raspberry pi zero support to the makefile
+* **opencv**
+    * update to OpenCV 4.3.0
+* **openvino**
+    * add build support
+* **windows**
+    * add cmake flag for allocator stats counter type to avoid opencv issue #16398
+
 0.22.0
 ---
 * **bgsegm**
