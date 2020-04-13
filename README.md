@@ -398,7 +398,7 @@ In order to build and install OpenCV 4.3.0 on Windows, you must first download a
 
 #### MinGW-W64
 
-Download and run the MinGW-W64 compiler installer from [https://sourceforge.net/projects/mingw-w64/?source=typ_redirect](https://sourceforge.net/projects/mingw-w64/?source=typ_redirect).
+Download and run the MinGW-W64 compiler installer from [https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/7.3.0/](https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/7.3.0/).
 
 The latest version of the MinGW-W64 toolchain is `7.3.0`, but any version from `7.X` on should work.
 
