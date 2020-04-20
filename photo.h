@@ -4,7 +4,6 @@
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
 #include <opencv2/photo.hpp>
-
 extern "C" {
 #endif
 
@@ -29,8 +28,11 @@ void IlluminationChange(Mat src, Mat mask, Mat dst, float alpha, float beta);
 void TextureFlattening(Mat src, Mat mask, Mat dst, float low_threshold, float high_threshold, int kernel_size);
 
 void FastNlMeansDenoisingColoredMulti(struct Mats src, Mat dst, int imgToDenoiseIndex, int 	temporalWindowSize);
-
 void FastNlMeansDenoisingColoredMultiWithParams(struct Mats src, Mat dst, int imgToDenoiseIndex, int 	temporalWindowSize, float 	h, float 	hColor, int 	templateWindowSize, int 	searchWindowSize );
+void FastNlMeansDenoising(Mat src, Mat dst);
+void FastNlMeansDenoisingWithParams(Mat src, Mat dst, float h, int templateWindowSize, int searchWindowSize);
+void FastNlMeansDenoisingColored(Mat src, Mat dst);
+void FastNlMeansDenoisingColoredWithParams(Mat src, Mat dst, float h, float hColor, int templateWindowSize, int searchWindowSize);
 
 MergeMertens MergeMertens_Create();
 MergeMertens MergeMertens_CreateWithParams(float contrast_weight, float saturation_weight, float exposure_weight);
