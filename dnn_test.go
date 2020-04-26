@@ -12,16 +12,16 @@ func checkNet(t *testing.T, net Net) {
 	net.SetPreferableTarget(NetTargetCPU)
 
 	img := IMRead("images/space_shuttle.jpg", IMReadColor)
-	defer img.Close()
 	if img.Empty() {
 		t.Error("Invalid Mat in ReadNet test")
 	}
+	defer img.Close()
 
 	blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(0, 0, 0, 0), false, false)
-	defer blob.Close()
 	if blob.Empty() {
 		t.Error("Invalid blob in ReadNet test")
 	}
+	defer blob.Close()
 
 	net.SetInput(blob, "data")
 
@@ -89,10 +89,10 @@ func TestReadNetDisk(t *testing.T) {
 	}
 
 	net := ReadNet(path+"/bvlc_googlenet.caffemodel", path+"/bvlc_googlenet.prototxt")
-	defer net.Close()
 	if net.Empty() {
 		t.Errorf("Unable to load Caffe model using ReadNet")
 	}
+	defer net.Close()
 
 	checkNet(t, net)
 }
@@ -112,29 +112,29 @@ func TestReadNetMemory(t *testing.T) {
 		t.Errorf("Failed to load config from file: %v", err)
 	}
 	net, err := ReadNetBytes("caffe", bModel, bConfig)
-	defer net.Close()
 	if err != nil {
 		t.Errorf("Failed to read net bytes: %v", err)
 	}
 	if net.Empty() {
 		t.Errorf("Unable to load Caffe model using ReadNetBytes")
 	}
+	defer net.Close()
 
 	checkNet(t, net)
 }
 
 func checkCaffeNet(t *testing.T, net Net) {
 	img := IMRead("images/space_shuttle.jpg", IMReadColor)
-	defer img.Close()
 	if img.Empty() {
 		t.Error("Invalid Mat in Caffe test")
 	}
+	defer img.Close()
 
 	blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(0, 0, 0, 0), false, false)
-	defer blob.Close()
 	if blob.Empty() {
 		t.Error("Invalid blob in Caffe test")
 	}
+	defer blob.Close()
 
 	net.SetInput(blob, "data")
 	prob := net.Forward("prob")
@@ -167,10 +167,10 @@ func TestCaffeDisk(t *testing.T) {
 	}
 
 	net := ReadNetFromCaffe(path+"/bvlc_googlenet.prototxt", path+"/bvlc_googlenet.caffemodel")
-	defer net.Close()
 	if net.Empty() {
 		t.Errorf("Unable to load Caffe model")
 	}
+	defer net.Close()
 
 	checkCaffeNet(t, net)
 }
@@ -190,29 +190,29 @@ func TestCaffeMemory(t *testing.T) {
 		t.Errorf("Failed to load Caffe caffemodel from file: %v", err)
 	}
 	net, err := ReadNetFromCaffeBytes(bPrototxt, bCaffeModel)
-	defer net.Close()
 	if err != nil {
 		t.Errorf("Error reading caffe from bytes: %v", err)
 	}
 	if net.Empty() {
 		t.Errorf("Unable to load Caffe model")
 	}
+	defer net.Close()
 
 	checkCaffeNet(t, net)
 }
 
 func checkTensorflowNet(t *testing.T, net Net) {
 	img := IMRead("images/space_shuttle.jpg", IMReadColor)
-	defer img.Close()
 	if img.Empty() {
 		t.Error("Invalid Mat in Tensorflow test")
 	}
+	defer img.Close()
 
 	blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(0, 0, 0, 0), true, false)
-	defer blob.Close()
 	if blob.Empty() {
 		t.Error("Invalid blob in Tensorflow test")
 	}
+	defer blob.Close()
 
 	net.SetInput(blob, "input")
 	prob := net.Forward("softmax2")
@@ -245,10 +245,10 @@ func TestTensorflowDisk(t *testing.T) {
 	}
 
 	net := ReadNetFromTensorflow(path + "/tensorflow_inception_graph.pb")
-	defer net.Close()
 	if net.Empty() {
 		t.Errorf("Unable to load Tensorflow model")
 	}
+	defer net.Close()
 
 	checkTensorflowNet(t, net)
 }
@@ -264,13 +264,13 @@ func TestTensorflowMemory(t *testing.T) {
 		t.Errorf("Failed to load tensorflow model from file: %v", err)
 	}
 	net, err := ReadNetFromTensorflowBytes(b)
-	defer net.Close()
 	if err != nil {
 		t.Errorf("Failed to load Tensorflow model from bytes: %v", err)
 	}
 	if net.Empty() {
 		t.Errorf("Unable to load Tensorflow model")
 	}
+	defer net.Close()
 
 	checkTensorflowNet(t, net)
 }
@@ -279,10 +279,10 @@ func TestBlobFromImages(t *testing.T) {
 	imgs := make([]Mat, 0)
 
 	img := IMRead("images/space_shuttle.jpg", IMReadColor)
-	defer img.Close()
 	if img.Empty() {
 		t.Error("Invalid Mat in BlobFromImages test")
 	}
+	defer img.Close()
 
 	imgs = append(imgs, img)
 	imgs = append(imgs, img)
@@ -299,10 +299,10 @@ func TestBlobFromImages(t *testing.T) {
 
 func TestBlobFromImageGreyscale(t *testing.T) {
 	img := IMRead("images/space_shuttle.jpg", IMReadGrayScale)
-	defer img.Close()
 	if img.Empty() {
 		t.Error("Invalid Mat in TestBlobFromImageGreyscale test")
 	}
+	defer img.Close()
 
 	blob := BlobFromImage(img, 1.0, image.Pt(100, 100), NewScalar(0, 0, 0, 0), false, false)
 	defer blob.Close()
@@ -316,10 +316,10 @@ func TestImagesFromBlob(t *testing.T) {
 	imgs := make([]Mat, 0)
 
 	img := IMRead("images/space_shuttle.jpg", IMReadGrayScale)
-	defer img.Close()
 	if img.Empty() {
 		t.Error("Invalid Mat in BlobFromImages test")
 	}
+	defer img.Close()
 
 	imgs = append(imgs, img)
 	imgs = append(imgs, img)
