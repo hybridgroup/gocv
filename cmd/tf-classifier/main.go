@@ -70,11 +70,11 @@ func main() {
 
 	// open DNN classifier
 	net := gocv.ReadNet(model, "")
+	defer net.Close()
 	if net.Empty() {
 		fmt.Printf("Error reading network model : %v\n", model)
 		return
 	}
-	defer net.Close()
 	net.SetPreferableBackend(gocv.NetBackendType(backend))
 	net.SetPreferableTarget(gocv.NetTargetType(target))
 
