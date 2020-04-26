@@ -85,10 +85,10 @@ func TestReadNet(t *testing.T) {
 
 	t.Run("net from disk", func(t *testing.T) {
 		net := ReadNet(path+"/bvlc_googlenet.caffemodel", path+"/bvlc_googlenet.prototxt")
+		defer net.Close()
 		if net.Empty() {
 			t.Errorf("Unable to load Caffe model using ReadNet")
 		}
-		defer net.Close()
 
 		checkNet(t, net)
 	})
@@ -103,13 +103,13 @@ func TestReadNet(t *testing.T) {
 			t.Errorf("Failed to load config from file: %v", err)
 		}
 		net, err := ReadNetBytes("caffe", bModel, bConfig)
+		defer net.Close()
 		if err != nil {
 			t.Errorf("Failed to read net bytes: %v", err)
 		}
 		if net.Empty() {
 			t.Errorf("Unable to load Caffe model using ReadNetBytes")
 		}
-		defer net.Close()
 
 		checkNet(t, net)
 	})
@@ -160,10 +160,10 @@ func TestCaffe(t *testing.T) {
 
 	t.Run("net from disk", func(t *testing.T) {
 		net := ReadNetFromCaffe(path+"/bvlc_googlenet.prototxt", path+"/bvlc_googlenet.caffemodel")
+		defer net.Close()
 		if net.Empty() {
 			t.Errorf("Unable to load Caffe model")
 		}
-		defer net.Close()
 
 		checkNet(t, net)
 	})
@@ -178,13 +178,13 @@ func TestCaffe(t *testing.T) {
 			t.Errorf("Failed to load Caffe caffemodel from file: %v", err)
 		}
 		net, err := ReadNetFromCaffeBytes(bPrototxt, bCaffeModel)
+		defer net.Close()
 		if err != nil {
 			t.Errorf("Error reading caffe from bytes: %v", err)
 		}
 		if net.Empty() {
 			t.Errorf("Unable to load Caffe model")
 		}
-		defer net.Close()
 
 		checkNet(t, net)
 	})
@@ -235,10 +235,10 @@ func TestTensorflow(t *testing.T) {
 
 	t.Run("net from disk", func(t *testing.T) {
 		net := ReadNetFromTensorflow(path + "/tensorflow_inception_graph.pb")
+		defer net.Close()
 		if net.Empty() {
 			t.Errorf("Unable to load Tensorflow model")
 		}
-		defer net.Close()
 
 		checkNet(t, net)
 	})
@@ -249,13 +249,13 @@ func TestTensorflow(t *testing.T) {
 			t.Errorf("Failed to load tensorflow model from file: %v", err)
 		}
 		net, err := ReadNetFromTensorflowBytes(b)
+		defer net.Close()
 		if err != nil {
 			t.Errorf("Failed to load Tensorflow model from bytes: %v", err)
 		}
 		if net.Empty() {
 			t.Errorf("Unable to load Tensorflow model")
 		}
-		defer net.Close()
 
 		checkNet(t, net)
 	})

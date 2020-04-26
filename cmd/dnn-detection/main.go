@@ -74,11 +74,11 @@ func main() {
 
 	// open DNN object tracking model
 	net := gocv.ReadNet(model, config)
+	defer net.Close()
 	if net.Empty() {
 		fmt.Printf("Error reading network model from : %v %v\n", model, config)
 		return
 	}
-	defer net.Close()
 	net.SetPreferableBackend(gocv.NetBackendType(backend))
 	net.SetPreferableTarget(gocv.NetTargetType(target))
 
