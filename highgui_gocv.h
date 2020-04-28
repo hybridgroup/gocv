@@ -23,6 +23,7 @@ struct Rects Window_SelectROIs(const char* winname, Mat img);
 
 // Trackbar
 void Trackbar_Create(const char* winname, const char* trackname, int max);
+void Trackbar_CreateWithValue(const char* winname, const char* trackname, int* value, int max);
 int Trackbar_GetPos(const char* winname, const char* trackname);
 void Trackbar_SetPos(const char* winname, const char* trackname, int pos);
 void Trackbar_SetMin(const char* winname, const char* trackname, int pos);
