@@ -78,8 +78,12 @@ func main() {
 			continue
 		}
 
+		// convert image Mat DataType to CV_32F
+		img_CV32F := img.Clone()
+		img_CV32F.ConvertTo(&img_CV32F, gocv.MatTypeCV32F)
+
 		// convert image Mat to 640x480 blob that the style transfer can analyze
-		blob := gocv.BlobFromImage(img, 1.0, image.Pt(640, 480), gocv.NewScalar(103.939, 116.779, 123.68, 0), false, false)
+		blob := gocv.BlobFromImage(img_CV32F, 1.0, image.Pt(640, 480), gocv.NewScalar(103.939, 116.779, 123.68, 0), false, false)
 
 		// feed the blob into the detector
 		net.SetInput(blob, "")
