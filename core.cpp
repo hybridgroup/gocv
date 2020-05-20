@@ -700,6 +700,13 @@ void Contours_Close(struct Contours cs) {
     delete[] cs.contours;
 }
 
+void CStrings_Close(struct CStrings cstrs) {
+    for ( int i = 0; i < cstrs.length; i++ ) {
+        delete [] cstrs.strs[i];
+    }
+    delete [] cstrs.strs;
+}
+
 void KeyPoints_Close(struct KeyPoints ks) {
     delete[] ks.keypoints;
 }
