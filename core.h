@@ -390,6 +390,8 @@ Mat Mat_colRange(Mat m,int startrow,int endrow);
 
 void IntVector_Close(struct IntVector ivec);
 
+void CStrings_Close(struct CStrings cstrs);
+
 #ifdef __cplusplus
 }
 #endif
