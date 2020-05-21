@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"math"
 	"testing"
 )
 
@@ -212,6 +213,146 @@ func TestUndistort(t *testing.T) {
 	//IMWrite("images/distortion_up.jpg", dest)
 }
 
+func TestUndistortPoint(t *testing.T) {
+	k := NewMatWithSize(3, 3, MatTypeCV64F)
+	defer k.Close()
+
+	k.SetDoubleAt(0, 0, 1094.7249578198823)
+	k.SetDoubleAt(0, 1, 0)
+	k.SetDoubleAt(0, 2, 959.4907612030962)
+
+	k.SetDoubleAt(1, 0, 0)
+	k.SetDoubleAt(1, 1, 1094.9945708128778)
+	k.SetDoubleAt(1, 2, 536.4566143451868)
+
+	k.SetDoubleAt(2, 0, 0)
+	k.SetDoubleAt(2, 1, 0)
+	k.SetDoubleAt(2, 2, 1)
+
+	d := NewMatWithSize(1, 4, MatTypeCV64F)
+	defer d.Close()
+
+	d.SetDoubleAt(0, 0, -0.05207412392075069)
+	d.SetDoubleAt(0, 1, -0.089168300192224)
+	d.SetDoubleAt(0, 2, 0.10465607695792184)
+	d.SetDoubleAt(0, 3, -0.045693446831115585)
+
+	r := NewMat()
+	defer r.Close()
+
+	// transform 3 points in one go
+	src := NewMatWithSize(3, 1, MatTypeCV64FC2)
+	defer src.Close()
+	dst := NewMatWithSize(3, 1, MatTypeCV64FC2)
+	defer dst.Close()
+
+	// This camera matrix is 1920x1080. Points where x < 960 and y < 540 should move toward the top left (x and y get smaller)
+	// The centre point should be mostly unchanged
+	// Points where x > 960 and y > 540 should move toward the bottom right (x and y get bigger)
+
+	// The index being used for col here is actually the channel (i.e. the point's x/y dimensions)
+	// (since there's only 1 column so the formula: (colNumber * numChannels + channelNumber) reduces to
+	// (0 * 2) + channelNumber
+	// so col = 0 is the x coordinate and col = 1 is the y coordinate
+
+	src.SetDoubleAt(0, 0, 480)
+	src.SetDoubleAt(0, 1, 270)
+
+	src.SetDoubleAt(1, 0, 960)
+	src.SetDoubleAt(1, 1, 540)
+
+	src.SetDoubleAt(2, 0, 1920)
+	src.SetDoubleAt(2, 1, 1080)
+
+	UndistortPoints(src, &dst, k, d, r, k)
+
+	if dst.GetDoubleAt(0, 0) >= 480 || dst.GetDoubleAt(0, 1) >= 270 {
+		t.Error("undistortion expected top left point to move further up and left")
+		return
+	}
+
+	if math.Round(dst.GetDoubleAt(1, 0)) != 960 || math.Round(dst.GetDoubleAt(1, 1)) != 540 {
+		t.Error("undistortion expected centre point to be nearly unchanged")
+		return
+	}
+
+	if dst.GetDoubleAt(2, 0) != 1920 || dst.GetDoubleAt(2, 1) != 1080 {
+		t.Error("undistortion expected bottom right corner to be unchanged")
+		return
+	}
+
+}
+
+func TestFisheyeUndistortPoint(t *testing.T) {
+	k := NewMatWithSize(3, 3, MatTypeCV64F)
+	defer k.Close()
+
+	k.SetDoubleAt(0, 0, 1094.7249578198823)
+	k.SetDoubleAt(0, 1, 0)
+	k.SetDoubleAt(0, 2, 959.4907612030962)
+
+	k.SetDoubleAt(1, 0, 0)
+	k.SetDoubleAt(1, 1, 1094.9945708128778)
+	k.SetDoubleAt(1, 2, 536.4566143451868)
+
+	k.SetDoubleAt(2, 0, 0)
+	k.SetDoubleAt(2, 1, 0)
+	k.SetDoubleAt(2, 2, 1)
+
+	d := NewMatWithSize(1, 4, MatTypeCV64F)
+	defer d.Close()
+
+	d.SetDoubleAt(0, 0, -0.05207412392075069)
+	d.SetDoubleAt(0, 1, -0.089168300192224)
+	d.SetDoubleAt(0, 2, 0.10465607695792184)
+	d.SetDoubleAt(0, 3, -0.045693446831115585)
+
+	r := NewMat()
+	defer r.Close()
+
+	// transform 3 points in one go (X and Y values of points go in each channel)
+	src := NewMatWithSize(3, 1, MatTypeCV64FC2)
+	defer src.Close()
+	dst := NewMatWithSize(3, 1, MatTypeCV64FC2)
+	defer dst.Close()
+
+	// This camera matrix is 1920x1080. Points where x < 960 and y < 540 should move toward the top left (x and y get smaller)
+	// The centre point should be mostly unchanged
+	// Points where x > 960 and y > 540 should move toward the bottom right (x and y get bigger)
+
+	// The index being used for col here is actually the channel (i.e. the point's x/y dimensions)
+	// (since there's only 1 column so the formula: (colNumber * numChannels + channelNumber) reduces to
+	// (0 * 2) + channelNumber
+	// so col = 0 is the x coordinate and col = 1 is the y coordinate
+
+	src.SetDoubleAt(0, 0, 480)
+	src.SetDoubleAt(0, 1, 270)
+
+	src.SetDoubleAt(1, 0, 960)
+	src.SetDoubleAt(1, 1, 540)
+
+	src.SetDoubleAt(2, 0, 1440)
+	src.SetDoubleAt(2, 1, 810)
+
+	kNew := NewMat()
+	defer kNew.Close()
+
+	k.CopyTo(&kNew)
+
+	kNew.SetDoubleAt(0, 0, 0.4*k.GetDoubleAt(0, 0))
+	kNew.SetDoubleAt(1, 1, 0.4*k.GetDoubleAt(1, 1))
+
+	imgSize := image.Point{X: 1920, Y: 1080}
+
+	EstimateNewCameraMatrixForUndistortRectify(k, d, imgSize, r, &kNew, 1, imgSize, 1)
+
+	FisheyeUndistortPoints(src, &dst, k, d, r, kNew)
+
+	if dst.GetDoubleAt(0, 0) == 0 {
+		t.Error("expected destination Mat to be populated")
+	}
+
+}
 func TestFindChessboard(t *testing.T) {
 	img := IMRead("images/chessboard_4x6.png", IMReadUnchanged)
 	if img.Empty() {

@@ -67,6 +67,24 @@ func FisheyeUndistortImageWithParams(distorted Mat, undistorted *Mat, k, d, knew
 	C.Fisheye_UndistortImageWithParams(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr(), knew.Ptr(), sz)
 }
 
+// FisheyeUndistortPoints transforms points to compensate for fisheye lens distortion
+func FisheyeUndistortPoints(distorted Mat, undistorted *Mat, k, d, r, p Mat) {
+	C.Fisheye_UndistortPoints(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr(), r.Ptr(), p.Ptr())
+}
+
+// EstimateNewCameraMatrixForUndistortRectify estimates new camera matrix for undistortion or rectification.
+func EstimateNewCameraMatrixForUndistortRectify(k, d Mat, imgSize image.Point, r Mat, p *Mat, balance float64, newSize image.Point, fovScale float64) {
+	imgSz := C.struct_Size{
+		width:  C.int(imgSize.X),
+		height: C.int(imgSize.Y),
+	}
+	newSz := C.struct_Size{
+		width:  C.int(newSize.X),
+		height: C.int(newSize.Y),
+	}
+	C.Fisheye_EstimateNewCameraMatrixForUndistortRectify(k.Ptr(), d.Ptr(), imgSz, r.Ptr(), p.Ptr(), C.double(balance), newSz, C.double(fovScale))
+}
+
 // InitUndistortRectifyMap computes the joint undistortion and rectification transformation and represents the result in the form of maps for remap
 //
 // For further details, please see:
@@ -100,6 +118,10 @@ func GetOptimalNewCameraMatrixWithParams(cameraMatrix Mat, distCoeffs Mat, image
 
 func Undistort(src Mat, dst *Mat, cameraMatrix Mat, distCoeffs Mat, newCameraMatrix Mat) {
 	C.Undistort(src.Ptr(), dst.Ptr(), cameraMatrix.Ptr(), distCoeffs.Ptr(), newCameraMatrix.Ptr())
+}
+
+func UndistortPoints(src Mat, dst *Mat, cameraMatrix, distCoeffs, rectificationTransform, newCameraMatrix Mat) {
+	C.UndistortPoints(src.Ptr(), dst.Ptr(), cameraMatrix.Ptr(), distCoeffs.Ptr(), rectificationTransform.Ptr(), newCameraMatrix.Ptr())
 }
 
 // CalibCBFlag value for chessboard calibration

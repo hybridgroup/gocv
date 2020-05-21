@@ -1851,6 +1851,22 @@ type DMatch struct {
 	Distance float64
 }
 
+// Vecb is a generic vector of bytes.
+type Vecb []uint8
+
+// GetVecbAt returns a vector of bytes. Its size corresponds to the number
+// of channels of the Mat.
+func (m *Mat) GetVecbAt(row int, col int) Vecb {
+	ch := m.Channels()
+	v := make(Vecb, ch)
+
+	for c := 0; c < ch; c++ {
+		v[c] = m.GetUCharAt(row, col*ch+c)
+	}
+
+	return v
+}
+
 // Vecf is a generic vector of floats.
 type Vecf []float32
 
@@ -1862,6 +1878,22 @@ func (m *Mat) GetVecfAt(row int, col int) Vecf {
 
 	for c := 0; c < ch; c++ {
 		v[c] = m.GetFloatAt(row, col*ch+c)
+	}
+
+	return v
+}
+
+// Vecd is a generic vector of float64/doubles.
+type Vecd []float64
+
+// GetVecdAt returns a vector of float64s. Its size corresponds to the number
+// of channels of the Mat.
+func (m *Mat) GetVecdAt(row int, col int) Vecd {
+	ch := m.Channels()
+	v := make(Vecd, ch)
+
+	for c := 0; c < ch; c++ {
+		v[c] = m.GetDoubleAt(row, col*ch+c)
 	}
 
 	return v
