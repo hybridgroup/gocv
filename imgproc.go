@@ -1694,6 +1694,18 @@ func GetPerspectiveTransform2f(src, dst []Point2f) Mat {
 	return newMat(C.GetPerspectiveTransform2f(srcPoints, dstPoints))
 }
 
+type HomographyMethod int
+
+const (
+	HomograpyMethodAllPoints HomographyMethod = 0
+	HomograpyMethodLMEDS                      = 4
+	HomograpyMethodRANSAC                     = 8
+)
+
+func FindHomography(srcPoints Mat, dstPoints *Mat, method HomographyMethod, ransacReprojThreshold float64, mask *Mat, maxIters int, confidence float64) Mat {
+	return newMat(C.FindHomography(srcPoints.Ptr(), dstPoints.Ptr(), C.int(method), C.double(ransacReprojThreshold), mask.Ptr(), C.int(maxIters), C.double(confidence)))
+}
+
 // DrawContours draws contours outlines or filled contours.
 //
 // For further details, please see:
