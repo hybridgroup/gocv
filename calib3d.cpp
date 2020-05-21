@@ -10,6 +10,16 @@ void Fisheye_UndistortImageWithParams(Mat distorted, Mat undistorted, Mat k, Mat
     cv::fisheye::undistortImage(*distorted, *undistorted, *k, *d, *knew, sz);
 }
 
+void Fisheye_UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d, Mat r, Mat p) {
+    cv::fisheye::undistortPoints(*distorted, *undistorted, *k, *d, *r, *p);
+}
+
+void Fisheye_EstimateNewCameraMatrixForUndistortRectify(Mat k, Mat d, Size imgSize, Mat r, Mat p, double balance, Size newSize, double fovScale) {
+    cv::Size newSz(newSize.width, newSize.height);
+    cv::Size imgSz(imgSize.width, imgSize.height);
+    cv::fisheye::estimateNewCameraMatrixForUndistortRectify(*k, *d, imgSz, *r, *p, balance, newSz, fovScale);
+}
+
 void InitUndistortRectifyMap(Mat cameraMatrix,Mat distCoeffs,Mat r,Mat newCameraMatrix,Size size,int m1type,Mat map1,Mat map2) {
     cv::Size sz(size.width, size.height);
     cv::initUndistortRectifyMap(*cameraMatrix,*distCoeffs,*r,*newCameraMatrix,sz,m1type,*map1,*map2);
@@ -29,6 +39,10 @@ Mat GetOptimalNewCameraMatrixWithParams(Mat cameraMatrix,Mat distCoeffs,Size siz
 
 void Undistort(Mat src, Mat dst, Mat cameraMatrix, Mat distCoeffs, Mat newCameraMatrix) {
     cv::undistort(*src, *dst, *cameraMatrix, *distCoeffs, *newCameraMatrix);
+}
+
+void UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d, Mat r, Mat p) {
+    cv::undistortPoints(*distorted, *undistorted, *k, *d, *r, *p);
 }
 
 bool FindChessboardCorners(Mat image, Size patternSize, Mat corners, int flags) {
