@@ -587,6 +587,10 @@ Mat GetPerspectiveTransform2f(Contour2f src, Contour2f dst) {
     return new cv::Mat(cv::getPerspectiveTransform(src_pts, dst_pts));
 }
 
+Mat FindHomography(Mat src, Mat dst, int method, double ransacReprojThreshold, Mat mask, const int maxIters, const double confidence) {
+    return new cv::Mat(cv::findHomography(*src, *dst, method, ransacReprojThreshold, *mask, maxIters, confidence));
+}
+
 void DrawContours(Mat src, Contours contours, int contourIdx, Scalar color, int thickness) {
     std::vector<std::vector<cv::Point> > cntrs;
 
