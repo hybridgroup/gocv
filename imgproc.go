@@ -1702,6 +1702,11 @@ const (
 	HomograpyMethodRANSAC                     = 8
 )
 
+// FindHomography finds an optimal homography matrix using 4 or more point pairs (as opposed to GetPerspectiveTransform, which uses exactly 4)
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga4abc2ece9fab9398f2e560d53c8c9780
+//
 func FindHomography(srcPoints Mat, dstPoints *Mat, method HomographyMethod, ransacReprojThreshold float64, mask *Mat, maxIters int, confidence float64) Mat {
 	return newMat(C.FindHomography(srcPoints.Ptr(), dstPoints.Ptr(), C.int(method), C.double(ransacReprojThreshold), mask.Ptr(), C.int(maxIters), C.double(confidence)))
 }
