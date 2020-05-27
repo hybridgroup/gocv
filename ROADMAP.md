@@ -54,7 +54,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [initUndistortRectifyMap](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga7dfb72c9cf9780a347fbe3d1c47e5d5a)
         - [ ] [initWideAngleProjMap](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gaceb049ec48898d1dadd5b50c604429c8)
         - [ ] [undistort](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga69f2545a8b62a6b0fc2ee060dc30559d)
-        - [ ] [undistortPoints](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga55c716492470bfe86b0ee9bf3a1f0f7e)
+        - [X] [undistortPoints](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga55c716492470bfe86b0ee9bf3a1f0f7e)
 
     - [ ] **Miscellaneous Image Transformations - WORK STARTED** The following functions still need implementation:
         - [ ] [cvtColorTwoPlane](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8e873314e72a1a6c0252375538fbf753)
@@ -139,7 +139,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [findCirclesGrid](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [findEssentialMat](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [findFundamentalMat](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [findHomography](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [X] [findHomography](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [getDefaultNewCameraMatrix](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [getOptimalNewCameraMatrix](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [getValidDisparityROI](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
@@ -170,11 +170,11 @@ Your pull requests will be greatly appreciated!
     - [ ] **Fisheye - WORK STARTED** The following functions still need implementation:
         - [ ] [calibrate](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gad626a78de2b1dae7489e152a5a5a89e1)
         - [ ] [distortPoints](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#ga75d8877a98e38d0b29b6892c5f8d7765)
-        - [ ] [estimateNewCameraMatrixForUndistortRectify](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#ga384940fdf04c03e362e94b6eb9b673c9)
+        - [X] [estimateNewCameraMatrixForUndistortRectify](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#ga384940fdf04c03e362e94b6eb9b673c9)
         - [ ] [projectPoints](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gab1ad1dc30c42ee1a50ce570019baf2c4)
         - [ ] [stereoCalibrate](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gadbb3a6ca6429528ef302c784df47949b)
         - [ ] [stereoRectify](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gac1af58774006689056b0f2ef1db55ecc)
-        - [ ] [undistortPoints](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gab738cdf90ceee97b2b52b0d0e7511541)
+        - [X] [undistortPoints](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gab738cdf90ceee97b2b52b0d0e7511541)
 
 - [ ] **features2d. 2D Features Framework - WORK STARTED**
     - [X] **Feature Detection and Description**
