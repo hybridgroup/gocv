@@ -676,9 +676,9 @@ void InvertAffineTransform(Mat src, Mat dst) {
 Point2f PhaseCorrelate(Mat src1, Mat src2, Mat window, double* response) {
     cv::Point2d result = cv::phaseCorrelate(*src1, *src2, *window, response);
 
-    Point2f result2f {
-        x: float(result.x),
-        y: float(result.y),
+    Point2f result2f = {
+        .x = float(result.x),
+        .y = float(result.y),
     };
     return result2f;
 }
