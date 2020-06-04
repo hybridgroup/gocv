@@ -1447,6 +1447,52 @@ func TestGetPerspectiveTransform2f(t *testing.T) {
 	}
 }
 
+func TestGetAffineTransform(t *testing.T) {
+	src := []image.Point{
+		image.Pt(0, 0),
+		image.Pt(10, 5),
+		image.Pt(10, 10),
+	}
+	dst := []image.Point{
+		image.Pt(0, 0),
+		image.Pt(10, 0),
+		image.Pt(10, 10),
+	}
+
+	m := GetAffineTransform(src, dst)
+	defer m.Close()
+
+	if m.Cols() != 3 {
+		t.Errorf("TestGetAffineTransform(): unexpected cols = %v, want = %v", m.Cols(), 3)
+	}
+	if m.Rows() != 2 {
+		t.Errorf("TestGetAffineTransform(): unexpected rows = %v, want = %v", m.Rows(), 2)
+	}
+}
+
+func TestGetAffineTransform2f(t *testing.T) {
+	src := []Point2f{
+		{0, 0},
+		{10.5, 5.5},
+		{10.5, 10.5},
+	}
+	dst := []Point2f{
+		{0, 0},
+		{590.20, 24.12},
+		{100.12, 150.21},
+	}
+
+	m := GetAffineTransform2f(src, dst)
+	defer m.Close()
+
+	if m.Cols() != 3 {
+		t.Errorf("TestGetAffineTransform2f(): unexpected cols = %v, want = %v", m.Cols(), 3)
+	}
+	if m.Rows() != 2 {
+		t.Errorf("TestGetAffineTransform2f(): unexpected rows = %v, want = %v", m.Rows(), 2)
+	}
+}
+
 func TestFindHomography(t *testing.T) {
 	src := NewMatWithSize(4, 1, MatTypeCV64FC2)
 	defer src.Close()
