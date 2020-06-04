@@ -1694,6 +1694,28 @@ func GetPerspectiveTransform2f(src, dst []Point2f) Mat {
 	return newMat(C.GetPerspectiveTransform2f(srcPoints, dstPoints))
 }
 
+// GetAffineTransform returns a 2x3 affine transformation matrix for the
+// corresponding 3 point pairs as image.Point.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga8f6d378f9f8eebb5cb55cd3ae295a999
+func GetAffineTransform(src, dst []image.Point) Mat {
+	srcPoints := toCPoints(src)
+	dstPoints := toCPoints(dst)
+	return newMat(C.GetAffineTransform(srcPoints, dstPoints))
+}
+
+// GetAffineTransform2f returns a 2x3 affine transformation matrix for the
+// corresponding 3 point pairs as gocv.Point2f.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga8f6d378f9f8eebb5cb55cd3ae295a999
+func GetAffineTransform2f(src, dst []Point2f) Mat {
+	srcPoints := toCPoints2f(src)
+	dstPoints := toCPoints2f(dst)
+	return newMat(C.GetAffineTransform2f(srcPoints, dstPoints))
+}
+
 type HomographyMethod int
 
 const (

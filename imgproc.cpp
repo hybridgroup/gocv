@@ -587,6 +587,35 @@ Mat GetPerspectiveTransform2f(Contour2f src, Contour2f dst) {
     return new cv::Mat(cv::getPerspectiveTransform(src_pts, dst_pts));
 }
 
+Mat GetAffineTransform(Contour src, Contour dst) {
+  std::vector<cv::Point2f> src_pts;
+  for (size_t i = 0; i < src.length; i++) {
+    src_pts.push_back(cv::Point2f(src.points[i].x, src.points[i].y));
+  }
+  std::vector<cv::Point2f> dst_pts;
+  for (size_t i = 0; i < dst.length; i++) {
+    dst_pts.push_back(cv::Point2f(dst.points[i].x, dst.points[i].y));
+  }
+
+  return new cv::Mat(cv::getAffineTransform(src_pts, dst_pts));
+}
+
+Mat GetAffineTransform2f(Contour2f src, Contour2f dst) {
+    std::vector<cv::Point2f> src_pts;
+
+    for (size_t i = 0; i < src.length; i++) {
+        src_pts.push_back(cv::Point2f(src.points[i].x, src.points[i].y));
+    }
+
+    std::vector<cv::Point2f> dst_pts;
+
+    for (size_t i = 0; i < dst.length; i++) {
+        dst_pts.push_back(cv::Point2f(dst.points[i].x, dst.points[i].y));
+    }
+
+    return new cv::Mat(cv::getAffineTransform(src_pts, dst_pts));
+}
+
 Mat FindHomography(Mat src, Mat dst, int method, double ransacReprojThreshold, Mat mask, const int maxIters, const double confidence) {
     return new cv::Mat(cv::findHomography(*src, *dst, method, ransacReprojThreshold, *mask, maxIters, confidence));
 }
