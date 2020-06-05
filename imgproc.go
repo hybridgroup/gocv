@@ -1776,7 +1776,7 @@ func Remap(src Mat, dst, map1, map2 *Mat, interpolation InterpolationFlags, bord
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga27c049795ce870216ddfb366086b5a04
-func Filter2D(src Mat, dst *Mat, ddepth int, kernel Mat, anchor image.Point, delta float64, borderType BorderType) {
+func Filter2D(src Mat, dst *Mat, ddepth MatType, kernel Mat, anchor image.Point, delta float64, borderType BorderType) {
 	anchorP := C.struct_Point{
 		x: C.int(anchor.X),
 		y: C.int(anchor.Y),
@@ -1788,7 +1788,7 @@ func Filter2D(src Mat, dst *Mat, ddepth int, kernel Mat, anchor image.Point, del
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga910e29ff7d7b105057d1625a4bf6318d
-func SepFilter2D(src Mat, dst *Mat, ddepth int, kernelX, kernelY Mat, anchor image.Point, delta float64, borderType BorderType) {
+func SepFilter2D(src Mat, dst *Mat, ddepth MatType, kernelX, kernelY Mat, anchor image.Point, delta float64, borderType BorderType) {
 	anchorP := C.struct_Point{
 		x: C.int(anchor.X),
 		y: C.int(anchor.Y),
