@@ -63,24 +63,23 @@ func (w *Window) IsOpen() bool {
 }
 
 // WindowFlag value for SetWindowProperty / GetWindowProperty.
-// XXX: There are currently overlapping values in this enum.
 type WindowFlag float32
 
 const (
 	// WindowNormal indicates a normal window.
-	WindowNormal WindowFlag = 0
+	WindowNormal WindowFlag = 0x00000000
+
+	// WindowAutosize indicates a window sized based on the contents.
+	WindowAutosize WindowFlag = 0x00000001
 
 	// WindowFullscreen indicates a full-screen window.
 	WindowFullscreen WindowFlag = 1
-
-	// WindowAutosize indicates a window sized based on the contents.
-	WindowAutosize WindowFlag = 1
 
 	// WindowFreeRatio indicates allow the user to resize without maintaining aspect ratio.
 	WindowFreeRatio WindowFlag = 0x00000100
 
 	// WindowKeepRatio indicates always maintain an aspect ratio that matches the contents.
-	WindowKeepRatio WindowFlag = 0
+	WindowKeepRatio WindowFlag = 0x00000000
 )
 
 // WindowPropertyFlag flags for SetWindowProperty / GetWindowProperty.
