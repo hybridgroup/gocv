@@ -959,7 +959,7 @@ func BitwiseXorWithMask(src1 Mat, src2 Mat, dst *Mat, mask Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4ba778a1c57f83233b1d851c83f5a622
 //
-func BatchDistance(src1 Mat, src2 Mat, dist Mat, dtype int, nidx Mat, normType int, K int, mask Mat, update int, crosscheck bool) {
+func BatchDistance(src1 Mat, src2 Mat, dist Mat, dtype MatType, nidx Mat, normType NormType, K int, mask Mat, update int, crosscheck bool) {
 	C.Mat_BatchDistance(src1.p, src2.p, dist.p, C.int(dtype), nidx.p, C.int(normType), C.int(K), mask.p, C.int(update), C.bool(crosscheck))
 }
 
@@ -1005,7 +1005,7 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga017122d912af19d7d0d2cccc2d63819f
 //
-func CalcCovarMatrix(samples Mat, covar *Mat, mean *Mat, flags CovarFlags, ctype int) {
+func CalcCovarMatrix(samples Mat, covar *Mat, mean *Mat, flags CovarFlags, ctype MatType) {
 	C.Mat_CalcCovarMatrix(samples.p, covar.p, mean.p, C.int(flags), C.int(ctype))
 }
 
@@ -1651,7 +1651,7 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4b78072a303f29d9031d56e5638da78e
 //
-func Reduce(src Mat, dst *Mat, dim int, rType ReduceTypes, dType int) {
+func Reduce(src Mat, dst *Mat, dim int, rType ReduceTypes, dType MatType) {
 	C.Mat_Reduce(src.p, dst.p, C.int(dim), C.int(rType), C.int(dType))
 }
 

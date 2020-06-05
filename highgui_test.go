@@ -26,7 +26,7 @@ func TestWindow(t *testing.T) {
 
 	window.SetWindowProperty(WindowPropertyFullscreen, WindowFullscreen)
 
-	prop := int(window.GetWindowProperty(WindowPropertyFullscreen))
+	prop := WindowFlag(window.GetWindowProperty(WindowPropertyFullscreen))
 	if prop != WindowFullscreen {
 		t.Error("Window property should have been fullscreen")
 	}

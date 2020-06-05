@@ -901,7 +901,7 @@ func GetGaussianKernel(ksize int, sigma float64) Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gac05a120c1ae92a6060dd0db190a61afa
-func GetGaussianKernelWithParams(ksize int, sigma float64, ktype int) Mat {
+func GetGaussianKernelWithParams(ksize int, sigma float64, ktype MatType) Mat {
 	return newMat(C.GetGaussianKernel(C.int(ksize), C.double(sigma), C.int(ktype)))
 }
 
@@ -910,7 +910,7 @@ func GetGaussianKernelWithParams(ksize int, sigma float64, ktype int) Mat {
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gacea54f142e81b6758cb6f375ce782c8d
 //
-func Sobel(src Mat, dst *Mat, ddepth, dx, dy, ksize int, scale, delta float64, borderType BorderType) {
+func Sobel(src Mat, dst *Mat, ddepth MatType, dx, dy, ksize int, scale, delta float64, borderType BorderType) {
 	C.Sobel(src.p, dst.p, C.int(ddepth), C.int(dx), C.int(dy), C.int(ksize), C.double(scale), C.double(delta), C.int(borderType))
 }
 
@@ -919,7 +919,7 @@ func Sobel(src Mat, dst *Mat, ddepth, dx, dy, ksize int, scale, delta float64, b
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga405d03b20c782b65a4daf54d233239a2
 //
-func SpatialGradient(src Mat, dx, dy *Mat, ksize int, borderType BorderType) {
+func SpatialGradient(src Mat, dx, dy *Mat, ksize MatType, borderType BorderType) {
 	C.SpatialGradient(src.p, dx.p, dy.p, C.int(ksize), C.int(borderType))
 }
 
@@ -928,7 +928,7 @@ func SpatialGradient(src Mat, dx, dy *Mat, ksize int, borderType BorderType) {
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gad78703e4c8fe703d479c1860d76429e6
 //
-func Laplacian(src Mat, dst *Mat, dDepth int, size int, scale float64,
+func Laplacian(src Mat, dst *Mat, dDepth MatType, size int, scale float64,
 	delta float64, borderType BorderType) {
 	C.Laplacian(src.p, dst.p, C.int(dDepth), C.int(size), C.double(scale), C.double(delta), C.int(borderType))
 }
@@ -938,7 +938,7 @@ func Laplacian(src Mat, dst *Mat, dDepth int, size int, scale float64,
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaa13106761eedf14798f37aa2d60404c9
 //
-func Scharr(src Mat, dst *Mat, dDepth int, dx int, dy int, scale float64,
+func Scharr(src Mat, dst *Mat, dDepth MatType, dx int, dy int, scale float64,
 	delta float64, borderType BorderType) {
 	C.Scharr(src.p, dst.p, C.int(dDepth), C.int(dx), C.int(dy), C.double(scale), C.double(delta), C.int(borderType))
 }
