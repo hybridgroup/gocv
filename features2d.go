@@ -149,9 +149,9 @@ const (
 	//FastFeatureDetectorType58 is an alias of FastFeatureDetector::TYPE_5_8
 	FastFeatureDetectorType58 FastFeatureDetectorType = 0
 	//FastFeatureDetectorType712 is an alias of FastFeatureDetector::TYPE_7_12
-	FastFeatureDetectorType712 = 1
+	FastFeatureDetectorType712 FastFeatureDetectorType = 1
 	//FastFeatureDetectorType916 is an alias of FastFeatureDetector::TYPE_9_16
-	FastFeatureDetectorType916 = 2
+	FastFeatureDetectorType916 FastFeatureDetectorType = 2
 )
 
 // FastFeatureDetector is a wrapper around the cv::FastFeatureDetector.
@@ -710,11 +710,11 @@ const (
 	// DrawDefault creates new image and for each keypoint only the center point will be drawn
 	DrawDefault DrawMatchesFlag = 0
 	// DrawOverOutImg draws matches on existing content of image
-	DrawOverOutImg = 1
+	DrawOverOutImg DrawMatchesFlag = 1
 	// NotDrawSinglePoints will not draw single points
-	NotDrawSinglePoints = 2
+	NotDrawSinglePoints DrawMatchesFlag = 2
 	// DrawRichKeyPoints draws the circle around each keypoint with keypoint size and orientation
-	DrawRichKeyPoints = 3
+	DrawRichKeyPoints DrawMatchesFlag = 3
 )
 
 // DrawKeyPoints draws keypoints

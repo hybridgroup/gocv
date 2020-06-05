@@ -178,22 +178,22 @@ const (
 	HistCmpCorrel HistCompMethod = 0
 
 	// HistCmpChiSqr calculates the Chi-Square
-	HistCmpChiSqr = 1
+	HistCmpChiSqr HistCompMethod = 1
 
 	// HistCmpIntersect calculates the Intersection
-	HistCmpIntersect = 2
+	HistCmpIntersect HistCompMethod = 2
 
 	// HistCmpBhattacharya applies the HistCmpBhattacharya by calculating the Bhattacharya distance.
-	HistCmpBhattacharya = 3
+	HistCmpBhattacharya HistCompMethod = 3
 
 	// HistCmpHellinger applies the HistCmpBhattacharya comparison. It is a synonym to HistCmpBhattacharya.
 	HistCmpHellinger = HistCmpBhattacharya
 
 	// HistCmpChiSqrAlt applies the Alternative Chi-Square (regularly used for texture comparsion).
-	HistCmpChiSqrAlt = 4
+	HistCmpChiSqrAlt HistCompMethod = 4
 
 	// HistCmpKlDiv applies the Kullback-Liebler divergence comparison.
-	HistCmpKlDiv = 5
+	HistCmpKlDiv HistCompMethod = 5
 )
 
 // CompareHist Compares two histograms.
@@ -359,21 +359,21 @@ const (
 
 	// RetrievalList retrieves all of the contours without establishing
 	// any hierarchical relationships.
-	RetrievalList = 1
+	RetrievalList RetrievalMode = 1
 
 	// RetrievalCComp retrieves all of the contours and organizes them into
 	// a two-level hierarchy. At the top level, there are external boundaries
 	// of the components. At the second level, there are boundaries of the holes.
 	// If there is another contour inside a hole of a connected component, it
 	// is still put at the top level.
-	RetrievalCComp = 2
+	RetrievalCComp RetrievalMode = 2
 
 	// RetrievalTree retrieves all of the contours and reconstructs a full
 	// hierarchy of nested contours.
-	RetrievalTree = 3
+	RetrievalTree RetrievalMode = 3
 
 	// RetrievalFloodfill lacks a description in the original header.
-	RetrievalFloodfill = 4
+	RetrievalFloodfill RetrievalMode = 4
 )
 
 // ContourApproximationMode is the mode of the contour approximation algorithm.
@@ -389,15 +389,15 @@ const (
 	// ChainApproxSimple compresses horizontal, vertical, and diagonal segments
 	// and leaves only their end points.
 	// For example, an up-right rectangular contour is encoded with 4 points.
-	ChainApproxSimple = 2
+	ChainApproxSimple ContourApproximationMode = 2
 
 	// ChainApproxTC89L1 applies one of the flavors of the Teh-Chin chain
 	// approximation algorithms.
-	ChainApproxTC89L1 = 3
+	ChainApproxTC89L1 ContourApproximationMode = 3
 
 	// ChainApproxTC89KCOS applies one of the flavors of the Teh-Chin chain
 	// approximation algorithms.
-	ChainApproxTC89KCOS = 4
+	ChainApproxTC89KCOS ContourApproximationMode = 4
 )
 
 // BoundingRect calculates the up-right bounding rectangle of a point set.
@@ -591,10 +591,10 @@ const (
 	CCL_WU ConnectedComponentsAlgorithmType = 0
 
 	// BBDT algorithm for 8-way connectivity, SAUF algorithm for 4-way connectivity.
-	CCL_DEFAULT = 1
+	CCL_DEFAULT ConnectedComponentsAlgorithmType = 1
 
 	// BBDT algorithm for 8-way connectivity, SAUF algorithm for 4-way connectivity
-	CCL_GRANA = 2
+	CCL_GRANA ConnectedComponentsAlgorithmType = 2
 )
 
 // ConnectedComponents computes the connected components labeled image of boolean image.
@@ -621,21 +621,21 @@ type ConnectedComponentsTypes int
 
 const (
 	//The leftmost (x) coordinate which is the inclusive start of the bounding box in the horizontal direction.
-	CC_STAT_LEFT = 0
+	CC_STAT_LEFT ConnectedComponentsTypes = 0
 
 	//The topmost (y) coordinate which is the inclusive start of the bounding box in the vertical direction.
-	CC_STAT_TOP = 1
+	CC_STAT_TOP ConnectedComponentsTypes = 1
 
 	// The horizontal size of the bounding box.
-	CC_STAT_WIDTH = 2
+	CC_STAT_WIDTH ConnectedComponentsTypes = 2
 
 	// The vertical size of the bounding box.
-	CC_STAT_HEIGHT = 3
+	CC_STAT_HEIGHT ConnectedComponentsTypes = 3
 
 	// The total area (in pixels) of the connected component.
-	CC_STAT_AREA = 4
+	CC_STAT_AREA ConnectedComponentsTypes = 4
 
-	CC_STAT_MAX = 5
+	CC_STAT_MAX ConnectedComponentsTypes = 5
 )
 
 // ConnectedComponentsWithStats computes the connected components labeled image of boolean
@@ -668,15 +668,15 @@ const (
 	// TmSqdiff maps to TM_SQDIFF
 	TmSqdiff TemplateMatchMode = 0
 	// TmSqdiffNormed maps to TM_SQDIFF_NORMED
-	TmSqdiffNormed = 1
+	TmSqdiffNormed TemplateMatchMode = 1
 	// TmCcorr maps to TM_CCORR
-	TmCcorr = 2
+	TmCcorr TemplateMatchMode = 2
 	// TmCcorrNormed maps to TM_CCORR_NORMED
-	TmCcorrNormed = 3
+	TmCcorrNormed TemplateMatchMode = 3
 	// TmCcoeff maps to TM_CCOEFF
-	TmCcoeff = 4
+	TmCcoeff TemplateMatchMode = 4
 	// TmCcoeffNormed maps to TM_CCOEFF_NORMED
-	TmCcoeffNormed = 5
+	TmCcoeffNormed TemplateMatchMode = 5
 )
 
 // MatchTemplate compares a template against overlapped image regions.
@@ -793,10 +793,10 @@ const (
 	MorphRect MorphShape = 0
 
 	// MorphCross is the cross morph shape.
-	MorphCross = 1
+	MorphCross MorphShape = 1
 
 	// MorphEllipse is the ellipse morph shape.
-	MorphEllipse = 2
+	MorphEllipse MorphShape = 2
 )
 
 // GetStructuringElement returns a structuring element of the specified size
@@ -822,25 +822,25 @@ const (
 	MorphErode MorphType = 0
 
 	// MorphDilate operation
-	MorphDilate = 1
+	MorphDilate MorphType = 1
 
 	// MorphOpen operation
-	MorphOpen = 2
+	MorphOpen MorphType = 2
 
 	// MorphClose operation
-	MorphClose = 3
+	MorphClose MorphType = 3
 
 	// MorphGradient operation
-	MorphGradient = 4
+	MorphGradient MorphType = 4
 
 	// MorphTophat operation
-	MorphTophat = 5
+	MorphTophat MorphType = 5
 
 	// MorphBlackhat operation
-	MorphBlackhat = 6
+	MorphBlackhat MorphType = 6
 
 	// MorphHitmiss operation
-	MorphHitmiss = 7
+	MorphHitmiss MorphType = 7
 )
 
 // BorderType type of border.
@@ -851,25 +851,25 @@ const (
 	BorderConstant BorderType = 0
 
 	// BorderReplicate border type
-	BorderReplicate = 1
+	BorderReplicate BorderType = 1
 
 	// BorderReflect border type
-	BorderReflect = 2
+	BorderReflect BorderType = 2
 
 	// BorderWrap border type
-	BorderWrap = 3
+	BorderWrap BorderType = 3
 
 	// BorderReflect101 border type
-	BorderReflect101 = 4
+	BorderReflect101 BorderType = 4
 
 	// BorderTransparent border type
-	BorderTransparent = 5
+	BorderTransparent BorderType = 5
 
 	// BorderDefault border type
 	BorderDefault = BorderReflect101
 
 	// BorderIsolated border type
-	BorderIsolated = 16
+	BorderIsolated BorderType = 16
 )
 
 // GaussianBlur blurs an image Mat using a Gaussian filter.
@@ -1008,12 +1008,12 @@ const (
 	// GCInitWithMask makes the function initialize the state using the provided mask.
 	// GCInitWithMask and GCInitWithRect can be combined.
 	// Then all the pixels outside of the ROI are automatically initialized with GC_BGD.
-	GCInitWithMask = 1
+	GCInitWithMask GrabCutMode = 1
 	// GCEval means that the algorithm should just resume.
-	GCEval = 2
+	GCEval GrabCutMode = 2
 	// GCEvalFreezeModel means that the algorithm should just run a single iteration of the GrabCut algorithm
 	// with the fixed model
-	GCEvalFreezeModel = 3
+	GCEvalFreezeModel GrabCutMode = 3
 )
 
 // Grabcut runs the GrabCut algorithm.
@@ -1040,15 +1040,15 @@ const (
 	HoughStandard HoughMode = 0
 	// HoughProbabilistic is the probabilistic Hough transform (more efficient
 	// in case if the picture contains a few long linear segments).
-	HoughProbabilistic = 1
+	HoughProbabilistic HoughMode = 1
 	// HoughMultiScale is the multi-scale variant of the classical Hough
 	// transform.
-	HoughMultiScale = 2
+	HoughMultiScale HoughMode = 2
 	// HoughGradient is basically 21HT, described in: HK Yuen, John Princen,
 	// John Illingworth, and Josef Kittler. Comparative study of hough
 	// transform methods for circle finding. Image and Vision Computing,
 	// 8(1):71–77, 1990.
-	HoughGradient = 3
+	HoughGradient HoughMode = 3
 )
 
 // HoughCircles finds circles in a grayscale image using the Hough transform.
@@ -1128,25 +1128,25 @@ const (
 	ThresholdBinary ThresholdType = 0
 
 	// ThresholdBinaryInv threshold type
-	ThresholdBinaryInv = 1
+	ThresholdBinaryInv ThresholdType = 1
 
 	// ThresholdTrunc threshold type
-	ThresholdTrunc = 2
+	ThresholdTrunc ThresholdType = 2
 
 	// ThresholdToZero threshold type
-	ThresholdToZero = 3
+	ThresholdToZero ThresholdType = 3
 
 	// ThresholdToZeroInv threshold type
-	ThresholdToZeroInv = 4
+	ThresholdToZeroInv ThresholdType = 4
 
 	// ThresholdMask threshold type
-	ThresholdMask = 7
+	ThresholdMask ThresholdType = 7
 
 	// ThresholdOtsu threshold type
-	ThresholdOtsu = 8
+	ThresholdOtsu ThresholdType = 8
 
 	// ThresholdTriangle threshold type
-	ThresholdTriangle = 16
+	ThresholdTriangle ThresholdType = 16
 )
 
 // Threshold applies a fixed-level threshold to each array element.
@@ -1166,7 +1166,7 @@ const (
 	AdaptiveThresholdMean AdaptiveThresholdType = 0
 
 	// AdaptiveThresholdGaussian threshold type
-	AdaptiveThresholdGaussian = 1
+	AdaptiveThresholdGaussian AdaptiveThresholdType = 1
 )
 
 // AdaptiveThreshold applies a fixed-level threshold to each array element.
@@ -1395,23 +1395,23 @@ const (
 	// FontHersheySimplex is normal size sans-serif font.
 	FontHersheySimplex HersheyFont = 0
 	// FontHersheyPlain issmall size sans-serif font.
-	FontHersheyPlain = 1
+	FontHersheyPlain HersheyFont = 1
 	// FontHersheyDuplex normal size sans-serif font
 	// (more complex than FontHersheySIMPLEX).
-	FontHersheyDuplex = 2
+	FontHersheyDuplex HersheyFont = 2
 	// FontHersheyComplex i a normal size serif font.
-	FontHersheyComplex = 3
+	FontHersheyComplex HersheyFont = 3
 	// FontHersheyTriplex is a normal size serif font
 	// (more complex than FontHersheyCOMPLEX).
-	FontHersheyTriplex = 4
+	FontHersheyTriplex HersheyFont = 4
 	// FontHersheyComplexSmall is a smaller version of FontHersheyCOMPLEX.
-	FontHersheyComplexSmall = 5
+	FontHersheyComplexSmall HersheyFont = 5
 	// FontHersheyScriptSimplex is a hand-writing style font.
-	FontHersheyScriptSimplex = 6
+	FontHersheyScriptSimplex HersheyFont = 6
 	// FontHersheyScriptComplex is a more complex variant of FontHersheyScriptSimplex.
-	FontHersheyScriptComplex = 7
+	FontHersheyScriptComplex HersheyFont = 7
 	// FontItalic is the flag for italic font.
-	FontItalic = 16
+	FontItalic HersheyFont = 16
 )
 
 // LineType are the line libraries included in OpenCV.
@@ -1425,11 +1425,11 @@ const (
 	// Filled line
 	Filled LineType = -1
 	// Line4 4-connected line
-	Line4 = 4
+	Line4 LineType = 4
 	// Line8 8-connected line
-	Line8 = 8
+	Line8 LineType = 8
 	// LineAA antialiased line
-	LineAA = 16
+	LineAA LineType = 16
 )
 
 // GetTextSize calculates the width and height of a text string.
@@ -1512,23 +1512,23 @@ const (
 	InterpolationNearestNeighbor InterpolationFlags = 0
 
 	// InterpolationLinear is bilinear interpolation.
-	InterpolationLinear = 1
+	InterpolationLinear InterpolationFlags = 1
 
 	// InterpolationCubic is bicube interpolation.
-	InterpolationCubic = 2
+	InterpolationCubic InterpolationFlags = 2
 
 	// InterpolationArea uses pixel area relation. It is preferred for image
 	// decimation as it gives moire-free results.
-	InterpolationArea = 3
+	InterpolationArea InterpolationFlags = 3
 
 	// InterpolationLanczos4 is Lanczos interpolation over 8x8 neighborhood.
-	InterpolationLanczos4 = 4
+	InterpolationLanczos4 InterpolationFlags = 4
 
 	// InterpolationDefault is an alias for InterpolationLinear.
 	InterpolationDefault = InterpolationLinear
 
 	// InterpolationMax indicates use maximum interpolation.
-	InterpolationMax = 7
+	InterpolationMax InterpolationFlags = 7
 )
 
 // Resize resizes an image.
@@ -1642,18 +1642,18 @@ type ColormapTypes int
 // https://docs.opencv.org/master/d3/d50/group__imgproc__colormap.html#ga9a805d8262bcbe273f16be9ea2055a65
 const (
 	ColormapAutumn  ColormapTypes = 0
-	ColormapBone                  = 1
-	ColormapJet                   = 2
-	ColormapWinter                = 3
-	ColormapRainbow               = 4
-	ColormapOcean                 = 5
-	ColormapSummer                = 6
-	ColormapSpring                = 7
-	ColormapCool                  = 8
-	ColormapHsv                   = 9
-	ColormapPink                  = 10
-	ColormapHot                   = 11
-	ColormapParula                = 12
+	ColormapBone    ColormapTypes = 1
+	ColormapJet     ColormapTypes = 2
+	ColormapWinter  ColormapTypes = 3
+	ColormapRainbow ColormapTypes = 4
+	ColormapOcean   ColormapTypes = 5
+	ColormapSummer  ColormapTypes = 6
+	ColormapSpring  ColormapTypes = 7
+	ColormapCool    ColormapTypes = 8
+	ColormapHsv     ColormapTypes = 9
+	ColormapPink    ColormapTypes = 10
+	ColormapHot     ColormapTypes = 11
+	ColormapParula  ColormapTypes = 12
 )
 
 // ApplyColorMap applies a GNU Octave/MATLAB equivalent colormap on a given image.
@@ -1698,8 +1698,8 @@ type HomographyMethod int
 
 const (
 	HomograpyMethodAllPoints HomographyMethod = 0
-	HomograpyMethodLMEDS                      = 4
-	HomograpyMethodRANSAC                     = 8
+	HomograpyMethodLMEDS     HomographyMethod = 4
+	HomograpyMethodRANSAC    HomographyMethod = 8
 )
 
 // FindHomography finds an optimal homography matrix using 4 or more point pairs (as opposed to GetPerspectiveTransform, which uses exactly 4)
@@ -1828,13 +1828,13 @@ type DistanceTypes int
 
 const (
 	DistUser   DistanceTypes = 0
-	DistL1                   = 1
-	DistL2                   = 2
-	DistC                    = 3
-	DistL12                  = 4
-	DistFair                 = 5
-	DistWelsch               = 6
-	DistHuber                = 7
+	DistL1     DistanceTypes = 1
+	DistL2     DistanceTypes = 2
+	DistC      DistanceTypes = 3
+	DistL12    DistanceTypes = 4
+	DistFair   DistanceTypes = 5
+	DistWelsch DistanceTypes = 6
+	DistHuber  DistanceTypes = 7
 )
 
 // FitLine fits a line to a 2D or 3D point set.
