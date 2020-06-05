@@ -23,7 +23,7 @@ type DescriptorStorageFormat int
 const (
 	DESCR_FORMAT_COL_BY_COL DescriptorStorageFormat = 0
 
-	DESCR_FORMAT_COL_BY_ROW = 1
+	DESCR_FORMAT_COL_BY_ROW DescriptorStorageFormat = 1
 )
 
 // CascadeClassifier_GPU is a cascade classifier class for object detection.

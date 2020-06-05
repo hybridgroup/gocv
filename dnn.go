@@ -325,7 +325,7 @@ func BlobFromImage(img Mat, scaleFactor float64, size image.Point, mean Scalar,
 // https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga2b89ed84432e4395f5a1412c2926293c
 //
 func BlobFromImages(imgs []Mat, blob *Mat, scaleFactor float64, size image.Point, mean Scalar,
-	swapRB bool, crop bool, ddepth int) {
+	swapRB bool, crop bool, ddepth MatType) {
 
 	cMatArray := make([]C.Mat, len(imgs))
 	for i, r := range imgs {
