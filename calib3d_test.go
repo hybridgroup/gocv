@@ -395,7 +395,7 @@ func TestEstimateAffinePartial2D(t *testing.T) {
 	if m.Cols() != 3 {
 		t.Errorf("TestEstimateAffinePartial2D(): unexpected cols = %v, want = %v", m.Cols(), 3)
 	}
-	if m.Rows() != 3 {
+	if m.Rows() != 2 {
 		t.Errorf("TestEstimateAffinePartial2D(): unexpected rows = %v, want = %v", m.Rows(), 2)
 	}
 }
