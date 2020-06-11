@@ -374,3 +374,28 @@ func TestFindChessboard(t *testing.T) {
 		return
 	}
 }
+
+func TestEstimateAffinePartial2D(t *testing.T) {
+	src := []Point2f{
+		{0, 0},
+		{10, 5},
+		{10, 10},
+		{5, 10},
+	}
+	dst := []Point2f{
+		{0, 0},
+		{10, 0},
+		{10, 10},
+		{0, 10},
+	}
+
+	m := EstimateAffinePartial2D(src, dst)
+	defer m.Close()
+
+	if m.Cols() != 3 {
+		t.Errorf("TestEstimateAffinePartial2D(): unexpected cols = %v, want = %v", m.Cols(), 3)
+	}
+	if m.Rows() != 2 {
+		t.Errorf("TestEstimateAffinePartial2D(): unexpected rows = %v, want = %v", m.Rows(), 2)
+	}
+}
