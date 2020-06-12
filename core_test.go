@@ -1051,6 +1051,32 @@ func TestMatMultiply(t *testing.T) {
 	}
 }
 
+func TestMatMultiplyWithParams(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV64F)
+	defer mat1.Close()
+	mat2 := NewMatWithSize(101, 102, MatTypeCV64F)
+	defer mat2.Close()
+	mat3 := NewMat()
+	defer mat3.Close()
+	MultiplyWithParams(mat1, mat2, &mat3, 0.5, -1)
+	if mat3.Empty() {
+		t.Error("TestMatMultiplyWithParams dest mat3 should not be empty.")
+	}
+
+	// since this is a single channel Mat, only the first value in the scalar is used
+	mat4 := NewMatWithSizeFromScalar(NewScalar(2.0, 0.0, 0.0, 0.0), 101, 102, MatTypeCV64F)
+	defer mat4.Close()
+	mat5 := NewMatWithSizeFromScalar(NewScalar(3.0, 0.0, 0.0, 0.0), 101, 102, MatTypeCV64F)
+	defer mat5.Close()
+	MultiplyWithParams(mat4, mat5, &mat3, 2.0, -1)
+	if mat3.Empty() {
+		t.Error("TestMatMultiplyWithParams dest mat3 should not be empty.")
+	}
+	if mat3.GetDoubleAt(0, 0) != 12.0 {
+		t.Error("TestMatMultiplyWithParams invalue value in dest mat3.")
+	}
+}
+
 func TestMatNormalize(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
 	defer src.Close()
