@@ -1497,6 +1497,16 @@ func Multiply(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_Multiply(src1.p, src2.p, dst.p)
 }
 
+// MultiplyWithParams calculates the per-element scaled product of two arrays.
+// Both input arrays must be of the same size and the same type.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga979d898a58d7f61c53003e162e7ad89f
+//
+func MultiplyWithParams(src1 Mat, src2 Mat, dst *Mat, scale float64, dtype MatType) {
+	C.Mat_MultiplyWithParams(src1.p, src2.p, dst.p, C.double(scale), C.int(dtype))
+}
+
 // NormType for normalization operations.
 //
 // For further details, please see:

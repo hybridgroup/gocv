@@ -574,6 +574,10 @@ void Mat_Multiply(Mat src1, Mat src2, Mat dst) {
     cv::multiply(*src1, *src2, *dst);
 }
 
+void Mat_MultiplyWithParams(Mat src1, Mat src2, Mat dst, double scale, int dtype) {
+    cv::multiply(*src1, *src2, *dst, scale, dtype);
+}
+
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
     cv::normalize(*src, *dst, alpha, beta, typ);
 }
