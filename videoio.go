@@ -313,6 +313,12 @@ func (vw *VideoWriter) Write(img Mat) error {
 	return nil
 }
 
+// return VideoWriter Point  for unsafe.Pointer
+//
+func (vw *VideoWriter) Ptr() unsafe.Pointer {
+	return unsafe.Pointer(vw.p)
+}
+
 // OpenVideoCapture return VideoCapture specified by device ID if v is a
 // number. Return VideoCapture created from video file, URL, or GStreamer
 // pipeline if v is a string.
