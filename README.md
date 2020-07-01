@@ -1,13 +1,13 @@
 # GoCV
 
-[![GoCV](https://raw.githubusercontent.com/hybridgroup/gocv/master/images/gocvlogo.jpg)](http://gocv.io/)
+[![GoCV](https://raw.githubusercontent.com/hybridgroup/gocv/release/images/gocvlogo.jpg)](http://gocv.io/)
 
 [![GoDoc](https://godoc.org/gocv.io/x/gocv?status.svg)](https://godoc.org/github.com/hybridgroup/gocv)
 [![Travis Build Status](https://travis-ci.org/hybridgroup/gocv.svg?branch=dev)](https://travis-ci.org/hybridgroup/gocv)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/9asd5foet54ru69q/branch/dev?svg=true)](https://ci.appveyor.com/project/deadprogram/gocv/branch/dev)
 [![codecov](https://codecov.io/gh/hybridgroup/gocv/branch/dev/graph/badge.svg)](https://codecov.io/gh/hybridgroup/gocv)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hybridgroup/gocv)](https://goreportcard.com/report/github.com/hybridgroup/gocv)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/hybridgroup/gocv/blob/master/LICENSE.txt)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/hybridgroup/gocv/blob/release/LICENSE.txt)
 
 The GoCV package provides Go language bindings for the [OpenCV 4](http://opencv.org/) computer vision library.
 
@@ -43,7 +43,7 @@ func main() {
 
 ### Face detect
 
-![GoCV](https://raw.githubusercontent.com/hybridgroup/gocv/master/images/face-detect.jpg)
+![GoCV](https://raw.githubusercontent.com/hybridgroup/gocv/release/images/face-detect.jpg)
 
 This is a more complete example that opens a video capture device using device "0". It also uses the CascadeClassifier class to load an external data file containing the classifier data. The program grabs each frame from the video, then uses the classifier to detect faces. If any faces are found, it draws a green rectangle around each one, then displays the video in an output window:
 
