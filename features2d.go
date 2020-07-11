@@ -740,9 +740,9 @@ func DrawKeyPoints(src Mat, keyPoints []KeyPoint, dst *Mat, color color.RGBA, fl
 	}
 
 	scalar := C.struct_Scalar{
-		val1: C.double(color.R),
+		val1: C.double(color.B),
 		val2: C.double(color.G),
-		val3: C.double(color.B),
+		val3: C.double(color.R),
 		val4: C.double(color.A),
 	}
 
