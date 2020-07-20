@@ -10,17 +10,10 @@ extern "C" {
 #include "../core.h"
 
 #ifdef __cplusplus
-typedef cv::Ptr<cv::xfeatures2d::SIFT>* SIFT;
 typedef cv::Ptr<cv::xfeatures2d::SURF>* SURF;
 #else
-typedef void* SIFT;
 typedef void* SURF;
 #endif
-
-SIFT SIFT_Create();
-void SIFT_Close(SIFT f);
-struct KeyPoints SIFT_Detect(SIFT f, Mat src);
-struct KeyPoints SIFT_DetectAndCompute(SIFT f, Mat src, Mat mask, Mat desc);
 
 SURF SURF_Create();
 void SURF_Close(SURF f);

@@ -453,3 +453,34 @@ func TestDrawKeyPoints(t *testing.T) {
 		t.Error("Invalid DrawKeyPoints test")
 	}
 }
+
+func TestSIFT(t *testing.T) {
+	img := IMRead("./images/face.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid Mat in SIFT test")
+	}
+	defer img.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	si := NewSIFT()
+	defer si.Close()
+
+	kp := si.Detect(img)
+	if len(kp) == 512 {
+		t.Errorf("Invalid KeyPoint array in SIFT test: %d", len(kp))
+	}
+
+	mask := NewMat()
+	defer mask.Close()
+
+	kp2, desc := si.DetectAndCompute(img, mask)
+	if len(kp2) == 512 {
+		t.Errorf("Invalid KeyPoint array in SIFT DetectAndCompute: %d", len(kp2))
+	}
+
+	if desc.Empty() {
+		t.Error("Invalid Mat desc in SIFT DetectAndCompute")
+	}
+}

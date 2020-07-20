@@ -428,3 +428,46 @@ void DrawKeyPoints(Mat src, struct KeyPoints kp, Mat dst, Scalar s, int flags) {
 
         cv::drawKeypoints(*src, keypts, *dst, color, static_cast<cv::DrawMatchesFlags>(flags));
 }
+
+SIFT SIFT_Create() {
+    // TODO: params
+    return new cv::Ptr<cv::SIFT>(cv::SIFT::create());
+}
+
+void SIFT_Close(SIFT d) {
+    delete d;
+}
+
+struct KeyPoints SIFT_Detect(SIFT d, Mat src) {
+    std::vector<cv::KeyPoint> detected;
+    (*d)->detect(*src, detected);
+
+    KeyPoint* kps = new KeyPoint[detected.size()];
+
+    for (size_t i = 0; i < detected.size(); ++i) {
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
+    }
+
+    KeyPoints ret = {kps, (int)detected.size()};
+    return ret;
+}
+
+struct KeyPoints SIFT_DetectAndCompute(SIFT d, Mat src, Mat mask, Mat desc) {
+    std::vector<cv::KeyPoint> detected;
+    (*d)->detectAndCompute(*src, *mask, detected, *desc);
+
+    KeyPoint* kps = new KeyPoint[detected.size()];
+
+    for (size_t i = 0; i < detected.size(); ++i) {
+        KeyPoint k = {detected[i].pt.x, detected[i].pt.y, detected[i].size, detected[i].angle,
+                      detected[i].response, detected[i].octave, detected[i].class_id
+                     };
+        kps[i] = k;
+    }
+
+    KeyPoints ret = {kps, (int)detected.size()};
+    return ret;
+}
