@@ -476,6 +476,7 @@ func TestSIFT(t *testing.T) {
 	defer mask.Close()
 
 	kp2, desc := si.DetectAndCompute(img, mask)
+	defer desc.Close()
 	if len(kp2) == 512 {
 		t.Errorf("Invalid KeyPoint array in SIFT DetectAndCompute: %d", len(kp2))
 	}
