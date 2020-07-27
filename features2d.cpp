@@ -428,3 +428,7 @@ void DrawKeyPoints(Mat src, struct KeyPoints kp, Mat dst, Scalar s, int flags) {
 
         cv::drawKeypoints(*src, keypts, *dst, color, static_cast<cv::DrawMatchesFlags>(flags));
 }
+
+void DrawMatches(Mat img1, struct KeyPoints kp, Mat img2, struct KeyPoints kp2, Mat outImg, const Scalar matchesColor, const Scalar pointColor, char matchesMask[][], int flags) {
+    // TODO
+}
