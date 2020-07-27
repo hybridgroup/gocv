@@ -794,4 +794,68 @@ func (d *SIFT) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
 		C.Mat(desc.Ptr()))
 
 	return getKeyPoints(ret), desc
+// DrawMatches draws matches on combined train and querry images.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.4/d4/d5d/group__features2d__draw.html
+func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2 []DMatch, outImage *Mat, matchColor color.RGBA, singlePointColor color.RGBA, matchesMask []char, flags DrawMatchesFlag) {
+	cKeyPoint1Array := make([]C.struct_KeyPoint, len(kp1))
+	cKeyPoint2Array := make([]C.struct_KeyPoint, len(kp2))
+
+	for i, kp := range kp1 {
+		cKeyPoint1Array[i].x = C.double(kp.X)
+		cKeyPoint1Array[i].y = C.double(kp.Y)
+		cKeyPoint1Array[i].size = C.double(kp.Size)
+		cKeyPoint1Array[i].angle = C.double(kp.Angle)
+		cKeyPoint1Array[i].response = C.double(kp.Response)
+		cKeyPoint1Array[i].octave = C.int(kp.Octave)
+		cKeyPoint1Array[i].classID = C.int(kp.ClassID)
+	}
+
+	for i, kp := range kp2 {
+		cKeyPoint2Array[i].x = C.double(kp.X)
+		cKeyPoint2Array[i].y = C.double(kp.Y)
+		cKeyPoint2Array[i].size = C.double(kp.Size)
+		cKeyPoint2Array[i].angle = C.double(kp.Angle)
+		cKeyPoint2Array[i].response = C.double(kp.Response)
+		cKeyPoint2Array[i].octave = C.int(kp.Octave)
+		cKeyPoint2Array[i].classID = C.int(kp.ClassID)
+	}
+
+	cDMatchArray := make([]C.struct_DMatch, len(matches1to2))
+
+	for i, dm := range matches1to2 {
+		cDMatchArray[i].queryIdx = C.int(dm.QueryIdx)
+		cDMatchArray[i].trainIdx = C.int(dm.TrainIdx)
+		cDMatchArray[i].imgIdx = C.int(dm.ImgIdx)
+		cDMatchArray[i].distance = C.double(dm.Distance)
+	}
+
+	cKeyPoints1 := C.struct_KeyPoints{
+		keypoints: (*C.struct_KeyPoint)(&cKeyPointArray1[0]),
+		length:    (C.int)(len(kp1)),
+	}
+
+	cKeyPoints2 := C.struct_KeyPoints{
+		keypoints: (*C.struct_KeyPoint)(&cKeyPointArray2[0]),
+		length:    (C.int)(len(kp2)),
+	}
+
+	scalarMatchColor := C.struct_Scalar{
+		val1: C.double(matchColor.R),
+		val2: C.double(matchColor.G),
+		val3: C.double(matchColor.B),
+		val4: C.double(matchColor.A),
+	}
+
+	scalarPointColor := C.struct_Scalar{
+		val1: C.double(singlePointColor.R),
+		val2: C.double(singlePointColor.G),
+		val3: C.double(singlePointColor.B),
+		val4: C.double(singlePointColor.A),
+	}
+
+	cMask := make([]C.char, len(matchesMask))
+
+	C.DrawMatches(img1.p, cKeyPoints1, img2.p, cKeyPoints2, cDMatchArray, outImg.p, scalarMatchColor, scalarPointColor, cMask, C.int(flags))
 }

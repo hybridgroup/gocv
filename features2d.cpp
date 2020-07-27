@@ -471,3 +471,42 @@ struct KeyPoints SIFT_DetectAndCompute(SIFT d, Mat src, Mat mask, Mat desc) {
     KeyPoints ret = {kps, (int)detected.size()};
     return ret;
 }
+
+void DrawMatches(Mat img1, struct KeyPoints kp1, Mat img2, struct KeyPoints kp2, struct DMatches matches1to2, Mat outImg, const Scalar matchesColor, const Scalar pointColor, struct ByteArray matchesMask, int flags) {
+    std::vector<cv::KeyPoint> kp1vec, kp2vec;
+    cv::KeyPoint keypt;
+
+    for (int i = 0; i < kp1.length; ++i) {
+        keypt = cv::KeyPoint(kp1.keypoints[i].x, kp1.keypoints[i].y,
+                            kp1.keypoints[i].size, kp1.keypoints[i].angle, kp1.keypoints[i].response,
+                            kp1.keypoints[i].octave, kp1.keypoints[i].classID);
+        kp1vec.push_back(keypt);
+    }
+
+    for (int i = 0; i < kp2.length; ++i) {
+        keypt = cv::KeyPoint(kp2.keypoints[i].x, kp2.keypoints[i].y,
+                            kp2.keypoints[i].size, kp2.keypoints[i].angle, kp2.keypoints[i].response,
+                            kp2.keypoints[i].octave, kp2.keypoints[i].classID);
+        kp2vec.push_back(keypt);
+    }
+
+    cv::Scalar cvmatchescolor = cv::Scalar(matchesColor.val1, matchesColor.val2, matchesColor.val3, matchesColor.val4);
+    cv::Scalar cvpointcolor = cv::Scalar(pointColor.val1, pointColor.val2, pointColor.val3, pointColor.val4);
+    
+    std::vector<cv::DMatch> dmatchvec;
+    cv::DMatch dm;
+
+    for (int i = 0; i < matches1to2.length; i++) {
+        dm = cv::DMatch(matches1to2.dmatches[i].queryIdx, matches1to2.dmatches[i].trainIdx,
+                        matches1to2.dmatches[i].imgIdx, matches1to2.dmatches[i].distance);
+        dmatchvec.push_back(dm);
+    }
+
+    std::vector<char> maskvec;
+
+    for (int i = 0; i < matchesMask.length; i++) {
+        maskvec.push_back(matchesMask.data[i]);
+    }
+
+    cv::drawMatches(*img1, kp1vec, *img2, kp2vec, dmatchvec, *outImg, cvmatchescolor, cvpointcolor, maskvec, static_cast<cv::DrawMatchesFlags>(flags));
+}
