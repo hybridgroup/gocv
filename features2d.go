@@ -753,7 +753,7 @@ func DrawKeyPoints(src Mat, keyPoints []KeyPoint, dst *Mat, color color.RGBA, fl
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4/d4/d5d/group__features2d__draw.html
-func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2 []DMatch, outImage *Mat, matchColor color.RGBA, singlePointColor color.RGBA, matchesMask [][]char, flags DrawMatchesFlag) {
+func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2 []DMatch, outImage *Mat, matchColor color.RGBA, singlePointColor color.RGBA, matchesMask []char, flags DrawMatchesFlag) {
 	cKeyPoint1Array := make([]C.struct_KeyPoint, len(kp1))
 	cKeyPoint2Array := make([]C.struct_KeyPoint, len(kp2))
 
@@ -775,6 +775,15 @@ func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2
 		cKeyPoint2Array[i].response = C.double(kp.Response)
 		cKeyPoint2Array[i].octave = C.int(kp.Octave)
 		cKeyPoint2Array[i].classID = C.int(kp.ClassID)
+	}
+
+	cDMatchArray := make([]C.struct_DMatch, len(matches1to2))
+
+	for i, dm := range matches1to2 {
+		cDMatchArray[i].queryIdx = C.int(dm.QueryIdx)
+		cDMatchArray[i].trainIdx = C.int(dm.TrainIdx)
+		cDMatchArray[i].imgIdx = C.int(dm.ImgIdx)
+		cDMatchArray[i].distance = C.double(dm.Distance)
 	}
 
 	cKeyPoints1 := C.struct_KeyPoints{
@@ -801,5 +810,5 @@ func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2
 		val4: C.double(singlePointColor.A),
 	}
 
-	C.DrawMatches(img1.p, cKeyPoints1, img2.p, cKeyPoints2, matches1to2, outImg.p, scalarMatchColor, scalarPointColor, matchesMask, flags)
+	C.DrawMatches(img1.p, cKeyPoints1, img2.p, cKeyPoints2, cDMatchArray, outImg.p, scalarMatchColor, scalarPointColor, matchesMask, flags)
 }

@@ -82,7 +82,7 @@ struct MultiDMatches BFMatcher_KnnMatch(BFMatcher b, Mat query, Mat train, int k
 
 void DrawKeyPoints(Mat src, struct KeyPoints kp, Mat dst, const Scalar s, int flags);
 
-void DrawMatches(Mat img1, struct KeyPoints kp, Mat img2, struct KeyPoints kp2, Mat outImg, const Scalar matchesColor, const Scalar pointColor, char matchesMask[][], int flags);
+void DrawMatches(Mat img1, struct KeyPoints kp1, Mat img2, struct KeyPoints kp2, struct DMatch matches1to2[], Mat outImg, const Scalar matchesColor, const Scalar pointColor, char matchesMask[], int flags);
 
 #ifdef __cplusplus
 }
