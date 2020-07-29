@@ -1,3 +1,27 @@
+0.24.0
+---
+* **all**
+    * update Makefile and READMEChange constants and corresponding function signatures to have the correct types (#689)
+    * replace master branch terminology with release
+    * update to OpenCV 4.4.0
+* **calib3d**
+    * add FindHomography()
+    * add function EstimateAffinePartial2D()
+    * add GetAffineTransform() and GetAffineTransform2f()
+    * add UndistortPoints(), FisheyeUndistortPoints() and EstimateNewCameraMatrixForUndistortRectify()
+* **core**
+    * add MultiplyWithParams
+* **docs**
+    * add recent contributions to ROADMAP
+    * create CODE_OF_CONDUCT.md
+    * update copyright year
+* **features2d**
+    * close returned Mat from SIFT algorithm
+    * fix issue 707 with DrawKeyPoints
+    * SIFT patent now expired so is part of main OpenCV modules
+* **imgproc**
+    * change struct to remove GNU old-style field designator extension warning
+
 0.23.0
 ---
 * **build**
