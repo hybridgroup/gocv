@@ -1,3 +1,4 @@
+
 if not exist "C:\opencv" mkdir "C:\opencv"
 if not exist "C:\opencv\build" mkdir "C:\opencv\build"
 if not exist "C:\opencv\testdata" mkdir "C:\opencv\testdata"
