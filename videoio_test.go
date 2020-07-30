@@ -6,7 +6,6 @@ import (
 	"strings"
 	"fmt"
 	"testing"
-	"log"
 )
 
 func TestVideoCaptureEmptyNumericalParameters(t *testing.T) {
@@ -132,10 +131,9 @@ func TestVideoWriterCap(t *testing.T) {
 	vr, in_err := OpenVideoCapture(in_pipeline)
 
 	if in_err != nil {
-		log.Println(in_err)
+		t.Error(in_err)
 	}
 
-	log.Println("Opened input")
 	img := NewMat()
 	defer img.Close()
 	_ = vr.Read(&img)
@@ -145,11 +143,11 @@ func TestVideoWriterCap(t *testing.T) {
 	out_pipeline := fmt.Sprintf("appsrc ! videoconvert ! x264enc ! filesink location=%s", tmpfn)
 
 	vw, out_err := VideoWriterCap(out_pipeline, CAP_GSTREAMER, "avc1", 20, img.Cols(), img.Rows(), true)
+
 	if out_err != nil {
-		log.Println(in_err)
+		t.Fatal(in_err)
 	}
 	defer vw.Close()
-	log.Println("Opened output")
 
 	if !vw.IsOpened() {
 		t.Error("Unable to open VideoWriterFile")
