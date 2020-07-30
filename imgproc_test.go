@@ -3,7 +3,10 @@ package gocv
 import (
 	"image"
 	"image/color"
+	"image/draw"
+	"log"
 	"math"
+	"os"
 	"reflect"
 	"testing"
 )
@@ -1852,5 +1855,129 @@ func TestPhaseCorrelate(t *testing.T) {
 
 	if responseDifferent > 0.05 {
 		t.Errorf("expected response for different image to be < 0.05, but got %f", responseDifferent)
+	}
+}
+
+func TestMatToImage(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8UC3)
+	defer mat1.Close()
+
+	img, err := mat1.ToImage()
+	if err != nil {
+		t.Errorf("TestToImage %v.", err)
+	}
+
+	if img.Bounds().Dx() != 102 {
+		t.Errorf("TestToImage incorrect width got %d.", img.Bounds().Dx())
+	}
+
+	if img.Bounds().Dy() != 101 {
+		t.Errorf("TestToImage incorrect height got %d.", img.Bounds().Dy())
+	}
+
+	mat2 := NewMatWithSize(101, 102, MatTypeCV8UC1)
+	defer mat2.Close()
+
+	img, err = mat2.ToImage()
+	if err != nil {
+		t.Errorf("TestToImage %v.", err)
+	}
+
+	mat3 := NewMatWithSize(101, 102, MatTypeCV8UC4)
+	defer mat3.Close()
+
+	img, err = mat3.ToImage()
+	if err != nil {
+		t.Errorf("TestToImage %v.", err)
+	}
+
+	matWithUnsupportedType := NewMatWithSize(101, 102, MatTypeCV8S)
+	defer matWithUnsupportedType.Close()
+
+	_, err = matWithUnsupportedType.ToImage()
+	if err == nil {
+		t.Error("TestToImage expected error got nil.")
+	}
+}
+
+//Tests that image is the same after converting to Mat and back to Image
+func TestImageToMatRGBA(t *testing.T) {
+	file, err := os.Open("images/gocvlogo.png")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+	img0, _, err := image.Decode(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mat, err := ImageToMatRGBA(img0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer mat.Close()
+	img1, err := mat.ToImage()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if !compareImages(img0, img1) {
+		t.Errorf("Image after converting to Mat and back to Image isn't the same")
+	}
+}
+
+//Tests that image is the same after converting to Mat and back to Image
+func TestImageToMatRGB(t *testing.T) {
+	file, err := os.Open("images/gocvlogo.jpg")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+	img0, _, err := image.Decode(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mat, err := ImageToMatRGB(img0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer mat.Close()
+	img1, err := mat.ToImage()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if !compareImages(img0, img1) {
+		t.Errorf("Image after converting to Mat and back to Image isn't the same")
+	}
+}
+
+func TestImageGrayToMatGray(t *testing.T) {
+	file, err := os.Open("images/gocvlogo.jpg")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+	imgSrc, _, err := image.Decode(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+	img0 := image.NewGray(imgSrc.Bounds())
+	draw.Draw(img0, imgSrc.Bounds(), imgSrc, image.ZP, draw.Src)
+
+	mat, err := ImageGrayToMatGray(img0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer mat.Close()
+	img1, err := mat.ToImage()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if !compareImages(img0, img1) {
+		t.Errorf("Image after converting to Mat and back to Image isn't the same")
 	}
 }

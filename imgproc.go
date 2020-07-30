@@ -6,6 +6,7 @@ package gocv
 */
 import "C"
 import (
+	"errors"
 	"image"
 	"image/color"
 	"reflect"
@@ -1929,4 +1930,165 @@ func PhaseCorrelate(src1, src2, window Mat) (phaseShift Point2f, response float6
 		X: float32(result.x),
 		Y: float32(result.y),
 	}, float64(responseDouble)
+}
+
+// ToImage converts a Mat to a image.Image.
+func (m *Mat) ToImage() (image.Image, error) {
+	t := m.Type()
+	if t != MatTypeCV8UC1 && t != MatTypeCV8UC3 && t != MatTypeCV8UC4 {
+		return nil, errors.New("ToImage supports only MatType CV8UC1, CV8UC3 and CV8UC4")
+	}
+
+	width := m.Cols()
+	height := m.Rows()
+
+	if MatTypeCV8UC1 == t {
+		img := image.NewGray(image.Rect(0, 0, width, height))
+		q := ([]byte)(m.DataPtrUint8())
+		copy(img.Pix, q[0:])
+		return img, nil
+	}
+
+	// MatTypeCV8UC3 and MatTypeCV8UC4
+	dst := NewMat()
+	if MatTypeCV8UC3 == t {
+		C.CvtColor(m.p, dst.p, C.int(ColorBGRToRGBA))
+		data := ([]byte)(dst.DataPtrUint8())
+		img := image.NewRGBA(image.Rect(0, 0, width, height))
+		copy(img.Pix, data[0:])
+		return img, nil
+	} else if MatTypeCV8UC4 == t {
+		C.CvtColor(m.p, dst.p, C.int(ColorBGRAToRGBA))
+		data := ([]byte)(dst.DataPtrUint8())
+		img := image.NewNRGBA(image.Rect(0, 0, width, height))
+		copy(img.Pix, data[0:])
+		return img, nil
+	}
+
+	//Other image type
+	step := m.Step()
+	data := m.ToBytes()
+	channels := m.Channels()
+
+	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	c := color.RGBA{
+		R: uint8(0),
+		G: uint8(0),
+		B: uint8(0),
+		A: uint8(255),
+	}
+
+	for y := 0; y < height; y++ {
+		for x := 0; x < step; x = x + channels {
+			c.B = uint8(data[y*step+x])
+			c.G = uint8(data[y*step+x+1])
+			c.R = uint8(data[y*step+x+2])
+			if channels == 4 {
+				c.A = uint8(data[y*step+x+3])
+			}
+			img.SetRGBA(int(x/channels), y, c)
+		}
+	}
+
+	return img, nil
+}
+
+//ImageToMatRGBA converts image.Image to gocv.Mat,
+//which represents RGBA image having 8bit for each component.
+//Type of Mat is gocv.MatTypeCV8UC4.
+func ImageToMatRGBA(img image.Image) (Mat, error) {
+	bounds := img.Bounds()
+	x := bounds.Dx()
+	y := bounds.Dy()
+	model := img.ColorModel()
+
+	if (color.RGBAModel != model) && (color.NRGBAModel != model) {
+		data := make([]byte, 0, x*y*3)
+		for j := bounds.Min.Y; j < bounds.Max.Y; j++ {
+			for i := bounds.Min.X; i < bounds.Max.X; i++ {
+				r, g, b, _ := img.At(i, j).RGBA()
+				data = append(data, byte(b>>8), byte(g>>8), byte(r>>8))
+			}
+		}
+		return NewMatFromBytes(y, x, MatTypeCV8UC3, data)
+	}
+
+	//Speed up the conversion process of RGBA format
+	var data []uint8
+	if color.RGBAModel == model {
+		m, res := img.(*image.RGBA)
+		if true != res {
+			return NewMat(), errors.New("Image color format error")
+		}
+		data = m.Pix
+	} else if color.NRGBAModel == model {
+		m, res := img.(*image.NRGBA)
+		if true != res {
+			return NewMat(), errors.New("Image color format error")
+		}
+		data = m.Pix
+	}
+
+	cvImg, err := NewMatFromBytes(y, x, MatTypeCV8UC4, data)
+	if nil != err {
+		return NewMat(), err
+	}
+
+	dst := NewMat()
+	C.CvtColor(cvImg.p, dst.p, C.int(ColorBGRAToRGBA))
+	return dst, nil
+}
+
+//ImageToMatRGB converts image.Image to gocv.Mat,
+//which represents RGB image having 8bit for each component.
+//Type of Mat is gocv.MatTypeCV8UC3.
+func ImageToMatRGB(img image.Image) (Mat, error) {
+	bounds := img.Bounds()
+	x := bounds.Dx()
+	y := bounds.Dy()
+	model := img.ColorModel()
+
+	if (color.RGBAModel != model) && (color.NRGBAModel != model) {
+		data := make([]byte, 0, x*y*3)
+		for j := bounds.Min.Y; j < bounds.Max.Y; j++ {
+			for i := bounds.Min.X; i < bounds.Max.X; i++ {
+				r, g, b, _ := img.At(i, j).RGBA()
+				data = append(data, byte(b>>8), byte(g>>8), byte(r>>8))
+			}
+		}
+		return NewMatFromBytes(y, x, MatTypeCV8UC3, data)
+	}
+
+	//Speed up the conversion process of RGBA format
+	var data []uint8
+	if color.RGBAModel == model {
+		m, res := img.(*image.RGBA)
+		if true != res {
+			return NewMat(), errors.New("Image color format error")
+		}
+		data = m.Pix
+	}
+
+	src, err := NewMatFromBytes(y, x, MatTypeCV8UC4, data)
+	if nil != err {
+		return NewMat(), errors.New("Image data error")
+	}
+
+	dst := NewMat()
+	CvtColor(src, &dst, ColorRGBAToBGR)
+	return dst, nil
+}
+
+//ImageGrayToMatGray converts image.Gray to gocv.Mat,
+//which represents grayscale image 8bit.
+//Type of Mat is gocv.MatTypeCV8UC1.
+func ImageGrayToMatGray(img *image.Gray) (Mat, error) {
+	bounds := img.Bounds()
+	x := bounds.Dx()
+	y := bounds.Dy()
+	m, err := NewMatFromBytes(y, x, MatTypeCV8UC1, img.Pix)
+	if nil != err {
+		return NewMat(), err
+	}
+	return m, nil
 }
