@@ -10,10 +10,6 @@ environment:
   GOROOT: c:\go
   GOVERSION: 1.14
   TEST_EXTERNAL: 1
-  APPVEYOR_SAVE_CACHE_ON_ERROR: true
-
-cache:
-  - C:\opencv -> appveyor_build_opencv.cmd
 
 install:
   - if not exist "C:\opencv" appveyor_build_opencv.cmd
