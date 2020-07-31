@@ -800,47 +800,52 @@ func (d *SIFT) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4/d4/d5d/group__features2d__draw.html
-func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2 []DMatch, outImage *Mat, matchColor color.RGBA, singlePointColor color.RGBA, matchesMask []char, flags DrawMatchesFlag) {
-	cKeyPoint1Array := make([]C.struct_KeyPoint, len(kp1))
-	cKeyPoint2Array := make([]C.struct_KeyPoint, len(kp2))
+func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2 []DMatch, outImg *Mat, matchColor color.RGBA, singlePointColor color.RGBA, matchesMask []byte, flags DrawMatchesFlag) {
+	kp1arr := make([]C.struct_KeyPoint, len(kp1))
+	kp2arr := make([]C.struct_KeyPoint, len(kp2))
 
 	for i, kp := range kp1 {
-		cKeyPoint1Array[i].x = C.double(kp.X)
-		cKeyPoint1Array[i].y = C.double(kp.Y)
-		cKeyPoint1Array[i].size = C.double(kp.Size)
-		cKeyPoint1Array[i].angle = C.double(kp.Angle)
-		cKeyPoint1Array[i].response = C.double(kp.Response)
-		cKeyPoint1Array[i].octave = C.int(kp.Octave)
-		cKeyPoint1Array[i].classID = C.int(kp.ClassID)
+		kp1arr[i].x = C.double(kp.X)
+		kp1arr[i].y = C.double(kp.Y)
+		kp1arr[i].size = C.double(kp.Size)
+		kp1arr[i].angle = C.double(kp.Angle)
+		kp1arr[i].response = C.double(kp.Response)
+		kp1arr[i].octave = C.int(kp.Octave)
+		kp1arr[i].classID = C.int(kp.ClassID)
 	}
 
 	for i, kp := range kp2 {
-		cKeyPoint2Array[i].x = C.double(kp.X)
-		cKeyPoint2Array[i].y = C.double(kp.Y)
-		cKeyPoint2Array[i].size = C.double(kp.Size)
-		cKeyPoint2Array[i].angle = C.double(kp.Angle)
-		cKeyPoint2Array[i].response = C.double(kp.Response)
-		cKeyPoint2Array[i].octave = C.int(kp.Octave)
-		cKeyPoint2Array[i].classID = C.int(kp.ClassID)
-	}
-
-	cDMatchArray := make([]C.struct_DMatch, len(matches1to2))
-
-	for i, dm := range matches1to2 {
-		cDMatchArray[i].queryIdx = C.int(dm.QueryIdx)
-		cDMatchArray[i].trainIdx = C.int(dm.TrainIdx)
-		cDMatchArray[i].imgIdx = C.int(dm.ImgIdx)
-		cDMatchArray[i].distance = C.double(dm.Distance)
+		kp2arr[i].x = C.double(kp.X)
+		kp2arr[i].y = C.double(kp.Y)
+		kp2arr[i].size = C.double(kp.Size)
+		kp2arr[i].angle = C.double(kp.Angle)
+		kp2arr[i].response = C.double(kp.Response)
+		kp2arr[i].octave = C.int(kp.Octave)
+		kp2arr[i].classID = C.int(kp.ClassID)
 	}
 
 	cKeyPoints1 := C.struct_KeyPoints{
-		keypoints: (*C.struct_KeyPoint)(&cKeyPointArray1[0]),
+		keypoints: (*C.struct_KeyPoint)(&kp1arr[0]),
 		length:    (C.int)(len(kp1)),
 	}
 
 	cKeyPoints2 := C.struct_KeyPoints{
-		keypoints: (*C.struct_KeyPoint)(&cKeyPointArray2[0]),
+		keypoints: (*C.struct_KeyPoint)(&kp2arr[0]),
 		length:    (C.int)(len(kp2)),
+	}
+
+	dMatchArr := make([]C.struct_DMatch, len(matches1to2))
+
+	for i, dm := range matches1to2 {
+		dMatchArr[i].queryIdx = C.int(dm.QueryIdx)
+		dMatchArr[i].trainIdx = C.int(dm.TrainIdx)
+		dMatchArr[i].imgIdx = C.int(dm.ImgIdx)
+		dMatchArr[i].distance = C.float(dm.Distance)
+	}
+
+	cDMatches := C.struct_DMatches{
+		dmatches: (*C.struct_DMatch)(&dMatchArr[0]),
+		length:   (C.int)(len(matches1to2)),
 	}
 
 	scalarMatchColor := C.struct_Scalar{
@@ -857,7 +862,13 @@ func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2
 		val4: C.double(singlePointColor.A),
 	}
 
-	cMask := make([]C.char, len(matchesMask))
+	mask := make([]C.char, len(matchesMask))
 
-	C.DrawMatches(img1.p, cKeyPoints1, img2.p, cKeyPoints2, cDMatchArray, outImg.p, scalarMatchColor, scalarPointColor, cMask, C.int(flags))
+	cByteArray := C.struct_ByteArray{
+		data:   (*C.char)(&mask[0]),
+		length: (C.int)(len(matchesMask)),
+	}
+
+	C.DrawMatches(img1.p, cKeyPoints1, img2.p, cKeyPoints2, cDMatches, outImg.p, scalarMatchColor, scalarPointColor, cByteArray, C.int(flags))
+	//C.Dummy(img1.p, cKeyPoints1, cDMatches)
 }

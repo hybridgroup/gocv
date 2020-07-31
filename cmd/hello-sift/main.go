@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"gocv.io/x/gocv"
-	"gocv.io/x/gocv/contrib"
 )
 
 // you can run this example from root of this repository
@@ -24,7 +23,7 @@ func main() {
 
 	println("images opened")
 
-	sift := contrib.NewSIFT()
+	sift := gocv.NewSIFT()
 	defer sift.Close()
 
 	println("sift created")
@@ -85,7 +84,7 @@ func main() {
 		A: 0,
 	}
 
-	mask := make([]byte, len(matches))
+	mask := make([]byte, len(good))
 
 	var out gocv.Mat
 	gocv.DrawMatches(train, kp1, querry, kp2, good, &out, c1, c2, mask, gocv.DrawDefault)
@@ -96,7 +95,9 @@ func main() {
 	window2 := gocv.NewWindow("Train")
 	window2.IMShow(train)
 
+	window3 := gocv.NewWindow("Output")
+	window3.IMShow(out)
+
 	window1.WaitKey(0)
 	window2.WaitKey(0)
-
 }
