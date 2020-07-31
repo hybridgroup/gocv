@@ -35,7 +35,7 @@ func main() {
 	println("detect and compute done")
 
 	bf := gocv.NewBFMatcher()
-	matches := bf.Knntch(des1, des2, 2)
+	matches := bf.KnnMatch(des1, des2, 2)
 
 	println("matches created")
 
@@ -71,8 +71,6 @@ func main() {
 	gocv.CvtColor(querry, &querry, gocv.ColorBGRToRGBA)
 	gocv.CvtColor(train, &train, gocv.ColorBGRToRGBA)
 
-	var out gocv.Mat
-
 	c1 := color.RGBA{
 		R: 255,
 		G: 0,
@@ -87,8 +85,9 @@ func main() {
 		A: 0,
 	}
 
-	var mask [len(matches)]char
+	mask := make([]byte, len(matches))
 
+	var out gocv.Mat
 	gocv.DrawMatches(train, kp1, querry, kp2, good, &out, c1, c2, mask, gocv.DrawDefault)
 
 	window1 := gocv.NewWindow("Query")

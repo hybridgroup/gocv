@@ -504,13 +504,9 @@ void DrawMatches(Mat img1, struct KeyPoints kp1, Mat img2, struct KeyPoints kp2,
 
     std::vector<char> maskvec;
 
-<<<<<<< HEAD
+
     for (int i = 0; i < matchesMask.length; i++) {
         maskvec.push_back(matchesMask.data[i]);
-=======
-    for (int i = 0; i < sizeof(matchesMask)/sizeof(char); i++) {
-        maskvec.push_back(static_cast<char>(matchesMask[i]));
->>>>>>> Untested implementation of DrawMatches
     }
 
     cv::drawMatches(*img1, kp1vec, *img2, kp2vec, dmatchvec, *outImg, cvmatchescolor, cvpointcolor, maskvec, static_cast<cv::DrawMatchesFlags>(flags));
