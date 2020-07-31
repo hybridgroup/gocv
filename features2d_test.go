@@ -471,12 +471,18 @@ func TestDrawMatches(t *testing.T) {
 	sift := NewSIFT()
 	defer sift.Close()
 
-	kp1, des1 := sift.DetectAndCompute(query, NewMat())
-	kp2, des2 := sift.DetectAndCompute(train, NewMat())
+	m1 := NewMat()
+	m2 := NewMat()
+	defer m1.Close()
+	defer m2.Close()
+
+	kp1, des1 := sift.DetectAndCompute(query, m1)
+	kp2, des2 := sift.DetectAndCompute(train, m2)
 	defer des1.Close()
 	defer des2.Close()
 
 	bf := NewBFMatcher()
+	defer bf.Close()
 	matches := bf.KnnMatch(des1, des2, 2)
 
 	if len(matches) == 0 {
