@@ -794,6 +794,8 @@ func (d *SIFT) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
 		C.Mat(desc.Ptr()))
 
 	return getKeyPoints(ret), desc
+}
+
 // DrawMatches draws matches on combined train and querry images.
 //
 // For further details, please see:
