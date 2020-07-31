@@ -1,3 +1,3 @@
-module gocv.io/x/gocv
+module github.com/Shanduur/gocv
 
 go 1.13
