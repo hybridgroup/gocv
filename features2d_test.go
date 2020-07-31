@@ -473,6 +473,8 @@ func TestDrawMatches(t *testing.T) {
 
 	kp1, des1 := sift.DetectAndCompute(query, NewMat())
 	kp2, des2 := sift.DetectAndCompute(train, NewMat())
+	defer des1.Close()
+	defer des2.Close()
 
 	bf := NewBFMatcher()
 	matches := bf.KnnMatch(des1, des2, 2)
