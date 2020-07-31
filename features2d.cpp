@@ -504,7 +504,6 @@ void DrawMatches(Mat img1, struct KeyPoints kp1, Mat img2, struct KeyPoints kp2,
 
     std::vector<char> maskvec;
 
-
     for (int i = 0; i < matchesMask.length; i++) {
         maskvec.push_back(matchesMask.data[i]);
     }
