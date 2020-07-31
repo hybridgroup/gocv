@@ -86,7 +86,7 @@ func main() {
 
 	mask := make([]byte, len(good))
 
-	var out gocv.Mat
+	out := gocv.NewMat()
 	gocv.DrawMatches(train, kp1, querry, kp2, good, &out, c1, c2, mask, gocv.DrawDefault)
 
 	window1 := gocv.NewWindow("Query")

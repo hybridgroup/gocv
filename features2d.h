@@ -91,8 +91,6 @@ struct KeyPoints SIFT_DetectAndCompute(SIFT f, Mat src, Mat mask, Mat desc);
 
 void DrawMatches(Mat img1, struct KeyPoints kp1, Mat img2, struct KeyPoints kp2, struct DMatches matches1to2, Mat outImg, const Scalar matchesColor, const Scalar pointColor, struct ByteArray matchesMask, int flags);
 
-void Dummy(Mat img1, struct KeyPoints kp1, struct DMatches matches1to2);
-
 #ifdef __cplusplus
 }
 #endif
