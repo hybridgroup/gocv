@@ -224,7 +224,7 @@ docker:
 astyle:
 	astyle --project=.astylerc --recursive *.cpp,*.h
 
-CMDS=basic-drawing caffe-classifier captest capwindow counter faceblur facedetect find-circles hand-gestures img-similarity mjpeg-streamer motion-detect pose saveimage savevideo showimage ssd-facedetect tf-classifier tracking version
+CMDS=basic-drawing caffe-classifier captest capwindow counter faceblur facedetect find-circles hand-gestures hello-sift img-similarity mjpeg-streamer motion-detect pose saveimage savevideo showimage ssd-facedetect tf-classifier tracking version
 cmds:
 	for cmd in $(CMDS) ; do \
 		go build -o build/$$cmd cmd/$$cmd/main.go ;

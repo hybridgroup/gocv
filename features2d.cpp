@@ -429,9 +429,7 @@ void DrawKeyPoints(Mat src, struct KeyPoints kp, Mat dst, Scalar s, int flags) {
         cv::drawKeypoints(*src, keypts, *dst, color, static_cast<cv::DrawMatchesFlags>(flags));
 }
 
-void DrawMatches(Mat img1, struct KeyPoints kp1, Mat img2, struct KeyPoints kp2, 
-                struct DMatches matches1to2, Mat outImg, const Scalar matchesColor, 
-                const Scalar pointColor, char matchesMask[], int flags) {
+void DrawMatches(Mat img1, struct KeyPoints kp1, Mat img2, struct KeyPoints kp2, struct DMatches matches1to2, Mat outImg, const Scalar matchesColor, const Scalar pointColor, struct ByteArray matchesMask, int flags) {
     std::vector<cv::KeyPoint> kp1vec, kp2vec;
     cv::KeyPoint keypt;
 
@@ -463,8 +461,8 @@ void DrawMatches(Mat img1, struct KeyPoints kp1, Mat img2, struct KeyPoints kp2,
 
     std::vector<char> maskvec;
 
-    for (int i = 0; i < sizeof(matchesMask)/sizeof(char); i++) {
-        maskvec.push_back(static_cast<char>(matchesMask[i]));
+    for (int i = 0; i < matchesMask.length; i++) {
+        maskvec.push_back(matchesMask.data[i]);
     }
 
     cv::drawMatches(*img1, kp1vec, *img2, kp2vec, dmatchvec, *outImg, cvmatchescolor, cvpointcolor, maskvec, static_cast<cv::DrawMatchesFlags>(flags));

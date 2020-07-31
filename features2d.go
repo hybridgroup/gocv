@@ -810,5 +810,7 @@ func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2
 		val4: C.double(singlePointColor.A),
 	}
 
-	C.DrawMatches(img1.p, cKeyPoints1, img2.p, cKeyPoints2, cDMatchArray, outImg.p, scalarMatchColor, scalarPointColor, matchesMask, flags)
+	cMask := make([]C.char, len(matchesMask))
+
+	C.DrawMatches(img1.p, cKeyPoints1, img2.p, cKeyPoints2, cDMatchArray, outImg.p, scalarMatchColor, scalarPointColor, cMask, C.int(flags))
 }
