@@ -856,9 +856,9 @@ func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2
 	}
 
 	scalarPointColor := C.struct_Scalar{
-		val1: C.double(singlePointColor.R),
+		val1: C.double(singlePointColor.B),
 		val2: C.double(singlePointColor.G),
-		val3: C.double(singlePointColor.B),
+		val3: C.double(singlePointColor.R),
 		val4: C.double(singlePointColor.A),
 	}
 
