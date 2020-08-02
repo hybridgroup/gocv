@@ -59,34 +59,23 @@ func main() {
 	fmt.Println("good selected")
 	fmt.Println(len(good))
 
-	// drawing keypoints on querry
-	gocv.DrawKeyPoints(querry, kp1, &querry, color.RGBA{
-		R: 0,
-		G: 255,
-		B: 0,
-		A: 0,
-	}, gocv.DrawDefault)
-	// drawing keypoints on train
-	gocv.DrawKeyPoints(train, kp2, &train, color.RGBA{
-		R: 0,
-		G: 0,
-		B: 255,
-		A: 0,
-	}, gocv.DrawDefault)
+	for _, d := range good {
+		fmt.Println(d)
+	}
 
 	// matches color
 	c1 := color.RGBA{
-		R: 255,
-		G: 0,
-		B: 0, // just blue
+		R: 0,
+		G: 255,
+		B: 0,
 		A: 0,
 	}
 
 	// point color
 	c2 := color.RGBA{
-		R: 100,
+		R: 255,
 		G: 0,
-		B: 100,
+		B: 0,
 		A: 0,
 	}
 
@@ -98,20 +87,9 @@ func main() {
 	// drawing matches
 	gocv.DrawMatches(querry, kp1, train, kp2, good, &out, c1, c2, mask, gocv.DrawDefault)
 
-	// creating windows with images
-	window1 := gocv.NewWindow("Query")
-	window1.IMShow(querry)
-	defer window1.Close()
+	window := gocv.NewWindow("Output")
+	window.IMShow(out)
+	defer window.Close()
 
-	window2 := gocv.NewWindow("Train")
-	window2.IMShow(train)
-	defer window2.Close()
-
-	window3 := gocv.NewWindow("Output")
-	window3.IMShow(out)
-	defer window3.Close()
-
-	window1.WaitKey(0)
-	window2.WaitKey(0)
-	window3.WaitKey(0)
+	window.WaitKey(0)
 }
