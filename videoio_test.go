@@ -140,7 +140,7 @@ func TestVideoWriterCap(t *testing.T) {
 
 	_ = vr
 
-	out_pipeline := fmt.Sprintf("appsrc ! videoconvert ! x264enc ! filesink location=%s", tmpfn)
+	out_pipeline := fmt.Sprintf("appsrc ! videoconvert ! x264enc ! mp4mux ! filesink location=%s", tmpfn)
 
 	vw, out_err := VideoWriterCap(out_pipeline, CAP_GSTREAMER, "avc1", 20, img.Cols(), img.Rows(), true)
 
@@ -154,7 +154,7 @@ func TestVideoWriterCap(t *testing.T) {
 	}
 
 	i := 0
-	for i < 30 {
+	for i < 100 {
 
 		img := NewMat()
 		defer img.Close()
@@ -167,5 +167,4 @@ func TestVideoWriterCap(t *testing.T) {
 		}
 		i++
 	}
-	
 }
