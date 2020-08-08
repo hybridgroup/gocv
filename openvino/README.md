@@ -3,7 +3,7 @@
 The [Intel® Distribution of OpenVINO™ toolkit](https://software.intel.com/en-us/openvino-toolkit) is a set of tools and libraries for computer vision applications, that uses computer vision and imaging algorithms developed at Intel. It also includes a complete build of OpenCV 4.2.0.
 
 GoCV supports using the Intel GPU or Intel OpenVINO Inference Engine as a backend for the OpenCV deep neural network (DNN) module. For details, please see:
-https://github.com/hybridgroup/gocv/blob/master/openvino/ie/README.md
+https://github.com/hybridgroup/gocv/blob/release/openvino/ie/README.md
 
 ## Installing Intel OpenVINO toolkit
 

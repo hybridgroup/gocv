@@ -19,6 +19,7 @@ typedef cv::Ptr<cv::MSER>* MSER;
 typedef cv::Ptr<cv::ORB>* ORB;
 typedef cv::Ptr<cv::SimpleBlobDetector>* SimpleBlobDetector;
 typedef cv::Ptr<cv::BFMatcher>* BFMatcher;
+typedef cv::Ptr<cv::SIFT>* SIFT;
 #else
 typedef void* AKAZE;
 typedef void* AgastFeatureDetector;
@@ -30,6 +31,7 @@ typedef void* MSER;
 typedef void* ORB;
 typedef void* SimpleBlobDetector;
 typedef void* BFMatcher;
+typedef void* SIFT;
 #endif
 
 AKAZE AKAZE_Create();
@@ -81,6 +83,11 @@ void BFMatcher_Close(BFMatcher b);
 struct MultiDMatches BFMatcher_KnnMatch(BFMatcher b, Mat query, Mat train, int k);
 
 void DrawKeyPoints(Mat src, struct KeyPoints kp, Mat dst, const Scalar s, int flags);
+
+SIFT SIFT_Create();
+void SIFT_Close(SIFT f);
+struct KeyPoints SIFT_Detect(SIFT f, Mat src);
+struct KeyPoints SIFT_DetectAndCompute(SIFT f, Mat src, Mat mask, Mat desc);
 
 #ifdef __cplusplus
 }

@@ -67,19 +67,19 @@ type WindowFlag float32
 
 const (
 	// WindowNormal indicates a normal window.
-	WindowNormal WindowFlag = 0
-
-	// WindowFullscreen indicates a full-screen window.
-	WindowFullscreen = 1
+	WindowNormal WindowFlag = 0x00000000
 
 	// WindowAutosize indicates a window sized based on the contents.
-	WindowAutosize = 1
+	WindowAutosize WindowFlag = 0x00000001
+
+	// WindowFullscreen indicates a full-screen window.
+	WindowFullscreen WindowFlag = 1
 
 	// WindowFreeRatio indicates allow the user to resize without maintaining aspect ratio.
-	WindowFreeRatio = 0x00000100
+	WindowFreeRatio WindowFlag = 0x00000100
 
 	// WindowKeepRatio indicates always maintain an aspect ratio that matches the contents.
-	WindowKeepRatio = 0
+	WindowKeepRatio WindowFlag = 0x00000000
 )
 
 // WindowPropertyFlag flags for SetWindowProperty / GetWindowProperty.
@@ -92,17 +92,17 @@ const (
 
 	// WindowPropertyAutosize is autosize property
 	// (can be WINDOW_NORMAL or WINDOW_AUTOSIZE).
-	WindowPropertyAutosize = 1
+	WindowPropertyAutosize WindowPropertyFlag = 1
 
 	// WindowPropertyAspectRatio window's aspect ration
 	// (can be set to WINDOW_FREERATIO or WINDOW_KEEPRATIO).
-	WindowPropertyAspectRatio = 2
+	WindowPropertyAspectRatio WindowPropertyFlag = 2
 
 	// WindowPropertyOpenGL opengl support.
-	WindowPropertyOpenGL = 3
+	WindowPropertyOpenGL WindowPropertyFlag = 3
 
 	// WindowPropertyVisible or not.
-	WindowPropertyVisible = 4
+	WindowPropertyVisible WindowPropertyFlag = 4
 )
 
 // GetWindowProperty returns properties of a window.

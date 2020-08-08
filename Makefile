@@ -2,10 +2,10 @@
 .PHONY: test deps download build clean astyle cmds docker
 
 # OpenCV version to use.
-OPENCV_VERSION?=4.3.0
+OPENCV_VERSION?=4.4.0
 
 # Go version to use when building Docker image
-GOVERSION?=1.14.1
+GOVERSION?=1.14.4
 
 # Temporary directory to put files into.
 TMP_DIR?=/tmp/
@@ -16,6 +16,9 @@ BUILD_SHARED_LIBS?=ON
 # Package list for each well-known Linux distribution
 RPMS=cmake curl wget git gtk2-devel libpng-devel libjpeg-devel libtiff-devel tbb tbb-devel libdc1394-devel unzip
 DEBS=unzip wget build-essential cmake curl git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
+
+explain:
+	@echo "For quick install with typical defaults of both OpenCV and GoCV, run 'make install'"
 
 # Detect Linux distribution
 distro_deps=
