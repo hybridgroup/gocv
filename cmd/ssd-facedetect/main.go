@@ -67,11 +67,11 @@ func main() {
 
 	// open DNN classifier
 	net := gocv.ReadNetFromCaffe(proto, model)
+	defer net.Close()
 	if net.Empty() {
 		fmt.Printf("Error reading network model from : %v %v\n", proto, model)
 		return
 	}
-	defer net.Close()
 
 	green := color.RGBA{0, 255, 0, 0}
 	fmt.Printf("Start reading device: %v\n", deviceID)

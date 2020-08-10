@@ -76,11 +76,11 @@ func main() {
 	// open OpenPose model
 	n := gocv.ReadNet(model, proto)
 	net = &n
+	defer net.Close()
 	if net.Empty() {
 		fmt.Printf("Error reading network model from : %v %v\n", model, proto)
 		return
 	}
-	defer net.Close()
 	net.SetPreferableBackend(gocv.NetBackendType(backend))
 	net.SetPreferableTarget(gocv.NetTargetType(target))
 
