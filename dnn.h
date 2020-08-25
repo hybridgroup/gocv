@@ -25,6 +25,7 @@ Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel);
 Net Net_ReadNetFromCaffeBytes(struct ByteArray prototxt, struct ByteArray caffeModel);
 Net Net_ReadNetFromTensorflow(const char* model);
 Net Net_ReadNetFromTensorflowBytes(struct ByteArray model);
+Net Net_ReadNetFromTorch(const char* model);
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
                       bool crop);
 void Net_BlobFromImages(struct Mats images, Mat blob,  double scalefactor, Size size, 

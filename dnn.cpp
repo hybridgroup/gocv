@@ -33,6 +33,11 @@ Net Net_ReadNetFromTensorflowBytes(struct ByteArray model) {
     return n;
 }
 
+Net Net_ReadNetFromTorch(const char* model) {
+    Net n = new cv::dnn::Net(cv::dnn::readNetFromTorch(model));
+    return n;
+}
+
 void Net_Close(Net net) {
     delete net;
 }

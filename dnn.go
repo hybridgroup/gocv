@@ -292,6 +292,18 @@ func ReadNetFromTensorflowBytes(model []byte) (Net, error) {
 	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTensorflowBytes(*bModel))}, nil
 }
 
+// ReadNetFromTorch reads a network model stored in Torch framework's format (t7).
+//   check net.Empty() for read failure
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#gaaaed8c8530e9e92fe6647700c13d961e
+//
+func ReadNetFromTorch(model string) Net {
+	cmodel := C.CString(model)
+	defer C.free(unsafe.Pointer(cmodel))
+	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTorch(cmodel))}
+}
+
 // BlobFromImage creates 4-dimensional blob from image. Optionally resizes and crops
 // image from center, subtract mean values, scales values by scalefactor,
 // swap Blue and Red channels.
