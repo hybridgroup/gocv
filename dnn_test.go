@@ -46,9 +46,17 @@ func checkNet(t *testing.T, net Net) {
 		t.Errorf("Invalid len output layers in ReadNet test: %d\n", len(ids))
 	}
 
+	if len(ids) == 1 && ids[0] != 142 {
+		t.Errorf("Invalid unconnected output layers in ReadNet test: %d\n", ids[0])
+	}
+
 	lnames := net.GetLayerNames()
 	if len(lnames) != 142 {
 		t.Errorf("Invalid len layer names in ReadNet test: %d\n", len(lnames))
+	}
+
+	if len(lnames) == 142 && lnames[1] != "conv1/relu_7x7" {
+		t.Errorf("Invalid layer name in ReadNet test: %s\n", lnames[1])
 	}
 
 	prob := net.ForwardLayers([]string{"prob"})
