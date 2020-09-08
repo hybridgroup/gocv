@@ -228,7 +228,7 @@ func (v *VideoCapture) CodecString() string {
 	res := ""
 	hexes := []int64{0xff, 0xff00, 0xff0000, 0xff000000}
 	for i, h := range hexes {
-		res += string(int64(v.Get(VideoCaptureFOURCC)) & h >> (uint(i * 8)))
+		res += string(rune(int64(v.Get(VideoCaptureFOURCC)) & h >> (uint(i * 8))))
 	}
 	return res
 }
