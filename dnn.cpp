@@ -110,11 +110,9 @@ void Net_GetLayerNames(Net net, CStrings* names) {
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
                       bool crop) {
     cv::Size sz(size.width, size.height);
-
-    // set the output ddepth to the input image depth
-    int ddepth = image->depth();
     cv::Scalar cm(mean.val1, mean.val2, mean.val3, mean.val4);
-    return new cv::Mat(cv::dnn::blobFromImage(*image, scalefactor, sz, cm, swapRB, crop, ddepth));
+    // use the default target ddepth here.
+    return new cv::Mat(cv::dnn::blobFromImage(*image, scalefactor, sz, cm, swapRB, crop));
 }
 
 void Net_BlobFromImages(struct Mats images, Mat blob, double scalefactor, Size size,
@@ -128,8 +126,8 @@ void Net_BlobFromImages(struct Mats images, Mat blob, double scalefactor, Size s
     cv::Size sz(size.width, size.height);
     cv::Scalar cm = cv::Scalar(mean.val1, mean.val2, mean.val3, mean.val4);
 
-    // TODO: handle different version signatures of this function v2 vs v3.
-    cv::dnn::blobFromImages(imgs, *blob, scalefactor, sz, cm, swapRB, crop, ddepth);
+    // ignore the passed in ddepth, just use default.
+    cv::dnn::blobFromImages(imgs, *blob, scalefactor, sz, cm, swapRB, crop);
 }
 
 void Net_ImagesFromBlob(Mat blob_, struct Mats* images_) {
