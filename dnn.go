@@ -414,13 +414,14 @@ func (net *Net) GetPerfProfile() float64 {
 func (net *Net) GetUnconnectedOutLayers() (ids []int) {
 	cids := C.IntVector{}
 	C.Net_GetUnconnectedOutLayers((C.Net)(net.p), &cids)
+	defer C.free(unsafe.Pointer(cids.val))
 
 	h := &reflect.SliceHeader{
 		Data: uintptr(unsafe.Pointer(cids.val)),
 		Len:  int(cids.length),
 		Cap:  int(cids.length),
 	}
-	pcids := *(*[]int)(unsafe.Pointer(h))
+	pcids := *(*[]C.int)(unsafe.Pointer(h))
 
 	for i := 0; i < int(cids.length); i++ {
 		ids = append(ids, int(pcids[i]))
@@ -436,16 +437,17 @@ func (net *Net) GetUnconnectedOutLayers() (ids []int) {
 func (net *Net) GetLayerNames() (names []string) {
 	cstrs := C.CStrings{}
 	C.Net_GetLayerNames((C.Net)(net.p), &cstrs)
+	defer C.free(unsafe.Pointer(cstrs.strs))
 
 	h := &reflect.SliceHeader{
 		Data: uintptr(unsafe.Pointer(cstrs.strs)),
 		Len:  int(cstrs.length),
 		Cap:  int(cstrs.length),
 	}
-	pcstrs := *(*[]string)(unsafe.Pointer(h))
+	pcstrs := *(*[](*C.char))(unsafe.Pointer(h))
 
 	for i := 0; i < int(cstrs.length); i++ {
-		names = append(names, string(pcstrs[i]))
+		names = append(names, C.GoString(pcstrs[i]))
 	}
 	return
 }
