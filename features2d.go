@@ -865,7 +865,7 @@ func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2
 	mask := make([]C.char, len(matchesMask))
 
 	cByteArray := C.struct_ByteArray{
-		length:	(C.int)(len(matchesMask)),
+		length: (C.int)(len(matchesMask)),
 	}
 
 	if len(matchesMask) > 0 {
