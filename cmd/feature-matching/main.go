@@ -16,6 +16,7 @@ import (
 func main() {
 	if len(os.Args) != 3 {
 		fmt.Println("Usage: app /path/to/querry /path/to/train")
+		panic("error: no files provided")
 	}
 
 	// opening querry image
@@ -65,7 +66,7 @@ func main() {
 	}
 
 	// creating empty mask
-	mask := make([]byte, len(good))
+	mask := make([]byte, 0)
 
 	// new matrix for output image
 	out := gocv.NewMat()
