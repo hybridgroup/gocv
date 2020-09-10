@@ -7,7 +7,6 @@ package gocv
 import "C"
 import (
 	"image/color"
-	"image"
 	"reflect"
 	"unsafe"
 )
@@ -866,27 +865,15 @@ func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2
 	mask := make([]C.char, len(matchesMask))
 
 	cByteArray := C.struct_ByteArray{
-		data:   (*C.char)(&mask[0]),
-		length: (C.int)(len(matchesMask)),
+		length:	(C.int)(len(matchesMask)),
+	}
+
+	if len(matchesMask) > 0 {
+		cByteArray = C.struct_ByteArray{
+			data:   (*C.char)(&mask[0]),
+			length: (C.int)(len(matchesMask)),
+		}
 	}
 
 	C.DrawMatches(img1.p, cKeyPoints1, img2.p, cKeyPoints2, cDMatches, outImg.p, scalarMatchColor, scalarPointColor, cByteArray, C.int(flags))
-
-
-	// for some reason C.DrawMatches isn't drawing matches
-	// and it had to be implemented manually
-	for _, d := range matches1to2 {
-
-		p1 := image.Point{
-			X: int(kp1[d.QueryIdx].X),
-			Y: int(kp1[d.QueryIdx].Y),
-		}
-
-		p2 := image.Point{
-			X: (int(kp2[d.TrainIdx].X)+img1.Cols()),
-			Y: int(kp2[d.TrainIdx].Y),
-		}
-
-		Line(outImg, p1, p2, matchColor, 1)
-	}
 }
