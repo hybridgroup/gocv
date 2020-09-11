@@ -779,6 +779,7 @@ func (d *SIFT) Close() error {
 //
 func (d *SIFT) Detect(src Mat) []KeyPoint {
 	ret := C.SIFT_Detect((C.SIFT)(d.p), C.Mat(src.Ptr()))
+	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
 }
@@ -792,6 +793,7 @@ func (d *SIFT) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
 	desc := NewMat()
 	ret := C.SIFT_DetectAndCompute((C.SIFT)(d.p), C.Mat(src.Ptr()), C.Mat(mask.Ptr()),
 		C.Mat(desc.Ptr()))
+	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret), desc
 }
