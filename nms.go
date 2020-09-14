@@ -29,7 +29,6 @@ func NMSBoxes(bboxes []image.Rectangle, scores []float32, scoreThreshold float32
 		rects:  (*C.Rect)(&bboxesRectArr[0]),
 		length: C.int(len(bboxes)),
 	}
-	defer C.Rects_Close(bboxesRects)
 
 	scoresFloats := []C.float{}
 	for _, v := range scores {
@@ -70,7 +69,6 @@ func NMSBoxesWithParams(bboxes []image.Rectangle, scores []float32, scoreThresho
 		rects:  (*C.Rect)(&bboxesRectArr[0]),
 		length: C.int(len(bboxes)),
 	}
-	defer C.Rects_Close(bboxesRects)
 
 	scoresFloats := []C.float{}
 	for _, v := range scores {
