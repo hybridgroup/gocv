@@ -505,7 +505,7 @@ func TestDrawMatches(t *testing.T) {
 		A: 0,
 	}
 
-	mask := make([]byte, len(good))
+	mask := make([]byte, 0)
 
 	out := NewMat()
 	defer out.Close()
