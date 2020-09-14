@@ -61,6 +61,10 @@ void Mat_ConvertTo(Mat m, Mat dst, int type) {
     m->convertTo(*dst, type);
 }
 
+void Mat_ConvertToWithParams(Mat m, Mat dst, int type, float alpha, float beta) {
+    m->convertTo(*dst, type, alpha, beta);
+}
+
 // Mat_ToBytes returns the bytes representation of the underlying data.
 struct ByteArray Mat_ToBytes(Mat m) {
     return toByteArray(reinterpret_cast<const char*>(m->data), m->total() * m->elemSize());
