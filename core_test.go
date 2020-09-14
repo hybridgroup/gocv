@@ -495,6 +495,17 @@ func TestMatConvert(t *testing.T) {
 	}
 }
 
+func TestMatConvertWithParams(t *testing.T) {
+	src := NewMatWithSize(100, 100, MatTypeCV8U)
+	defer src.Close()
+	dst := NewMat()
+	defer dst.Close()
+	src.ConvertToWithParams(&dst, MatTypeCV32F, 1.0/255.0, 0.0)
+	if dst.Empty() {
+		t.Error("TestConvertWithParams dst should not be empty.")
+	}
+}
+
 func TestMatConvertFp16(t *testing.T) {
 	src := NewMatWithSize(100, 100, MatTypeCV32F)
 	defer src.Close()

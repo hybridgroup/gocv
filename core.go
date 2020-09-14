@@ -275,6 +275,11 @@ func (m *Mat) ConvertTo(dst *Mat, mt MatType) {
 	return
 }
 
+func (m *Mat) ConvertToWithParams(dst *Mat, mt MatType, alpha, beta float32) {
+	C.Mat_ConvertToWithParams(m.p, dst.p, C.int(mt), C.float(alpha), C.float(beta))
+	return
+}
+
 // Total returns the total number of array elements.
 //
 // For further details, please see:
