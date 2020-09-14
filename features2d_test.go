@@ -515,6 +515,13 @@ func TestDrawMatches(t *testing.T) {
 	if out.Cols() != (query.Cols()+train.Cols()) || out.Rows() < train.Rows() || out.Rows() < query.Rows() {
 		t.Error("Invalid DrawMatches test")
 	}
+
+	mask = make([]byte, len(good))
+
+	smoke := NewMat()
+	defer smoke.Close()
+
+	DrawMatches(query, kp1, train, kp2, good, &smoke, c, c, mask, DrawDefault)
 }
 
 func TestSIFT(t *testing.T) {
