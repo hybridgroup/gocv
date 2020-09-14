@@ -799,7 +799,7 @@ func (d *SIFT) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
 // DrawMatches draws matches on combined train and querry images.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.4/d4/d5d/group__features2d__draw.html
+// https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html#gad8f463ccaf0dc6f61083abd8717c261a
 func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2 []DMatch, outImg *Mat, matchColor color.RGBA, singlePointColor color.RGBA, matchesMask []byte, flags DrawMatchesFlag) {
 	kp1arr := make([]C.struct_KeyPoint, len(kp1))
 	kp2arr := make([]C.struct_KeyPoint, len(kp2))
