@@ -9,8 +9,8 @@ extern "C" {
 
 #include "core.h"
 
-void NMSBoxes(struct Rects bboxes, FloatVector scores, const float score_threshold, const float nms_threshold, IntVector indices);
-void NMSBoxesWithParams(struct Rects bboxes, FloatVector scores, const float score_threshold, const float nms_threshold, IntVector indices, const float eta, const int top_k);
+void NMSBoxes(struct Rects bboxes, FloatVector scores, float score_threshold, float nms_threshold, IntVector* indices);
+void NMSBoxesWithParams(struct Rects bboxes, FloatVector scores, const float score_threshold, const float nms_threshold, IntVector* indices, const float eta, const int top_k);
 
 #ifdef __cplusplus
 }

@@ -7,6 +7,8 @@ package gocv
 import "C"
 import (
 	"image"
+	"reflect"
+	"unsafe"
 )
 
 // NMSBoxes performs non maximum suppression given boxes and corresponding scores.
@@ -38,15 +40,23 @@ func NMSBoxes(bboxes []image.Rectangle, scores []float32, scoreThreshold float32
 	scoresVector.val = (*C.float)(&scoresFloats[0])
 	scoresVector.length = (C.int)(len(scoresFloats))
 
-	indicesInts := []C.int{}
-	for _, v := range indices {
-		indicesInts = append(indicesInts, C.int(v))
-	}
-	indicesVector := C.struct_IntVector{}
-	indicesVector.val = (*C.int)(&indicesInts[0])
-	indicesVector.length = (C.int)(len(indicesInts))
+	indicesVector := C.IntVector{}
 
-	C.NMSBoxes(bboxesRects, scoresVector, C.float(scoreThreshold), C.float(nmsThreshold), indicesVector)
+	C.NMSBoxes(bboxesRects, scoresVector, C.float(scoreThreshold), C.float(nmsThreshold), &indicesVector)
+	defer C.free(unsafe.Pointer(indicesVector.val))
+
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(indicesVector.val)),
+		Len:  int(indicesVector.length),
+		Cap:  int(indicesVector.length),
+	}
+
+	ptr := *(*[]C.int)(unsafe.Pointer(h))
+
+	for i := 0; i < int(indicesVector.length); i++ {
+		indices[i] = int(ptr[i])
+	}
+	return
 }
 
 // NMSBoxesWithParams performs non maximum suppression given boxes and corresponding scores.
@@ -78,13 +88,21 @@ func NMSBoxesWithParams(bboxes []image.Rectangle, scores []float32, scoreThresho
 	scoresVector.val = (*C.float)(&scoresFloats[0])
 	scoresVector.length = (C.int)(len(scoresFloats))
 
-	indicesInts := []C.int{}
-	for _, v := range indices {
-		indicesInts = append(indicesInts, C.int(v))
-	}
-	indicesVector := C.struct_IntVector{}
-	indicesVector.val = (*C.int)(&indicesInts[0])
-	indicesVector.length = (C.int)(len(indicesInts))
+	indicesVector := C.IntVector{}
 
-	C.NMSBoxesWithParams(bboxesRects, scoresVector, C.float(scoreThreshold), C.float(nmsThreshold), indicesVector, C.float(eta), C.int(topK))
+	C.NMSBoxesWithParams(bboxesRects, scoresVector, C.float(scoreThreshold), C.float(nmsThreshold), &indicesVector, C.float(eta), C.int(topK))
+	defer C.free(unsafe.Pointer(indicesVector.val))
+
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(indicesVector.val)),
+		Len:  int(indicesVector.length),
+		Cap:  int(indicesVector.length),
+	}
+
+	ptr := *(*[]C.int)(unsafe.Pointer(h))
+
+	for i := 0; i < int(indicesVector.length); i++ {
+		indices[i] = int(ptr[i])
+	}
+	return
 }
