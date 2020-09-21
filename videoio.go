@@ -150,6 +150,31 @@ const (
 
 	// VideoCaptureAutoFocus controls video capture auto focus..
 	VideoCaptureAutoFocus VideoCaptureProperties = 39
+
+	// VideoCaptureSarNumerator controls the sample aspect ratio: num/den (num)
+	VideoCaptureSarNumerator VideoCaptureProperties = 40
+
+	// VideoCaptureSarDenominator controls the sample aspect ratio: num/den (den)
+	VideoCaptureSarDenominator VideoCaptureProperties = 41
+
+	// VideoCaptureBackend is the current backend (enum VideoCaptureAPIs). Read-only property.
+	VideoCaptureBackend VideoCaptureProperties = 42
+
+	// VideoCaptureChannel controls the video input or channel number (only for those cameras that support).
+	VideoCaptureChannel VideoCaptureProperties = 43
+
+	// VideoCaptureAutoWB controls the auto white-balance.
+	VideoCaptureAutoWB VideoCaptureProperties = 44
+
+	// VideoCaptureWBTemperature controls the white-balance color temperature
+	VideoCaptureWBTemperature VideoCaptureProperties = 45
+
+	// VideoCaptureCodecPixelFormat shows the the codec's pixel format (4-character code). Read-only property.
+	// Subset of AV_PIX_FMT_* or -1 if unknown.
+	VideoCaptureCodecPixelFormat VideoCaptureProperties = 46
+
+	// VideoCaptureBitrate displays the video bitrate in kbits/s. Read-only property.
+	VideoCaptureBitrate VideoCaptureProperties = 47
 )
 
 // VideoCapture is a wrapper around the OpenCV VideoCapture class.

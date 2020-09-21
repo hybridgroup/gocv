@@ -80,6 +80,22 @@ func (c VideoCaptureProperties) String() string {
 		return "video-capture-buffer-size"
 	case VideoCaptureAutoFocus:
 		return "video-capture-auto-focus"
+	case VideoCaptureSarNumerator:
+		return "video-capture-sar-numerator"
+	case VideoCaptureSarDenominator:
+		return "video-capture-sar-denominator"
+	case VideoCaptureBackend:
+		return "video-capture-backend"
+	case VideoCaptureChannel:
+		return "video-capture-channel"
+	case VideoCaptureAutoWB:
+		return "video-capture-auto-wb"
+	case VideoCaptureWBTemperature:
+		return "video-capture-wb-temperature"
+	case VideoCaptureCodecPixelFormat:
+		return "video-capture-pixel-format"
+	case VideoCaptureBitrate:
+		return "video-capture-bitrate"
 	}
 	return ""
 }
