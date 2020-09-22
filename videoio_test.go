@@ -45,7 +45,7 @@ func TestVideoCaptureCodecConversion(t *testing.T) {
 func TestVideoCaptureCodecConversionBadInput(t *testing.T) {
 	vc, err := OpenVideoCapture("images/small.mp4")
 	if err != nil {
-		t.Errorf("TestVideoCaptureCodecConversionBadInput: error loading a file: %v", err)
+		t.Errorf("TestVideoCaptureCodecString: error loading a file: %v", err)
 	}
 	codec := vc.ToCodec("BAD CODEC")
 	if int64(codec) != -1 {
@@ -58,6 +58,19 @@ func TestVideoCaptureInvalid(t *testing.T) {
 	if err == nil {
 		t.Errorf("Should return error with invalid param")
 	}
+}
+
+func TestVideoCaptureWithAPI(t *testing.T) {
+	t.Run("video capture file with api", func(t *testing.T) {
+		vc, err := OpenVideoCaptureWithAPI("images/small.mp4", VideoCaptureGstreamer)
+		if err != nil {
+			t.Errorf("error loading a file: %v", err)
+		}
+		backend := vc.Get(VideoCaptureBackend)
+		if backend != float64(VideoCaptureGstreamer) {
+			t.Errorf("video capture backend api was not %f instead of %d", backend, VideoCaptureGstreamer)
+		}
+	})
 }
 
 func TestVideoCaptureFile(t *testing.T) {
@@ -91,11 +104,20 @@ func TestVideoCaptureFile(t *testing.T) {
 		t.Error("Unable to read VideoCaptureFile")
 	}
 
+	// video capture file with non-existent video"
 	vc2, err := VideoCaptureFile("nonexistent.mp4")
 	defer vc2.Close()
 
 	if err == nil {
 		t.Errorf("Expected error when opening invalid file")
+	}
+
+	// video capture file with api
+	vc3, err := VideoCaptureFileWithAPI("images/small.mp4", VideoCaptureAny)
+	defer vc3.Close()
+
+	if err != nil {
+		t.Error(err)
 	}
 }
 
