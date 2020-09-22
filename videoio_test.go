@@ -62,16 +62,31 @@ func TestVideoCaptureInvalid(t *testing.T) {
 
 func TestVideoCaptureWithAPI(t *testing.T) {
 	t.Run("video capture file with api", func(t *testing.T) {
-		vc, err := OpenVideoCaptureWithAPI("images/small.mp4", VideoCaptureGstreamer)
+		vc, err := OpenVideoCaptureWithAPI("images/small.mp4", VideoCaptureAny)
 		if err != nil {
 			t.Errorf("error loading a file: %v", err)
 		}
 		backend := vc.Get(VideoCaptureBackend)
-		if backend != float64(VideoCaptureGstreamer) {
-			t.Errorf("video capture backend api was not %f instead of %d", backend, VideoCaptureGstreamer)
+		if backend == float64(VideoCaptureAny) {
+			t.Errorf("video capture backend api did not select a backend")
+		}
+	})
+
+	t.Run("video capture unknown device with api", func(t *testing.T) {
+		_, err := VideoCaptureDeviceWithAPI(-1, VideoCaptureAny)
+		if err == nil {
+			t.Errorf("should return error opening device")
+		}
+	})
+
+	t.Run("video capture invalid", func(t *testing.T) {
+		_, err := OpenVideoCaptureWithAPI(1.1, VideoCaptureAny)
+		if err == nil {
+			t.Errorf("should return error with invalid param")
 		}
 	})
 }
+
 
 func TestVideoCaptureFile(t *testing.T) {
 	vc, err := VideoCaptureFile("images/small.mp4")
@@ -104,7 +119,7 @@ func TestVideoCaptureFile(t *testing.T) {
 		t.Error("Unable to read VideoCaptureFile")
 	}
 
-	// video capture file with non-existent video"
+	// video capture file with non-existent video
 	vc2, err := VideoCaptureFile("nonexistent.mp4")
 	defer vc2.Close()
 
@@ -118,6 +133,14 @@ func TestVideoCaptureFile(t *testing.T) {
 
 	if err != nil {
 		t.Error(err)
+	}
+
+	// video capture non-existent video with api
+	vc4, err := VideoCaptureFileWithAPI("nonexistent.mp4", VideoCaptureAny)
+	defer vc4.Close()
+
+	if err == nil {
+		t.Errorf("Expected error when opening invalid file")
 	}
 }
 
