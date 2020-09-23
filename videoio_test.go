@@ -2,7 +2,9 @@ package gocv
 
 import (
 	"io/ioutil"
+	"math"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -73,20 +75,27 @@ func TestVideoCaptureWithAPI(t *testing.T) {
 	})
 
 	t.Run("video capture unknown device with api", func(t *testing.T) {
-		_, err := VideoCaptureDeviceWithAPI(-1, VideoCaptureAny)
+		_, err := OpenVideoCaptureWithAPI(math.MaxInt32, VideoCaptureAny)
 		if err == nil {
 			t.Errorf("should return error opening device")
 		}
 	})
 
-	t.Run("video capture invalid", func(t *testing.T) {
+	t.Run("video capture invalid with api", func(t *testing.T) {
 		_, err := OpenVideoCaptureWithAPI(1.1, VideoCaptureAny)
 		if err == nil {
 			t.Errorf("should return error with invalid param")
 		}
 	})
-}
 
+	t.Run("video capture valid int string with api", func(t *testing.T) {
+		vc5, err := OpenVideoCaptureWithAPI("1", VideoCaptureAny)
+		defer vc5.Close()
+		if err == nil {
+			t.Errorf("should return error opening device")
+		}
+	})
+}
 
 func TestVideoCaptureFile(t *testing.T) {
 	vc, err := VideoCaptureFile("images/small.mp4")
@@ -127,21 +136,45 @@ func TestVideoCaptureFile(t *testing.T) {
 		t.Errorf("Expected error when opening invalid file")
 	}
 
-	// video capture file with api
-	vc3, err := VideoCaptureFileWithAPI("images/small.mp4", VideoCaptureAny)
-	defer vc3.Close()
+	t.Run(" video capture file with api", func(t *testing.T) {
+		vc3, err := VideoCaptureFileWithAPI("images/small.mp4", VideoCaptureAny)
+		defer vc3.Close()
+		if err != nil {
+			t.Error(err)
+		}
+	})
 
-	if err != nil {
-		t.Error(err)
-	}
+	t.Run("video capture non-existent video with api", func(t *testing.T) {
+		vc4, err := VideoCaptureFileWithAPI("nonexistent.mp4", VideoCaptureAny)
+		defer vc4.Close()
+		if err == nil {
+			t.Errorf("Expected error when opening invalid file")
+		}
+	})
 
-	// video capture non-existent video with api
-	vc4, err := VideoCaptureFileWithAPI("nonexistent.mp4", VideoCaptureAny)
-	defer vc4.Close()
+	t.Run("video capture invalid int", func(t *testing.T) {
+		vc5, err := OpenVideoCapture(math.MaxInt32)
+		defer vc5.Close()
+		if err == nil {
+			t.Errorf("should return error opening device")
+		}
+	})
 
-	if err == nil {
-		t.Errorf("Expected error when opening invalid file")
-	}
+	t.Run("video capture invalid string", func(t *testing.T) {
+		vc5, err := OpenVideoCapture("test-device")
+		defer vc5.Close()
+		if err == nil {
+			t.Errorf("should return error opening device")
+		}
+	})
+
+	t.Run("video capture valid string", func(t *testing.T) {
+		vc5, err := OpenVideoCapture(strconv.Itoa(math.MaxInt32))
+		defer vc5.Close()
+		if err == nil {
+			t.Errorf("should return error opening device")
+		}
+	})
 }
 
 func TestVideoWriterFile(t *testing.T) {
