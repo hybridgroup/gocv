@@ -2277,3 +2277,17 @@ func TestColRowRange(t *testing.T) {
 		t.Errorf("TestColRowRange incorrect submatCols count: %v\n", submatCols.Cols())
 	}
 }
+
+func Test_toGoStrings(t *testing.T) {
+	goStrings := []string{"foo", "bar"}
+	cStrings := toCStrings(goStrings)
+	result := toGoStrings(cStrings)
+	if len(goStrings) != len(result) {
+		t.Errorf("TesttoGoStrings failed: length of converted string is not equal to original \n")
+	}
+	for i, s := range goStrings {
+		if s != result[i] {
+			t.Errorf("TesttoGoStrings failed: strings are not equal. expected=%s, actusal=%s", s, result[i])
+		}
+	}
+}
