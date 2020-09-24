@@ -191,6 +191,13 @@ func TestQRCodeDetector(t *testing.T) {
 			t.Errorf("Error in TestQRCodeDetector Multi test: decoded straight QR code=%s, decoded[%d] =%s", tmpDecoded, i, s)
 		}
 	}
+
+	emptyMat := NewMatWithSize(100, 200, MatTypeCV8UC3)
+	success = detector.DetectAndDecodeMulti(emptyMat, &decoded, &multiBox2, &qrCodes)
+	if success {
+		t.Errorf("Error in TestQRCodeDetector Multi test: empty Mat returned sucess=true")
+	}
+	emptyMat.Close()
 }
 
 func padQr(qr *Mat) Mat {
