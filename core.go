@@ -224,6 +224,18 @@ func NewMatFromBytes(rows int, cols int, mt MatType, data []byte) (Mat, error) {
 	return newMat(C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), *cBytes)), nil
 }
 
+func Eye(rows int, cols int, mt MatType) Mat {
+	return newMat(C.Eye(C.int(rows), C.int(cols), C.int(mt)))
+}
+
+func Zeros(rows int, cols int, mt MatType) Mat {
+	return newMat(C.Zeros(C.int(rows), C.int(cols), C.int(mt)))
+}
+
+func Ones(rows int, cols int, mt MatType) Mat {
+	return newMat(C.Ones(C.int(rows), C.int(cols), C.int(mt)))
+}
+
 // FromPtr returns a new Mat with a specific size and type, initialized from a Mat Ptr.
 func (m *Mat) FromPtr(rows int, cols int, mt MatType, prow int, pcol int) (Mat, error) {
 	return newMat(C.Mat_FromPtr(m.p, C.int(rows), C.int(cols), C.int(mt), C.int(prow), C.int(pcol))), nil

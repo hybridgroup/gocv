@@ -28,6 +28,21 @@ Mat Mat_NewFromBytes(int rows, int cols, int type, struct ByteArray buf) {
     return new cv::Mat(rows, cols, type, buf.data);
 }
 
+Mat Eye(int rows, int cols, int type) {
+    cv::Mat temp = cv::Mat::eye(rows, cols, type);
+    return new cv::Mat(rows, cols, type, temp.data);
+}
+
+Mat Zeros(int rows, int cols, int type) {
+    cv::Mat temp = cv::Mat::zeros(rows, cols, type);
+    return new cv::Mat(rows, cols, type, temp.data);
+}
+
+Mat Ones(int rows, int cols, int type) {
+    cv::Mat temp = cv::Mat::ones(rows, cols, type);
+    return new cv::Mat(rows, cols, type, temp.data);
+}
+
 Mat Mat_FromPtr(Mat m, int rows, int cols, int type, int prow, int pcol) {
     return new cv::Mat(rows, cols, type, m->ptr(prow, pcol));
 }

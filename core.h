@@ -258,6 +258,9 @@ int Mat_Cols(Mat m);
 int Mat_Channels(Mat m);
 int Mat_Type(Mat m);
 int Mat_Step(Mat m);
+Mat Eye(int rows, int cols, int type);
+Mat Zeros(int rows, int cols, int type);
+Mat Ones(int rows, int cols, int type);
 
 uint8_t Mat_GetUChar(Mat m, int row, int col);
 uint8_t Mat_GetUChar3(Mat m, int x, int y, int z);

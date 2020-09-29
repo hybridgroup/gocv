@@ -222,6 +222,68 @@ func TestMatToBytes(t *testing.T) {
 	}
 }
 
+func TestMatEye(t *testing.T) {
+	data := []byte{1, 0, 0, 1}
+	e := Eye(2, 2, MatTypeCV8U)
+
+	if bytes.Compare(e.ToBytes(), data) != 0 {
+		t.Errorf("Mat bytes are not equal")
+	}
+	e.Close()
+
+	data2 := []byte{1, 0, 0, 0, 1, 0}
+	e2 := Eye(2, 3, MatTypeCV8U)
+	if bytes.Compare(e2.ToBytes(), data2) != 0 {
+		t.Errorf("Mat bytes are not equal")
+	}
+
+	val := e2.GetUCharAt(0, 2)
+	if val != 0 {
+		t.Errorf("Mat bytes unexpected value at [0,2]: %v\n", val)
+	}
+	e2.Close()
+}
+
+func TestMatZeros(t *testing.T) {
+	expected := NewMatWithSize(2, 3, MatTypeCV8U)
+	z := Zeros(2, 3, MatTypeCV8U)
+
+	if bytes.Compare(z.ToBytes(), expected.ToBytes()) != 0 {
+		t.Errorf("Mat bytes are not equal")
+	}
+
+	expected.Close()
+	z.Close()
+
+	expected2 := NewMatWithSize(2, 3, MatTypeCV64F)
+	z2 := Zeros(2, 3, MatTypeCV64F)
+
+	if bytes.Compare(z2.ToBytes(), expected2.ToBytes()) != 0 {
+		t.Errorf("Mat bytes are not equal")
+	}
+	expected2.Close()
+	z2.Close()
+}
+
+func TestMatOnes(t *testing.T) {
+	expected := NewMatWithSizeFromScalar(Scalar{Val1: 1}, 2, 3, MatTypeCV8U)
+	o := Ones(2, 3, MatTypeCV8U)
+	if bytes.Compare(o.ToBytes(), expected.ToBytes()) != 0 {
+		t.Errorf("Mat bytes are not equal")
+	}
+	defer expected.Close()
+	defer o.Close()
+
+	expected2 := NewMatWithSizeFromScalar(Scalar{Val1: 1}, 2, 1, MatTypeCV64F)
+	o2 := Ones(2, 1, MatTypeCV64F)
+
+	if bytes.Compare(o2.ToBytes(), expected2.ToBytes()) != 0 {
+		t.Errorf("Mat bytes are not equal")
+	}
+	expected2.Close()
+	o2.Close()
+}
+
 func TestMatDataPtr(t *testing.T) {
 	const (
 		rows = 101
