@@ -1447,6 +1447,22 @@ func GetTextSize(text string, fontFace HersheyFont, fontScale float64, thickness
 	return image.Pt(int(sz.width), int(sz.height))
 }
 
+// GetTextSizeWithBaseline calculates the width and height of a text string including the basline of the text.
+// It returns an image.Point with the size required to draw text using
+// a specific font face, scale, and thickness as well as its baseline.
+//
+// For further details, please see:
+// http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga3d2abfcb995fd2db908c8288199dba82
+//
+func GetTextSizeWithBaseline(text string, fontFace HersheyFont, fontScale float64, thickness int) (image.Point, int) {
+	cText := C.CString(text)
+	defer C.free(unsafe.Pointer(cText))
+	cBaseline := C.int(0)
+
+	sz := C.GetTextSizeWithBaseline(cText, C.int(fontFace), C.double(fontScale), C.int(thickness), &cBaseline)
+	return image.Pt(int(sz.width), int(sz.height)), int(cBaseline)
+}
+
 // PutText draws a text string.
 // It renders the specified text string into the img Mat at the location
 // passed in the "org" param, using the desired font face, font scale,

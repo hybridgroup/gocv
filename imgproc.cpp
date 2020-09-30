@@ -494,7 +494,11 @@ void Polylines(Mat img, Contours points, bool isClosed, Scalar color,int thickne
 }
 
 struct Size GetTextSize(const char* text, int fontFace, double fontScale, int thickness) {
-    cv::Size sz = cv::getTextSize(text, fontFace, fontScale, thickness, NULL);
+    return GetTextSizeWithBaseline(text, fontFace, fontScale, thickness, NULL);
+}
+
+struct Size GetTextSizeWithBaseline(const char* text, int fontFace, double fontScale, int thickness, int* baesline) {
+    cv::Size sz = cv::getTextSize(text, fontFace, fontScale, thickness, baesline);
     Size size = {sz.width, sz.height};
     return size;
 }
