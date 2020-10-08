@@ -3,6 +3,7 @@
 
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
+#include <opencv2/cudabgsegm.hpp>
 
 extern "C" {
 #endif

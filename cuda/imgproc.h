@@ -6,6 +6,8 @@
 
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
+#include <opencv2/cudaimgproc.hpp>
+#include <opencv2/cudaarithm.hpp>
 extern "C" {
 #endif
 #include "cuda.h"
