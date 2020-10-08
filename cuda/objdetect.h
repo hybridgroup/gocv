@@ -6,6 +6,7 @@
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/cuda.hpp>
+#include <opencv2/cudaobjdetect.hpp>
 
 extern "C" {
 #endif
