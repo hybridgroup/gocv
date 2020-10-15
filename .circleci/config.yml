@@ -1,10 +1,20 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
       - image: gocv/opencv:4.5.0
-
-    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+    working_directory: /usr/local/go/src/github.com/hybridgroup/gocv
     steps:
       - checkout
-      - run: make test
+      - run:
+          name: Check Go version
+          command: go version
+      - run:
+          name: Install xvfb
+          command: |
+            apt-get update -yqq && apt-get install xvfb -y
+      - run:
+          name: Run tests
+          command: xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" make test
+          environment:
+              DISPLAY: 99.0
