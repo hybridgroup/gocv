@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
             libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev && \
             rm -rf /var/lib/apt/lists/*
 
-ARG OPENCV_VERSION="4.4.0"
+ARG OPENCV_VERSION="4.5.0"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
