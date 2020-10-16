@@ -32,3 +32,4 @@ jobs:
               DISPLAY: 99.0
               GOCV_CAFFE_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
               GOCV_TENSORFLOW_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
+              OPENCV_ENABLE_NONFREE: ON
