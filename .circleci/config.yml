@@ -27,7 +27,7 @@ jobs:
             unzip -o /usr/local/go/src/github.com/hybridgroup/gocv/testdata/inception5h.zip tensorflow_inception_graph.pb -d /usr/local/go/src/github.com/hybridgroup/gocv/testdata
       - run:
           name: Run tests
-          command: xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" make test
+          command: xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" go test -v . ./contrib
           environment:
               DISPLAY: 99.0
               GOCV_CAFFE_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
