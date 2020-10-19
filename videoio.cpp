@@ -13,8 +13,16 @@ bool VideoCapture_Open(VideoCapture v, const char* uri) {
     return v->open(uri);
 }
 
+bool VideoCapture_OpenWithAPI(VideoCapture v, const char* uri, int apiPreference) {
+    return v->open(uri, apiPreference);
+}
+
 bool VideoCapture_OpenDevice(VideoCapture v, int device) {
     return v->open(device);
+}
+
+bool VideoCapture_OpenDeviceWithAPI(VideoCapture v, int device, int apiPreference) {
+    return v->open(device, apiPreference);
 }
 
 void VideoCapture_Set(VideoCapture v, int prop, double param) {

@@ -13,6 +13,111 @@ import (
 	"unsafe"
 )
 
+// Select preferred API for a capture object.
+// Note: Backends are available only if they have been built with your OpenCV binaries
+type VideoCaptureAPI int
+
+const (
+	// Auto detect == 0
+	VideoCaptureAny VideoCaptureAPI = 0
+
+	// Video For Windows (obsolete, removed)
+	VideoCaptureVFW VideoCaptureAPI = 200
+
+	// V4L/V4L2 capturing support
+	VideoCaptureV4L VideoCaptureAPI = 200
+
+	// Same as VideoCaptureV4L
+	VideoCaptureV4L2 VideoCaptureAPI = 200
+
+	// IEEE 1394 drivers
+	VideoCaptureFirewire VideoCaptureAPI = 300
+
+	// Same value as VideoCaptureFirewire
+	VideoCaptureFireware VideoCaptureAPI = 300
+
+	// Same value as VideoCaptureFirewire
+	VideoCaptureIEEE1394 VideoCaptureAPI = 300
+
+	// Same value as VideoCaptureFirewire
+	VideoCaptureDC1394 VideoCaptureAPI = 300
+
+	// Same value as VideoCaptureFirewire
+	VideoCaptureCMU1394 VideoCaptureAPI = 300
+
+	// QuickTime (obsolete, removed)
+	VideoCaptureQT VideoCaptureAPI = 500
+
+	// Unicap drivers (obsolete, removed)
+	VideoCaptureUnicap VideoCaptureAPI = 600
+
+	// DirectShow (via videoInput)
+	VideoCaptureDshow VideoCaptureAPI = 700
+
+	// PvAPI, Prosilica GigE SDK
+	VideoCapturePvAPI VideoCaptureAPI = 800
+
+	// OpenNI (for Kinect)
+	VideoCaptureOpenNI VideoCaptureAPI = 900
+
+	// OpenNI (for Asus Xtion)
+	VideoCaptureOpenNIAsus VideoCaptureAPI = 910
+
+	// Android - not used
+	VideoCaptureAndroid VideoCaptureAPI = 1000
+
+	// XIMEA Camera API
+	VideoCaptureXiAPI VideoCaptureAPI = 1100
+
+	// AVFoundation framework for iOS (OS X Lion will have the same API)
+	VideoCaptureAVFoundation VideoCaptureAPI = 1200
+
+	// Smartek Giganetix GigEVisionSDK
+	VideoCaptureGiganetix VideoCaptureAPI = 1300
+
+	// Microsoft Media Foundation (via videoInput)
+	VideoCaptureMSMF VideoCaptureAPI = 1400
+
+	// Microsoft Windows Runtime using Media Foundation
+	VideoCaptureWinRT VideoCaptureAPI = 1410
+
+	// RealSense (former Intel Perceptual Computing SDK)
+	VideoCaptureIntelPerc VideoCaptureAPI = 1500
+
+	// Synonym for VideoCaptureIntelPerc
+	VideoCaptureRealsense VideoCaptureAPI = 1500
+
+	// OpenNI2 (for Kinect)
+	VideoCaptureOpenNI2 VideoCaptureAPI = 1600
+
+	// OpenNI2 (for Asus Xtion and Occipital Structure sensors)
+	VideoCaptureOpenNI2Asus VideoCaptureAPI = 1610
+
+	// gPhoto2 connection
+	VideoCaptureGPhoto2 VideoCaptureAPI = 1700
+
+	// GStreamer
+	VideoCaptureGstreamer VideoCaptureAPI = 1800
+
+	// Open and record video file or stream using the FFMPEG library
+	VideoCaptureFFmpeg VideoCaptureAPI = 1900
+
+	// OpenCV Image Sequence (e.g. img_%02d.jpg)
+	VideoCaptureImages VideoCaptureAPI = 2000
+
+	// Aravis SDK
+	VideoCaptureAravis VideoCaptureAPI = 2100
+
+	// Built-in OpenCV MotionJPEG codec
+	VideoCaptureOpencvMjpeg VideoCaptureAPI = 2200
+
+	// Intel MediaSDK
+	VideoCaptureIntelMFX VideoCaptureAPI = 2300
+
+	// XINE engine (Linux)
+	VideoCaptureXINE VideoCaptureAPI = 2400
+)
+
 // VideoCaptureProperties are the properties used for VideoCapture operations.
 type VideoCaptureProperties int
 
@@ -150,6 +255,31 @@ const (
 
 	// VideoCaptureAutoFocus controls video capture auto focus..
 	VideoCaptureAutoFocus VideoCaptureProperties = 39
+
+	// VideoCaptureSarNumerator controls the sample aspect ratio: num/den (num)
+	VideoCaptureSarNumerator VideoCaptureProperties = 40
+
+	// VideoCaptureSarDenominator controls the sample aspect ratio: num/den (den)
+	VideoCaptureSarDenominator VideoCaptureProperties = 41
+
+	// VideoCaptureBackend is the current api backend (VideoCaptureAPI). Read-only property.
+	VideoCaptureBackend VideoCaptureProperties = 42
+
+	// VideoCaptureChannel controls the video input or channel number (only for those cameras that support).
+	VideoCaptureChannel VideoCaptureProperties = 43
+
+	// VideoCaptureAutoWB controls the auto white-balance.
+	VideoCaptureAutoWB VideoCaptureProperties = 44
+
+	// VideoCaptureWBTemperature controls the white-balance color temperature
+	VideoCaptureWBTemperature VideoCaptureProperties = 45
+
+	// VideoCaptureCodecPixelFormat shows the the codec's pixel format (4-character code). Read-only property.
+	// Subset of AV_PIX_FMT_* or -1 if unknown.
+	VideoCaptureCodecPixelFormat VideoCaptureProperties = 46
+
+	// VideoCaptureBitrate displays the video bitrate in kbits/s. Read-only property.
+	VideoCaptureBitrate VideoCaptureProperties = 47
 )
 
 // VideoCapture is a wrapper around the OpenCV VideoCapture class.
@@ -176,6 +306,21 @@ func VideoCaptureFile(uri string) (vc *VideoCapture, err error) {
 	return
 }
 
+// VideoCaptureFile opens a VideoCapture from a file and prepares
+// to start capturing. It returns error if it fails to open the file stored in uri path.
+func VideoCaptureFileWithAPI(uri string, apiPreference VideoCaptureAPI) (vc *VideoCapture, err error) {
+	vc = &VideoCapture{p: C.VideoCapture_New()}
+
+	cURI := C.CString(uri)
+	defer C.free(unsafe.Pointer(cURI))
+
+	if !C.VideoCapture_OpenWithAPI(vc.p, cURI, C.int(apiPreference)) {
+		err = fmt.Errorf("Error opening file: %s with api backend: %d", uri, apiPreference)
+	}
+
+	return
+}
+
 // VideoCaptureDevice opens a VideoCapture from a device and prepares
 // to start capturing. It returns error if it fails to open the video device.
 func VideoCaptureDevice(device int) (vc *VideoCapture, err error) {
@@ -183,6 +328,18 @@ func VideoCaptureDevice(device int) (vc *VideoCapture, err error) {
 
 	if !C.VideoCapture_OpenDevice(vc.p, C.int(device)) {
 		err = fmt.Errorf("Error opening device: %d", device)
+	}
+
+	return
+}
+
+// VideoCaptureDevice opens a VideoCapture from a device with the api preference.
+// It returns error if it fails to open the video device.
+func VideoCaptureDeviceWithAPI(device int, apiPreference VideoCaptureAPI) (vc *VideoCapture, err error) {
+	vc = &VideoCapture{p: C.VideoCapture_New()}
+
+	if !C.VideoCapture_OpenDeviceWithAPI(vc.p, C.int(device), C.int(apiPreference)) {
+		err = fmt.Errorf("Error opening device: %d with api backend: %d", device, apiPreference)
 	}
 
 	return
@@ -326,6 +483,21 @@ func OpenVideoCapture(v interface{}) (*VideoCapture, error) {
 			return VideoCaptureDevice(id)
 		}
 		return VideoCaptureFile(vv)
+	default:
+		return nil, errors.New("argument must be int or string")
+	}
+}
+
+func OpenVideoCaptureWithAPI(v interface{}, apiPreference VideoCaptureAPI) (*VideoCapture, error) {
+	switch vv := v.(type) {
+	case int:
+		return VideoCaptureDeviceWithAPI(vv, apiPreference)
+	case string:
+		id, err := strconv.Atoi(vv)
+		if err == nil {
+			return VideoCaptureDeviceWithAPI(id, apiPreference)
+		}
+		return VideoCaptureFileWithAPI(vv, apiPreference)
 	default:
 		return nil, errors.New("argument must be int or string")
 	}
