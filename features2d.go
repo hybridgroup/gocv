@@ -665,6 +665,40 @@ func (b *BFMatcher) KnnMatch(query, train Mat, k int) [][]DMatch {
 	return getMultiDMatches(ret)
 }
 
+// FlannBasedMatcher is a wrapper around the the cv::FlannBasedMatcher algorithm
+type FlannBasedMatcher struct {
+	// C.FlannBasedMatcher
+	p unsafe.Pointer
+}
+
+// NewFlannBasedMatcher returns a new FlannBasedMatcher
+//
+// For further details, please see:
+// https://docs.opencv.org/master/dc/de2/classcv_1_1FlannBasedMatcher.html#ab9114a6471e364ad221f89068ca21382
+//
+func NewFlannBasedMatcher() FlannBasedMatcher {
+	return FlannBasedMatcher{p: unsafe.Pointer(C.FlannBasedMatcher_Create())}
+}
+
+// Close FlannBasedMatcher
+func (f *FlannBasedMatcher) Close() error {
+	C.FlannBasedMatcher_Close((C.FlannBasedMatcher)(f.p))
+	f.p = nil
+	return nil
+}
+
+// KnnMatch Finds the k best matches for each descriptor from a query set.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d39/classcv_1_1DescriptorMatcher.html#aa880f9353cdf185ccf3013e08210483a
+//
+func (f *FlannBasedMatcher) KnnMatch(query, train Mat, k int) [][]DMatch {
+	ret := C.FlannBasedMatcher_KnnMatch((C.FlannBasedMatcher)(f.p), query.p, train.p, C.int(k))
+	defer C.MultiDMatches_Close(ret)
+
+	return getMultiDMatches(ret)
+}
+
 func getMultiDMatches(ret C.MultiDMatches) [][]DMatch {
 	cArray := ret.dmatches
 	length := int(ret.length)
