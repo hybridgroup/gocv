@@ -172,30 +172,83 @@ Your pull requests will be greatly appreciated!
 - [ ] **features2d. 2D Features Framework - WORK STARTED**
     - [X] **Feature Detection and Description**
     - [ ] **Descriptor Matchers - WORK STARTED** The following functions still need implementation:
-        - [ ] [FlannBasedMatcher](https://docs.opencv.org/master/dc/de2/classcv_1_1FlannBasedMatcher.html)
+        - [X] [FlannBasedMatcher](https://docs.opencv.org/master/dc/de2/classcv_1_1FlannBasedMatcher.html)
     - [ ] **Drawing Function of Keypoints and Matches - WORK STARTED** The following function still needs implementation:
-        - [ ] [drawMatches](https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html#ga7421b3941617d7267e3f2311582f49e1)
+        - [X] [drawMatches](https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html#ga7421b3941617d7267e3f2311582f49e1)
     - [ ] Object Categorization
         - [ ] [BOWImgDescriptorExtractor](https://docs.opencv.org/master/d2/d6b/classcv_1_1BOWImgDescriptorExtractor.html)
         - [ ] [BOWKMeansTrainer](https://docs.opencv.org/master/d4/d72/classcv_1_1BOWKMeansTrainer.html)
 
 - [X] **objdetect. Object Detection**
 - [ ] **dnn. Deep Neural Network module - WORK STARTED** The following functions still need implementation:
-    - [ ] [NMSBoxes](https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga9d118d70a1659af729d01b10233213ee)
+    - [X] [NMSBoxes](https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga9d118d70a1659af729d01b10233213ee)
 
 - [ ] ml. Machine Learning
 - [ ] flann. Clustering and Search in Multi-Dimensional Spaces
 - [ ] photo. Computational Photography
 - [ ] stitching. Images stitching
-- [ ] cudaarithm. Operations on Matrices
-- [ ] cudabgsegm. Background Segmentation
+- [ ] **cudaarithm. Operations on Matrices - WORK STARTED** The following functions still need implementation:
+    - [ ] [cv::cuda::abs](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga54a72bd772494ab34d05406fd76df2b6)
+    - [ ] [cv::cuda::absdiff](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac062b283cf46ee90f74a773d3382ab54)
+    - [ ] [cv::cuda::add](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga5d9794bde97ed23d1c1485249074a8b1)
+    - [ ] [cv::cuda::addWeighted](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga2cd14a684ea70c6ab2a63ee90ffe6201)
+    - [ ] [cv::cuda::bitwise_and](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga78d7c1a013877abd4237fbfc4e13bd76)
+    - [ ] [cv::cuda::bitwise_not](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gae58159a2259ae1acc76b531c171cf06a)
+    - [ ] [cv::cuda::bitwise_or](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gafd098ee3e51c68daa793999c1da3dfb7)
+    - [ ] [cv::cuda::bitwise_xor](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga3d95d4faafb099aacf18e8b915a4ad8d)
+    - [ ] [cv::cuda::cartToPolar](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga82210c7d1c1d42e616e554bf75a53480)
+    - [ ] [cv::cuda::compare](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga4d41cd679f4a83862a3de71a6057db54)
+    - [ ] [cv::cuda::divide](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga124315aa226260841e25cc0b9ea99dc3)
+    - [ ] [cv::cuda::exp](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac6e51541d3bb0a7a396128e4d5919b61)
+    - [ ] [cv::cuda::log](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gaae9c60739e2d1a977b4d3250a0be42ca)
+    - [ ] [cv::cuda::lshift](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gafd072accecb14c9adccdad45e3bf2300)
+    - [ ] [cv::cuda::magnitude](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga3d17f4fcd79d7c01fadd217969009463)
+    - [ ] [cv::cuda::magnitudeSqr](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga7613e382d257e150033d0ce4d6098f6a)
+    - [ ] [cv::cuda::max](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gadb5dd3d870f10c0866035755b929b1e7)
+    - [ ] [cv::cuda::min](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga74f0b05a65b3d949c237abb5e6c60867)
+    - [ ] [cv::cuda::multiply](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga497cc0615bf717e1e615143b56f00591)
+    - [ ] [cv::cuda::phase](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga5b75ec01be06dcd6e27ada09a0d4656a)
+    - [ ] [cv::cuda::polarToCart](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga01516a286a329c303c2db746513dd9df)
+    - [ ] [cv::cuda::pow](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga82d04ef4bcc4dfa9bfbe76488007c6c4)
+    - [ ] [cv::cuda::rshift](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga87af0b66358cc302676f35c1fd56c2ed)
+    - [ ] [cv::cuda::sqr](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga8aae233da90ce0ffe309ab8004342acb)
+    - [ ] [cv::cuda::sqrt](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga09303680cb1a5521a922b6d392028d8c)
+    - [ ] [cv::cuda::subtract](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga6eab60fc250059e2fda79c5636bd067f)
+    - [X] [cv::cuda::threshold](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga40f1c94ae9a9456df3cad48e3cb008e1)
+
+- [X] **cudabgsegm. Background Segmentation**
 - [ ] cudacodec. Video Encoding/Decoding
 - [ ] cudafeatures2d. Feature Detection and Description
 - [ ] cudafilters. Image Filtering
-- [ ] cudaimgproc. Image Processing
+- [ ] **cudaimgproc. Image Processing - WORK STARTED** The following functions still need implementation:
+    - [X] [cv::cuda::CannyEdgeDetector](https://docs.opencv.org/master/d0/d43/classcv_1_1cuda_1_1CannyEdgeDetector.html)
+    - [ ] [cv::cuda::TemplateMatching](https://docs.opencv.org/master/d2/d58/classcv_1_1cuda_1_1TemplateMatching.html)
+    - [ ] [cv::cuda::alphaComp](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga08a698700458d9311390997b57fbf8dc)
+    - [X] [cv::cuda::cvtColor](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga48d0f208181d5ca370d8ff6b62cbe826)
+    - [ ] [cv::cuda::demosaicing](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga7fb153572b573ebd2d7610fcbe64166e)
+    - [ ] [cv::cuda::gammaCorrection](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#gaf4195a8409c3b8fbfa37295c2b2c4729)
+    - [ ] [cv::cuda::swapChannels](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga75a29cc4a97cde0d43ea066b01de927e)
+    - [ ] [cv::cuda::calcHist](https://docs.opencv.org/master/d8/d0e/group__cudaimgproc__hist.html#gaaf3944106890947020bb4522a7619c26)
+    - [ ] [cv::cuda::CLAHE](https://docs.opencv.org/master/db/d79/classcv_1_1cuda_1_1CLAHE.html)
+    - [ ] [cv::cuda::equalizeHist](https://docs.opencv.org/master/d8/d0e/group__cudaimgproc__hist.html#ga2384be74bd2feba7e6c46815513f0060)
+    - [ ] [cv::cuda::evenLevels](https://docs.opencv.org/master/d8/d0e/group__cudaimgproc__hist.html#ga2f2cbd21dc6d7367a7c4ee1a826f389d)
+    - [ ] [cv::cuda::histEven](https://docs.opencv.org/master/d8/d0e/group__cudaimgproc__hist.html#gacd3b14279fb77a57a510cb8c89a1856f)
+    - [ ] [cv::cuda::histRange](https://docs.opencv.org/master/d8/d0e/group__cudaimgproc__hist.html#ga87819085c1059186d9cdeacd92cea783)
+    - [ ] [cv::cuda::HoughCirclesDetector](https://docs.opencv.org/master/da/d80/classcv_1_1cuda_1_1HoughCirclesDetector.html)
+    - [ ] [cv::cuda::HoughLinesDetector](https://docs.opencv.org/master/d2/dcd/classcv_1_1cuda_1_1HoughLinesDetector.html)
+    - [ ] [cv::cuda::HoughSegmentDetector](https://docs.opencv.org/master/d6/df9/classcv_1_1cuda_1_1HoughSegmentDetector.html)
+    - [ ] [cv::cuda::createGoodFeaturesToTrackDetector](https://docs.opencv.org/master/dc/d6d/group__cudaimgproc__feature.html#ga478b474a598ece101f7e706fee2c8e91)
+    - [ ] [cv::cuda::createHarrisCorner](https://docs.opencv.org/master/dc/d6d/group__cudaimgproc__feature.html#ga3e5878a803e9bba51added0c10101979)
+    - [ ] [cv::cuda::createMinEigenValCorner](https://docs.opencv.org/master/dc/d6d/group__cudaimgproc__feature.html#ga7457fd4b53b025f990b1c1dd1b749915)
+    - [ ] [cv::cuda::bilateralFilter](https://docs.opencv.org/master/d0/d05/group__cudaimgproc.html#ga6abeaecdd4e7edc0bd1393a04f4f20bd)
+    - [ ] [cv::cuda::blendLinear](https://docs.opencv.org/master/d0/d05/group__cudaimgproc.html#ga4793607e5729bcc15b27ea33d9fe335e)
+    - [ ] [cv::cuda::meanShiftFiltering](https://docs.opencv.org/master/d0/d05/group__cudaimgproc.html#gae13b3035bc6df0e512d876dbb8c00555)
+    - [ ] [cv::cuda::meanShiftProc](https://docs.opencv.org/master/d0/d05/group__cudaimgproc.html#ga6039dc8ecbe2f912bc83fcc9b3bcca39)
+    - [ ] [cv::cuda::meanShiftSegmentation](https://docs.opencv.org/master/d0/d05/group__cudaimgproc.html#ga70ed80533a448829dc48cf22b1845c16)
+
 - [ ] cudalegacy. Legacy support
-- [ ] cudaobjdetect. Object Detection
-- [ ] **cudaoptflow. Optical Flow - WORK STARTED**
+- [X] **cudaobjdetect. Object Detection**
+- [ ] **cudaoptflow. Optical Flow - WORK STARTED** The following functions still need implementation:
     - [ ] [BroxOpticalFlow](https://docs.opencv.org/master/d7/d18/classcv_1_1cuda_1_1BroxOpticalFlow.html)
     - [ ] [DenseOpticalFlow](https://docs.opencv.org/master/d6/d4a/classcv_1_1cuda_1_1DenseOpticalFlow.html)
     - [ ] [DensePyrLKOpticalFlow](https://docs.opencv.org/master/d0/da4/classcv_1_1cuda_1_1DensePyrLKOpticalFlow.html)
