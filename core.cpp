@@ -570,6 +570,28 @@ void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* 
     maxLoc->y = cMaxLoc.y;
 }
 
+void Mat_MixChannels(struct Mats src, struct Mats dst, struct IntVector fromTo) {
+    std::vector<cv::Mat> srcMats;
+
+    for (int i = 0; i < src.length; ++i) {
+        srcMats.push_back(*src.mats[i]);
+    }
+
+    std::vector<cv::Mat> dstMats;
+
+    for (int i = 0; i < dst.length; ++i) {
+        dstMats.push_back(*dst.mats[i]);
+    }
+
+    std::vector<int> fromTos;
+
+    for (int i = 0; i < fromTo.length; ++i) {
+        fromTos.push_back(fromTo.val[i]);
+    }
+
+    cv::mixChannels(srcMats, dstMats, fromTos);
+}
+
 void Mat_MulSpectrums(Mat a, Mat b, Mat c, int flags) {
     cv::mulSpectrums(*a, *b, *c, flags);
 }

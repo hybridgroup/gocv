@@ -1483,6 +1483,47 @@ func MinMaxLoc(input Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
 	return float32(cMinVal), float32(cMaxVal), minLoc, maxLoc
 }
 
+// Copies specified channels from input arrays to the specified channels of output arrays.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga51d768c270a1cdd3497255017c4504be
+//
+func MixChannels(src []Mat, dst []Mat, fromTo []int) {
+	cSrcArray := make([]C.Mat, len(src))
+	for i, r := range src {
+		cSrcArray[i] = r.p
+	}
+	cSrcMats := C.struct_Mats{
+		mats:   (*C.Mat)(&cSrcArray[0]),
+		length: C.int(len(src)),
+	}
+
+	cDstArray := make([]C.Mat, len(dst))
+	for i, r := range dst {
+		cDstArray[i] = r.p
+	}
+	cDstMats := C.struct_Mats{
+		mats:   (*C.Mat)(&cDstArray[0]),
+		length: C.int(len(dst)),
+	}
+
+	cFromToArray := make([]C.int, len(fromTo))
+	for i, ft := range fromTo {
+		cFromToArray[i] = C.int(ft)
+	}
+
+	cFromToIntVector := C.IntVector{
+		val:    (*C.int)(&cFromToArray[0]),
+		length: C.int(len(fromTo)),
+	}
+
+	C.Mat_MixChannels(cSrcMats, cDstMats, cFromToIntVector)
+
+	for i := C.int(0); i < cDstMats.length; i++ {
+		dst[i].p = C.Mats_get(cDstMats, i)
+	}
+}
+
 //Mulspectrums performs the per-element multiplication of two Fourier spectrums.
 //
 // For further details, please see:
