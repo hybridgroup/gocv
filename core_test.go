@@ -2028,8 +2028,11 @@ func TestMatMinMaxIdx(t *testing.T) {
 
 func TestMixChannels(t *testing.T) {
 	bgra := NewMatWithSizeFromScalar(NewScalar(255, 0, 0, 255), 10, 10, MatTypeCV8UC4)
+	defer bgra.Close()
 	bgr := NewMatWithSize(bgra.Rows(), bgra.Cols(), MatTypeCV8UC3)
+	defer bgr.Close()
 	alpha := NewMatWithSize(bgra.Rows(), bgra.Cols(), MatTypeCV8UC1)
+	defer alpha.Close()
 
 	dst := []Mat{bgr, alpha}
 
