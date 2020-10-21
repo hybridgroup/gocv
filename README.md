@@ -13,6 +13,8 @@ The GoCV package provides Go language bindings for the [OpenCV 4](http://opencv.
 
 The GoCV package supports the latest releases of Go and OpenCV (v4.5.0) on Linux, macOS, and Windows. We intend to make the Go language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
 
+GoCV supports [CUDA](https://en.wikipedia.org/wiki/CUDA) for hardware acceleration using Nvidia GPUs. Check out the [CUDA README](./cuda/README.md) for more info on how to use GoCV with OpenCV/CUDA.
+
 GoCV also supports [Intel OpenVINO](https://software.intel.com/en-us/openvino-toolkit). Check out the [OpenVINO README](./openvino/README.md) for more info on how to use GoCV with the Intel OpenVINO toolkit.
 
 ## How to use
