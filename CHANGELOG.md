@@ -1,3 +1,43 @@
+0.25.0
+---
+* **all**
+    * update to opencv release 4.5.0
+* **build** 
+    * add file dependencies needed for DNN tests
+    * add verbose output for tests on CircleCI
+    * also run unit tests on non-free algorithms. YMMV.
+    * fix build with cuda
+    * remove Travis and switch to CircleCI using Docker based builds
+    * update CI builds to Go 1.15
+* **core**
+    * add mixChannels() method to Mat (#746)
+    * Add toGoStrings helper
+    * support ConvertToWithParams method
+* **dnn**
+    * Add NMSBoxes function (#736)
+    * Added ability to load Torch file. Tested features for extracting 128d vectors
+    * fix using wrong type for unconnectedlayertype
+    * use default ddepth for conversions to blob from image as recommended by @berak
+* **docker** 
+    * use separate dockerfile for opencv to avoid massive rebuild
+* **docs**
+    * add recent contributions to ROADMAP and also add cuda functions still in need of implementation
+    * display CircleCI badge in README
+    * minor improvements to CUDA docs in READMEs
+* **features2d**
+    * add FlannBasedMatcher
+    * add drawmatches (#720)
+    * fix memory leak in SIFT
+* **highgui**
+    * refactored ROI methods
+* **imgproc**
+    * Add option to return baseline with GetTextSizeWithBaseline
+* **objdetect** 
+    * Add QRCode DetectAndDecodeMulti
+* **videoio**
+    * Add video capture properties and set preferred api backend (#739)
+    * fix needed as discussed in golang/go issue #32479
+
 0.24.0
 ---
 * **all**
