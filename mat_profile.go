@@ -70,5 +70,6 @@ func (m *Mat) Close() error {
 	C.Mat_Close(m.p)
 	MatProfile.Remove(m.p)
 	m.p = nil
+	m.d = nil
 	return nil
 }
