@@ -193,6 +193,20 @@ func NewMatWithSize(rows int, cols int, mt MatType) Mat {
 	return newMat(C.Mat_NewWithSize(C.int(rows), C.int(cols), C.int(mt)))
 }
 
+// NewMatWithSizes returns a new Mat with specific sizes and type.
+func NewMatWithSizes(sizes []int, mt MatType) Mat {
+	sizesArray := make([]C.int, len(sizes))
+	for i, s := range sizes {
+		sizesArray[i] = C.int(s)
+	}
+
+	sizesIntVector := C.IntVector{
+		val:    (*C.int)(&sizesArray[0]),
+		length: C.int(len(sizes)),
+	}
+	return newMat(C.Mat_NewWithSizes(sizesIntVector, C.int(mt)))
+}
+
 // NewMatFromScalar returns a new Mat for a specific Scalar value
 func NewMatFromScalar(s Scalar, mt MatType) Mat {
 	sVal := C.struct_Scalar{

@@ -79,6 +79,27 @@ func TestMatWithSize(t *testing.T) {
 	}
 }
 
+func TestMatWithSizes(t *testing.T) {
+	mat := NewMatWithSizes([]int{42, 43, 44}, MatTypeCV8U)
+	defer mat.Close()
+	if mat.Empty() {
+		t.Error("NewMatWithSizes should not be empty")
+	}
+
+	size := mat.Size()
+	if size[0] != 42 || size[1] != 43 || size[2] != 44 {
+		t.Errorf("NewMatWithSize incorrect size: %v\n", mat.Size())
+	}
+
+	if mat.Channels() != 1 {
+		t.Errorf("NewMatWithSize incorrect channels count: %v\n", mat.Channels())
+	}
+
+	if mat.Type() != 0 {
+		t.Errorf("NewMatWithSize incorrect type: %v\n", mat.Type())
+	}
+}
+
 func TestMatWithSizeFromScalar(t *testing.T) {
 	s := NewScalar(255.0, 105.0, 180.0, 0.0)
 	mat := NewMatWithSizeFromScalar(s, 2, 3, MatTypeCV8UC3)
