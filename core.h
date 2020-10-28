@@ -232,6 +232,7 @@ void MultiDMatches_Close(struct MultiDMatches mds);
 
 Mat Mat_New();
 Mat Mat_NewWithSize(int rows, int cols, int type);
+Mat Mat_NewWithSizes(struct IntVector sizes, int type);
 Mat Mat_NewFromScalar(const Scalar ar, int type);
 Mat Mat_NewWithSizeFromScalar(const Scalar ar, int rows, int cols, int type);
 Mat Mat_NewFromBytes(int rows, int cols, int type, struct ByteArray buf);

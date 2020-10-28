@@ -11,6 +11,15 @@ Mat Mat_NewWithSize(int rows, int cols, int type) {
     return new cv::Mat(rows, cols, type, 0.0);
 }
 
+// Mat_NewWithSizes creates a new Mat with specific dimension sizes and number of channels.
+Mat Mat_NewWithSizes(struct IntVector sizes, int type) {
+	std::vector<int> sizess;
+    for (int i = 0; i < sizes.length; ++i) {
+        sizess.push_back(sizes.val[i]);
+    }
+    return new cv::Mat(sizess, type);
+}
+
 // Mat_NewFromScalar creates a new Mat from a Scalar. Intended to be used
 // for Mat comparison operation such as InRange.
 Mat Mat_NewFromScalar(Scalar ar, int type) {
