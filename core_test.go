@@ -9,6 +9,7 @@ import (
 	_ "image/png"
 	"log"
 	"os"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -31,6 +32,26 @@ func TestMatFromBytesWithEmptyByteSlise(t *testing.T) {
 		t.Errorf("TestMatFromBytesWithEmptyByteSlise: "+
 			"error must contain the following description: "+
 			"%v, but have: %v", ErrEmptyByteSlice, err)
+	}
+}
+
+func TestMatFromBytesSliceGarbageCollected(t *testing.T) {
+	data := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	m, err := NewMatFromBytes(2, 5, MatTypeCV8U, data)
+	if err != nil {
+		t.Error("TestMatFromBytesSliceGarbageCollected: " +
+			"failed to create Mat")
+	}
+	defer m.Close()
+
+	// Force garbage collection. As data is not used after this, its backing array should
+	// be collected.
+	runtime.GC()
+
+	v := m.GetUCharAt(0, 0)
+	if v != 0 {
+		t.Errorf("TestMatFromBytesSliceGarbageCollected: "+
+			"unexpected value. Want %d, got %d.", 0, v)
 	}
 }
 
