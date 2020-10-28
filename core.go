@@ -224,6 +224,33 @@ func NewMatFromBytes(rows int, cols int, mt MatType, data []byte) (Mat, error) {
 	return newMat(C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), *cBytes)), nil
 }
 
+// Returns an identity matrix of the specified size and type.
+//
+// The method returns a Matlab-style identity matrix initializer, similarly to Mat::zeros. Similarly to Mat::ones.
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#a2cf9b9acde7a9852542bbc20ef851ed2
+func Eye(rows int, cols int, mt MatType) Mat {
+	return newMat(C.Eye(C.int(rows), C.int(cols), C.int(mt)))
+}
+
+// Returns a zero array of the specified size and type.
+//
+// The method returns a Matlab-style zero array initializer.
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#a0b57b6a326c8876d944d188a46e0f556
+func Zeros(rows int, cols int, mt MatType) Mat {
+	return newMat(C.Zeros(C.int(rows), C.int(cols), C.int(mt)))
+}
+
+// Returns an array of all 1's of the specified size and type.
+//
+// The method returns a Matlab-style 1's array initializer
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#a69ae0402d116fc9c71908d8508dc2f09
+func Ones(rows int, cols int, mt MatType) Mat {
+	return newMat(C.Ones(C.int(rows), C.int(cols), C.int(mt)))
+}
+
 // FromPtr returns a new Mat with a specific size and type, initialized from a Mat Ptr.
 func (m *Mat) FromPtr(rows int, cols int, mt MatType, prow int, pcol int) (Mat, error) {
 	return newMat(C.Mat_FromPtr(m.p, C.int(rows), C.int(cols), C.int(mt), C.int(prow), C.int(pcol))), nil
