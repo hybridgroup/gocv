@@ -168,6 +168,12 @@ void Erode(Mat src, Mat dst, Mat kernel) {
     cv::erode(*src, *dst, *kernel);
 }
 
+void ErodeWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType) {
+    cv::Point pt1(anchor.x, anchor.y);
+
+    cv::erode(*src, *dst, *kernel, pt1, iterations, borderType, cv::morphologyDefaultBorderValue());
+}
+
 void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask) {
     cv::matchTemplate(*image, *templ, *result, method, *mask);
 }
@@ -317,6 +323,10 @@ void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt) {
     cv::GaussianBlur(*src, *dst, sz, sX, sY, bt);
 }
 
+Mat GetGaussianKernel(int ksize, double sigma, int ktype){
+    return new cv::Mat(cv::getGaussianKernel(ksize, sigma, ktype));
+}
+
 void Laplacian(Mat src, Mat dst, int dDepth, int kSize, double scale, double delta,
                int borderType) {
     cv::Laplacian(*src, *dst, dDepth, kSize, scale, delta, borderType);
@@ -382,8 +392,8 @@ void Integral(Mat src, Mat sum, Mat sqsum, Mat tilted) {
     cv::integral(*src, *sum, *sqsum, *tilted);
 }
 
-void Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ) {
-    cv::threshold(*src, *dst, thresh, maxvalue, typ);
+double Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ) {
+    return cv::threshold(*src, *dst, thresh, maxvalue, typ);
 }
 
 void AdaptiveThreshold(Mat src, Mat dst, double maxValue, int adaptiveMethod, int thresholdType,
@@ -463,8 +473,32 @@ void FillPoly(Mat img, Contours points, Scalar color) {
     cv::fillPoly(*img, pts, c);
 }
 
+void Polylines(Mat img, Contours points, bool isClosed, Scalar color,int thickness) {
+    std::vector<std::vector<cv::Point> > pts;
+
+    for (size_t i = 0; i < points.length; i++) {
+        Contour contour = points.contours[i];
+
+        std::vector<cv::Point> cntr;
+
+        for (size_t i = 0; i < contour.length; i++) {
+            cntr.push_back(cv::Point(contour.points[i].x, contour.points[i].y));
+        }
+
+        pts.push_back(cntr);
+    }
+
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::polylines(*img, pts, isClosed, c, thickness);
+}
+
 struct Size GetTextSize(const char* text, int fontFace, double fontScale, int thickness) {
-    cv::Size sz = cv::getTextSize(text, fontFace, fontScale, thickness, NULL);
+    return GetTextSizeWithBaseline(text, fontFace, fontScale, thickness, NULL);
+}
+
+struct Size GetTextSizeWithBaseline(const char* text, int fontFace, double fontScale, int thickness, int* baesline) {
+    cv::Size sz = cv::getTextSize(text, fontFace, fontScale, thickness, baesline);
     Size size = {sz.width, sz.height};
     return size;
 }
@@ -529,6 +563,19 @@ void ApplyCustomColorMap(Mat src, Mat dst, Mat colormap) {
 }
 
 Mat GetPerspectiveTransform(Contour src, Contour dst) {
+  std::vector<cv::Point2f> src_pts;
+  for (size_t i = 0; i < src.length; i++) {
+    src_pts.push_back(cv::Point2f(src.points[i].x, src.points[i].y));
+  }
+  std::vector<cv::Point2f> dst_pts;
+  for (size_t i = 0; i < dst.length; i++) {
+    dst_pts.push_back(cv::Point2f(dst.points[i].x, dst.points[i].y));
+  }
+
+  return new cv::Mat(cv::getPerspectiveTransform(src_pts, dst_pts));
+}
+
+Mat GetPerspectiveTransform2f(Contour2f src, Contour2f dst) {
     std::vector<cv::Point2f> src_pts;
 
     for (size_t i = 0; i < src.length; i++) {
@@ -542,6 +589,39 @@ Mat GetPerspectiveTransform(Contour src, Contour dst) {
     }
 
     return new cv::Mat(cv::getPerspectiveTransform(src_pts, dst_pts));
+}
+
+Mat GetAffineTransform(Contour src, Contour dst) {
+  std::vector<cv::Point2f> src_pts;
+  for (size_t i = 0; i < src.length; i++) {
+    src_pts.push_back(cv::Point2f(src.points[i].x, src.points[i].y));
+  }
+  std::vector<cv::Point2f> dst_pts;
+  for (size_t i = 0; i < dst.length; i++) {
+    dst_pts.push_back(cv::Point2f(dst.points[i].x, dst.points[i].y));
+  }
+
+  return new cv::Mat(cv::getAffineTransform(src_pts, dst_pts));
+}
+
+Mat GetAffineTransform2f(Contour2f src, Contour2f dst) {
+    std::vector<cv::Point2f> src_pts;
+
+    for (size_t i = 0; i < src.length; i++) {
+        src_pts.push_back(cv::Point2f(src.points[i].x, src.points[i].y));
+    }
+
+    std::vector<cv::Point2f> dst_pts;
+
+    for (size_t i = 0; i < dst.length; i++) {
+        dst_pts.push_back(cv::Point2f(dst.points[i].x, dst.points[i].y));
+    }
+
+    return new cv::Mat(cv::getAffineTransform(src_pts, dst_pts));
+}
+
+Mat FindHomography(Mat src, Mat dst, int method, double ransacReprojThreshold, Mat mask, const int maxIters, const double confidence) {
+    return new cv::Mat(cv::findHomography(*src, *dst, method, ransacReprojThreshold, *mask, maxIters, confidence));
 }
 
 void DrawContours(Mat src, Contours contours, int contourIdx, Scalar color, int thickness) {
@@ -624,4 +704,14 @@ void CLAHE_Apply(CLAHE c, Mat src, Mat dst) {
 
 void InvertAffineTransform(Mat src, Mat dst) {
 	cv::invertAffineTransform(*src, *dst);
+}
+
+Point2f PhaseCorrelate(Mat src1, Mat src2, Mat window, double* response) {
+    cv::Point2d result = cv::phaseCorrelate(*src1, *src2, *window, response);
+
+    Point2f result2f = {
+        .x = float(result.x),
+        .y = float(result.y),
+    };
+    return result2f;
 }

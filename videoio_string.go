@@ -1,5 +1,63 @@
 package gocv
 
+func (c VideoCaptureAPI) String() string {
+	switch c {
+	case VideoCaptureAny:
+		return "video-capture-any"
+	case VideoCaptureV4L2:
+		return "video-capture-v4l2"
+	case VideoCaptureFirewire:
+		return "video-capture-firewire"
+	case VideoCaptureQT:
+		return "video-capture-qt"
+	case VideoCaptureUnicap:
+		return "video-capture-unicap"
+	case VideoCaptureDshow:
+		return "video-capture-dshow"
+	case VideoCapturePvAPI:
+		return "video-capture-pvapi"
+	case VideoCaptureOpenNI:
+		return "video-capture-openni"
+	case VideoCaptureOpenNIAsus:
+		return "video-capture-openni-asus"
+	case VideoCaptureAndroid:
+		return "video-capture-android"
+	case VideoCaptureXiAPI:
+		return "video-capture-xiapi"
+	case VideoCaptureAVFoundation:
+		return "video-capture-av-foundation"
+	case VideoCaptureGiganetix:
+		return "video-capture-giganetix"
+	case VideoCaptureMSMF:
+		return "video-capture-msmf"
+	case VideoCaptureWinRT:
+		return "video-capture-winrt"
+	case VideoCaptureIntelPerc:
+		return "video-capture-intel-perc"
+	case VideoCaptureOpenNI2:
+		return "video-capture-openni2"
+	case VideoCaptureOpenNI2Asus:
+		return "video-capture-openni2-asus"
+	case VideoCaptureGPhoto2:
+		return "video-capture-gphoto2"
+	case VideoCaptureGstreamer:
+		return "video-capture-gstreamer"
+	case VideoCaptureFFmpeg:
+		return "video-capture-ffmpeg"
+	case VideoCaptureImages:
+		return "video-capture-images"
+	case VideoCaptureAravis:
+		return "video-capture-aravis"
+	case VideoCaptureOpencvMjpeg:
+		return "video-capture-opencv-mjpeg"
+	case VideoCaptureIntelMFX:
+		return "video-capture-intel-mfx"
+	case VideoCaptureXINE:
+		return "video-capture-xine"
+	}
+	return ""
+}
+
 func (c VideoCaptureProperties) String() string {
 	switch c {
 	case VideoCapturePosMsec:
@@ -80,6 +138,22 @@ func (c VideoCaptureProperties) String() string {
 		return "video-capture-buffer-size"
 	case VideoCaptureAutoFocus:
 		return "video-capture-auto-focus"
+	case VideoCaptureSarNumerator:
+		return "video-capture-sar-numerator"
+	case VideoCaptureSarDenominator:
+		return "video-capture-sar-denominator"
+	case VideoCaptureBackend:
+		return "video-capture-backend"
+	case VideoCaptureChannel:
+		return "video-capture-channel"
+	case VideoCaptureAutoWB:
+		return "video-capture-auto-wb"
+	case VideoCaptureWBTemperature:
+		return "video-capture-wb-temperature"
+	case VideoCaptureCodecPixelFormat:
+		return "video-capture-pixel-format"
+	case VideoCaptureBitrate:
+		return "video-capture-bitrate"
 	}
 	return ""
 }

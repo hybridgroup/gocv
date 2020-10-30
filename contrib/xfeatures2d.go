@@ -13,54 +13,6 @@ import (
 	"gocv.io/x/gocv"
 )
 
-// SIFT is a wrapper around the cv::SIFT algorithm.
-// Due to being a patented algorithm you must set the OpenCV contrib build flag OPENCV_ENABLE_NONFREE=1
-// in order to use it.
-type SIFT struct {
-	// C.SIFT
-	p unsafe.Pointer
-}
-
-// NewSIFT returns a new SIFT algorithm.
-//
-// For further details, please see:
-// https://docs.opencv.org/master/d5/d3c/classcv_1_1xfeatures2d_1_1SIFT.html
-//
-func NewSIFT() SIFT {
-	return SIFT{p: unsafe.Pointer(C.SIFT_Create())}
-}
-
-// Close SIFT.
-func (d *SIFT) Close() error {
-	C.SIFT_Close((C.SIFT)(d.p))
-	d.p = nil
-	return nil
-}
-
-// Detect keypoints in an image using SIFT.
-//
-// For further details, please see:
-// https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
-//
-func (d *SIFT) Detect(src gocv.Mat) []gocv.KeyPoint {
-	ret := C.SIFT_Detect((C.SIFT)(d.p), C.Mat(src.Ptr()))
-
-	return getKeyPoints(ret)
-}
-
-// DetectAndCompute detects and computes keypoints in an image using SIFT.
-//
-// For further details, please see:
-// https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
-//
-func (d *SIFT) DetectAndCompute(src gocv.Mat, mask gocv.Mat) ([]gocv.KeyPoint, gocv.Mat) {
-	desc := gocv.NewMat()
-	ret := C.SIFT_DetectAndCompute((C.SIFT)(d.p), C.Mat(src.Ptr()), C.Mat(mask.Ptr()),
-		C.Mat(desc.Ptr()))
-
-	return getKeyPoints(ret), desc
-}
-
 // SURF is a wrapper around the cv::SURF algorithm.
 // Due to being a patented algorithm you must set the OpenCV contrib build flag OPENCV_ENABLE_NONFREE=1
 // in order to use it.

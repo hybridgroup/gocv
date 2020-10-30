@@ -56,8 +56,17 @@ typedef struct Points {
     int length;
 } Points;
 
+// Wrapper for the vector of Point2f structs aka std::vector<Point2f>
+typedef struct Points2f {
+    Point2f* points;
+    int length;
+} Points2f;
+
 // Contour is alias for Points
 typedef Points Contour;
+
+// Contour2f is alias for Points2f
+typedef Points2f Contour2f;
 
 // Wrapper for the vector of Points vectors aka std::vector< std::vector<Point> >
 typedef struct Contours {
@@ -235,6 +244,7 @@ int Mat_Total(Mat m);
 void Mat_Size(Mat m, IntVector* res);
 void Mat_CopyToWithMask(Mat m, Mat dst, Mat mask);
 void Mat_ConvertTo(Mat m, Mat dst, int type);
+void Mat_ConvertToWithParams(Mat m, Mat dst, int type, float alpha, float beta);
 struct ByteArray Mat_ToBytes(Mat m);
 struct ByteArray Mat_DataPtr(Mat m);
 Mat Mat_Region(Mat m, Rect r);
@@ -249,6 +259,9 @@ int Mat_Cols(Mat m);
 int Mat_Channels(Mat m);
 int Mat_Type(Mat m);
 int Mat_Step(Mat m);
+Mat Eye(int rows, int cols, int type);
+Mat Zeros(int rows, int cols, int type);
+Mat Ones(int rows, int cols, int type);
 
 uint8_t Mat_GetUChar(Mat m, int row, int col);
 uint8_t Mat_GetUChar3(Mat m, int x, int y, int z);
@@ -345,8 +358,10 @@ void Mat_Merge(struct Mats mats, Mat dst);
 void Mat_Min(Mat src1, Mat src2, Mat dst);
 void Mat_MinMaxIdx(Mat m, double* minVal, double* maxVal, int* minIdx, int* maxIdx);
 void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc);
+void Mat_MixChannels(struct Mats src, struct Mats dst, struct IntVector fromTo);
 void Mat_MulSpectrums(Mat a, Mat b, Mat c, int flags);
 void Mat_Multiply(Mat src1, Mat src2, Mat dst);
+void Mat_MultiplyWithParams(Mat src1, Mat src2, Mat dst, double scale, int dtype);
 void Mat_Subtract(Mat src1, Mat src2, Mat dst);
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ);
 double Norm(Mat src1, int normType);
@@ -380,6 +395,8 @@ Mat Mat_rowRange(Mat m,int startrow,int endrow);
 Mat Mat_colRange(Mat m,int startrow,int endrow);
 
 void IntVector_Close(struct IntVector ivec);
+
+void CStrings_Close(struct CStrings cstrs);
 
 #ifdef __cplusplus
 }

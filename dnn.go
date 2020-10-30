@@ -39,6 +39,9 @@ const (
 
 	// NetBackendVKCOM is the Vulkan backend.
 	NetBackendVKCOM NetBackendType = 4
+
+	// NetBackendCUDA is the Cuda backend.
+	NetBackendCUDA NetBackendType = 5
 )
 
 // ParseNetBackend returns a valid NetBackendType given a string. Valid values are:
@@ -46,6 +49,7 @@ const (
 // - openvino
 // - opencv
 // - vulkan
+// - cuda
 // - default
 func ParseNetBackend(backend string) NetBackendType {
 	switch backend {
@@ -57,6 +61,8 @@ func ParseNetBackend(backend string) NetBackendType {
 		return NetBackendOpenCV
 	case "vulkan":
 		return NetBackendVKCOM
+	case "cuda":
+		return NetBackendCUDA
 	default:
 		return NetBackendDefault
 	}
@@ -83,6 +89,12 @@ const (
 
 	// NetTargetFPGA is the FPGA target.
 	NetTargetFPGA NetTargetType = 5
+
+	// NetTargetCUDA is the CUDA target.
+	NetTargetCUDA NetTargetType = 6
+
+	// NetTargetCUDAFP16 is the CUDA target.
+	NetTargetCUDAFP16 NetTargetType = 7
 )
 
 // ParseNetTarget returns a valid NetTargetType given a string. Valid values are:
@@ -92,6 +104,8 @@ const (
 // - vpu
 // - vulkan
 // - fpga
+// - cuda
+// - cudafp16
 func ParseNetTarget(target string) NetTargetType {
 	switch target {
 	case "cpu":
@@ -106,6 +120,10 @@ func ParseNetTarget(target string) NetTargetType {
 		return NetTargetVulkan
 	case "fpga":
 		return NetTargetFPGA
+	case "cuda":
+		return NetTargetCUDA
+	case "cudafp16":
+		return NetTargetCUDAFP16
 	default:
 		return NetTargetCPU
 	}
@@ -274,6 +292,18 @@ func ReadNetFromTensorflowBytes(model []byte) (Net, error) {
 	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTensorflowBytes(*bModel))}, nil
 }
 
+// ReadNetFromTorch reads a network model stored in Torch framework's format (t7).
+//   check net.Empty() for read failure
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#gaaaed8c8530e9e92fe6647700c13d961e
+//
+func ReadNetFromTorch(model string) Net {
+	cmodel := C.CString(model)
+	defer C.free(unsafe.Pointer(cmodel))
+	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTorch(cmodel))}
+}
+
 // BlobFromImage creates 4-dimensional blob from image. Optionally resizes and crops
 // image from center, subtract mean values, scales values by scalefactor,
 // swap Blue and Red channels.
@@ -307,7 +337,7 @@ func BlobFromImage(img Mat, scaleFactor float64, size image.Point, mean Scalar,
 // https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga2b89ed84432e4395f5a1412c2926293c
 //
 func BlobFromImages(imgs []Mat, blob *Mat, scaleFactor float64, size image.Point, mean Scalar,
-	swapRB bool, crop bool, ddepth int) {
+	swapRB bool, crop bool, ddepth MatType) {
 
 	cMatArray := make([]C.Mat, len(imgs))
 	for i, r := range imgs {
@@ -396,13 +426,14 @@ func (net *Net) GetPerfProfile() float64 {
 func (net *Net) GetUnconnectedOutLayers() (ids []int) {
 	cids := C.IntVector{}
 	C.Net_GetUnconnectedOutLayers((C.Net)(net.p), &cids)
+	defer C.free(unsafe.Pointer(cids.val))
 
 	h := &reflect.SliceHeader{
 		Data: uintptr(unsafe.Pointer(cids.val)),
 		Len:  int(cids.length),
 		Cap:  int(cids.length),
 	}
-	pcids := *(*[]int)(unsafe.Pointer(h))
+	pcids := *(*[]C.int)(unsafe.Pointer(h))
 
 	for i := 0; i < int(cids.length); i++ {
 		ids = append(ids, int(pcids[i]))
@@ -417,19 +448,9 @@ func (net *Net) GetUnconnectedOutLayers() (ids []int) {
 //
 func (net *Net) GetLayerNames() (names []string) {
 	cstrs := C.CStrings{}
+	defer C.CStrings_Close(cstrs)
 	C.Net_GetLayerNames((C.Net)(net.p), &cstrs)
-
-	h := &reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(cstrs.strs)),
-		Len:  int(cstrs.length),
-		Cap:  int(cstrs.length),
-	}
-	pcstrs := *(*[]string)(unsafe.Pointer(h))
-
-	for i := 0; i < int(cstrs.length); i++ {
-		names = append(names, string(pcstrs[i]))
-	}
-	return
+	return toGoStrings(cstrs)
 }
 
 // Close Layer
@@ -469,4 +490,100 @@ func (l *Layer) OutputNameToIndex(name string) int {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 	return int(C.Layer_OutputNameToIndex((C.Layer)(l.p), cName))
+}
+
+// NMSBoxes performs non maximum suppression given boxes and corresponding scores.
+//
+// For futher details, please see:
+// https://docs.opencv.org/4.4.0/d6/d0f/group__dnn.html#ga9d118d70a1659af729d01b10233213ee
+func NMSBoxes(bboxes []image.Rectangle, scores []float32, scoreThreshold float32, nmsThreshold float32, indices []int) {
+	bboxesRectArr := []C.struct_Rect{}
+	for _, v := range bboxes {
+		bbox := C.struct_Rect{
+			x:      C.int(v.Min.X),
+			y:      C.int(v.Min.Y),
+			width:  C.int(v.Size().X),
+			height: C.int(v.Size().Y),
+		}
+		bboxesRectArr = append(bboxesRectArr, bbox)
+	}
+
+	bboxesRects := C.Rects{
+		rects:  (*C.Rect)(&bboxesRectArr[0]),
+		length: C.int(len(bboxes)),
+	}
+
+	scoresFloats := []C.float{}
+	for _, v := range scores {
+		scoresFloats = append(scoresFloats, C.float(v))
+	}
+	scoresVector := C.struct_FloatVector{}
+	scoresVector.val = (*C.float)(&scoresFloats[0])
+	scoresVector.length = (C.int)(len(scoresFloats))
+
+	indicesVector := C.IntVector{}
+
+	C.NMSBoxes(bboxesRects, scoresVector, C.float(scoreThreshold), C.float(nmsThreshold), &indicesVector)
+	defer C.free(unsafe.Pointer(indicesVector.val))
+
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(indicesVector.val)),
+		Len:  int(indicesVector.length),
+		Cap:  int(indicesVector.length),
+	}
+
+	ptr := *(*[]C.int)(unsafe.Pointer(h))
+
+	for i := 0; i < int(indicesVector.length); i++ {
+		indices[i] = int(ptr[i])
+	}
+	return
+}
+
+// NMSBoxesWithParams performs non maximum suppression given boxes and corresponding scores.
+//
+// For futher details, please see:
+// https://docs.opencv.org/4.4.0/d6/d0f/group__dnn.html#ga9d118d70a1659af729d01b10233213ee
+func NMSBoxesWithParams(bboxes []image.Rectangle, scores []float32, scoreThreshold float32, nmsThreshold float32, indices []int, eta float32, topK int) {
+	bboxesRectArr := []C.struct_Rect{}
+	for _, v := range bboxes {
+		bbox := C.struct_Rect{
+			x:      C.int(v.Min.X),
+			y:      C.int(v.Min.Y),
+			width:  C.int(v.Size().X),
+			height: C.int(v.Size().Y),
+		}
+		bboxesRectArr = append(bboxesRectArr, bbox)
+	}
+
+	bboxesRects := C.Rects{
+		rects:  (*C.Rect)(&bboxesRectArr[0]),
+		length: C.int(len(bboxes)),
+	}
+
+	scoresFloats := []C.float{}
+	for _, v := range scores {
+		scoresFloats = append(scoresFloats, C.float(v))
+	}
+	scoresVector := C.struct_FloatVector{}
+	scoresVector.val = (*C.float)(&scoresFloats[0])
+	scoresVector.length = (C.int)(len(scoresFloats))
+
+	indicesVector := C.IntVector{}
+
+	C.NMSBoxesWithParams(bboxesRects, scoresVector, C.float(scoreThreshold), C.float(nmsThreshold), &indicesVector, C.float(eta), C.int(topK))
+	defer C.free(unsafe.Pointer(indicesVector.val))
+
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(indicesVector.val)),
+		Len:  int(indicesVector.length),
+		Cap:  int(indicesVector.length),
+	}
+
+	ptr := *(*[]C.int)(unsafe.Pointer(h))
+
+	for i := 0; i < int(indicesVector.length); i++ {
+		indices[i] = int(ptr[i])
+	}
+	return
 }

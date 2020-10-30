@@ -19,23 +19,23 @@ const (
 	InterpolationNearestNeighbor InterpolationFlags = 0
 
 	// InterpolationLinear is bilinear interpolation.
-	InterpolationLinear = 1
+	InterpolationLinear InterpolationFlags = 1
 
 	// InterpolationCubic is bicube interpolation.
-	InterpolationCubic = 2
+	InterpolationCubic InterpolationFlags = 2
 
 	// InterpolationArea uses pixel area relation. It is preferred for image
 	// decimation as it gives moire-free results.
-	InterpolationArea = 3
+	InterpolationArea InterpolationFlags = 3
 
 	// InterpolationLanczos4 is Lanczos interpolation over 8x8 neighborhood.
-	InterpolationLanczos4 = 4
+	InterpolationLanczos4 InterpolationFlags = 4
 
 	// InterpolationDefault is an alias for InterpolationLinear.
 	InterpolationDefault = InterpolationLinear
 
 	// InterpolationMax indicates use maximum interpolation.
-	InterpolationMax = 7
+	InterpolationMax InterpolationFlags = 7
 )
 
 // BorderType type of border.
@@ -46,25 +46,25 @@ const (
 	BorderConstant BorderType = 0
 
 	// BorderReplicate border type
-	BorderReplicate = 1
+	BorderReplicate BorderType = 1
 
 	// BorderReflect border type
-	BorderReflect = 2
+	BorderReflect BorderType = 2
 
 	// BorderWrap border type
-	BorderWrap = 3
+	BorderWrap BorderType = 3
 
 	// BorderReflect101 border type
-	BorderReflect101 = 4
+	BorderReflect101 BorderType = 4
 
 	// BorderTransparent border type
-	BorderTransparent = 5
+	BorderTransparent BorderType = 5
 
 	// BorderDefault border type
 	BorderDefault = BorderReflect101
 
 	// BorderIsolated border type
-	BorderIsolated = 16
+	BorderIsolated BorderType = 16
 )
 
 // Resize resizes an image.

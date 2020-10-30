@@ -1,7 +1,7 @@
 // Package cuda is the GoCV wrapper around OpenCV cuda.
 //
 // For further details, please see:
-// https://github.com/opencv/c
+// https://github.com/opencv/opencv
 //
 // import "gocv.io/x/gocv/cuda"
 package cuda
@@ -78,4 +78,14 @@ func PrintShortCudaDeviceInfo(device int) {
 // system
 func GetCudaEnabledDeviceCount() int {
 	return int(C.GetCudaEnabledDeviceCount())
+}
+
+// ConvertTo converts GpuMat into destination GpuMat.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a3a1b076e54d8a8503014e27a5440d98a
+//
+func (m *GpuMat) ConvertTo(dst *GpuMat, mt gocv.MatType) {
+	C.GpuMat_ConvertTo(m.p, dst.p, C.int(mt))
+	return
 }

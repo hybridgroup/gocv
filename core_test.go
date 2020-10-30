@@ -9,6 +9,7 @@ import (
 	_ "image/png"
 	"log"
 	"os"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -31,6 +32,26 @@ func TestMatFromBytesWithEmptyByteSlise(t *testing.T) {
 		t.Errorf("TestMatFromBytesWithEmptyByteSlise: "+
 			"error must contain the following description: "+
 			"%v, but have: %v", ErrEmptyByteSlice, err)
+	}
+}
+
+func TestMatFromBytesSliceGarbageCollected(t *testing.T) {
+	data := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	m, err := NewMatFromBytes(2, 5, MatTypeCV8U, data)
+	if err != nil {
+		t.Error("TestMatFromBytesSliceGarbageCollected: " +
+			"failed to create Mat")
+	}
+	defer m.Close()
+
+	// Force garbage collection. As data is not used after this, its backing array should
+	// be collected.
+	runtime.GC()
+
+	v := m.GetUCharAt(0, 0)
+	if v != 0 {
+		t.Errorf("TestMatFromBytesSliceGarbageCollected: "+
+			"unexpected value. Want %d, got %d.", 0, v)
 	}
 }
 
@@ -220,6 +241,68 @@ func TestMatToBytes(t *testing.T) {
 	if bytes.Compare(b, []byte{255, 105, 180}) != 0 {
 		t.Errorf("Mat bytes unexpected values: %v\n", b)
 	}
+}
+
+func TestMatEye(t *testing.T) {
+	data := []byte{1, 0, 0, 1}
+	e := Eye(2, 2, MatTypeCV8U)
+
+	if bytes.Compare(e.ToBytes(), data) != 0 {
+		t.Errorf("Mat bytes are not equal")
+	}
+	e.Close()
+
+	data2 := []byte{1, 0, 0, 0, 1, 0}
+	e2 := Eye(2, 3, MatTypeCV8U)
+	if bytes.Compare(e2.ToBytes(), data2) != 0 {
+		t.Errorf("Mat bytes are not equal")
+	}
+
+	val := e2.GetUCharAt(0, 2)
+	if val != 0 {
+		t.Errorf("Mat bytes unexpected value at [0,2]: %v\n", val)
+	}
+	e2.Close()
+}
+
+func TestMatZeros(t *testing.T) {
+	expected := NewMatWithSize(2, 3, MatTypeCV8U)
+	z := Zeros(2, 3, MatTypeCV8U)
+
+	if bytes.Compare(z.ToBytes(), expected.ToBytes()) != 0 {
+		t.Errorf("Mat bytes are not equal")
+	}
+
+	expected.Close()
+	z.Close()
+
+	expected2 := NewMatWithSize(2, 3, MatTypeCV64F)
+	z2 := Zeros(2, 3, MatTypeCV64F)
+
+	if bytes.Compare(z2.ToBytes(), expected2.ToBytes()) != 0 {
+		t.Errorf("Mat bytes are not equal")
+	}
+	expected2.Close()
+	z2.Close()
+}
+
+func TestMatOnes(t *testing.T) {
+	expected := NewMatWithSizeFromScalar(Scalar{Val1: 1}, 2, 3, MatTypeCV8U)
+	o := Ones(2, 3, MatTypeCV8U)
+	if bytes.Compare(o.ToBytes(), expected.ToBytes()) != 0 {
+		t.Errorf("Mat bytes are not equal")
+	}
+	defer expected.Close()
+	defer o.Close()
+
+	expected2 := NewMatWithSizeFromScalar(Scalar{Val1: 1}, 2, 1, MatTypeCV64F)
+	o2 := Ones(2, 1, MatTypeCV64F)
+
+	if bytes.Compare(o2.ToBytes(), expected2.ToBytes()) != 0 {
+		t.Errorf("Mat bytes are not equal")
+	}
+	expected2.Close()
+	o2.Close()
 }
 
 func TestMatDataPtr(t *testing.T) {
@@ -492,6 +575,17 @@ func TestMatConvert(t *testing.T) {
 	src.ConvertTo(&dst, MatTypeCV16S)
 	if dst.Empty() {
 		t.Error("TestConvert dst should not be empty.")
+	}
+}
+
+func TestMatConvertWithParams(t *testing.T) {
+	src := NewMatWithSize(100, 100, MatTypeCV8U)
+	defer src.Close()
+	dst := NewMat()
+	defer dst.Close()
+	src.ConvertToWithParams(&dst, MatTypeCV32F, 1.0/255.0, 0.0)
+	if dst.Empty() {
+		t.Error("TestConvertWithParams dst should not be empty.")
 	}
 }
 
@@ -1048,6 +1142,32 @@ func TestMatMultiply(t *testing.T) {
 	}
 	if mat3.GetDoubleAt(0, 0) != 6.0 {
 		t.Error("TestMatMultiply invalue value in dest mat3.")
+	}
+}
+
+func TestMatMultiplyWithParams(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV64F)
+	defer mat1.Close()
+	mat2 := NewMatWithSize(101, 102, MatTypeCV64F)
+	defer mat2.Close()
+	mat3 := NewMat()
+	defer mat3.Close()
+	MultiplyWithParams(mat1, mat2, &mat3, 0.5, -1)
+	if mat3.Empty() {
+		t.Error("TestMatMultiplyWithParams dest mat3 should not be empty.")
+	}
+
+	// since this is a single channel Mat, only the first value in the scalar is used
+	mat4 := NewMatWithSizeFromScalar(NewScalar(2.0, 0.0, 0.0, 0.0), 101, 102, MatTypeCV64F)
+	defer mat4.Close()
+	mat5 := NewMatWithSizeFromScalar(NewScalar(3.0, 0.0, 0.0, 0.0), 101, 102, MatTypeCV64F)
+	defer mat5.Close()
+	MultiplyWithParams(mat4, mat5, &mat3, 2.0, -1)
+	if mat3.Empty() {
+		t.Error("TestMatMultiplyWithParams dest mat3 should not be empty.")
+	}
+	if mat3.GetDoubleAt(0, 0) != 12.0 {
+		t.Error("TestMatMultiplyWithParams invalue value in dest mat3.")
 	}
 }
 
@@ -1989,6 +2109,47 @@ func TestMatMinMaxIdx(t *testing.T) {
 	}
 }
 
+func TestMixChannels(t *testing.T) {
+	bgra := NewMatWithSizeFromScalar(NewScalar(255, 0, 0, 255), 10, 10, MatTypeCV8UC4)
+	defer bgra.Close()
+	bgr := NewMatWithSize(bgra.Rows(), bgra.Cols(), MatTypeCV8UC3)
+	defer bgr.Close()
+	alpha := NewMatWithSize(bgra.Rows(), bgra.Cols(), MatTypeCV8UC1)
+	defer alpha.Close()
+
+	dst := []Mat{bgr, alpha}
+
+	// bgra[0] -> bgr[2], bgra[1] -> bgr[1],
+	// bgra[2] -> bgr[0], bgra[3] -> alpha[0]
+	fromTo := []int{0, 2, 1, 1, 2, 0, 3, 3}
+
+	MixChannels([]Mat{bgra}, dst, fromTo)
+
+	bgrChans := Split(bgr)
+	scalarByte := []byte{0, 0, 255}
+	for c := 0; c < bgr.Channels(); c++ {
+		for i := 0; i < bgr.Rows(); i++ {
+			for j := 0; j < bgr.Cols(); j++ {
+				if s := bgrChans[c].GetUCharAt(i, j); s != scalarByte[c] {
+					t.Errorf("TestMixChannels incorrect bgr scalar: %v\n", s)
+				}
+			}
+		}
+	}
+
+	alphaChans := Split(alpha)
+	scalarByte = []byte{255}
+	for c := 0; c < alpha.Channels(); c++ {
+		for i := 0; i < alpha.Rows(); i++ {
+			for j := 0; j < alpha.Cols(); j++ {
+				if s := alphaChans[c].GetUCharAt(i, j); s != scalarByte[c] {
+					t.Errorf("TestMixChannels incorrect alpha scalar: %v\n", s)
+				}
+			}
+		}
+	}
+}
+
 func TestMatToImage(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8UC3)
 	defer mat1.Close()
@@ -2262,5 +2423,19 @@ func TestNormWithMats(t *testing.T) {
 	d := NormWithMats(mat1, mat2, NormInf)
 	if d != 0 {
 		t.Fatal("expected 0")
+  }
+}
+
+func Test_toGoStrings(t *testing.T) {
+	goStrings := []string{"foo", "bar"}
+	cStrings := toCStrings(goStrings)
+	result := toGoStrings(cStrings)
+	if len(goStrings) != len(result) {
+		t.Errorf("TesttoGoStrings failed: length of converted string is not equal to original \n")
+	}
+	for i, s := range goStrings {
+		if s != result[i] {
+			t.Errorf("TesttoGoStrings failed: strings are not equal. expected=%s, actusal=%s", s, result[i])
+		}
 	}
 }

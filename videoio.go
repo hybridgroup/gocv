@@ -13,6 +13,111 @@ import (
 	"unsafe"
 )
 
+// Select preferred API for a capture object.
+// Note: Backends are available only if they have been built with your OpenCV binaries
+type VideoCaptureAPI int
+
+const (
+	// Auto detect == 0
+	VideoCaptureAny VideoCaptureAPI = 0
+
+	// Video For Windows (obsolete, removed)
+	VideoCaptureVFW VideoCaptureAPI = 200
+
+	// V4L/V4L2 capturing support
+	VideoCaptureV4L VideoCaptureAPI = 200
+
+	// Same as VideoCaptureV4L
+	VideoCaptureV4L2 VideoCaptureAPI = 200
+
+	// IEEE 1394 drivers
+	VideoCaptureFirewire VideoCaptureAPI = 300
+
+	// Same value as VideoCaptureFirewire
+	VideoCaptureFireware VideoCaptureAPI = 300
+
+	// Same value as VideoCaptureFirewire
+	VideoCaptureIEEE1394 VideoCaptureAPI = 300
+
+	// Same value as VideoCaptureFirewire
+	VideoCaptureDC1394 VideoCaptureAPI = 300
+
+	// Same value as VideoCaptureFirewire
+	VideoCaptureCMU1394 VideoCaptureAPI = 300
+
+	// QuickTime (obsolete, removed)
+	VideoCaptureQT VideoCaptureAPI = 500
+
+	// Unicap drivers (obsolete, removed)
+	VideoCaptureUnicap VideoCaptureAPI = 600
+
+	// DirectShow (via videoInput)
+	VideoCaptureDshow VideoCaptureAPI = 700
+
+	// PvAPI, Prosilica GigE SDK
+	VideoCapturePvAPI VideoCaptureAPI = 800
+
+	// OpenNI (for Kinect)
+	VideoCaptureOpenNI VideoCaptureAPI = 900
+
+	// OpenNI (for Asus Xtion)
+	VideoCaptureOpenNIAsus VideoCaptureAPI = 910
+
+	// Android - not used
+	VideoCaptureAndroid VideoCaptureAPI = 1000
+
+	// XIMEA Camera API
+	VideoCaptureXiAPI VideoCaptureAPI = 1100
+
+	// AVFoundation framework for iOS (OS X Lion will have the same API)
+	VideoCaptureAVFoundation VideoCaptureAPI = 1200
+
+	// Smartek Giganetix GigEVisionSDK
+	VideoCaptureGiganetix VideoCaptureAPI = 1300
+
+	// Microsoft Media Foundation (via videoInput)
+	VideoCaptureMSMF VideoCaptureAPI = 1400
+
+	// Microsoft Windows Runtime using Media Foundation
+	VideoCaptureWinRT VideoCaptureAPI = 1410
+
+	// RealSense (former Intel Perceptual Computing SDK)
+	VideoCaptureIntelPerc VideoCaptureAPI = 1500
+
+	// Synonym for VideoCaptureIntelPerc
+	VideoCaptureRealsense VideoCaptureAPI = 1500
+
+	// OpenNI2 (for Kinect)
+	VideoCaptureOpenNI2 VideoCaptureAPI = 1600
+
+	// OpenNI2 (for Asus Xtion and Occipital Structure sensors)
+	VideoCaptureOpenNI2Asus VideoCaptureAPI = 1610
+
+	// gPhoto2 connection
+	VideoCaptureGPhoto2 VideoCaptureAPI = 1700
+
+	// GStreamer
+	VideoCaptureGstreamer VideoCaptureAPI = 1800
+
+	// Open and record video file or stream using the FFMPEG library
+	VideoCaptureFFmpeg VideoCaptureAPI = 1900
+
+	// OpenCV Image Sequence (e.g. img_%02d.jpg)
+	VideoCaptureImages VideoCaptureAPI = 2000
+
+	// Aravis SDK
+	VideoCaptureAravis VideoCaptureAPI = 2100
+
+	// Built-in OpenCV MotionJPEG codec
+	VideoCaptureOpencvMjpeg VideoCaptureAPI = 2200
+
+	// Intel MediaSDK
+	VideoCaptureIntelMFX VideoCaptureAPI = 2300
+
+	// XINE engine (Linux)
+	VideoCaptureXINE VideoCaptureAPI = 2400
+)
+
 // VideoCaptureProperties are the properties used for VideoCapture operations.
 type VideoCaptureProperties int
 
@@ -23,133 +128,158 @@ const (
 
 	// VideoCapturePosFrames 0-based index of the frame to be
 	// decoded/captured next.
-	VideoCapturePosFrames = 1
+	VideoCapturePosFrames VideoCaptureProperties = 1
 
 	// VideoCapturePosAVIRatio relative position of the video file:
 	// 0=start of the film, 1=end of the film.
-	VideoCapturePosAVIRatio = 2
+	VideoCapturePosAVIRatio VideoCaptureProperties = 2
 
 	// VideoCaptureFrameWidth is width of the frames in the video stream.
-	VideoCaptureFrameWidth = 3
+	VideoCaptureFrameWidth VideoCaptureProperties = 3
 
 	// VideoCaptureFrameHeight controls height of frames in the video stream.
-	VideoCaptureFrameHeight = 4
+	VideoCaptureFrameHeight VideoCaptureProperties = 4
 
 	// VideoCaptureFPS controls capture frame rate.
-	VideoCaptureFPS = 5
+	VideoCaptureFPS VideoCaptureProperties = 5
 
 	// VideoCaptureFOURCC contains the 4-character code of codec.
 	// see VideoWriter::fourcc for details.
-	VideoCaptureFOURCC = 6
+	VideoCaptureFOURCC VideoCaptureProperties = 6
 
 	// VideoCaptureFrameCount contains number of frames in the video file.
-	VideoCaptureFrameCount = 7
+	VideoCaptureFrameCount VideoCaptureProperties = 7
 
 	// VideoCaptureFormat format of the Mat objects returned by
 	// VideoCapture::retrieve().
-	VideoCaptureFormat = 8
+	VideoCaptureFormat VideoCaptureProperties = 8
 
 	// VideoCaptureMode contains backend-specific value indicating
 	// the current capture mode.
-	VideoCaptureMode = 9
+	VideoCaptureMode VideoCaptureProperties = 9
 
 	// VideoCaptureBrightness is brightness of the image
 	// (only for those cameras that support).
-	VideoCaptureBrightness = 10
+	VideoCaptureBrightness VideoCaptureProperties = 10
 
 	// VideoCaptureContrast is contrast of the image
 	// (only for cameras that support it).
-	VideoCaptureContrast = 11
+	VideoCaptureContrast VideoCaptureProperties = 11
 
 	// VideoCaptureSaturation saturation of the image
 	// (only for cameras that support).
-	VideoCaptureSaturation = 12
+	VideoCaptureSaturation VideoCaptureProperties = 12
 
 	// VideoCaptureHue hue of the image (only for cameras that support).
-	VideoCaptureHue = 13
+	VideoCaptureHue VideoCaptureProperties = 13
 
 	// VideoCaptureGain is the gain of the capture image.
 	// (only for those cameras that support).
-	VideoCaptureGain = 14
+	VideoCaptureGain VideoCaptureProperties = 14
 
 	// VideoCaptureExposure is the exposure of the capture image.
 	// (only for those cameras that support).
-	VideoCaptureExposure = 15
+	VideoCaptureExposure VideoCaptureProperties = 15
 
 	// VideoCaptureConvertRGB is a boolean flags indicating whether
 	// images should be converted to RGB.
-	VideoCaptureConvertRGB = 16
+	VideoCaptureConvertRGB VideoCaptureProperties = 16
 
 	// VideoCaptureWhiteBalanceBlueU is currently unsupported.
-	VideoCaptureWhiteBalanceBlueU = 17
+	VideoCaptureWhiteBalanceBlueU VideoCaptureProperties = 17
 
 	// VideoCaptureRectification is the rectification flag for stereo cameras.
 	// Note: only supported by DC1394 v 2.x backend currently.
-	VideoCaptureRectification = 18
+	VideoCaptureRectification VideoCaptureProperties = 18
 
 	// VideoCaptureMonochrome indicates whether images should be
 	// converted to monochrome.
-	VideoCaptureMonochrome = 19
+	VideoCaptureMonochrome VideoCaptureProperties = 19
 
 	// VideoCaptureSharpness controls image capture sharpness.
-	VideoCaptureSharpness = 20
+	VideoCaptureSharpness VideoCaptureProperties = 20
 
 	// VideoCaptureAutoExposure controls the DC1394 exposure control
 	// done by camera, user can adjust reference level using this feature.
-	VideoCaptureAutoExposure = 21
+	VideoCaptureAutoExposure VideoCaptureProperties = 21
 
 	// VideoCaptureGamma controls video capture gamma.
-	VideoCaptureGamma = 22
+	VideoCaptureGamma VideoCaptureProperties = 22
 
 	// VideoCaptureTemperature controls video capture temperature.
-	VideoCaptureTemperature = 23
+	VideoCaptureTemperature VideoCaptureProperties = 23
 
 	// VideoCaptureTrigger controls video capture trigger.
-	VideoCaptureTrigger = 24
+	VideoCaptureTrigger VideoCaptureProperties = 24
 
 	// VideoCaptureTriggerDelay controls video capture trigger delay.
-	VideoCaptureTriggerDelay = 25
+	VideoCaptureTriggerDelay VideoCaptureProperties = 25
 
 	// VideoCaptureWhiteBalanceRedV controls video capture setting for
 	// white balance.
-	VideoCaptureWhiteBalanceRedV = 26
+	VideoCaptureWhiteBalanceRedV VideoCaptureProperties = 26
 
 	// VideoCaptureZoom controls video capture zoom.
-	VideoCaptureZoom = 27
+	VideoCaptureZoom VideoCaptureProperties = 27
 
 	// VideoCaptureFocus controls video capture focus.
-	VideoCaptureFocus = 28
+	VideoCaptureFocus VideoCaptureProperties = 28
 
 	// VideoCaptureGUID controls video capture GUID.
-	VideoCaptureGUID = 29
+	VideoCaptureGUID VideoCaptureProperties = 29
 
 	// VideoCaptureISOSpeed controls video capture ISO speed.
-	VideoCaptureISOSpeed = 30
+	VideoCaptureISOSpeed VideoCaptureProperties = 30
 
 	// VideoCaptureBacklight controls video capture backlight.
-	VideoCaptureBacklight = 32
+	VideoCaptureBacklight VideoCaptureProperties = 32
 
 	// VideoCapturePan controls video capture pan.
-	VideoCapturePan = 33
+	VideoCapturePan VideoCaptureProperties = 33
 
 	// VideoCaptureTilt controls video capture tilt.
-	VideoCaptureTilt = 34
+	VideoCaptureTilt VideoCaptureProperties = 34
 
 	// VideoCaptureRoll controls video capture roll.
-	VideoCaptureRoll = 35
+	VideoCaptureRoll VideoCaptureProperties = 35
 
 	// VideoCaptureIris controls video capture iris.
-	VideoCaptureIris = 36
+	VideoCaptureIris VideoCaptureProperties = 36
 
 	// VideoCaptureSettings is the pop up video/camera filter dialog. Note:
 	// only supported by DSHOW backend currently. The property value is ignored.
-	VideoCaptureSettings = 37
+	VideoCaptureSettings VideoCaptureProperties = 37
 
 	// VideoCaptureBufferSize controls video capture buffer size.
-	VideoCaptureBufferSize = 38
+	VideoCaptureBufferSize VideoCaptureProperties = 38
 
 	// VideoCaptureAutoFocus controls video capture auto focus..
-	VideoCaptureAutoFocus = 39
+	VideoCaptureAutoFocus VideoCaptureProperties = 39
+
+	// VideoCaptureSarNumerator controls the sample aspect ratio: num/den (num)
+	VideoCaptureSarNumerator VideoCaptureProperties = 40
+
+	// VideoCaptureSarDenominator controls the sample aspect ratio: num/den (den)
+	VideoCaptureSarDenominator VideoCaptureProperties = 41
+
+	// VideoCaptureBackend is the current api backend (VideoCaptureAPI). Read-only property.
+	VideoCaptureBackend VideoCaptureProperties = 42
+
+	// VideoCaptureChannel controls the video input or channel number (only for those cameras that support).
+	VideoCaptureChannel VideoCaptureProperties = 43
+
+	// VideoCaptureAutoWB controls the auto white-balance.
+	VideoCaptureAutoWB VideoCaptureProperties = 44
+
+	// VideoCaptureWBTemperature controls the white-balance color temperature
+	VideoCaptureWBTemperature VideoCaptureProperties = 45
+
+	// VideoCaptureCodecPixelFormat shows the the codec's pixel format (4-character code). Read-only property.
+	// Subset of AV_PIX_FMT_* or -1 if unknown.
+	VideoCaptureCodecPixelFormat VideoCaptureProperties = 46
+
+	// VideoCaptureBitrate displays the video bitrate in kbits/s. Read-only property.
+	VideoCaptureBitrate VideoCaptureProperties = 47
 )
 
 // VideoCapture is a wrapper around the OpenCV VideoCapture class.
@@ -176,6 +306,21 @@ func VideoCaptureFile(uri string) (vc *VideoCapture, err error) {
 	return
 }
 
+// VideoCaptureFile opens a VideoCapture from a file and prepares
+// to start capturing. It returns error if it fails to open the file stored in uri path.
+func VideoCaptureFileWithAPI(uri string, apiPreference VideoCaptureAPI) (vc *VideoCapture, err error) {
+	vc = &VideoCapture{p: C.VideoCapture_New()}
+
+	cURI := C.CString(uri)
+	defer C.free(unsafe.Pointer(cURI))
+
+	if !C.VideoCapture_OpenWithAPI(vc.p, cURI, C.int(apiPreference)) {
+		err = fmt.Errorf("Error opening file: %s with api backend: %d", uri, apiPreference)
+	}
+
+	return
+}
+
 // VideoCaptureDevice opens a VideoCapture from a device and prepares
 // to start capturing. It returns error if it fails to open the video device.
 func VideoCaptureDevice(device int) (vc *VideoCapture, err error) {
@@ -183,6 +328,18 @@ func VideoCaptureDevice(device int) (vc *VideoCapture, err error) {
 
 	if !C.VideoCapture_OpenDevice(vc.p, C.int(device)) {
 		err = fmt.Errorf("Error opening device: %d", device)
+	}
+
+	return
+}
+
+// VideoCaptureDevice opens a VideoCapture from a device with the api preference.
+// It returns error if it fails to open the video device.
+func VideoCaptureDeviceWithAPI(device int, apiPreference VideoCaptureAPI) (vc *VideoCapture, err error) {
+	vc = &VideoCapture{p: C.VideoCapture_New()}
+
+	if !C.VideoCapture_OpenDeviceWithAPI(vc.p, C.int(device), C.int(apiPreference)) {
+		err = fmt.Errorf("Error opening device: %d with api backend: %d", device, apiPreference)
 	}
 
 	return
@@ -228,7 +385,7 @@ func (v *VideoCapture) CodecString() string {
 	res := ""
 	hexes := []int64{0xff, 0xff00, 0xff0000, 0xff000000}
 	for i, h := range hexes {
-		res += string(int64(v.Get(VideoCaptureFOURCC)) & h >> (uint(i * 8)))
+		res += string(rune(int64(v.Get(VideoCaptureFOURCC)) & h >> (uint(i * 8))))
 	}
 	return res
 }
@@ -326,6 +483,21 @@ func OpenVideoCapture(v interface{}) (*VideoCapture, error) {
 			return VideoCaptureDevice(id)
 		}
 		return VideoCaptureFile(vv)
+	default:
+		return nil, errors.New("argument must be int or string")
+	}
+}
+
+func OpenVideoCaptureWithAPI(v interface{}, apiPreference VideoCaptureAPI) (*VideoCapture, error) {
+	switch vv := v.(type) {
+	case int:
+		return VideoCaptureDeviceWithAPI(vv, apiPreference)
+	case string:
+		id, err := strconv.Atoi(vv)
+		if err == nil {
+			return VideoCaptureDeviceWithAPI(id, apiPreference)
+		}
+		return VideoCaptureFileWithAPI(vv, apiPreference)
 	default:
 		return nil, errors.New("argument must be int or string")
 	}

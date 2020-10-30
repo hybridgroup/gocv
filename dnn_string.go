@@ -12,6 +12,8 @@ func (c NetBackendType) String() string {
 		return "opencv"
 	case NetBackendVKCOM:
 		return "vulkan"
+	case NetBackendCUDA:
+		return "cuda"
 	}
 	return ""
 }
@@ -30,6 +32,10 @@ func (c NetTargetType) String() string {
 		return "vulkan"
 	case NetTargetFPGA:
 		return "fpga"
+	case NetTargetCUDA:
+		return "cuda"
+	case NetTargetCUDAFP16:
+		return "cudafp16"
 	}
 	return ""
 }

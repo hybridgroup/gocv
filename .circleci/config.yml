@@ -1,0 +1,35 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: gocv/opencv:4.5.0
+    working_directory: /usr/local/go/src/github.com/hybridgroup/gocv
+    steps:
+      - checkout
+      - run:
+          name: Check Go version
+          command: go version
+      - run:
+          name: Install dependencies
+          command: |
+            apt-get update -yqq && apt-get install xvfb unzip -y
+      - run:
+          name: "Install Caffe test model"
+          command: |
+            mkdir -p testdata
+            curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/master/testdata/dnn/bvlc_googlenet.prototxt > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/bvlc_googlenet.prototxt
+            curl -sL http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/bvlc_googlenet.caffemodel
+      - run:
+          name: "Install Tensorflow test model"
+          command: |
+            mkdir -p testdata
+            curl -sL https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/inception5h.zip
+            unzip -o /usr/local/go/src/github.com/hybridgroup/gocv/testdata/inception5h.zip tensorflow_inception_graph.pb -d /usr/local/go/src/github.com/hybridgroup/gocv/testdata
+      - run:
+          name: Run tests
+          command: xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" go test -v . ./contrib
+          environment:
+              DISPLAY: 99.0
+              GOCV_CAFFE_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
+              GOCV_TENSORFLOW_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
+              OPENCV_ENABLE_NONFREE: ON

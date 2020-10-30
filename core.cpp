@@ -28,6 +28,21 @@ Mat Mat_NewFromBytes(int rows, int cols, int type, struct ByteArray buf) {
     return new cv::Mat(rows, cols, type, buf.data);
 }
 
+Mat Eye(int rows, int cols, int type) {
+    cv::Mat temp = cv::Mat::eye(rows, cols, type);
+    return new cv::Mat(rows, cols, type, temp.data);
+}
+
+Mat Zeros(int rows, int cols, int type) {
+    cv::Mat temp = cv::Mat::zeros(rows, cols, type);
+    return new cv::Mat(rows, cols, type, temp.data);
+}
+
+Mat Ones(int rows, int cols, int type) {
+    cv::Mat temp = cv::Mat::ones(rows, cols, type);
+    return new cv::Mat(rows, cols, type, temp.data);
+}
+
 Mat Mat_FromPtr(Mat m, int rows, int cols, int type, int prow, int pcol) {
     return new cv::Mat(rows, cols, type, m->ptr(prow, pcol));
 }
@@ -59,6 +74,10 @@ void Mat_CopyToWithMask(Mat m, Mat dst, Mat mask) {
 
 void Mat_ConvertTo(Mat m, Mat dst, int type) {
     m->convertTo(*dst, type);
+}
+
+void Mat_ConvertToWithParams(Mat m, Mat dst, int type, float alpha, float beta) {
+    m->convertTo(*dst, type, alpha, beta);
 }
 
 // Mat_ToBytes returns the bytes representation of the underlying data.
@@ -566,12 +585,38 @@ void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* 
     maxLoc->y = cMaxLoc.y;
 }
 
+void Mat_MixChannels(struct Mats src, struct Mats dst, struct IntVector fromTo) {
+    std::vector<cv::Mat> srcMats;
+
+    for (int i = 0; i < src.length; ++i) {
+        srcMats.push_back(*src.mats[i]);
+    }
+
+    std::vector<cv::Mat> dstMats;
+
+    for (int i = 0; i < dst.length; ++i) {
+        dstMats.push_back(*dst.mats[i]);
+    }
+
+    std::vector<int> fromTos;
+
+    for (int i = 0; i < fromTo.length; ++i) {
+        fromTos.push_back(fromTo.val[i]);
+    }
+
+    cv::mixChannels(srcMats, dstMats, fromTos);
+}
+
 void Mat_MulSpectrums(Mat a, Mat b, Mat c, int flags) {
     cv::mulSpectrums(*a, *b, *c, flags);
 }
 
 void Mat_Multiply(Mat src1, Mat src2, Mat dst) {
     cv::multiply(*src1, *src2, *dst);
+}
+
+void Mat_MultiplyWithParams(Mat src1, Mat src2, Mat dst, double scale, int dtype) {
+    cv::multiply(*src1, *src2, *dst, scale, dtype);
 }
 
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
@@ -694,6 +739,13 @@ void Contours_Close(struct Contours cs) {
     }
 
     delete[] cs.contours;
+}
+
+void CStrings_Close(struct CStrings cstrs) {
+    for ( int i = 0; i < cstrs.length; i++ ) {
+        delete [] cstrs.strs[i];
+    }
+    delete [] cstrs.strs;
 }
 
 void KeyPoints_Close(struct KeyPoints ks) {

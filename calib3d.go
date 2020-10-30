@@ -67,6 +67,30 @@ func FisheyeUndistortImageWithParams(distorted Mat, undistorted *Mat, k, d, knew
 	C.Fisheye_UndistortImageWithParams(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr(), knew.Ptr(), sz)
 }
 
+// FisheyeUndistortPoints transforms points to compensate for fisheye lens distortion
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gab738cdf90ceee97b2b52b0d0e7511541
+func FisheyeUndistortPoints(distorted Mat, undistorted *Mat, k, d, r, p Mat) {
+	C.Fisheye_UndistortPoints(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr(), r.Ptr(), p.Ptr())
+}
+
+// EstimateNewCameraMatrixForUndistortRectify estimates new camera matrix for undistortion or rectification.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#ga384940fdf04c03e362e94b6eb9b673c9
+func EstimateNewCameraMatrixForUndistortRectify(k, d Mat, imgSize image.Point, r Mat, p *Mat, balance float64, newSize image.Point, fovScale float64) {
+	imgSz := C.struct_Size{
+		width:  C.int(imgSize.X),
+		height: C.int(imgSize.Y),
+	}
+	newSz := C.struct_Size{
+		width:  C.int(newSize.X),
+		height: C.int(newSize.Y),
+	}
+	C.Fisheye_EstimateNewCameraMatrixForUndistortRectify(k.Ptr(), d.Ptr(), imgSz, r.Ptr(), p.Ptr(), C.double(balance), newSz, C.double(fovScale))
+}
+
 // InitUndistortRectifyMap computes the joint undistortion and rectification transformation and represents the result in the form of maps for remap
 //
 // For further details, please see:
@@ -100,4 +124,60 @@ func GetOptimalNewCameraMatrixWithParams(cameraMatrix Mat, distCoeffs Mat, image
 
 func Undistort(src Mat, dst *Mat, cameraMatrix Mat, distCoeffs Mat, newCameraMatrix Mat) {
 	C.Undistort(src.Ptr(), dst.Ptr(), cameraMatrix.Ptr(), distCoeffs.Ptr(), newCameraMatrix.Ptr())
+}
+
+// UndistortPoints transforms points to compensate for lens distortion
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga55c716492470bfe86b0ee9bf3a1f0f7e
+func UndistortPoints(src Mat, dst *Mat, cameraMatrix, distCoeffs, rectificationTransform, newCameraMatrix Mat) {
+	C.UndistortPoints(src.Ptr(), dst.Ptr(), cameraMatrix.Ptr(), distCoeffs.Ptr(), rectificationTransform.Ptr(), newCameraMatrix.Ptr())
+}
+
+// CalibCBFlag value for chessboard calibration
+// For more details, please see:
+// https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a
+type CalibCBFlag int
+
+const (
+	// Various operation flags that can be zero or a combination of the following values:
+	//  Use adaptive thresholding to convert the image to black and white, rather than a fixed threshold level (computed from the average image brightness).
+	CalibCBAdaptiveThresh CalibCBFlag = 1 << iota
+	//  Normalize the image gamma with equalizeHist before applying fixed or adaptive thresholding.
+	CalibCBNormalizeImage
+	//  Use additional criteria (like contour area, perimeter, square-like shape) to filter out false quads extracted at the contour retrieval stage.
+	CalibCBFilterQuads
+	//  Run a fast check on the image that looks for chessboard corners, and shortcut the call if none is found. This can drastically speed up the call in the degenerate condition when no chessboard is observed.
+	CalibCBFastCheck
+	CalibCBExhaustive
+	CalibCBAccuracy
+	CalibCBLarger
+	CalibCBMarker
+)
+
+func FindChessboardCorners(image Mat, patternSize image.Point, corners *Mat, flags CalibCBFlag) bool {
+	sz := C.struct_Size{
+		width:  C.int(patternSize.X),
+		height: C.int(patternSize.Y),
+	}
+	return bool(C.FindChessboardCorners(image.Ptr(), sz, corners.Ptr(), C.int(flags)))
+}
+
+func DrawChessboardCorners(image *Mat, patternSize image.Point, corners Mat, patternWasFound bool) {
+	sz := C.struct_Size{
+		width:  C.int(patternSize.X),
+		height: C.int(patternSize.Y),
+	}
+	C.DrawChessboardCorners(image.Ptr(), sz, corners.Ptr(), C.bool(patternWasFound))
+}
+
+// EstimateAffinePartial2D computes an optimal limited affine transformation
+// with 4 degrees of freedom between two 2D point sets.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d9/d0c/group__calib3d.html#gad767faff73e9cbd8b9d92b955b50062d
+func EstimateAffinePartial2D(from, to []Point2f) Mat {
+	fromPoints := toCPoints2f(from)
+	toPoints := toCPoints2f(to)
+	return newMat(C.EstimateAffinePartial2D(fromPoints, toPoints))
 }

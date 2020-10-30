@@ -149,9 +149,9 @@ const (
 	//FastFeatureDetectorType58 is an alias of FastFeatureDetector::TYPE_5_8
 	FastFeatureDetectorType58 FastFeatureDetectorType = 0
 	//FastFeatureDetectorType712 is an alias of FastFeatureDetector::TYPE_7_12
-	FastFeatureDetectorType712 = 1
+	FastFeatureDetectorType712 FastFeatureDetectorType = 1
 	//FastFeatureDetectorType916 is an alias of FastFeatureDetector::TYPE_9_16
-	FastFeatureDetectorType916 = 2
+	FastFeatureDetectorType916 FastFeatureDetectorType = 2
 )
 
 // FastFeatureDetector is a wrapper around the cv::FastFeatureDetector.
@@ -665,6 +665,40 @@ func (b *BFMatcher) KnnMatch(query, train Mat, k int) [][]DMatch {
 	return getMultiDMatches(ret)
 }
 
+// FlannBasedMatcher is a wrapper around the the cv::FlannBasedMatcher algorithm
+type FlannBasedMatcher struct {
+	// C.FlannBasedMatcher
+	p unsafe.Pointer
+}
+
+// NewFlannBasedMatcher returns a new FlannBasedMatcher
+//
+// For further details, please see:
+// https://docs.opencv.org/master/dc/de2/classcv_1_1FlannBasedMatcher.html#ab9114a6471e364ad221f89068ca21382
+//
+func NewFlannBasedMatcher() FlannBasedMatcher {
+	return FlannBasedMatcher{p: unsafe.Pointer(C.FlannBasedMatcher_Create())}
+}
+
+// Close FlannBasedMatcher
+func (f *FlannBasedMatcher) Close() error {
+	C.FlannBasedMatcher_Close((C.FlannBasedMatcher)(f.p))
+	f.p = nil
+	return nil
+}
+
+// KnnMatch Finds the k best matches for each descriptor from a query set.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d39/classcv_1_1DescriptorMatcher.html#aa880f9353cdf185ccf3013e08210483a
+//
+func (f *FlannBasedMatcher) KnnMatch(query, train Mat, k int) [][]DMatch {
+	ret := C.FlannBasedMatcher_KnnMatch((C.FlannBasedMatcher)(f.p), query.p, train.p, C.int(k))
+	defer C.MultiDMatches_Close(ret)
+
+	return getMultiDMatches(ret)
+}
+
 func getMultiDMatches(ret C.MultiDMatches) [][]DMatch {
 	cArray := ret.dmatches
 	length := int(ret.length)
@@ -710,11 +744,11 @@ const (
 	// DrawDefault creates new image and for each keypoint only the center point will be drawn
 	DrawDefault DrawMatchesFlag = 0
 	// DrawOverOutImg draws matches on existing content of image
-	DrawOverOutImg = 1
+	DrawOverOutImg DrawMatchesFlag = 1
 	// NotDrawSinglePoints will not draw single points
-	NotDrawSinglePoints = 2
+	NotDrawSinglePoints DrawMatchesFlag = 2
 	// DrawRichKeyPoints draws the circle around each keypoint with keypoint size and orientation
-	DrawRichKeyPoints = 3
+	DrawRichKeyPoints DrawMatchesFlag = 3
 )
 
 // DrawKeyPoints draws keypoints
@@ -740,11 +774,142 @@ func DrawKeyPoints(src Mat, keyPoints []KeyPoint, dst *Mat, color color.RGBA, fl
 	}
 
 	scalar := C.struct_Scalar{
-		val1: C.double(color.R),
+		val1: C.double(color.B),
 		val2: C.double(color.G),
-		val3: C.double(color.B),
+		val3: C.double(color.R),
 		val4: C.double(color.A),
 	}
 
 	C.DrawKeyPoints(src.p, cKeyPoints, dst.p, scalar, C.int(flag))
+}
+
+// SIFT is a wrapper around the cv::SIFT algorithm.
+// Due to the patent having expired, this is now in the main OpenCV code modules.
+type SIFT struct {
+	// C.SIFT
+	p unsafe.Pointer
+}
+
+// NewSIFT returns a new SIFT algorithm.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d5/d3c/classcv_1_1xfeatures2d_1_1SIFT.html
+//
+func NewSIFT() SIFT {
+	return SIFT{p: unsafe.Pointer(C.SIFT_Create())}
+}
+
+// Close SIFT.
+func (d *SIFT) Close() error {
+	C.SIFT_Close((C.SIFT)(d.p))
+	d.p = nil
+	return nil
+}
+
+// Detect keypoints in an image using SIFT.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
+//
+func (d *SIFT) Detect(src Mat) []KeyPoint {
+	ret := C.SIFT_Detect((C.SIFT)(d.p), C.Mat(src.Ptr()))
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret)
+}
+
+// DetectAndCompute detects and computes keypoints in an image using SIFT.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
+//
+func (d *SIFT) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
+	desc := NewMat()
+	ret := C.SIFT_DetectAndCompute((C.SIFT)(d.p), C.Mat(src.Ptr()), C.Mat(mask.Ptr()),
+		C.Mat(desc.Ptr()))
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret), desc
+}
+
+// DrawMatches draws matches on combined train and querry images.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html#gad8f463ccaf0dc6f61083abd8717c261a
+func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2 []DMatch, outImg *Mat, matchColor color.RGBA, singlePointColor color.RGBA, matchesMask []byte, flags DrawMatchesFlag) {
+	kp1arr := make([]C.struct_KeyPoint, len(kp1))
+	kp2arr := make([]C.struct_KeyPoint, len(kp2))
+
+	for i, kp := range kp1 {
+		kp1arr[i].x = C.double(kp.X)
+		kp1arr[i].y = C.double(kp.Y)
+		kp1arr[i].size = C.double(kp.Size)
+		kp1arr[i].angle = C.double(kp.Angle)
+		kp1arr[i].response = C.double(kp.Response)
+		kp1arr[i].octave = C.int(kp.Octave)
+		kp1arr[i].classID = C.int(kp.ClassID)
+	}
+
+	for i, kp := range kp2 {
+		kp2arr[i].x = C.double(kp.X)
+		kp2arr[i].y = C.double(kp.Y)
+		kp2arr[i].size = C.double(kp.Size)
+		kp2arr[i].angle = C.double(kp.Angle)
+		kp2arr[i].response = C.double(kp.Response)
+		kp2arr[i].octave = C.int(kp.Octave)
+		kp2arr[i].classID = C.int(kp.ClassID)
+	}
+
+	cKeyPoints1 := C.struct_KeyPoints{
+		keypoints: (*C.struct_KeyPoint)(&kp1arr[0]),
+		length:    (C.int)(len(kp1)),
+	}
+
+	cKeyPoints2 := C.struct_KeyPoints{
+		keypoints: (*C.struct_KeyPoint)(&kp2arr[0]),
+		length:    (C.int)(len(kp2)),
+	}
+
+	dMatchArr := make([]C.struct_DMatch, len(matches1to2))
+
+	for i, dm := range matches1to2 {
+		dMatchArr[i].queryIdx = C.int(dm.QueryIdx)
+		dMatchArr[i].trainIdx = C.int(dm.TrainIdx)
+		dMatchArr[i].imgIdx = C.int(dm.ImgIdx)
+		dMatchArr[i].distance = C.float(dm.Distance)
+	}
+
+	cDMatches := C.struct_DMatches{
+		dmatches: (*C.struct_DMatch)(&dMatchArr[0]),
+		length:   (C.int)(len(matches1to2)),
+	}
+
+	scalarMatchColor := C.struct_Scalar{
+		val1: C.double(matchColor.R),
+		val2: C.double(matchColor.G),
+		val3: C.double(matchColor.B),
+		val4: C.double(matchColor.A),
+	}
+
+	scalarPointColor := C.struct_Scalar{
+		val1: C.double(singlePointColor.B),
+		val2: C.double(singlePointColor.G),
+		val3: C.double(singlePointColor.R),
+		val4: C.double(singlePointColor.A),
+	}
+
+	mask := make([]C.char, len(matchesMask))
+
+	cByteArray := C.struct_ByteArray{
+		length: (C.int)(len(matchesMask)),
+	}
+
+	if len(matchesMask) > 0 {
+		cByteArray = C.struct_ByteArray{
+			data:   (*C.char)(&mask[0]),
+			length: (C.int)(len(matchesMask)),
+		}
+	}
+
+	C.DrawMatches(img1.p, cKeyPoints1, img2.p, cKeyPoints2, cDMatches, outImg.p, scalarMatchColor, scalarPointColor, cByteArray, C.int(flags))
 }
