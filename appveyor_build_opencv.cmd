@@ -19,6 +19,7 @@ mingw32-make install
 appveyor DownloadFile https://raw.githubusercontent.com/opencv/opencv_extra/master/testdata/dnn/bvlc_googlenet.prototxt -FileName C:\opencv\testdata\bvlc_googlenet.prototxt
 appveyor DownloadFile http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel -FileName C:\opencv\testdata\bvlc_googlenet.caffemodel
 appveyor DownloadFile https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip -FileName C:\opencv\testdata\inception5h.zip
+appveyor DownloadFile https://github.com/onnx/models/raw/master/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx -FileName C:\opencv\testdata\googlenet-9.onnx
 7z x C:\opencv\testdata\inception5h.zip -oC:\opencv\testdata tensorflow_inception_graph.pb -y
 rmdir c:\opencv\opencv-4.5.0 /s /q
 rmdir c:\opencv\opencv_contrib-4.5.0 /s /q
