@@ -2252,14 +2252,14 @@ func TestColRowRange(t *testing.T) {
 	}
 }
 
-func TestNorm2(t *testing.T) {
+func TestNormWithMats(t *testing.T) {
 	mat1 := NewMatWithSize(100, 100, MatTypeCV8UC1)
 	defer mat1.Close()
 
 	mat2 := NewMatWithSize(100, 100, MatTypeCV8UC1)
 	defer mat2.Close()
 
-	d := Norm2(mat1, mat2, NormInf)
+	d := NormWithMats(mat1, mat2, NormInf)
 	if d != 0 {
 		t.Fatal("expected 0")
 	}
