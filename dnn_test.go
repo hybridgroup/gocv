@@ -4,6 +4,7 @@ import (
 	"image"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -289,7 +290,7 @@ func TestOnnxMemory(t *testing.T) {
 		t.Skip("Unable to locate ONNX model file for tests")
 	}
 
-	b, err := ioutil.ReadFile(path + "/googlenet-9.onnx")
+	b, err := ioutil.ReadFile(filepath.Join(path, "googlenet-9.onnx"))
 	if err != nil {
 		t.Errorf("Failed to load ONNX from file: %v", err)
 	}
@@ -312,7 +313,7 @@ func TestOnnxDisk(t *testing.T) {
 		t.Skip("Unable to locate ONNX model file for tests")
 	}
 
-	net := ReadNetFromONNX(path + "/googlenet-9.onnx")
+	net := ReadNetFromONNX(filepath.Join(path, "googlenet-9.onnx"))
 	if net.Empty() {
 		t.Errorf("Unable to load ONNX model")
 	}
