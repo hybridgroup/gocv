@@ -178,6 +178,9 @@ var ErrEmptyByteSlice = errors.New("empty byte array")
 //
 type Mat struct {
 	p C.Mat
+
+	// Non-nil if Mat was created with a []byte (using NewMatFromBytes()). Nil otherwise.
+	d []byte
 }
 
 // NewMat returns a new empty Mat.
@@ -221,7 +224,17 @@ func NewMatFromBytes(rows int, cols int, mt MatType, data []byte) (Mat, error) {
 	if err != nil {
 		return Mat{}, err
 	}
-	return newMat(C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), *cBytes)), nil
+	mat := newMat(C.Mat_NewFromBytes(C.int(rows), C.int(cols), C.int(mt), *cBytes))
+
+	// Store a reference to the backing data slice. This is needed because we pass the backing
+	// array directly to C code and without keeping a Go reference to it, it might end up
+	// garbage collected which would result in crashes.
+	//
+	// TODO(bga): This could live in newMat() but I wanted to reduce the change surface.
+	// TODO(bga): Code that needs access to the array from Go could use this directly.
+	mat.d = data
+
+	return mat, nil
 }
 
 // Returns an identity matrix of the specified size and type.

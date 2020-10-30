@@ -17,5 +17,6 @@ func newMat(p C.Mat) Mat {
 func (m *Mat) Close() error {
 	C.Mat_Close(m.p)
 	m.p = nil
+	m.d = nil
 	return nil
 }
