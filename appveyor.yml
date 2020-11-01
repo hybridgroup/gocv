@@ -27,6 +27,7 @@ install:
   - go get -d .
   - set GOCV_CAFFE_TEST_FILES=C:\opencv\testdata
   - set GOCV_TENSORFLOW_TEST_FILES=C:\opencv\testdata
+  - set GOCV_ONNX_TEST_FILES=C:\opencv\testdata
   - set OPENCV_ENABLE_NONFREE=ON
   - go env
 

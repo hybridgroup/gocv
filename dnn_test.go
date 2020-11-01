@@ -4,6 +4,7 @@ import (
 	"image"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -281,6 +282,81 @@ func TestTensorflowMemory(t *testing.T) {
 	defer net.Close()
 
 	checkTensorflowNet(t, net)
+}
+
+func TestOnnxMemory(t *testing.T) {
+	path := os.Getenv("GOCV_ONNX_TEST_FILES")
+	if path == "" {
+		t.Skip("Unable to locate ONNX model file for tests")
+	}
+
+	b, err := ioutil.ReadFile(filepath.Join(path, "googlenet-9.onnx"))
+	if err != nil {
+		t.Errorf("Failed to load ONNX from file: %v", err)
+	}
+
+	net, err := ReadNetFromONNXBytes(b)
+	if err != nil {
+		t.Errorf("Failed to load Tensorflow model from bytes: %v", err)
+	}
+	if net.Empty() {
+		t.Errorf("Unable to load Tensorflow model")
+	}
+	defer net.Close()
+
+	checkONNXNet(t, net)
+}
+
+func TestOnnxDisk(t *testing.T) {
+	path := os.Getenv("GOCV_ONNX_TEST_FILES")
+	if path == "" {
+		t.Skip("Unable to locate ONNX model file for tests")
+	}
+
+	net := ReadNetFromONNX(filepath.Join(path, "googlenet-9.onnx"))
+	if net.Empty() {
+		t.Errorf("Unable to load ONNX model")
+	}
+	defer net.Close()
+
+	checkONNXNet(t, net)
+}
+
+func checkONNXNet(t *testing.T, net Net) {
+	img := IMRead("images/space_shuttle.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in ONNX test")
+	}
+	defer img.Close()
+
+	blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(0, 0, 0, 0), true, false)
+	if blob.Empty() {
+		t.Error("Invalid blob in ONNX test")
+	}
+	defer blob.Close()
+
+	net.SetInput(blob, "data_0")
+	prob := net.Forward("prob_1")
+	defer prob.Close()
+	if prob.Empty() {
+		t.Error("Invalid output in ONNX test")
+	}
+
+	probMat := prob.Reshape(1, 1)
+	defer probMat.Close()
+	_, maxVal, minLoc, maxLoc := MinMaxLoc(probMat)
+
+	if round(float64(maxVal), 0.0005) != 0.9965 {
+		t.Errorf("ONNX maxVal incorrect: %v\n", round(float64(maxVal), 0.0005))
+	}
+
+	if minLoc.X != 955 || minLoc.Y != 0 {
+		t.Errorf("ONNX minLoc incorrect: %v\n", minLoc)
+	}
+
+	if maxLoc.X != 812 || maxLoc.Y != 0 {
+		t.Errorf("ONNX maxLoc incorrect: %v\n", maxLoc)
+	}
 }
 
 func TestBlobFromImages(t *testing.T) {

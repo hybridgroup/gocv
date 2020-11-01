@@ -26,10 +26,16 @@ jobs:
             curl -sL https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/inception5h.zip
             unzip -o /usr/local/go/src/github.com/hybridgroup/gocv/testdata/inception5h.zip tensorflow_inception_graph.pb -d /usr/local/go/src/github.com/hybridgroup/gocv/testdata
       - run:
+          name: "Install ONNX test model"
+          command: |
+            mkdir -p testdata
+            curl -sL https://github.com/onnx/models/blob/master/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx\?raw\=true > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/googlenet-9.onnx
+      - run:
           name: Run tests
           command: xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" go test -v . ./contrib
           environment:
               DISPLAY: 99.0
               GOCV_CAFFE_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
               GOCV_TENSORFLOW_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
+              GOCV_ONNX_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
               OPENCV_ENABLE_NONFREE: ON

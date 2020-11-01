@@ -38,6 +38,16 @@ Net Net_ReadNetFromTorch(const char* model) {
     return n;
 }
 
+Net Net_ReadNetFromONNX(const char* model) {
+    Net n = new cv::dnn::Net(cv::dnn::readNetFromONNX(model));
+    return n;
+}
+
+Net Net_ReadNetFromONNXBytes(struct ByteArray model) {
+    Net n = new cv::dnn::Net(cv::dnn::readNetFromONNX(model.data, model.length));
+    return n;
+}
+
 void Net_Close(Net net) {
     delete net;
 }
