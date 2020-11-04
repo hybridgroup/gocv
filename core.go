@@ -2060,7 +2060,7 @@ func toGoBytes(b C.struct_ByteArray) []byte {
 // Converts CStrings to a slice of Go strings even when the C strings are not contiguous in memory
 func toGoStrings(strs C.CStrings) []string {
 	length := int(strs.length)
-	tmpslice := (*[1 << 30]*C.char)(unsafe.Pointer(strs.strs))[:length:length]
+	tmpslice := (*[1 << 20]*C.char)(unsafe.Pointer(strs.strs))[:length:length]
 	gostrings := make([]string, length)
 	for i, s := range tmpslice {
 		gostrings[i] = C.GoString(s)
