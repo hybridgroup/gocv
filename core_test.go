@@ -2434,6 +2434,19 @@ func TestColRowRange(t *testing.T) {
 	}
 }
 
+func TestNormWithMats(t *testing.T) {
+	mat1 := NewMatWithSize(100, 100, MatTypeCV8UC1)
+	defer mat1.Close()
+
+	mat2 := NewMatWithSize(100, 100, MatTypeCV8UC1)
+	defer mat2.Close()
+
+	d := NormWithMats(mat1, mat2, NormInf)
+	if d != 0 {
+		t.Fatal("expected 0")
+  }
+}
+
 func Test_toGoStrings(t *testing.T) {
 	goStrings := []string{"foo", "bar"}
 	cStrings := toCStrings(goStrings)

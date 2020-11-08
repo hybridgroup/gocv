@@ -636,6 +636,10 @@ double Norm(Mat src1, int normType) {
     return cv::norm(*src1, normType);
 }
 
+double NormWithMats(Mat src1, Mat src2, int normType) {
+    return cv::norm(*src1, *src2, normType);
+}
+
 void Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm) {
     cv::perspectiveTransform(*src, *dst, *tm);
 }

@@ -1661,6 +1661,15 @@ func Norm(src1 Mat, normType NormType) float64 {
 	return float64(C.Norm(src1.p, C.int(normType)))
 }
 
+// Norm calculates the absolute difference/relative norm of two arrays.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga7c331fb8dd951707e184ef4e3f21dd33
+//
+func NormWithMats(src1 Mat, src2 Mat, normType NormType) float64 {
+	return float64(C.NormWithMats(src1.p, src2.p, C.int(normType)))
+}
+
 // PerspectiveTransform performs the perspective matrix transformation of vectors.
 //
 // For further details, please see:
