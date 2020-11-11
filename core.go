@@ -193,7 +193,7 @@ func NewMatWithSize(rows int, cols int, mt MatType) Mat {
 	return newMat(C.Mat_NewWithSize(C.int(rows), C.int(cols), C.int(mt)))
 }
 
-// NewMatWithSizes returns a new Mat with specific sizes and type.
+// NewMatWithSizes returns a new multidimensional Mat with a specific size and type.
 func NewMatWithSizes(sizes []int, mt MatType) Mat {
 	sizesArray := make([]C.int, len(sizes))
 	for i, s := range sizes {
@@ -205,6 +205,44 @@ func NewMatWithSizes(sizes []int, mt MatType) Mat {
 		length: C.int(len(sizes)),
 	}
 	return newMat(C.Mat_NewWithSizes(sizesIntVector, C.int(mt)))
+}
+
+// NewMatWithSizesWithScalar returns a new multidimensional Mat with a specific size, type and scalar value.
+func NewMatWithSizesWithScalar(sizes []int, mt MatType, s Scalar) Mat {
+	csizes := []C.int{}
+	for _, v := range sizes {
+		csizes = append(csizes, C.int(v))
+	}
+	sizesVector := C.struct_IntVector{}
+	sizesVector.val = (*C.int)(&csizes[0])
+	sizesVector.length = (C.int)(len(csizes))
+
+	sVal := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
+	}
+
+	return newMat(C.Mat_NewWithSizesFromScalar(sizesVector, C.int(mt), sVal))
+}
+
+// NewMatWithSizesWithScalar returns a new multidimensional Mat with a specific size, type and preexisting data.
+func NewMatWithSizesFromBytes(sizes []int, mt MatType, data []byte) (Mat, error) {
+	cBytes, err := toByteArray(data)
+	if err != nil {
+		return Mat{}, err
+	}
+
+	csizes := []C.int{}
+	for _, v := range sizes {
+		csizes = append(csizes, C.int(v))
+	}
+	sizesVector := C.struct_IntVector{}
+	sizesVector.val = (*C.int)(&csizes[0])
+	sizesVector.length = (C.int)(len(csizes))
+
+	return newMat(C.Mat_NewWithSizesFromBytes(sizesVector, C.int(mt), *cBytes)), nil
 }
 
 // NewMatFromScalar returns a new Mat for a specific Scalar value

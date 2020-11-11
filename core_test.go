@@ -22,14 +22,165 @@ func TestMat(t *testing.T) {
 	}
 }
 
-func TestMatFromBytesWithEmptyByteSlise(t *testing.T) {
+func TestMatWithSizes(t *testing.T) {
+	t.Run("create mat with multidimensional array", func(t *testing.T) {
+		sizes := []int{100, 100, 100}
+		mat := NewMatWithSizes(sizes, MatTypeCV8U)
+		defer mat.Close()
+		if mat.Empty() {
+			t.Error("NewMatWithSizes should not be empty")
+		}
+
+		for i, val := range mat.Size() {
+			if val != sizes[i] {
+				t.Errorf("NewMatWithSizes incorrect size: %v\n", mat.Size())
+			}
+		}
+
+		if mat.Rows() != -1 {
+			t.Errorf("NewMatWithSizes incorrect row count: %v\n", mat.Rows())
+		}
+
+		if mat.Cols() != -1 {
+			t.Errorf("NewMatWithSizes incorrect col count: %v\n", mat.Cols())
+		}
+
+		if mat.Channels() != 1 {
+			t.Errorf("NewMatWithSizes incorrect channels count: %v\n", mat.Channels())
+		}
+
+		if mat.Type() != MatTypeCV8U {
+			t.Errorf("NewMatWithSizes incorrect type: %v\n", mat.Type())
+		}
+
+		if mat.Total() != 100*100*100 {
+			t.Errorf("NewMatWithSizes incorrect total: %v\n", mat.Total())
+		}
+	})
+
+	t.Run("create 2x3x3 multidimensional array with 3 channels and scalar", func(t *testing.T) {
+		sizes := []int{2, 3, 3}
+		s := NewScalar(255.0, 105.0, 180.0, 0.0)
+		mat := NewMatWithSizesWithScalar(sizes, MatTypeCV32FC3, s)
+		defer mat.Close()
+		if mat.Empty() {
+			t.Error("NewMatWithSizesWithScalar should not be empty")
+		}
+
+		for i, val := range mat.Size() {
+			if val != sizes[i] {
+				t.Errorf("NewMatWithSizesWithScalar incorrect size: %v\n", mat.Size())
+			}
+		}
+
+		if mat.Rows() != -1 {
+			t.Errorf("NewMatWithSizesWithScalar incorrect row count: %v\n", mat.Rows())
+		}
+
+		if mat.Cols() != -1 {
+			t.Errorf("NewMatWithSizesWithScalar incorrect col count: %v\n", mat.Cols())
+		}
+
+		if mat.Channels() != 3 {
+			t.Errorf("NewMatWithSizesWithScalar incorrect channels count: %v\n", mat.Channels())
+		}
+
+		if mat.Type() != MatTypeCV32FC3 {
+			t.Errorf("NewMatWithSizesWithScalar incorrect type: %v\n", mat.Type())
+		}
+
+		if mat.Total() != 2*3*3 {
+			t.Errorf("NewMatWithSizesWithScalar incorrect total: %v\n", mat.Total())
+		}
+
+		matChans := Split(mat)
+		scalar := []float32{255.0, 105.0, 180.0}
+		for c := 0; c < mat.Channels(); c++ {
+			for x := 0; x < sizes[0]; x++ {
+				for y := 0; y < sizes[1]; y++ {
+					for z := 0; z < sizes[2]; z++ {
+						if s := matChans[c].GetFloatAt3(x, y, z); s != scalar[c] {
+							t.Errorf("NewMatWithSizesWithScalar incorrect scalar: %v\n", s)
+						}
+					}
+				}
+			}
+		}
+	})
+
+	t.Run("create 1x2x3 multidimensional array with 3 channel and data", func(t *testing.T) {
+		sizes := []int{1, 2, 3}
+
+		// generate byte array
+		s := NewScalar(255.0, 123.0, 55.0, 0.0)
+		mat1 := NewMatWithSizesWithScalar(sizes, MatTypeCV32FC2, s)
+		defer mat1.Close()
+		b := mat1.ToBytes()
+
+		mat, err := NewMatWithSizesFromBytes(sizes, MatTypeCV32FC2, b)
+		defer mat.Close()
+		if err != nil {
+			t.Errorf("NewMatWithSizesFromBytes %v\n", err)
+		}
+		if mat.Empty() {
+			t.Error("NewMatWithSizesFromBytes should not be empty")
+		}
+
+		b1 := mat.ToBytes()
+		if !bytes.Equal(b, b1) {
+			t.Error("NewMatWithSizesFromBytes byte arrays not equal")
+		}
+
+		for i, val := range mat.Size() {
+			if val != sizes[i] {
+				t.Errorf("NewMatWithSizesFromBytes incorrect size: %v\n", mat.Size())
+			}
+		}
+
+		if mat.Rows() != -1 {
+			t.Errorf("NewMatWithSizesFromBytes incorrect row count: %v\n", mat.Rows())
+		}
+
+		if mat.Cols() != -1 {
+			t.Errorf("NewMatWithSizesFromBytes incorrect col count: %v\n", mat.Cols())
+		}
+
+		if mat.Channels() != 2 {
+			t.Errorf("NewMatWithSizesFromBytes incorrect channels count: %v\n", mat.Channels())
+		}
+
+		if mat.Type() != MatTypeCV32FC2 {
+			t.Errorf("NewMatWithSizesFromBytes incorrect type: %v\n", mat.Type())
+		}
+
+		if mat.Total() != 1*2*3 {
+			t.Errorf("NewMatWithSizesFromBytes incorrect total: %v\n", mat.Total())
+		}
+
+		matChans := Split(mat)
+		scalar := []float32{255.0, 123.0, 55.0}
+		for c := 0; c < mat.Channels(); c++ {
+			for x := 0; x < sizes[0]; x++ {
+				for y := 0; y < sizes[1]; y++ {
+					for z := 0; z < sizes[2]; z++ {
+						if s := matChans[c].GetFloatAt3(x, y, z); s != scalar[c] {
+							t.Errorf("NewMatWithSizesFromBytes incorrect value: %v\n", s)
+						}
+					}
+				}
+			}
+		}
+	})
+}
+
+func TestMatFromBytesWithEmptyByteSlice(t *testing.T) {
 	_, err := NewMatFromBytes(600, 800, MatTypeCV8U, []byte{})
 	if err == nil {
 		t.Error("TestMatFromBytesWithEmptyByteSlise: " +
-			"must fail because of an empty byte slise")
+			"must fail because of an empty byte slice")
 	}
 	if !strings.Contains(err.Error(), ErrEmptyByteSlice.Error()) {
-		t.Errorf("TestMatFromBytesWithEmptyByteSlise: "+
+		t.Errorf("TestMatFromBytesWithEmptyByteSlice: "+
 			"error must contain the following description: "+
 			"%v, but have: %v", ErrEmptyByteSlice, err)
 	}
@@ -68,27 +219,6 @@ func TestMatWithSize(t *testing.T) {
 
 	if mat.Cols() != 102 {
 		t.Errorf("NewMatWithSize incorrect col count: %v\n", mat.Cols())
-	}
-
-	if mat.Channels() != 1 {
-		t.Errorf("NewMatWithSize incorrect channels count: %v\n", mat.Channels())
-	}
-
-	if mat.Type() != 0 {
-		t.Errorf("NewMatWithSize incorrect type: %v\n", mat.Type())
-	}
-}
-
-func TestMatWithSizes(t *testing.T) {
-	mat := NewMatWithSizes([]int{42, 43, 44}, MatTypeCV8U)
-	defer mat.Close()
-	if mat.Empty() {
-		t.Error("NewMatWithSizes should not be empty")
-	}
-
-	size := mat.Size()
-	if size[0] != 42 || size[1] != 43 || size[2] != 44 {
-		t.Errorf("NewMatWithSize incorrect size: %v\n", mat.Size())
 	}
 
 	if mat.Channels() != 1 {
