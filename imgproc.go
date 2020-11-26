@@ -1946,3 +1946,76 @@ func PhaseCorrelate(src1, src2, window Mat) (phaseShift Point2f, response float6
 		Y: float32(result.y),
 	}, float64(responseDouble)
 }
+
+// Adds the square of a source image to the accumulator image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga1a567a79901513811ff3b9976923b199
+//
+
+func Accumulate(src Mat, dst *Mat) {
+	C.Mat_Accumulate(src.p, dst.p)
+}
+
+// Adds an image to the accumulator image with mask.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga1a567a79901513811ff3b9976923b199
+//
+func AccumulateWithMask(src Mat, dst *Mat, mask Mat) {
+	C.Mat_AccumulateWithMask(src.p, dst.p, mask.p)
+}
+
+// Adds the square of a source image to the accumulator image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#gacb75e7ffb573227088cef9ceaf80be8c
+//
+func AccumulateSquare(src Mat, dst *Mat) {
+	C.Mat_AccumulateSquare(src.p, dst.p)
+}
+
+// Adds the square of a source image to the accumulator image with mask.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#gacb75e7ffb573227088cef9ceaf80be8c
+//
+func AccumulateSquareWithMask(src Mat, dst *Mat, mask Mat) {
+	C.Mat_AccumulateSquareWithMask(src.p, dst.p, mask.p)
+}
+
+// Adds the per-element product of two input images to the accumulator image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga82518a940ecfda49460f66117ac82520
+//
+func AccumulateProduct(src1 Mat, src2 Mat, dst *Mat) {
+	C.Mat_AccumulateProduct(src1.p, src2.p, dst.p)
+}
+
+// Adds the per-element product of two input images to the accumulator image with mask.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga82518a940ecfda49460f66117ac82520
+//
+func AccumulateProductWithMask(src1 Mat, src2 Mat, dst *Mat, mask Mat) {
+	C.Mat_AccumulateProductWithMask(src1.p, src2.p, dst.p, mask.p)
+}
+
+// Updates a running average.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga4f9552b541187f61f6818e8d2d826bc7
+//
+func AccumulatedWeighted(src Mat, dst *Mat, alpha float64) {
+	C.Mat_AccumulatedWeighted(src.p, dst.p, C.double(alpha))
+}
+
+// Updates a running average with mask.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga4f9552b541187f61f6818e8d2d826bc7
+//
+func AccumulatedWeightedWithMask(src Mat, dst *Mat, alpha float64, mask Mat) {
+	C.Mat_AccumulatedWeightedWithMask(src.p, dst.p, C.double(alpha), mask.p)
+}
