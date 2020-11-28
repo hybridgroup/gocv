@@ -171,18 +171,14 @@ Your pull requests will be greatly appreciated!
 
 - [ ] **features2d. 2D Features Framework - WORK STARTED**
     - [X] **Feature Detection and Description**
-    - [ ] **Descriptor Matchers - WORK STARTED** The following functions still need implementation:
-        - [X] [FlannBasedMatcher](https://docs.opencv.org/master/dc/de2/classcv_1_1FlannBasedMatcher.html)
-    - [ ] **Drawing Function of Keypoints and Matches - WORK STARTED** The following function still needs implementation:
-        - [X] [drawMatches](https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html#ga7421b3941617d7267e3f2311582f49e1)
+    - [X] **Descriptor Matchers**
+    - [X] **Drawing Function of Keypoints and Matches**
     - [ ] Object Categorization
         - [ ] [BOWImgDescriptorExtractor](https://docs.opencv.org/master/d2/d6b/classcv_1_1BOWImgDescriptorExtractor.html)
         - [ ] [BOWKMeansTrainer](https://docs.opencv.org/master/d4/d72/classcv_1_1BOWKMeansTrainer.html)
 
 - [X] **objdetect. Object Detection**
-- [ ] **dnn. Deep Neural Network module - WORK STARTED** The following functions still need implementation:
-    - [X] [NMSBoxes](https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga9d118d70a1659af729d01b10233213ee)
-
+- [X] **dnn. Deep Neural Network module**
 - [ ] ml. Machine Learning
 - [ ] flann. Clustering and Search in Multi-Dimensional Spaces
 - [ ] photo. Computational Photography
