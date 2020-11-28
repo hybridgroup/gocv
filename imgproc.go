@@ -2048,9 +2048,11 @@ func ImageToMatRGBA(img image.Image) (Mat, error) {
 	}
 
 	cvImg, err := NewMatFromBytes(y, x, MatTypeCV8UC4, data)
-	if nil != err {
+	if err != nil {
 		return NewMat(), err
 	}
+
+	defer cvImg.Close()
 
 	dst := NewMat()
 	C.CvtColor(cvImg.p, dst.p, C.int(ColorBGRAToRGBA))
@@ -2088,9 +2090,10 @@ func ImageToMatRGB(img image.Image) (Mat, error) {
 	}
 
 	src, err := NewMatFromBytes(y, x, MatTypeCV8UC4, data)
-	if nil != err {
-		return NewMat(), errors.New("Image data error")
+	if err != nil {
+		return NewMat(), err
 	}
+	defer src.Close()
 
 	dst := NewMat()
 	CvtColor(src, &dst, ColorRGBAToBGR)
