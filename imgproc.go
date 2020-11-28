@@ -1967,6 +1967,8 @@ func (m *Mat) ToImage() (image.Image, error) {
 
 	// MatTypeCV8UC3 and MatTypeCV8UC4
 	dst := NewMat()
+	defer dst.Close()
+
 	if MatTypeCV8UC3 == t {
 		C.CvtColor(m.p, dst.p, C.int(ColorBGRToRGBA))
 		data := ([]byte)(dst.DataPtrUint8())
