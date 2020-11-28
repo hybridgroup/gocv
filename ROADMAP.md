@@ -187,6 +187,9 @@ Your pull requests will be greatly appreciated!
 - [ ] flann. Clustering and Search in Multi-Dimensional Spaces
 - [ ] photo. Computational Photography
 - [ ] stitching. Images stitching
+
+## CUDA
+
 - [ ] **cudaarithm. Operations on Matrices - WORK STARTED** The following functions still need implementation:
     - [ ] [cv::cuda::abs](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga54a72bd772494ab34d05406fd76df2b6)
     - [ ] [cv::cuda::absdiff](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac062b283cf46ee90f74a773d3382ab54)
@@ -261,13 +264,10 @@ Your pull requests will be greatly appreciated!
 - [ ] cudastereo. Stereo Correspondence
 - [X] **cudawarping. Image Warping**
 - [ ] cudev. Device layer
-- [ ] shape. Shape Distance and Matching
-- [ ] superres. Super Resolution
-- [ ] videostab. Video Stabilization
-- [ ] viz. 3D Visualizer
 
 ## Contrib modules list
 
+- [ ] alphamat. Alpha Matting
 - [ ] aruco. ArUco Marker Detection
 - [X] **bgsegm. Improved Background-Foreground Segmentation Methods - WORK STARTED**
 - [ ] bioinspired. Biologically inspired vision models and derivated tools
@@ -276,26 +276,36 @@ Your pull requests will be greatly appreciated!
 - [ ] cvv. GUI for Interactive Visual Debugging of Computer Vision Programs
 - [ ] datasets. Framework for working with different datasets
 - [ ] dnn_modern. Deep Learning Modern Module
+- [ ] dnn_objdetect. DNN used for object detection
+- [ ] dnn_superres. DNN used for super resolution
 - [ ] dpm. Deformable Part-based Models
 - [ ] **face. Face Recognition - WORK STARTED**
 - [ ] freetype. Drawing UTF-8 strings with freetype/harfbuzz
 - [ ] fuzzy. Image processing based on fuzzy mathematics
 - [ ] hdf. Hierarchical Data Format I/O routines
+- [ ] hfs. Hierarchical Feature Selection for Efficient Image Segmentation
 - [X] **img_hash. The module brings implementations of different image hashing algorithms.**
+- [ ] intensity_transform. The module brings implementations of intensity transformation algorithms to adjust image contrast.
 - [ ] line_descriptor. Binary descriptors for lines extracted from an image
+- [ ] mcc. Macbeth Chart module
 - [ ] matlab. MATLAB Bridge
 - [ ] optflow. Optical Flow Algorithms
+- [ ] ovis. OGRE 3D Visualiser
 - [ ] phase_unwrapping. Phase Unwrapping API
 - [ ] plot. Plot function for Mat data
 - [ ] reg. Image Registration
 - [ ] rgbd. RGB-Depth Processing
 - [ ] saliency. Saliency API
 - [ ] sfm. Structure From Motion
+- [ ] shape. Shape Distance and Matching
 - [ ] stereo. Stereo Correspondance Algorithms
 - [ ] structured_light. Structured Light API
+- [ ] superres. Super Resolution
 - [ ] surface_matching. Surface Matching
 - [ ] text. Scene Text Detection and Recognition
 - [ ] **tracking. Tracking API - WORK STARTED**
+- [ ] videostab. Video Stabilization
+- [ ] viz. 3D Visualizer
 - [ ] **xfeatures2d. Extra 2D Features Framework - WORK STARTED**
 - [ ] ximgproc. Extended Image Processing
 - [ ] xobjdetect. Extended object detection
