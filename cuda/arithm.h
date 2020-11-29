@@ -11,6 +11,7 @@ extern "C" {
 #endif
 #include "cuda.h"
 
+void GpuAbs(GpuMat src, GpuMat dst);
 void GpuThreshold(GpuMat src, GpuMat dst, double thresh, double maxval, int typ);
 
 #ifdef __cplusplus

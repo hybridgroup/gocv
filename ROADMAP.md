@@ -212,7 +212,7 @@ Your pull requests will be greatly appreciated!
 ## CUDA
 
 - [ ] **cudaarithm. Operations on Matrices - WORK STARTED** The following functions still need implementation:
-    - [ ] [cv::cuda::abs](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga54a72bd772494ab34d05406fd76df2b6)
+    - [X] [cv::cuda::abs](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga54a72bd772494ab34d05406fd76df2b6)
     - [ ] [cv::cuda::absdiff](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac062b283cf46ee90f74a773d3382ab54)
     - [ ] [cv::cuda::add](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga5d9794bde97ed23d1c1485249074a8b1)
     - [ ] [cv::cuda::addWeighted](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga2cd14a684ea70c6ab2a63ee90ffe6201)
@@ -267,7 +267,6 @@ Your pull requests will be greatly appreciated!
     - [ ] [cv::cuda::meanShiftProc](https://docs.opencv.org/master/d0/d05/group__cudaimgproc.html#ga6039dc8ecbe2f912bc83fcc9b3bcca39)
     - [ ] [cv::cuda::meanShiftSegmentation](https://docs.opencv.org/master/d0/d05/group__cudaimgproc.html#ga70ed80533a448829dc48cf22b1845c16)
 
-- [ ] cudalegacy. Legacy support
 - [X] **cudaobjdetect. Object Detection**
 - [ ] **cudaoptflow. Optical Flow - WORK STARTED** The following functions still need implementation:
     - [ ] [BroxOpticalFlow](https://docs.opencv.org/master/d7/d18/classcv_1_1cuda_1_1BroxOpticalFlow.html)
