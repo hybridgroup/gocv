@@ -19,7 +19,6 @@ typedef void* CannyEdgeDetector;
 #endif
 
 void GpuCvtColor(GpuMat src, GpuMat dst, int code);
-void GpuThreshold(GpuMat src, GpuMat dst, double thresh, double maxval, int typ);
 CannyEdgeDetector CreateCannyEdgeDetector(double lowThresh, double highThresh, int appertureSize, bool L2gradient);
 GpuMat CannyEdgeDetector_Detect(CannyEdgeDetector det, GpuMat img);
 int CannyEdgeDetector_GetAppertureSize(CannyEdgeDetector det);

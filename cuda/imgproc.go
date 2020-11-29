@@ -22,7 +22,7 @@ type CannyEdgeDetector struct {
 	p unsafe.Pointer
 }
 
-// NewCascadeClassifier_GPU returns a new CascadeClassifier.
+// CreateCannyEdgeDetector returns a new CannyEdgeDetector.
 func CreateCannyEdgeDetector(lowThresh, highThresh float64, appertureSize int, L2gradient bool) CannyEdgeDetector {
 	return CannyEdgeDetector{p: unsafe.Pointer(C.CreateCannyEdgeDetector(C.double(lowThresh), C.double(highThresh), C.int(appertureSize), C.bool(L2gradient)))}
 }
@@ -117,13 +117,4 @@ func (h *CannyEdgeDetector) SetLowThreshold(lowThresh float64) {
 //
 func CvtColor(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode) {
 	C.GpuCvtColor(src.p, dst.p, C.int(code))
-}
-
-// Threshold applies a fixed-level threshold to each array element.
-//
-// For further details, please see:
-// https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga40f1c94ae9a9456df3cad48e3cb008e1
-//
-func Threshold(src GpuMat, dst *GpuMat, thresh, maxval float64, typ int) {
-	C.GpuThreshold(src.p, dst.p, C.double(thresh), C.double(maxval), C.int(typ))
 }
