@@ -1,16 +1,12 @@
-###################
-#  GoCV + OpenCV  #
-###################
+# to build this docker image:
+#   docker build .
 FROM gocv/opencv:4.5.0
-LABEL maintainer="hybridgroup"
 
 ENV GOPATH /go
-WORKDIR $GOPATH
 
-RUN go get -u -d gocv.io/x/gocv
+COPY . /go/src/gocv.io/x/gocv/
 
-WORKDIR ${GOPATH}/src/gocv.io/x/gocv/cmd/version/
+WORKDIR /go/src/gocv.io/x/gocv
+RUN go build -tags example -o /build/gocv_version -i ./cmd/version/
 
-RUN go build -o gocv_version -i main.go
-
-CMD ["./gocv_version"]
+CMD ["/build/gocv_version"]
