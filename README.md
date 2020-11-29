@@ -155,17 +155,17 @@ If it works correctly, at the end of the entire process, the following message s
 
 That's it, now you are ready to use GoCV.
 
-#### Install Cuda
+#### Using CUDA with GoCV
 
-	[cuda directory](./cuda)
+See the [cuda directory](./cuda) for information.
 
-#### Install OpenVINO
+#### Using OpenVINO with GoCV
 
-	[openvino directory](./openvino)
+See the [openvino directory](./openvino) for information.
 	
-#### Install OpenVINO and Cuda
+#### Make Install for OpenVINO and Cuda
 
-	The following commands should do everything to download and install OpenCV 4.5.0 with Cuda and OpenVINO on Linux:
+	The following commands should do everything to download and install OpenCV 4.5.0 with CUDA and OpenVINO on Linux:
 
 	cd $GOPATH/src/gocv.io/x/gocv
 	make install_all
