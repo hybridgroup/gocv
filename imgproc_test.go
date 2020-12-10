@@ -2009,3 +2009,129 @@ func TestImageGrayToMatGray(t *testing.T) {
 		t.Errorf("Image after converting to Mat and back to Image isn't the same")
 	}
 }
+
+func TestAccumulate(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := NewMatWithSizes(src.Size(), MatTypeCV64FC3)
+	defer dst.Close()
+
+	Accumulate(src, &dst)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("Accumulate: dst is empty")
+	}
+}
+
+func TestAccumulateWithMask(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := NewMatWithSizes(src.Size(), MatTypeCV64FC3)
+	defer dst.Close()
+
+	mask := NewMat()
+	defer mask.Close()
+	AccumulateWithMask(src, &dst, mask)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("Accumulate: dst is empty")
+	}
+}
+
+func TestAccumulateSquare(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := NewMatWithSizes(src.Size(), MatTypeCV64FC3)
+	defer dst.Close()
+
+	AccumulateSquare(src, &dst)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("Accumulate: dst is empty")
+	}
+}
+
+func TestAccumulateSquareWithMask(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := NewMatWithSizes(src.Size(), MatTypeCV64FC3)
+	defer dst.Close()
+
+	mask := NewMat()
+	defer mask.Close()
+	AccumulateSquareWithMask(src, &dst, mask)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("Accumulate: dst is empty")
+	}
+}
+
+func TestAccumulateProduct(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	src2 := src.Clone()
+	defer src2.Close()
+
+	dst := NewMatWithSizes(src.Size(), MatTypeCV64FC3)
+	defer dst.Close()
+
+	AccumulateProduct(src, src2, &dst)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("Accumulate: dst is empty")
+	}
+}
+
+func TestAccumulateProductWithMask(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	src2 := src.Clone()
+	defer src2.Close()
+
+	dst := NewMatWithSizes(src.Size(), MatTypeCV64FC3)
+	defer dst.Close()
+
+	mask := NewMat()
+	defer mask.Close()
+	AccumulateProductWithMask(src, src2, &dst, mask)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("Accumulate: dst is empty")
+	}
+}
+
+func TestAccumulatedWeighted(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := NewMatWithSizes(src.Size(), MatTypeCV64FC3)
+	defer dst.Close()
+
+	AccumulatedWeighted(src, &dst, 0.1)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("AccumulatedWeighted: dst is empty")
+	}
+}
+
+func TestAccumulatedWeightedWithMask(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer src.Close()
+
+	dst := NewMatWithSizes(src.Size(), MatTypeCV64FC3)
+	defer dst.Close()
+
+	mask := NewMat()
+	defer mask.Close()
+	AccumulatedWeightedWithMask(src, &dst, 0.1, mask)
+
+	if ok := dst.Empty(); ok {
+		t.Errorf("AccumulatedWeighted: dst is empty")
+	}
+}
