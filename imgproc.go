@@ -1953,7 +1953,10 @@ func (m *Mat) ToImage() (image.Image, error) {
 	switch m.Type() {
 	case MatTypeCV8UC1:
 		img := image.NewGray(image.Rect(0, 0, m.Cols(), m.Rows()))
-		data := ([]byte)(m.DataPtrUint8())
+		data, err := m.DataPtrUint8()
+		if err != nil {
+			return nil, err
+		}
 		copy(img.Pix, data[0:])
 		return img, nil
 
@@ -1964,7 +1967,11 @@ func (m *Mat) ToImage() (image.Image, error) {
 		C.CvtColor(m.p, dst.p, C.int(ColorBGRToRGBA))
 
 		img := image.NewRGBA(image.Rect(0, 0, m.Cols(), m.Rows()))
-		data := ([]byte)(dst.DataPtrUint8())
+		data, err := dst.DataPtrUint8()
+		if err != nil {
+			return nil, err
+		}
+
 		copy(img.Pix, data[0:])
 		return img, nil
 
@@ -1975,7 +1982,10 @@ func (m *Mat) ToImage() (image.Image, error) {
 		C.CvtColor(m.p, dst.p, C.int(ColorBGRAToRGBA))
 
 		img := image.NewNRGBA(image.Rect(0, 0, m.Cols(), m.Rows()))
-		data := ([]byte)(dst.DataPtrUint8())
+		data, err := dst.DataPtrUint8()
+		if err != nil {
+			return nil, err
+		}
 		copy(img.Pix, data[0:])
 		return img, nil
 

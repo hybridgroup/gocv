@@ -241,6 +241,7 @@ Mat Mat_NewFromBytes(int rows, int cols, int type, struct ByteArray buf);
 Mat Mat_FromPtr(Mat m, int rows, int cols, int type, int prows, int pcols);
 void Mat_Close(Mat m);
 int Mat_Empty(Mat m);
+bool Mat_IsContinuous(Mat m);
 Mat Mat_Clone(Mat m);
 void Mat_CopyTo(Mat m, Mat dst);
 int Mat_Total(Mat m);

@@ -472,7 +472,10 @@ func TestMatDataPtr(t *testing.T) {
 		mat1 := NewMatWithSize(rows, cols, MatTypeCV8U)
 		defer mat1.Close()
 
-		b := mat1.DataPtrUint8()
+		b, err := mat1.DataPtrUint8()
+		if err != nil {
+			t.Error(err)
+		}
 		if len(b) != 101*102 {
 			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 		}
@@ -487,7 +490,10 @@ func TestMatDataPtr(t *testing.T) {
 
 		mat2 := NewMatWithSize(3, 9, MatTypeCV32F)
 		defer mat2.Close()
-		b = mat2.DataPtrUint8()
+		b, err = mat2.DataPtrUint8()
+		if err != nil {
+			t.Error(err)
+		}
 		if len(b) != 3*9*4 {
 			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 		}
@@ -506,7 +512,11 @@ func TestMatDataPtr(t *testing.T) {
 		mat1 := NewMatWithSize(101, 102, MatTypeCV8S)
 		defer mat1.Close()
 
-		b := mat1.DataPtrInt8()
+		b, err := mat1.DataPtrInt8()
+		if err != nil {
+			t.Error(err)
+		}
+
 		if len(b) != rows*cols {
 			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 		}
@@ -521,7 +531,10 @@ func TestMatDataPtr(t *testing.T) {
 
 		mat2 := NewMatWithSize(3, 9, MatTypeCV32F)
 		defer mat2.Close()
-		b = mat2.DataPtrInt8()
+		b, err = mat2.DataPtrInt8()
+		if err != nil {
+			t.Error(err)
+		}
 		if len(b) != 3*9*4 {
 			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 		}

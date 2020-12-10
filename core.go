@@ -332,6 +332,15 @@ func (m *Mat) Empty() bool {
 	return isEmpty != 0
 }
 
+// IsContinuous determines if the Mat is continuous.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#aa90cea495029c7d1ee0a41361ccecdf3
+//
+func (m *Mat) IsContinuous() bool {
+	return bool(C.Mat_IsContinuous(m.p))
+}
+
 // Clone returns a cloned full copy of the Mat.
 func (m *Mat) Clone() Mat {
 	return newMat(C.Mat_Clone(m.p))
@@ -417,28 +426,44 @@ func (m *Mat) ToBytes() []byte {
 //
 // The data is no longer valid once the Mat has been closed. Any data that
 // needs to be accessed after the Mat is closed must be copied into Go memory.
-func (m *Mat) DataPtrUint8() []uint8 {
+func (m *Mat) DataPtrUint8() ([]uint8, error) {
+	if m.Type()&MatTypeCV8U != MatTypeCV8U {
+		return nil, errors.New("DataPtrUint8 only supports MatTypeCV8U")
+	}
+
+	if !m.IsContinuous() {
+		return nil, errors.New("DataPtrUint8 requires continuous Mat")
+	}
+
 	p := C.Mat_DataPtr(m.p)
 	h := &reflect.SliceHeader{
 		Data: uintptr(unsafe.Pointer(p.data)),
 		Len:  int(p.length),
 		Cap:  int(p.length),
 	}
-	return *(*[]uint8)(unsafe.Pointer(h))
+	return *(*[]uint8)(unsafe.Pointer(h)), nil
 }
 
 // DataPtrInt8 returns a slice that references the OpenCV allocated data.
 //
 // The data is no longer valid once the Mat has been closed. Any data that
 // needs to be accessed after the Mat is closed must be copied into Go memory.
-func (m *Mat) DataPtrInt8() []int8 {
+func (m *Mat) DataPtrInt8() ([]int8, error) {
+	if m.Type()&MatTypeCV8S != MatTypeCV8S {
+		return nil, errors.New("DataPtrInt8 only supports MatTypeCV8S")
+	}
+
+	if !m.IsContinuous() {
+		return nil, errors.New("DataPtrInt8 requires continuous Mat")
+	}
+
 	p := C.Mat_DataPtr(m.p)
 	h := &reflect.SliceHeader{
 		Data: uintptr(unsafe.Pointer(p.data)),
 		Len:  int(p.length),
 		Cap:  int(p.length),
 	}
-	return *(*[]int8)(unsafe.Pointer(h))
+	return *(*[]int8)(unsafe.Pointer(h)), nil
 }
 
 // DataPtrUint16 returns a slice that references the OpenCV allocated data.
@@ -448,6 +473,10 @@ func (m *Mat) DataPtrInt8() []int8 {
 func (m *Mat) DataPtrUint16() ([]uint16, error) {
 	if m.Type()&MatTypeCV16U != MatTypeCV16U {
 		return nil, errors.New("DataPtrUint16 only supports MatTypeCV16U")
+	}
+
+	if !m.IsContinuous() {
+		return nil, errors.New("DataPtrUint16 requires continuous Mat")
 	}
 
 	p := C.Mat_DataPtr(m.p)
@@ -468,6 +497,10 @@ func (m *Mat) DataPtrInt16() ([]int16, error) {
 		return nil, errors.New("DataPtrInt16 only supports MatTypeCV16S")
 	}
 
+	if !m.IsContinuous() {
+		return nil, errors.New("DataPtrInt16 requires continuous Mat")
+	}
+
 	p := C.Mat_DataPtr(m.p)
 	h := &reflect.SliceHeader{
 		Data: uintptr(unsafe.Pointer(p.data)),
@@ -486,6 +519,10 @@ func (m *Mat) DataPtrFloat32() ([]float32, error) {
 		return nil, errors.New("DataPtrFloat32 only supports MatTypeCV32F")
 	}
 
+	if !m.IsContinuous() {
+		return nil, errors.New("DataPtrFloat32 requires continuous Mat")
+	}
+
 	p := C.Mat_DataPtr(m.p)
 	h := &reflect.SliceHeader{
 		Data: uintptr(unsafe.Pointer(p.data)),
@@ -502,6 +539,10 @@ func (m *Mat) DataPtrFloat32() ([]float32, error) {
 func (m *Mat) DataPtrFloat64() ([]float64, error) {
 	if m.Type()&MatTypeCV64F != MatTypeCV64F {
 		return nil, errors.New("DataPtrFloat64 only supports MatTypeCV64F")
+	}
+
+	if !m.IsContinuous() {
+		return nil, errors.New("DataPtrFloat64 requires continuous Mat")
 	}
 
 	p := C.Mat_DataPtr(m.p)

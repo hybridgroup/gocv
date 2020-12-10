@@ -87,6 +87,11 @@ int Mat_Empty(Mat m) {
     return m->empty();
 }
 
+// Mat_IsContinuous tests if a Mat is continuous
+bool Mat_IsContinuous(Mat m) {
+    return m->isContinuous();
+}
+
 // Mat_Clone returns a clone of this Mat
 Mat Mat_Clone(Mat m) {
     return new cv::Mat(m->clone());
