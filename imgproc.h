@@ -121,7 +121,14 @@ void CLAHE_Close(CLAHE c);
 void CLAHE_Apply(CLAHE c, Mat src, Mat dst);
 void InvertAffineTransform(Mat src, Mat dst);
 Point2f PhaseCorrelate(Mat src1, Mat src2, Mat window, double* response);
-
+void Mat_Accumulate(Mat src, Mat dst);
+void Mat_AccumulateWithMask(Mat src, Mat dst, Mat mask);
+void Mat_AccumulateSquare(Mat src, Mat dst);
+void Mat_AccumulateSquareWithMask(Mat src, Mat dst, Mat mask);
+void Mat_AccumulateProduct(Mat src1, Mat src2, Mat dst);
+void Mat_AccumulateProductWithMask(Mat src1, Mat src2, Mat dst, Mat mask);
+void Mat_AccumulatedWeighted(Mat src, Mat dst, double alpha);
+void Mat_AccumulatedWeightedWithMask(Mat src, Mat dst, double alpha, Mat mask);
 #ifdef __cplusplus
 }
 #endif
