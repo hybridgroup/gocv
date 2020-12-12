@@ -1774,6 +1774,7 @@ func SortIdx(src Mat, dst *Mat, flags SortFlags) {
 }
 
 // Split creates an array of single channel images from a multi-channel image
+// Created images should be closed manualy to avoid memory leaks.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga0547c7fed86152d7e9d0096029c8518a

@@ -42,6 +42,11 @@ func TestMatProfile(t *testing.T) {
 }
 
 func TestAddMatToProfile(t *testing.T) {
+	if MatProfile.Count() != 0 {
+		var b bytes.Buffer
+		MatProfile.WriteTo(&b, 1)
+		t.Errorf("Mat profile should start with 0 entries. A test failure here likely means that some other test is not closing all Mats. Here are the current profile entries:\n%v", b.String())
+	}
 	mat := NewMatWithSize(5, 5, MatTypeCV8UC3)
 	if MatProfile.Count() != 1 {
 		t.Errorf("Mat profile should == 1 after creating 3 channel mat but instead was %v", MatProfile.Count())
