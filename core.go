@@ -1785,6 +1785,7 @@ func Split(src Mat) (mv []Mat) {
 	mv = make([]Mat, cMats.length)
 	for i := C.int(0); i < cMats.length; i++ {
 		mv[i].p = C.Mats_get(cMats, i)
+		addMatToProfile(mv[i].p)
 	}
 	return
 }

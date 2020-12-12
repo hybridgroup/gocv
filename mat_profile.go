@@ -58,6 +58,12 @@ func init() {
 	}
 }
 
+// addMatToProfile records Mat to the MatProfile.
+func addMatToProfile(p C.Mat) {
+	MatProfile.Add(p, 1)
+	return
+}
+
 // newMat returns a new Mat from a C Mat and records it to the MatProfile.
 func newMat(p C.Mat) Mat {
 	m := Mat{p: p}
