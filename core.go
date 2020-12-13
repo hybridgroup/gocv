@@ -427,10 +427,6 @@ func (m *Mat) ToBytes() []byte {
 // The data is no longer valid once the Mat has been closed. Any data that
 // needs to be accessed after the Mat is closed must be copied into Go memory.
 func (m *Mat) DataPtrUint8() ([]uint8, error) {
-	if m.Type()&MatTypeCV8U != MatTypeCV8U {
-		return nil, errors.New("DataPtrUint8 only supports MatTypeCV8U")
-	}
-
 	if !m.IsContinuous() {
 		return nil, errors.New("DataPtrUint8 requires continuous Mat")
 	}
