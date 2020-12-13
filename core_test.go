@@ -497,6 +497,13 @@ func TestMatDataPtr(t *testing.T) {
 		if len(b) != 3*9*4 {
 			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 		}
+
+		mat3 := mat1.Region(image.Rect(25, 25, 75, 75))
+		defer mat3.Close()
+		_, err = mat3.DataPtrUint8()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
 	})
 	t.Run("Int8", func(t *testing.T) {
 		testPoints := []struct {
@@ -538,6 +545,13 @@ func TestMatDataPtr(t *testing.T) {
 		if len(b) != 3*9*4 {
 			t.Errorf("Mat bytes incorrect length: %v\n", len(b))
 		}
+
+		mat3 := mat1.Region(image.Rect(25, 25, 75, 75))
+		defer mat3.Close()
+		_, err = mat3.DataPtrInt8()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
 	})
 	t.Run("Uint16", func(t *testing.T) {
 		testPoints := []struct {
@@ -572,6 +586,13 @@ func TestMatDataPtr(t *testing.T) {
 		mat2 := NewMatWithSize(3, 9, MatTypeCV32F)
 		defer mat2.Close()
 		_, err = mat2.DataPtrUint16()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
+
+		mat3 := mat1.Region(image.Rect(25, 25, 75, 75))
+		defer mat3.Close()
+		_, err = mat3.DataPtrUint16()
 		if err == nil {
 			t.Errorf("Expected error.")
 		}
@@ -612,6 +633,13 @@ func TestMatDataPtr(t *testing.T) {
 		if err == nil {
 			t.Errorf("Expected error.")
 		}
+
+		mat3 := mat1.Region(image.Rect(25, 25, 75, 75))
+		defer mat3.Close()
+		_, err = mat3.DataPtrInt16()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
 	})
 	t.Run("Float32", func(t *testing.T) {
 		testPoints := []struct {
@@ -649,6 +677,13 @@ func TestMatDataPtr(t *testing.T) {
 		if err == nil {
 			t.Errorf("Expected error.")
 		}
+
+		mat3 := mat1.Region(image.Rect(25, 25, 75, 75))
+		defer mat3.Close()
+		_, err = mat3.DataPtrFloat32()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
 	})
 	t.Run("Float64", func(t *testing.T) {
 		testPoints := []struct {
@@ -683,6 +718,13 @@ func TestMatDataPtr(t *testing.T) {
 		mat2 := NewMatWithSize(3, 9, MatTypeCV16S)
 		defer mat2.Close()
 		_, err = mat2.DataPtrFloat64()
+		if err == nil {
+			t.Errorf("Expected error.")
+		}
+
+		mat3 := mat1.Region(image.Rect(25, 25, 75, 75))
+		defer mat3.Close()
+		_, err = mat3.DataPtrFloat64()
 		if err == nil {
 			t.Errorf("Expected error.")
 		}

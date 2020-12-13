@@ -1875,6 +1875,13 @@ func TestMatToImage(t *testing.T) {
 		t.Errorf("TestToImage incorrect height got %d.", img.Bounds().Dy())
 	}
 
+	matreg := mat1.Region(image.Rect(25, 25, 75, 75))
+	defer matreg.Close()
+	img, err = matreg.ToImage()
+	if err != nil {
+		t.Errorf("Expected error.")
+	}
+
 	mat2 := NewMatWithSize(101, 102, MatTypeCV8UC1)
 	defer mat2.Close()
 
@@ -1889,6 +1896,13 @@ func TestMatToImage(t *testing.T) {
 	img, err = mat3.ToImage()
 	if err != nil {
 		t.Errorf("TestToImage %v.", err)
+	}
+
+	matreg3 := mat3.Region(image.Rect(25, 25, 75, 75))
+	defer matreg3.Close()
+	img, err = matreg3.ToImage()
+	if err != nil {
+		t.Errorf("Expected error.")
 	}
 
 	matWithUnsupportedType := NewMatWithSize(101, 102, MatTypeCV8S)
@@ -1925,6 +1939,13 @@ func TestImageToMatRGBA(t *testing.T) {
 	if !compareImages(img0, img1) {
 		t.Errorf("Image after converting to Mat and back to Image isn't the same")
 	}
+
+	img3 := image.NewRGBA(image.Rect(0, 0, 200, 200))
+	mat3, err := ImageToMatRGBA(img3)
+	if err != nil {
+		t.Error(err)
+	}
+	defer mat3.Close()
 }
 
 //Tests that image is the same after converting to Mat and back to Image
@@ -1952,6 +1973,13 @@ func TestImageToMatRGB(t *testing.T) {
 	if !compareImages(img0, img1) {
 		t.Errorf("Image after converting to Mat and back to Image isn't the same")
 	}
+
+	img3 := image.NewRGBA(image.Rect(0, 0, 200, 200))
+	mat3, err := ImageToMatRGB(img3)
+	if err != nil {
+		t.Error(err)
+	}
+	defer mat3.Close()
 }
 
 func TestImageGrayToMatGray(t *testing.T) {
