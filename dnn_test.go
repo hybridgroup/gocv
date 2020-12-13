@@ -89,6 +89,9 @@ func checkNet(t *testing.T, net Net) {
 	if perf == 0 {
 		t.Error("ReadNet GetPerfProfile error")
 	}
+	for _, bl := range prob {
+		bl.Close()
+	}
 }
 
 func TestReadNetDisk(t *testing.T) {

@@ -180,6 +180,7 @@ func (net *Net) ForwardLayers(outBlobNames []string) (blobs []Mat) {
 	blobs = make([]Mat, cMats.length)
 	for i := C.int(0); i < cMats.length; i++ {
 		blobs[i].p = C.Mats_get(cMats, i)
+		addMatToProfile(blobs[i].p)
 	}
 	return
 }

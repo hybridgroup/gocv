@@ -103,6 +103,9 @@ func TestMatWithSizes(t *testing.T) {
 				}
 			}
 		}
+		for _, ch := range matChans {
+			ch.Close()
+		}
 	})
 
 	t.Run("create 1x2x3 multidimensional array with 3 channel and data", func(t *testing.T) {
@@ -166,6 +169,9 @@ func TestMatWithSizes(t *testing.T) {
 					}
 				}
 			}
+		}
+		for _, ch := range matChans {
+			ch.Close()
 		}
 	})
 }
@@ -270,6 +276,9 @@ func TestMatWithSizeFromScalar(t *testing.T) {
 				}
 			}
 		}
+	}
+	for _, i := range matChans {
+		i.Close()
 	}
 }
 
@@ -1712,6 +1721,9 @@ func TestMatSplit(t *testing.T) {
 	dst := NewMat()
 	defer dst.Close()
 	Merge(chans, &dst)
+	for _, ch := range chans {
+		ch.Close()
+	}
 	diff := NewMat()
 	defer diff.Close()
 	AbsDiff(src, dst, &diff)
@@ -2340,6 +2352,10 @@ func TestMixChannels(t *testing.T) {
 		}
 	}
 
+	for _, ch := range bgrChans {
+		ch.Close()
+	}
+
 	alphaChans := Split(alpha)
 	scalarByte = []byte{255}
 	for c := 0; c < alpha.Channels(); c++ {
@@ -2350,6 +2366,9 @@ func TestMixChannels(t *testing.T) {
 				}
 			}
 		}
+	}
+	for _, ch := range alphaChans {
+		ch.Close()
 	}
 }
 
