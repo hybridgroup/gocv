@@ -375,7 +375,7 @@ func TestFindAndDrawChessboard(t *testing.T) {
 	}
 
 	img2 := NewMatWithSize(150, 150, MatTypeCV8U)
-	defer img.Close()
+	defer img2.Close()
 
 	DrawChessboardCorners(&img2, image.Pt(4, 6), corners, true)
 	if img2.Empty() {
