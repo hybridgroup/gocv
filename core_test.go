@@ -126,6 +126,12 @@ func TestMatWithSizes(t *testing.T) {
 			t.Error("NewMatWithSizesFromBytes should not be empty")
 		}
 
+		mat2, err := NewMatWithSizesFromBytes(sizes, MatTypeCV32FC2, nil)
+		defer mat2.Close()
+		if err == nil {
+			t.Error("NewMatWithSizesFromBytes should return error with empty bytes")
+		}
+
 		b1 := mat.ToBytes()
 		if !bytes.Equal(b, b1) {
 			t.Error("NewMatWithSizesFromBytes byte arrays not equal")
@@ -231,6 +237,10 @@ func TestMatWithSize(t *testing.T) {
 	if mat.Type() != 0 {
 		t.Errorf("NewMatWithSize incorrect type: %v\n", mat.Type())
 	}
+
+	if mat.Step() != 102 {
+		t.Errorf("NewMatWithSize incorrect step count: %v\n", mat.Step())
+	}
 }
 
 func TestMatWithSizeFromScalar(t *testing.T) {
@@ -259,6 +269,10 @@ func TestMatWithSizeFromScalar(t *testing.T) {
 
 	if mat.Total() != 6 {
 		t.Errorf("incorrect total: %v\n", mat.Total())
+	}
+
+	if mat.Step() != 9 {
+		t.Errorf("NewMatWithSizeFromScalar incorrect step count: %v\n", mat.Step())
 	}
 
 	sz := mat.Size()
@@ -2377,6 +2391,46 @@ func TestGetVecfAt(t *testing.T) {
 		m            Mat
 		expectedSize int
 	}{
+		{NewMatWithSize(1, 1, MatTypeCV32FC1), 1},
+		{NewMatWithSize(1, 1, MatTypeCV32FC2), 2},
+		{NewMatWithSize(1, 1, MatTypeCV32FC3), 3},
+		{NewMatWithSize(1, 1, MatTypeCV32FC4), 4},
+	}
+
+	for _, c := range cases {
+		vec := c.m.GetVecfAt(0, 0)
+		if len := len(vec); len != c.expectedSize {
+			t.Errorf("TestGetVecfAt: expected %d, got: %d.", c.expectedSize, len)
+		}
+		c.m.Close()
+	}
+}
+
+func TestGetVecdAt(t *testing.T) {
+	var cases = []struct {
+		m            Mat
+		expectedSize int
+	}{
+		{NewMatWithSize(1, 1, MatTypeCV64FC1), 1},
+		{NewMatWithSize(1, 1, MatTypeCV64FC2), 2},
+		{NewMatWithSize(1, 1, MatTypeCV64FC3), 3},
+		{NewMatWithSize(1, 1, MatTypeCV64FC4), 4},
+	}
+
+	for _, c := range cases {
+		vec := c.m.GetVecdAt(0, 0)
+		if len := len(vec); len != c.expectedSize {
+			t.Errorf("TestGetVecdAt: expected %d, got: %d.", c.expectedSize, len)
+		}
+		c.m.Close()
+	}
+}
+
+func TestGetVecbAt(t *testing.T) {
+	var cases = []struct {
+		m            Mat
+		expectedSize int
+	}{
 		{NewMatWithSize(1, 1, MatTypeCV8UC1), 1},
 		{NewMatWithSize(1, 1, MatTypeCV8UC2), 2},
 		{NewMatWithSize(1, 1, MatTypeCV8UC3), 3},
@@ -2384,9 +2438,9 @@ func TestGetVecfAt(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		vec := c.m.GetVecfAt(0, 0)
+		vec := c.m.GetVecbAt(0, 0)
 		if len := len(vec); len != c.expectedSize {
-			t.Errorf("TestGetVecfAt: expected %d, got: %d.", c.expectedSize, len)
+			t.Errorf("TestGetVecbAt: expected %d, got: %d.", c.expectedSize, len)
 		}
 		c.m.Close()
 	}

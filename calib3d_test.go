@@ -353,7 +353,7 @@ func TestFisheyeUndistortPoint(t *testing.T) {
 	}
 
 }
-func TestFindChessboard(t *testing.T) {
+func TestFindAndDrawChessboard(t *testing.T) {
 	img := IMRead("images/chessboard_4x6.png", IMReadUnchanged)
 	if img.Empty() {
 		t.Error("Invalid read of chessboard image")
@@ -372,6 +372,14 @@ func TestFindChessboard(t *testing.T) {
 	if corners.Empty() {
 		t.Error("chessboard pattern not found")
 		return
+	}
+
+	img2 := NewMatWithSize(150, 150, MatTypeCV8U)
+	defer img.Close()
+
+	DrawChessboardCorners(&img2, image.Pt(4, 6), corners, true)
+	if img2.Empty() {
+		t.Error("Error in DrawChessboardCorners test")
 	}
 }
 

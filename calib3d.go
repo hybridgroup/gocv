@@ -155,6 +155,11 @@ const (
 	CalibCBMarker
 )
 
+// FindChessboardCorners finds the positions of internal corners of the chessboard.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a
+//
 func FindChessboardCorners(image Mat, patternSize image.Point, corners *Mat, flags CalibCBFlag) bool {
 	sz := C.struct_Size{
 		width:  C.int(patternSize.X),
@@ -163,6 +168,11 @@ func FindChessboardCorners(image Mat, patternSize image.Point, corners *Mat, fla
 	return bool(C.FindChessboardCorners(image.Ptr(), sz, corners.Ptr(), C.int(flags)))
 }
 
+// DrawChessboardCorners renders the detected chessboard corners.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga6a10b0bb120c4907e5eabbcd22319022
+//
 func DrawChessboardCorners(image *Mat, patternSize image.Point, corners Mat, patternWasFound bool) {
 	sz := C.struct_Size{
 		width:  C.int(patternSize.X),
