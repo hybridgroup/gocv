@@ -1914,6 +1914,118 @@ func TestMatToImage(t *testing.T) {
 	}
 }
 
+func TestMatToImageYUV(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8UC3)
+	defer mat1.Close()
+
+	img, err := mat1.ToImageYUV()
+	if err != nil {
+		t.Errorf("TestToImage %v.", err)
+	}
+
+	if img.Bounds().Dx() != 102 {
+		t.Errorf("TestToImage incorrect width got %d.", img.Bounds().Dx())
+	}
+
+	if img.Bounds().Dy() != 101 {
+		t.Errorf("TestToImage incorrect height got %d.", img.Bounds().Dy())
+	}
+
+	matreg := mat1.Region(image.Rect(25, 25, 75, 75))
+	defer matreg.Close()
+	img, err = matreg.ToImageYUV()
+	if err != nil {
+		t.Errorf("Expected error.")
+	}
+
+	mat2 := NewMatWithSize(101, 102, MatTypeCV8UC1)
+	defer mat2.Close()
+
+	img, err = mat2.ToImageYUV()
+	if err != nil {
+		t.Errorf("TestToImageYUV %v.", err)
+	}
+
+	mat3 := NewMatWithSize(101, 102, MatTypeCV8UC4)
+	defer mat3.Close()
+
+	img, err = mat3.ToImageYUV()
+	if err != nil {
+		t.Errorf("TestToImageYUV %v.", err)
+	}
+
+	matreg3 := mat3.Region(image.Rect(25, 25, 75, 75))
+	defer matreg3.Close()
+	img, err = matreg3.ToImageYUV()
+	if err != nil {
+		t.Errorf("Expected error.")
+	}
+
+	matWithUnsupportedType := NewMatWithSize(101, 102, MatTypeCV8S)
+	defer matWithUnsupportedType.Close()
+
+	_, err = matWithUnsupportedType.ToImageYUV()
+	if err == nil {
+		t.Error("TestToImageYUV expected error got nil.")
+	}
+}
+
+func TestMatToImageYUVWithParams(t *testing.T) {
+	mat1 := NewMatWithSize(101, 102, MatTypeCV8UC3)
+	defer mat1.Close()
+
+	img, err := mat1.ToImageYUVWithParams(image.YCbCrSubsampleRatio420)
+	if err != nil {
+		t.Errorf("TestToImage %v.", err)
+	}
+
+	if img.Bounds().Dx() != 102 {
+		t.Errorf("TestToImage incorrect width got %d.", img.Bounds().Dx())
+	}
+
+	if img.Bounds().Dy() != 101 {
+		t.Errorf("TestToImage incorrect height got %d.", img.Bounds().Dy())
+	}
+
+	matreg := mat1.Region(image.Rect(25, 25, 75, 75))
+	defer matreg.Close()
+	img, err = matreg.ToImageYUVWithParams(image.YCbCrSubsampleRatio420)
+	if err != nil {
+		t.Errorf("Expected error.")
+	}
+
+	mat2 := NewMatWithSize(101, 102, MatTypeCV8UC1)
+	defer mat2.Close()
+
+	img, err = mat2.ToImageYUVWithParams(image.YCbCrSubsampleRatio420)
+	if err != nil {
+		t.Errorf("TestToImageYUVWithParams image.YCbCrSubsampleRatio420%v.", err)
+	}
+
+	mat3 := NewMatWithSize(101, 102, MatTypeCV8UC4)
+	defer mat3.Close()
+
+	img, err = mat3.ToImageYUVWithParams(image.YCbCrSubsampleRatio420)
+	if err != nil {
+		t.Errorf("TestToImageYUVWithParams image.YCbCrSubsampleRatio420%v.", err)
+	}
+
+	matreg3 := mat3.Region(image.Rect(25, 25, 75, 75))
+	defer matreg3.Close()
+	img, err = matreg3.ToImageYUVWithParams(image.YCbCrSubsampleRatio420)
+	if err != nil {
+		t.Errorf("Expected error.")
+	}
+
+	matWithUnsupportedType := NewMatWithSize(101, 102, MatTypeCV8S)
+	defer matWithUnsupportedType.Close()
+
+	_, err = matWithUnsupportedType.ToImageYUVWithParams(image.YCbCrSubsampleRatio420)
+	if err == nil {
+		t.Error("TestToImageYUVWithParams image.YCbCrSubsampleRatio420expected error got nil.")
+	}
+}
+
 //Tests that image is the same after converting to Mat and back to Image
 func TestImageToMatRGBA(t *testing.T) {
 	file, err := os.Open("images/gocvlogo.png")
