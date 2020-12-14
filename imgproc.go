@@ -1853,6 +1853,50 @@ func (m *Mat) ToImage() (image.Image, error) {
 	}
 }
 
+// ToImageYUV converts a Mat to a image.YCbCr using image.YCbCrSubsampleRatio420 as default subsampling param.
+func (m *Mat) ToImageYUV() (*image.YCbCr, error) {
+	img, err := m.ToImage()
+	if err != nil {
+		return nil, err
+	}
+	bounds := img.Bounds()
+	converted := image.NewYCbCr(bounds, image.YCbCrSubsampleRatio420)
+
+	for row := 0; row < bounds.Max.Y; row++ {
+		for col := 0; col < bounds.Max.X; col++ {
+			r, g, b, _ := img.At(col, row).RGBA()
+			y, cb, cr := color.RGBToYCbCr(uint8(r), uint8(g), uint8(b))
+
+			converted.Y[converted.YOffset(col, row)] = y
+			converted.Cb[converted.COffset(col, row)] = cb
+			converted.Cr[converted.COffset(col, row)] = cr
+		}
+	}
+	return converted, nil
+}
+
+// ToImageYUV converts a Mat to a image.YCbCr using provided YUV subsample ratio param.
+func (m *Mat) ToImageYUVWithParams(ratio image.YCbCrSubsampleRatio) (*image.YCbCr, error) {
+	img, err := m.ToImage()
+	if err != nil {
+		return nil, err
+	}
+	bounds := img.Bounds()
+	converted := image.NewYCbCr(bounds, ratio)
+
+	for row := 0; row < bounds.Max.Y; row++ {
+		for col := 0; col < bounds.Max.X; col++ {
+			r, g, b, _ := img.At(col, row).RGBA()
+			y, cb, cr := color.RGBToYCbCr(uint8(r), uint8(g), uint8(b))
+
+			converted.Y[converted.YOffset(col, row)] = y
+			converted.Cb[converted.COffset(col, row)] = cb
+			converted.Cr[converted.COffset(col, row)] = cr
+		}
+	}
+	return converted, nil
+}
+
 // ImageToMatRGBA converts image.Image to gocv.Mat,
 // which represents RGBA image having 8bit for each component.
 // Type of Mat is gocv.MatTypeCV8UC4.
