@@ -1381,7 +1381,6 @@ func FillPoly(img *Mat, pts [][]image.Point, c color.RGBA) {
 
 	for i, pt := range pts {
 		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
-		defer C.free(unsafe.Pointer(p))
 
 		pa := getPoints(p, len(pt))
 
@@ -1396,6 +1395,7 @@ func FillPoly(img *Mat, pts [][]image.Point, c color.RGBA) {
 			points: (*C.Point)(p),
 			length: C.int(len(pt)),
 		}
+		C.free(unsafe.Pointer(p))
 	}
 
 	cPoints := C.struct_Contours{
@@ -1426,7 +1426,6 @@ func FillPolyWithParams(img *Mat, pts [][]image.Point, c color.RGBA, lineType Li
 
 	for i, pt := range pts {
 		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
-		defer C.free(unsafe.Pointer(p))
 
 		pa := getPoints(p, len(pt))
 
@@ -1441,6 +1440,7 @@ func FillPolyWithParams(img *Mat, pts [][]image.Point, c color.RGBA, lineType Li
 			points: (*C.Point)(p),
 			length: C.int(len(pt)),
 		}
+		C.free(unsafe.Pointer(p))
 	}
 
 	cPoints := C.struct_Contours{
@@ -1467,7 +1467,6 @@ func Polylines(img *Mat, pts [][]image.Point, isClosed bool, c color.RGBA, thick
 
 	for i, pt := range pts {
 		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
-		defer C.free(unsafe.Pointer(p))
 
 		pa := getPoints(p, len(pt))
 
@@ -1482,6 +1481,7 @@ func Polylines(img *Mat, pts [][]image.Point, isClosed bool, c color.RGBA, thick
 			points: (*C.Point)(p),
 			length: C.int(len(pt)),
 		}
+		C.free(unsafe.Pointer(p))
 	}
 
 	cPoints := C.struct_Contours{
@@ -1508,7 +1508,6 @@ func PolylinesWithParams(img *Mat, pts [][]image.Point, isClosed bool, c color.R
 
 	for i, pt := range pts {
 		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
-		defer C.free(unsafe.Pointer(p))
 
 		pa := getPoints(p, len(pt))
 
@@ -1523,6 +1522,7 @@ func PolylinesWithParams(img *Mat, pts [][]image.Point, isClosed bool, c color.R
 			points: (*C.Point)(p),
 			length: C.int(len(pt)),
 		}
+		C.free(unsafe.Pointer(p))
 	}
 
 	cPoints := C.struct_Contours{
