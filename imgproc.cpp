@@ -424,6 +424,13 @@ void Circle(Mat img, Point center, int radius, Scalar color, int thickness) {
     cv::circle(*img, p1, radius, c, thickness);
 }
 
+void CircleWithParams(Mat img, Point center, int radius, Scalar color, int thickness, int lineType, int shift) {
+    cv::Point p1(center.x, center.y);
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::circle(*img, p1, radius, c, thickness, lineType, shift);
+}
+
 void Ellipse(Mat img, Point center, Point axes, double angle, double
              startAngle, double endAngle, Scalar color, int thickness) {
     cv::Point p1(center.x, center.y);
@@ -431,6 +438,15 @@ void Ellipse(Mat img, Point center, Point axes, double angle, double
     cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
 
     cv::ellipse(*img, p1, p2, angle, startAngle, endAngle, c, thickness);
+}
+
+void EllipseWithParams(Mat img, Point center, Point axes, double angle, double
+             startAngle, double endAngle, Scalar color, int thickness, int lineType, int shift) {
+    cv::Point p1(center.x, center.y);
+    cv::Point p2(axes.x, axes.y);
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::ellipse(*img, p1, p2, angle, startAngle, endAngle, c, thickness, lineType, shift);
 }
 
 void Line(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
@@ -453,6 +469,19 @@ void Rectangle(Mat img, Rect r, Scalar color, int thickness) {
     );
 }
 
+void RectangleWithParams(Mat img, Rect r, Scalar color, int thickness, int lineType, int shift) {
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+    cv::rectangle(
+        *img,
+        cv::Point(r.x, r.y),
+        cv::Point(r.x + r.width, r.y + r.height),
+        c,
+        thickness,
+        lineType,
+        shift
+    );
+}
+
 void FillPoly(Mat img, Contours points, Scalar color) {
     std::vector<std::vector<cv::Point> > pts;
 
@@ -471,6 +500,27 @@ void FillPoly(Mat img, Contours points, Scalar color) {
     cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
 
     cv::fillPoly(*img, pts, c);
+}
+
+void FillPolyWithParams(Mat img, Contours points, Scalar color, int lineType, int shift, Point offset) {
+    std::vector<std::vector<cv::Point> > pts;
+    cv::Point offsetPt(offset.x, offset.y);
+
+    for (size_t i = 0; i < points.length; i++) {
+        Contour contour = points.contours[i];
+
+        std::vector<cv::Point> cntr;
+
+        for (size_t i = 0; i < contour.length; i++) {
+            cntr.push_back(cv::Point(contour.points[i].x, contour.points[i].y));
+        }
+
+        pts.push_back(cntr);
+    }
+
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::fillPoly(*img, pts, c, lineType, shift, offsetPt);
 }
 
 void Polylines(Mat img, Contours points, bool isClosed, Scalar color,int thickness) {

@@ -1608,15 +1608,200 @@ func TestDrawContours(t *testing.T) {
 }
 
 func TestEllipse(t *testing.T) {
-	img := NewMatWithSize(100, 100, MatTypeCV8UC1)
-	defer img.Close()
 
-	white := color.RGBA{255, 255, 255, 0}
-	Ellipse(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white, 2)
+	t.Run("Ellipse", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
 
-	if v := img.GetUCharAt(24, 50); v != 255 {
-		t.Errorf("TestEllipse(): wrong pixel value = %v, want = %v", v, 255)
-	}
+		white := color.RGBA{255, 255, 255, 0}
+		Ellipse(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white, 2)
+
+		if v := img.GetUCharAt(24, 50); v != 255 {
+			t.Errorf("TestEllipse(): wrong pixel value = %v, want = %v", v, 255)
+		}
+	})
+
+	t.Run("Ellipse Fill", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		Ellipse(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white, -1)
+
+		if v := img.GetUCharAt(55, 47); v != 255 {
+			t.Errorf("TestEllipse(): wrong pixel value = %v, want = %v", v, 255)
+		}
+	})
+
+	t.Run("EllipseWithParams", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		EllipseWithParams(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white, 2, Line8, 0)
+
+		if v := img.GetUCharAt(24, 50); v != 255 {
+			t.Errorf("TestEllipse(): wrong pixel value = %v, want = %v", v, 255)
+		}
+	})
+
+	t.Run("EllipseWithParams Fill", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		EllipseWithParams(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white, -1, Line8, 0)
+
+		if v := img.GetUCharAt(55, 47); v != 255 {
+			t.Errorf("TestEllipse() EllipseWithParams Fill: wrong pixel value = %v, want = %v", v, 255)
+		}
+	})
+
+	t.Run("EllipseWithParams shift", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		EllipseWithParams(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white, 2, Line8, 2)
+
+		if v := img.GetUCharAt(6, 12); v != 255 {
+			t.Errorf("TestEllipse() shift: wrong pixel value = %v, want = %v", v, 255)
+		}
+
+		if v := img.GetUCharAt(19, 13); v != 255 {
+			t.Errorf("TestEllipse() shift: wrong pixel value = %v, want = %v", v, 255)
+		}
+	})
+
+	t.Run("EllipseWithParams AA", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		EllipseWithParams(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white, 2, LineAA, 0)
+
+		if v := img.GetUCharAt(77, 54); v < 10 || v > 220 {
+			t.Errorf("TestEllipse() AA: wrong pixel value = %v, want < %v and > %v", v, 10, 220)
+		}
+	})
+}
+
+func TestRectangle(t *testing.T) {
+	t.Run("Rectangle", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		Rectangle(&img, image.Rect(10, 10, 80, 80), white, 1)
+
+		if v := img.GetUCharAt(10, 60); v < 50 { // Default is LineAA
+			t.Errorf("TestRectangle(): wrong pixel value = %v, want >= %v", v, 50)
+		}
+	})
+
+	t.Run("Rectangle Fill", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		Rectangle(&img, image.Rect(10, 10, 80, 80), white, -1)
+
+		if v := img.GetUCharAt(30, 30); v < 50 { // Default is LineAA
+			t.Errorf("TestRectangle(): wrong pixel value = %v, want >= %v", v, 50)
+		}
+	})
+
+	t.Run("RectangleWithParams", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		RectangleWithParams(&img, image.Rect(10, 10, 80, 80), white, 1, Line4, 0)
+
+		if v := img.GetUCharAt(10, 60); v != 255 {
+			t.Errorf("TestRectangle(): wrong pixel value = %v, want = %v", v, 255)
+		}
+	})
+
+	t.Run("RectangleWithParams Fill", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		RectangleWithParams(&img, image.Rect(10, 10, 80, 80), white, -1, Line4, 0)
+
+		if v := img.GetUCharAt(30, 30); v != 255 {
+			t.Errorf("TestRectangle(): wrong pixel value = %v, want >= %v", v, 255)
+		}
+	})
+
+}
+
+func TestCircle(t *testing.T) {
+	t.Run("Circle", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		Circle(&img, image.Pt(70, 70), 20, white, 3)
+
+		if v := img.GetUCharAt(80, 89); v != 255 {
+			t.Errorf("TestCircle(): wrong pixel value = %v, want = %v", v, 50)
+		}
+	})
+
+	t.Run("Circle Fill", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		Circle(&img, image.Pt(70, 70), 20, white, -1)
+
+		if v := img.GetUCharAt(60, 60); v != 255 { // Default is LineAA
+			t.Errorf("TestCircle(): wrong pixel value = %v, want = %v", v, 50)
+		}
+	})
+
+	t.Run("CircleWithParams", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		CircleWithParams(&img, image.Pt(70, 70), 20, white, 3, Line4, 0)
+
+		if v := img.GetUCharAt(80, 89); v != 255 {
+			t.Errorf("TestCircle(): wrong pixel value = %v, want = %v", v, 255)
+		}
+	})
+
+	t.Run("CircleWithParams Fill", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		CircleWithParams(&img, image.Pt(70, 70), 20, white, -1, Line4, 0)
+
+		if v := img.GetUCharAt(60, 60); v != 255 {
+			t.Errorf("TestCircle(): wrong pixel value = %v, want = %v", v, 255)
+		}
+	})
+
+	t.Run("CircleWithParams Shift", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		CircleWithParams(&img, image.Pt(70, 70), 20, white, 3, Line4, 1)
+
+		if v := img.GetUCharAt(47, 38); v != 255 {
+			t.Errorf("TestCircle(): wrong pixel value = %v, want = %v", v, 255)
+		}
+
+		if v := img.GetUCharAt(48, 38); v == 255 {
+			t.Errorf("TestCircle(): wrong pixel value = %v, want != %v", v, 255)
+		}
+	})
+
 }
 
 func TestFillPoly(t *testing.T) {
@@ -1637,6 +1822,49 @@ func TestFillPoly(t *testing.T) {
 	if v := img.GetUCharAt(10, 10); v != 255 {
 		t.Errorf("TestFillPoly(): wrong pixel value = %v, want = %v", v, 255)
 	}
+}
+
+func TestFillPolyWithParams(t *testing.T) {
+
+	t.Run("FillPollyWithParams", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		pts := [][]image.Point{
+			{
+				image.Pt(10, 10),
+				image.Pt(10, 20),
+				image.Pt(20, 20),
+				image.Pt(20, 10),
+			},
+		}
+		FillPolyWithParams(&img, pts, white, Line4, 0, image.Point{})
+
+		if v := img.GetUCharAt(10, 10); v != 255 {
+			t.Errorf("TestFillPoly(): wrong pixel value = %v, want = %v", v, 255)
+		}
+	})
+
+	t.Run("FillPollyWithParams offset 2", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		pts := [][]image.Point{
+			{
+				image.Pt(10, 10),
+				image.Pt(10, 20),
+				image.Pt(20, 20),
+				image.Pt(20, 10),
+			},
+		}
+		FillPolyWithParams(&img, pts, white, Line4, 0, image.Point{2, 2})
+
+		if v := img.GetUCharAt(12, 12); v != 255 {
+			t.Errorf("TestFillPolyWithParams() with offset of 2: wrong pixel value = %v, want = %v", v, 255)
+		}
+	})
 }
 
 func TestPolylines(t *testing.T) {
