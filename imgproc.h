@@ -89,6 +89,7 @@ void RectangleWithParams(Mat img, Rect rect, Scalar color, int thickness, int li
 void FillPoly(Mat img, Contours points, Scalar color);
 void FillPolyWithParams(Mat img, Contours points, Scalar color, int lineType, int shift, Point offset);
 void Polylines(Mat img, Contours points, bool isClosed, Scalar color, int thickness);
+void PolylinesWithParams(Mat img, Contours points, bool isClosed, Scalar color, int thickness, int lineType, int shift);
 struct Size GetTextSize(const char* text, int fontFace, double fontScale, int thickness);
 struct Size GetTextSizeWithBaseline(const char* text, int fontFace, double fontScale, int thickness, int* baseline);
 void PutText(Mat img, const char* text, Point org, int fontFace, double fontScale,

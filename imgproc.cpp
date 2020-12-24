@@ -543,6 +543,26 @@ void Polylines(Mat img, Contours points, bool isClosed, Scalar color,int thickne
     cv::polylines(*img, pts, isClosed, c, thickness);
 }
 
+void PolylinesWithParams(Mat img, Contours points, bool isClosed, Scalar color,int thickness, int lineType, int shift) {
+    std::vector<std::vector<cv::Point> > pts;
+
+    for (size_t i = 0; i < points.length; i++) {
+        Contour contour = points.contours[i];
+
+        std::vector<cv::Point> cntr;
+
+        for (size_t i = 0; i < contour.length; i++) {
+            cntr.push_back(cv::Point(contour.points[i].x, contour.points[i].y));
+        }
+
+        pts.push_back(cntr);
+    }
+
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::polylines(*img, pts, isClosed, c, thickness, lineType, shift);
+}
+
 struct Size GetTextSize(const char* text, int fontFace, double fontScale, int thickness) {
     return GetTextSizeWithBaseline(text, fontFace, fontScale, thickness, NULL);
 }

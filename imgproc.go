@@ -1273,7 +1273,7 @@ func Ellipse(img *Mat, center, axes image.Point, angle, startAngle, endAngle flo
 	C.Ellipse(img.p, pc, pa, C.double(angle), C.double(startAngle), C.double(endAngle), sColor, C.int(thickness))
 }
 
-// Ellipse draws a simple or thick elliptic arc or fills an ellipse sector.
+// EllipseWithParams draws a simple or thick elliptic arc or fills an ellipse sector.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga28b2267d35786f5f890ca167236cbc69
@@ -1497,6 +1497,47 @@ func Polylines(img *Mat, pts [][]image.Point, isClosed bool, c color.RGBA, thick
 	}
 
 	C.Polylines(img.p, cPoints, C.bool(isClosed), sColor, C.int(thickness))
+}
+
+// PolylinesWithParams draws several polygonal curves.
+//
+// For more information, see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga1ea127ffbbb7e0bfc4fd6fd2eb64263c
+func PolylinesWithParams(img *Mat, pts [][]image.Point, isClosed bool, c color.RGBA, thickness int, lineType LineType, shift int) {
+	points := make([]C.struct_Points, len(pts))
+
+	for i, pt := range pts {
+		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
+		defer C.free(unsafe.Pointer(p))
+
+		pa := getPoints(p, len(pt))
+
+		for j, point := range pt {
+			pa[j] = C.struct_Point{
+				x: C.int(point.X),
+				y: C.int(point.Y),
+			}
+		}
+
+		points[i] = C.struct_Points{
+			points: (*C.Point)(p),
+			length: C.int(len(pt)),
+		}
+	}
+
+	cPoints := C.struct_Contours{
+		contours: (*C.struct_Points)(&points[0]),
+		length:   C.int(len(pts)),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.PolylinesWithParams(img.p, cPoints, C.bool(isClosed), sColor, C.int(thickness), C.int(lineType), C.int(shift))
 }
 
 // HersheyFont are the font libraries included in OpenCV.

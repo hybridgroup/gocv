@@ -1868,23 +1868,46 @@ func TestFillPolyWithParams(t *testing.T) {
 }
 
 func TestPolylines(t *testing.T) {
-	img := NewMatWithSize(100, 100, MatTypeCV8UC1)
-	defer img.Close()
 
-	white := color.RGBA{255, 255, 255, 0}
-	pts := [][]image.Point{
-		{
-			image.Pt(10, 10),
-			image.Pt(10, 20),
-			image.Pt(20, 20),
-			image.Pt(20, 10),
-		},
-	}
-	Polylines(&img, pts, true, white, 1)
+	t.Run("Polylines", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
 
-	if v := img.GetUCharAt(10, 10); v != 255 {
-		t.Errorf("TestPolylines(): wrong pixel value = %v, want = %v", v, 255)
-	}
+		white := color.RGBA{255, 255, 255, 0}
+		pts := [][]image.Point{
+			{
+				image.Pt(10, 10),
+				image.Pt(10, 20),
+				image.Pt(20, 20),
+				image.Pt(20, 10),
+			},
+		}
+		Polylines(&img, pts, true, white, 1)
+
+		if v := img.GetUCharAt(10, 10); v != 255 {
+			t.Errorf("TestPolylines(): wrong pixel value = %v, want = %v", v, 255)
+		}
+	})
+
+	t.Run("PolylinesWithParams", func(t *testing.T) {
+		img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+		defer img.Close()
+
+		white := color.RGBA{255, 255, 255, 0}
+		pts := [][]image.Point{
+			{
+				image.Pt(10, 10),
+				image.Pt(10, 20),
+				image.Pt(20, 20),
+				image.Pt(20, 10),
+			},
+		}
+		PolylinesWithParams(&img, pts, true, white, 1, Line8, 0)
+
+		if v := img.GetUCharAt(10, 10); v != 255 {
+			t.Errorf("TestPolylines(): wrong pixel value = %v, want = %v", v, 255)
+		}
+	})
 }
 
 func TestRemap(t *testing.T) {
