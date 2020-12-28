@@ -60,14 +60,15 @@ download:
 	rm opencv.zip opencv_contrib.zip
 	cd -
 
-# Download dldt source tarballs.
-download_dldt:
+# Download openvino source tarballs.
+download_openvino:
 	sudo rm -rf /usr/local/dldt/
-	sudo git clone https://github.com/opencv/dldt -b 2019 /usr/local/dldt/
+	sudo rm -rf /usr/local/openvino/
+	sudo git clone https://github.com/openvinotoolkit/openvino -b 2019_R3.1 /usr/local/openvino/
 
-# Build dldt.
-build_dldt:
-	cd /usr/local/dldt/inference-engine
+# Build openvino.
+build_openvino_package:
+	cd /usr/local/openvino/inference-engine
 	sudo git submodule init
 	sudo git submodule update --recursive
 	sudo ./install_dependencies.sh
@@ -184,10 +185,10 @@ install_raspi_zero: deps download build_raspi_zero sudo_install clean verify
 install_cuda: deps download sudo_pre_install_clean build_cuda sudo_install clean verify verify_cuda
 
 # Do everything with openvino.
-install_openvino: deps download download_dldt sudo_pre_install_clean build_dldt sudo_install_dldt build_openvino sudo_install clean verify_openvino
+install_openvino: deps download download_openvino sudo_pre_install_clean build_openvino_package sudo_install_openvino build_openvino sudo_install clean verify_openvino
 
 # Do everything with openvino and cuda.
-install_all: deps download download_dldt sudo_pre_install_clean build_dldt sudo_install_dldt build_all sudo_install clean verify_openvino verify_cuda
+install_all: deps download download_openvino sudo_pre_install_clean build_openvino_package sudo_install_openvino build_all sudo_install clean verify_openvino verify_cuda
 
 # Install system wide.
 sudo_install:
@@ -197,8 +198,8 @@ sudo_install:
 	cd -
 
 # Install system wide.
-sudo_install_dldt:
-	cd /usr/local/dldt/inference-engine/build
+sudo_install_openvino:
+	cd /usr/local/openvino/inference-engine/build
 	sudo $(MAKE) install
 	sudo ldconfig
 	cd -
