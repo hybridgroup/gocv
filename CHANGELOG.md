@@ -1,3 +1,45 @@
+0.26.0
+---
+* **all**
+    * update to OpenCV 4.5.1
+* **core**
+    * add Matrix initializers: eye, ones, zeros (#758)
+    * add multidimensional mat creation
+    * add ndim mat constructor
+    * added accumulators
+    * added norm call with two mats (#600)
+    * keep a reference to a []byte that backs a Mat. (#755)
+    * remove guard for DataPtrUint8 since any Mat can be treated an Uint8
+    * add Mat IsContinuous() function, and ensure that any Mat data pointers used to create Go slices only apply to continuous Mats
+    * fix buffer size for Go strings for 32-bit operating systems
+* **build**
+    * bring back codecov.io
+* **calib3d**
+    * correctly close mat after test
+* **dnn**
+    * add ReadNetFromONNX and ReadNetFromONNXBytes (#760)
+    * increase test coverage
+* **docker**
+    * dockerfiles for opencv gpu builds
+* **docs**
+    * corrected links to CUDA and OpenVINO
+    * list all unimplemented functions in photo module
+    * replace GoDocs with pkg docs
+    * update ROADMAP from recent contributions
+* **imgproc**
+    * add test coverage for GetTextSizeWithBaseline()
+    * close all Mats even those based on memory slices
+    * close Mat to avoid memory leak in ToImage()
+    * refactoring of ToImage and ImageToMatXX functions
+* **openvino**
+    * fix dldt repo in makefile for openvino
+* **os**
+    * adding gcc-c++ package to rpm deps
+* **photo**
+    * add SeamlessClone function
+* **profile**
+    * add created mats in Split and ForwardLayers to profile (#780)
+
 0.25.0
 ---
 * **all**
