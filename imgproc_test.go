@@ -1136,7 +1136,22 @@ func TestGetTextSize(t *testing.T) {
 	if size.Y != 26 {
 		t.Error("Invalid text size height")
 	}
+
+	size1, base := GetTextSizeWithBaseline("test", FontHersheySimplex, 1.2, 1)
+	if size1.X != 72 {
+		t.Error("Invalid text size width")
+	}
+
+	if size1.Y != 26 {
+		t.Error("Invalid text size height")
+	}
+
+	expected := 11
+	if base != expected {
+		t.Errorf("invalid base. expected %d, actual %d", expected, base)
+	}
 }
+
 func TestPutText(t *testing.T) {
 	img := NewMatWithSize(150, 150, MatTypeCV8U)
 	if img.Empty() {
