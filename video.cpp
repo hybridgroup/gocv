@@ -47,3 +47,27 @@ void CalcOpticalFlowPyrLKWithParams(Mat prevImg, Mat nextImg, Mat prevPts, Mat n
     cv::calcOpticalFlowPyrLK(*prevImg, *nextImg, *prevPts, *nextPts, *status, *err, sz, maxLevel, *criteria, flags, minEigThreshold);
 }
 
+bool Tracker_Init(Tracker self, Mat image, Rect boundingBox) {
+    cv::Rect bb(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
+
+    (*self)->init(*image, bb);
+    return true;
+}
+
+bool Tracker_Update(Tracker self, Mat image, Rect* boundingBox) {
+    cv::Rect bb;
+    bool ret = (*self)->update(*image, bb);
+    boundingBox->x = int(bb.x);
+    boundingBox->y = int(bb.y);
+    boundingBox->width = int(bb.width);
+    boundingBox->height = int(bb.height);
+    return ret;
+}
+
+TrackerMIL TrackerMIL_Create() {
+    return new cv::Ptr<cv::TrackerMIL>(cv::TrackerMIL::create());
+}
+
+void TrackerMIL_Close(TrackerMIL self) {
+    delete self;
+}

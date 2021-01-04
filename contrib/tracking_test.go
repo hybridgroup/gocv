@@ -1,12 +1,13 @@
 package contrib
 
 import (
-	"gocv.io/x/gocv"
 	"image"
 	"testing"
+
+	"gocv.io/x/gocv"
 )
 
-func BaseTestTracker(t *testing.T, tracker Tracker, name string) {
+func BaseTestTracker(t *testing.T, tracker gocv.Tracker, name string) {
 	if tracker == nil {
 		t.Error("TestTracker " + name + " should not be nil")
 	}
@@ -32,14 +33,9 @@ func BaseTestTracker(t *testing.T, tracker Tracker, name string) {
 func TestSingleTrackers(t *testing.T) {
 	tab := []struct {
 		name    string
-		tracker Tracker
+		tracker gocv.Tracker
 	}{
-		{"MIL", NewTrackerMIL()},
-		{"Boosting", NewTrackerBoosting()},
-		{"MedianFlow", NewTrackerMedianFlow()},
-		{"TLD", NewTrackerTLD()},
 		{"KCF", NewTrackerKCF()},
-		{"MOSSE", NewTrackerMOSSE()},
 		{"CSRT", NewTrackerCSRT()},
 	}
 

@@ -155,3 +155,81 @@ func CalcOpticalFlowPyrLKWithParams(prevImg Mat, nextImg Mat, prevPts Mat, nextP
 	C.CalcOpticalFlowPyrLKWithParams(prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p, err.p, winSz, C.int(maxLevel), criteria.p, C.int(flags), C.double(minEigThreshold))
 	return
 }
+
+// Tracker is the base interface for object tracking.
+//
+// see: https://docs.opencv.org/master/d0/d0a/classcv_1_1Tracker.html
+//
+type Tracker interface {
+	// Close closes, as Trackers need to be Closed manually.
+	//
+	Close() error
+
+	// Init initializes the tracker with a known bounding box that surrounded the target.
+	// Note: this can only be called once. If you lose the object, you have to Close() the instance,
+	// create a new one, and call Init() on it again.
+	//
+	// see: https://docs.opencv.org/master/d0/d0a/classcv_1_1Tracker.html#a4d285747589b1bdd16d2e4f00c3255dc
+	//
+	Init(image Mat, boundingBox image.Rectangle) bool
+
+	// Update updates the tracker, returns a new bounding box and a boolean determining whether the tracker lost the target.
+	//
+	// see: https://docs.opencv.org/master/d0/d0a/classcv_1_1Tracker.html#a549159bd0553e6a8de356f3866df1f18
+	//
+	Update(image Mat) (image.Rectangle, bool)
+}
+
+func trackerInit(trk C.Tracker, img Mat, boundingBox image.Rectangle) bool {
+	cBox := C.struct_Rect{
+		x:      C.int(boundingBox.Min.X),
+		y:      C.int(boundingBox.Min.Y),
+		width:  C.int(boundingBox.Size().X),
+		height: C.int(boundingBox.Size().Y),
+	}
+
+	ret := C.Tracker_Init(trk, C.Mat(img.Ptr()), cBox)
+	return bool(ret)
+}
+
+func trackerUpdate(trk C.Tracker, img Mat) (image.Rectangle, bool) {
+	cBox := C.struct_Rect{}
+
+	ret := C.Tracker_Update(trk, C.Mat(img.Ptr()), &cBox)
+
+	rect := image.Rect(int(cBox.x), int(cBox.y), int(cBox.x+cBox.width), int(cBox.y+cBox.height))
+	return rect, bool(ret)
+}
+
+// TrackerMIL is a Tracker that uses the MIL algorithm. MIL trains a classifier in an online manner
+// to separate the object from the background.
+// Multiple Instance Learning avoids the drift problem for a robust tracking.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d26/classcv_1_1TrackerMIL.html
+//
+type TrackerMIL struct {
+	p C.TrackerMIL
+}
+
+// NewTrackerMIL returns a new TrackerMIL.
+func NewTrackerMIL() Tracker {
+	return TrackerMIL{p: C.TrackerMIL_Create()}
+}
+
+// Close closes the TrackerMIL.
+func (trk TrackerMIL) Close() error {
+	C.TrackerMIL_Close(trk.p)
+	trk.p = nil
+	return nil
+}
+
+// Init initializes the TrackerMIL.
+func (trk TrackerMIL) Init(img Mat, boundingBox image.Rectangle) bool {
+	return trackerInit(C.Tracker(trk.p), img, boundingBox)
+}
+
+// Update updates the TrackerMIL.
+func (trk TrackerMIL) Update(img Mat) (image.Rectangle, bool) {
+	return trackerUpdate(C.Tracker(trk.p), img)
+}

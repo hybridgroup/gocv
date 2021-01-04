@@ -2,7 +2,7 @@
 .PHONY: test deps download build clean astyle cmds docker
 
 # OpenCV version to use.
-OPENCV_VERSION?=4.5.0
+OPENCV_VERSION?=4.5.1
 
 # Go version to use when building Docker image
 GOVERSION?=1.15.3
@@ -219,7 +219,7 @@ verify_openvino:
 # This assumes env.sh was already sourced.
 # pvt is not tested here since it requires additional depenedences.
 test:
-	go test . ./contrib
+	go test -tags matprofile . ./contrib
 
 docker:
 	docker build --build-arg OPENCV_VERSION=$(OPENCV_VERSION) --build-arg GOVERSION=$(GOVERSION) .
