@@ -1150,6 +1150,10 @@ func TestPutText(t *testing.T) {
 	if img.Empty() {
 		t.Error("Error in PutText test")
 	}
+
+	if v := img.GetUCharAt(6, 81); v != 255 {
+		t.Errorf("TestPutTextWithParams(): wrong pixel value = %v, want = %v", v, 255)
+	}
 }
 func TestPutTextWithParams(t *testing.T) {
 	img := NewMatWithSize(150, 150, MatTypeCV8U)
@@ -1163,6 +1167,9 @@ func TestPutTextWithParams(t *testing.T) {
 
 	if img.Empty() {
 		t.Error("Error in PutText test")
+	}
+	if v := img.GetUCharAt(6, 81); v != 255 {
+		t.Errorf("TestPutTextWithParams(): wrong pixel value = %v, want = %v", v, 255)
 	}
 }
 
