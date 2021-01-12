@@ -204,9 +204,11 @@ typedef struct Moment {
 #ifdef __cplusplus
 typedef cv::Mat* Mat;
 typedef cv::TermCriteria* TermCriteria;
+typedef cv::RNG* RNG;
 #else
 typedef void* Mat;
 typedef void* TermCriteria;
+typedef void* RNG;
 #endif
 
 // Wrapper for the vector of Mat aka std::vector<Mat>
@@ -401,6 +403,16 @@ Mat Mat_colRange(Mat m,int startrow,int endrow);
 void IntVector_Close(struct IntVector ivec);
 
 void CStrings_Close(struct CStrings cstrs);
+
+RNG TheRNG();
+
+void SetRNGSeed(int seed);
+
+void RNG_Fill(RNG rng, Mat mat, int distType, double a, double b, bool saturateRange);
+
+double RNG_Gaussian(RNG rng, double sigma);
+
+unsigned int RNG_Next(RNG rng);
 
 #ifdef __cplusplus
 }

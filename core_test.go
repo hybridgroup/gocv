@@ -2591,3 +2591,31 @@ func Test_toGoStrings(t *testing.T) {
 		}
 	}
 }
+
+func TestTheRNG(t *testing.T) {
+	rng := TheRNG()
+	if rng.p == nil {
+		t.Errorf("got no rng")
+	}
+}
+
+func TestSetRNGSeed(t *testing.T) {
+	SetRNGSeed(123)
+}
+
+func TestRNG_Fill(t *testing.T) {
+	rng := TheRNG()
+	mat := NewMatWithSize(20, 20, MatTypeCV8UC3)
+	defer mat.Close()
+	rng.RNG_Fill(&mat, RNGDistNormal, 10, 20, false)
+}
+
+func TestRNG_Gaussian(t *testing.T) {
+	rng := TheRNG()
+	_ = rng.RNG_Gaussian(0.5)
+}
+
+func TestRNG_Next(t *testing.T) {
+	rng := TheRNG()
+	_ = rng.Next()
+}

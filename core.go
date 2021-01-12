@@ -2134,3 +2134,46 @@ func (m *Mat) RowRange(start, end int) Mat {
 func (m *Mat) ColRange(start, end int) Mat {
 	return newMat(C.Mat_colRange(m.p, C.int(start), C.int(end)))
 }
+
+// RNG Random Number Generator.
+// It encapsulates the state (currently, a 64-bit integer) and
+// has methods to return scalar random values and to fill arrays
+// with random values
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d1/dd6/classcv_1_1RNG.html
+//
+type RNG struct {
+	p C.RNG
+}
+
+type RNGDistType int
+
+const (
+	// Uniform distribution
+	RNGDistUniform RNGDistType = 0
+	// Normal distribution
+	RNGDistNormal RNGDistType = 1
+)
+
+func TheRNG() RNG {
+	return RNG{
+		p: C.TheRNG(),
+	}
+}
+
+func SetRNGSeed(seed int) {
+	C.SetRNGSeed(C.int(seed))
+}
+
+func (r *RNG) RNG_Fill(mat *Mat, distType RNGDistType, a, b float64, saturateRange bool) {
+	C.RNG_Fill(r.p, mat.p, C.int(distType), C.double(a), C.double(b), C.bool(saturateRange))
+}
+
+func (r *RNG) RNG_Gaussian(sigma float64) float64 {
+	return float64(C.RNG_Gaussian(r.p, C.double(sigma)))
+}
+
+func (r *RNG) Next() uint {
+	return uint(C.RNG_Next(r.p))
+}

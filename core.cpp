@@ -855,3 +855,23 @@ Mat Mat_colRange(Mat m,int startrow,int endrow) {
 void IntVector_Close(struct IntVector ivec) {
     delete[] ivec.val;
 }
+
+RNG TheRNG() {
+    return &cv::theRNG();
+}
+
+void SetRNGSeed(int seed) {
+    cv::setRNGSeed(seed);
+}
+
+void RNG_Fill(RNG rng, Mat mat, int distType, double a, double b, bool saturateRange) {
+    rng->fill(*mat, distType, a, b, saturateRange);
+}
+
+double RNG_Gaussian(RNG rng, double sigma) {
+    return rng->gaussian(sigma);
+}
+
+unsigned int RNG_Next(RNG rng) {
+    return rng->next();
+}
