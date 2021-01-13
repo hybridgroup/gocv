@@ -268,9 +268,9 @@ void MinEnclosingCircle(Points points, Point2f* center, float* radius){
     center->y = center2f.y;
 }
 
-struct Contours FindContours(Mat src, int mode, int method) {
+struct Contours FindContours(Mat src, Mat hierarchy, int mode, int method) {
     std::vector<std::vector<cv::Point> > contours;
-    cv::findContours(*src, contours, mode, method);
+    cv::findContours(*src, contours, *hierarchy, mode, method);
 
     Contour* points = new Contour[contours.size()];
 
