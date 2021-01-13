@@ -548,10 +548,21 @@ func MinEnclosingCircle(points []image.Point) (x, y, radius float32) {
 // FindContours finds contours in a binary image.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga17ed9f5d79ae97bd4c7cf18403e1689a
+// https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga95f5b48d01abc7c2e0732db24689837b
 //
 func FindContours(src Mat, mode RetrievalMode, method ContourApproximationMode) [][]image.Point {
-	ret := C.FindContours(src.p, C.int(mode), C.int(method))
+	hierarchy := NewMat()
+	defer hierarchy.Close()
+	return FindContoursWithParams(src, &hierarchy, mode, method)
+}
+
+// FindContoursWithParams finds contours in a binary image.
+//
+// For further details, please see:
+// https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga17ed9f5d79ae97bd4c7cf18403e1689a
+//
+func FindContoursWithParams(src Mat, hierarchy *Mat, mode RetrievalMode, method ContourApproximationMode) [][]image.Point {
+	ret := C.FindContours(src.p, hierarchy.p, C.int(mode), C.int(method))
 	defer C.Contours_Close(ret)
 
 	cArray := ret.contours
