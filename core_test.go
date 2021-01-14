@@ -2607,15 +2607,39 @@ func TestRNG_Fill(t *testing.T) {
 	rng := TheRNG()
 	mat := NewMatWithSize(20, 20, MatTypeCV8UC3)
 	defer mat.Close()
-	rng.RNG_Fill(&mat, RNGDistNormal, 10, 20, false)
+	rng.Fill(&mat, RNGDistNormal, 10, 20, false)
 }
 
 func TestRNG_Gaussian(t *testing.T) {
 	rng := TheRNG()
-	_ = rng.RNG_Gaussian(0.5)
+	_ = rng.Gaussian(0.5)
 }
 
 func TestRNG_Next(t *testing.T) {
 	rng := TheRNG()
 	_ = rng.Next()
+}
+
+func TestRandN(t *testing.T) {
+	mat := NewMatWithSize(5, 5, MatTypeCV8UC3)
+	defer mat.Close()
+	RandN(&mat, NewScalar(10, 10, 10, 10), NewScalar(20, 20, 20, 20))
+}
+
+func TestRandShuffle(t *testing.T) {
+	mat := NewMatWithSize(5, 5, MatTypeCV8UC3)
+	defer mat.Close()
+	RandShuffle(&mat)
+}
+
+func TestRandShuffleWithParams(t *testing.T) {
+	mat := NewMatWithSize(5, 5, MatTypeCV8UC3)
+	defer mat.Close()
+	RandShuffleWithParams(&mat, 1, TheRNG())
+}
+
+func TestRandU(t *testing.T) {
+	mat := NewMatWithSize(5, 5, MatTypeCV8UC3)
+	defer mat.Close()
+	RandU(&mat, NewScalar(10, 10, 10, 10), NewScalar(20, 20, 20, 20))
 }

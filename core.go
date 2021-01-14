@@ -2156,24 +2156,114 @@ const (
 	RNGDistNormal RNGDistType = 1
 )
 
+// TheRNG Returns the default random number generator.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga75843061d150ad6564b5447e38e57722
+//
 func TheRNG() RNG {
 	return RNG{
 		p: C.TheRNG(),
 	}
 }
 
+// TheRNG Sets state of default random number generator.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga757e657c037410d9e19e819569e7de0f
+//
 func SetRNGSeed(seed int) {
 	C.SetRNGSeed(C.int(seed))
 }
 
-func (r *RNG) RNG_Fill(mat *Mat, distType RNGDistType, a, b float64, saturateRange bool) {
+// Fill Fills arrays with random numbers.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d1/dd6/classcv_1_1RNG.html#ad26f2b09d9868cf108e84c9814aa682d
+//
+func (r *RNG) Fill(mat *Mat, distType RNGDistType, a, b float64, saturateRange bool) {
 	C.RNG_Fill(r.p, mat.p, C.int(distType), C.double(a), C.double(b), C.bool(saturateRange))
 }
 
-func (r *RNG) RNG_Gaussian(sigma float64) float64 {
+// Gaussian Returns the next random number sampled from
+// the Gaussian distribution.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d1/dd6/classcv_1_1RNG.html#a8df8ce4dc7d15916cee743e5a884639d
+//
+func (r *RNG) Gaussian(sigma float64) float64 {
 	return float64(C.RNG_Gaussian(r.p, C.double(sigma)))
 }
 
+// Next The method updates the state using the MWC algorithm
+// and returns the next 32-bit random number.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d1/dd6/classcv_1_1RNG.html#a8df8ce4dc7d15916cee743e5a884639d
+//
 func (r *RNG) Next() uint {
 	return uint(C.RNG_Next(r.p))
+}
+
+// RandN Fills the array with normally distributed random numbers.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gaeff1f61e972d133a04ce3a5f81cf6808
+//
+func RandN(mat *Mat, mean, stddev Scalar) {
+	meanVal := C.struct_Scalar{
+		val1: C.double(mean.Val1),
+		val2: C.double(mean.Val2),
+		val3: C.double(mean.Val3),
+		val4: C.double(mean.Val4),
+	}
+	stddevVal := C.struct_Scalar{
+		val1: C.double(stddev.Val1),
+		val2: C.double(stddev.Val2),
+		val3: C.double(stddev.Val3),
+		val4: C.double(stddev.Val4),
+	}
+
+	C.RandN(mat.p, meanVal, stddevVal)
+}
+
+// RandShuffle Shuffles the array elements randomly.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6a789c8a5cb56c6dd62506179808f763
+//
+func RandShuffle(mat *Mat) {
+	C.RandShuffle(mat.p)
+}
+
+// RandShuffleWithParams Shuffles the array elements randomly.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6a789c8a5cb56c6dd62506179808f763
+//
+func RandShuffleWithParams(mat *Mat, iterFactor float64, rng RNG) {
+	C.RandShuffleWithParams(mat.p, C.double(iterFactor), rng.p)
+}
+
+// RandU Generates a single uniformly-distributed random
+// number or an array of random numbers.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#ga1ba1026dca0807b27057ba6a49d258c0
+//
+func RandU(mat *Mat, low, high Scalar) {
+	lowVal := C.struct_Scalar{
+		val1: C.double(low.Val1),
+		val2: C.double(low.Val2),
+		val3: C.double(low.Val3),
+		val4: C.double(low.Val4),
+	}
+	highVal := C.struct_Scalar{
+		val1: C.double(high.Val1),
+		val2: C.double(high.Val2),
+		val3: C.double(high.Val3),
+		val4: C.double(high.Val4),
+	}
+
+	C.RandU(mat.p, lowVal, highVal)
 }

@@ -875,3 +875,23 @@ double RNG_Gaussian(RNG rng, double sigma) {
 unsigned int RNG_Next(RNG rng) {
     return rng->next();
 }
+
+void RandN(Mat mat, Scalar mean, Scalar stddev) {
+    cv::Scalar m = cv::Scalar(mean.val1, mean.val2, mean.val3, mean.val4);
+    cv::Scalar s = cv::Scalar(stddev.val1, stddev.val2, stddev.val3, stddev.val4);
+    cv::randn(*mat, m, s);
+}
+
+void RandShuffle(Mat mat) {
+    cv::randShuffle(*mat);
+}
+
+void RandShuffleWithParams(Mat mat, double iterFactor, RNG rng) {
+    cv::randShuffle(*mat, iterFactor, rng);
+}
+
+void RandU(Mat mat, Scalar low, Scalar high) {
+    cv::Scalar l = cv::Scalar(low.val1, low.val2, low.val3, low.val4);
+    cv::Scalar h = cv::Scalar(high.val1, high.val2, high.val3, high.val4);
+    cv::randn(*mat, l, h);
+}
