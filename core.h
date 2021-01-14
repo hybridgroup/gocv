@@ -414,6 +414,14 @@ double RNG_Gaussian(RNG rng, double sigma);
 
 unsigned int RNG_Next(RNG rng);
 
+void RandN(Mat mat, Scalar mean, Scalar stddev);
+
+void RandShuffle(Mat mat);
+
+void RandShuffleWithParams(Mat mat, double iterFactor, RNG rng);
+
+void RandU(Mat mat, Scalar low, Scalar high);
+
 #ifdef __cplusplus
 }
 #endif
