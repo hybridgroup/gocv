@@ -149,6 +149,17 @@ build_cuda:
 	$(MAKE) preinstall
 	cd -
 
+# Build OpenCV staticly linked
+build_static:
+	cd $(TMP_DIR)opencv/opencv-$(OPENCV_VERSION)
+	mkdir build
+	cd build
+	rm -rf *
+	cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_SHARED_LIBS=OFF -D OPENCV_EXTRA_MODULES_PATH=$(TMP_DIR)opencv/opencv_contrib-$(OPENCV_VERSION)/modules -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_opencv_java=NO -D BUILD_opencv_python=NO -D BUILD_opencv_python2=NO -D BUILD_opencv_python3=NO -DWITH_JASPER=OFF -DWITH_QT=OFF -DWITH_GTK=OFF -DWITH_FFMPEG=OFF -DWITH_TIFF=OFF -DWITH_WEBP=OFF -DWITH_PNG=OFF -DWITH_1394=OFF -DWITH_OPENJPEG=OFF -DOPENCV_GENERATE_PKGCONFIG=ON ..
+	$(MAKE) -j $(shell nproc --all)
+	$(MAKE) preinstall
+	cd -
+
 # Build OpenCV with cuda.
 build_all:
 	cd $(TMP_DIR)opencv/opencv-$(OPENCV_VERSION)
@@ -186,6 +197,9 @@ install_cuda: deps download sudo_pre_install_clean build_cuda sudo_install clean
 
 # Do everything with openvino.
 install_openvino: deps download download_openvino sudo_pre_install_clean build_openvino_package sudo_install_openvino build_openvino sudo_install clean verify_openvino
+
+# Do everything statically.
+install_static: deps download sudo_pre_install_clean build_static sudo_install clean verify
 
 # Do everything with openvino and cuda.
 install_all: deps download download_openvino sudo_pre_install_clean build_openvino_package sudo_install_openvino build_all sudo_install clean verify_openvino verify_cuda
