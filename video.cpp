@@ -55,7 +55,7 @@ bool Tracker_Init(Tracker self, Mat image, Rect boundingBox) {
 }
 
 bool Tracker_Update(Tracker self, Mat image, Rect* boundingBox) {
-    cv::Rect bb;
+    cv::Rect2d bb;
     bool ret = (*self)->update(*image, bb);
     boundingBox->x = int(bb.x);
     boundingBox->y = int(bb.y);
