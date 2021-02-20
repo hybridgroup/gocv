@@ -3,6 +3,7 @@
 
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
+#include <opencv2/tracking.hpp>
 #include <opencv2/video.hpp>
 extern "C" {
 #endif
