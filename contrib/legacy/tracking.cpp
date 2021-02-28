@@ -20,7 +20,7 @@ bool Tracker_Update(Tracker self, Mat image, Rect* boundingBox) {
 }
 
 TrackerMIL TrackerMIL_Create() {
-    return new cv::Ptr<cv::TrackerMIL>(cv::TrackerMIL::create());
+    return new cv::Ptr<cv::legacy::TrackerMIL>(cv::legacy::TrackerMIL::create());
 }
 
 void TrackerMIL_Close(TrackerMIL self) {
@@ -28,7 +28,7 @@ void TrackerMIL_Close(TrackerMIL self) {
 }
 
 TrackerBoosting TrackerBoosting_Create() {
-    return new cv::Ptr<cv::TrackerBoosting>(cv::TrackerBoosting::create());
+    return new cv::Ptr<cv::legacy::TrackerBoosting>(cv::legacy::TrackerBoosting::create());
 }
 
 void TrackerBoosting_Close(TrackerBoosting self) {
@@ -36,7 +36,7 @@ void TrackerBoosting_Close(TrackerBoosting self) {
 }
 
 TrackerMedianFlow TrackerMedianFlow_Create() {
-    return new cv::Ptr<cv::TrackerMedianFlow>(cv::TrackerMedianFlow::create());
+    return new cv::Ptr<cv::legacy::TrackerMedianFlow>(cv::legacy::TrackerMedianFlow::create());
 }
 
 void TrackerMedianFlow_Close(TrackerMedianFlow self) {
@@ -44,7 +44,7 @@ void TrackerMedianFlow_Close(TrackerMedianFlow self) {
 }
 
 TrackerTLD TrackerTLD_Create() {
-    return new cv::Ptr<cv::TrackerTLD>(cv::TrackerTLD::create());
+    return new cv::Ptr<cv::legacy::TrackerTLD>(cv::legacy::TrackerTLD::create());
 }
 
 void TrackerTLD_Close(TrackerTLD self) {
@@ -52,7 +52,7 @@ void TrackerTLD_Close(TrackerTLD self) {
 }
 
 TrackerKCF TrackerKCF_Create() {
-    return new cv::Ptr<cv::TrackerKCF>(cv::TrackerKCF::create());
+    return new cv::Ptr<cv::legacy::TrackerKCF>(cv::legacy::TrackerKCF::create());
 }
 
 void TrackerKCF_Close(TrackerKCF self) {
@@ -60,7 +60,7 @@ void TrackerKCF_Close(TrackerKCF self) {
 }
 
 TrackerMOSSE TrackerMOSSE_Create() {
-    return new cv::Ptr<cv::TrackerMOSSE>(cv::TrackerMOSSE::create());
+    return new cv::Ptr<cv::legacy::TrackerMOSSE>(cv::legacy::TrackerMOSSE::create());
 }
 
 void TrackerMOSSE_Close(TrackerMOSSE self) {
@@ -68,7 +68,7 @@ void TrackerMOSSE_Close(TrackerMOSSE self) {
 }
 
 TrackerCSRT TrackerCSRT_Create() {
-    return new cv::Ptr<cv::TrackerCSRT>(cv::TrackerCSRT::create());
+    return new cv::Ptr<cv::legacy::TrackerCSRT>(cv::legacy::TrackerCSRT::create());
 }
 
 void TrackerCSRT_Close(TrackerCSRT self) {
