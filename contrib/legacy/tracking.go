@@ -10,26 +10,6 @@ import (
 	"gocv.io/x/gocv"
 )
 
-type Tracker interface {
-	// Close closes, as Trackers need to be Closed manually.
-	//
-	Close() error
-
-	// Init initializes the tracker with a known bounding box that surrounded the target.
-	// Note: this can only be called once. If you lose the object, you have to Close() the instance,
-	// create a new one, and call Init() on it again.
-	//
-	// see: https://docs.opencv.org/master/db/dfe/classcv_1_1legacy_1_1Tracker.html#aecb9fd5dc14fff8f5d6cdcd2365ff0cd
-	//
-	Init(image gocv.Mat, boundingBox image.Rectangle) bool
-
-	// Update updates the tracker, returns a new bounding box and a boolean determining whether the tracker lost the target.
-	//
-	// see: https://docs.opencv.org/master/db/dfe/classcv_1_1legacy_1_1Tracker.html#aca6082cb358593a4634694c376f9000c
-	//
-	Update(image gocv.Mat) (image.Rectangle, bool)
-}
-
 // TrackerBoosting is a real-time object tracker based
 // on a novel on-line version of the AdaBoost algorithm.
 //
@@ -41,7 +21,7 @@ type TrackerBoosting struct {
 }
 
 // NewTrackerBoosting returns a new TrackerBoosting.
-func NewTrackerBoosting() Tracker {
+func NewTrackerBoosting() gocv.Tracker {
 	return TrackerBoosting{p: C.TrackerBoosting_Create()}
 }
 
@@ -105,7 +85,7 @@ type TrackerKCF struct {
 }
 
 // NewTrackerKCF returns a new TrackerKCF.
-func NewTrackerKCF() Tracker {
+func NewTrackerKCF() gocv.Tracker {
 	return TrackerKCF{p: C.TrackerKCF_Create()}
 }
 
@@ -137,7 +117,7 @@ type TrackerMedianFlow struct {
 }
 
 // NewTrackerMedianFlow returns a new TrackerMedianFlow.
-func NewTrackerMedianFlow() Tracker {
+func NewTrackerMedianFlow() gocv.Tracker {
 	return TrackerMedianFlow{p: C.TrackerMedianFlow_Create()}
 }
 
@@ -170,7 +150,7 @@ type TrackerMIL struct {
 }
 
 // NewTrackerMIL returns a new TrackerMIL.
-func NewTrackerMIL() Tracker {
+func NewTrackerMIL() gocv.Tracker {
 	return TrackerMIL{p: C.TrackerMIL_Create()}
 }
 
@@ -202,7 +182,7 @@ type TrackerMOSSE struct {
 }
 
 // NewTrackerMOSSE returns a new TrackerMOSSE.
-func NewTrackerMOSSE() Tracker {
+func NewTrackerMOSSE() gocv.Tracker {
 	return TrackerMOSSE{p: C.TrackerMOSSE_Create()}
 }
 
@@ -234,7 +214,7 @@ type TrackerTLD struct {
 }
 
 // NewTrackerTLD returns a new TrackerTLD.
-func NewTrackerTLD() Tracker {
+func NewTrackerTLD() gocv.Tracker {
 	return TrackerTLD{p: C.TrackerTLD_Create()}
 }
 
