@@ -70,7 +70,11 @@ func main() {
 			image.Pt(w/4., 13*w/16.),
 		},
 	}
-	gocv.FillPoly(&rook, points, white)
+
+	pv := NewPointsVectorFromPoints(points)
+	defer pv.Close()
+
+	gocv.FillPoly(&rook, pv, white)
 	gocv.Rectangle(&rook, image.Rect(0, 7*w/8.0, w, w), yellow, -1)
 	gocv.Line(&rook, image.Pt(0, 15*w/16), image.Pt(w, 15*w/16), black, 2)
 	gocv.Line(&rook, image.Pt(w/4, 7*w/8), image.Pt(w/4, w), black, 2)

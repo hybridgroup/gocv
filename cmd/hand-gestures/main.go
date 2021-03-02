@@ -86,9 +86,9 @@ func main() {
 		var angle float64
 		defectCount := 0
 		for i := 0; i < defects.Rows(); i++ {
-			start := c[defects.GetIntAt(i, 0)]
-			end := c[defects.GetIntAt(i, 1)]
-			far := c[defects.GetIntAt(i, 2)]
+			start := c.At(int(defects.GetIntAt(i, 0)))
+			end := c.At(int(defects.GetIntAt(i, 1)))
+			far := c.At(int(defects.GetIntAt(i, 2)))
 
 			a := math.Sqrt(math.Pow(float64(end.X-start.X), 2) + math.Pow(float64(end.Y-start.Y), 2))
 			b := math.Sqrt(math.Pow(float64(far.X-start.X), 2) + math.Pow(float64(far.Y-start.Y), 2))
@@ -118,15 +118,15 @@ func main() {
 	}
 }
 
-func getBiggestContour(contours [][]image.Point) []image.Point {
+func getBiggestContour(contours gocv.PointsVector) gocv.PointVector {
 	var area float64
 	index := 0
-	for i, c := range contours {
-		newArea := gocv.ContourArea(c)
+	for i := 0; i < contours.Size(); i++ {
+		newArea := gocv.ContourArea(contours.At(i))
 		if newArea > area {
 			area = newArea
 			index = i
 		}
 	}
-	return contours[index]
+	return contours.At(index)
 }

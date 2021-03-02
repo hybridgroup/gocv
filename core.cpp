@@ -852,6 +852,68 @@ Mat Mat_colRange(Mat m,int startrow,int endrow) {
     return new cv::Mat(m->colRange(startrow,endrow));
 }
 
+PointVector PointVector_New() {
+    return new std::vector< cv::Point >;
+}
+
+PointVector PointVector_NewFromPoints(Contour points) {
+    std::vector<cv::Point>* cntr = new std::vector<cv::Point>;
+
+    for (size_t i = 0; i < points.length; i++) {
+        cntr->push_back(cv::Point(points.points[i].x, points.points[i].y));
+    }
+
+    return cntr;
+}
+
+Point PointVector_At(PointVector pv, int idx) {
+    cv::Point p = pv->at(idx);
+    return Point{x: p.x, y: p.y};
+}
+
+int PointVector_Size(PointVector p) {
+    return p->size();
+}
+
+void PointVector_Close(PointVector p) {
+    delete p;
+}
+
+PointsVector PointsVector_New() {
+    return new std::vector< std::vector< cv::Point > >;
+}
+
+PointsVector PointsVector_NewFromPoints(Contours points) {
+    std::vector< std::vector< cv::Point > >* pv = new std::vector< std::vector< cv::Point > >;
+
+    for (size_t i = 0; i < points.length; i++) {
+        Contour contour = points.contours[i];
+
+        std::vector<cv::Point> cntr;
+
+        for (size_t i = 0; i < contour.length; i++) {
+            cntr.push_back(cv::Point(contour.points[i].x, contour.points[i].y));
+        }
+
+        pv->push_back(cntr);
+    }
+
+    return pv;
+}
+
+int PointsVector_Size(PointsVector ps) {
+    return ps->size();
+}
+
+PointVector PointsVector_At(PointsVector ps, int idx) {
+    std::vector< cv::Point >* p = &(ps->at(idx));
+    return p;
+}
+
+void PointsVector_Close(PointsVector ps) {
+    delete ps;
+}
+
 void IntVector_Close(struct IntVector ivec) {
     delete[] ivec.val;
 }
