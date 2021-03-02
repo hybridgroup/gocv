@@ -2011,6 +2011,167 @@ func (m *Mat) GetVeciAt(row int, col int) Veci {
 	return v
 }
 
+// PointVector is a wrapper around a std::vector< cv::Point >*
+// This is needed anytime that you need to pass or receive a collection of points.
+type PointVector struct {
+	p C.PointVector
+}
+
+// NewPointVector returns a new empty PointVector.
+func NewPointVector() PointVector {
+	return PointVector{p: C.PointVector_New()}
+}
+
+// NewPointVectorFromPoints returns a new PointVector that has been
+// initialized to a slice of image.Point.
+func NewPointVectorFromPoints(pts []image.Point) PointVector {
+	p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pts))))
+	defer C.free(unsafe.Pointer(p))
+
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(p)),
+		Len:  len(pts),
+		Cap:  len(pts),
+	}
+	pa := *(*[]C.Point)(unsafe.Pointer(h))
+
+	for j, point := range pts {
+		pa[j] = C.struct_Point{
+			x: C.int(point.X),
+			y: C.int(point.Y),
+		}
+	}
+
+	cpoints := C.struct_Points{
+		points: (*C.Point)(p),
+		length: C.int(len(pts)),
+	}
+
+	return PointVector{p: C.PointVector_NewFromPoints(cpoints)}
+}
+
+// IsNil checks the CGo pointer in the PointVector.
+func (pv PointVector) IsNil() bool {
+	return pv.p == nil
+}
+
+// Size returns how many Point are in the PointVector.
+func (pv PointVector) Size() int {
+	return int(C.PointVector_Size(pv.p))
+}
+
+// At returns the image.Point
+func (pv PointVector) At(idx int) image.Point {
+	if idx > pv.Size() {
+		return image.Point{}
+	}
+
+	cp := C.PointVector_At(pv.p, C.int(idx))
+	return image.Pt(int(cp.x), int(cp.y))
+}
+
+// ToPoints returns a slice of image.Point for the data in this PointVector.
+func (pv PointVector) ToPoints() []image.Point {
+	points := make([]image.Point, pv.Size())
+
+	for j := 0; j < pv.Size(); j++ {
+		points[j] = pv.At(j)
+	}
+	return points
+}
+
+// Close closes and frees memory for this PointVector.
+func (pv PointVector) Close() {
+	C.PointVector_Close(pv.p)
+}
+
+// PointsVector is a wrapper around a std::vector< std::vector< cv::Point > >*
+type PointsVector struct {
+	p C.PointsVector
+}
+
+// NewPointsVector returns a new empty PointsVector.
+func NewPointsVector() PointsVector {
+	return PointsVector{p: C.PointsVector_New()}
+}
+
+// NewPointsVectorFromPoints returns a new PointsVector that has been
+// initialized to a slice of slices of image.Point.
+func NewPointsVectorFromPoints(pts [][]image.Point) PointsVector {
+	points := make([]C.struct_Points, len(pts))
+
+	for i, pt := range pts {
+		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
+		defer C.free(unsafe.Pointer(p))
+
+		h := &reflect.SliceHeader{
+			Data: uintptr(unsafe.Pointer(p)),
+			Len:  len(pt),
+			Cap:  len(pt),
+		}
+		pa := *(*[]C.Point)(unsafe.Pointer(h))
+
+		for j, point := range pt {
+			pa[j] = C.struct_Point{
+				x: C.int(point.X),
+				y: C.int(point.Y),
+			}
+		}
+
+		points[i] = C.struct_Points{
+			points: (*C.Point)(p),
+			length: C.int(len(pt)),
+		}
+	}
+
+	cPoints := C.struct_Contours{
+		contours: (*C.struct_Points)(&points[0]),
+		length:   C.int(len(pts)),
+	}
+
+	return PointsVector{p: C.PointsVector_NewFromPoints(cPoints)}
+}
+
+// ToPoints returns a slice of slices of image.Point for the data in this PointsVector.
+func (pvs PointsVector) ToPoints() [][]image.Point {
+	ppoints := make([][]image.Point, pvs.Size())
+	for i := 0; i < pvs.Size(); i++ {
+		pts := pvs.At(i)
+		points := make([]image.Point, pts.Size())
+
+		for j := 0; j < pts.Size(); j++ {
+			points[j] = pts.At(j)
+		}
+		ppoints[i] = points
+	}
+
+	return ppoints
+}
+
+// IsNil checks the CGo pointer in the PointsVector.
+func (pvs PointsVector) IsNil() bool {
+	return pvs.p == nil
+}
+
+// Size returns how many vectors of Points are in the PointsVector.
+func (pvs PointsVector) Size() int {
+	return int(C.PointsVector_Size(pvs.p))
+}
+
+// At returns the PointVector at that index of the PointsVector.
+func (pvs PointsVector) At(idx int) PointVector {
+	if idx > pvs.Size() {
+		return PointVector{}
+	}
+
+	return PointVector{p: C.PointsVector_At(pvs.p, C.int(idx))}
+}
+
+// Close closes and frees memory for this PointsVector.
+func (pvs PointsVector) Close() {
+	C.PointsVector_Close(pvs.p)
+}
+
 // GetTickCount returns the number of ticks.
 //
 // For further details, please see:

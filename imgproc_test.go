@@ -24,19 +24,26 @@ func TestApproxPolyDP(t *testing.T) {
 	Rectangle(&img, image.Rect(125, 25, 175, 75), white, 1)
 
 	contours := FindContours(img, RetrievalExternal, ChainApproxSimple)
+	defer contours.Close()
 
-	trianglePerimeter := ArcLength(contours[0], true)
-	triangleContour := ApproxPolyDP(contours[0], 0.04*trianglePerimeter, true)
+	trianglePerimeter := ArcLength(contours.At(0), true)
+	triangleContour := ApproxPolyDP(contours.At(0), 0.04*trianglePerimeter, true)
+	defer triangleContour.Close()
+
 	expectedTriangleContour := []image.Point{image.Pt(25, 25), image.Pt(25, 75), image.Pt(75, 50)}
-	if !reflect.DeepEqual(triangleContour, expectedTriangleContour) {
-		t.Errorf("Failed to approximate triangle.\nActual:%v\nExpect:%v", triangleContour, expectedTriangleContour)
+	actualTriangleContour := triangleContour.ToPoints()
+	if !reflect.DeepEqual(actualTriangleContour, expectedTriangleContour) {
+		t.Errorf("Failed to approximate triangle.\nActual:%v\nExpect:%v", actualTriangleContour, expectedTriangleContour)
 	}
 
-	rectPerimeter := ArcLength(contours[1], true)
-	rectContour := ApproxPolyDP(contours[1], 0.04*rectPerimeter, true)
+	rectPerimeter := ArcLength(contours.At(1), true)
+	rectContour := ApproxPolyDP(contours.At(1), 0.04*rectPerimeter, true)
+	defer rectContour.Close()
+
+	actualRectContour := rectContour.ToPoints()
 	expectedRectContour := []image.Point{image.Pt(125, 24), image.Pt(124, 75), image.Pt(175, 76), image.Pt(176, 25)}
-	if !reflect.DeepEqual(rectContour, expectedRectContour) {
-		t.Errorf("Failed to approximate rectangle.\nActual:%v\nExpect:%v", rectContour, expectedRectContour)
+	if !reflect.DeepEqual(actualRectContour, expectedRectContour) {
+		t.Errorf("Failed to approximate rectangle.\nActual:%v\nExpect:%v", actualRectContour, expectedRectContour)
 	}
 }
 
@@ -48,11 +55,13 @@ func TestConvexity(t *testing.T) {
 	defer img.Close()
 
 	res := FindContours(img, RetrievalExternal, ChainApproxSimple)
-	if len(res) < 1 {
+	defer res.Close()
+
+	if res.Size() < 1 {
 		t.Error("Invalid FindContours test")
 	}
 
-	area := ContourArea(res[0])
+	area := ContourArea(res.At(0))
 	if area != 127280.0 {
 		t.Errorf("Invalid ContourArea test: %f", area)
 	}
@@ -60,7 +69,7 @@ func TestConvexity(t *testing.T) {
 	hull := NewMat()
 	defer hull.Close()
 
-	ConvexHull(res[0], &hull, true, false)
+	ConvexHull(res.At(0), &hull, true, false)
 	if hull.Empty() {
 		t.Error("Invalid ConvexHull test")
 	}
@@ -68,7 +77,7 @@ func TestConvexity(t *testing.T) {
 	defects := NewMat()
 	defer defects.Close()
 
-	ConvexityDefects(res[0], hull, &defects)
+	ConvexityDefects(res.At(0), hull, &defects)
 	if defects.Empty() {
 		t.Error("Invalid ConvexityDefects test")
 	}
@@ -334,7 +343,9 @@ func TestBoxPoints(t *testing.T) {
 	Threshold(img, &threshImg, 25, 255, ThresholdBinary)
 
 	contours := FindContours(threshImg, RetrievalExternal, ChainApproxSimple)
-	contour := contours[0]
+	defer contours.Close()
+
+	contour := contours.At(0)
 
 	hull := NewMat()
 	defer hull.Close()
@@ -343,7 +354,7 @@ func TestBoxPoints(t *testing.T) {
 	for i := 0; i < hull.Cols(); i++ {
 		for j := 0; j < hull.Rows(); j++ {
 			p := hull.GetIntAt(j, i)
-			hullPoints = append(hullPoints, contour[p])
+			hullPoints = append(hullPoints, contour.At(int(p)))
 		}
 	}
 	rect := MinAreaRect(hullPoints)
@@ -408,26 +419,28 @@ func TestFindContours(t *testing.T) {
 	defer img.Close()
 
 	res := FindContours(img, RetrievalExternal, ChainApproxSimple)
-	if len(res) < 1 {
+	defer res.Close()
+
+	if res.Size() < 1 {
 		t.Error("Invalid FindContours test")
 	}
 
-	area := ContourArea(res[0])
+	area := ContourArea(res.At(0))
 	if area != 127280.0 {
 		t.Errorf("Invalid ContourArea test: %f", area)
 	}
 
-	r := BoundingRect(res[0])
+	r := BoundingRect(res.At(0))
 	if !r.Eq(image.Rect(0, 0, 400, 320)) {
 		t.Errorf("Invalid BoundingRect test: %v", r)
 	}
 
-	length := ArcLength(res[0], true)
+	length := ArcLength(res.At(0), true)
 	if int(length) != 1436 {
 		t.Errorf("Invalid ArcLength test: %f", length)
 	}
 
-	length = ArcLength(res[0], false)
+	length = ArcLength(res.At(0), false)
 	if int(length) != 1037 {
 		t.Errorf("Invalid ArcLength test: %f", length)
 	}
@@ -443,12 +456,13 @@ func TestFindContoursWithParams(t *testing.T) {
 	defer hierarchy.Close()
 
 	res := FindContoursWithParams(img, &hierarchy, RetrievalTree, ChainApproxNone)
+	defer res.Close()
 
-	if want := 4; want != len(res) {
-		t.Fatalf("Expected %d contours but got %d", want, len(res))
+	if want := 4; want != res.Size() {
+		t.Fatalf("Expected %d contours but got %d", want, res.Size())
 	}
-	if len(res) != hierarchy.Cols() {
-		t.Fatalf("Expected %d hierarchy of contours, got %d", len(res), hierarchy.Cols())
+	if res.Size() != hierarchy.Cols() {
+		t.Fatalf("Expected %d hierarchy of contours, got %d", res.Size(), hierarchy.Cols())
 	}
 	// Assert hierarchy values, the pattern is [Next, Previous, First_Child, Parent]
 	// More info at https://docs.opencv.org/master/d9/d8b/tutorial_py_contours_hierarchy.html
@@ -1635,6 +1649,7 @@ func TestDrawContours(t *testing.T) {
 	Rectangle(&img, image.Rect(125, 25, 175, 75), white, 1)
 
 	contours := FindContours(img, RetrievalExternal, ChainApproxSimple)
+	defer contours.Close()
 
 	if v := img.GetUCharAt(23, 123); v != 0 {
 		t.Errorf("TestDrawContours(): wrong pixel value = %v, want = %v", v, 0)
@@ -1679,7 +1694,11 @@ func TestFillPoly(t *testing.T) {
 			image.Pt(20, 10),
 		},
 	}
-	FillPoly(&img, pts, white)
+
+	pv := NewPointsVectorFromPoints(pts)
+	defer pv.Close()
+
+	FillPoly(&img, pv, white)
 
 	if v := img.GetUCharAt(10, 10); v != 255 {
 		t.Errorf("TestFillPoly(): wrong pixel value = %v, want = %v", v, 255)
@@ -1699,7 +1718,10 @@ func TestPolylines(t *testing.T) {
 			image.Pt(20, 10),
 		},
 	}
-	Polylines(&img, pts, true, white, 1)
+	pv := NewPointsVectorFromPoints(pts)
+	defer pv.Close()
+
+	Polylines(&img, pv, true, white, 1)
 
 	if v := img.GetUCharAt(10, 10); v != 255 {
 		t.Errorf("TestPolylines(): wrong pixel value = %v, want = %v", v, 255)

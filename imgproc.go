@@ -13,25 +13,14 @@ import (
 	"unsafe"
 )
 
-func getPoints(pts *C.Point, l int) []C.Point {
-	h := &reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(pts)),
-		Len:  l,
-		Cap:  l,
-	}
-	return *(*[]C.Point)(unsafe.Pointer(h))
-}
-
 // ArcLength calculates a contour perimeter or a curve length.
 //
 // For further details, please see:
 //
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8d26483c636be6b35c3ec6335798a47c
 //
-func ArcLength(curve []image.Point, isClosed bool) float64 {
-	cPoints := toCPoints(curve)
-	arcLength := C.ArcLength(cPoints, C.bool(isClosed))
-	return float64(arcLength)
+func ArcLength(curve PointVector, isClosed bool) float64 {
+	return float64(C.ArcLength(curve.p, C.bool(isClosed)))
 }
 
 // ApproxPolyDP approximates a polygonal curve(s) with the specified precision.
@@ -40,19 +29,8 @@ func ArcLength(curve []image.Point, isClosed bool) float64 {
 //
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga0012a5fdaea70b8a9970165d98722b4c
 //
-func ApproxPolyDP(curve []image.Point, epsilon float64, closed bool) (approxCurve []image.Point) {
-	cCurve := toCPoints(curve)
-
-	cApproxCurve := C.ApproxPolyDP(cCurve, C.double(epsilon), C.bool(closed))
-	defer C.Points_Close(cApproxCurve)
-
-	cApproxCurvePoints := getPoints(cApproxCurve.points, int(cApproxCurve.length))
-
-	approxCurve = make([]image.Point, cApproxCurve.length)
-	for i, cPoint := range cApproxCurvePoints {
-		approxCurve[i] = image.Pt(int(cPoint.x), int(cPoint.y))
-	}
-	return approxCurve
+func ApproxPolyDP(curve PointVector, epsilon float64, closed bool) PointVector {
+	return PointVector{p: C.ApproxPolyDP(curve.p, C.double(epsilon), C.bool(closed))}
 }
 
 // ConvexHull finds the convex hull of a point set.
@@ -60,9 +38,8 @@ func ApproxPolyDP(curve []image.Point, epsilon float64, closed bool) (approxCurv
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga014b28e56cb8854c0de4a211cb2be656
 //
-func ConvexHull(points []image.Point, hull *Mat, clockwise bool, returnPoints bool) {
-	cPoints := toCPoints(points)
-	C.ConvexHull(cPoints, hull.p, C.bool(clockwise), C.bool(returnPoints))
+func ConvexHull(points PointVector, hull *Mat, clockwise bool, returnPoints bool) {
+	C.ConvexHull(points.p, hull.p, C.bool(clockwise), C.bool(returnPoints))
 }
 
 // ConvexityDefects finds the convexity defects of a contour.
@@ -70,9 +47,8 @@ func ConvexHull(points []image.Point, hull *Mat, clockwise bool, returnPoints bo
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gada4437098113fd8683c932e0567f47ba
 //
-func ConvexityDefects(contour []image.Point, hull Mat, result *Mat) {
-	cPoints := toCPoints(contour)
-	C.ConvexityDefects(cPoints, hull.p, result.p)
+func ConvexityDefects(contour PointVector, hull Mat, result *Mat) {
+	C.ConvexityDefects(contour.p, hull.p, result.p)
 }
 
 // CvtColor converts an image from one color space to another.
@@ -406,9 +382,8 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#gacb413ddce8e48ff3ca61ed7cf626a366
 //
-func BoundingRect(contour []image.Point) image.Rectangle {
-	cContour := toCPoints(contour)
-	r := C.BoundingRect(cContour)
+func BoundingRect(contour PointVector) image.Rectangle {
+	r := C.BoundingRect(contour.p)
 	rect := image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
 	return rect
 }
@@ -455,9 +430,8 @@ func BoxPoints(rect RotatedRect, pts *Mat) {
 // For further details, please see:
 // https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga2c759ed9f497d4a618048a2f56dc97f1
 //
-func ContourArea(contour []image.Point) float64 {
-	cContour := toCPoints(contour)
-	result := C.ContourArea(cContour)
+func ContourArea(contour PointVector) float64 {
+	result := C.ContourArea(contour.p)
 	return float64(result)
 }
 
@@ -548,9 +522,9 @@ func MinEnclosingCircle(points []image.Point) (x, y, radius float32) {
 // FindContours finds contours in a binary image.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga95f5b48d01abc7c2e0732db24689837b
+// https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga95f5b48d01abc7c2e0732db24689837b
 //
-func FindContours(src Mat, mode RetrievalMode, method ContourApproximationMode) [][]image.Point {
+func FindContours(src Mat, mode RetrievalMode, method ContourApproximationMode) PointsVector {
 	hierarchy := NewMat()
 	defer hierarchy.Close()
 	return FindContoursWithParams(src, &hierarchy, mode, method)
@@ -559,40 +533,10 @@ func FindContours(src Mat, mode RetrievalMode, method ContourApproximationMode) 
 // FindContoursWithParams finds contours in a binary image.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga17ed9f5d79ae97bd4c7cf18403e1689a
+// https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga17ed9f5d79ae97bd4c7cf18403e1689a
 //
-func FindContoursWithParams(src Mat, hierarchy *Mat, mode RetrievalMode, method ContourApproximationMode) [][]image.Point {
-	ret := C.FindContours(src.p, hierarchy.p, C.int(mode), C.int(method))
-	defer C.Contours_Close(ret)
-
-	cArray := ret.contours
-	cLength := int(ret.length)
-	cHdr := reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(cArray)),
-		Len:  cLength,
-		Cap:  cLength,
-	}
-	sContours := *(*[]C.Points)(unsafe.Pointer(&cHdr))
-
-	contours := make([][]image.Point, cLength)
-	for i, pts := range sContours {
-		pArray := pts.points
-		pLength := int(pts.length)
-		pHdr := reflect.SliceHeader{
-			Data: uintptr(unsafe.Pointer(pArray)),
-			Len:  pLength,
-			Cap:  pLength,
-		}
-		sPoints := *(*[]C.Point)(unsafe.Pointer(&pHdr))
-
-		points := make([]image.Point, pLength)
-		for j, pt := range sPoints {
-			points[j] = image.Pt(int(pt.x), int(pt.y))
-		}
-		contours[i] = points
-	}
-
-	return contours
+func FindContoursWithParams(src Mat, hierarchy *Mat, mode RetrievalMode, method ContourApproximationMode) PointsVector {
+	return PointsVector{p: C.FindContours(src.p, hierarchy.p, C.int(mode), C.int(method))}
 }
 
 //ConnectedComponentsAlgorithmType specifies the type for ConnectedComponents
@@ -1317,33 +1261,7 @@ func Rectangle(img *Mat, r image.Rectangle, c color.RGBA, thickness int) {
 //
 // For more information, see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf30888828337aa4c6b56782b5dfbd4b7
-func FillPoly(img *Mat, pts [][]image.Point, c color.RGBA) {
-	points := make([]C.struct_Points, len(pts))
-
-	for i, pt := range pts {
-		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
-		defer C.free(unsafe.Pointer(p))
-
-		pa := getPoints(p, len(pt))
-
-		for j, point := range pt {
-			pa[j] = C.struct_Point{
-				x: C.int(point.X),
-				y: C.int(point.Y),
-			}
-		}
-
-		points[i] = C.struct_Points{
-			points: (*C.Point)(p),
-			length: C.int(len(pt)),
-		}
-	}
-
-	cPoints := C.struct_Contours{
-		contours: (*C.struct_Points)(&points[0]),
-		length:   C.int(len(pts)),
-	}
-
+func FillPoly(img *Mat, pts PointsVector, c color.RGBA) {
 	sColor := C.struct_Scalar{
 		val1: C.double(c.B),
 		val2: C.double(c.G),
@@ -1351,40 +1269,14 @@ func FillPoly(img *Mat, pts [][]image.Point, c color.RGBA) {
 		val4: C.double(c.A),
 	}
 
-	C.FillPoly(img.p, cPoints, sColor)
+	C.FillPoly(img.p, pts.p, sColor)
 }
 
 // Polylines draws several polygonal curves.
 //
 // For more information, see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga1ea127ffbbb7e0bfc4fd6fd2eb64263c
-func Polylines(img *Mat, pts [][]image.Point, isClosed bool, c color.RGBA, thickness int) {
-	points := make([]C.struct_Points, len(pts))
-
-	for i, pt := range pts {
-		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pt))))
-		defer C.free(unsafe.Pointer(p))
-
-		pa := getPoints(p, len(pt))
-
-		for j, point := range pt {
-			pa[j] = C.struct_Point{
-				x: C.int(point.X),
-				y: C.int(point.Y),
-			}
-		}
-
-		points[i] = C.struct_Points{
-			points: (*C.Point)(p),
-			length: C.int(len(pt)),
-		}
-	}
-
-	cPoints := C.struct_Contours{
-		contours: (*C.struct_Points)(&points[0]),
-		length:   C.int(len(pts)),
-	}
-
+func Polylines(img *Mat, pts PointsVector, isClosed bool, c color.RGBA, thickness int) {
 	sColor := C.struct_Scalar{
 		val1: C.double(c.B),
 		val2: C.double(c.G),
@@ -1392,7 +1284,7 @@ func Polylines(img *Mat, pts [][]image.Point, isClosed bool, c color.RGBA, thick
 		val4: C.double(c.A),
 	}
 
-	C.Polylines(img.p, cPoints, C.bool(isClosed), sColor, C.int(thickness))
+	C.Polylines(img.p, pts.p, C.bool(isClosed), sColor, C.int(thickness))
 }
 
 // HersheyFont are the font libraries included in OpenCV.
@@ -1766,32 +1658,7 @@ func FindHomography(srcPoints Mat, dstPoints *Mat, method HomographyMethod, rans
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga746c0625f1781f1ffc9056259103edbc
 //
-func DrawContours(img *Mat, contours [][]image.Point, contourIdx int, c color.RGBA, thickness int) {
-	cntrs := make([]C.struct_Points, len(contours))
-
-	for i, contour := range contours {
-		p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(contour))))
-
-		pa := getPoints(p, len(contour))
-
-		for j, point := range contour {
-			pa[j] = C.struct_Point{
-				x: C.int(point.X),
-				y: C.int(point.Y),
-			}
-		}
-
-		cntrs[i] = C.struct_Points{
-			points: (*C.Point)(p),
-			length: C.int(len(contour)),
-		}
-	}
-
-	cContours := C.struct_Contours{
-		contours: (*C.struct_Points)(&cntrs[0]),
-		length:   C.int(len(contours)),
-	}
-
+func DrawContours(img *Mat, contours PointsVector, contourIdx int, c color.RGBA, thickness int) {
 	sColor := C.struct_Scalar{
 		val1: C.double(c.B),
 		val2: C.double(c.G),
@@ -1799,13 +1666,7 @@ func DrawContours(img *Mat, contours [][]image.Point, contourIdx int, c color.RG
 		val4: C.double(c.A),
 	}
 
-	C.DrawContours(img.p, cContours, C.int(contourIdx), sColor, C.int(thickness))
-
-	// now free the contour points
-	for i := 0; i < len(contours); i++ {
-		C.free(unsafe.Pointer(cntrs[i].points))
-
-	}
+	C.DrawContours(img.p, contours.p, C.int(contourIdx), sColor, C.int(thickness))
 }
 
 // Remap applies a generic geometrical transformation to an image.

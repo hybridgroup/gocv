@@ -205,10 +205,14 @@ typedef struct Moment {
 typedef cv::Mat* Mat;
 typedef cv::TermCriteria* TermCriteria;
 typedef cv::RNG* RNG;
+typedef std::vector< cv::Point >* PointVector;
+typedef std::vector< std::vector< cv::Point > >* PointsVector;
 #else
 typedef void* Mat;
 typedef void* TermCriteria;
 typedef void* RNG;
+typedef void* PointVector;
+typedef void* PointsVector;
 #endif
 
 // Wrapper for the vector of Mat aka std::vector<Mat>
@@ -399,6 +403,18 @@ double GetTickFrequency();
 
 Mat Mat_rowRange(Mat m,int startrow,int endrow);
 Mat Mat_colRange(Mat m,int startrow,int endrow);
+
+PointVector PointVector_New();
+PointVector PointVector_NewFromPoints(Contour points);
+Point PointVector_At(PointVector pv, int idx);
+int PointVector_Size(PointVector pv);
+void PointVector_Close(PointVector pv);
+
+PointsVector PointsVector_New();
+PointsVector PointsVector_NewFromPoints(Contours points);
+PointVector PointsVector_At(PointsVector psv, int idx);
+int PointsVector_Size(PointsVector psv);
+void PointsVector_Close(PointsVector psv);
 
 void IntVector_Close(struct IntVector ivec);
 

@@ -2643,3 +2643,60 @@ func TestRandU(t *testing.T) {
 	defer mat.Close()
 	RandU(&mat, NewScalar(10, 10, 10, 10), NewScalar(20, 20, 20, 20))
 }
+
+func TestNewPointsVectorFromPoints(t *testing.T) {
+	pts := [][]image.Point{
+		{
+			image.Pt(10, 10),
+			image.Pt(10, 20),
+			image.Pt(20, 20),
+			image.Pt(20, 10),
+		},
+	}
+
+	psv := NewPointsVectorFromPoints(pts)
+	defer psv.Close()
+
+	if psv.IsNil() {
+		t.Fatal("pointsvector pointer was nil")
+	}
+
+	if psv.Size() != 1 {
+		t.Fatal("expected pointsvector size 1")
+	}
+
+	pv := psv.At(0)
+	if pv.Size() != 4 {
+		t.Fatal("expected pointvector size 4")
+	}
+
+	p := pv.At(0)
+	if p != image.Pt(10, 10) {
+		t.Fatal("invalid point")
+	}
+}
+
+func TestNewPointVectorFromPoints(t *testing.T) {
+	pts := []image.Point{
+		image.Pt(10, 10),
+		image.Pt(10, 20),
+		image.Pt(20, 20),
+		image.Pt(20, 10),
+	}
+
+	pv := NewPointVectorFromPoints(pts)
+	defer pv.Close()
+
+	if pv.IsNil() {
+		t.Fatal("pointvector pointer was nil")
+	}
+
+	if pv.Size() != 4 {
+		t.Fatal("expected pointvector size 4")
+	}
+
+	p := pv.At(0)
+	if p != image.Pt(10, 10) {
+		t.Fatal("invalid point")
+	}
+}
