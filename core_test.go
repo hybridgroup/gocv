@@ -2645,6 +2645,13 @@ func TestRandU(t *testing.T) {
 }
 
 func TestNewPointsVectorFromPoints(t *testing.T) {
+	epv := NewPointsVector()
+	defer epv.Close()
+
+	if epv.Size() != 0 {
+		t.Fatal("expected empty pointsvector size not 0")
+	}
+
 	pts := [][]image.Point{
 		{
 			image.Pt(10, 10),
@@ -2665,6 +2672,11 @@ func TestNewPointsVectorFromPoints(t *testing.T) {
 		t.Fatal("expected pointsvector size 1")
 	}
 
+	ipv := psv.At(10)
+	if !ipv.IsNil() {
+		t.Fatal("expected pointvector nil")
+	}
+
 	pv := psv.At(0)
 	if pv.Size() != 4 {
 		t.Fatal("expected pointvector size 4")
@@ -2672,11 +2684,28 @@ func TestNewPointsVectorFromPoints(t *testing.T) {
 
 	p := pv.At(0)
 	if p != image.Pt(10, 10) {
-		t.Fatal("invalid point")
+		t.Fatal("invalid At() point")
+	}
+
+	p = pv.At(10)
+	if p != image.Pt(0, 0) {
+		t.Fatal("invalid At() point beyond range")
+	}
+
+	out := psv.ToPoints()
+	if out[0][0] != image.Pt(10, 10) {
+		t.Fatal("invalid ToPoints() point")
 	}
 }
 
 func TestNewPointVectorFromPoints(t *testing.T) {
+	epv := NewPointVector()
+	defer epv.Close()
+
+	if epv.Size() != 0 {
+		t.Fatal("expected empty pointvector size not 0")
+	}
+
 	pts := []image.Point{
 		image.Pt(10, 10),
 		image.Pt(10, 20),
