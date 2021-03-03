@@ -1520,7 +1520,13 @@ func TestGetPerspectiveTransform2f(t *testing.T) {
 		{0, 10},
 	}
 
-	m := GetPerspectiveTransform2f(src, dst)
+	pvsrc := NewPoint2fVectorFromPoints(src)
+	defer pvsrc.Close()
+
+	pvdst := NewPoint2fVectorFromPoints(dst)
+	defer pvdst.Close()
+
+	m := GetPerspectiveTransform2f(pvsrc, pvdst)
 	defer m.Close()
 
 	if m.Cols() != 3 {
@@ -1571,7 +1577,13 @@ func TestGetAffineTransform2f(t *testing.T) {
 		{100.12, 150.21},
 	}
 
-	m := GetAffineTransform2f(src, dst)
+	pvsrc := NewPoint2fVectorFromPoints(src)
+	defer pvsrc.Close()
+
+	pvdst := NewPoint2fVectorFromPoints(dst)
+	defer pvdst.Close()
+
+	m := GetAffineTransform2f(pvsrc, pvdst)
 	defer m.Close()
 
 	if m.Cols() != 3 {
@@ -1617,7 +1629,13 @@ func TestFindHomography(t *testing.T) {
 	m := FindHomography(src, &dst, HomograpyMethodAllPoints, 3, &mask, 2000, 0.995)
 	defer m.Close()
 
-	m2 := GetPerspectiveTransform2f(srcPoints, dstPoints)
+	pvsrc := NewPoint2fVectorFromPoints(srcPoints)
+	defer pvsrc.Close()
+
+	pvdst := NewPoint2fVectorFromPoints(dstPoints)
+	defer pvdst.Close()
+
+	m2 := GetPerspectiveTransform2f(pvsrc, pvdst)
 	defer m2.Close()
 
 	for row := 0; row < 3; row++ {

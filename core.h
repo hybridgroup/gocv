@@ -418,6 +418,12 @@ PointVector PointsVector_At(PointsVector psv, int idx);
 int PointsVector_Size(PointsVector psv);
 void PointsVector_Close(PointsVector psv);
 
+Point2fVector Point2fVector_New();
+void Point2fVector_Close(Point2fVector pfv);
+Point2fVector Point2fVector_NewFromPoints(Contour2f pts);
+Point2f Point2fVector_At(Point2fVector pfv, int idx);
+int Point2fVector_Size(Point2fVector pfv);
+
 void IntVector_Close(struct IntVector ivec);
 
 void CStrings_Close(struct CStrings cstrs);

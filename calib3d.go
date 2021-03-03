@@ -186,8 +186,6 @@ func DrawChessboardCorners(image *Mat, patternSize image.Point, corners Mat, pat
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d9/d0c/group__calib3d.html#gad767faff73e9cbd8b9d92b955b50062d
-func EstimateAffinePartial2D(from, to []Point2f) Mat {
-	fromPoints := toCPoints2f(from)
-	toPoints := toCPoints2f(to)
-	return newMat(C.EstimateAffinePartial2D(fromPoints, toPoints))
+func EstimateAffinePartial2D(from, to Point2fVector) Mat {
+	return newMat(C.EstimateAffinePartial2D(from.p, to.p))
 }

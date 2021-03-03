@@ -913,6 +913,34 @@ void PointsVector_Close(PointsVector ps) {
     delete ps;
 }
 
+Point2fVector Point2fVector_New() {
+    return new std::vector< cv::Point2f >;
+}
+
+Point2fVector Point2fVector_NewFromPoints(Contour2f points) {
+    std::vector<cv::Point2f>* cntr = new std::vector<cv::Point2f>;
+
+    for (size_t i = 0; i < points.length; i++) {
+        cntr->push_back(cv::Point2f(points.points[i].x, points.points[i].y));
+    }
+
+    return cntr;
+}
+
+Point2f Point2fVector_At(Point2fVector pfv, int idx) {
+    cv::Point2f p = pfv->at(idx);
+    return Point2f{x: p.x, y: p.y};
+}
+
+int Point2fVector_Size(Point2fVector pfv) {
+    return pfv->size();
+}
+
+void Point2fVector_Close(Point2fVector pv) {
+    pv->clear();
+    delete pv;
+}
+
 void IntVector_Close(struct IntVector ivec) {
     delete[] ivec.val;
 }

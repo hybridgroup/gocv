@@ -23,7 +23,7 @@ void Undistort(Mat src, Mat dst, Mat cameraMatrix, Mat distCoeffs, Mat newCamera
 void UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d, Mat r, Mat p);
 bool FindChessboardCorners(Mat image, Size patternSize, Mat corners, int flags);
 void DrawChessboardCorners(Mat image, Size patternSize, Mat corners, bool patternWasFound);
-Mat EstimateAffinePartial2D(Contour2f from, Contour2f to);
+Mat EstimateAffinePartial2D(Point2fVector from, Point2fVector to);
 #ifdef __cplusplus
 }
 #endif
