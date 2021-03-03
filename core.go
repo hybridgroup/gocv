@@ -2069,6 +2069,18 @@ func (pv PointVector) At(idx int) image.Point {
 	return image.Pt(int(cp.x), int(cp.y))
 }
 
+// Append appends an image.Point at end of the PointVector.
+func (pv PointVector) Append(point image.Point) {
+	p := C.struct_Point{
+		x: C.int(point.X),
+		y: C.int(point.Y),
+	}
+
+	C.PointVector_Append(pv.p, p)
+
+	return
+}
+
 // ToPoints returns a slice of image.Point for the data in this PointVector.
 func (pv PointVector) ToPoints() []image.Point {
 	points := make([]image.Point, pv.Size())
@@ -2164,6 +2176,15 @@ func (pvs PointsVector) At(idx int) PointVector {
 	}
 
 	return PointVector{p: C.PointsVector_At(pvs.p, C.int(idx))}
+}
+
+// Append appends a PointVector at end of the PointsVector.
+func (pvs PointsVector) Append(pv PointVector) {
+	if !pv.IsNil() {
+		C.PointsVector_Append(pvs.p, pv.p)
+	}
+
+	return
 }
 
 // Close closes and frees memory for this PointsVector.

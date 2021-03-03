@@ -865,7 +865,11 @@ PointVector PointVector_NewFromPoints(Contour points) {
 
 Point PointVector_At(PointVector pv, int idx) {
     cv::Point p = pv->at(idx);
-    return Point{x: p.x, y: p.y};
+    return Point{.x = p.x, .y = p.y};
+}
+
+void PointVector_Append(PointVector pv, Point p) {
+    pv->push_back(cv::Point(p.x, p.y));
 }
 
 int PointVector_Size(PointVector p) {
@@ -908,6 +912,10 @@ PointVector PointsVector_At(PointsVector ps, int idx) {
     return p;
 }
 
+void PointsVector_Append(PointsVector psv, PointVector pv) {
+    psv->push_back(*pv);
+}
+
 void PointsVector_Close(PointsVector ps) {
     ps->clear();
     delete ps;
@@ -929,7 +937,7 @@ Point2fVector Point2fVector_NewFromPoints(Contour2f points) {
 
 Point2f Point2fVector_At(Point2fVector pfv, int idx) {
     cv::Point2f p = pfv->at(idx);
-    return Point2f{x: p.x, y: p.y};
+    return Point2f{.x = p.x, .y = p.y};
 }
 
 int Point2fVector_Size(Point2fVector pfv) {

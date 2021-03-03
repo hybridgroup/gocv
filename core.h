@@ -409,12 +409,14 @@ Mat Mat_colRange(Mat m,int startrow,int endrow);
 PointVector PointVector_New();
 PointVector PointVector_NewFromPoints(Contour points);
 Point PointVector_At(PointVector pv, int idx);
+void PointVector_Append(PointVector pv, Point p);
 int PointVector_Size(PointVector pv);
 void PointVector_Close(PointVector pv);
 
 PointsVector PointsVector_New();
 PointsVector PointsVector_NewFromPoints(Contours points);
 PointVector PointsVector_At(PointsVector psv, int idx);
+void PointsVector_Append(PointsVector psv, PointVector pv);
 int PointsVector_Size(PointsVector psv);
 void PointsVector_Close(PointsVector psv);
 
