@@ -55,15 +55,6 @@ void DrawChessboardCorners(Mat image, Size patternSize, Mat corners, bool patter
     cv::drawChessboardCorners(*image, sz, *corners, patternWasFound);
 }
 
-Mat EstimateAffinePartial2D(Contour2f from, Contour2f to) {
-  std::vector<cv::Point2f> from_pts;
-  for (size_t i = 0; i < from.length; i++) {
-    from_pts.push_back(cv::Point2f(from.points[i].x, from.points[i].y));
-  }
-  std::vector<cv::Point2f> to_pts;
-  for (size_t i = 0; i < to.length; i++) {
-    to_pts.push_back(cv::Point2f(to.points[i].x, to.points[i].y));
-  }
-
-  return new cv::Mat(cv::estimateAffinePartial2D(from_pts, to_pts));
+Mat EstimateAffinePartial2D(Point2fVector from, Point2fVector to) {
+    return new cv::Mat(cv::estimateAffinePartial2D(*from, *to));
 }

@@ -2648,7 +2648,7 @@ func TestRandU(t *testing.T) {
 	RandU(&mat, NewScalar(10, 10, 10, 10), NewScalar(20, 20, 20, 20))
 }
 
-func TestNewPointsVectorFromPoints(t *testing.T) {
+func TestNewPointsVector(t *testing.T) {
 	epv := NewPointsVector()
 	defer epv.Close()
 
@@ -2702,7 +2702,7 @@ func TestNewPointsVectorFromPoints(t *testing.T) {
 	}
 }
 
-func TestNewPointVectorFromPoints(t *testing.T) {
+func TestNewPointVector(t *testing.T) {
 	epv := NewPointVector()
 	defer epv.Close()
 
@@ -2726,6 +2726,38 @@ func TestNewPointVectorFromPoints(t *testing.T) {
 
 	if pv.Size() != 4 {
 		t.Fatal("expected pointvector size 4")
+	}
+
+	p := pv.At(0)
+	if p != image.Pt(10, 10) {
+		t.Fatal("invalid point")
+	}
+}
+
+func TestNewPoint2fVector(t *testing.T) {
+	epv := NewPoint2fVector()
+	defer epv.Close()
+
+	if epv.Size() != 0 {
+		t.Fatal("expected empty pointvector size not 0")
+	}
+
+	pts := []Point2f{
+		{10.0, 10.0},
+		{10.0, 20.0},
+		{20.5, 21.5},
+		{25.5, 30.5},
+	}
+
+	pv := NewPoint2fVectorFromPoints(pts)
+	defer pv.Close()
+
+	if pv.IsNil() {
+		t.Fatal("point2fvector pointer was nil")
+	}
+
+	if pv.Size() != 4 {
+		t.Fatal("expected point2fvector size 4")
 	}
 
 	p := pv.At(0)

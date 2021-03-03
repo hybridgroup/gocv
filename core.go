@@ -2171,6 +2171,80 @@ func (pvs PointsVector) Close() {
 	C.PointsVector_Close(pvs.p)
 }
 
+// Point2fVector is a wrapper around a std::vector< cv::Point2f >*
+// This is needed anytime that you need to pass or receive a collection of points.
+type Point2fVector struct {
+	p C.Point2fVector
+}
+
+// NewPoint2fVector returns a new empty Point2fVector.
+func NewPoint2fVector() Point2fVector {
+	return Point2fVector{p: C.Point2fVector_New()}
+}
+
+// NewPoint2fVectorFromPoints returns a new Point2fVector that has been
+// initialized to a slice of image.Point.
+func NewPoint2fVectorFromPoints(pts []Point2f) Point2fVector {
+	p := (*C.struct_Point2f)(C.malloc(C.size_t(C.sizeof_struct_Point2f * len(pts))))
+	defer C.free(unsafe.Pointer(p))
+
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(p)),
+		Len:  len(pts),
+		Cap:  len(pts),
+	}
+	pa := *(*[]C.Point2f)(unsafe.Pointer(h))
+
+	for j, point := range pts {
+		pa[j] = C.struct_Point2f{
+			x: C.float(point.X),
+			y: C.float(point.Y),
+		}
+	}
+
+	cpoints := C.struct_Points2f{
+		points: (*C.Point2f)(p),
+		length: C.int(len(pts)),
+	}
+
+	return Point2fVector{p: C.Point2fVector_NewFromPoints(cpoints)}
+}
+
+// IsNil checks the CGo pointer in the Point2fVector.
+func (pfv Point2fVector) IsNil() bool {
+	return pfv.p == nil
+}
+
+// Size returns how many Point are in the PointVector.
+func (pfv Point2fVector) Size() int {
+	return int(C.Point2fVector_Size(pfv.p))
+}
+
+// At returns the image.Point
+func (pfv Point2fVector) At(idx int) image.Point {
+	if idx > pfv.Size() {
+		return image.Point{}
+	}
+
+	cp := C.Point2fVector_At(pfv.p, C.int(idx))
+	return image.Pt(int(cp.x), int(cp.y))
+}
+
+// ToPoints returns a slice of image.Point for the data in this PointVector.
+func (pfv Point2fVector) ToPoints() []image.Point {
+	points := make([]image.Point, pfv.Size())
+
+	for j := 0; j < pfv.Size(); j++ {
+		points[j] = pfv.At(j)
+	}
+	return points
+}
+
+// Close closes and frees memory for this Point2fVector.
+func (pfv Point2fVector) Close() {
+	C.Point2fVector_Close(pfv.p)
+}
+
 // GetTickCount returns the number of ticks.
 //
 // For further details, please see:

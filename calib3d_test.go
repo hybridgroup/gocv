@@ -390,6 +390,7 @@ func TestEstimateAffinePartial2D(t *testing.T) {
 		{10, 10},
 		{5, 10},
 	}
+
 	dst := []Point2f{
 		{0, 0},
 		{10, 0},
@@ -397,7 +398,13 @@ func TestEstimateAffinePartial2D(t *testing.T) {
 		{0, 10},
 	}
 
-	m := EstimateAffinePartial2D(src, dst)
+	pvsrc := NewPoint2fVectorFromPoints(src)
+	defer pvsrc.Close()
+
+	pvdst := NewPoint2fVectorFromPoints(dst)
+	defer pvdst.Close()
+
+	m := EstimateAffinePartial2D(pvsrc, pvdst)
 	defer m.Close()
 
 	if m.Cols() != 3 {
