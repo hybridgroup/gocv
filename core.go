@@ -1408,9 +1408,8 @@ func KMeans(data Mat, k int, bestLabels *Mat, criteria TermCriteria, attempts in
 // For further details, please see:
 // https://docs.opencv.org/master/d5/d38/group__core__cluster.html#ga9a34dc06c6ec9460e90860f15bcd2f88
 //
-func KMeansPoints(points []image.Point, k int, bestLabels *Mat, criteria TermCriteria, attempts int, flags KMeansFlags, centers *Mat) float64 {
-	cPoints := toCPoints(points)
-	ret := C.KMeansPoints(cPoints, C.int(k), bestLabels.p, criteria.p, C.int(attempts), C.int(flags), centers.p)
+func KMeansPoints(points PointVector, k int, bestLabels *Mat, criteria TermCriteria, attempts int, flags KMeansFlags, centers *Mat) float64 {
+	ret := C.KMeansPoints(points.p, C.int(k), bestLabels.p, criteria.p, C.int(attempts), C.int(flags), centers.p)
 	return float64(ret)
 }
 

@@ -76,26 +76,26 @@ double CompareHist(Mat hist1, Mat hist2, int method) {
     return cv::compareHist(*hist1, *hist2, method);
 }
 
-struct RotatedRect FitEllipse(Points points)
+struct RotatedRect FitEllipse(PointVector pts)
 {
-  Point *rpts = new Point[points.length];
-  std::vector<cv::Point> pts;
+    cv::RotatedRect bRect = cv::fitEllipse(*pts);
 
-  for (size_t i = 0; i < points.length; i++)
-  {
-    pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
-    Point pt = {points.points[i].x, points.points[i].y};
-    rpts[i] = pt;
-  }
+    Rect r = {bRect.boundingRect().x, bRect.boundingRect().y, bRect.boundingRect().width, bRect.boundingRect().height};
+    Point centrpt = {int(lroundf(bRect.center.x)), int(lroundf(bRect.center.y))};
+    Size szsz = {int(lroundf(bRect.size.width)), int(lroundf(bRect.size.height))};
 
-  cv::RotatedRect bRect = cv::fitEllipse(pts);
+    cv::Point2f* pts4 = new cv::Point2f[4];
+    bRect.points(pts4);
+    Point* rpts = new Point[4];
+    for (size_t j = 0; j < 4; j++) {
+        Point pt = {int(lroundf(pts4[j].x)), int(lroundf(pts4[j].y))};
+        rpts[j] = pt;
+    }
 
-  Rect r = {bRect.boundingRect().x, bRect.boundingRect().y, bRect.boundingRect().width, bRect.boundingRect().height};
-  Point centrpt = {int(lroundf(bRect.center.x)), int(lroundf(bRect.center.y))};
-  Size szsz = {int(lroundf(bRect.size.width)), int(lroundf(bRect.size.height))};
+    delete[] pts4;
 
-  RotatedRect rotRect = {(Contour){rpts, 4}, r, centrpt, szsz, bRect.angle};
-  return rotRect;
+    RotatedRect rotRect = {Points{rpts, 4}, r, centrpt, szsz, bRect.angle};
+    return rotRect;
 }
 
 void ConvexHull(PointVector points, Mat hull, bool clockwise, bool returnPoints) {
@@ -176,21 +176,15 @@ void BoxPoints(RotatedRect rect, Mat boxPts){
     cv::Point2f centerPt(rect.center.x , rect.center.y);
     cv::Size2f rSize(rect.size.width, rect.size.height);
     cv::RotatedRect rotatedRectangle(centerPt, rSize, rect.angle);
-     cv::boxPoints(rotatedRectangle, *boxPts);
+    cv::boxPoints(rotatedRectangle, *boxPts);
 }
 
 double ContourArea(PointVector pts) {
     return cv::contourArea(*pts);
 }
 
-struct RotatedRect MinAreaRect(Points points){
-    std::vector<cv::Point> pts;
-
-    for (size_t i = 0; i < points.length; i++) {
-        pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
-    }
-
-    cv::RotatedRect cvrect = cv::minAreaRect(pts);
+struct RotatedRect MinAreaRect(PointVector pts){
+    cv::RotatedRect cvrect = cv::minAreaRect(*pts);
 
     Point* rpts = new Point[4];
     cv::Point2f* pts4 = new cv::Point2f[4];
@@ -212,15 +206,9 @@ struct RotatedRect MinAreaRect(Points points){
     return retrect;
 }
 
-void MinEnclosingCircle(Points points, Point2f* center, float* radius){
-    std::vector<cv::Point> pts;
-
-    for (size_t i = 0; i < points.length; i++) {
-        pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
-    }
-
+void MinEnclosingCircle(PointVector pts, Point2f* center, float* radius){
     cv::Point2f center2f;
-    cv::minEnclosingCircle(pts, center2f, *radius);
+    cv::minEnclosingCircle(*pts, center2f, *radius);
     center->x = center2f.x;
     center->y = center2f.y;
 }
@@ -477,17 +465,14 @@ void ApplyCustomColorMap(Mat src, Mat dst, Mat colormap) {
     cv::applyColorMap(*src, *dst, *colormap);
 }
 
-Mat GetPerspectiveTransform(Contour src, Contour dst) {
-  std::vector<cv::Point2f> src_pts;
-  for (size_t i = 0; i < src.length; i++) {
-    src_pts.push_back(cv::Point2f(src.points[i].x, src.points[i].y));
-  }
-  std::vector<cv::Point2f> dst_pts;
-  for (size_t i = 0; i < dst.length; i++) {
-    dst_pts.push_back(cv::Point2f(dst.points[i].x, dst.points[i].y));
-  }
+Mat GetPerspectiveTransform(PointVector src, PointVector dst) {
+    std::vector<cv::Point2f> src_pts;
+    copyPointVectorToPoint2fVector(src, &src_pts);
 
-  return new cv::Mat(cv::getPerspectiveTransform(src_pts, dst_pts));
+    std::vector<cv::Point2f> dst_pts;
+    copyPointVectorToPoint2fVector(dst, &dst_pts);
+
+    return new cv::Mat(cv::getPerspectiveTransform(src_pts, dst_pts));
 }
 
 Mat GetPerspectiveTransform2f(Contour2f src, Contour2f dst) {
@@ -506,17 +491,14 @@ Mat GetPerspectiveTransform2f(Contour2f src, Contour2f dst) {
     return new cv::Mat(cv::getPerspectiveTransform(src_pts, dst_pts));
 }
 
-Mat GetAffineTransform(Contour src, Contour dst) {
-  std::vector<cv::Point2f> src_pts;
-  for (size_t i = 0; i < src.length; i++) {
-    src_pts.push_back(cv::Point2f(src.points[i].x, src.points[i].y));
-  }
-  std::vector<cv::Point2f> dst_pts;
-  for (size_t i = 0; i < dst.length; i++) {
-    dst_pts.push_back(cv::Point2f(dst.points[i].x, dst.points[i].y));
-  }
+Mat GetAffineTransform(PointVector src, PointVector dst) {
+    std::vector<cv::Point2f> src_pts;
+    copyPointVectorToPoint2fVector(src, &src_pts);
 
-  return new cv::Mat(cv::getAffineTransform(src_pts, dst_pts));
+    std::vector<cv::Point2f> dst_pts;
+    copyPointVectorToPoint2fVector(dst, &dst_pts);
+
+    return new cv::Mat(cv::getAffineTransform(src_pts, dst_pts));
 }
 
 Mat GetAffineTransform2f(Contour2f src, Contour2f dst) {
@@ -573,12 +555,8 @@ void LogPolar(Mat src, Mat dst, Point center, double m, int flags) {
 	cv::logPolar(*src, *dst, centerPt, m, flags);
 }
 
-void FitLine(Contour points, Mat line, int distType, double param, double reps, double aeps) {
-	std::vector<cv::Point> pts;
-	for (size_t i = 0; i < points.length; i++) {
-		pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
-	}
-	cv::fitLine(pts, *line, distType, param, reps, aeps);
+void FitLine(PointVector pts, Mat line, int distType, double param, double reps, double aeps) {
+	cv::fitLine(*pts, *line, distType, param, reps, aeps);
 }
 
 void LinearPolar(Mat src, Mat dst, Point center, double maxRadius, int flags) {

@@ -91,7 +91,10 @@ func TestMinEnclosingCircle(t *testing.T) {
 		image.Pt(-2, 0),
 		image.Pt(1, -1),
 	}
-	x, y, radius := MinEnclosingCircle(pts)
+	pv := NewPointVectorFromPoints(pts)
+	defer pv.Close()
+
+	x, y, radius := MinEnclosingCircle(pv)
 	const epsilon = 0.001
 	if math.Abs(float64(radius-2.0)) > epsilon ||
 		math.Abs(float64(x-0.0)) > epsilon ||
@@ -357,7 +360,11 @@ func TestBoxPoints(t *testing.T) {
 			hullPoints = append(hullPoints, contour.At(int(p)))
 		}
 	}
-	rect := MinAreaRect(hullPoints)
+
+	pvhp := NewPointVectorFromPoints(hullPoints)
+	defer pvhp.Close()
+
+	rect := MinAreaRect(pvhp)
 	pts := NewMat()
 	defer pts.Close()
 	BoxPoints(rect, &pts)
@@ -374,7 +381,11 @@ func TestMinAreaRect(t *testing.T) {
 		image.Pt(4, 2),
 		image.Pt(2, 4),
 	}
-	m := MinAreaRect(src)
+
+	pv := NewPointVectorFromPoints(src)
+	defer pv.Close()
+
+	m := MinAreaRect(pv)
 
 	if m.Center.X != 2 {
 		t.Errorf("TestMinAreaRect(): unexpected center.X = %v, want = %v", m.Center.X, 2)
@@ -399,7 +410,11 @@ func TestFitEllipse(t *testing.T) {
 		image.Pt(0, 3),
 		image.Pt(0, 2),
 	}
-	rect := FitEllipse(src)
+
+	pv := NewPointVectorFromPoints(src)
+	defer pv.Close()
+
+	rect := FitEllipse(pv)
 	if rect.Center.X != 2 {
 		t.Errorf("TestFitEllipse(): unexpected center.X = %v, want = %v", rect.Center.X, 2)
 	}
@@ -1468,14 +1483,19 @@ func TestGetPerspectiveTransform(t *testing.T) {
 		image.Pt(10, 10),
 		image.Pt(5, 10),
 	}
+	pvsrc := NewPointVectorFromPoints(src)
+	defer pvsrc.Close()
+
 	dst := []image.Point{
 		image.Pt(0, 0),
 		image.Pt(10, 0),
 		image.Pt(10, 10),
 		image.Pt(0, 10),
 	}
+	pvdst := NewPointVectorFromPoints(dst)
+	defer pvdst.Close()
 
-	m := GetPerspectiveTransform(src, dst)
+	m := GetPerspectiveTransform(pvsrc, pvdst)
 	defer m.Close()
 
 	if m.Cols() != 3 {
@@ -1517,13 +1537,18 @@ func TestGetAffineTransform(t *testing.T) {
 		image.Pt(10, 5),
 		image.Pt(10, 10),
 	}
+	pvsrc := NewPointVectorFromPoints(src)
+	defer pvsrc.Close()
+
 	dst := []image.Point{
 		image.Pt(0, 0),
 		image.Pt(10, 0),
 		image.Pt(10, 10),
 	}
+	pvdst := NewPointVectorFromPoints(dst)
+	defer pvdst.Close()
 
-	m := GetAffineTransform(src, dst)
+	m := GetAffineTransform(pvsrc, pvdst)
 	defer m.Close()
 
 	if m.Cols() != 3 {
@@ -1617,13 +1642,19 @@ func TestWarpPerspective(t *testing.T) {
 		image.Pt(10, 10),
 		image.Pt(5, 10),
 	}
+	pvs := NewPointVectorFromPoints(s)
+	defer pvs.Close()
+
 	d := []image.Point{
 		image.Pt(0, 0),
 		image.Pt(10, 0),
 		image.Pt(10, 10),
 		image.Pt(0, 10),
 	}
-	m := GetPerspectiveTransform(s, d)
+	pvd := NewPointVectorFromPoints(d)
+	defer pvd.Close()
+
+	m := GetPerspectiveTransform(pvs, pvd)
 	defer m.Close()
 
 	dst := NewMat()
@@ -1814,11 +1845,13 @@ func TestLinearPolar(t *testing.T) {
 
 func TestFitLine(t *testing.T) {
 	points := []image.Point{image.Pt(125, 24), image.Pt(124, 75), image.Pt(175, 76), image.Pt(176, 25)}
+	pv := NewPointVectorFromPoints(points)
+	defer pv.Close()
 
 	line := NewMat()
 	defer line.Close()
 
-	FitLine(points, &line, DistL2, 0, 0.01, 0.01)
+	FitLine(pv, &line, DistL2, 0, 0.01, 0.01)
 
 	if ok := line.Empty(); ok {
 		t.Errorf("FitLine(): line is empty")

@@ -71,7 +71,7 @@ func main() {
 		},
 	}
 
-	pv := NewPointsVectorFromPoints(points)
+	pv := gocv.NewPointsVectorFromPoints(points)
 	defer pv.Close()
 
 	gocv.FillPoly(&rook, pv, white)
