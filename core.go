@@ -2242,18 +2242,18 @@ func (pfv Point2fVector) Size() int {
 }
 
 // At returns the image.Point
-func (pfv Point2fVector) At(idx int) image.Point {
+func (pfv Point2fVector) At(idx int) Point2f {
 	if idx > pfv.Size() {
-		return image.Point{}
+		return Point2f{}
 	}
 
 	cp := C.Point2fVector_At(pfv.p, C.int(idx))
-	return image.Pt(int(cp.x), int(cp.y))
+	return Point2f{float32(cp.x), float32(cp.y)}
 }
 
 // ToPoints returns a slice of image.Point for the data in this PointVector.
-func (pfv Point2fVector) ToPoints() []image.Point {
-	points := make([]image.Point, pfv.Size())
+func (pfv Point2fVector) ToPoints() []Point2f {
+	points := make([]Point2f, pfv.Size())
 
 	for j := 0; j < pfv.Size(); j++ {
 		points[j] = pfv.At(j)

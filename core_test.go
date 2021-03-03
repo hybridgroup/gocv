@@ -2783,7 +2783,19 @@ func TestNewPoint2fVector(t *testing.T) {
 	}
 
 	p := pv.At(0)
-	if p != image.Pt(10, 10) {
+	want := Point2f{10.0, 10.0}
+	if p != want {
 		t.Fatal("invalid point")
+	}
+
+	p = pv.At(10)
+	nopoint := Point2f{0, 0}
+	if p != nopoint {
+		t.Fatal("invalid At() point beyond range")
+	}
+
+	out := pv.ToPoints()
+	if len(out) != 4 && out[0] != want {
+		t.Fatal("invalid ToPoints()")
 	}
 }
