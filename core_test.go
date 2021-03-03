@@ -2700,6 +2700,21 @@ func TestNewPointsVector(t *testing.T) {
 	if out[0][0] != image.Pt(10, 10) {
 		t.Fatal("invalid ToPoints() point")
 	}
+
+	ps := []image.Point{
+		image.Pt(10, 10),
+		image.Pt(10, 20),
+		image.Pt(20, 20),
+		image.Pt(20, 10),
+	}
+
+	apv := NewPointVectorFromPoints(ps)
+	defer apv.Close()
+
+	psv.Append(apv)
+	if psv.Size() != 2 {
+		t.Fatal("unable to append to PointsVector")
+	}
 }
 
 func TestNewPointVector(t *testing.T) {
@@ -2731,6 +2746,13 @@ func TestNewPointVector(t *testing.T) {
 	p := pv.At(0)
 	if p != image.Pt(10, 10) {
 		t.Fatal("invalid point")
+	}
+
+	np := image.Pt(50, 50)
+
+	pv.Append(np)
+	if pv.Size() != 5 {
+		t.Fatal("unable to append to PointVector")
 	}
 }
 
