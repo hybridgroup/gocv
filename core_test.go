@@ -2252,13 +2252,17 @@ func TestKMeansPoints(t *testing.T) {
 		image.Pt(0, 0),
 		image.Pt(1, 1),
 	}
+
+	pv := NewPointVectorFromPoints(points)
+	defer pv.Close()
+
 	bestLabels := NewMat()
 	defer bestLabels.Close()
 	centers := NewMat()
 	defer centers.Close()
 
 	criteria := NewTermCriteria(Count, 10, 1.0)
-	KMeansPoints(points, 2, &bestLabels, criteria, 2, KMeansRandomCenters, &centers)
+	KMeansPoints(pv, 2, &bestLabels, criteria, 2, KMeansRandomCenters, &centers)
 	if bestLabels.Empty() || bestLabels.Size()[0] != len(points) {
 		t.Error("Labels is not proper")
 	}

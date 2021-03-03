@@ -565,12 +565,9 @@ double KMeans(Mat data, int k, Mat bestLabels, TermCriteria criteria, int attemp
     return ret;
 }
 
-double KMeansPoints(Contour points, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers) {
+double KMeansPoints(PointVector points, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers) {
     std::vector<cv::Point2f> pts;
-
-    for (size_t i = 0; i < points.length; i++) {
-        pts.push_back(cv::Point2f(points.points[i].x, points.points[i].y));
-    }
+    copyPointVectorToPoint2fVector(points, &pts);
     double ret = cv::kmeans(pts, k, *bestLabels, *criteria, attempts, flags, *centers);
     return ret;
 }
@@ -876,6 +873,7 @@ int PointVector_Size(PointVector p) {
 }
 
 void PointVector_Close(PointVector p) {
+    p->clear();
     delete p;
 }
 
@@ -911,6 +909,7 @@ PointVector PointsVector_At(PointsVector ps, int idx) {
 }
 
 void PointsVector_Close(PointsVector ps) {
+    ps->clear();
     delete ps;
 }
 
@@ -956,4 +955,10 @@ void RandU(Mat mat, Scalar low, Scalar high) {
     cv::Scalar l = cv::Scalar(low.val1, low.val2, low.val3, low.val4);
     cv::Scalar h = cv::Scalar(high.val1, high.val2, high.val3, high.val4);
     cv::randn(*mat, l, h);
+}
+
+void copyPointVectorToPoint2fVector(PointVector src, Point2fVector dest) {
+    for (size_t i = 0; i < src->size(); i++) {
+        dest->push_back(cv::Point2f(src->at(i).x, src->at(i).y));
+    }
 }

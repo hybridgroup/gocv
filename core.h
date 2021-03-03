@@ -96,7 +96,7 @@ typedef struct Size {
 
 // Wrapper for an individual cv::RotatedRect
 typedef struct RotatedRect {
-    Contour pts;
+    Points pts;
     Rect boundingRect;
     Point center;
     Size size;
@@ -207,12 +207,14 @@ typedef cv::TermCriteria* TermCriteria;
 typedef cv::RNG* RNG;
 typedef std::vector< cv::Point >* PointVector;
 typedef std::vector< std::vector< cv::Point > >* PointsVector;
+typedef std::vector< cv::Point2f >* Point2fVector;
 #else
 typedef void* Mat;
 typedef void* TermCriteria;
 typedef void* RNG;
 typedef void* PointVector;
 typedef void* PointsVector;
+typedef void* Point2fVector;
 #endif
 
 // Wrapper for the vector of Mat aka std::vector<Mat>
@@ -359,7 +361,7 @@ void Mat_InRangeWithScalar(Mat src, const Scalar lowerb, const Scalar upperb, Ma
 void Mat_InsertChannel(Mat src, Mat dst, int coi);
 double Mat_Invert(Mat src, Mat dst, int flags);
 double KMeans(Mat data, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers);
-double KMeansPoints(Contour points, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers);
+double KMeansPoints(PointVector pts, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers);
 void Mat_Log(Mat src, Mat dst);
 void Mat_Magnitude(Mat x, Mat y, Mat magnitude);
 void Mat_Max(Mat src1, Mat src2, Mat dst);
@@ -437,6 +439,8 @@ void RandShuffle(Mat mat);
 void RandShuffleWithParams(Mat mat, double iterFactor, RNG rng);
 
 void RandU(Mat mat, Scalar low, Scalar high);
+
+void copyPointVectorToPoint2fVector(PointVector src, Point2fVector dest);
 
 #ifdef __cplusplus
 }

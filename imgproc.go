@@ -394,8 +394,7 @@ func BoundingRect(contour PointVector) image.Rectangle {
 // https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#gaf78d467e024b4d7936cf9397185d2f5c
 //
 func BoxPoints(rect RotatedRect, pts *Mat) {
-
-	rPoints := toCPoints(rect.Contour)
+	rPoints := toCPoints(rect.Points)
 
 	rRect := C.struct_Rect{
 		x:      C.int(rect.BoundingRect.Min.X),
@@ -436,7 +435,7 @@ func ContourArea(contour PointVector) float64 {
 }
 
 type RotatedRect struct {
-	Contour      []image.Point
+	Points       []image.Point
 	BoundingRect image.Rectangle
 	Center       image.Point
 	Width        int
@@ -467,15 +466,14 @@ func toPoints(points C.Contour) []image.Point {
 // MinAreaRect finds a rotated rectangle of the minimum area enclosing the input 2D point set.
 //
 // For further details, please see:
-// https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga3d476a3417130ae5154aea421ca7ead9
+// https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga3d476a3417130ae5154aea421ca7ead9
 //
-func MinAreaRect(points []image.Point) RotatedRect {
-	cPoints := toCPoints(points)
-	result := C.MinAreaRect(cPoints)
-
+func MinAreaRect(points PointVector) RotatedRect {
+	result := C.MinAreaRect(points.p)
 	defer C.Points_Close(result.pts)
+
 	return RotatedRect{
-		Contour:      toPoints(result.pts),
+		Points:       toPoints(result.pts),
 		BoundingRect: image.Rect(int(result.boundingRect.x), int(result.boundingRect.y), int(result.boundingRect.x)+int(result.boundingRect.width), int(result.boundingRect.y)+int(result.boundingRect.height)),
 		Center:       image.Pt(int(result.center.x), int(result.center.y)),
 		Width:        int(result.size.width),
@@ -489,13 +487,12 @@ func MinAreaRect(points []image.Point) RotatedRect {
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf259efaad93098103d6c27b9e4900ffa
 //
-func FitEllipse(points []image.Point) RotatedRect {
-	cPoints := toCPoints(points)
-	cRect := C.FitEllipse(cPoints)
+func FitEllipse(pts PointVector) RotatedRect {
+	cRect := C.FitEllipse(pts.p)
 	defer C.Points_Close(cRect.pts)
 
 	return RotatedRect{
-		Contour:      toPoints(cRect.pts),
+		Points:       toPoints(cRect.pts),
 		BoundingRect: image.Rect(int(cRect.boundingRect.x), int(cRect.boundingRect.y), int(cRect.boundingRect.x)+int(cRect.boundingRect.width), int(cRect.boundingRect.y)+int(cRect.boundingRect.height)),
 		Center:       image.Pt(int(cRect.center.x), int(cRect.center.y)),
 		Width:        int(cRect.size.width),
@@ -509,11 +506,10 @@ func FitEllipse(points []image.Point) RotatedRect {
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4/d3/dc0/group__imgproc__shape.html#ga8ce13c24081bbc7151e9326f412190f1
-func MinEnclosingCircle(points []image.Point) (x, y, radius float32) {
-	cPoints := toCPoints(points)
+func MinEnclosingCircle(pts PointVector) (x, y, radius float32) {
 	cCenterPoint := C.struct_Point2f{}
 	var cRadius C.float
-	C.MinEnclosingCircle(cPoints, &cCenterPoint, &cRadius)
+	C.MinEnclosingCircle(pts.p, &cCenterPoint, &cRadius)
 	x, y = float32(cCenterPoint.x), float32(cCenterPoint.y)
 	radius = float32(cRadius)
 	return x, y, radius
@@ -1597,10 +1593,8 @@ func ApplyCustomColorMap(src Mat, dst *Mat, customColormap Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga8c1ae0e3589a9d77fffc962c49b22043
-func GetPerspectiveTransform(src, dst []image.Point) Mat {
-	srcPoints := toCPoints(src)
-	dstPoints := toCPoints(dst)
-	return newMat(C.GetPerspectiveTransform(srcPoints, dstPoints))
+func GetPerspectiveTransform(src, dst PointVector) Mat {
+	return newMat(C.GetPerspectiveTransform(src.p, dst.p))
 }
 
 // GetPerspectiveTransform2f returns 3x3 perspective transformation for the
@@ -1619,10 +1613,8 @@ func GetPerspectiveTransform2f(src, dst []Point2f) Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga8f6d378f9f8eebb5cb55cd3ae295a999
-func GetAffineTransform(src, dst []image.Point) Mat {
-	srcPoints := toCPoints(src)
-	dstPoints := toCPoints(dst)
-	return newMat(C.GetAffineTransform(srcPoints, dstPoints))
+func GetAffineTransform(src, dst PointVector) Mat {
+	return newMat(C.GetAffineTransform(src.p, dst.p))
 }
 
 // GetAffineTransform2f returns a 2x3 affine transformation matrix for the
@@ -1752,9 +1744,8 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf849da1fdafa67ee84b1e9a23b93f91f
-func FitLine(pts []image.Point, line *Mat, distType DistanceTypes, param, reps, aeps float64) {
-	cPoints := toCPoints(pts)
-	C.FitLine(cPoints, line.p, C.int(distType), C.double(param), C.double(reps), C.double(aeps))
+func FitLine(pts PointVector, line *Mat, distType DistanceTypes, param, reps, aeps float64) {
+	C.FitLine(pts.p, line.p, C.int(distType), C.double(param), C.double(reps), C.double(aeps))
 }
 
 // CLAHE is a wrapper around the cv::CLAHE algorithm.
