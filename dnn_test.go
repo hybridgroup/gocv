@@ -119,10 +119,22 @@ func TestReadNetMemory(t *testing.T) {
 	if err != nil {
 		t.Errorf("Failed to load model from file: %v", err)
 	}
+
+	_, err = ReadNetBytes("caffe", nil, nil)
+	if err == nil {
+		t.Errorf("Should have error for reading nil model bytes")
+	}
+
 	bConfig, err := ioutil.ReadFile(path + "/bvlc_googlenet.prototxt")
 	if err != nil {
 		t.Errorf("Failed to load config from file: %v", err)
 	}
+
+	_, err = ReadNetBytes("caffe", bModel, nil)
+	if err == nil {
+		t.Errorf("Should have error for reading nil config bytes")
+	}
+
 	net, err := ReadNetBytes("caffe", bModel, bConfig)
 	if err != nil {
 		t.Errorf("Failed to read net bytes: %v", err)
@@ -193,10 +205,21 @@ func TestCaffeMemory(t *testing.T) {
 		t.Skip("Unable to locate Caffe model files for tests")
 	}
 
+	_, err := ReadNetFromCaffeBytes(nil, nil)
+	if err == nil {
+		t.Errorf("Should have error for reading nil model bytes")
+	}
+
 	bPrototxt, err := ioutil.ReadFile(path + "/bvlc_googlenet.prototxt")
 	if err != nil {
 		t.Errorf("Failed to load Caffe prototxt from file: %v", err)
 	}
+
+	_, err = ReadNetFromCaffeBytes(bPrototxt, nil)
+	if err == nil {
+		t.Errorf("Should have error for reading nil config bytes")
+	}
+
 	bCaffeModel, err := ioutil.ReadFile(path + "/bvlc_googlenet.caffemodel")
 	if err != nil {
 		t.Errorf("Failed to load Caffe caffemodel from file: %v", err)
