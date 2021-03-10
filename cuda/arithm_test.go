@@ -45,7 +45,7 @@ func TestThreshold(t *testing.T) {
 	dest := gocv.NewMat()
 	defer dest.Close()
 
-	Threshold(cimg, &dimg, 25, 255, ThresholdBinary)
+	Threshold(cimg, &dimg, 25, 255, gocv.ThresholdBinary)
 	dimg.Download(&dest)
 	if dest.Empty() || src.Rows() != dest.Rows() || src.Cols() != dest.Cols() {
 		t.Error("Invalid Threshold test")

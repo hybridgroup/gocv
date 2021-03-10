@@ -8,6 +8,8 @@ package cuda
 */
 import "C"
 
+import "gocv.io/x/gocv"
+
 // Abs computes an absolute value of each matrix element.
 //
 // For further details, please see:
@@ -22,6 +24,6 @@ func Abs(src GpuMat, dst *GpuMat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga40f1c94ae9a9456df3cad48e3cb008e1
 //
-func Threshold(src GpuMat, dst *GpuMat, thresh, maxval float64, typ int) {
+func Threshold(src GpuMat, dst *GpuMat, thresh, maxval float64, typ gocv.ThresholdType) {
 	C.GpuThreshold(src.p, dst.p, C.double(thresh), C.double(maxval), C.int(typ))
 }
