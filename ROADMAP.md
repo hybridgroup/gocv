@@ -285,7 +285,21 @@ Your pull requests will be greatly appreciated!
 - [X] **cudabgsegm. Background Segmentation**
 - [ ] cudacodec. Video Encoding/Decoding
 - [ ] cudafeatures2d. Feature Detection and Description
-- [ ] cudafilters. Image Filtering
+- [ ] cudafilters. Image Filtering. The following functions still need implementation:
+    - [ ] [cv::cuda::createBoxFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga3113b66e289bad7caef412e6e13ec2be)
+    - [ ] [cv::cuda::createBoxMaxFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaaf4740c51128d23a37f6f1b22cee49e8)
+    - [ ] [cv::cuda::createBoxMinFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga77fd36949bc8d92aabc120b4b1cfaafa)
+    - [ ] [cv::cuda::createColumnSumFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gac13bf7c41a34bfde2a7f33ad8caacfdf)
+    - [ ] [cv::cuda::createDerivFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga14d76dc6982ce739c67198f52bc16ee1)
+    - [ ] [cv::cuda::createGaussianFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaa4df286369114cfd4b144ae211f6a6c8)
+    - [ ] [cv::cuda::createLaplacianFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga53126e88bb7e6185dcd5628e28e42cd2)
+    - [ ] [cv::cuda::createLinearFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga57cb1804ad9d1280bf86433858daabf9)
+    - [ ] [cv::cuda::createMorphologyFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gae58694e07be6bdbae126f36c75c08ee6)
+    - [ ] [cv::cuda::createRowSumFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaf735de273ccb5072f3c27816fb97a53a)
+    - [ ] [cv::cuda::createScharrFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga4ac8df158e5771ddb0bd5c9091188ce6)
+    - [ ] [cv::cuda::createSeparableLinearFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaf7b79a9a92992044f328dad07a52c4bf)
+    - [ ] [cv::cuda::createSobelFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gabf85fe61958bb21e93211a6fcc7c5c3b)
+
 - [ ] **cudaimgproc. Image Processing - WORK STARTED** The following functions still need implementation:
     - [ ] [cv::cuda::TemplateMatching](https://docs.opencv.org/master/d2/d58/classcv_1_1cuda_1_1TemplateMatching.html)
     - [ ] [cv::cuda::alphaComp](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga08a698700458d9311390997b57fbf8dc)
