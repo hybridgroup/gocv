@@ -1,4 +1,4 @@
-#include "cudawarping.h"
+#include "warping.h"
 
 void CudaResize(GpuMat src, GpuMat dst, Size dsize, double fx, double fy, int interp) {
     cv::Size sz(dsize.width, dsize.height);

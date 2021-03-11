@@ -1,4 +1,4 @@
-#include "cudaoptflow.h"
+#include "optflow.h"
 
 CudaSparsePyrLKOpticalFlow CudaSparsePyrLKOpticalFlow_Create() {
     return new cv::Ptr<cv::cuda::SparsePyrLKOpticalFlow>(cv::cuda::SparsePyrLKOpticalFlow::create());

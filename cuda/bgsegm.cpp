@@ -1,4 +1,4 @@
-#include "cudabgsegm.h"
+#include "bgsegm.h"
 
 CudaBackgroundSubtractorMOG2 CudaBackgroundSubtractorMOG2_Create() {
     return new cv::Ptr<cv::cuda::BackgroundSubtractorMOG2>(cv::cuda::createBackgroundSubtractorMOG2());

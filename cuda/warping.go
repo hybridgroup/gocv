@@ -2,7 +2,7 @@ package cuda
 
 /*
 #include <stdlib.h>
-#include "cudawarping.h"
+#include "warping.h"
 */
 import "C"
 import (

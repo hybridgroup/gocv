@@ -3,7 +3,7 @@ package cuda
 /*
 #include <stdlib.h>
 #include "cuda.h"
-#include "cudaoptflow.h"
+#include "optflow.h"
 */
 import "C"
 import "unsafe"

@@ -2,7 +2,7 @@ package cuda
 
 /*
 #include <stdlib.h>
-#include "cudabgsegm.h"
+#include "bgsegm.h"
 */
 import "C"
 import "unsafe"
