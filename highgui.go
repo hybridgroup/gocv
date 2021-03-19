@@ -194,6 +194,31 @@ func (w *Window) ResizeWindow(width, height int) {
 	C.Window_Resize(cName, C.int(width), C.int(height))
 }
 
+//export go_MouseCallback
+func go_MouseCallback(event C.int, x C.int, y C.int, flags C.int, userdata unsafe.Pointer) {
+	CGOCallback.Lookup(int(*(*C.int)(userdata)))(event, x, y, flags)
+}
+
+// Sets mouse handler for the specified window.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.2.0/d7/dfc/group__highgui.html#ga89e7806b0a616f6f1d502bd8c183ad3e
+//
+func (w *Window) SetMouseCallback(onMouse MouseCallback) {
+	cName := C.CString(w.name)
+	defer C.free(unsafe.Pointer(cName))
+
+	fn := C.int(CGOCallback.Register(func(args ...interface{}) {
+		onMouse(
+			MouseEventType(args[0].(C.int)),
+			int(args[1].(C.int)),
+			int(args[2].(C.int)),
+			MouseEventFlag(args[3].(C.int)),
+		)
+	}))
+	C.Window_SetMouseCallback(cName, (C.mouse_callback)(C.go_MouseCallback), unsafe.Pointer(&fn))
+}
+
 // SelectROI selects a Region Of Interest (ROI) on the given image.
 // It creates a window and allows user to select a ROI using mouse.
 //
@@ -342,3 +367,33 @@ func (t *Trackbar) SetMax(pos int) {
 
 	C.Trackbar_SetMax(cName, tName, C.int(pos))
 }
+
+type MouseCallback func(event MouseEventType, x, y int, flags MouseEventFlag)
+
+type MouseEventType int
+
+const (
+	MouseEventMove MouseEventType = iota
+	MouseEventLeftButtonDown
+	MouseEventRightButtonDown
+	MouseEventMiddleButtonDown
+	MouseEventLeftButtonUp
+	MouseEventRightButtonUp
+	MouseEventMiddleButtonUp
+	MouseEventLeftButtonDoubleClick
+	MouseEventRightButtonDoubleClick
+	MouseEventMiddleButtonDoubleClick
+	MouseEventMouseWheel
+	MouseEventHorizontalMouseWheel
+)
+
+type MouseEventFlag int
+
+const (
+	MouseEventFlagLeftButton MouseEventFlag = 1 << iota
+	MouseEventFlagRightButton
+	MouseEventFlagMiddleButton
+	MouseEventFlagCtrlKey
+	MouseEventFlagShiftKey
+	MouseEventFlagAltKey
+)

@@ -57,6 +57,11 @@ struct Rects Window_SelectROIs(const char* winname, Mat img) {
     return ret;
 }
 
+// MouseCallback
+void Window_SetMouseCallback(const char* winname, mouse_callback callback, void* userdata) {
+   cv::setMouseCallback(winname, callback, userdata);
+}
+
 // Trackbar
 void Trackbar_Create(const char* winname, const char* trackname, int max) {
     cv::createTrackbar(trackname, winname, NULL, max);

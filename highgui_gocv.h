@@ -28,6 +28,12 @@ void Trackbar_SetPos(const char* winname, const char* trackname, int pos);
 void Trackbar_SetMin(const char* winname, const char* trackname, int pos);
 void Trackbar_SetMax(const char* winname, const char* trackname, int pos);
 
+// MouseCallback
+typedef void (*mouse_callback)(int event, int x, int y, int flags, void* userdata);
+void Window_SetMouseCallback(const char* winname, mouse_callback callback, void* userdata);
+extern void go_MouseCallback(int event, int x, int y, int flags, void* userdata);
+
+
 #ifdef __cplusplus
 }
 #endif
