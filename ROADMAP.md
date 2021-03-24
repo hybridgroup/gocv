@@ -298,7 +298,7 @@ Your pull requests will be greatly appreciated!
     - [ ] [cv::cuda::createRowSumFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaf735de273ccb5072f3c27816fb97a53a)
     - [ ] [cv::cuda::createScharrFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga4ac8df158e5771ddb0bd5c9091188ce6)
     - [ ] [cv::cuda::createSeparableLinearFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaf7b79a9a92992044f328dad07a52c4bf)
-    - [ ] [cv::cuda::createSobelFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gabf85fe61958bb21e93211a6fcc7c5c3b)
+    - [X] [cv::cuda::createSobelFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gabf85fe61958bb21e93211a6fcc7c5c3b)
 
 - [ ] **cudaimgproc. Image Processing - WORK STARTED** The following functions still need implementation:
     - [ ] [cv::cuda::TemplateMatching](https://docs.opencv.org/master/d2/d58/classcv_1_1cuda_1_1TemplateMatching.html)

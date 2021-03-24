@@ -22,3 +22,22 @@ GpuMat GaussianFilter_Apply(GaussianFilter gf, GpuMat img) {
 
     return dst;
 }
+
+SobelFilter CreateSobelFilter(int srcType, int dstType, int dx, int dy) {
+    return new cv::Ptr<cv::cuda::Filter>(cv::cuda::createSobelFilter(srcType, dstType, dx, dy));
+}
+
+SobelFilter CreateSobelFilterWithParams(int srcType, int dstType, int dx, int dy, int ksize, double scale, int rowBorderMode, int columnBorderMode) {
+    return new cv::Ptr<cv::cuda::Filter>(cv::cuda::createSobelFilter(srcType, dstType, dx, dy, ksize, rowBorderMode, columnBorderMode));
+}
+
+void SobelFilter_Close(SobelFilter sf) {
+    delete sf;
+}
+
+GpuMat SobelFilter_Apply(SobelFilter sf, GpuMat img) {
+    GpuMat dst = new cv::cuda::GpuMat();
+    (*sf)->apply(*img, *dst);
+
+    return dst;
+}
