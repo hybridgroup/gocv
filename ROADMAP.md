@@ -291,7 +291,7 @@ Your pull requests will be greatly appreciated!
     - [ ] [cv::cuda::createBoxMinFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga77fd36949bc8d92aabc120b4b1cfaafa)
     - [ ] [cv::cuda::createColumnSumFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gac13bf7c41a34bfde2a7f33ad8caacfdf)
     - [ ] [cv::cuda::createDerivFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga14d76dc6982ce739c67198f52bc16ee1)
-    - [ ] [cv::cuda::createGaussianFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaa4df286369114cfd4b144ae211f6a6c8)
+    - [X] [cv::cuda::createGaussianFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaa4df286369114cfd4b144ae211f6a6c8)
     - [ ] [cv::cuda::createLaplacianFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga53126e88bb7e6185dcd5628e28e42cd2)
     - [ ] [cv::cuda::createLinearFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga57cb1804ad9d1280bf86433858daabf9)
     - [ ] [cv::cuda::createMorphologyFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gae58694e07be6bdbae126f36c75c08ee6)
