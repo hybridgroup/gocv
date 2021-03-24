@@ -285,7 +285,7 @@ Your pull requests will be greatly appreciated!
 - [X] **cudabgsegm. Background Segmentation**
 - [ ] cudacodec. Video Encoding/Decoding
 - [ ] cudafeatures2d. Feature Detection and Description
-- [ ] cudafilters. Image Filtering. The following functions still need implementation:
+- [ ] **cudafilters. Image Filtering - WORK STARTED** The following functions still need implementation:
     - [ ] [cv::cuda::createBoxFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga3113b66e289bad7caef412e6e13ec2be)
     - [ ] [cv::cuda::createBoxMaxFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaaf4740c51128d23a37f6f1b22cee49e8)
     - [ ] [cv::cuda::createBoxMinFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga77fd36949bc8d92aabc120b4b1cfaafa)
