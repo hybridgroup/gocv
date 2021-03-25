@@ -280,11 +280,24 @@ Your pull requests will be greatly appreciated!
         - [ ] [cv::cuda::sqlSum](https://docs.opencv.org/master/d5/de6/group__cudaarithm__reduce.html#ga056c804ebf5d2eb9f6f35e3dcb01524c)
         - [ ] [cv::cuda::sum](https://docs.opencv.org/master/d5/de6/group__cudaarithm__reduce.html#ga1f582844670199281e8012733b50c582)
 
-    - [ ] Operations on matrices
+    - [ ] **Operations on matrices** The following functions still need implementation:
+        - [ ] [cv::cuda::createConvolution](https://docs.opencv.org/4.5.0/d9/d88/group__cudaarithm__arithm.html#ga2695e05ef624bf3ce03cfbda383a821d)
+        - [ ] [cv::cuda::createDFT](https://docs.opencv.org/4.5.0/d9/d88/group__cudaarithm__arithm.html#ga0f72d063b73c8bb995678525eb076f10)
+        - [ ] [cv::cuda::dft](https://docs.opencv.org/4.5.0/d9/d88/group__cudaarithm__arithm.html#gadea99cb15a715c983bcc2870d65a2e78)
+        - [ ] [cv::cuda::gemm](https://docs.opencv.org/4.5.0/d9/d88/group__cudaarithm__arithm.html#ga42efe211d7a43bbc922da044c4f17130)
+        - [ ] [cv::cuda::mulAndScaleSpectrums](https://docs.opencv.org/4.5.0/d9/d88/group__cudaarithm__arithm.html#ga5704c25b8be4f19da812e6d98c8ee464)
+        - [ ] [cv::cuda::mulSpectrums](https://docs.opencv.org/4.5.0/d9/d88/group__cudaarithm__arithm.html#gab3e8900d67c4f59bdc137a0495206cd8)
 
 - [X] **cudabgsegm. Background Segmentation**
-- [ ] cudacodec. Video Encoding/Decoding
-- [ ] cudafeatures2d. Feature Detection and Description
+
+- [ ] **cudacodec** Video Encoding/Decoding. The following functions still need implementation:
+    - [ ] [cv::cuda::VideoReader](https://docs.opencv.org/master/db/ded/classcv_1_1cudacodec_1_1VideoReader.html)
+    - [ ] [cv::cuda::VideoWriter](https://docs.opencv.org/master/df/dde/classcv_1_1cudacodec_1_1VideoWriter.html)
+
+- [ ] **cudafeatures2d** Feature Detection and Description. The following functions still need implementation:
+    - [ ] [cv::cuda::FastFeatureDetector](https://docs.opencv.org/master/d4/d6a/classcv_1_1cuda_1_1FastFeatureDetector.html)
+    - [ ] [cv::cuda::ORB](https://docs.opencv.org/master/da/d44/classcv_1_1cuda_1_1ORB.html)
+
 - [ ] **cudafilters. Image Filtering - WORK STARTED** The following functions still need implementation:
     - [ ] [cv::cuda::createBoxFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga3113b66e289bad7caef412e6e13ec2be)
     - [ ] [cv::cuda::createBoxMaxFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaaf4740c51128d23a37f6f1b22cee49e8)
@@ -325,6 +338,7 @@ Your pull requests will be greatly appreciated!
     - [ ] [cv::cuda::meanShiftSegmentation](https://docs.opencv.org/master/d0/d05/group__cudaimgproc.html#ga70ed80533a448829dc48cf22b1845c16)
 
 - [X] **cudaobjdetect. Object Detection**
+
 - [ ] **cudaoptflow. Optical Flow - WORK STARTED** The following functions still need implementation:
     - [ ] [BroxOpticalFlow](https://docs.opencv.org/master/d7/d18/classcv_1_1cuda_1_1BroxOpticalFlow.html)
     - [ ] [DenseOpticalFlow](https://docs.opencv.org/master/d6/d4a/classcv_1_1cuda_1_1DenseOpticalFlow.html)
@@ -335,7 +349,15 @@ Your pull requests will be greatly appreciated!
     - [ ] [SparseOpticalFlow](https://docs.opencv.org/master/d5/dcf/classcv_1_1cuda_1_1SparseOpticalFlow.html)
     - [ ] **[SparsePyrLKOpticalFlow](https://docs.opencv.org/master/d7/d05/classcv_1_1cuda_1_1SparsePyrLKOpticalFlow.html) - WORK STARTED**
 
-- [ ] cudastereo. Stereo Correspondence
+- [ ] **cudastereo** Stereo Correspondence
+    - [ ] [cv::cuda::createDisparityBilateralFilter](https://docs.opencv.org/master/dd/d47/group__cudastereo.html#gaafb5f9902f7a9e74cb2cd4e680569590)
+    - [ ] [cv::cuda::createStereoBeliefPropagation](https://docs.opencv.org/master/dd/d47/group__cudastereo.html#ga8d22dd80bdfb4e3d7d2ac09e8a07c22b)
+    - [ ] [cv::cuda::createStereoBM](https://docs.opencv.org/master/dd/d47/group__cudastereo.html#ga77edc901350dd0a7f46ec5aca4138039)
+    - [ ] [cv::cuda::createStereoConstantSpaceBP](https://docs.opencv.org/master/dd/d47/group__cudastereo.html#gaec3b49c7cf9f7701a6f549a227be4df2)
+    - [ ] [cv::cuda::createStereoSGM](https://docs.opencv.org/master/dd/d47/group__cudastereo.html#gafb7e5284de5f488d664c3155acb12c93)
+    - [ ] [cv::cuda::drawColorDisp](https://docs.opencv.org/master/dd/d47/group__cudastereo.html#ga469b23a77938dd7c06861e59cecc08c5)
+    - [ ] [cv::cuda::reprojectImageTo3D](https://docs.opencv.org/master/dd/d47/group__cudastereo.html#gaff851e3932da0f3e74d1be1d8855f094)
+
 - [X] **cudawarping. Image Warping**
 
 ## Contrib modules list
