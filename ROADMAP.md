@@ -13,7 +13,7 @@ Your pull requests will be greatly appreciated!
 ## Modules list
 
 - [ ] **core. Core functionality - WORK STARTED**
-    - [ ] **Basic structures - WORK STARTED**
+    - [X] **Basic structures**
     - [ ] **Operations on arrays - WORK STARTED**. The following functions still need implementation:
         - [ ] [Mahalanobis](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4493aee129179459cbfc6064f051aa7d)
         - [ ] [mulTransposed](https://docs.opencv.org/master/d2/de8/group__core__array.html#gadc4e49f8f7a155044e3be1b9e3b270ab)
@@ -28,15 +28,17 @@ Your pull requests will be greatly appreciated!
         - [ ] [SVBackSubst](https://docs.opencv.org/master/d2/de8/group__core__array.html#gab4e620e6fc6c8a27bb2be3d50a840c0b)
         - [ ] [SVDecomp](https://docs.opencv.org/master/d2/de8/group__core__array.html#gab477b5b7b39b370bb03e75b19d2d5109)
         - [ ] [theRNG](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga75843061d150ad6564b5447e38e57722)
+
     - [ ] XML/YAML Persistence
+        - [ ] [FileStorage](https://docs.opencv.org/master/da/d56/classcv_1_1FileStorage.html)
+
     - [ ] **Clustering - WORK STARTED**. The following functions still need implementation:
         - [ ] [partition](https://docs.opencv.org/master/d5/d38/group__core__cluster.html#ga2037c989e69b499c1aa271419f3a9b34)
 
-    - [ ] Utility and system functions and macros
-    - [ ] OpenGL interoperability
-    - [ ] Intel IPP Asynchronous C/C++ Converters
     - [ ] Optimization Algorithms
-    - [ ] OpenCL support 
+        - [ ] [ConjGradSolver](https://docs.opencv.org/master/d0/d21/classcv_1_1ConjGradSolver.html)
+        - [ ] [DownhillSolver](https://docs.opencv.org/master/d4/d43/classcv_1_1DownhillSolver.html)
+        - [ ] [solveLP](https://docs.opencv.org/master/da/d01/group__core__optim.html#ga9a06d237a9d38ace891efa1ca1b5d00a)
 
 - [ ] **imgproc. Image processing - WORK STARTED**
     - [ ] **Image Filtering - WORK STARTED** The following functions still need implementation:
