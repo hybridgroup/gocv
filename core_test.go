@@ -2224,7 +2224,7 @@ func TestMatInvert(t *testing.T) {
 	dst := NewMat()
 	defer dst.Close()
 
-	Invert(src, &dst, 0)
+	Invert(src, &dst, SolveDecompositionLu)
 	if dst.Empty() {
 		t.Error("Invert dst should not be empty.")
 	}

@@ -1372,7 +1372,7 @@ func InsertChannel(src Mat, dst *Mat, coi int) {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#gad278044679d4ecf20f7622cc151aaaa2
 //
-func Invert(src Mat, dst *Mat, flags int) float64 {
+func Invert(src Mat, dst *Mat, flags SolveDecompositionFlags) float64 {
 	ret := C.Mat_Invert(src.p, dst.p, C.int(flags))
 	return float64(ret)
 }
