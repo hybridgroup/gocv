@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: gocv/opencv:4.5.1
+      - image: gocv/opencv:4.5.2
     working_directory: /usr/local/go/src/github.com/hybridgroup/gocv
     environment:
         DISPLAY: 99.0
