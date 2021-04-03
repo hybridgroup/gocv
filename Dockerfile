@@ -1,6 +1,6 @@
 # to build this docker image:
 #   docker build .
-FROM gocv/opencv:4.5.1
+FROM gocv/opencv:4.5.2
 
 ENV GOPATH /go
 

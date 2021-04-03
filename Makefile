@@ -2,10 +2,10 @@
 .PHONY: test deps download build clean astyle cmds docker
 
 # OpenCV version to use.
-OPENCV_VERSION?=4.5.1
+OPENCV_VERSION?=4.5.2
 
 # Go version to use when building Docker image
-GOVERSION?=1.15.3
+GOVERSION?=1.16.2
 
 # Temporary directory to put files into.
 TMP_DIR?=/tmp/
