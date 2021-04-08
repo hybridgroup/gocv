@@ -1,3 +1,43 @@
+0.27.0
+---
+* **all**
+    * update to OpenCV 4.5.2
+* **core**
+    * add Append() to PointsVector/PointVector
+    * add cv::RNG
+    * add implementation for Point2fVector
+    * add rand functions
+    * add test coverage for PointsVector
+    * create new PointsVector/PointVector wrappers to avoid repetitive memory copying for seeming innocent operations involving slices of image.Point
+    * test coverage for Point2f
+    * use PointVector for everything that we can to speed up pipeline when passing around Point vectors
+    * use enum instead of int for Invert Method
+* **cuda**
+    * adding HoughLinesDetector and HoughSegmentDetector
+    * adding tests for the CannyEdgeDetector
+    * some refactoring of the API
+    * adding dockerfiles for OpenCV 4.5.2 with CUDA 11.2
+    * add GaussianFilter
+    * correct signature and test for Threshold
+    * implement SobelFilter
+    * move arithm module functions into correct location
+    * rename files to get rid of so many cudas
+    * add abs function implementation
+* **dnn**
+    * increase test coverage
+* **docker**
+    * make all Dockerfiles names/tags more consistent
+* **docs**
+    * add CUDA functions that need implementation to ROADMAP
+    * remove invalid sections and add some missing functions from ROADMAP
+* **imgproc**
+    * Add FindContoursWithParams function
+    * Add ToImageYUV and ToImageYUVWithParams
+* **make**
+    * add make task to show changelog for next release
+* **wechat_qrcode**
+    * disable module in Windows due to linker error
+
 0.26.0
 ---
 * **all**

@@ -150,7 +150,7 @@ If you need static opencv libraries
 
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
-	gocv version: 0.26.0
+	gocv version: 0.27.0
 	opencv lib version: 4.5.2
 
 That's it, now you are ready to use GoCV.
@@ -176,7 +176,7 @@ If you need static opencv libraries
 
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
-	gocv version: 0.26.0
+	gocv version: 0.27.0
 	opencv lib version: 4.5.2-openvino
     cuda information:
       Device 0:  "GeForce MX150"  2003Mb, sm_61, Driver/Runtime ver.10.0/10.0
@@ -231,7 +231,7 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-	gocv version: 0.26.0
+	gocv version: 0.27.0
 	opencv lib version: 4.5.2
 
 #### Cleanup extra files
@@ -328,7 +328,7 @@ The following commands should do everything to download and install OpenCV 4.5.2
 
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
-	gocv version: 0.26.0
+	gocv version: 0.27.0
 	opencv lib version: 4.5.2
 
 That's it, now you are ready to use GoCV.
@@ -367,7 +367,7 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-	gocv version: 0.26.0
+	gocv version: 0.27.0
 	opencv lib version: 4.5.2
 
 ### Cache builds
@@ -435,7 +435,7 @@ Now you should be able to build or run any of the command examples:
 
 The version program should output the following:
 
-	gocv version: 0.26.0
+	gocv version: 0.27.0
 	opencv lib version: 4.5.2
 
 That's it, now you are ready to use GoCV.
