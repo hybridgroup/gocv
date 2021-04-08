@@ -1,6 +1,9 @@
 .ONESHELL:
 .PHONY: test deps download build clean astyle cmds docker
 
+# GoCV version to use.
+GOCV_VERSION?="v0.26.0"
+
 # OpenCV version to use.
 OPENCV_VERSION?=4.5.2
 
@@ -227,6 +230,10 @@ docker:
 
 astyle:
 	astyle --project=.astylerc --recursive *.cpp,*.h
+
+
+releaselog:
+	git log --pretty=format:"%s" $(GOCV_VERSION)..HEAD
 
 CMDS=basic-drawing caffe-classifier captest capwindow counter faceblur facedetect find-circles hand-gestures hello-sift img-similarity mjpeg-streamer motion-detect pose saveimage savevideo showimage ssd-facedetect tf-classifier tracking version
 cmds:
