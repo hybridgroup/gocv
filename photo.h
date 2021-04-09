@@ -17,6 +17,10 @@ void IlluminationChange(Mat src, Mat mask, Mat dst, float alpha, float beta);
 
 void TextureFlattening(Mat src, Mat mask, Mat dst, float low_threshold, float high_threshold, int kernel_size);
 
+void MergeMertensProcessCSE(struct Mats src, Mat dst,float contrast_weight, float saturation_weight, float exposure_weight);
+
+void MergeMertensProcess(struct Mats src, Mat dst);
+
 #ifdef __cplusplus
 }
 #endif

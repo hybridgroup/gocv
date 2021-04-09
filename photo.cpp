@@ -16,3 +16,19 @@ void SeamlessClone(Mat src, Mat dst, Mat mask, Point p, Mat blend, int flags) {
 void TextureFlattening(Mat src, Mat mask, Mat dst, float low_threshold, float high_threshold, int kernel_size) {
     cv::textureFlattening(*src, *mask, *dst, low_threshold, high_threshold, kernel_size);
 }
+
+void MergeMertensProcessCSE(struct Mats src, Mat dst,float contrast_weight, float saturation_weight , float exposure_weight ) {
+    std::vector<cv::Mat> images;
+    for (int i = 0; i < src.length; ++i) {
+        images.push_back(*src.mats[i]);
+    }   
+    cv::createMergeMertens(contrast_weight , saturation_weight, exposure_weight)->process(images, *dst);
+}
+
+void MergeMertensProcess(struct Mats src, Mat dst) {
+    std::vector<cv::Mat> images;
+    for (int i = 0; i < src.length; ++i) {
+        images.push_back(*src.mats[i]);
+    }  
+    cv::createMergeMertens()->process(images, *dst);
+}

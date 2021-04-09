@@ -61,3 +61,31 @@ func IlluminationChange(src, mask Mat, dst *Mat, alpha, beta float32) {
 func TextureFlattening(src, mask Mat, dst *Mat, lowThreshold, highThreshold float32, kernelSize int) {
 	C.TextureFlattening(src.p, mask.p, dst.p, C.float(lowThreshold), C.float(highThreshold), C.int(kernelSize))
 }
+
+func MergeMertensProcess(src []Mat , dst *Mat ){
+    cMatArray := make([]C.Mat, len(src))
+	for i, r := range src {
+		cMatArray[i] = (C.Mat)(r.p)
+	}
+	matsVector := C.struct_Mats{
+		mats:   (*C.Mat)(&cMatArray[0]),
+		length: C.int(len(src)),
+	}
+	C.MergeMertensProcess(matsVector,dst.p)
+    dst.ConvertToWithParams(dst,MatTypeCV8UC3,255.0,0.0)
+}
+
+func MergeMertensProcessCSE(src []Mat , dst *Mat , contrast_weight float32 , saturation_weight float32 , exposure_weight float32 ) {
+    cMatArray := make([]C.Mat, len(src))
+	for i, r := range src {
+		cMatArray[i] = (C.Mat)(r.Ptr())
+	}
+	matsVector := C.struct_Mats{
+		mats:   (*C.Mat)(&cMatArray[0]),
+		length: C.int(len(src)),
+	}
+	C.MergeMertensProcessCSE(matsVector,dst.p, C.float(contrast_weight), C.float(saturation_weight), C.float(exposure_weight))
+    dst.ConvertToWithParams(dst,MatTypeCV8UC3,255.0,0.0)
+}
+
+
