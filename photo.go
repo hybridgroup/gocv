@@ -5,10 +5,25 @@ package gocv
 #include "photo.h"
 */
 import "C"
-import "image"
+import (
+	"image"
+	"unsafe"
+)
 
 //SeamlessCloneFlags seamlessClone algorithm flags
 type SeamlessCloneFlags int
+
+// MergeMertens is a wrapper around the cv::MergeMertens.
+type MergeMertens struct {
+	// C.MergeMertens
+	p unsafe.Pointer
+}
+
+// AlignMTB is a wrapper around the cv::AlignMTB.
+type AlignMTB struct {
+	// C.AlignMTB
+	p unsafe.Pointer
+}
 
 const (
 	// NormalClone The power of the method is fully expressed when inserting objects with complex outlines into a new background.
@@ -62,8 +77,46 @@ func TextureFlattening(src, mask Mat, dst *Mat, lowThreshold, highThreshold floa
 	C.TextureFlattening(src.p, mask.p, dst.p, C.float(lowThreshold), C.float(highThreshold), C.int(kernelSize))
 }
 
-func MergeMertensProcess(src []Mat , dst *Mat ){
-    cMatArray := make([]C.Mat, len(src))
+// NewMergeMertens returns returns a new MergeMertens white LDR merge algorithm.
+// of type MergeMertens with default parameters.
+// MergeMertens algorithm merge the ldr image should result in a HDR image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/df5/group__photo__hdr.html
+// https://docs.opencv.org/master/d7/dd6/classcv_1_1MergeMertens.html
+// https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga79d59aa3cb3a7c664e59a4b5acc1ccb6
+//
+func NewMergeMertens() MergeMertens {
+	return MergeMertens{p: unsafe.Pointer(C.MergeMertens_Create())}
+}
+
+// NewMergeMertensWithParams returns a new MergeMertens white LDR merge algorithm
+// of type MergeMertens with customized parameters.
+// MergeMertens algorithm merge the ldr image should result in a HDR image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/df5/group__photo__hdr.html
+// https://docs.opencv.org/master/d7/dd6/classcv_1_1MergeMertens.html
+// https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga79d59aa3cb3a7c664e59a4b5acc1ccb6
+//
+func NewMergeMertensWithParams(contrast_weight float32, saturation_weight float32, exposure_weight float32) MergeMertens {
+	return MergeMertens{p: unsafe.Pointer(C.MergeMertens_CreateWithParams(C.float(contrast_weight), C.float(saturation_weight), C.float(exposure_weight)))}
+}
+
+// Close MergeMertens.
+func (b *MergeMertens) Close() error {
+	C.MergeMertens_Close((C.MergeMertens)(b.p))
+	b.p = nil
+	return nil
+}
+
+// BalanceWhite computes merge LDR images using the current MergeMertens.
+// Return a image MAT : 8bits 3 channel image ( RGB 8 bits )
+// For further details, please see:
+// https://docs.opencv.org/master/d7/dd6/classcv_1_1MergeMertens.html#a2d2254b2aab722c16954de13a663644d
+//
+func (b *MergeMertens) Process(src []Mat, dst *Mat) {
+	cMatArray := make([]C.Mat, len(src))
 	for i, r := range src {
 		cMatArray[i] = (C.Mat)(r.p)
 	}
@@ -71,21 +124,74 @@ func MergeMertensProcess(src []Mat , dst *Mat ){
 		mats:   (*C.Mat)(&cMatArray[0]),
 		length: C.int(len(src)),
 	}
-	C.MergeMertensProcess(matsVector,dst.p)
-    dst.ConvertToWithParams(dst,MatTypeCV8UC3,255.0,0.0)
+	C.MergeMertens_Process((C.MergeMertens)(b.p), matsVector, dst.p)
+	dst.ConvertToWithParams(dst, MatTypeCV8UC3, 255.0, 0.0)
 }
 
-func MergeMertensProcessCSE(src []Mat , dst *Mat , contrast_weight float32 , saturation_weight float32 , exposure_weight float32 ) {
-    cMatArray := make([]C.Mat, len(src))
+// NewAlignMTB returns an AlignMTB for converts images to median threshold bitmaps.
+// of type AlignMTB converts images to median threshold bitmaps (1 for pixels
+// brighter than median luminance and 0 otherwise) and than aligns the resulting
+// bitmaps using bit operations.
+
+// For further details, please see:
+// https://docs.opencv.org/master/d6/df5/group__photo__hdr.html
+// https://docs.opencv.org/master/d7/db6/classcv_1_1AlignMTB.html
+// https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga2f1fafc885a5d79dbfb3542e08db0244
+//
+func NewAlignMTB() AlignMTB {
+	return AlignMTB{p: unsafe.Pointer(C.AlignMTB_Create())}
+}
+
+// NewAlignMTBWithParams returns an AlignMTB for converts images to median threshold bitmaps.
+// of type AlignMTB converts images to median threshold bitmaps (1 for pixels
+// brighter than median luminance and 0 otherwise) and than aligns the resulting
+// bitmaps using bit operations.
+
+// For further details, please see:
+// https://docs.opencv.org/master/d6/df5/group__photo__hdr.html
+// https://docs.opencv.org/master/d7/db6/classcv_1_1AlignMTB.html
+// https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga2f1fafc885a5d79dbfb3542e08db0244
+//
+func NewAlignMTBWithParams(max_bits int, exclude_range int, cut bool) AlignMTB {
+	return AlignMTB{p: unsafe.Pointer(C.AlignMTB_CreateWithParams(C.int(max_bits), C.int(exclude_range), C.bool(cut)))}
+}
+
+// Close AlignMTB.
+func (b *AlignMTB) Close() error {
+	C.AlignMTB_Close((C.AlignMTB)(b.p))
+	b.p = nil
+	return nil
+}
+
+// Process computes an alignment using the current AlignMTB.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/db6/classcv_1_1AlignMTB.html#a37b3417d844f362d781f34155cbcb201
+//
+func (b *AlignMTB) Process(src []Mat, dst []Mat) {
+
+	cSrcArray := make([]C.Mat, len(src))
 	for i, r := range src {
-		cMatArray[i] = (C.Mat)(r.Ptr())
+		cSrcArray[i] = r.p
 	}
-	matsVector := C.struct_Mats{
-		mats:   (*C.Mat)(&cMatArray[0]),
+	cSrcMats := C.struct_Mats{
+		mats:   (*C.Mat)(&cSrcArray[0]),
 		length: C.int(len(src)),
 	}
-	C.MergeMertensProcessCSE(matsVector,dst.p, C.float(contrast_weight), C.float(saturation_weight), C.float(exposure_weight))
-    dst.ConvertToWithParams(dst,MatTypeCV8UC3,255.0,0.0)
+
+	cDstArray := make([]C.Mat, len(dst))
+	for i, r := range dst {
+		cDstArray[i] = r.p
+	}
+	cDstMats := C.struct_Mats{
+		mats:   (*C.Mat)(&cDstArray[0]),
+		length: C.int(len(dst)),
+	}
+
+	C.AlignMTB_Process((C.AlignMTB)(b.p), cSrcMats, cDstMats)
+
+	for i := C.int(0); i < cDstMats.length; i++ {
+		dst[i].p = C.Mats_get(cDstMats, i)
+	}
+	return
 }
-
-
