@@ -51,3 +51,26 @@ func TestThreshold(t *testing.T) {
 		t.Error("Invalid Threshold test")
 	}
 }
+
+func TestFlip(t *testing.T) {
+	src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadColor)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in Flip test")
+	}
+	defer src.Close()
+
+	var cimg, dimg = NewGpuMat(), NewGpuMat()
+	defer cimg.Close()
+	defer dimg.Close()
+
+	cimg.Upload(src)
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	Flip(cimg, &dimg, 0)
+	dimg.Download(&dest)
+	if dest.Empty() || src.Rows() != dest.Rows() || src.Cols() != dest.Cols() {
+		t.Error("Invalid Flip test")
+	}
+}

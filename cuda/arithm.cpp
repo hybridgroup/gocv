@@ -9,3 +9,7 @@ void GpuAbs(GpuMat src, GpuMat dst) {
 void GpuThreshold(GpuMat src, GpuMat dst, double thresh, double maxval, int typ) {
     cv::cuda::threshold(*src, *dst, thresh, maxval, typ);
 }
+
+void GpuFlip(GpuMat src, GpuMat dst, int flipCode) {
+    cv::cuda::flip(*src, *dst, flipCode);
+}
