@@ -13,6 +13,7 @@ extern "C" {
 
 void GpuAbs(GpuMat src, GpuMat dst);
 void GpuThreshold(GpuMat src, GpuMat dst, double thresh, double maxval, int typ);
+void GpuFlip(GpuMat src, GpuMat dst, int flipCode);
 
 #ifdef __cplusplus
 }
