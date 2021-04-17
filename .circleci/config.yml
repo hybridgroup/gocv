@@ -39,16 +39,19 @@ jobs:
       - run:
           name: Run main tests
           command: | 
-            xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" go test -v -coverprofile=/tmp/coverage.txt -covermode=atomic -tags matprofile .
+            xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" go test -v -coverprofile=/tmp/coverage.out -count=1 -tags matprofile .
       - run:
           name: Run contrib tests
           command: | 
-            xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" go test -v -coverprofile=/tmp/contrib.txt -covermode=atomic -tags matprofile ./contrib
+            xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" go test -v -coverprofile=/tmp/contrib.out -count=1 -tags matprofile ./contrib
       - run:
           name: Code coverage
           command: | 
-            cat /tmp/contrib.txt >> /tmp/coverage.txt
-            go tool cover -html=/tmp/coverage.txt -o /tmp/coverage.html
+            go tool cover -html=/tmp/coverage.out -o /tmp/coverage.html
+            go tool cover -html=/tmp/contrib.out -o /tmp/contrib.html
       - store_artifacts:
           path: /tmp/coverage.html
           destination: test-coverage.html
+      - store_artifacts:
+          path: /tmp/contrib.html
+          destination: test-coverage-contrib.html
