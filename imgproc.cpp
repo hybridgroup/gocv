@@ -129,6 +129,12 @@ void Dilate(Mat src, Mat dst, Mat kernel) {
     cv::dilate(*src, *dst, *kernel);
 }
 
+void DilateWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType) {
+    cv::Point pt1(anchor.x, anchor.y);
+
+    cv::dilate(*src, *dst, *kernel, pt1, iterations, borderType, cv::morphologyDefaultBorderValue());
+}
+
 void DistanceTransform(Mat src, Mat dst, Mat labels, int distanceType, int maskSize, int labelType) {
     cv::distanceTransform(*src, *dst, *labels, distanceType, maskSize, labelType);
 }

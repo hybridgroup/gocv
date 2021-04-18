@@ -237,6 +237,25 @@ func TestDilate(t *testing.T) {
 	}
 }
 
+func TestDilateWithParams(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in DilateWithParams test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	defer kernel.Close()
+
+	DilateWithParams(img, &dest, kernel, image.Pt(-1, -1), 3, 0)
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid DilateWithParams test")
+	}
+}
+
 func TestDistanceTransform(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
