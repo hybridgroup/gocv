@@ -250,7 +250,7 @@ func TestDilateWithParams(t *testing.T) {
 	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
 	defer kernel.Close()
 
-	DilateWithParams(img, &dest, kernel, image.Pt(-1, -1), 3, 0)
+	DilateWithParams(img, &dest, kernel, image.Pt(-1, -1), 3, 0, color.RGBA{0, 0, 0, 0})
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid DilateWithParams test")
 	}
