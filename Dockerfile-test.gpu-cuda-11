@@ -1,5 +1,11 @@
-# to build this docker image:
+# To build:
 #   docker build -f Dockerfile-test.gpu-cuda-11 -t gocv-test-gpu-cuda-11 .
+#
+# To run tests:
+#   xhost +
+#   docker run -it --rm --gpus all -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix gocv-test-gpu-cuda-11
+#   xhost -
+#
 FROM gocv/opencv:4.5.2-gpu-cuda-11 AS gocv-gpu-test-cuda-11
 
 ENV GOPATH /go
@@ -8,4 +14,6 @@ COPY . /go/src/gocv.io/x/gocv/
 
 WORKDIR /go/src/gocv.io/x/gocv
 
-ENTRYPOINT ["go", "test", "-v", "./cuda/..."]
+RUN go get -u github.com/rakyll/gotest
+
+ENTRYPOINT ["gotest", "-v", ".", "./contrib/...","./cuda/..."]
