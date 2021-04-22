@@ -12,6 +12,6 @@ COPY . /go/src/gocv.io/x/gocv/
 
 WORKDIR /go/src/gocv.io/x/gocv
 
-RUN go get -u github.com/rakyll/gotest
+RUN curl http://storage.googleapis.com/jbd-releases/gotest_linux > gotest && chmod +x gotest
 
 ENTRYPOINT ["gotest", "-v", "./cuda/..."]
