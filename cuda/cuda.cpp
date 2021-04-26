@@ -39,3 +39,19 @@ int GetCudaEnabledDeviceCount(){
 void GpuMat_ConvertTo(GpuMat m, GpuMat dst, int type) {
     m->convertTo(*dst, type);
 }
+
+int GpuMat_Cols(GpuMat m) {
+    return m->cols;
+}
+
+int GpuMat_Rows(GpuMat m) {
+    return m->rows;
+}
+
+int GpuMat_Channels(GpuMat m) {
+    return m->channels();
+}
+
+int GpuMat_Type(GpuMat m) {
+    return m->type();
+}

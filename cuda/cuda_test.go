@@ -1,8 +1,9 @@
 package cuda
 
 import (
-	"gocv.io/x/gocv"
 	"testing"
+
+	"gocv.io/x/gocv"
 )
 
 func TestNewGpuMat(t *testing.T) {
@@ -10,7 +11,7 @@ func TestNewGpuMat(t *testing.T) {
 	defer mat.Close()
 
 	if !mat.Empty() {
-		t.Error("New Mat should be empty")
+		t.Error("New GpuMat should be empty")
 	}
 }
 
@@ -22,7 +23,31 @@ func TestNewGpuMatFromMat(t *testing.T) {
 	defer gpumat.Close()
 
 	if !gpumat.Empty() {
-		t.Error("New Mat should be empty")
+		t.Error("New GpuMat should be empty")
+	}
+}
+
+func TestNewGpuMatFromMatWithSize(t *testing.T) {
+	mat := gocv.NewMatWithSize(100, 200, gocv.MatTypeCV32FC4)
+	defer mat.Close()
+
+	gpumat := NewGpuMatFromMat(mat)
+	defer gpumat.Close()
+
+	if gpumat.Empty() {
+		t.Error("New GpuMat should be not empty")
+	}
+
+	if gpumat.Rows() != 100 {
+		t.Error("incorrect number of rows for GpuMat")
+	}
+
+	if gpumat.Cols() != 200 {
+		t.Error("incorrect number of cols for GpuMat")
+	}
+
+	if gpumat.Type() != gocv.MatTypeCV32FC4 {
+		t.Error("incorrect type for GpuMat")
 	}
 }
 

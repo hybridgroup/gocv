@@ -89,3 +89,23 @@ func (m *GpuMat) ConvertTo(dst *GpuMat, mt gocv.MatType) {
 	C.GpuMat_ConvertTo(m.p, dst.p, C.int(mt))
 	return
 }
+
+// Rows returns the number of rows for this GpuMat.
+func (m *GpuMat) Rows() int {
+	return int(C.GpuMat_Rows(m.p))
+}
+
+// Cols returns the number of columns for this GpuMat.
+func (m *GpuMat) Cols() int {
+	return int(C.GpuMat_Cols(m.p))
+}
+
+// Channels returns the number of channels for this GpuMat.
+func (m *GpuMat) Channels() int {
+	return int(C.GpuMat_Channels(m.p))
+}
+
+// Type returns the type for this GpuMat.
+func (m *GpuMat) Type() gocv.MatType {
+	return gocv.MatType(C.GpuMat_Type(m.p))
+}

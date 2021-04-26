@@ -23,6 +23,10 @@ void GpuMat_Download(GpuMat m,Mat dst);
 void GpuMat_Close(GpuMat m);
 int GpuMat_Empty(GpuMat m);
 void GpuMat_ConvertTo(GpuMat m, GpuMat dst, int type);
+int GpuMat_Cols(GpuMat m);
+int GpuMat_Rows(GpuMat m);
+int GpuMat_Channels(GpuMat m);
+int GpuMat_Type(GpuMat m);
 
 void PrintCudaDeviceInfo(int device);
 void PrintShortCudaDeviceInfo(int device);
