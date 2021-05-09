@@ -397,6 +397,12 @@ void FillPoly(Mat img, PointsVector pts, Scalar color) {
     cv::fillPoly(*img, *pts, c);
 }
 
+void FillPolyWithParams(Mat img, PointsVector pts, Scalar color, int lineType, int shift, Point offset) {
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::fillPoly(*img, *pts, c, lineType, shift, cv::Point(offset.x, offset.y));
+}
+
 void Polylines(Mat img, PointsVector pts, bool isClosed, Scalar color,int thickness) {
     cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
 

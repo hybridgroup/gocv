@@ -1288,6 +1288,26 @@ func FillPoly(img *Mat, pts PointsVector, c color.RGBA) {
 	C.FillPoly(img.p, pts.p, sColor)
 }
 
+// FillPolyWithParams fills the area bounded by one or more polygons.
+//
+// For more information, see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf30888828337aa4c6b56782b5dfbd4b7
+func FillPolyWithParams(img *Mat, pts PointsVector, c color.RGBA, lineType LineType, shift int, offset image.Point) {
+	offsetP := C.struct_Point{
+		x: C.int(offset.X),
+		y: C.int(offset.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.FillPolyWithParams(img.p, pts.p, sColor, C.int(lineType), C.int(shift), offsetP)
+}
+
 // Polylines draws several polygonal curves.
 //
 // For more information, see:

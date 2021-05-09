@@ -84,6 +84,7 @@ void Ellipse(Mat img, Point center, Point axes, double angle, double
 void Line(Mat img, Point pt1, Point pt2, Scalar color, int thickness);
 void Rectangle(Mat img, Rect rect, Scalar color, int thickness);
 void FillPoly(Mat img, PointsVector points, Scalar color);
+void FillPolyWithParams(Mat img, PointsVector points, Scalar color, int lineType, int shift, Point offset);
 void Polylines(Mat img, PointsVector points, bool isClosed, Scalar color, int thickness);
 struct Size GetTextSize(const char* text, int fontFace, double fontScale, int thickness);
 struct Size GetTextSizeWithBaseline(const char* text, int fontFace, double fontScale, int thickness, int* baseline);

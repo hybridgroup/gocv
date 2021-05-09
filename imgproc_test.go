@@ -1773,6 +1773,50 @@ func TestFillPoly(t *testing.T) {
 	}
 }
 
+func TestFillPolyWithParams(t *testing.T) {
+	tests := []struct {
+		name   string      // name of testcase
+		offset image.Point // offset to the FillPolyWithParams function
+		point  image.Point // point to be checked
+		result uint8       // expected value at the point to be checked
+	}{
+		{
+			name:   "No offset",
+			point:  image.Point{10, 10},
+			result: 255,
+		}, {
+			name:   "Offset of 2",
+			offset: image.Point{2, 2},
+			point:  image.Point{12, 12},
+			result: 255,
+		},
+	}
+	white := color.RGBA{255, 255, 255, 0}
+	pts := [][]image.Point{
+		{
+			image.Pt(10, 10),
+			image.Pt(10, 20),
+			image.Pt(20, 20),
+			image.Pt(20, 10),
+		},
+	}
+	pv := NewPointsVectorFromPoints(pts)
+	defer pv.Close()
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
+
+			FillPolyWithParams(&img, pv, white, Line4, 0, tc.offset)
+
+			if v := img.GetUCharAt(tc.point.X, tc.point.Y); v != tc.result {
+				t.Errorf("Wrong pixel value; got = %v, want = %v", v, tc.result)
+			}
+		})
+	}
+}
+
 func TestPolylines(t *testing.T) {
 	img := NewMatWithSize(100, 100, MatTypeCV8UC1)
 	defer img.Close()
