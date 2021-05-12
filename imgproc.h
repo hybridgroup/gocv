@@ -79,6 +79,7 @@ void AdaptiveThreshold(Mat src, Mat dst, double maxValue, int adaptiveTyp, int t
 
 void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness);
 void Circle(Mat img, Point center, int radius, Scalar color, int thickness);
+void CircleWithParams(Mat img, Point center, int radius, Scalar color, int thickness, int lineType, int shift);
 void Ellipse(Mat img, Point center, Point axes, double angle, double
              startAngle, double endAngle, Scalar color, int thickness);
 void Line(Mat img, Point pt1, Point pt2, Scalar color, int thickness);

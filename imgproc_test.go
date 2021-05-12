@@ -1107,6 +1107,90 @@ func TestAdaptiveThreshold(t *testing.T) {
 	}
 }
 
+func TestCircle(t *testing.T) {
+	tests := []struct {
+		name      string      // name of the testcase
+		thickness int         // thickness of the circle
+		point     image.Point // point to be checked
+		result    uint8       // expected value at the point to be checked
+	}{
+		{
+			name:      "Without filling",
+			thickness: 3,
+			point:     image.Point{80, 89},
+			result:    255,
+		}, {
+			name:      "With filling",
+			thickness: -1,
+			point:     image.Point{60, 60},
+			result:    255,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run("tc.name", func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
+
+			white := color.RGBA{255, 255, 255, 0}
+			Circle(&img, image.Pt(70, 70), 20, white, tc.thickness)
+
+			if v := img.GetUCharAt(tc.point.X, tc.point.Y); v != tc.result {
+				t.Errorf("Wrong pixel value, got = %v, want = %v", v, tc.result)
+			}
+		})
+	}
+}
+
+func TestCircleWithParams(t *testing.T) {
+	tests := []struct {
+		name      string                // name of the testcase
+		thickness int                   // thickness of the circle
+		shift     int                   // how much to shift and reduce(in size)
+		checks    map[image.Point]uint8 // map of points to be checked and corresponding expected value
+	}{
+		{
+			name:      "Without filling and shift",
+			thickness: 3,
+			shift:     0,
+			checks: map[image.Point]uint8{
+				image.Point{80, 89}: 255,
+			},
+		}, {
+			name:      "With filling, without shift",
+			thickness: -1,
+			shift:     0,
+			checks: map[image.Point]uint8{
+				image.Point{60, 60}: 255,
+			},
+		}, {
+			name:      "Without filling, with shift",
+			thickness: 3,
+			shift:     1,
+			checks: map[image.Point]uint8{
+				image.Point{47, 38}: 255,
+				image.Point{48, 38}: 0,
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
+
+			white := color.RGBA{255, 255, 255, 0}
+			CircleWithParams(&img, image.Pt(70, 70), 20, white, tc.thickness, Line4, tc.shift)
+
+			for c, result := range tc.checks {
+				if v := img.GetUCharAt(c.X, c.Y); v != result {
+					t.Errorf("Wrong pixel value, got = %v, want = %v", v, result)
+				}
+			}
+		})
+	}
+}
+
 func TestEqualizeHist(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
