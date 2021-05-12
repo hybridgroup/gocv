@@ -362,6 +362,13 @@ void Circle(Mat img, Point center, int radius, Scalar color, int thickness) {
     cv::circle(*img, p1, radius, c, thickness);
 }
 
+void CircleWithParams(Mat img, Point center, int radius, Scalar color, int thickness, int lineType, int shift) {
+    cv::Point p1(center.x, center.y);
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::circle(*img, p1, radius, c, thickness, lineType, shift);
+}
+
 void Ellipse(Mat img, Point center, Point axes, double angle, double
              startAngle, double endAngle, Scalar color, int thickness) {
     cv::Point p1(center.x, center.y);

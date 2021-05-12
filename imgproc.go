@@ -1198,6 +1198,27 @@ func Circle(img *Mat, center image.Point, radius int, c color.RGBA, thickness in
 	C.Circle(img.p, pc, C.int(radius), sColor, C.int(thickness))
 }
 
+// CircleWithParams draws a circle.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf10604b069374903dbd0f0488cb43670
+//
+func CircleWithParams(img *Mat, center image.Point, radius int, c color.RGBA, thickness int, lineType LineType, shift int) {
+	pc := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.CircleWithParams(img.p, pc, C.int(radius), sColor, C.int(thickness), C.int(lineType), C.int(shift))
+}
+
 // Ellipse draws a simple or thick elliptic arc or fills an ellipse sector.
 //
 // For further details, please see:
