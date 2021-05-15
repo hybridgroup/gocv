@@ -1191,6 +1191,78 @@ func TestCircleWithParams(t *testing.T) {
 	}
 }
 
+func TestRectangle(t *testing.T) {
+	tests := []struct {
+		name      string      // name of the testcase
+		thickness int         // thickness of the rectangle
+		point     image.Point // point to be checked
+	}{
+		{
+			name:      "Without filling",
+			thickness: 1,
+			point:     image.Point{10, 60},
+		}, {
+			name:      "With filling",
+			thickness: -1,
+			point:     image.Point{30, 30},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
+
+			white := color.RGBA{255, 255, 255, 0}
+			Rectangle(&img, image.Rect(10, 10, 80, 80), white, tc.thickness)
+
+			if v := img.GetUCharAt(tc.point.X, tc.point.Y); v < 50 {
+				t.Errorf("Wrong pixel value, got = %v, want >= %v", v, 50)
+
+			}
+		})
+	}
+}
+
+func TestRectangleWithParams(t *testing.T) {
+	tests := []struct {
+		name      string      // name of the testcase
+		thickness int         // thickness of the rectangle
+		shift     int         // how much to shift and reduce (in size)
+		point     image.Point // point to be checked
+	}{
+		{
+			name:      "Without filling and shift",
+			thickness: 1,
+			point:     image.Point{10, 60},
+		}, {
+			name:      "With filling, without shift",
+			thickness: -1,
+			point:     image.Point{30, 30},
+		}, {
+			name:      "Without filling, with shift",
+			thickness: 1,
+			shift:     1,
+			point:     image.Point{5, 5},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
+
+			white := color.RGBA{255, 255, 255, 0}
+			RectangleWithParams(&img, image.Rect(10, 10, 80, 80), white, tc.thickness, Line4, tc.shift)
+
+			if v := img.GetUCharAt(tc.point.X, tc.point.Y); v != 255 {
+				t.Errorf("Wrong pixel value, got = %v, want = %v", v, 255)
+			}
+
+		})
+	}
+}
+
 func TestEqualizeHist(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {

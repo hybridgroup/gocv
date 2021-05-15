@@ -84,6 +84,7 @@ void Ellipse(Mat img, Point center, Point axes, double angle, double
              startAngle, double endAngle, Scalar color, int thickness);
 void Line(Mat img, Point pt1, Point pt2, Scalar color, int thickness);
 void Rectangle(Mat img, Rect rect, Scalar color, int thickness);
+void RectangleWithParams(Mat img, Rect rect, Scalar color, int thickness, int lineType, int shift);
 void FillPoly(Mat img, PointsVector points, Scalar color);
 void FillPolyWithParams(Mat img, PointsVector points, Scalar color, int lineType, int shift, Point offset);
 void Polylines(Mat img, PointsVector points, bool isClosed, Scalar color, int thickness);
