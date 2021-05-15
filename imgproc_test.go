@@ -1894,14 +1894,99 @@ func TestDrawContours(t *testing.T) {
 }
 
 func TestEllipse(t *testing.T) {
-	img := NewMatWithSize(100, 100, MatTypeCV8UC1)
-	defer img.Close()
+	tests := []struct {
+		name      string      // name of the testcase
+		thickness int         // thickness of the ellipse
+		point     image.Point // point to be checked
+	}{
+		{
+			name:      "Without filling",
+			thickness: 2,
+			point:     image.Point{24, 50},
+		}, {
+			name:      "With filling",
+			thickness: -1,
+			point:     image.Point{55, 47},
+		},
+	}
 
-	white := color.RGBA{255, 255, 255, 0}
-	Ellipse(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white, 2)
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
 
-	if v := img.GetUCharAt(24, 50); v != 255 {
-		t.Errorf("TestEllipse(): wrong pixel value = %v, want = %v", v, 255)
+			white := color.RGBA{255, 255, 255, 0}
+			Ellipse(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white, tc.thickness)
+
+			if v := img.GetUCharAt(tc.point.X, tc.point.Y); v != 255 {
+				t.Errorf("Wrong pixel value, got = %v, want = %v", v, 255)
+			}
+		})
+	}
+}
+
+func TestEllipseWithParams(t *testing.T) {
+	check255 := func(v uint8) bool {
+		return v != 255
+	}
+
+	tests := []struct {
+		name      string                           // name of the testcase
+		thickness int                              // thickness of the ellipse
+		linetype  LineType                         // type of line used for drawing
+		shift     int                              // how much to shift and reduce(in size)
+		checks    map[image.Point]func(uint8) bool // points to be checked and corresponding expected value
+		checkFn   func(uint8) bool                 // function to check if the result is as expected
+
+	}{
+		{
+			name:      "Without filling and shift, line = Line8",
+			thickness: 2,
+			linetype:  Line8,
+			checks: map[image.Point]func(uint8) bool{
+				image.Point{24, 50}: check255,
+			},
+		}, {
+			name:      "With filling, without shift, line = Line8",
+			thickness: -1,
+			linetype:  Line8,
+			checks: map[image.Point]func(uint8) bool{
+				image.Point{55, 47}: check255,
+			},
+		}, {
+			name:      "Without filling, with shift 2, line = Line8",
+			thickness: 2,
+			linetype:  Line8,
+			shift:     2,
+			checks: map[image.Point]func(uint8) bool{
+				image.Point{6, 12}:  check255,
+				image.Point{19, 13}: check255,
+			},
+		}, {
+			name:      "Without filling and shift, line = LineAA",
+			thickness: 2,
+			linetype:  LineAA,
+			checks: map[image.Point]func(uint8) bool{
+				image.Point{77, 54}: func(v uint8) bool { return v < 10 || v > 220 },
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
+
+			white := color.RGBA{255, 255, 255, 0}
+			EllipseWithParams(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white,
+				tc.thickness, tc.linetype, tc.shift)
+
+			for c, fn := range tc.checks {
+				if v := img.GetUCharAt(c.X, c.Y); fn(v) {
+					t.Errorf("Wrong pixel value, got = %v", v)
+				}
+			}
+		})
 	}
 }
 

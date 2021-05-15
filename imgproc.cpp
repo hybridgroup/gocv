@@ -378,6 +378,15 @@ void Ellipse(Mat img, Point center, Point axes, double angle, double
     cv::ellipse(*img, p1, p2, angle, startAngle, endAngle, c, thickness);
 }
 
+void EllipseWithParams(Mat img, Point center, Point axes, double angle, double
+             startAngle, double endAngle, Scalar color, int thickness, int lineType, int shift) {
+    cv::Point p1(center.x, center.y);
+    cv::Point p2(axes.x, axes.y);
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+
+    cv::ellipse(*img, p1, p2, angle, startAngle, endAngle, c, thickness, lineType, shift);
+}
+
 void Line(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
     cv::Point p1(pt1.x, pt1.y);
     cv::Point p2(pt2.x, pt2.y);

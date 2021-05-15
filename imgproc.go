@@ -1244,6 +1244,31 @@ func Ellipse(img *Mat, center, axes image.Point, angle, startAngle, endAngle flo
 	C.Ellipse(img.p, pc, pa, C.double(angle), C.double(startAngle), C.double(endAngle), sColor, C.int(thickness))
 }
 
+// Ellipse draws a simple or thick elliptic arc or fills an ellipse sector.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga28b2267d35786f5f890ca167236cbc69
+//
+func EllipseWithParams(img *Mat, center, axes image.Point, angle, startAngle, endAngle float64, c color.RGBA, thickness int, lineType LineType, shift int) {
+	pc := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+	pa := C.struct_Point{
+		x: C.int(axes.X),
+		y: C.int(axes.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.EllipseWithParams(img.p, pc, pa, C.double(angle), C.double(startAngle), C.double(endAngle), sColor, C.int(thickness), C.int(lineType), C.int(shift))
+}
+
 // Line draws a line segment connecting two points.
 //
 // For further details, please see:
