@@ -1294,6 +1294,30 @@ func Rectangle(img *Mat, r image.Rectangle, c color.RGBA, thickness int) {
 	C.Rectangle(img.p, cRect, sColor, C.int(thickness))
 }
 
+// RectangleWithParams draws a simple, thick, or filled up-right rectangle.
+// It renders a rectangle with the desired characteristics to the target Mat image.
+//
+// For further details, please see:
+// http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga346ac30b5c74e9b5137576c9ee9e0e8c
+//
+func RectangleWithParams(img *Mat, r image.Rectangle, c color.RGBA, thickness int, lineType LineType, shift int) {
+	cRect := C.struct_Rect{
+		x:      C.int(r.Min.X),
+		y:      C.int(r.Min.Y),
+		width:  C.int(r.Size().X),
+		height: C.int(r.Size().Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+
+	C.RectangleWithParams(img.p, cRect, sColor, C.int(thickness), C.int(lineType), C.int(shift))
+}
+
 // FillPoly fills the area bounded by one or more polygons.
 //
 // For more information, see:

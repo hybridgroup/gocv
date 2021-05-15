@@ -398,6 +398,19 @@ void Rectangle(Mat img, Rect r, Scalar color, int thickness) {
     );
 }
 
+void RectangleWithParams(Mat img, Rect r, Scalar color, int thickness, int lineType, int shift) {
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+    cv::rectangle(
+        *img,
+        cv::Point(r.x, r.y),
+        cv::Point(r.x + r.width, r.y + r.height),
+        c,
+        thickness,
+        lineType,
+        shift
+    );
+}
+
 void FillPoly(Mat img, PointsVector pts, Scalar color) {
     cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
 
