@@ -2049,6 +2049,12 @@ func NewPointVectorFromPoints(pts []image.Point) PointVector {
 	return PointVector{p: C.PointVector_NewFromPoints(cpoints)}
 }
 
+// NewPointVectorFromMat returns a new PointVector that has been
+// wrapped around a Mat of type CV_32SC2 with a single columm.
+func NewPointVectorFromMat(mat Mat) PointVector {
+	return PointVector{p: C.PointVector_NewFromMat(mat.p)}
+}
+
 // IsNil checks the CGo pointer in the PointVector.
 func (pv PointVector) IsNil() bool {
 	return pv.p == nil
@@ -2229,6 +2235,12 @@ func NewPoint2fVectorFromPoints(pts []Point2f) Point2fVector {
 	}
 
 	return Point2fVector{p: C.Point2fVector_NewFromPoints(cpoints)}
+}
+
+// NewPoint2fVectorFromMat returns a new Point2fVector that has been
+// wrapped around a Mat of type CV_32FC2 with a single columm.
+func NewPoint2fVectorFromMat(mat Mat) Point2fVector {
+	return Point2fVector{p: C.Point2fVector_NewFromMat(mat.p)}
 }
 
 // IsNil checks the CGo pointer in the Point2fVector.
