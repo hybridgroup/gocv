@@ -863,6 +863,12 @@ PointVector PointVector_NewFromPoints(Contour points) {
     return cntr;
 }
 
+PointVector PointVector_NewFromMat(Mat mat) {
+    std::vector<cv::Point>* pts = new std::vector<cv::Point>;
+    *pts = (std::vector<cv::Point>) *mat;
+    return pts;
+}
+
 Point PointVector_At(PointVector pv, int idx) {
     cv::Point p = pv->at(idx);
     return Point{.x = p.x, .y = p.y};
@@ -933,6 +939,12 @@ Point2fVector Point2fVector_NewFromPoints(Contour2f points) {
     }
 
     return cntr;
+}
+
+Point2fVector Point2fVector_NewFromMat(Mat mat) {
+    std::vector<cv::Point2f>* pts = new std::vector<cv::Point2f>;
+    *pts = (std::vector<cv::Point2f>) *mat;
+    return pts;
 }
 
 Point2f Point2fVector_At(Point2fVector pfv, int idx) {

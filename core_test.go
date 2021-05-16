@@ -2754,6 +2754,16 @@ func TestNewPointVector(t *testing.T) {
 	if pv.Size() != 5 {
 		t.Fatal("unable to append to PointVector")
 	}
+
+	mat := NewMatWithSize(4, 1, MatTypeCV32SC2)
+	defer mat.Close()
+
+	pvm := NewPointVectorFromMat(mat)
+	defer pvm.Close()
+
+	if pvm.Size() != 4 {
+		t.Fatalf("expected size of NewPointVectorFromMat to be 4, was %d", pvm.Size())
+	}
 }
 
 func TestNewPoint2fVector(t *testing.T) {
@@ -2797,5 +2807,15 @@ func TestNewPoint2fVector(t *testing.T) {
 	out := pv.ToPoints()
 	if len(out) != 4 && out[0] != want {
 		t.Fatal("invalid ToPoints()")
+	}
+
+	mat := NewMatWithSize(4, 1, MatTypeCV32FC2)
+	defer mat.Close()
+
+	pvm := NewPoint2fVectorFromMat(mat)
+	defer pvm.Close()
+
+	if pvm.Size() != 4 {
+		t.Fatalf("expected size of NewPoint2fVectorFromMat to be 4, was %d", pvm.Size())
 	}
 }

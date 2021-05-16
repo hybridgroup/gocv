@@ -408,6 +408,7 @@ Mat Mat_colRange(Mat m,int startrow,int endrow);
 
 PointVector PointVector_New();
 PointVector PointVector_NewFromPoints(Contour points);
+PointVector PointVector_NewFromMat(Mat mat);
 Point PointVector_At(PointVector pv, int idx);
 void PointVector_Append(PointVector pv, Point p);
 int PointVector_Size(PointVector pv);
@@ -423,6 +424,7 @@ void PointsVector_Close(PointsVector psv);
 Point2fVector Point2fVector_New();
 void Point2fVector_Close(Point2fVector pfv);
 Point2fVector Point2fVector_NewFromPoints(Contour2f pts);
+Point2fVector Point2fVector_NewFromMat(Mat mat);
 Point2f Point2fVector_At(Point2fVector pfv, int idx);
 int Point2fVector_Size(Point2fVector pfv);
 
