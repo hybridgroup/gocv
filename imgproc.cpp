@@ -227,6 +227,12 @@ PointsVector FindContours(Mat src, Mat hierarchy, int mode, int method) {
     return contours;
 }
 
+double PointPolygonTest(PointVector pts, Point pt, bool measureDist) {
+	cv::Point2f pt1(pt.x, pt.y);
+
+  return cv::pointPolygonTest(*pts, pt1, measureDist);
+}
+
 int ConnectedComponents(Mat src, Mat labels, int connectivity, int ltype, int ccltype){
     return cv::connectedComponents(*src, *labels, connectivity, ltype, ccltype);
 }

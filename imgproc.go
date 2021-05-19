@@ -555,6 +555,19 @@ func FindContoursWithParams(src Mat, hierarchy *Mat, mode RetrievalMode, method 
 	return PointsVector{p: C.FindContours(src.p, hierarchy.p, C.int(mode), C.int(method))}
 }
 
+// PointPolygonTest performs a point-in-contour test.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga1a539e8db2135af2566103705d7a5722
+//
+func PointPolygonTest(pts PointVector, pt image.Point, measureDist bool) float64 {
+	cp := C.struct_Point{
+		x: C.int(pt.X),
+		y: C.int(pt.Y),
+	}
+	return float64(C.PointPolygonTest(pts.p, cp, C.bool(measureDist)))
+}
+
 //ConnectedComponentsAlgorithmType specifies the type for ConnectedComponents
 type ConnectedComponentsAlgorithmType int
 
