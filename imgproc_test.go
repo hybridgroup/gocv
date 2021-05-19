@@ -513,6 +513,72 @@ func TestFindContoursWithParams(t *testing.T) {
 	}
 }
 
+func TestPointPolygonTest(t *testing.T) {
+	tests := []struct {
+		name      string      // name of the testcase
+		thickness int         // thickness of the polygon
+		point     image.Point // point to be checked
+		result    float64     // expected result; either distance or -1, 0, 1 based on measure parameter
+		measure   bool        // enable distance measurement, if true
+	}{
+		{
+			name:      "Inside the polygon - measure=false",
+			thickness: 1,
+			point:     image.Point{20, 30},
+			result:    1.0,
+			measure:   false,
+		}, {
+			name:      "Outside the polygon - measure=false",
+			thickness: 1,
+			point:     image.Point{5, 15},
+			result:    -1.0,
+			measure:   false,
+		}, {
+			name:      "On the polygon - measure=false",
+			thickness: 1,
+			point:     image.Point{10, 10},
+			result:    0.0,
+			measure:   false,
+		}, {
+			name:      "Inside the polygon - measure=true",
+			thickness: 1,
+			point:     image.Point{20, 30},
+			result:    10.0,
+			measure:   true,
+		}, {
+			name:      "Outside the polygon - measure=true",
+			thickness: 1,
+			point:     image.Point{5, 15},
+			result:    -5.0,
+			measure:   true,
+		}, {
+			name:      "On the polygon - measure=true",
+			thickness: 1,
+			point:     image.Point{10, 10},
+			result:    0.0,
+			measure:   true,
+		},
+	}
+
+	pts := []image.Point{
+		image.Pt(10, 10),
+		image.Pt(10, 80),
+		image.Pt(80, 80),
+		image.Pt(80, 10),
+	}
+
+	ctr := NewPointVectorFromPoints(pts)
+	defer ctr.Close()
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			if r := PointPolygonTest(ctr, tc.point, tc.measure); r != tc.result {
+				t.Errorf("Wrong result, got = %v, want >= %v", r, tc.result)
+			}
+		})
+	}
+}
+
 func TestConnectedComponents(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
