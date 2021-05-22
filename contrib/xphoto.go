@@ -585,7 +585,7 @@ func (b *TonemapDurand) Process(src gocv.Mat, dst *gocv.Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/de/daa/group__xphoto.html#gab4febba6be53e5fddc480b8cedf51eee
 //
-func Inpaint(src gocv.Mat, mask gocv.Mat, dst *gocv.Mat, algorithmType InpaintTypes) {
+func Inpaint(src *gocv.Mat, mask *gocv.Mat, dst *gocv.Mat, algorithmType InpaintTypes) {
 	C.Inpaint(C.Mat(src.Ptr()), C.Mat(mask.Ptr()), C.Mat(dst.Ptr()), C.int(algorithmType))
 }
 

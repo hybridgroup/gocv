@@ -28,15 +28,15 @@ func Inpaint() {
 
 	dstShitMap := gocv.NewMat()
 	defer dstShitMap.Close()
-	contrib.Inpaint(src, maskFsrFast, &dstShitMap, contrib.FsrFast)
+	contrib.Inpaint(&src, &maskFsrFast, &dstShitMap, contrib.FsrFast)
 
 	dstFsrFast := gocv.NewMat()
 	defer dstFsrFast.Close()
-	contrib.Inpaint(src, maskFsrFast, &dstFsrFast, contrib.FsrFast)
+	contrib.Inpaint(&src, &maskFsrFast, &dstFsrFast, contrib.FsrFast)
 
 	dstFsrBest := gocv.NewMat()
 	defer dstFsrBest.Close()
-	contrib.Inpaint(src, maskFsrFast, &dstFsrBest, contrib.FsrFast)
+	contrib.Inpaint(&src, &maskFsrFast, &dstFsrBest, contrib.FsrFast)
 
 	if dstShitMap.Empty() || dstShitMap.Rows() != src.Rows() || dstShitMap.Cols() != src.Cols() || dstShitMap.Type() != src.Type() {
 		fmt.Printf("Invlalid TestInpaint ShitMap test\n")
