@@ -66,7 +66,7 @@ func TestTextureFlattening(t *testing.T) {
 
 func TestFastNlMeansDenoisingColoredMultiWithParams(t *testing.T) {
 	var src [3]Mat
-	for i := 0; i<3 ; i++ {
+	for i := 0; i < 3; i++ {
 		src[i] = NewMatWithSize(20, 20, MatTypeCV8UC3)
 		defer src[i].Close()
 	}
@@ -74,7 +74,7 @@ func TestFastNlMeansDenoisingColoredMultiWithParams(t *testing.T) {
 	dst := NewMat()
 	defer dst.Close()
 
-	FastNlMeansDenoisingColoredMultiWithParams( []Mat{src[0],src[1],src[2]} , &dst, 1, 1, 3, 3, 7, 21)
+	FastNlMeansDenoisingColoredMultiWithParams([]Mat{src[0], src[1], src[2]}, &dst, 1, 1, 3, 3, 7, 21)
 
 	if dst.Empty() || dst.Rows() != src[0].Rows() || dst.Cols() != src[0].Cols() {
 		t.Error("Invalid FastNlMeansDenoisingColoredMultiWithParams test")
@@ -83,7 +83,7 @@ func TestFastNlMeansDenoisingColoredMultiWithParams(t *testing.T) {
 
 func TestMergeMertens(t *testing.T) {
 	var src [3]Mat
-	for i := 0; i<3 ; i++ {
+	for i := 0; i < 3; i++ {
 		src[i] = NewMatWithSize(20, 20, MatTypeCV8UC3)
 		defer src[i].Close()
 	}
@@ -94,17 +94,16 @@ func TestMergeMertens(t *testing.T) {
 	mertens := NewMergeMertens()
 	defer mertens.Close()
 
-	mertens.Process( []Mat{src[0],src[1],src[2]} , &dst )
+	mertens.Process([]Mat{src[0], src[1], src[2]}, &dst)
 
 	if dst.Empty() || dst.Rows() != src[0].Rows() || dst.Cols() != src[0].Cols() {
 		t.Error("Invalid TestMergeMertens test")
 	}
 }
 
-
 func TestNewAlignMTB(t *testing.T) {
 	var src [3]Mat
-	for i := 0; i<3 ; i++ {
+	for i := 0; i < 3; i++ {
 		src[i] = NewMatWithSize(20, 20, MatTypeCV8UC3)
 		defer src[i].Close()
 	}
@@ -113,10 +112,10 @@ func TestNewAlignMTB(t *testing.T) {
 	defer alignwtb.Close()
 
 	var dst []Mat
-	alignwtb.Process( []Mat{src[0],src[1],src[2]} , &dst   )
+	alignwtb.Process([]Mat{src[0], src[1], src[2]}, &dst)
 
 	sizedst := len(dst)
-	t.Logf(" Size Dst slice : %d " , sizedst)
+	t.Logf(" Size Dst slice : %d ", sizedst)
 	if sizedst > 0 {
 		if dst[0].Empty() || dst[0].Rows() != src[0].Rows() || dst[0].Cols() != src[0].Cols() {
 			t.Error("Invalid TestNewAlignMTB test")

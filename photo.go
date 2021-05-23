@@ -75,13 +75,12 @@ func TextureFlattening(src, mask Mat, dst *Mat, lowThreshold, highThreshold floa
 	C.TextureFlattening(src.p, mask.p, dst.p, C.float(lowThreshold), C.float(highThreshold), C.int(kernelSize))
 }
 
-
 // FastNlMeansDenoisingColoredMulti denoises the selected images.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#gaa501e71f52fb2dc17ff8ca5e7d2d3619
 //
-func FastNlMeansDenoisingColoredMulti( src []Mat, dst *Mat, imgToDenoiseIndex int , temporalWindowSize int){
+func FastNlMeansDenoisingColoredMulti(src []Mat, dst *Mat, imgToDenoiseIndex int, temporalWindowSize int) {
 	cMatArray := make([]C.Mat, len(src))
 	for i, r := range src {
 		cMatArray[i] = (C.Mat)(r.p)
@@ -90,7 +89,7 @@ func FastNlMeansDenoisingColoredMulti( src []Mat, dst *Mat, imgToDenoiseIndex in
 		mats:   (*C.Mat)(&cMatArray[0]),
 		length: C.int(len(src)),
 	}
-	C.FastNlMeansDenoisingColoredMulti(matsVector, dst.p , C.int(imgToDenoiseIndex), C.int(temporalWindowSize))
+	C.FastNlMeansDenoisingColoredMulti(matsVector, dst.p, C.int(imgToDenoiseIndex), C.int(temporalWindowSize))
 }
 
 // FastNlMeansDenoisingColoredMulti denoises the selected images.
@@ -98,7 +97,7 @@ func FastNlMeansDenoisingColoredMulti( src []Mat, dst *Mat, imgToDenoiseIndex in
 // For further details, please see:
 // https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#gaa501e71f52fb2dc17ff8ca5e7d2d3619
 //
-func FastNlMeansDenoisingColoredMultiWithParams( src []Mat, dst *Mat, imgToDenoiseIndex int , temporalWindowSize int , h float32, hColor float32, templateWindowSize int, searchWindowSize int){
+func FastNlMeansDenoisingColoredMultiWithParams(src []Mat, dst *Mat, imgToDenoiseIndex int, temporalWindowSize int, h float32, hColor float32, templateWindowSize int, searchWindowSize int) {
 	cMatArray := make([]C.Mat, len(src))
 	for i, r := range src {
 		cMatArray[i] = (C.Mat)(r.p)
@@ -107,9 +106,8 @@ func FastNlMeansDenoisingColoredMultiWithParams( src []Mat, dst *Mat, imgToDenoi
 		mats:   (*C.Mat)(&cMatArray[0]),
 		length: C.int(len(src)),
 	}
-	C.FastNlMeansDenoisingColoredMultiWithParams(matsVector, dst.p , C.int(imgToDenoiseIndex), C.int(temporalWindowSize), C.float(h), C.float(hColor), C.int(templateWindowSize), C.int(searchWindowSize))
+	C.FastNlMeansDenoisingColoredMultiWithParams(matsVector, dst.p, C.int(imgToDenoiseIndex), C.int(temporalWindowSize), C.float(h), C.float(hColor), C.int(templateWindowSize), C.int(searchWindowSize))
 }
-
 
 // NewMergeMertens returns returns a new MergeMertens white LDR merge algorithm.
 // of type MergeMertens with default parameters.
@@ -154,13 +152,13 @@ func (b *MergeMertens) Process(src []Mat, dst *Mat) {
 	for i, r := range src {
 		cMatArray[i] = (C.Mat)(r.p)
 	}
-        // Conversion function from a Golang slice into an array of matrices that are understood by OpenCV
+	// Conversion function from a Golang slice into an array of matrices that are understood by OpenCV
 	matsVector := C.struct_Mats{
 		mats:   (*C.Mat)(&cMatArray[0]),
 		length: C.int(len(src)),
 	}
 	C.MergeMertens_Process((C.MergeMertens)(b.p), matsVector, dst.p)
-        // Convert a series of double [0.0,1.0] to [0,255] with Golang
+	// Convert a series of double [0.0,1.0] to [0,255] with Golang
 	dst.ConvertToWithParams(dst, MatTypeCV8UC3, 255.0, 0.0)
 }
 
@@ -217,13 +215,13 @@ func (b *AlignMTB) Process(src []Mat, dst *[]Mat) {
 
 	cDstMats := C.struct_Mats{}
 
-	C.AlignMTB_Process((C.AlignMTB)(b.p), cSrcMats, &cDstMats )
+	C.AlignMTB_Process((C.AlignMTB)(b.p), cSrcMats, &cDstMats)
 
-        // Pass the matrices by reference from an OpenCV/C++ to a GoCV::Mat object
+	// Pass the matrices by reference from an OpenCV/C++ to a GoCV::Mat object
 	for i := C.int(0); i < cDstMats.length; i++ {
 		var tempdst Mat
 		tempdst.p = C.Mats_get(cDstMats, i)
-		*dst = append( *dst , tempdst )
+		*dst = append(*dst, tempdst)
 	}
 	return
 }
