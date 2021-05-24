@@ -237,8 +237,11 @@ struct KeyPoints FastFeatureDetector_Detect(FastFeatureDetector f, Mat src) {
 }
 
 ORB ORB_Create() {
-    // TODO: params
     return new cv::Ptr<cv::ORB>(cv::ORB::create());
+}
+
+ORB ORB_CreateWithParams(int nfeatures, float scaleFactor, int nlevels, int edgeThreshold, int firstLevel, int WTA_K, int scoreType, int patchSize, int fastThreshold) {
+    return new cv::Ptr<cv::ORB>(cv::ORB::create(nfeatures, scaleFactor, nlevels, edgeThreshold, firstLevel, WTA_K, static_cast<cv::ORB::ScoreType>(scoreType), patchSize, fastThreshold));
 }
 
 void ORB_Close(ORB o) {
