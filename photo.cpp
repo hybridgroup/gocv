@@ -16,3 +16,71 @@ void SeamlessClone(Mat src, Mat dst, Mat mask, Point p, Mat blend, int flags) {
 void TextureFlattening(Mat src, Mat mask, Mat dst, float low_threshold, float high_threshold, int kernel_size) {
     cv::textureFlattening(*src, *mask, *dst, low_threshold, high_threshold, kernel_size);
 }
+
+
+void FastNlMeansDenoisingColoredMulti(	struct Mats src, Mat dst, int imgToDenoiseIndex, int 	temporalWindowSize){
+  std::vector<cv::Mat> images;
+  for (int i = 0; i < src.length; ++i) {
+    images.push_back(*src.mats[i]);
+  }
+  cv::fastNlMeansDenoisingColoredMulti( images, *dst, imgToDenoiseIndex, 	temporalWindowSize );
+}
+
+void FastNlMeansDenoisingColoredMultiWithParams( struct Mats src, Mat dst, int imgToDenoiseIndex, int 	temporalWindowSize, float 	h, float 	hColor, int 	templateWindowSize, int 	searchWindowSize ){
+  std::vector<cv::Mat> images;
+  for (int i = 0; i < src.length; ++i) {
+    images.push_back(*src.mats[i]);
+  }
+  cv::fastNlMeansDenoisingColoredMulti( images, *dst, imgToDenoiseIndex, 	temporalWindowSize, h, hColor, templateWindowSize, searchWindowSize );
+}
+
+MergeMertens MergeMertens_Create() {
+  return new cv::Ptr<cv::MergeMertens>(cv::createMergeMertens());
+}
+
+MergeMertens MergeMertens_CreateWithParams(float contrast_weight,
+                                           float saturation_weight,
+                                           float exposure_weight) {
+  return new cv::Ptr<cv::MergeMertens>(cv::createMergeMertens(
+      contrast_weight, saturation_weight, exposure_weight));
+}
+
+void MergeMertens_Close(MergeMertens b) {
+  delete b;
+}
+
+void MergeMertens_Process(MergeMertens b, struct Mats src, Mat dst) {
+  std::vector<cv::Mat> images;
+  for (int i = 0; i < src.length; ++i) {
+    images.push_back(*src.mats[i]);
+  }
+  (*b)->process(images, *dst);
+}
+
+AlignMTB AlignMTB_Create() {
+  return new cv::Ptr<cv::AlignMTB>(cv::createAlignMTB(6,4,false));
+}
+
+AlignMTB AlignMTB_CreateWithParams(int max_bits, int exclude_range, bool cut) {
+  return new cv::Ptr<cv::AlignMTB>(
+      cv::createAlignMTB(max_bits, exclude_range, cut));
+}
+
+void AlignMTB_Close(AlignMTB b) { delete b; }
+
+void AlignMTB_Process(AlignMTB b, struct Mats src, struct Mats *dst) {
+
+  std::vector<cv::Mat> srcMats;
+  for (int i = 0; i < src.length; ++i) {
+    srcMats.push_back(*src.mats[i]);
+  }
+
+  std::vector<cv::Mat> dstMats;
+  (*b)->process(srcMats, dstMats);
+
+  dst->mats = new Mat[dstMats.size()];
+  for (size_t i = 0; i < dstMats.size() ; ++i) {
+	dst->mats[i] = new cv::Mat( dstMats[i] );
+  }
+  dst->length = (int)dstMats.size();
+}
