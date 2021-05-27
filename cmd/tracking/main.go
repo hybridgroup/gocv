@@ -50,7 +50,7 @@ func main() {
 
 	// create a tracker instance
 	// (one of MIL, KCF, TLD, MedianFlow, Boosting, MOSSE or CSRT)
-	tracker := contrib.NewTrackerMOSSE()
+	tracker := contrib.NewTrackerKCF()
 	defer tracker.Close()
 
 	// prepare image matrix
