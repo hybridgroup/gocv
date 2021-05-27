@@ -80,7 +80,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [isContourConvex](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8abf8010377b58cbc16db6734d92941b)
         - [ ] [matchShapes](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaadc90cb16e2362c9bd6e7363e6e4c317)
         - [ ] [minEnclosingTriangle](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga1513e72f6bbdfc370563664f71e0542f)
-        - [ ] [pointPolygonTest](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga1a539e8db2135af2566103705d7a5722)
+        - [X] [pointPolygonTest](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga1a539e8db2135af2566103705d7a5722)
         - [ ] [rotatedRectangleIntersection](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8740e7645628c59d238b0b22c2abe2d4)
 
     - [ ] **Motion Analysis and Object Tracking - WORK STARTED** The following functions still need implementation:
@@ -191,13 +191,13 @@ Your pull requests will be greatly appreciated!
     - [ ] [denoise_TVL1](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga7602ed5ae17b7de40152b922227c4e4f)
     - [ ] [fastNlMeansDenoising](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga4c6b0031f56ea3f98f768881279ffe93)
     - [ ] [fastNlMeansDenoisingColored](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga03aa4189fc3e31dafd638d90de335617)
-    - [ ] [fastNlMeansDenoisingColoredMulti](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#gaa501e71f52fb2dc17ff8ca5e7d2d3619)
+    - [X] [fastNlMeansDenoisingColoredMulti](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#gaa501e71f52fb2dc17ff8ca5e7d2d3619)
     - [ ] [fastNlMeansDenoisingMulti](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#gaf4421bf068c4d632ea7f0aa38e0bf172)
-    - [ ] [createAlignMTB](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga2f1fafc885a5d79dbfb3542e08db0244)
+    - [X] [createAlignMTB](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga2f1fafc885a5d79dbfb3542e08db0244)
     - [ ] [createCalibrateDebevec](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga7fed9707ad5f2cc0e633888867109f90)
     - [ ] [createCalibrateRobertson](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#gae77813a21cd351a596619e5ff013be5d)
     - [ ] [createMergeDebevec](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#gaa8eab36bc764abb2a225db7c945f87f9)
-    - [ ] [createMergeMertens](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga79d59aa3cb3a7c664e59a4b5acc1ccb6)
+    - [X] [createMergeMertens](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga79d59aa3cb3a7c664e59a4b5acc1ccb6)
     - [ ] [createMergeRobertson](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga460d4a1df1a7e8cdcf7445bb87a8fb78)
     - [ ] [createTonemap](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#gabcbd653140b93a1fa87ccce94548cd0d)
     - [ ] [createTonemapDrago](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga72bf92bb6b8653ee4be650ac01cf50b6)
@@ -406,4 +406,4 @@ Your pull requests will be greatly appreciated!
 - [ ] **xfeatures2d. Extra 2D Features Framework - WORK STARTED**
 - [ ] ximgproc. Extended Image Processing
 - [ ] xobjdetect. Extended object detection
-- [ ] xphoto. Additional photo processing algorithms
+- [ ] **xphoto. Additional photo processing algorithms - WORK STARTED**
