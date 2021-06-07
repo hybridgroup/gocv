@@ -73,8 +73,10 @@ func newMat(p C.Mat) Mat {
 
 // Close the Mat object.
 func (m *Mat) Close() error {
-	C.Mat_Close(m.p)
+	// NOTE: The pointer must be removed from the profile before it is deleted to
+	// avoid a data race.
 	MatProfile.Remove(m.p)
+	C.Mat_Close(m.p)
 	m.p = nil
 	m.d = nil
 	return nil
