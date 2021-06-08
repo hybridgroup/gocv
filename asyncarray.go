@@ -29,8 +29,8 @@ func (a *AsyncArray) Ptr() C.AsyncArray {
 }
 
 // Get async returns the Mat
-func (m *AsyncArray) Get(mat *Mat) error {
-	result := C.AsyncArray_GetAsync(m.p, mat.p)
+func (m *AsyncArray) Get(mt Mat) error {
+	result := C.AsyncArray_GetAsync(m.p, mt.Ptr())
 	err := C.GoString(result)
 
 	if len(err) > 0 {

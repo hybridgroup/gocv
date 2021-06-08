@@ -155,7 +155,7 @@ func (w *Window) IMShow(img Mat) {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
-	C.Window_IMShow(cName, img.p)
+	C.Window_IMShow(cName, img.Ptr())
 }
 
 // WaitKey waits for a pressed key.
@@ -208,7 +208,7 @@ func (w *Window) SelectROI(img Mat) image.Rectangle {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
-	r := C.Window_SelectROI(cName, img.p)
+	r := C.Window_SelectROI(cName, img.Ptr())
 	rect := image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
 	return rect
 }
@@ -227,7 +227,7 @@ func (w *Window) SelectROIs(img Mat) []image.Rectangle {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
-	ret := C.Window_SelectROIs(cName, img.p)
+	ret := C.Window_SelectROIs(cName, img.Ptr())
 	defer C.Rects_Close(ret)
 
 	return toRectangles(ret)
@@ -238,7 +238,7 @@ func SelectROI(name string, img Mat) image.Rectangle {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 
-	r := C.Window_SelectROI(cName, img.p)
+	r := C.Window_SelectROI(cName, img.Ptr())
 	rect := image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
 	return rect
 }
@@ -248,7 +248,7 @@ func SelectROIs(name string, img Mat) []image.Rectangle {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 
-	ret := C.Window_SelectROIs(cName, img.p)
+	ret := C.Window_SelectROIs(cName, img.Ptr())
 	defer C.Rects_Close(ret)
 
 	return toRectangles(ret)

@@ -154,7 +154,7 @@ func (net *Net) SetInput(blob Mat, name string) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 
-	C.Net_SetInput((C.Net)(net.p), blob.p, cName)
+	C.Net_SetInput((C.Net)(net.p), blob.Ptr(), cName)
 }
 
 // Forward runs forward pass to compute output of layer with name outputName.
@@ -179,8 +179,8 @@ func (net *Net) ForwardLayers(outBlobNames []string) (blobs []Mat) {
 	C.Net_ForwardLayers((C.Net)(net.p), &(cMats), toCStrings(outBlobNames))
 	blobs = make([]Mat, cMats.length)
 	for i := C.int(0); i < cMats.length; i++ {
-		blobs[i].p = C.Mats_get(cMats, i)
-		addMatToProfile(blobs[i].p)
+		blobs[i].SetPtr(C.Mats_get(cMats, i))
+		addMatToProfile(blobs[i].Ptr())
 	}
 	return
 }
@@ -352,7 +352,7 @@ func BlobFromImage(img Mat, scaleFactor float64, size image.Point, mean Scalar,
 		val4: C.double(mean.Val4),
 	}
 
-	return newMat(C.Net_BlobFromImage(img.p, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop)))
+	return newMat(C.Net_BlobFromImage(img.Ptr(), C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop)))
 }
 
 // BlobFromImages Creates 4-dimensional blob from series of images.
@@ -362,12 +362,12 @@ func BlobFromImage(img Mat, scaleFactor float64, size image.Point, mean Scalar,
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga2b89ed84432e4395f5a1412c2926293c
 //
-func BlobFromImages(imgs []Mat, blob *Mat, scaleFactor float64, size image.Point, mean Scalar,
+func BlobFromImages(imgs []Mat, blob Mat, scaleFactor float64, size image.Point, mean Scalar,
 	swapRB bool, crop bool, ddepth MatType) {
 
 	cMatArray := make([]C.Mat, len(imgs))
 	for i, r := range imgs {
-		cMatArray[i] = r.p
+		cMatArray[i] = r.Ptr()
 	}
 
 	cMats := C.struct_Mats{
@@ -387,7 +387,7 @@ func BlobFromImages(imgs []Mat, blob *Mat, scaleFactor float64, size image.Point
 		val4: C.double(mean.Val4),
 	}
 
-	C.Net_BlobFromImages(cMats, blob.p, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop), C.int(ddepth))
+	C.Net_BlobFromImages(cMats, blob.Ptr(), C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop), C.int(ddepth))
 }
 
 // ImagesFromBlob Parse a 4D blob and output the images it contains as
@@ -398,10 +398,10 @@ func BlobFromImages(imgs []Mat, blob *Mat, scaleFactor float64, size image.Point
 //
 func ImagesFromBlob(blob Mat, imgs []Mat) {
 	cMats := C.struct_Mats{}
-	C.Net_ImagesFromBlob(blob.p, &(cMats))
+	C.Net_ImagesFromBlob(blob.Ptr(), &(cMats))
 	// mv = make([]Mat, cMats.length)
 	for i := C.int(0); i < cMats.length; i++ {
-		imgs[i].p = C.Mats_get(cMats, i)
+		imgs[i].SetPtr(C.Mats_get(cMats, i))
 	}
 }
 
@@ -410,13 +410,13 @@ func ImagesFromBlob(blob Mat, imgs []Mat) {
 //  a bones structure from pose detection, or a color plane from Colorization)
 //
 func GetBlobChannel(blob Mat, imgidx int, chnidx int) Mat {
-	return newMat(C.Net_GetBlobChannel(blob.p, C.int(imgidx), C.int(chnidx)))
+	return newMat(C.Net_GetBlobChannel(blob.Ptr(), C.int(imgidx), C.int(chnidx)))
 }
 
 // GetBlobSize retrieves the 4 dimensional size information in (N,C,H,W) order
 //
 func GetBlobSize(blob Mat) Scalar {
-	s := C.Net_GetBlobSize(blob.p)
+	s := C.Net_GetBlobSize(blob.Ptr())
 	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
 }
 

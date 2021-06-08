@@ -23,14 +23,14 @@ import (
 func main() {
 	filename := os.Args[1]
 
-	mat := gocv.IMRead(filename, gocv.IMReadColor)
+	m := gocv.IMRead(filename, gocv.IMReadColor)
 
 	matCanny := gocv.NewMat()
 	matLines := gocv.NewMat()
 
 	window := gocv.NewWindow("detected lines")
 
-	gocv.Canny(mat, &matCanny, 50, 200)
+	gocv.Canny(m, &matCanny, 50, 200)
 	gocv.HoughLinesP(matCanny, &matLines, 1, math.Pi/180, 80)
 
 	fmt.Println(matLines.Cols())
@@ -38,11 +38,11 @@ func main() {
 	for i := 0; i < matLines.Rows(); i++ {
 		pt1 := image.Pt(int(matLines.GetVeciAt(i, 0)[0]), int(matLines.GetVeciAt(i, 0)[1]))
 		pt2 := image.Pt(int(matLines.GetVeciAt(i, 0)[2]), int(matLines.GetVeciAt(i, 0)[3]))
-		gocv.Line(&mat, pt1, pt2, color.RGBA{0, 255, 0, 50}, 10)
+		gocv.Line(&m, pt1, pt2, color.RGBA{0, 255, 0, 50}, 10)
 	}
 
 	for {
-		window.IMShow(mat)
+		window.IMShow(m)
 		if window.WaitKey(10) >= 0 {
 			break
 		}

@@ -1,4 +1,5 @@
 // +build !matprofile
+// +build matunsafe
 
 package gocv
 
@@ -15,11 +16,11 @@ func addMatToProfile(p C.Mat) {
 
 // newMat returns a new Mat from a C Mat
 func newMat(p C.Mat) Mat {
-	return Mat{p: p}
+	return &mat{p: p}
 }
 
 // Close the Mat object.
-func (m *Mat) Close() error {
+func (m *mat) Close() error {
 	C.Mat_Close(m.p)
 	m.p = nil
 	m.d = nil

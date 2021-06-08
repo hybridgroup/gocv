@@ -39,7 +39,7 @@ func (a *AKAZE) Close() error {
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 //
 func (a *AKAZE) Detect(src Mat) []KeyPoint {
-	ret := C.AKAZE_Detect((C.AKAZE)(a.p), src.p)
+	ret := C.AKAZE_Detect((C.AKAZE)(a.p), src.Ptr())
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
@@ -52,7 +52,7 @@ func (a *AKAZE) Detect(src Mat) []KeyPoint {
 //
 func (a *AKAZE) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
 	desc := NewMat()
-	ret := C.AKAZE_DetectAndCompute((C.AKAZE)(a.p), src.p, mask.p, desc.p)
+	ret := C.AKAZE_DetectAndCompute((C.AKAZE)(a.p), src.Ptr(), mask.Ptr(), desc.Ptr())
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret), desc
@@ -86,7 +86,7 @@ func (a *AgastFeatureDetector) Close() error {
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 //
 func (a *AgastFeatureDetector) Detect(src Mat) []KeyPoint {
-	ret := C.AgastFeatureDetector_Detect((C.AgastFeatureDetector)(a.p), src.p)
+	ret := C.AgastFeatureDetector_Detect((C.AgastFeatureDetector)(a.p), src.Ptr())
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
@@ -120,7 +120,7 @@ func (b *BRISK) Close() error {
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 //
 func (b *BRISK) Detect(src Mat) []KeyPoint {
-	ret := C.BRISK_Detect((C.BRISK)(b.p), src.p)
+	ret := C.BRISK_Detect((C.BRISK)(b.p), src.Ptr())
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
@@ -133,7 +133,7 @@ func (b *BRISK) Detect(src Mat) []KeyPoint {
 //
 func (b *BRISK) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
 	desc := NewMat()
-	ret := C.BRISK_DetectAndCompute((C.BRISK)(b.p), src.p, mask.p, desc.p)
+	ret := C.BRISK_DetectAndCompute((C.BRISK)(b.p), src.Ptr(), mask.Ptr(), desc.Ptr())
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret), desc
@@ -191,7 +191,7 @@ func (f *FastFeatureDetector) Close() error {
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 //
 func (f *FastFeatureDetector) Detect(src Mat) []KeyPoint {
-	ret := C.FastFeatureDetector_Detect((C.FastFeatureDetector)(f.p), src.p)
+	ret := C.FastFeatureDetector_Detect((C.FastFeatureDetector)(f.p), src.Ptr())
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
@@ -225,7 +225,7 @@ func (a *GFTTDetector) Close() error {
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 //
 func (a *GFTTDetector) Detect(src Mat) []KeyPoint {
-	ret := C.GFTTDetector_Detect((C.GFTTDetector)(a.p), src.p)
+	ret := C.GFTTDetector_Detect((C.GFTTDetector)(a.p), src.Ptr())
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
@@ -259,7 +259,7 @@ func (a *KAZE) Close() error {
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 //
 func (a *KAZE) Detect(src Mat) []KeyPoint {
-	ret := C.KAZE_Detect((C.KAZE)(a.p), src.p)
+	ret := C.KAZE_Detect((C.KAZE)(a.p), src.Ptr())
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
@@ -272,7 +272,7 @@ func (a *KAZE) Detect(src Mat) []KeyPoint {
 //
 func (a *KAZE) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
 	desc := NewMat()
-	ret := C.KAZE_DetectAndCompute((C.KAZE)(a.p), src.p, mask.p, desc.p)
+	ret := C.KAZE_DetectAndCompute((C.KAZE)(a.p), src.Ptr(), mask.Ptr(), desc.Ptr())
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret), desc
@@ -306,7 +306,7 @@ func (a *MSER) Close() error {
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 //
 func (a *MSER) Detect(src Mat) []KeyPoint {
-	ret := C.MSER_Detect((C.MSER)(a.p), src.p)
+	ret := C.MSER_Detect((C.MSER)(a.p), src.Ptr())
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
@@ -340,7 +340,7 @@ func (o *ORB) Close() error {
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 //
 func (o *ORB) Detect(src Mat) []KeyPoint {
-	ret := C.ORB_Detect((C.ORB)(o.p), src.p)
+	ret := C.ORB_Detect((C.ORB)(o.p), src.Ptr())
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
@@ -353,7 +353,7 @@ func (o *ORB) Detect(src Mat) []KeyPoint {
 //
 func (o *ORB) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
 	desc := NewMat()
-	ret := C.ORB_DetectAndCompute((C.ORB)(o.p), src.p, mask.p, desc.p)
+	ret := C.ORB_DetectAndCompute((C.ORB)(o.p), src.Ptr(), mask.Ptr(), desc.Ptr())
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret), desc
@@ -596,7 +596,7 @@ func (p *SimpleBlobDetectorParams) GetThresholdStep() float64 {
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 //
 func (b *SimpleBlobDetector) Detect(src Mat) []KeyPoint {
-	ret := C.SimpleBlobDetector_Detect((C.SimpleBlobDetector)(b.p), src.p)
+	ret := C.SimpleBlobDetector_Detect((C.SimpleBlobDetector)(b.p), src.Ptr())
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
@@ -659,7 +659,7 @@ func (b *BFMatcher) Close() error {
 // https://docs.opencv.org/master/db/d39/classcv_1_1DescriptorMatcher.html#aa880f9353cdf185ccf3013e08210483a
 //
 func (b *BFMatcher) KnnMatch(query, train Mat, k int) [][]DMatch {
-	ret := C.BFMatcher_KnnMatch((C.BFMatcher)(b.p), query.p, train.p, C.int(k))
+	ret := C.BFMatcher_KnnMatch((C.BFMatcher)(b.p), query.Ptr(), train.Ptr(), C.int(k))
 	defer C.MultiDMatches_Close(ret)
 
 	return getMultiDMatches(ret)
@@ -693,7 +693,7 @@ func (f *FlannBasedMatcher) Close() error {
 // https://docs.opencv.org/master/db/d39/classcv_1_1DescriptorMatcher.html#aa880f9353cdf185ccf3013e08210483a
 //
 func (f *FlannBasedMatcher) KnnMatch(query, train Mat, k int) [][]DMatch {
-	ret := C.FlannBasedMatcher_KnnMatch((C.FlannBasedMatcher)(f.p), query.p, train.p, C.int(k))
+	ret := C.FlannBasedMatcher_KnnMatch((C.FlannBasedMatcher)(f.p), query.Ptr(), train.Ptr(), C.int(k))
 	defer C.MultiDMatches_Close(ret)
 
 	return getMultiDMatches(ret)
@@ -755,7 +755,7 @@ const (
 //
 // For further details please see:
 // https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html#gab958f8900dd10f14316521c149a60433
-func DrawKeyPoints(src Mat, keyPoints []KeyPoint, dst *Mat, color color.RGBA, flag DrawMatchesFlag) {
+func DrawKeyPoints(src Mat, keyPoints []KeyPoint, dst Mat, color color.RGBA, flag DrawMatchesFlag) {
 	cKeyPointArray := make([]C.struct_KeyPoint, len(keyPoints))
 
 	for i, kp := range keyPoints {
@@ -780,7 +780,7 @@ func DrawKeyPoints(src Mat, keyPoints []KeyPoint, dst *Mat, color color.RGBA, fl
 		val4: C.double(color.A),
 	}
 
-	C.DrawKeyPoints(src.p, cKeyPoints, dst.p, scalar, C.int(flag))
+	C.DrawKeyPoints(src.Ptr(), cKeyPoints, dst.Ptr(), scalar, C.int(flag))
 }
 
 // SIFT is a wrapper around the cv::SIFT algorithm.
@@ -836,7 +836,7 @@ func (d *SIFT) DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d5d/group__features2d__draw.html#gad8f463ccaf0dc6f61083abd8717c261a
-func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2 []DMatch, outImg *Mat, matchColor color.RGBA, singlePointColor color.RGBA, matchesMask []byte, flags DrawMatchesFlag) {
+func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2 []DMatch, outImg Mat, matchColor color.RGBA, singlePointColor color.RGBA, matchesMask []byte, flags DrawMatchesFlag) {
 	kp1arr := make([]C.struct_KeyPoint, len(kp1))
 	kp2arr := make([]C.struct_KeyPoint, len(kp2))
 
@@ -911,5 +911,5 @@ func DrawMatches(img1 Mat, kp1 []KeyPoint, img2 Mat, kp2 []KeyPoint, matches1to2
 		}
 	}
 
-	C.DrawMatches(img1.p, cKeyPoints1, img2.p, cKeyPoints2, cDMatches, outImg.p, scalarMatchColor, scalarPointColor, cByteArray, C.int(flags))
+	C.DrawMatches(img1.Ptr(), cKeyPoints1, img2.Ptr(), cKeyPoints2, cDMatches, outImg.Ptr(), scalarMatchColor, scalarPointColor, cByteArray, C.int(flags))
 }

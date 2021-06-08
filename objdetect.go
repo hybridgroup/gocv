@@ -49,7 +49,7 @@ func (c *CascadeClassifier) Load(name string) bool {
 // http://docs.opencv.org/master/d1/de5/classcv_1_1CascadeClassifier.html#aaf8181cb63968136476ec4204ffca498
 //
 func (c *CascadeClassifier) DetectMultiScale(img Mat) []image.Rectangle {
-	ret := C.CascadeClassifier_DetectMultiScale(c.p, img.p)
+	ret := C.CascadeClassifier_DetectMultiScale(c.p, img.Ptr())
 	defer C.Rects_Close(ret)
 
 	return toRectangles(ret)
@@ -74,7 +74,7 @@ func (c *CascadeClassifier) DetectMultiScaleWithParams(img Mat, scale float64,
 		height: C.int(maxSize.Y),
 	}
 
-	ret := C.CascadeClassifier_DetectMultiScaleWithParams(c.p, img.p, C.double(scale),
+	ret := C.CascadeClassifier_DetectMultiScaleWithParams(c.p, img.Ptr(), C.double(scale),
 		C.int(minNeighbors), C.int(flags), minSz, maxSz)
 	defer C.Rects_Close(ret)
 
@@ -109,7 +109,7 @@ func (h *HOGDescriptor) Close() error {
 // https://docs.opencv.org/master/d5/d33/structcv_1_1HOGDescriptor.html#a660e5cd036fd5ddf0f5767b352acd948
 //
 func (h *HOGDescriptor) DetectMultiScale(img Mat) []image.Rectangle {
-	ret := C.HOGDescriptor_DetectMultiScale(h.p, img.p)
+	ret := C.HOGDescriptor_DetectMultiScale(h.p, img.Ptr())
 	defer C.Rects_Close(ret)
 
 	return toRectangles(ret)
@@ -133,7 +133,7 @@ func (h *HOGDescriptor) DetectMultiScaleWithParams(img Mat, hitThresh float64,
 		height: C.int(padding.Y),
 	}
 
-	ret := C.HOGDescriptor_DetectMultiScaleWithParams(h.p, img.p, C.double(hitThresh),
+	ret := C.HOGDescriptor_DetectMultiScaleWithParams(h.p, img.Ptr(), C.double(hitThresh),
 		wSz, pSz, C.double(scale), C.double(finalThreshold), C.bool(useMeanshiftGrouping))
 	defer C.Rects_Close(ret)
 
@@ -155,7 +155,7 @@ func HOGDefaultPeopleDetector() Mat {
 // https://docs.opencv.org/master/d5/d33/structcv_1_1HOGDescriptor.html#a09e354ad701f56f9c550dc0385dc36f1
 //
 func (h *HOGDescriptor) SetSVMDetector(det Mat) error {
-	C.HOGDescriptor_SetSVMDetector(h.p, det.p)
+	C.HOGDescriptor_SetSVMDetector(h.p, det.Ptr())
 	return nil
 }
 
@@ -215,8 +215,8 @@ func (a *QRCodeDetector) Close() error {
 // For further details, please see:
 // https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#a7290bd6a5d59b14a37979c3a14fbf394
 //
-func (a *QRCodeDetector) DetectAndDecode(input Mat, points *Mat, straight_qrcode *Mat) string {
-	goResult := C.GoString(C.QRCodeDetector_DetectAndDecode(a.p, input.p, points.p, straight_qrcode.p))
+func (a *QRCodeDetector) DetectAndDecode(input Mat, points Mat, straight_qrcode Mat) string {
+	goResult := C.GoString(C.QRCodeDetector_DetectAndDecode(a.p, input.Ptr(), points.Ptr(), straight_qrcode.Ptr()))
 	return string(goResult)
 }
 
@@ -225,8 +225,8 @@ func (a *QRCodeDetector) DetectAndDecode(input Mat, points *Mat, straight_qrcode
 // For further details, please see:
 // https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#a64373f7d877d27473f64fe04bb57d22b
 //
-func (a *QRCodeDetector) Detect(input Mat, points *Mat) bool {
-	result := C.QRCodeDetector_Detect(a.p, input.p, points.p)
+func (a *QRCodeDetector) Detect(input Mat, points Mat) bool {
+	result := C.QRCodeDetector_Detect(a.p, input.Ptr(), points.Ptr())
 	return bool(result)
 }
 
@@ -235,8 +235,8 @@ func (a *QRCodeDetector) Detect(input Mat, points *Mat) bool {
 // For further details, please see:
 // https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#a4172c2eb4825c844fb1b0ae67202d329
 //
-func (a *QRCodeDetector) Decode(input Mat, points Mat, straight_qrcode *Mat) string {
-	goResult := C.GoString(C.QRCodeDetector_DetectAndDecode(a.p, input.p, points.p, straight_qrcode.p))
+func (a *QRCodeDetector) Decode(input Mat, points Mat, straight_qrcode Mat) string {
+	goResult := C.GoString(C.QRCodeDetector_DetectAndDecode(a.p, input.Ptr(), points.Ptr(), straight_qrcode.Ptr()))
 	return string(goResult)
 }
 
@@ -247,8 +247,8 @@ func (a *QRCodeDetector) Decode(input Mat, points Mat, straight_qrcode *Mat) str
 // For usage please see TestQRCodeDetector
 // For further details, please see:
 // https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#aaf2b6b2115b8e8fbc9acf3a8f68872b6
-func (a *QRCodeDetector) DetectMulti(input Mat, points *Mat) bool {
-	result := C.QRCodeDetector_DetectMulti(a.p, input.p, points.p)
+func (a *QRCodeDetector) DetectMulti(input Mat, points Mat) bool {
+	result := C.QRCodeDetector_DetectMulti(a.p, input.Ptr(), points.Ptr())
 	return bool(result)
 }
 
@@ -259,19 +259,19 @@ func (a *QRCodeDetector) DetectMulti(input Mat, points *Mat) bool {
 // For usage please see TestQRCodeDetector
 // For further details, please see:
 //https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#a188b63ffa17922b2c65d8a0ab7b70775
-func (a *QRCodeDetector) DetectAndDecodeMulti(input Mat, decoded *[]string, points *Mat, qrCodes *[]Mat) bool {
+func (a *QRCodeDetector) DetectAndDecodeMulti(input Mat, decoded *[]string, points Mat, qrCodes *[]Mat) bool {
 	cDecoded := C.CStrings{}
 	defer C.CStrings_Close(cDecoded)
 	cQrCodes := C.struct_Mats{}
 	defer C.Mats_Close(cQrCodes)
-	success := C.QRCodeDetector_DetectAndDecodeMulti(a.p, input.p, &cDecoded, points.p, &cQrCodes)
+	success := C.QRCodeDetector_DetectAndDecodeMulti(a.p, input.Ptr(), &cDecoded, points.Ptr(), &cQrCodes)
 	if !success {
 		return bool(success)
 	}
 
 	tmpCodes := make([]Mat, cQrCodes.length)
 	for i := C.int(0); i < cQrCodes.length; i++ {
-		tmpCodes[i].p = C.Mats_get(cQrCodes, i)
+		tmpCodes[i].SetPtr(C.Mats_get(cQrCodes, i))
 	}
 
 	for _, qr := range tmpCodes {

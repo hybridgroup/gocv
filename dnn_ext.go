@@ -39,16 +39,16 @@ func FP16BlobFromImage(img Mat, scaleFactor float32, size image.Point, mean floa
 		roi.Max.Y = size.Y
 	}
 
-	Resize(img, &square, roi.Max, 0, 0, InterpolationDefault)
+	Resize(img, square, roi.Max, 0, 0, InterpolationDefault)
 
 	if swapRB {
-		CvtColor(square, &square, ColorBGRToRGB)
+		CvtColor(square, square, ColorBGRToRGB)
 	}
 
 	fp32Image := NewMat()
 	defer fp32Image.Close()
 
-	square.ConvertTo(&fp32Image, MatTypeCV32F)
+	square.ConvertTo(fp32Image, MatTypeCV32F)
 
 	if mean != 0 {
 		// subtract mean

@@ -54,12 +54,12 @@ const (
 )
 
 // FisheyeUndistortImage transforms an image to compensate for fisheye lens distortion
-func FisheyeUndistortImage(distorted Mat, undistorted *Mat, k, d Mat) {
+func FisheyeUndistortImage(distorted Mat, undistorted Mat, k, d Mat) {
 	C.Fisheye_UndistortImage(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr())
 }
 
 // FisheyeUndistortImageWithParams transforms an image to compensate for fisheye lens distortion with Knew matrix
-func FisheyeUndistortImageWithParams(distorted Mat, undistorted *Mat, k, d, knew Mat, size image.Point) {
+func FisheyeUndistortImageWithParams(distorted Mat, undistorted Mat, k, d, knew Mat, size image.Point) {
 	sz := C.struct_Size{
 		width:  C.int(size.X),
 		height: C.int(size.Y),
@@ -71,7 +71,7 @@ func FisheyeUndistortImageWithParams(distorted Mat, undistorted *Mat, k, d, knew
 //
 // For further details, please see:
 // https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gab738cdf90ceee97b2b52b0d0e7511541
-func FisheyeUndistortPoints(distorted Mat, undistorted *Mat, k, d, r, p Mat) {
+func FisheyeUndistortPoints(distorted Mat, undistorted Mat, k, d, r, p Mat) {
 	C.Fisheye_UndistortPoints(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr(), r.Ptr(), p.Ptr())
 }
 
@@ -79,7 +79,7 @@ func FisheyeUndistortPoints(distorted Mat, undistorted *Mat, k, d, r, p Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#ga384940fdf04c03e362e94b6eb9b673c9
-func EstimateNewCameraMatrixForUndistortRectify(k, d Mat, imgSize image.Point, r Mat, p *Mat, balance float64, newSize image.Point, fovScale float64) {
+func EstimateNewCameraMatrixForUndistortRectify(k, d Mat, imgSize image.Point, r Mat, p Mat, balance float64, newSize image.Point, fovScale float64) {
 	imgSz := C.struct_Size{
 		width:  C.int(imgSize.X),
 		height: C.int(imgSize.Y),
@@ -122,7 +122,7 @@ func GetOptimalNewCameraMatrixWithParams(cameraMatrix Mat, distCoeffs Mat, image
 	return newMat(C.GetOptimalNewCameraMatrixWithParams(cameraMatrix.Ptr(), distCoeffs.Ptr(), sz, C.double(alpha), newSize, &rt, C.bool(centerPrincipalPoint))), toRect(rt)
 }
 
-func Undistort(src Mat, dst *Mat, cameraMatrix Mat, distCoeffs Mat, newCameraMatrix Mat) {
+func Undistort(src Mat, dst Mat, cameraMatrix Mat, distCoeffs Mat, newCameraMatrix Mat) {
 	C.Undistort(src.Ptr(), dst.Ptr(), cameraMatrix.Ptr(), distCoeffs.Ptr(), newCameraMatrix.Ptr())
 }
 
@@ -130,7 +130,7 @@ func Undistort(src Mat, dst *Mat, cameraMatrix Mat, distCoeffs Mat, newCameraMat
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga55c716492470bfe86b0ee9bf3a1f0f7e
-func UndistortPoints(src Mat, dst *Mat, cameraMatrix, distCoeffs, rectificationTransform, newCameraMatrix Mat) {
+func UndistortPoints(src Mat, dst Mat, cameraMatrix, distCoeffs, rectificationTransform, newCameraMatrix Mat) {
 	C.UndistortPoints(src.Ptr(), dst.Ptr(), cameraMatrix.Ptr(), distCoeffs.Ptr(), rectificationTransform.Ptr(), newCameraMatrix.Ptr())
 }
 
@@ -160,7 +160,7 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a
 //
-func FindChessboardCorners(image Mat, patternSize image.Point, corners *Mat, flags CalibCBFlag) bool {
+func FindChessboardCorners(image Mat, patternSize image.Point, corners Mat, flags CalibCBFlag) bool {
 	sz := C.struct_Size{
 		width:  C.int(patternSize.X),
 		height: C.int(patternSize.Y),
@@ -173,7 +173,7 @@ func FindChessboardCorners(image Mat, patternSize image.Point, corners *Mat, fla
 // For further details, please see:
 // https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga6a10b0bb120c4907e5eabbcd22319022
 //
-func DrawChessboardCorners(image *Mat, patternSize image.Point, corners Mat, patternWasFound bool) {
+func DrawChessboardCorners(image Mat, patternSize image.Point, corners Mat, patternWasFound bool) {
 	sz := C.struct_Size{
 		width:  C.int(patternSize.X),
 		height: C.int(patternSize.Y),

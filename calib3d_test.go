@@ -42,7 +42,7 @@ func TestFisheyeUndistorImage(t *testing.T) {
 	d.SetDoubleAt(0, 2, 0)
 	d.SetDoubleAt(0, 3, 0)
 
-	FisheyeUndistortImage(img, &dest, k, d)
+	FisheyeUndistortImage(img, dest, k, d)
 
 	if dest.Empty() {
 		t.Error("final image is empty")
@@ -88,13 +88,13 @@ func TestFisheyeUndistorImageWithParams(t *testing.T) {
 	knew := NewMat()
 	defer knew.Close()
 
-	k.CopyTo(&knew)
+	k.CopyTo(knew)
 
 	knew.SetDoubleAt(0, 0, 0.4*k.GetDoubleAt(0, 0))
 	knew.SetDoubleAt(1, 1, 0.4*k.GetDoubleAt(1, 1))
 
 	size := image.Point{dest.Rows(), dest.Cols()}
-	FisheyeUndistortImageWithParams(img, &dest, k, d, knew, size)
+	FisheyeUndistortImageWithParams(img, dest, k, d, knew, size)
 
 	if dest.Empty() {
 		t.Error("final image is empty")
@@ -155,7 +155,7 @@ func TestInitUndistortRectifyMap(t *testing.T) {
 	//dest := NewMat()
 	InitUndistortRectifyMap(k, d, r, newC, image.Point{X: img.Cols(), Y: img.Rows()}, 5, mapx, mapy)
 
-	Remap(img, &dest, &mapx, &mapy, InterpolationDefault, BorderConstant, color.RGBA{0, 0, 0, 0})
+	Remap(img, dest, mapx, mapy, InterpolationDefault, BorderConstant, color.RGBA{0, 0, 0, 0})
 	flg := IMWrite("images/distortion-correct.jpg", dest)
 	if !flg {
 		t.Error("IMWrite failed")
@@ -199,12 +199,12 @@ func TestUndistort(t *testing.T) {
 	knew := NewMat()
 	defer knew.Close()
 
-	k.CopyTo(&knew)
+	k.CopyTo(knew)
 
 	knew.SetDoubleAt(0, 0, 0.5*k.GetDoubleAt(0, 0))
 	knew.SetDoubleAt(1, 1, 0.5*k.GetDoubleAt(1, 1))
 
-	Undistort(img, &dest, k, d, knew)
+	Undistort(img, dest, k, d, knew)
 
 	if dest.Empty() {
 		t.Error("final image is empty")
@@ -264,7 +264,7 @@ func TestUndistortPoint(t *testing.T) {
 	src.SetDoubleAt(2, 0, 1920)
 	src.SetDoubleAt(2, 1, 1080)
 
-	UndistortPoints(src, &dst, k, d, r, k)
+	UndistortPoints(src, dst, k, d, r, k)
 
 	if dst.GetDoubleAt(0, 0) >= 480 || dst.GetDoubleAt(0, 1) >= 270 {
 		t.Error("undistortion expected top left point to move further up and left")
@@ -337,16 +337,16 @@ func TestFisheyeUndistortPoint(t *testing.T) {
 	kNew := NewMat()
 	defer kNew.Close()
 
-	k.CopyTo(&kNew)
+	k.CopyTo(kNew)
 
 	kNew.SetDoubleAt(0, 0, 0.4*k.GetDoubleAt(0, 0))
 	kNew.SetDoubleAt(1, 1, 0.4*k.GetDoubleAt(1, 1))
 
 	imgSize := image.Point{X: 1920, Y: 1080}
 
-	EstimateNewCameraMatrixForUndistortRectify(k, d, imgSize, r, &kNew, 1, imgSize, 1)
+	EstimateNewCameraMatrixForUndistortRectify(k, d, imgSize, r, kNew, 1, imgSize, 1)
 
-	FisheyeUndistortPoints(src, &dst, k, d, r, kNew)
+	FisheyeUndistortPoints(src, dst, k, d, r, kNew)
 
 	if dst.GetDoubleAt(0, 0) == 0 {
 		t.Error("expected destination Mat to be populated")
@@ -364,7 +364,7 @@ func TestFindAndDrawChessboard(t *testing.T) {
 	corners := NewMat()
 	defer corners.Close()
 
-	found := FindChessboardCorners(img, image.Point{X: 4, Y: 6}, &corners, 0)
+	found := FindChessboardCorners(img, image.Point{X: 4, Y: 6}, corners, 0)
 	if found == false {
 		t.Error("chessboard pattern not found")
 		return
@@ -377,7 +377,7 @@ func TestFindAndDrawChessboard(t *testing.T) {
 	img2 := NewMatWithSize(150, 150, MatTypeCV8U)
 	defer img2.Close()
 
-	DrawChessboardCorners(&img2, image.Pt(4, 6), corners, true)
+	DrawChessboardCorners(img2, image.Pt(4, 6), corners, true)
 	if img2.Empty() {
 		t.Error("Error in DrawChessboardCorners test")
 	}

@@ -371,8 +371,8 @@ func (v *VideoCapture) IsOpened() bool {
 
 // Read reads the next frame from the VideoCapture to the Mat passed in
 // as the param. It returns false if the VideoCapture cannot read frame.
-func (v *VideoCapture) Read(m *Mat) bool {
-	return C.VideoCapture_Read(v.p, m.p) != 0
+func (v *VideoCapture) Read(m Mat) bool {
+	return C.VideoCapture_Read(v.p, m.Ptr()) != 0
 }
 
 // Grab skips a specific number of frames.
@@ -466,7 +466,7 @@ func (vw *VideoWriter) IsOpened() bool {
 func (vw *VideoWriter) Write(img Mat) error {
 	vw.mu.Lock()
 	defer vw.mu.Unlock()
-	C.VideoWriter_Write(vw.p, img.p)
+	C.VideoWriter_Write(vw.p, img.Ptr())
 	return nil
 }
 

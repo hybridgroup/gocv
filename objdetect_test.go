@@ -200,7 +200,7 @@ func TestQRCodeDetector(t *testing.T) {
 	emptyMat.Close()
 }
 
-func padQr(qr *Mat) Mat {
+func padQr(qr Mat) Mat {
 	l := 101
 	d := 10
 	L := l + 2*d

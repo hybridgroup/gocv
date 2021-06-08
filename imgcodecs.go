@@ -152,7 +152,7 @@ func IMWrite(name string, img Mat) bool {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
 
-	return bool(C.Image_IMWrite(cName, img.p))
+	return bool(C.Image_IMWrite(cName, img.Ptr()))
 }
 
 // IMWriteWithParams writes a Mat to an image file. With that func you can
@@ -175,7 +175,7 @@ func IMWriteWithParams(name string, img Mat, params []int) bool {
 	paramsVector.val = (*C.int)(&cparams[0])
 	paramsVector.length = (C.int)(len(cparams))
 
-	return bool(C.Image_IMWrite_WithParams(cName, img.p, paramsVector))
+	return bool(C.Image_IMWrite_WithParams(cName, img.Ptr(), paramsVector))
 }
 
 // FileExt represents a file extension.
@@ -246,7 +246,7 @@ func IMEncodeWithParams(fileExt FileExt, img Mat, params []int) (buf []byte, err
 func IMDecode(buf []byte, flags IMReadFlag) (Mat, error) {
 	data, err := toByteArray(buf)
 	if err != nil {
-		return Mat{}, err
+		return nil, err
 	}
 	return newMat(C.Image_IMDecode(*data, C.int(flags))), nil
 }

@@ -11,7 +11,7 @@ func main() {
 	img := gocv.NewMat()
 
 	for {
-		webcam.Read(&img)
+		webcam.Read(img)
 		window.IMShow(img)
 		window.WaitKey(1)
 	}

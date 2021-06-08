@@ -56,8 +56,8 @@ func NewGpuMat() GpuMat {
 }
 
 // NewGpuMatFromMat returns a new GpuMat based on a Mat
-func NewGpuMatFromMat(mat gocv.Mat) GpuMat {
-	return newGpuMat(C.GpuMat_NewFromMat(C.Mat(mat.Ptr())))
+func NewGpuMatFromMat(m gocv.Mat) GpuMat {
+	return newGpuMat(C.GpuMat_NewFromMat(C.Mat(m.Ptr())))
 }
 
 func newGpuMat(p C.GpuMat) GpuMat {

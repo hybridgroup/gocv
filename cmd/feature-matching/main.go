@@ -71,7 +71,7 @@ func main() {
 	// new matrix for output image
 	out := gocv.NewMat()
 	// drawing matches
-	gocv.DrawMatches(querry, kp1, train, kp2, good, &out, c1, c2, mask, gocv.DrawDefault)
+	gocv.DrawMatches(querry, kp1, train, kp2, good, out, c1, c2, mask, gocv.DrawDefault)
 
 	// creating output window with result
 	window := gocv.NewWindow("Output")
