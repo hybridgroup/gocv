@@ -9,6 +9,7 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+	"unsafe"
 )
 
 func TestMat(t *testing.T) {
@@ -17,6 +18,22 @@ func TestMat(t *testing.T) {
 	if !mat.Empty() {
 		t.Error("New Mat should be empty")
 	}
+}
+
+func TestMatNativeCopy(t *testing.T) {
+	mat := NewMatWithSize(10, 10, MatTypeCV32F)
+	mat.SetTo(NewScalar(1, 2, 3, 4))
+	matData := mat.ToBytes()
+
+	mat2 := NewMatFromCVMat(unsafe.Pointer(mat.p))
+	mat.Close()
+	runtime.GC()
+
+	if !bytes.Equal(matData, mat2.ToBytes()) {
+		t.Error("TestMatNativeCopy: mats are not equal")
+	}
+
+	mat.Close()
 }
 
 func TestMatWithSizes(t *testing.T) {

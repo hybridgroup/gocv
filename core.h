@@ -247,6 +247,7 @@ Mat Mat_NewFromScalar(const Scalar ar, int type);
 Mat Mat_NewWithSizeFromScalar(const Scalar ar, int rows, int cols, int type);
 Mat Mat_NewFromBytes(int rows, int cols, int type, struct ByteArray buf);
 Mat Mat_FromPtr(Mat m, int rows, int cols, int type, int prows, int pcols);
+Mat Mat_FromCVMat(Mat m);
 void Mat_Close(Mat m);
 int Mat_Empty(Mat m);
 bool Mat_IsContinuous(Mat m);
