@@ -2534,3 +2534,43 @@ func RandU(mat *Mat, low, high Scalar) {
 
 	C.RandU(mat.p, lowVal, highVal)
 }
+
+type NativeByteBuffer struct {
+	// std::vector is build of 3 pointers And this will not change ever.
+	stdVectorOpaq [3]uintptr
+}
+
+func newNativeByteBuffer() *NativeByteBuffer {
+	buffer := &NativeByteBuffer{}
+	C.StdByteVectorInitialize(buffer.nativePointer())
+	return buffer
+}
+
+func (buffer *NativeByteBuffer) nativePointer() unsafe.Pointer {
+	return unsafe.Pointer(&buffer.stdVectorOpaq[0])
+}
+
+func (buffer *NativeByteBuffer) dataPointer() unsafe.Pointer {
+	return unsafe.Pointer(C.StdByteVectorData(buffer.nativePointer()))
+}
+
+// GetBytes returns slice of bytes backed by native buffer
+func (buffer *NativeByteBuffer) GetBytes() []byte {
+	var result []byte
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&result))
+	vectorLen := int(C.StdByteVectorLen(buffer.nativePointer()))
+	sliceHeader.Cap = vectorLen
+	sliceHeader.Len = vectorLen
+	sliceHeader.Data = uintptr(buffer.dataPointer())
+	return result
+}
+
+// Len - returns length in bytes of underlying buffer
+func (buffer *NativeByteBuffer) Len() int {
+	return int(C.StdByteVectorLen(buffer.nativePointer()))
+}
+
+// Close the buffer releasing all its resources
+func (buffer *NativeByteBuffer) Close() {
+	C.StdByteVectorFree(buffer.nativePointer())
+}
