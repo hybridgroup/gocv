@@ -452,6 +452,10 @@ void RandU(Mat mat, Scalar low, Scalar high);
 
 void copyPointVectorToPoint2fVector(PointVector src, Point2fVector dest);
 
+void StdByteVectorInitialize(void* data);
+void StdByteVectorFree(void *data);
+size_t StdByteVectorLen(void *data);
+uint8_t* StdByteVectorData(void *data);
 #ifdef __cplusplus
 }
 #endif

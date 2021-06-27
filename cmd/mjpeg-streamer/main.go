@@ -80,6 +80,7 @@ func mjpegCapture() {
 		}
 
 		buf, _ := gocv.IMEncode(".jpg", img)
-		stream.UpdateJPEG(buf)
+		stream.UpdateJPEG(buf.GetBytes())
+		buf.Close()
 	}
 }

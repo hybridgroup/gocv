@@ -1010,3 +1010,19 @@ void copyPointVectorToPoint2fVector(PointVector src, Point2fVector dest) {
         dest->push_back(cv::Point2f(src->at(i).x, src->at(i).y));
     }
 }
+
+void StdByteVectorInitialize(void* data) {
+    new (data) std::vector<uchar>();
+}
+
+void StdByteVectorFree(void *data) {
+    reinterpret_cast<std::vector<uchar> *>(data)->~vector<uchar>();
+}
+
+size_t StdByteVectorLen(void *data) {
+    return reinterpret_cast<std::vector<uchar> *>(data)->size();
+}
+
+uint8_t* StdByteVectorData(void *data) {
+    return reinterpret_cast<std::vector<uchar> *>(data)->data();
+}
