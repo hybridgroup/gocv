@@ -1,5 +1,5 @@
 # to build this docker image:
-#   docker build -f Dockerfile.opencv-gpu-cuda-11 -t gocv/opencv:4.5.2-gpu-cuda-11 .
+#   docker build -f Dockerfile.opencv-gpu-cuda-11 -t gocv/opencv:4.5.3-gpu-cuda-11 .
 FROM nvidia/cuda:11.2.2-cudnn8-devel AS opencv-gpu-cuda-11-base
 LABEL maintainer="hybridgroup"
 ENV DEBIAN_FRONTEND=noninteractive
@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
             libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev && \
             rm -rf /var/lib/apt/lists/*
 
-ARG OPENCV_VERSION="4.5.2"
+ARG OPENCV_VERSION="4.5.3"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
