@@ -1,11 +1,27 @@
+// What it does:
+//
+// This example demonstrates a couple of uses of the XPhoto module.
+// It can use the GrayworldWB class with BalanceWhite image
+// to save an image file on disk.
+//
+// This example can also use the Inpaint functions with inpaint algorithms type
+// to save an image file on disk.
+//
+// How to run:
+//
+// 		go run ./cmd/xphoto/main.go -i -g
+//
+// +build example
+
 package main
 
 import (
 	"flag"
 	"fmt"
+	"os"
+
 	"gocv.io/x/gocv"
 	"gocv.io/x/gocv/contrib"
-	"os"
 )
 
 func Inpaint() {
@@ -19,7 +35,6 @@ func Inpaint() {
 
 	src := gocv.NewMat()
 	defer src.Close()
-	//         testImage.ConvertTo(&src,gocv.MatTypeCV8UC3)
 	sizeImage := jpgImage.Size()
 	jpgImage.ConvertTo(&src, gocv.MatTypeCV8UC3)
 
@@ -84,20 +99,6 @@ func BalanceWhite() {
 
 	gocv.IMWrite(fileGrayWorld, dst)
 }
-
-// What it does:
-//
-// This example uses the GrayworldWB class with BalanceWhite image.
-// then save it to an image file on disk.
-//
-// This example uses the Inpaint functions with inpaint algorithms type.
-// then save it to image files on disk.
-//
-// How to run:
-//
-// 		go run ./cmd/xphoto/main.go -i -g
-//
-// +build example
 
 func main() {
 
