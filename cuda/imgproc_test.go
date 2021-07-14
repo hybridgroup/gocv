@@ -148,8 +148,8 @@ func TestHoughSegment_Calc(t *testing.T) {
 	}
 
 	expected := map[point]point{
-		point{1, 21}:   point{398, 21},
-		point{304, 21}: point{10, 315},
+		{1, 21}:   {398, 21},
+		{304, 21}: {10, 315},
 	}
 
 	actual := make(map[point]point)
