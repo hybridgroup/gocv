@@ -7,7 +7,6 @@
 //
 // 		go run ./cmd/captest/main.go
 //
-// +build example
 
 package main
 

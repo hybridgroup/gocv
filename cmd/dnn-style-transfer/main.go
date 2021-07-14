@@ -12,7 +12,6 @@
 //
 // 		go run ./cmd/dnn-style-transfer/main.go 0 ~/Downloads/starry_night.t7 openvino fp16
 //
-// +build example
 
 package main
 

@@ -6,7 +6,6 @@
 //
 // 		go run ./cmd/find-lines/main.go lines.jpg
 //
-// +build example
 
 package main
 

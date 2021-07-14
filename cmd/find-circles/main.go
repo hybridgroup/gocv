@@ -6,7 +6,6 @@
 //
 // 		go run ./cmd/find-circles/main.go ./images/circles.jpg
 //
-// +build example
 
 package main
 

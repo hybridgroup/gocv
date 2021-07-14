@@ -9,7 +9,6 @@
 //
 // 		go run ./counter/main.go /path/to/video.avi 400 y 10
 //
-// +build example
 
 package main
 

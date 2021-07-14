@@ -11,7 +11,6 @@
 //
 // 		go run ./cmd/xphoto/main.go -i -g
 //
-// +build example
 
 package main
 

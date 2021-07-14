@@ -10,7 +10,6 @@
 //
 // 		go run ./cmd/faceblur/main.go 0 data/haarcascade_frontalface_default.xml
 //
-// +build example
 
 package main
 

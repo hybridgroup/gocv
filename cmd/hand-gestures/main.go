@@ -6,7 +6,6 @@
 //
 // 		go run ./cmd/hand-gestures/main.go 0
 //
-// +build example
 
 package main
 

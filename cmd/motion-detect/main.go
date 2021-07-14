@@ -10,7 +10,6 @@
 //
 // 		go run ./cmd/motion-detect/main.go 0
 //
-// +build example
 
 package main
 

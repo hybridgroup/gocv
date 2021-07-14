@@ -9,7 +9,6 @@
 //
 // 		go run ./cmd/facedetect-from-url/main.go https://raw.githubusercontent.com/hybridgroup/gocv/release/images/face.jpg data/haarcascade_frontalface_default.xml output.jpg
 //
-// +build example
 
 package main
 

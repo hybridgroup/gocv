@@ -12,7 +12,6 @@
 //		go get -u github.com/hybridgroup/mjpeg
 // 		go run ./cmd/mjpeg-streamer/main.go 1 0.0.0.0:8080
 //
-// +build example
 
 package main
 

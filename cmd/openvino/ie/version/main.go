@@ -6,7 +6,6 @@
 //
 // 		go run ./cmd/openvino/ie/version/main.go
 //
-// +build example
 
 package main
 

@@ -20,7 +20,6 @@
 //
 // 		go run ./cmd/caffe-classifier/main.go 0 ~/Downloads/bvlc_googlenet.caffemodel ~/Downloads/bvlc_googlenet.prototxt ~/Downloads/classification_classes_ILSVRC2012.txt openvino fp16
 //
-// +build example
 
 package main
 

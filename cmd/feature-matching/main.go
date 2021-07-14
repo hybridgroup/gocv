@@ -1,3 +1,15 @@
+// What it does:
+//
+// This example uses Brute-Force Matching
+// with SIFT Descriptors and Ratio Test
+//
+// How to run:
+//
+// feature-matching [query image] [training image]
+//
+// 		go run ./cmd/feature-matching/main.go input.jpg training.jpg
+//
+
 package main
 
 import (
@@ -8,20 +20,15 @@ import (
 	"gocv.io/x/gocv"
 )
 
-// you can run this example from root of this repository
-// with go run ./cmd/hello-sift /path/to/querry /path/to/train
-//
-// this is an example of Brute-Force Matching
-// with SIFT Descriptors and Ratio Test
 func main() {
 	if len(os.Args) != 3 {
-		fmt.Println("Usage: app /path/to/querry /path/to/train")
+		fmt.Println("Usage: feature-matching /path/to/query /path/to/train")
 		panic("error: no files provided")
 	}
 
-	// opening querry image
-	querry := gocv.IMRead(os.Args[1], gocv.IMReadGrayScale)
-	defer querry.Close()
+	// opening query image
+	query := gocv.IMRead(os.Args[1], gocv.IMReadGrayScale)
+	defer query.Close()
 
 	// opening train image
 	train := gocv.IMRead(os.Args[2], gocv.IMReadGrayScale)
@@ -32,7 +39,7 @@ func main() {
 	defer sift.Close()
 
 	// detecting and computing keypoints using SIFT method
-	kp1, des1 := sift.DetectAndCompute(querry, gocv.NewMat())
+	kp1, des1 := sift.DetectAndCompute(query, gocv.NewMat())
 	kp2, des2 := sift.DetectAndCompute(train, gocv.NewMat())
 
 	// finding K best matches for each descriptor
@@ -71,7 +78,7 @@ func main() {
 	// new matrix for output image
 	out := gocv.NewMat()
 	// drawing matches
-	gocv.DrawMatches(querry, kp1, train, kp2, good, &out, c1, c2, mask, gocv.DrawDefault)
+	gocv.DrawMatches(query, kp1, train, kp2, good, &out, c1, c2, mask, gocv.DrawDefault)
 
 	// creating output window with result
 	window := gocv.NewWindow("Output")

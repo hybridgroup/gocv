@@ -14,7 +14,6 @@
 //
 // 		go run ./cmd/tracking/main.go 0
 //
-// +build example
 
 package main
 

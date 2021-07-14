@@ -7,7 +7,6 @@
 //
 // 		go run ./cmd/basic-drawing/main.go
 //
-// +build example
 
 package main
 
