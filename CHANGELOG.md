@@ -1,3 +1,44 @@
+0.28.0
+---
+* **all**
+    * update to OpenCV 4.5.3
+    * make task and build tag for static build of OpenCV/GoCV on Linux
+    * add Makefile tasks for OpenCV install on Nvidia Jetson
+    * add gotest for more colorful test output running tests from containers
+* **build**
+    * correcting output format for code coverage report
+    * enforce rule that all Go code is correctly formatted
+    * remove codecov
+* **core**
+    * add NewPointVectorFromMat() and NewPoint2fVectorFromMat() functions
+    * Fix possible MatProfile race by ordering remove before free.
+* **cuda**
+    * add core functions for GpuMat like Cols(), Rows(), and Type()
+    * initial implementation for the Flip function
+* **docs**
+    * update ROADMAP from recent contributions
+* **examples**
+    * correct list of examples and fix comment
+* **features2d**
+    * Add NewORBWithParams
+* **tracking**
+    * change MOSSE to KCF
+* **highgui**
+    * Add function CreateTrackbarWithValue to Window type.
+* **imgcodec**
+    * optimize IMEncode avoiding multiple data copies.
+* **imgproc**
+    * Add CircleWithParams function
+    * Add DilateWithParams() function (#827)
+    * Add EllipseWithParams function
+    * Add FillPolyWithParams function
+    * Add PointPolygonTest function
+    * Add RectangleWithParams function
+* **photo**
+    * add MergeMertens, AlignMTB and Denoising function (#848)
+* **xphoto**
+    * Add Xphoto contrib (#844)
+
 0.27.0
 ---
 * **all**
