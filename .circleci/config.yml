@@ -16,6 +16,9 @@ jobs:
           name: Check Go version
           command: go version
       - run:
+          name: "Enforce Go Formatted Code"
+          command: "! go fmt ./... 2>&1 | read"
+      - run:
           name: Install dependencies
           command: |
             apt-get update -yqq && apt-get install xvfb unzip -y
@@ -36,9 +39,6 @@ jobs:
           command: |
             mkdir -p testdata
             curl -sL https://github.com/onnx/models/blob/master/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx\?raw\=true > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/googlenet-9.onnx
-      - run:
-          name: "Enforce Go Formatted Code"
-          command: "! go fmt ./... 2>&1 | read"
       - run:
           name: Run main tests
           command: | 
