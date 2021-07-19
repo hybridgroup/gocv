@@ -34,6 +34,8 @@ VideoWriter VideoWriter_New();
 void VideoWriter_Close(VideoWriter vw);
 void VideoWriter_Open(VideoWriter vw, const char* name, const char* codec, double fps, int width,
                       int height, bool isColor);
+void VideoWriter_OpenCap(VideoWriter vw, const char* name, int apiPreference, const char* codec, double fps, int width,
+                      int height, bool isColor);
 int VideoWriter_IsOpened(VideoWriter vw);
 void VideoWriter_Write(VideoWriter vw, Mat img);
 

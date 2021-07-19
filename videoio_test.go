@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"fmt"
 	"testing"
 )
 
@@ -197,5 +198,51 @@ func TestVideoWriterFile(t *testing.T) {
 	err := vw.Write(img)
 	if err != nil {
 		t.Error("Invalid Write() in VideoWriter")
+	}
+}
+
+func TestVideoWriterCap(t *testing.T) {
+	dir, _ := ioutil.TempDir("", "gocvtests")
+	tmpfn := filepath.Join(dir, "test.mp4")
+
+	in_pipeline := fmt.Sprintf("videotestsrc ! video/x-raw,framerate=20/1 ! videoscale ! videoconvert ! appsink")
+	vr, in_err := OpenVideoCapture(in_pipeline)
+
+	if in_err != nil {
+		t.Error(in_err)
+	}
+
+	img := NewMat()
+	defer img.Close()
+	_ = vr.Read(&img)
+
+	_ = vr
+
+	out_pipeline := fmt.Sprintf("appsrc ! videoconvert ! x264enc ! mp4mux ! filesink location=%s", tmpfn)
+
+	vw, out_err := VideoWriterCap(out_pipeline, CAP_GSTREAMER, "avc1", 20, img.Cols(), img.Rows(), true)
+
+	if out_err != nil {
+		t.Fatal(in_err)
+	}
+	defer vw.Close()
+
+	if !vw.IsOpened() {
+		t.Error("Unable to open VideoWriterFile")
+	}
+
+	i := 0
+	for i < 100 {
+
+		img := NewMat()
+		defer img.Close()
+
+		_ = vr.Read(&img)
+
+		err := vw.Write(img)
+		if err != nil {
+			t.Error("Invalid Write() in VideoWriter")
+		}
+		i++
 	}
 }
