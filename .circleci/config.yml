@@ -17,7 +17,7 @@ jobs:
           command: go version
       - run:
           name: "Enforce Go Formatted Code"
-          command: "! go fmt ./... 2>&1 | read"
+          command: "test -z $(gofmt -l .) || gofmt -d ."
       - run:
           name: Install dependencies
           command: |
