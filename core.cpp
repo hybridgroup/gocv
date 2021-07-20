@@ -77,6 +77,10 @@ Mat Mat_FromPtr(Mat m, int rows, int cols, int type, int prow, int pcol) {
     return new cv::Mat(rows, cols, type, m->ptr(prow, pcol));
 }
 
+Mat Mat_FromCVMat(Mat m) {
+    return new cv::Mat(*m);
+}
+
 // Mat_Close deletes an existing Mat
 void Mat_Close(Mat m) {
     delete m;
