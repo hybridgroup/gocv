@@ -383,6 +383,85 @@ func TestFindAndDrawChessboard(t *testing.T) {
 	}
 }
 
+func TestCalibrateCamera(t *testing.T) {
+	img := IMRead("images/chessboard_4x6_distort.png", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of chessboard image")
+		return
+	}
+	defer img.Close()
+
+	corners := NewMat()
+	defer corners.Close()
+
+	size := image.Pt(4, 6)
+	found := FindChessboardCorners(img, size, &corners, 0)
+	if !found {
+		t.Error("chessboard pattern not found")
+		return
+	}
+	if corners.Empty() {
+		t.Error("chessboard pattern not found")
+		return
+	}
+
+	imagePoints := NewPoint2fVectorFromMat(corners)
+	defer imagePoints.Close()
+
+	objectPoints := NewPoint3fVector()
+	defer objectPoints.Close()
+
+	for j := 0; j < size.Y; j++ {
+		for i := 0; i < size.X; i++ {
+			objectPoints.Append(Point3f{
+				X: float32(100 * i),
+				Y: float32(100 * j),
+				Z: 0,
+			})
+		}
+	}
+
+	cameraMatrix := NewMat()
+	defer cameraMatrix.Close()
+	distCoeffs := NewMat()
+	defer distCoeffs.Close()
+	rvecs := NewMat()
+	defer rvecs.Close()
+	tvecs := NewMat()
+	defer tvecs.Close()
+
+	objectPointsVector := NewPoints3fVector()
+	objectPointsVector.Append(objectPoints)
+	defer objectPointsVector.Close()
+
+	imagePointsVector := NewPoints2fVector()
+	imagePointsVector.Append(imagePoints)
+	defer imagePointsVector.Close()
+
+	CalibrateCamera(
+		objectPointsVector, imagePointsVector, image.Pt(img.Cols(), img.Rows()),
+		&cameraMatrix, &distCoeffs, &rvecs, &tvecs, 0,
+	)
+
+	dest := NewMat()
+	defer dest.Close()
+	Undistort(img, &dest, cameraMatrix, distCoeffs, cameraMatrix)
+
+	target := IMRead("images/chessboard_4x6_distort_correct.png", IMReadGrayScale)
+	defer target.Close()
+
+	xor := NewMat()
+	defer xor.Close()
+
+	// The method for compare is ugly : different pix number < 0.5%
+	BitwiseXor(dest, target, &xor)
+	differentPixelsNumber := xor.Sum().Val1
+	maxDifferentPixelsNumber := float64(img.Cols()*img.Rows()) * 0.005
+	if differentPixelsNumber > maxDifferentPixelsNumber {
+		t.Error("the undisorted image not equal the target one:", differentPixelsNumber, "bigger than", maxDifferentPixelsNumber)
+	}
+}
+
 func TestEstimateAffinePartial2D(t *testing.T) {
 	src := []Point2f{
 		{0, 0},

@@ -5,7 +5,9 @@ package gocv
 #include "calib3d.h"
 */
 import "C"
-import "image"
+import (
+	"image"
+)
 
 // Calib is a wrapper around OpenCV's "Camera Calibration and 3D Reconstruction" of
 // Fisheye Camera model
@@ -120,6 +122,22 @@ func GetOptimalNewCameraMatrixWithParams(cameraMatrix Mat, distCoeffs Mat, image
 	}
 	rt := C.struct_Rect{}
 	return newMat(C.GetOptimalNewCameraMatrixWithParams(cameraMatrix.Ptr(), distCoeffs.Ptr(), sz, C.double(alpha), newSize, &rt, C.bool(centerPrincipalPoint))), toRect(rt)
+}
+
+// CalibrateCamera finds the camera intrinsic and extrinsic parameters from several views of a calibration pattern.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga3207604e4b1a1758aa66acb6ed5aa65d
+//
+func CalibrateCamera(objectPoints Points3fVector, imagePoints Points2fVector, imageSize image.Point,
+	cameraMatrix *Mat, distCoeffs *Mat, rvecs *Mat, tvecs *Mat, calibFlag CalibFlag) float64 {
+	sz := C.struct_Size {
+		width: C.int(imageSize.X),
+		height: C.int(imageSize.Y),
+	}
+
+	res := C.CalibrateCamera(objectPoints.p, imagePoints.p, sz, cameraMatrix.p, distCoeffs.p, rvecs.p, tvecs.p, C.int(calibFlag))
+	return float64(res)
 }
 
 func Undistort(src Mat, dst *Mat, cameraMatrix Mat, distCoeffs Mat, newCameraMatrix Mat) {

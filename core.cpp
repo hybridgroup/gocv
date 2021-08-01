@@ -961,6 +961,7 @@ void Point2fVector_Close(Point2fVector pv) {
     delete pv;
 }
 
+
 void IntVector_Close(struct IntVector ivec) {
     delete[] ivec.val;
 }
@@ -1026,3 +1027,114 @@ size_t StdByteVectorLen(void *data) {
 uint8_t* StdByteVectorData(void *data) {
     return reinterpret_cast<std::vector<uchar> *>(data)->data();
 }
+
+Points2fVector Points2fVector_New(){
+    return new std::vector< std::vector< cv::Point2f > >;
+}
+
+Points2fVector Points2fVector_NewFromPoints(Contours2f points) {
+    Points2fVector pv = Points2fVector_New();
+    for(size_t i = 0;i<points.length;i++){
+        Contour2f contour2f = points.contours[i];
+        Point2fVector cntr = Point2fVector_NewFromPoints(contour2f);
+        Points2fVector_Append(pv, cntr);
+    }
+
+    return pv;
+}
+
+int Points2fVector_Size(Points2fVector ps) {
+    return ps->size();
+}
+
+Point2fVector Points2fVector_At(Points2fVector ps, int idx) {
+    return &(ps->at(idx));
+}
+
+void Points2fVector_Append(Points2fVector psv, Point2fVector pv) {
+    psv->push_back(*pv);
+}
+
+void Points2fVector_Close(Points2fVector ps) {
+    ps->clear();
+    delete ps;
+}
+
+Point3fVector Point3fVector_New() {
+    return new std::vector< cv::Point3f >;
+}
+
+
+Point3fVector Point3fVector_NewFromPoints(Contour3f points) {
+    std::vector<cv::Point3f> *cntr = new std::vector<cv::Point3f>;
+    for(size_t i = 0;i< points.length;i++) {
+        cntr->push_back(cv::Point3f(
+            points.points[i].x,
+            points.points[i].y,
+            points.points[i].z
+        ));
+    }
+
+    return cntr;
+}
+
+Point3fVector Point3fVector_NewFromMat(Mat mat) {
+    std::vector<cv::Point3f> *pts = new std::vector<cv::Point3f>;
+    *pts = (std::vector<cv::Point3f>) *mat;
+    return pts;
+}
+
+Point3f Point3fVector_At(Point3fVector pfv, int idx) {
+    cv::Point3f p = pfv->at(idx);
+    return Point3f{
+        .x = p.x,
+        .y = p.y,
+        .z = p.z
+    };
+}
+
+void Point3fVector_Append(Point3fVector pfv, Point3f point) {
+    pfv->push_back(cv::Point3f(point.x, point.y, point.z));
+}
+
+int Point3fVector_Size(Point3fVector pfv) {
+    return pfv->size();
+}
+
+void Point3fVector_Close(Point3fVector pv) {
+    pv->clear();
+    delete pv;
+}
+
+Points3fVector Points3fVector_New(){
+    return new std::vector< std::vector< cv::Point3f > >;
+}
+
+Points3fVector Points3fVector_NewFromPoints(Contours3f points) {
+    Points3fVector pv = Points3fVector_New();
+    for(size_t i = 0;i<points.length;i++){
+        Contour3f contour3f = points.contours[i];
+        Point3fVector cntr = Point3fVector_NewFromPoints(contour3f);
+        Points3fVector_Append(pv, cntr);
+    }
+
+    return pv;
+}
+
+int Points3fVector_Size(Points3fVector ps) {
+    return ps->size();
+}
+
+Point3fVector Points3fVector_At(Points3fVector ps, int idx) {
+    return &(ps->at(idx));
+}
+
+void Points3fVector_Append(Points3fVector psv, Point3fVector pv) {
+    psv->push_back(*pv);
+}
+
+void Points3fVector_Close(Points3fVector ps) {
+    ps->clear();
+    delete ps;
+}
+
