@@ -109,3 +109,23 @@ func (m *GpuMat) Channels() int {
 func (m *GpuMat) Type() gocv.MatType {
 	return gocv.MatType(C.GpuMat_Type(m.p))
 }
+
+// Stream asynchronous stream used for CUDA operations.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d9/df3/classcv_1_1cuda_1_1Stream.html#aa6434e2f5f29bd81406732b39951c246
+type Stream struct {
+	p C.Stream
+}
+
+// NewStream returns a new empty Stream.
+func NewStream() Stream {
+	return Stream{p: C.Stream_New()}
+}
+
+// Close the Stream.
+func (s *Stream) Close() error {
+	C.Stream_Close(s.p)
+	s.p = nil
+	return nil
+}

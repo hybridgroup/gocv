@@ -11,9 +11,9 @@ extern "C" {
 #endif
 #include "cuda.h"
 
-void GpuAbs(GpuMat src, GpuMat dst);
-void GpuThreshold(GpuMat src, GpuMat dst, double thresh, double maxval, int typ);
-void GpuFlip(GpuMat src, GpuMat dst, int flipCode);
+void GpuAbs(GpuMat src, GpuMat dst, Stream s);
+void GpuThreshold(GpuMat src, GpuMat dst, double thresh, double maxval, int typ, Stream s);
+void GpuFlip(GpuMat src, GpuMat dst, int flipCode, Stream s);
 
 #ifdef __cplusplus
 }

@@ -12,8 +12,10 @@ extern "C" {
 
 #ifdef __cplusplus
 typedef cv::cuda::GpuMat* GpuMat;
+typedef cv::cuda::Stream* Stream;
 #else
 typedef void* GpuMat;
+typedef void* Stream;
 #endif
 
 GpuMat GpuMat_New();
@@ -31,6 +33,9 @@ int GpuMat_Type(GpuMat m);
 void PrintCudaDeviceInfo(int device);
 void PrintShortCudaDeviceInfo(int device);
 int GetCudaEnabledDeviceCount();
+
+Stream Stream_New();
+void Stream_Close(Stream s);
 
 #ifdef __cplusplus
 }

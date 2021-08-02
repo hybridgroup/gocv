@@ -23,13 +23,13 @@ typedef void* HoughSegmentDetector;
 #endif
 
 // standalone functions
-void GpuCvtColor(GpuMat src, GpuMat dst, int code);
+void GpuCvtColor(GpuMat src, GpuMat dst, int code, Stream s);
 
 // CannyEdgeDetector
 CannyEdgeDetector CreateCannyEdgeDetector(double lowThresh, double highThresh);
 CannyEdgeDetector CreateCannyEdgeDetectorWithParams(double lowThresh, double highThresh, int appertureSize, bool L2gradient);
 void CannyEdgeDetector_Close(CannyEdgeDetector det);
-GpuMat CannyEdgeDetector_Detect(CannyEdgeDetector det, GpuMat img);
+GpuMat CannyEdgeDetector_Detect(CannyEdgeDetector det, GpuMat img, Stream s);
 int CannyEdgeDetector_GetAppertureSize(CannyEdgeDetector det);
 double CannyEdgeDetector_GetHighThreshold(CannyEdgeDetector det);
 bool CannyEdgeDetector_GetL2Gradient(CannyEdgeDetector det);
@@ -43,12 +43,12 @@ void CannyEdgeDetector_SetLowThreshold(CannyEdgeDetector det, double lowThresh);
 HoughLinesDetector HoughLinesDetector_Create(double rho, double theta, int threshold);
 HoughLinesDetector HoughLinesDetector_CreateWithParams(double rho, double theta, int threshold, bool sort, int maxlines);
 void HoughLinesDetector_Close(HoughLinesDetector hld);
-GpuMat HoughLinesDetector_Detect(HoughLinesDetector hld, GpuMat img);
+GpuMat HoughLinesDetector_Detect(HoughLinesDetector hld, GpuMat img, Stream s);
 
 // HoughSegmentDetector
 HoughSegmentDetector HoughSegmentDetector_Create(double rho, double theta, int minLineLength, int maxLineGap);
 void HoughSegmentDetector_Close(HoughSegmentDetector hsd);
-GpuMat HoughSegmentDetector_Detect(HoughSegmentDetector hsd, GpuMat img);
+GpuMat HoughSegmentDetector_Detect(HoughSegmentDetector hsd, GpuMat img, Stream s);
 
 #ifdef __cplusplus
 }
