@@ -55,3 +55,11 @@ int GpuMat_Channels(GpuMat m) {
 int GpuMat_Type(GpuMat m) {
     return m->type();
 }
+
+Stream Stream_New() {
+    return new cv::cuda::Stream();
+}
+
+void Stream_Close(Stream s){
+    delete s;
+}

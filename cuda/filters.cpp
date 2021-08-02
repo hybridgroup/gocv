@@ -16,10 +16,13 @@ void GaussianFilter_Close(GaussianFilter gf) {
     delete gf;
 }
 
-GpuMat GaussianFilter_Apply(GaussianFilter gf, GpuMat img) {
+GpuMat GaussianFilter_Apply(GaussianFilter gf, GpuMat img, Stream s) {
     GpuMat dst = new cv::cuda::GpuMat();
-    (*gf)->apply(*img, *dst);
-
+    if (s == NULL) {
+        (*gf)->apply(*img, *dst);
+    } else {
+        (*gf)->apply(*img, *dst, *s);
+    }
     return dst;
 }
 
@@ -35,9 +38,13 @@ void SobelFilter_Close(SobelFilter sf) {
     delete sf;
 }
 
-GpuMat SobelFilter_Apply(SobelFilter sf, GpuMat img) {
+GpuMat SobelFilter_Apply(SobelFilter sf, GpuMat img, Stream s) {
     GpuMat dst = new cv::cuda::GpuMat();
-    (*sf)->apply(*img, *dst);
+    if (s == NULL) {
+        (*sf)->apply(*img, *dst);
+    } else {
+        (*sf)->apply(*img, *dst, *s);
+    }
 
     return dst;
 }

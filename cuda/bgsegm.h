@@ -21,11 +21,11 @@ typedef void* CudaBackgroundSubtractorMOG;
 
 CudaBackgroundSubtractorMOG2 CudaBackgroundSubtractorMOG2_Create();
 void CudaBackgroundSubtractorMOG2_Close(CudaBackgroundSubtractorMOG2 b);
-void CudaBackgroundSubtractorMOG2_Apply(CudaBackgroundSubtractorMOG2 b, GpuMat src, GpuMat dst);
+void CudaBackgroundSubtractorMOG2_Apply(CudaBackgroundSubtractorMOG2 b, GpuMat src, GpuMat dst, Stream s);
 
 CudaBackgroundSubtractorMOG CudaBackgroundSubtractorMOG_Create();
 void CudaBackgroundSubtractorMOG_Close(CudaBackgroundSubtractorMOG b);
-void CudaBackgroundSubtractorMOG_Apply(CudaBackgroundSubtractorMOG b, GpuMat src, GpuMat dst);
+void CudaBackgroundSubtractorMOG_Apply(CudaBackgroundSubtractorMOG b, GpuMat src, GpuMat dst, Stream s);
 
 #ifdef __cplusplus
 }

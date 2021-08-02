@@ -46,7 +46,17 @@ func (gf *GaussianFilter) Close() error {
 // https://docs.opencv.org/master/dc/d2b/classcv_1_1cuda_1_1Filter.html#a20b58d13871027473b4c39cc698cf80f
 //
 func (gf *GaussianFilter) Apply(img GpuMat) GpuMat {
-	return newGpuMat(C.GaussianFilter_Apply(C.GaussianFilter(gf.p), img.p))
+	return newGpuMat(C.GaussianFilter_Apply(C.GaussianFilter(gf.p), img.p, nil))
+}
+
+// ApplyWithStream applies the Gaussian filter
+// using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/dc/d2b/classcv_1_1cuda_1_1Filter.html#a20b58d13871027473b4c39cc698cf80f
+//
+func (gf *GaussianFilter) ApplyWithStream(img GpuMat, s Stream) GpuMat {
+	return newGpuMat(C.GaussianFilter_Apply(C.GaussianFilter(gf.p), img.p, s.p))
 }
 
 // SobelFilter
@@ -81,5 +91,15 @@ func (sf *SobelFilter) Close() error {
 // https://docs.opencv.org/master/dc/d2b/classcv_1_1cuda_1_1Filter.html#a20b58d13871027473b4c39cc698cf80f
 //
 func (sf *SobelFilter) Apply(img GpuMat) GpuMat {
-	return newGpuMat(C.SobelFilter_Apply(C.SobelFilter(sf.p), img.p))
+	return newGpuMat(C.SobelFilter_Apply(C.SobelFilter(sf.p), img.p, nil))
+}
+
+// ApplyWithStream applies the Sobel filter
+// using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/dc/d2b/classcv_1_1cuda_1_1Filter.html#a20b58d13871027473b4c39cc698cf80f
+//
+func (sf *SobelFilter) ApplyWithStream(img GpuMat, s Stream) GpuMat {
+	return newGpuMat(C.SobelFilter_Apply(C.SobelFilter(sf.p), img.p, s.p))
 }
