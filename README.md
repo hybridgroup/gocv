@@ -59,8 +59,8 @@ import (
 )
 
 func main() {
-    // set to use a video capture device 0
-    deviceID := 0
+	// set to use a video capture device 0
+	deviceID := 0
 
 	// open webcam
 	webcam, err := gocv.OpenVideoCapture(deviceID)
