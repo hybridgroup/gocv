@@ -2153,6 +2153,10 @@ func NewPointsVectorFromPoints(pts [][]image.Point) PointsVector {
 	return PointsVector{p: C.PointsVector_NewFromPoints(cPoints)}
 }
 
+func (pvs PointsVector) P() C.PointsVector {
+	return pvs.p
+}
+
 // ToPoints returns a slice of slices of image.Point for the data in this PointsVector.
 func (pvs PointsVector) ToPoints() [][]image.Point {
 	ppoints := make([][]image.Point, pvs.Size())
@@ -2598,6 +2602,10 @@ func NewPoints2fVectorFromPoints(pts [][]Point2f) Points2fVector {
 		pv.Close()
 	}
 	return pvf
+}
+
+func (pvs Points2fVector) P() C.Points2fVector {
+	return pvs.p
 }
 
 // ToPoints returns a slice of slices of Point2f for the data in this Points2fVector.
