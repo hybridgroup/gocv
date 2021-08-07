@@ -166,7 +166,7 @@ func TestHoughSegment_Calc(t *testing.T) {
 	}
 	defer src.Close()
 
-	cimg, mimg := NewGpuMat(), NewGpuMat()
+	cimg, mimg, dimg := NewGpuMat(), NewGpuMat(), NewGpuMat()
 	defer cimg.Close()
 	defer mimg.Close()
 	defer dimg.Close()
@@ -183,8 +183,9 @@ func TestHoughSegment_Calc(t *testing.T) {
 	cimg.Upload(src)
 	canny.Detect(cimg, &mimg)
 	detector.Detect(mimg, &dimg)
-	dimg.Reshape(0, dimg.Cols())
-	dimg.Download(&dest)
+	fimg := dimg.Reshape(0, dimg.Cols())
+	defer fimg.Close()
+	fimg.Download(&dest)
 
 	if dest.Empty() {
 		t.Error("Empty HoughSegment test")
@@ -244,8 +245,9 @@ func TestHoughSegment_CalcWithStream(t *testing.T) {
 	cimg.UploadWithStream(src, stream)
 	canny.DetectWithStream(cimg, &mimg, stream)
 	detector.DetectWithStream(mimg, &dimg, stream)
-	dimg.Reshape(0, dimg.Cols())
-	dimg.DownloadWithStream(&dest, stream)
+	fimg := dimg.Reshape(0, dimg.Cols())
+	defer fimg.Close()
+	fimg.DownloadWithStream(&dest, stream)
 
 	stream.WaitForCompletion()
 

@@ -26,7 +26,7 @@ void GpuMat_Close(GpuMat m);
 int GpuMat_Empty(GpuMat m);
 void GpuMat_ConvertTo(GpuMat m, GpuMat dst, int type, Stream s);
 void GpuMat_CopyTo(GpuMat m, GpuMat dst, Stream s);
-void GpuMat_Reshape(GpuMat m, int cn, int rows);
+GpuMat GpuMat_Reshape(GpuMat m, int cn, int rows);
 int GpuMat_Cols(GpuMat m);
 int GpuMat_Rows(GpuMat m);
 int GpuMat_Channels(GpuMat m);

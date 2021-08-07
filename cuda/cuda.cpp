@@ -60,8 +60,8 @@ void GpuMat_CopyTo(GpuMat m, GpuMat dst, Stream s) {
     m->copyTo(*dst, *s);
 }
 
-void GpuMat_Reshape(GpuMat m, int cn, int rows) {
-    m->reshape(cn, rows);
+GpuMat GpuMat_Reshape(GpuMat m, int cn, int rows) {
+    return new cv::cuda::GpuMat(m->reshape(cn, rows));
 }
 
 int GpuMat_Cols(GpuMat m) {
