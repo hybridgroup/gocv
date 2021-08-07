@@ -27,7 +27,16 @@ type GpuMat struct {
 // https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a00ef5bfe18d14623dcf578a35e40a46b
 //
 func (g *GpuMat) Upload(data gocv.Mat) {
-	C.GpuMat_Upload(g.p, C.Mat(data.Ptr()))
+	C.GpuMat_Upload(g.p, C.Mat(data.Ptr()), nil)
+}
+
+// UploadWithStream performs data upload to GpuMat (non-blocking call)
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a00ef5bfe18d14623dcf578a35e40a46b
+//
+func (g *GpuMat) UploadWithStream(data gocv.Mat, s Stream) {
+	C.GpuMat_Upload(g.p, C.Mat(data.Ptr()), s.p)
 }
 
 // Download performs data download from GpuMat (Blocking call)
@@ -35,7 +44,15 @@ func (g *GpuMat) Upload(data gocv.Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a027e74e4364ddfd9687b58aa5db8d4e8
 func (g *GpuMat) Download(dst *gocv.Mat) {
-	C.GpuMat_Download(g.p, C.Mat(dst.Ptr()))
+	C.GpuMat_Download(g.p, C.Mat(dst.Ptr()), nil)
+}
+
+// DownloadWithStream performs data download from GpuMat (non-blocking call)
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a027e74e4364ddfd9687b58aa5db8d4e8
+func (g *GpuMat) DownloadWithStream(dst *gocv.Mat, s Stream) {
+	C.GpuMat_Download(g.p, C.Mat(dst.Ptr()), s.p)
 }
 
 // Empty returns true if GpuMat is empty
@@ -86,7 +103,37 @@ func GetCudaEnabledDeviceCount() int {
 // https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a3a1b076e54d8a8503014e27a5440d98a
 //
 func (m *GpuMat) ConvertTo(dst *GpuMat, mt gocv.MatType) {
-	C.GpuMat_ConvertTo(m.p, dst.p, C.int(mt))
+	C.GpuMat_ConvertTo(m.p, dst.p, C.int(mt), nil)
+	return
+}
+
+// ConvertToWithStream converts GpuMat into destination GpuMat.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a3a1b076e54d8a8503014e27a5440d98a
+//
+func (m *GpuMat) ConvertToWithStream(dst *GpuMat, mt gocv.MatType, s Stream) {
+	C.GpuMat_ConvertTo(m.p, dst.p, C.int(mt), s.p)
+	return
+}
+
+// CopyTo copies GpuMat into destination GpuMat.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a948c562ee340c0678a44884bde1f5a3e
+//
+func (m *GpuMat) CopyTo(dst *GpuMat) {
+	C.GpuMat_CopyTo(m.p, dst.p, nil)
+	return
+}
+
+// CopyToWithStream copies GpuMat into destination GpuMat.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a948c562ee340c0678a44884bde1f5a3e
+//
+func (m *GpuMat) CopyToWithStream(dst *GpuMat, s Stream) {
+	C.GpuMat_CopyTo(m.p, dst.p, s.p)
 	return
 }
 
@@ -110,6 +157,17 @@ func (m *GpuMat) Type() gocv.MatType {
 	return gocv.MatType(C.GpuMat_Type(m.p))
 }
 
+// Reshape changes the GpuMat to have the same data
+// with a different number of channels and/or different number of rows
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a408e22ed824d1ddf59f58bda895017a8
+//
+func (m *GpuMat) Reshape(cn int, rows int) {
+	C.GpuMat_Reshape(m.p, C.int(cn), C.int(rows))
+	return
+}
+
 // Stream asynchronous stream used for CUDA operations.
 //
 // For further details, please see:
@@ -128,4 +186,22 @@ func (s *Stream) Close() error {
 	C.Stream_Close(s.p)
 	s.p = nil
 	return nil
+}
+
+// QueryIfComplete returns true if the current stream queue is finished
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d9/df3/classcv_1_1cuda_1_1Stream.html#a9fab618395d42fa31987506e42fab1b4
+//
+func (s *Stream) QueryIfComplete() bool {
+	return bool(C.Stream_QueryIfComplete(s.p))
+}
+
+// WaitForCompletion blocks the current CPU thread until all operations in the stream are complete.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d9/df3/classcv_1_1cuda_1_1Stream.html#a0e1d939503e8faad741ab584b720bca6
+//
+func (s *Stream) WaitForCompletion() {
+	C.Stream_WaitForCompletion(s.p)
 }

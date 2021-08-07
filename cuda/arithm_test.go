@@ -41,13 +41,15 @@ func TestAbsWithStream(t *testing.T) {
 	defer dimg.Close()
 	defer s.Close()
 
-	cimg.Upload(src)
-
 	dest := gocv.NewMat()
 	defer dest.Close()
 
+	cimg.UploadWithStream(src, s)
 	AbsWithStream(cimg, &dimg, s)
-	dimg.Download(&dest)
+	dimg.DownloadWithStream(&dest, s)
+
+	s.WaitForCompletion()
+
 	if dest.Empty() || src.Rows() != dest.Rows() || src.Cols() != dest.Cols() {
 		t.Error("Invalid Abs test")
 	}
@@ -88,13 +90,15 @@ func TestThresholdWithStream(t *testing.T) {
 	defer dimg.Close()
 	defer s.Close()
 
-	cimg.Upload(src)
-
 	dest := gocv.NewMat()
 	defer dest.Close()
 
+	cimg.UploadWithStream(src, s)
 	ThresholdWithStream(cimg, &dimg, 25, 255, gocv.ThresholdBinary, s)
-	dimg.Download(&dest)
+	dimg.DownloadWithStream(&dest, s)
+
+	s.WaitForCompletion()
+
 	if dest.Empty() || src.Rows() != dest.Rows() || src.Cols() != dest.Cols() {
 		t.Error("Invalid Threshold test")
 	}
@@ -135,13 +139,15 @@ func TestFlipWithStream(t *testing.T) {
 	defer dimg.Close()
 	defer s.Close()
 
-	cimg.Upload(src)
-
 	dest := gocv.NewMat()
 	defer dest.Close()
 
+	cimg.UploadWithStream(src, s)
 	FlipWithStream(cimg, &dimg, 0, s)
-	dimg.Download(&dest)
+	dimg.DownloadWithStream(&dest, s)
+
+	s.WaitForCompletion()
+
 	if dest.Empty() || src.Rows() != dest.Rows() || src.Cols() != dest.Cols() {
 		t.Error("Invalid Flip test")
 	}

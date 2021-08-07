@@ -14,16 +14,16 @@ func TestGaussianFilter_Apply(t *testing.T) {
 	}
 	defer src.Close()
 
-	cimg := NewGpuMat()
+	cimg, dimg := NewGpuMat(), NewGpuMat()
 	defer cimg.Close()
+	defer dimg.Close()
 
 	cimg.Upload(src)
 
 	filter := NewGaussianFilter(src.Type(), src.Type(), image.Pt(23, 23), 30)
 	defer filter.Close()
 
-	dimg := filter.Apply(cimg)
-	defer dimg.Close()
+	filter.Apply(cimg, &dimg)
 
 	dest := gocv.NewMat()
 	defer dest.Close()
@@ -48,10 +48,9 @@ func TestGaussianFilter_ApplyWithStream(t *testing.T) {
 	}
 	defer src.Close()
 
-	cimg := NewGpuMat()
+	cimg, dimg := NewGpuMat(), NewGpuMat()
 	defer cimg.Close()
-
-	cimg.Upload(src)
+	defer dimg.Close()
 
 	filter := NewGaussianFilter(src.Type(), src.Type(), image.Pt(23, 23), 30)
 	defer filter.Close()
@@ -59,13 +58,14 @@ func TestGaussianFilter_ApplyWithStream(t *testing.T) {
 	stream := NewStream()
 	defer stream.Close()
 
-	dimg := filter.ApplyWithStream(cimg, stream)
-	defer dimg.Close()
-
 	dest := gocv.NewMat()
 	defer dest.Close()
 
-	dimg.Download(&dest)
+	cimg.UploadWithStream(src, stream)
+	filter.ApplyWithStream(cimg, &dimg, stream)
+	dimg.DownloadWithStream(&dest, stream)
+
+	stream.WaitForCompletion()
 
 	if dest.Empty() {
 		t.Error("Empty GaussianFilter test")
@@ -85,20 +85,18 @@ func TestSobelFilter_Apply(t *testing.T) {
 	}
 	defer src.Close()
 
-	cimg := NewGpuMat()
+	cimg, dimg := NewGpuMat(), NewGpuMat()
 	defer cimg.Close()
-
-	cimg.Upload(src)
+	defer dimg.Close()
 
 	filter := NewSobelFilter(src.Type(), src.Type(), 0, 1)
 	defer filter.Close()
 
-	dimg := filter.Apply(cimg)
-	defer dimg.Close()
-
 	dest := gocv.NewMat()
 	defer dest.Close()
 
+	cimg.Upload(src)
+	filter.Apply(cimg, &dimg)
 	dimg.Download(&dest)
 
 	if dest.Empty() {
@@ -119,10 +117,9 @@ func TestSobelFilter_ApplyWithStream(t *testing.T) {
 	}
 	defer src.Close()
 
-	cimg := NewGpuMat()
+	cimg, dimg := NewGpuMat(), NewGpuMat()
 	defer cimg.Close()
-
-	cimg.Upload(src)
+	defer dimg.Close()
 
 	filter := NewSobelFilter(src.Type(), src.Type(), 0, 1)
 	defer filter.Close()
@@ -130,13 +127,14 @@ func TestSobelFilter_ApplyWithStream(t *testing.T) {
 	stream := NewStream()
 	defer stream.Close()
 
-	dimg := filter.ApplyWithStream(cimg, stream)
-	defer dimg.Close()
-
 	dest := gocv.NewMat()
 	defer dest.Close()
 
-	dimg.Download(&dest)
+	cimg.UploadWithStream(src, stream)
+	filter.ApplyWithStream(cimg, &dimg, stream)
+	dimg.DownloadWithStream(&dest, stream)
+
+	stream.WaitForCompletion()
 
 	if dest.Empty() {
 		t.Error("Empty SobelFilter test")

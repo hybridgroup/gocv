@@ -22,14 +22,13 @@ void CannyEdgeDetector_Close(CannyEdgeDetector det) {
     delete det;
 }
 
-GpuMat CannyEdgeDetector_Detect(CannyEdgeDetector det, GpuMat img, Stream s) {    
-    GpuMat dst = new cv::cuda::GpuMat();
+void CannyEdgeDetector_Detect(CannyEdgeDetector det, GpuMat img, GpuMat dst, Stream s) {
     if (s == NULL) {
         (*det)->detect(*img, *dst);
     } else {
         (*det)->detect(*img, *dst, *s);
     }
-    return dst;
+    return;
 }
 
 int CannyEdgeDetector_GetAppertureSize(CannyEdgeDetector det) {
@@ -76,14 +75,13 @@ void HoughLinesDetector_Close(HoughLinesDetector hld) {
     delete hld;
 }
 
-GpuMat HoughLinesDetector_Detect(HoughLinesDetector hld, GpuMat img, Stream s) {
-    GpuMat dst = new cv::cuda::GpuMat();
+void HoughLinesDetector_Detect(HoughLinesDetector hld, GpuMat img, GpuMat dst, Stream s) {
     if (s == NULL) {
         (*hld)->detect(*img, *dst);
     } else {
         (*hld)->detect(*img, *dst, *s);
     }
-    return dst;
+    return;
 }
 
 HoughSegmentDetector HoughSegmentDetector_Create(double rho, double theta, int minLineLength, int maxLineGap) {
@@ -94,12 +92,11 @@ void HoughSegmentDetector_Close(HoughSegmentDetector hsd) {
     delete hsd;
 }
 
-GpuMat HoughSegmentDetector_Detect(HoughSegmentDetector hsd, GpuMat img, Stream s) {
-    GpuMat dst = new cv::cuda::GpuMat();
+void HoughSegmentDetector_Detect(HoughSegmentDetector hsd, GpuMat img, GpuMat dst, Stream s) {
     if (s == NULL) {
         (*hsd)->detect(*img, *dst);
     } else {
         (*hsd)->detect(*img, *dst, *s);
     }
-    return dst;
+    return;
 }

@@ -17,20 +17,18 @@ func TestCanny_Detect(t *testing.T) {
 	}
 	defer src.Close()
 
-	cimg := NewGpuMat()
+	cimg, dimg := NewGpuMat(), NewGpuMat()
 	defer cimg.Close()
-
-	cimg.Upload(src)
-
-	detector := NewCannyEdgeDetector(50, 100)
-	defer detector.Close()
-
-	dimg := detector.Detect(cimg)
 	defer dimg.Close()
 
 	dest := gocv.NewMat()
 	defer dest.Close()
 
+	detector := NewCannyEdgeDetector(50, 100)
+	defer detector.Close()
+
+	cimg.Upload(src)
+	detector.Detect(cimg, &dimg)
 	dimg.Download(&dest)
 
 	if dest.Empty() {
@@ -51,26 +49,23 @@ func TestHoughLines_Calc(t *testing.T) {
 	}
 	defer src.Close()
 
-	cimg := NewGpuMat()
+	cimg, mimg, dimg := NewGpuMat(), NewGpuMat(), NewGpuMat()
 	defer cimg.Close()
-
-	cimg.Upload(src)
+	defer mimg.Close()
+	defer dimg.Close()
 
 	canny := NewCannyEdgeDetector(100, 200)
 	defer canny.Close()
 
-	mimg := canny.Detect(cimg)
-	defer mimg.Close()
-
 	detector := NewHoughLinesDetectorWithParams(1, math.Pi/180, 50, true, 4096)
 	defer detector.Close()
-
-	dimg := detector.Detect(mimg)
-	defer dimg.Close()
 
 	dest := gocv.NewMat()
 	defer dest.Close()
 
+	cimg.Upload(src)
+	canny.Detect(cimg, &mimg)
+	detector.Detect(mimg, &dimg)
 	dimg.Download(&dest)
 
 	if dest.Empty() {
@@ -110,30 +105,29 @@ func TestHoughLines_CalcWithStream(t *testing.T) {
 	}
 	defer src.Close()
 
-	cimg := NewGpuMat()
+	cimg, mimg, dimg := NewGpuMat(), NewGpuMat(), NewGpuMat()
 	defer cimg.Close()
-
-	cimg.Upload(src)
-
-	canny := NewCannyEdgeDetector(100, 200)
-	defer canny.Close()
+	defer mimg.Close()
+	defer dimg.Close()
 
 	stream := NewStream()
 	defer stream.Close()
 
-	mimg := canny.DetectWithStream(cimg, stream)
-	defer mimg.Close()
+	canny := NewCannyEdgeDetector(100, 200)
+	defer canny.Close()
 
 	detector := NewHoughLinesDetectorWithParams(1, math.Pi/180, 50, true, 4096)
 	defer detector.Close()
 
-	dimg := detector.DetectWithStream(mimg, stream)
-	defer dimg.Close()
-
 	dest := gocv.NewMat()
 	defer dest.Close()
 
-	dimg.Download(&dest)
+	cimg.UploadWithStream(src, stream)
+	canny.DetectWithStream(cimg, &mimg, stream)
+	detector.DetectWithStream(mimg, &dimg, stream)
+	dimg.DownloadWithStream(&dest, stream)
+
+	stream.WaitForCompletion()
 
 	if dest.Empty() {
 		t.Error("Empty HoughLines test")
@@ -172,40 +166,35 @@ func TestHoughSegment_Calc(t *testing.T) {
 	}
 	defer src.Close()
 
-	cimg := NewGpuMat()
+	cimg, mimg := NewGpuMat(), NewGpuMat()
 	defer cimg.Close()
-
-	cimg.Upload(src)
+	defer mimg.Close()
+	defer dimg.Close()
 
 	canny := NewCannyEdgeDetector(50, 100)
 	defer canny.Close()
 
-	mimg := canny.Detect(cimg)
-	defer mimg.Close()
-
 	detector := NewHoughSegmentDetector(1, math.Pi/180, 150, 50)
 	defer detector.Close()
-
-	dimg := detector.Detect(mimg)
-	defer dimg.Close()
 
 	dest := gocv.NewMat()
 	defer dest.Close()
 
+	cimg.Upload(src)
+	canny.Detect(cimg, &mimg)
+	detector.Detect(mimg, &dimg)
+	dimg.Reshape(0, dimg.Cols())
 	dimg.Download(&dest)
 
 	if dest.Empty() {
 		t.Error("Empty HoughSegment test")
 	}
 
-	final := dest.Reshape(0, dest.Cols())
-	defer final.Close()
-
-	if final.Rows() != 5 {
-		t.Errorf("Invalid HoughSegment test rows: %v", final.Rows())
+	if dest.Rows() != 5 {
+		t.Errorf("Invalid HoughSegment test rows: %v", dest.Rows())
 	}
-	if final.Cols() != 1 {
-		t.Errorf("Invalid HoughSegment test cols: %v", final.Cols())
+	if dest.Cols() != 1 {
+		t.Errorf("Invalid HoughSegment test cols: %v", dest.Cols())
 	}
 
 	type point struct {
@@ -218,9 +207,9 @@ func TestHoughSegment_Calc(t *testing.T) {
 	}
 
 	actual := make(map[point]point)
-	for i := 0; i < final.Rows(); i += 4 {
-		actual[point{final.GetVeciAt(i, 0)[0], final.GetVeciAt(i, 0)[1]}] =
-			point{final.GetVeciAt(i, 0)[2], final.GetVeciAt(i, 0)[3]}
+	for i := 0; i < dest.Rows(); i += 4 {
+		actual[point{dest.GetVeciAt(i, 0)[0], dest.GetVeciAt(i, 0)[1]}] =
+			point{dest.GetVeciAt(i, 0)[2], dest.GetVeciAt(i, 0)[3]}
 	}
 
 	for k, v := range expected {
@@ -235,43 +224,40 @@ func TestHoughSegment_CalcWithStream(t *testing.T) {
 	}
 	defer src.Close()
 
-	cimg := NewGpuMat()
+	cimg, mimg, dimg := NewGpuMat(), NewGpuMat(), NewGpuMat()
 	defer cimg.Close()
-
-	cimg.Upload(src)
-
-	canny := NewCannyEdgeDetector(50, 100)
-	defer canny.Close()
+	defer mimg.Close()
+	defer dimg.Close()
 
 	stream := NewStream()
 	defer stream.Close()
 
-	mimg := canny.DetectWithStream(cimg, stream)
-	defer mimg.Close()
+	canny := NewCannyEdgeDetector(50, 100)
+	defer canny.Close()
 
 	detector := NewHoughSegmentDetector(1, math.Pi/180, 150, 50)
 	defer detector.Close()
 
-	dimg := detector.DetectWithStream(mimg, stream)
-	defer dimg.Close()
-
 	dest := gocv.NewMat()
 	defer dest.Close()
 
-	dimg.Download(&dest)
+	cimg.UploadWithStream(src, stream)
+	canny.DetectWithStream(cimg, &mimg, stream)
+	detector.DetectWithStream(mimg, &dimg, stream)
+	dimg.Reshape(0, dimg.Cols())
+	dimg.DownloadWithStream(&dest, stream)
+
+	stream.WaitForCompletion()
 
 	if dest.Empty() {
 		t.Error("Empty HoughSegment test")
 	}
 
-	final := dest.Reshape(0, dest.Cols())
-	defer final.Close()
-
-	if final.Rows() != 5 {
-		t.Errorf("Invalid HoughSegment test rows: %v", final.Rows())
+	if dest.Rows() != 5 {
+		t.Errorf("Invalid HoughSegment test rows: %v", dest.Rows())
 	}
-	if final.Cols() != 1 {
-		t.Errorf("Invalid HoughSegment test cols: %v", final.Cols())
+	if dest.Cols() != 1 {
+		t.Errorf("Invalid HoughSegment test cols: %v", dest.Cols())
 	}
 
 	type point struct {
@@ -284,9 +270,9 @@ func TestHoughSegment_CalcWithStream(t *testing.T) {
 	}
 
 	actual := make(map[point]point)
-	for i := 0; i < final.Rows(); i += 4 {
-		actual[point{final.GetVeciAt(i, 0)[0], final.GetVeciAt(i, 0)[1]}] =
-			point{final.GetVeciAt(i, 0)[2], final.GetVeciAt(i, 0)[3]}
+	for i := 0; i < dest.Rows(); i += 4 {
+		actual[point{dest.GetVeciAt(i, 0)[0], dest.GetVeciAt(i, 0)[1]}] =
+			point{dest.GetVeciAt(i, 0)[2], dest.GetVeciAt(i, 0)[3]}
 	}
 
 	for k, v := range expected {
