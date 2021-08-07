@@ -77,6 +77,11 @@ func NewGpuMatFromMat(mat gocv.Mat) GpuMat {
 	return newGpuMat(C.GpuMat_NewFromMat(C.Mat(mat.Ptr())))
 }
 
+// NewGpuMatWithSize returns a new GpuMat with a specific size and type.
+func NewGpuMatWithSize(rows int, cols int, mt gocv.MatType) GpuMat {
+	return newGpuMat(C.GpuMat_NewWithSize(C.int(rows), C.int(cols), C.int(mt)))
+}
+
 func newGpuMat(p C.GpuMat) GpuMat {
 	return GpuMat{p: p}
 }

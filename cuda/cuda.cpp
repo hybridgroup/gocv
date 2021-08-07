@@ -8,6 +8,10 @@ GpuMat GpuMat_NewFromMat(Mat mat) {
     return new cv::cuda::GpuMat(*mat);
 }
 
+GpuMat GpuMat_NewWithSize(int rows, int cols, int type) {
+    return new cv::cuda::GpuMat(rows, cols, type);
+}
+
 void GpuMat_Upload(GpuMat m, Mat data, Stream s){
     if (s == NULL) {
         m->upload(*data);
