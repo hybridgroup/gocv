@@ -157,15 +157,14 @@ func (m *GpuMat) Type() gocv.MatType {
 	return gocv.MatType(C.GpuMat_Type(m.p))
 }
 
-// Reshape changes the GpuMat to have the same data
-// with a different number of channels and/or different number of rows
+// Reshape creates a new GpuMat with the same data
+// but with a different number of channels and/or different number of rows.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a408e22ed824d1ddf59f58bda895017a8
 //
-func (m *GpuMat) Reshape(cn int, rows int) {
-	C.GpuMat_Reshape(m.p, C.int(cn), C.int(rows))
-	return
+func (m *GpuMat) Reshape(cn int, rows int) GpuMat {
+	return newGpuMat(C.GpuMat_Reshape(m.p, C.int(cn), C.int(rows)))
 }
 
 // Stream asynchronous stream used for CUDA operations.
