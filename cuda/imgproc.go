@@ -44,8 +44,9 @@ func (h *CannyEdgeDetector) Close() error {
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d43/classcv_1_1cuda_1_1CannyEdgeDetector.html#a6438cf8453f2dfd6703ceb50056de309
 //
-func (h *CannyEdgeDetector) Detect(img GpuMat) GpuMat {
-	return newGpuMat(C.CannyEdgeDetector_Detect(C.CannyEdgeDetector(h.p), img.p, nil))
+func (h *CannyEdgeDetector) Detect(img GpuMat, dst *GpuMat) {
+	C.CannyEdgeDetector_Detect(C.CannyEdgeDetector(h.p), img.p, dst.p, nil)
+	return
 }
 
 // DetectWithStream finds edges in an image using the Canny algorithm
@@ -54,8 +55,9 @@ func (h *CannyEdgeDetector) Detect(img GpuMat) GpuMat {
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d43/classcv_1_1cuda_1_1CannyEdgeDetector.html#a6438cf8453f2dfd6703ceb50056de309
 //
-func (h *CannyEdgeDetector) DetectWithStream(img GpuMat, s Stream) GpuMat {
-	return newGpuMat(C.CannyEdgeDetector_Detect(C.CannyEdgeDetector(h.p), img.p, s.p))
+func (h *CannyEdgeDetector) DetectWithStream(img GpuMat, dst *GpuMat, s Stream) {
+	C.CannyEdgeDetector_Detect(C.CannyEdgeDetector(h.p), img.p, dst.p, s.p)
+	return
 }
 
 // GetAppertureSize
@@ -184,8 +186,9 @@ func (h *HoughLinesDetector) Close() error {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/dcd/classcv_1_1cuda_1_1HoughLinesDetector.html#a18ff6d0886833ac6215054e191ae2520
 //
-func (h *HoughLinesDetector) Detect(img GpuMat) GpuMat {
-	return newGpuMat(C.HoughLinesDetector_Detect(C.HoughLinesDetector(h.p), img.p, nil))
+func (h *HoughLinesDetector) Detect(img GpuMat, dst *GpuMat) {
+	C.HoughLinesDetector_Detect(C.HoughLinesDetector(h.p), img.p, dst.p, nil)
+	return
 }
 
 // DetectWithStream finds lines in a binary image using the classical Hough transform
@@ -194,8 +197,9 @@ func (h *HoughLinesDetector) Detect(img GpuMat) GpuMat {
 // For further details, please see:
 // https://docs.opencv.org/master/d2/dcd/classcv_1_1cuda_1_1HoughLinesDetector.html#a18ff6d0886833ac6215054e191ae2520
 //
-func (h *HoughLinesDetector) DetectWithStream(img GpuMat, s Stream) GpuMat {
-	return newGpuMat(C.HoughLinesDetector_Detect(C.HoughLinesDetector(h.p), img.p, s.p))
+func (h *HoughLinesDetector) DetectWithStream(img GpuMat, dst *GpuMat, s Stream) {
+	C.HoughLinesDetector_Detect(C.HoughLinesDetector(h.p), img.p, dst.p, s.p)
+	return
 }
 
 // HoughSegmentDetector
@@ -223,8 +227,9 @@ func (h *HoughSegmentDetector) Close() error {
 // For further details, please see:
 // https://docs.opencv.org/master/d6/df9/classcv_1_1cuda_1_1HoughSegmentDetector.html#a739bf84825ca455966d69dd75ca0ea6e
 //
-func (h *HoughSegmentDetector) Detect(img GpuMat) GpuMat {
-	return newGpuMat(C.HoughSegmentDetector_Detect(C.HoughSegmentDetector(h.p), img.p, nil))
+func (h *HoughSegmentDetector) Detect(img GpuMat, dst *GpuMat) {
+	C.HoughSegmentDetector_Detect(C.HoughSegmentDetector(h.p), img.p, dst.p, nil)
+	return
 }
 
 // DetectWithStream finds lines in a binary image using the Hough probabilistic transform
@@ -233,6 +238,7 @@ func (h *HoughSegmentDetector) Detect(img GpuMat) GpuMat {
 // For further details, please see:
 // https://docs.opencv.org/master/d6/df9/classcv_1_1cuda_1_1HoughSegmentDetector.html#a739bf84825ca455966d69dd75ca0ea6e
 //
-func (h *HoughSegmentDetector) DetectWithStream(img GpuMat, s Stream) GpuMat {
-	return newGpuMat(C.HoughSegmentDetector_Detect(C.HoughSegmentDetector(h.p), img.p, s.p))
+func (h *HoughSegmentDetector) DetectWithStream(img GpuMat, dst *GpuMat, s Stream) {
+	C.HoughSegmentDetector_Detect(C.HoughSegmentDetector(h.p), img.p, dst.p, s.p)
+	return
 }

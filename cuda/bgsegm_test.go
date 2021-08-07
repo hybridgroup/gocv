@@ -46,17 +46,17 @@ func TestCudaMOG2WithStream(t *testing.T) {
 	defer dimg.Close()
 	defer s.Close()
 
-	cimg.Upload(img)
-
 	dst := gocv.NewMat()
 	defer dst.Close()
 
 	mog2 := NewBackgroundSubtractorMOG2()
 	defer mog2.Close()
 
+	cimg.UploadWithStream(img, s)
 	mog2.ApplyWithStream(cimg, &dimg, s)
+	dimg.DownloadWithStream(&dst, s)
 
-	dimg.Download(&dst)
+	s.WaitForCompletion()
 
 	if dst.Empty() {
 		t.Error("Error in TestCudaMOG2 test")
@@ -103,17 +103,17 @@ func TestCudaMOGWithStream(t *testing.T) {
 	defer dimg.Close()
 	defer s.Close()
 
-	cimg.Upload(img)
-
 	dst := gocv.NewMat()
 	defer dst.Close()
 
 	mog2 := NewBackgroundSubtractorMOG()
 	defer mog2.Close()
 
+	cimg.UploadWithStream(img, s)
 	mog2.ApplyWithStream(cimg, &dimg, s)
+	dimg.DownloadWithStream(&dst, s)
 
-	dimg.Download(&dst)
+	s.WaitForCompletion()
 
 	if dst.Empty() {
 		t.Error("Error in TestCudaMOG test")

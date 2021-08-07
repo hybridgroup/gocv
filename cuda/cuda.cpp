@@ -8,12 +8,20 @@ GpuMat GpuMat_NewFromMat(Mat mat) {
     return new cv::cuda::GpuMat(*mat);
 }
 
-void GpuMat_Upload(GpuMat m,Mat data){
-    m->upload(*data);
+void GpuMat_Upload(GpuMat m, Mat data, Stream s){
+    if (s == NULL) {
+        m->upload(*data);
+        return;
+    }
+    m->upload(*data, *s);
 }
 
-void GpuMat_Download(GpuMat m,Mat dst){
-    m->download(*dst);
+void GpuMat_Download(GpuMat m, Mat dst, Stream s){
+    if (s == NULL) {
+        m->download(*dst);
+        return;
+    }
+    m->download(*dst, *s);
 }
 
 int GpuMat_Empty(GpuMat m){
@@ -36,8 +44,24 @@ int GetCudaEnabledDeviceCount(){
     return cv::cuda::getCudaEnabledDeviceCount();
 }
 
-void GpuMat_ConvertTo(GpuMat m, GpuMat dst, int type) {
-    m->convertTo(*dst, type);
+void GpuMat_ConvertTo(GpuMat m, GpuMat dst, int type, Stream s) {
+    if (s == NULL) {
+        m->convertTo(*dst, type);
+        return;
+    }
+    m->convertTo(*dst, type, *s);
+}
+
+void GpuMat_CopyTo(GpuMat m, GpuMat dst, Stream s) {
+    if (s == NULL) {
+        m->copyTo(*dst);
+        return;
+    }
+    m->copyTo(*dst, *s);
+}
+
+void GpuMat_Reshape(GpuMat m, int cn, int rows) {
+    m->reshape(cn, rows);
 }
 
 int GpuMat_Cols(GpuMat m) {
@@ -62,4 +86,12 @@ Stream Stream_New() {
 
 void Stream_Close(Stream s){
     delete s;
+}
+
+bool Stream_QueryIfComplete(Stream s) {
+    return s->queryIfComplete();
+}
+
+void Stream_WaitForCompletion(Stream s) {
+    s->waitForCompletion();
 }
