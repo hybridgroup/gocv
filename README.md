@@ -367,7 +367,11 @@ You can install it by using Homebrew:
 
 To verify your installation you can run one of the included examples.
 
-First, change the current directory to the location of the GoCV repo:
+To start, you will need to set the `PKG_CONFIG_PATH` environment variable (replacing `4.5.3` if needed):
+
+	export PKG_CONFIG_PATH="/opt/homebrew/Cellar/opencv/4.5.3/lib/pkgconfig"
+
+Next, change the current directory to the location of the GoCV repo:
 
 	cd $HOME/folder/with/your/src/gocv
 
