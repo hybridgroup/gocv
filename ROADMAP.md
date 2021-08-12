@@ -212,9 +212,9 @@ Your pull requests will be greatly appreciated!
 - [ ] **core. - WORK STARTED** The following functions still need implementation:
     - [ ] [cv::cuda::convertFp16](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gaa1c52258763197958eb9e6681917f723)
     - [ ] [cv::cuda::deviceSupports](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga170b10cc9af4aa8cce8c0afdb4b1d08c)
-    - [ ] [cv::cuda::getDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6ded4ed8e4fc483a9863d31f34ec9c0e)
-    - [ ] [cv::cuda::resetDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6153b6f461101374e655a54fc77e725e)
-    - [ ] [cv::cuda::setDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gaefa34186b185de47851836dba537828b)
+    - [X] [cv::cuda::getDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6ded4ed8e4fc483a9863d31f34ec9c0e)
+    - [X] [cv::cuda::resetDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6153b6f461101374e655a54fc77e725e)
+    - [X] [cv::cuda::setDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gaefa34186b185de47851836dba537828b)
 
 - [ ] **cudaarithm. Operations on Matrices - WORK STARTED** The following functions still need implementation:
     - [ ] **core** The following functions still need implementation:
@@ -353,6 +353,7 @@ Your pull requests will be greatly appreciated!
 
 - [ ] alphamat. Alpha Matting
 - [ ] aruco. ArUco Marker Detection
+- [ ] barcode. Barcode detecting and decoding methods
 - [X] **bgsegm. Improved Background-Foreground Segmentation Methods - WORK STARTED**
 - [ ] bioinspired. Biologically inspired vision models and derivated tools
 - [ ] ccalib. Custom Calibration Pattern for 3D reconstruction
@@ -372,11 +373,12 @@ Your pull requests will be greatly appreciated!
 - [ ] intensity_transform. The module brings implementations of intensity transformation algorithms to adjust image contrast.
 - [ ] line_descriptor. Binary descriptors for lines extracted from an image
 - [ ] mcc. Macbeth Chart module
-- [ ] matlab. MATLAB Bridge
 - [ ] optflow. Optical Flow Algorithms
 - [ ] ovis. OGRE 3D Visualiser
 - [ ] phase_unwrapping. Phase Unwrapping API
 - [ ] plot. Plot function for Mat data
+- [ ] quality. Image Quality Analysis (IQA) API
+- [ ] rapid. silhouette based 3D object tracking
 - [ ] reg. Image Registration
 - [ ] rgbd. RGB-Depth Processing
 - [ ] saliency. Saliency API
@@ -390,6 +392,7 @@ Your pull requests will be greatly appreciated!
 - [ ] **tracking. Tracking API - WORK STARTED**
 - [ ] videostab. Video Stabilization
 - [ ] viz. 3D Visualizer
+- [ ] wechat_qrcode. WeChat QR code detector for detecting and parsing QR code.
 - [ ] **xfeatures2d. Extra 2D Features Framework - WORK STARTED**
 - [ ] ximgproc. Extended Image Processing
 - [ ] xobjdetect. Extended object detection
