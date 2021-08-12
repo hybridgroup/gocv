@@ -48,6 +48,18 @@ int GetCudaEnabledDeviceCount(){
     return cv::cuda::getCudaEnabledDeviceCount();
 }
 
+int GetCudaDevice() {
+    return cv::cuda::getDevice();
+}
+
+void SetCudaDevice(int device) {
+    cv::cuda::setDevice(device);
+}
+
+void ResetCudaDevice(){
+    cv::cuda::resetDevice();
+}
+
 void GpuMat_ConvertTo(GpuMat m, GpuMat dst, int type, Stream s) {
     if (s == NULL) {
         m->convertTo(*dst, type);

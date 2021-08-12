@@ -102,6 +102,36 @@ func GetCudaEnabledDeviceCount() int {
 	return int(C.GetCudaEnabledDeviceCount())
 }
 
+// GetDevice returns the current device index.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6ded4ed8e4fc483a9863d31f34ec9c0e
+//
+func GetDevice() int {
+	return int(C.GetCudaDevice())
+}
+
+// SetDevice sets a device and initializes it for the current thread.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gaefa34186b185de47851836dba537828b
+//
+func SetDevice(device int) {
+	C.SetCudaDevice(C.int(device))
+}
+
+// ResetDevice explicitly destroys and cleans up all resources associated
+// with the current device in the current process.
+//
+// Any subsequent API call to this device will reinitialize the device.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6153b6f461101374e655a54fc77e725e
+//
+func ResetDevice() {
+	C.ResetCudaDevice()
+}
+
 // ConvertTo converts GpuMat into destination GpuMat.
 //
 // For further details, please see:
