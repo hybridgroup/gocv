@@ -36,6 +36,9 @@ int GpuMat_Type(GpuMat m);
 void PrintCudaDeviceInfo(int device);
 void PrintShortCudaDeviceInfo(int device);
 int GetCudaEnabledDeviceCount();
+int GetCudaDevice();
+void SetCudaDevice(int device);
+void ResetCudaDevice();
 
 Stream Stream_New();
 void Stream_Close(Stream s);
