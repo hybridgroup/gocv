@@ -28,6 +28,7 @@ RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSIO
                   -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules \
                   -D OPENCV_ENABLE_NONFREE=ON \
                   -D WITH_JASPER=OFF \
+                  -D WITH_TBB=ON \
                   -D BUILD_DOCS=OFF \
                   -D BUILD_EXAMPLES=OFF \
                   -D BUILD_TESTS=OFF \
