@@ -383,6 +383,69 @@ func TestFindAndDrawChessboard(t *testing.T) {
 	}
 }
 
+func TestFindAndDrawChessboardSB(t *testing.T) {
+	img := IMRead("images/chessboard_4x6.png", IMReadUnchanged)
+	if img.Empty() {
+		t.Error("Invalid read of chessboard image")
+		return
+	}
+	defer img.Close()
+
+	corners := NewMat()
+	defer corners.Close()
+
+	found := FindChessboardCornersSB(img, image.Point{X: 4, Y: 6}, &corners, 0)
+	if found == false {
+		t.Error("chessboard pattern not found")
+		return
+	}
+	if corners.Empty() {
+		t.Error("chessboard pattern not found")
+		return
+	}
+
+	img2 := NewMatWithSize(150, 150, MatTypeCV8U)
+	defer img2.Close()
+
+	DrawChessboardCorners(&img2, image.Pt(4, 6), corners, true)
+	if img2.Empty() {
+		t.Error("Error in DrawChessboardCorners test")
+	}
+}
+
+func TestFindChessboardCornersSBWithMeta(t *testing.T) {
+	img := IMRead("images/chessboard_4x6.png", IMReadUnchanged)
+	if img.Empty() {
+		t.Error("Invalid read of chessboard image")
+		return
+	}
+	defer img.Close()
+
+	corners := NewMat()
+	defer corners.Close()
+
+	meta := NewMat()
+	defer meta.Close()
+
+	found := FindChessboardCornersSBWithMeta(img, image.Point{X: 4, Y: 6}, &corners, 0, &meta)
+	if found == false {
+		t.Error("chessboard pattern not found")
+		return
+	}
+	if corners.Empty() {
+		t.Error("chessboard pattern not found")
+		return
+	}
+
+	img2 := NewMatWithSize(150, 150, MatTypeCV8U)
+	defer img2.Close()
+
+	DrawChessboardCorners(&img2, image.Pt(4, 6), corners, true)
+	if img2.Empty() {
+		t.Error("Error in DrawChessboardCorners test")
+	}
+}
+
 func TestCalibrateCamera(t *testing.T) {
 	img := IMRead("images/chessboard_4x6_distort.png", IMReadGrayScale)
 	if img.Empty() {

@@ -23,6 +23,8 @@ double CalibrateCamera(Points3fVector objectPoints, Points2fVector imagePoints, 
 void Undistort(Mat src, Mat dst, Mat cameraMatrix, Mat distCoeffs, Mat newCameraMatrix);
 void UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d, Mat r, Mat p);
 bool FindChessboardCorners(Mat image, Size patternSize, Mat corners, int flags);
+bool FindChessboardCornersSB(Mat image, Size patternSize, Mat corners, int flags);
+bool FindChessboardCornersSBWithMeta(Mat image, Size patternSize, Mat corners, int flags, Mat meta);
 void DrawChessboardCorners(Mat image, Size patternSize, Mat corners, bool patternWasFound);
 Mat EstimateAffinePartial2D(Point2fVector from, Point2fVector to);
 
