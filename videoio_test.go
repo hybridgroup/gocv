@@ -89,7 +89,7 @@ func TestVideoCaptureWithAPI(t *testing.T) {
 	})
 
 	t.Run("video capture valid int string with api", func(t *testing.T) {
-		vc5, err := OpenVideoCaptureWithAPI("1", VideoCaptureAny)
+		vc5, err := OpenVideoCaptureWithAPI("99", VideoCaptureAny)
 		defer vc5.Close()
 		if err == nil {
 			t.Errorf("should return error opening device")
