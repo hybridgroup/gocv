@@ -20,6 +20,9 @@ func newMat(p C.Mat) Mat {
 
 // Close the Mat object.
 func (m *Mat) Close() error {
+	if m.p == nil {
+		return nil
+	}
 	C.Mat_Close(m.p)
 	m.p = nil
 	m.d = nil
