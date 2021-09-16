@@ -74,7 +74,7 @@ func newMat(p C.Mat) Mat {
 // Close the Mat object.
 func (m *Mat) Close() error {
 	if m.p == nil {
-		return nil
+		return errors.New("duplicate Mat close")
 	}
 	// NOTE: The pointer must be removed from the profile before it is deleted to
 	// avoid a data race.

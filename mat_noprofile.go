@@ -7,6 +7,7 @@ package gocv
 #include "core.h"
 */
 import "C"
+import "errors"
 
 // addMatToProfile does nothing if matprofile tag is not set.
 func addMatToProfile(p C.Mat) {
@@ -21,7 +22,7 @@ func newMat(p C.Mat) Mat {
 // Close the Mat object.
 func (m *Mat) Close() error {
 	if m.p == nil {
-		return nil
+		return errors.New("duplicate Mat close")
 	}
 	C.Mat_Close(m.p)
 	m.p = nil
