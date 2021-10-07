@@ -72,3 +72,7 @@ void DrawChessboardCorners(Mat image, Size patternSize, Mat corners, bool patter
 Mat EstimateAffinePartial2D(Point2fVector from, Point2fVector to) {
     return new cv::Mat(cv::estimateAffinePartial2D(*from, *to));
 }
+
+Mat EstimateAffine2D(Point2fVector from, Point2fVector to) {
+    return new cv::Mat(cv::estimateAffine2D(*from, *to));
+}
