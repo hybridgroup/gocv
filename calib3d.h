@@ -24,6 +24,8 @@ void UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d, Mat r, Mat p)
 bool FindChessboardCorners(Mat image, Size patternSize, Mat corners, int flags);
 void DrawChessboardCorners(Mat image, Size patternSize, Mat corners, bool patternWasFound);
 Mat EstimateAffinePartial2D(Point2fVector from, Point2fVector to);
+Mat EstimateAffine2D(Point2fVector from, Point2fVector to);
+//Mat EstimateAffine2DWithParams(Point2fVector from, Point2fVector to, PointVector inliers, int method, double ransacReprojThreshold, size_t maxIters, double confidence, size_t refineIters);
 #ifdef __cplusplus
 }
 #endif
