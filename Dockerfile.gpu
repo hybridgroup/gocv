@@ -1,12 +1,12 @@
 # to build this docker image:
 #   docker build -f Dockerfile.gpu .
-FROM gocv/opencv:4.5.2-gpu AS gocv-gpu
+FROM gocv/opencv:4.5.3-gpu-cuda-11 AS gocv-gpu
 
 ENV GOPATH /go
 
 COPY . /go/src/gocv.io/x/gocv/
 
 WORKDIR /go/src/gocv.io/x/gocv
-RUN go build -tags example -o /build/gocv_cuda_version ./cmd/cuda/
+RUN go build -tags cuda -o /build/gocv_cuda_version ./cmd/cuda/
 
 CMD ["/build/gocv_cuda_version"]

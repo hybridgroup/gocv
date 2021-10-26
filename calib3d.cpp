@@ -37,6 +37,10 @@ Mat GetOptimalNewCameraMatrixWithParams(Mat cameraMatrix,Mat distCoeffs,Size siz
     return mat;
 }
 
+double CalibrateCamera(Points3fVector objectPoints, Points2fVector imagePoints, Size imageSize, Mat cameraMatrix, Mat distCoeffs, Mat rvecs, Mat tvecs, int flag) {
+    return cv::calibrateCamera(*objectPoints, *imagePoints, cv::Size(imageSize.width, imageSize.height), *cameraMatrix, *distCoeffs, *rvecs, *tvecs, flag);
+}
+
 void Undistort(Mat src, Mat dst, Mat cameraMatrix, Mat distCoeffs, Mat newCameraMatrix) {
     cv::undistort(*src, *dst, *cameraMatrix, *distCoeffs, *newCameraMatrix);
 }
@@ -48,6 +52,16 @@ void UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d, Mat r, Mat p)
 bool FindChessboardCorners(Mat image, Size patternSize, Mat corners, int flags) {
     cv::Size sz(patternSize.width, patternSize.height);
     return cv::findChessboardCorners(*image, sz, *corners, flags);
+}
+
+bool FindChessboardCornersSB(Mat image, Size patternSize, Mat corners, int flags) {
+    cv::Size sz(patternSize.width, patternSize.height);
+    return cv::findChessboardCornersSB(*image, sz, *corners, flags);
+}
+
+bool FindChessboardCornersSBWithMeta(Mat image, Size patternSize, Mat corners, int flags, Mat meta) {
+    cv::Size sz(patternSize.width, patternSize.height);
+    return cv::findChessboardCornersSB(*image, sz, *corners, flags, *meta);
 }
 
 void DrawChessboardCorners(Mat image, Size patternSize, Mat corners, bool patternWasFound) {

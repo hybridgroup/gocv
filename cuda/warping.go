@@ -77,7 +77,21 @@ func Resize(src GpuMat, dst *GpuMat, sz image.Point, fx, fy float64, interp Inte
 		height: C.int(sz.Y),
 	}
 
-	C.CudaResize(src.p, dst.p, pSize, C.double(fx), C.double(fy), C.int(interp))
+	C.CudaResize(src.p, dst.p, pSize, C.double(fx), C.double(fy), C.int(interp), nil)
+}
+
+// ResizeWithStream resizes an image
+// using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d29/group__cudawarping.html#ga4f5fa0770d1c9efbadb9be1b92a6452a
+func ResizeWithStream(src GpuMat, dst *GpuMat, sz image.Point, fx, fy float64, interp InterpolationFlags, s Stream) {
+	pSize := C.struct_Size{
+		width:  C.int(sz.X),
+		height: C.int(sz.Y),
+	}
+
+	C.CudaResize(src.p, dst.p, pSize, C.double(fx), C.double(fy), C.int(interp), s.p)
 }
 
 // Rotate rotates an image around the origin (0,0) and then shifts it.
@@ -89,7 +103,20 @@ func Rotate(src GpuMat, dst *GpuMat, sz image.Point, angle, xShift, yShift float
 		width:  C.int(sz.X),
 		height: C.int(sz.Y),
 	}
-	C.CudaRotate(src.p, dst.p, pSize, C.double(angle), C.double(xShift), C.double(yShift), C.int(interp))
+	C.CudaRotate(src.p, dst.p, pSize, C.double(angle), C.double(xShift), C.double(yShift), C.int(interp), nil)
+}
+
+// RotateWithStream rotates an image around the origin (0,0) and then shifts it
+// using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d29/group__cudawarping.html#ga55d958eceb0f871e04b1be0adc6ef1b5
+func RotateWithStream(src GpuMat, dst *GpuMat, sz image.Point, angle, xShift, yShift float64, interp InterpolationFlags, s Stream) {
+	pSize := C.struct_Size{
+		width:  C.int(sz.X),
+		height: C.int(sz.Y),
+	}
+	C.CudaRotate(src.p, dst.p, pSize, C.double(angle), C.double(xShift), C.double(yShift), C.int(interp), s.p)
 }
 
 // Remap applies a generic geometrical transformation to an image.
@@ -103,7 +130,22 @@ func Remap(src GpuMat, dst, xmap, ymap *GpuMat, interpolation InterpolationFlags
 		val3: C.double(borderValue.R),
 		val4: C.double(borderValue.A),
 	}
-	C.CudaRemap(src.p, dst.p, xmap.p, ymap.p, C.int(interpolation), C.int(borderMode), bv)
+	C.CudaRemap(src.p, dst.p, xmap.p, ymap.p, C.int(interpolation), C.int(borderMode), bv, nil)
+}
+
+// RemapWithStream applies a generic geometrical transformation to an image
+// using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d29/group__cudawarping.html#ga0ece6c76e8efa3171adb8432d842beb0
+func RemapWithStream(src GpuMat, dst, xmap, ymap *GpuMat, interpolation InterpolationFlags, borderMode BorderType, borderValue color.RGBA, s Stream) {
+	bv := C.struct_Scalar{
+		val1: C.double(borderValue.B),
+		val2: C.double(borderValue.G),
+		val3: C.double(borderValue.R),
+		val4: C.double(borderValue.A),
+	}
+	C.CudaRemap(src.p, dst.p, xmap.p, ymap.p, C.int(interpolation), C.int(borderMode), bv, s.p)
 }
 
 // PyrDown blurs an image and downsamples it.
@@ -111,7 +153,16 @@ func Remap(src GpuMat, dst, xmap, ymap *GpuMat, interpolation InterpolationFlags
 // For further details, please see:
 // https://docs.opencv.org/master/db/d29/group__cudawarping.html#ga9c8456de9792d96431e065f407c7a91b
 func PyrDown(src GpuMat, dst *GpuMat) {
-	C.CudaPyrDown(src.p, dst.p)
+	C.CudaPyrDown(src.p, dst.p, nil)
+}
+
+// PyrDownWithStream blurs an image and downsamples it
+// using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d29/group__cudawarping.html#ga9c8456de9792d96431e065f407c7a91b
+func PyrDownWithStream(src GpuMat, dst *GpuMat, s Stream) {
+	C.CudaPyrDown(src.p, dst.p, s.p)
 }
 
 // PyrUp upsamples an image and then blurs it.
@@ -119,7 +170,16 @@ func PyrDown(src GpuMat, dst *GpuMat) {
 // For further details, please see:
 // https://docs.opencv.org/master/db/d29/group__cudawarping.html#ga2048da0dfdb9e4a726232c5cef7e5747
 func PyrUp(src GpuMat, dst *GpuMat) {
-	C.CudaPyrUp(src.p, dst.p)
+	C.CudaPyrUp(src.p, dst.p, nil)
+}
+
+// PyrUpWithStream upsamples an image and then blurs it
+// using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d29/group__cudawarping.html#ga2048da0dfdb9e4a726232c5cef7e5747
+func PyrUpWithStream(src GpuMat, dst *GpuMat, s Stream) {
+	C.CudaPyrUp(src.p, dst.p, s.p)
 }
 
 // WarpPerspective applies a perspective transformation to an image.
@@ -138,7 +198,27 @@ func WarpPerspective(src GpuMat, dst *GpuMat, m GpuMat, sz image.Point, flags In
 		val4: C.double(borderValue.A),
 	}
 
-	C.CudaWarpPerspective(src.p, dst.p, m.p, pSize, C.int(flags), C.int(borderType), bv)
+	C.CudaWarpPerspective(src.p, dst.p, m.p, pSize, C.int(flags), C.int(borderType), bv, nil)
+}
+
+// WarpPerspectiveWithStream applies a perspective transformation to an image
+// using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d29/group__cudawarping.html#ga7a6cf95065536712de6b155f3440ccff
+func WarpPerspectiveWithStream(src GpuMat, dst *GpuMat, m GpuMat, sz image.Point, flags InterpolationFlags, borderType BorderType, borderValue color.RGBA, s Stream) {
+	pSize := C.struct_Size{
+		width:  C.int(sz.X),
+		height: C.int(sz.Y),
+	}
+	bv := C.struct_Scalar{
+		val1: C.double(borderValue.B),
+		val2: C.double(borderValue.G),
+		val3: C.double(borderValue.R),
+		val4: C.double(borderValue.A),
+	}
+
+	C.CudaWarpPerspective(src.p, dst.p, m.p, pSize, C.int(flags), C.int(borderType), bv, s.p)
 }
 
 // WarpAffine applies an affine transformation to an image. For more parameters please check WarpAffineWithParams
@@ -157,7 +237,29 @@ func WarpAffine(src GpuMat, dst *GpuMat, m GpuMat, sz image.Point, flags Interpo
 		val4: C.double(borderValue.A),
 	}
 
-	C.CudaWarpAffine(src.p, dst.p, m.p, pSize, C.int(flags), C.int(borderType), bv)
+	C.CudaWarpAffine(src.p, dst.p, m.p, pSize, C.int(flags), C.int(borderType), bv, nil)
+}
+
+// WarpAffineWithStream applies an affine transformation to an image
+// using a Stream for concurrency.
+//
+// For more parameters please check WarpAffineWithParams
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d29/group__cudawarping.html#ga9e8dd9e73b96bdc8e27d85c0e83f1130
+func WarpAffineWithStream(src GpuMat, dst *GpuMat, m GpuMat, sz image.Point, flags InterpolationFlags, borderType BorderType, borderValue color.RGBA, s Stream) {
+	pSize := C.struct_Size{
+		width:  C.int(sz.X),
+		height: C.int(sz.Y),
+	}
+	bv := C.struct_Scalar{
+		val1: C.double(borderValue.B),
+		val2: C.double(borderValue.G),
+		val3: C.double(borderValue.R),
+		val4: C.double(borderValue.A),
+	}
+
+	C.CudaWarpAffine(src.p, dst.p, m.p, pSize, C.int(flags), C.int(borderType), bv, s.p)
 }
 
 // BuildWarpAffineMaps builds transformation maps for affine transformation.
@@ -170,7 +272,21 @@ func BuildWarpAffineMaps(M GpuMat, inverse bool, sz image.Point, xmap, ymap *Gpu
 		height: C.int(sz.Y),
 	}
 
-	C.CudaBuildWarpAffineMaps(M.p, C.bool(inverse), pSize, xmap.p, ymap.p)
+	C.CudaBuildWarpAffineMaps(M.p, C.bool(inverse), pSize, xmap.p, ymap.p, nil)
+}
+
+// BuildWarpAffineMapsWithStream builds transformation maps for affine transformation
+// using a Stream for concurrency.
+//
+// For further details. please see:
+// https://docs.opencv.org/master/db/d29/group__cudawarping.html#ga63504590a96e4cc702d994281d17bc1c
+func BuildWarpAffineMapsWithStream(M GpuMat, inverse bool, sz image.Point, xmap, ymap *GpuMat, s Stream) {
+	pSize := C.struct_Size{
+		width:  C.int(sz.X),
+		height: C.int(sz.Y),
+	}
+
+	C.CudaBuildWarpAffineMaps(M.p, C.bool(inverse), pSize, xmap.p, ymap.p, s.p)
 }
 
 // BuildWarpPerspectiveMaps builds transformation maps for perspective transformation.
@@ -183,5 +299,19 @@ func BuildWarpPerspectiveMaps(M GpuMat, inverse bool, sz image.Point, xmap, ymap
 		height: C.int(sz.Y),
 	}
 
-	C.CudaBuildWarpPerspectiveMaps(M.p, C.bool(inverse), pSize, xmap.p, ymap.p)
+	C.CudaBuildWarpPerspectiveMaps(M.p, C.bool(inverse), pSize, xmap.p, ymap.p, nil)
+}
+
+// BuildWarpPerspectiveMapsWithStream builds transformation maps for perspective transformation
+// using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d29/group__cudawarping.html#ga8d16e3003703bd3b89cca98c913ef864
+func BuildWarpPerspectiveMapsWithStream(M GpuMat, inverse bool, sz image.Point, xmap, ymap *GpuMat, s Stream) {
+	pSize := C.struct_Size{
+		width:  C.int(sz.X),
+		height: C.int(sz.Y),
+	}
+
+	C.CudaBuildWarpPerspectiveMaps(M.p, C.bool(inverse), pSize, xmap.p, ymap.p, s.p)
 }

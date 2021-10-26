@@ -64,8 +64,10 @@ func TestIMEncode(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if len(buf) < 43000 {
-		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", len(buf))
+	defer buf.Close()
+	bytes := buf.GetBytes()
+	if len(bytes) < 43000 {
+		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", len(bytes))
 	}
 }
 
@@ -86,9 +88,10 @@ func ExampleIMEncodeWithParams() {
 			io.WriteString(w, err.Error())
 			return
 		}
+		defer buffer.Close()
 		w.Header().Set("Content-Type", "image/jpeg")
 		w.WriteHeader(http.StatusOK)
-		w.Write(buffer)
+		w.Write(buffer.GetBytes())
 	}
 
 	http.HandleFunc("/img", imgHandler)
@@ -107,19 +110,21 @@ func TestIMEncodeWithParams(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if len(buf) < 18000 {
-		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", len(buf))
+	defer buf.Close()
+	if buf.Len() < 18000 {
+		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", buf.Len())
 	}
 
 	buf2, err := IMEncodeWithParams(JPEGFileExt, img, []int{IMWriteJpegQuality, 100})
 	if err != nil {
 		t.Error(err)
 	}
-	if len(buf2) < 18000 {
-		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", len(buf))
+	defer buf2.Close()
+	if buf2.Len() < 18000 {
+		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", buf2.Len())
 	}
 
-	if len(buf) >= len(buf2) {
+	if buf.Len() >= buf2.Len() {
 		t.Errorf("Jpeg quality parameter does not work correctly\n")
 	}
 }

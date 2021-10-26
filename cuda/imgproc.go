@@ -44,8 +44,20 @@ func (h *CannyEdgeDetector) Close() error {
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d43/classcv_1_1cuda_1_1CannyEdgeDetector.html#a6438cf8453f2dfd6703ceb50056de309
 //
-func (h *CannyEdgeDetector) Detect(img GpuMat) GpuMat {
-	return newGpuMat(C.CannyEdgeDetector_Detect(C.CannyEdgeDetector(h.p), img.p))
+func (h *CannyEdgeDetector) Detect(img GpuMat, dst *GpuMat) {
+	C.CannyEdgeDetector_Detect(C.CannyEdgeDetector(h.p), img.p, dst.p, nil)
+	return
+}
+
+// DetectWithStream finds edges in an image using the Canny algorithm
+// using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d43/classcv_1_1cuda_1_1CannyEdgeDetector.html#a6438cf8453f2dfd6703ceb50056de309
+//
+func (h *CannyEdgeDetector) DetectWithStream(img GpuMat, dst *GpuMat, s Stream) {
+	C.CannyEdgeDetector_Detect(C.CannyEdgeDetector(h.p), img.p, dst.p, s.p)
+	return
 }
 
 // GetAppertureSize
@@ -128,7 +140,19 @@ func (h *CannyEdgeDetector) SetLowThreshold(lowThresh float64) {
 // https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga48d0f208181d5ca370d8ff6b62cbe826
 //
 func CvtColor(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode) {
-	C.GpuCvtColor(src.p, dst.p, C.int(code))
+	C.GpuCvtColor(src.p, dst.p, C.int(code), nil)
+}
+
+// CvtColorWithStream converts an image from one color space to another
+// using a Stream for concurrency.
+// It converts the src Mat image to the dst Mat using the
+// code param containing the desired ColorConversionCode color space.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga48d0f208181d5ca370d8ff6b62cbe826
+//
+func CvtColorWithStream(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode, s Stream) {
+	C.GpuCvtColor(src.p, dst.p, C.int(code), s.p)
 }
 
 // HoughLinesDetector
@@ -157,13 +181,25 @@ func (h *HoughLinesDetector) Close() error {
 	return nil
 }
 
-// Detect finds lines in a binary image using the classical Hough transform
+// Detect finds lines in a binary image using the classical Hough transform.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/dcd/classcv_1_1cuda_1_1HoughLinesDetector.html#a18ff6d0886833ac6215054e191ae2520
 //
-func (h *HoughLinesDetector) Detect(img GpuMat) GpuMat {
-	return newGpuMat(C.HoughLinesDetector_Detect(C.HoughLinesDetector(h.p), img.p))
+func (h *HoughLinesDetector) Detect(img GpuMat, dst *GpuMat) {
+	C.HoughLinesDetector_Detect(C.HoughLinesDetector(h.p), img.p, dst.p, nil)
+	return
+}
+
+// DetectWithStream finds lines in a binary image using the classical Hough transform
+// using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/dcd/classcv_1_1cuda_1_1HoughLinesDetector.html#a18ff6d0886833ac6215054e191ae2520
+//
+func (h *HoughLinesDetector) DetectWithStream(img GpuMat, dst *GpuMat, s Stream) {
+	C.HoughLinesDetector_Detect(C.HoughLinesDetector(h.p), img.p, dst.p, s.p)
+	return
 }
 
 // HoughSegmentDetector
@@ -188,10 +224,21 @@ func (h *HoughSegmentDetector) Close() error {
 }
 
 // Detect finds lines in a binary image using the Hough probabilistic transform.
+// For further details, please see:
+// https://docs.opencv.org/master/d6/df9/classcv_1_1cuda_1_1HoughSegmentDetector.html#a739bf84825ca455966d69dd75ca0ea6e
+//
+func (h *HoughSegmentDetector) Detect(img GpuMat, dst *GpuMat) {
+	C.HoughSegmentDetector_Detect(C.HoughSegmentDetector(h.p), img.p, dst.p, nil)
+	return
+}
+
+// DetectWithStream finds lines in a binary image using the Hough probabilistic transform
+// using a Stream for concurrency.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/df9/classcv_1_1cuda_1_1HoughSegmentDetector.html#a739bf84825ca455966d69dd75ca0ea6e
 //
-func (h *HoughSegmentDetector) Detect(img GpuMat) GpuMat {
-	return newGpuMat(C.HoughSegmentDetector_Detect(C.HoughSegmentDetector(h.p), img.p))
+func (h *HoughSegmentDetector) DetectWithStream(img GpuMat, dst *GpuMat, s Stream) {
+	C.HoughSegmentDetector_Detect(C.HoughSegmentDetector(h.p), img.p, dst.p, s.p)
+	return
 }

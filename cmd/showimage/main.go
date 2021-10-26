@@ -7,7 +7,6 @@
 //
 // 		go run ./cmd/showimage/main.go /home/ron/Pictures/mcp23017.jpg
 //
-// +build example
 
 package main
 

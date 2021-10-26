@@ -24,7 +24,6 @@
 //
 // 		go run ./cmd/dnn-detection/main.go [videosource] [modelfile] [configfile] ([backend] [device])
 //
-// +build example
 
 package main
 

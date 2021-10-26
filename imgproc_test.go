@@ -1220,22 +1220,22 @@ func TestCircleWithParams(t *testing.T) {
 			thickness: 3,
 			shift:     0,
 			checks: map[image.Point]uint8{
-				image.Point{80, 89}: 255,
+				{80, 89}: 255,
 			},
 		}, {
 			name:      "With filling, without shift",
 			thickness: -1,
 			shift:     0,
 			checks: map[image.Point]uint8{
-				image.Point{60, 60}: 255,
+				{60, 60}: 255,
 			},
 		}, {
 			name:      "Without filling, with shift",
 			thickness: 3,
 			shift:     1,
 			checks: map[image.Point]uint8{
-				image.Point{47, 38}: 255,
-				image.Point{48, 38}: 0,
+				{47, 38}: 255,
+				{48, 38}: 0,
 			},
 		},
 	}
@@ -2010,14 +2010,14 @@ func TestEllipseWithParams(t *testing.T) {
 			thickness: 2,
 			linetype:  Line8,
 			checks: map[image.Point]func(uint8) bool{
-				image.Point{24, 50}: check255,
+				{24, 50}: check255,
 			},
 		}, {
 			name:      "With filling, without shift, line = Line8",
 			thickness: -1,
 			linetype:  Line8,
 			checks: map[image.Point]func(uint8) bool{
-				image.Point{55, 47}: check255,
+				{55, 47}: check255,
 			},
 		}, {
 			name:      "Without filling, with shift 2, line = Line8",
@@ -2025,15 +2025,15 @@ func TestEllipseWithParams(t *testing.T) {
 			linetype:  Line8,
 			shift:     2,
 			checks: map[image.Point]func(uint8) bool{
-				image.Point{6, 12}:  check255,
-				image.Point{19, 13}: check255,
+				{6, 12}:  check255,
+				{19, 13}: check255,
 			},
 		}, {
 			name:      "Without filling and shift, line = LineAA",
 			thickness: 2,
 			linetype:  LineAA,
 			checks: map[image.Point]func(uint8) bool{
-				image.Point{77, 54}: func(v uint8) bool { return v < 10 || v > 220 },
+				{77, 54}: func(v uint8) bool { return v < 10 || v > 220 },
 			},
 		},
 	}

@@ -7,7 +7,6 @@
 //
 // 		go run ./cmd/capwindow/main.go
 //
-// +build example
 
 package main
 

@@ -2,8 +2,12 @@
 #include "imgproc.h"
 #include <string.h>
 
-void GpuCvtColor(GpuMat src, GpuMat dst, int code) {
-    cv::cuda::cvtColor(*src, *dst, code);
+void GpuCvtColor(GpuMat src, GpuMat dst, int code, Stream s) {
+    if (s == NULL) {
+        cv::cuda::cvtColor(*src, *dst, code);
+        return;
+    }
+    cv::cuda::cvtColor(*src, *dst, code, 0, *s);
 }
 
 CannyEdgeDetector CreateCannyEdgeDetector(double lowThresh, double highThresh) {
@@ -18,11 +22,13 @@ void CannyEdgeDetector_Close(CannyEdgeDetector det) {
     delete det;
 }
 
-GpuMat CannyEdgeDetector_Detect(CannyEdgeDetector det, GpuMat img) {    
-    GpuMat dst = new cv::cuda::GpuMat();
-    (*det)->detect(*img, *dst);
-
-    return dst;
+void CannyEdgeDetector_Detect(CannyEdgeDetector det, GpuMat img, GpuMat dst, Stream s) {
+    if (s == NULL) {
+        (*det)->detect(*img, *dst);
+    } else {
+        (*det)->detect(*img, *dst, *s);
+    }
+    return;
 }
 
 int CannyEdgeDetector_GetAppertureSize(CannyEdgeDetector det) {
@@ -69,11 +75,13 @@ void HoughLinesDetector_Close(HoughLinesDetector hld) {
     delete hld;
 }
 
-GpuMat HoughLinesDetector_Detect(HoughLinesDetector hld, GpuMat img) {
-    GpuMat dst = new cv::cuda::GpuMat();
-    (*hld)->detect(*img, *dst);
-
-    return dst;
+void HoughLinesDetector_Detect(HoughLinesDetector hld, GpuMat img, GpuMat dst, Stream s) {
+    if (s == NULL) {
+        (*hld)->detect(*img, *dst);
+    } else {
+        (*hld)->detect(*img, *dst, *s);
+    }
+    return;
 }
 
 HoughSegmentDetector HoughSegmentDetector_Create(double rho, double theta, int minLineLength, int maxLineGap) {
@@ -84,9 +92,11 @@ void HoughSegmentDetector_Close(HoughSegmentDetector hsd) {
     delete hsd;
 }
 
-GpuMat HoughSegmentDetector_Detect(HoughSegmentDetector hsd, GpuMat img) {
-    GpuMat dst = new cv::cuda::GpuMat();
-    (*hsd)->detect(*img, *dst);
-
-    return dst;
+void HoughSegmentDetector_Detect(HoughSegmentDetector hsd, GpuMat img, GpuMat dst, Stream s) {
+    if (s == NULL) {
+        (*hsd)->detect(*img, *dst);
+    } else {
+        (*hsd)->detect(*img, *dst, *s);
+    }
+    return;
 }

@@ -9,7 +9,6 @@
 //
 // 		go run ./cmd/savevideo/main.go 0 testvideo.avi
 //
-// +build example
 
 package main
 

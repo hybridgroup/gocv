@@ -10,7 +10,6 @@
 //
 // 		go run ./cmd/img-similarity/main.go -all images/space_shuttle.jpg images/toy.jpg
 //
-// +build example
 
 package main
 

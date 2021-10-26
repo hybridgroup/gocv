@@ -12,7 +12,6 @@
 //		go get -u github.com/hybridgroup/mjpeg
 // 		go run ./cmd/mjpeg-streamer/main.go 1 0.0.0.0:8080
 //
-// +build example
 
 package main
 
@@ -80,6 +79,7 @@ func mjpegCapture() {
 		}
 
 		buf, _ := gocv.IMEncode(".jpg", img)
-		stream.UpdateJPEG(buf)
+		stream.UpdateJPEG(buf.GetBytes())
+		buf.Close()
 	}
 }

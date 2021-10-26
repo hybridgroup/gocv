@@ -80,7 +80,6 @@ Your pull requests will be greatly appreciated!
         - [ ] [isContourConvex](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8abf8010377b58cbc16db6734d92941b)
         - [ ] [matchShapes](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaadc90cb16e2362c9bd6e7363e6e4c317)
         - [ ] [minEnclosingTriangle](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga1513e72f6bbdfc370563664f71e0542f)
-        - [X] [pointPolygonTest](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga1a539e8db2135af2566103705d7a5722)
         - [ ] [rotatedRectangleIntersection](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8740e7645628c59d238b0b22c2abe2d4)
 
     - [ ] **Motion Analysis and Object Tracking - WORK STARTED** The following functions still need implementation:
@@ -191,13 +190,10 @@ Your pull requests will be greatly appreciated!
     - [ ] [denoise_TVL1](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga7602ed5ae17b7de40152b922227c4e4f)
     - [ ] [fastNlMeansDenoising](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga4c6b0031f56ea3f98f768881279ffe93)
     - [ ] [fastNlMeansDenoisingColored](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga03aa4189fc3e31dafd638d90de335617)
-    - [X] [fastNlMeansDenoisingColoredMulti](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#gaa501e71f52fb2dc17ff8ca5e7d2d3619)
     - [ ] [fastNlMeansDenoisingMulti](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#gaf4421bf068c4d632ea7f0aa38e0bf172)
-    - [X] [createAlignMTB](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga2f1fafc885a5d79dbfb3542e08db0244)
     - [ ] [createCalibrateDebevec](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga7fed9707ad5f2cc0e633888867109f90)
     - [ ] [createCalibrateRobertson](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#gae77813a21cd351a596619e5ff013be5d)
     - [ ] [createMergeDebevec](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#gaa8eab36bc764abb2a225db7c945f87f9)
-    - [X] [createMergeMertens](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga79d59aa3cb3a7c664e59a4b5acc1ccb6)
     - [ ] [createMergeRobertson](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga460d4a1df1a7e8cdcf7445bb87a8fb78)
     - [ ] [createTonemap](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#gabcbd653140b93a1fa87ccce94548cd0d)
     - [ ] [createTonemapDrago](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga72bf92bb6b8653ee4be650ac01cf50b6)
@@ -216,24 +212,19 @@ Your pull requests will be greatly appreciated!
 - [ ] **core. - WORK STARTED** The following functions still need implementation:
     - [ ] [cv::cuda::convertFp16](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gaa1c52258763197958eb9e6681917f723)
     - [ ] [cv::cuda::deviceSupports](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga170b10cc9af4aa8cce8c0afdb4b1d08c)
-    - [X] [cv::cuda::getCudaEnabledDeviceCount](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gaaa93892f9189163e5d53790b4b1e88db)
-    - [ ] [cv::cuda::getDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6ded4ed8e4fc483a9863d31f34ec9c0e)
-    - [X] [cv::cuda::printCudaDeviceInfo](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gaa37afdfb8efe85b6252ca2bb8bea8ff2)
-    - [X] [cv::cuda::printShortCudaDeviceInfo](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gacece2dc1d7962bcc7233c033fe64328b)
-    - [ ] [cv::cuda::resetDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6153b6f461101374e655a54fc77e725e)
-    - [ ] [cv::cuda::setDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gaefa34186b185de47851836dba537828b)
+    - [X] [cv::cuda::getDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6ded4ed8e4fc483a9863d31f34ec9c0e)
+    - [X] [cv::cuda::resetDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6153b6f461101374e655a54fc77e725e)
+    - [X] [cv::cuda::setDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gaefa34186b185de47851836dba537828b)
 
 - [ ] **cudaarithm. Operations on Matrices - WORK STARTED** The following functions still need implementation:
     - [ ] **core** The following functions still need implementation:
         - [ ] [cv::cuda::copyMakeBorder](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga5368db7656eacf846b40089c98053a49)
         - [ ] [cv::cuda::createLookUpTable](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga2d9d9780dea8c5cd85d3c19b7e01979c)
-        - [X] [cv::cuda::flip](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga4d0a3f2b46e8f0f1ec2b5ac178dcd871)
         - [ ] [cv::cuda::merge](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#gaac939dc3b178ee92fb6e7078f342622c)
         - [ ] [cv::cuda::split](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#gabe5013d55d4ff586b20393913726179e)
         - [ ] [cv::cuda::transpose](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga327b71c3cb811a904ccf5fba37fc29f2)
 
     - [X] **per-element operations - WORK STARTED** The following functions still need implementation:
-        - [X] [cv::cuda::abs](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga54a72bd772494ab34d05406fd76df2b6)
         - [ ] [cv::cuda::absdiff](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac062b283cf46ee90f74a773d3382ab54)
         - [ ] [cv::cuda::add](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga5d9794bde97ed23d1c1485249074a8b1)
         - [ ] [cv::cuda::addWeighted](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga2cd14a684ea70c6ab2a63ee90ffe6201)
@@ -306,14 +297,12 @@ Your pull requests will be greatly appreciated!
     - [ ] [cv::cuda::createBoxMinFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga77fd36949bc8d92aabc120b4b1cfaafa)
     - [ ] [cv::cuda::createColumnSumFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gac13bf7c41a34bfde2a7f33ad8caacfdf)
     - [ ] [cv::cuda::createDerivFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga14d76dc6982ce739c67198f52bc16ee1)
-    - [X] [cv::cuda::createGaussianFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaa4df286369114cfd4b144ae211f6a6c8)
     - [ ] [cv::cuda::createLaplacianFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga53126e88bb7e6185dcd5628e28e42cd2)
     - [ ] [cv::cuda::createLinearFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga57cb1804ad9d1280bf86433858daabf9)
     - [ ] [cv::cuda::createMorphologyFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gae58694e07be6bdbae126f36c75c08ee6)
     - [ ] [cv::cuda::createRowSumFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaf735de273ccb5072f3c27816fb97a53a)
     - [ ] [cv::cuda::createScharrFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#ga4ac8df158e5771ddb0bd5c9091188ce6)
     - [ ] [cv::cuda::createSeparableLinearFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaf7b79a9a92992044f328dad07a52c4bf)
-    - [X] [cv::cuda::createSobelFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gabf85fe61958bb21e93211a6fcc7c5c3b)
 
 - [ ] **cudaimgproc. Image Processing - WORK STARTED** The following functions still need implementation:
     - [ ] [cv::cuda::TemplateMatching](https://docs.opencv.org/master/d2/d58/classcv_1_1cuda_1_1TemplateMatching.html)
@@ -328,8 +317,6 @@ Your pull requests will be greatly appreciated!
     - [ ] [cv::cuda::histEven](https://docs.opencv.org/master/d8/d0e/group__cudaimgproc__hist.html#gacd3b14279fb77a57a510cb8c89a1856f)
     - [ ] [cv::cuda::histRange](https://docs.opencv.org/master/d8/d0e/group__cudaimgproc__hist.html#ga87819085c1059186d9cdeacd92cea783)
     - [ ] [cv::cuda::HoughCirclesDetector](https://docs.opencv.org/master/da/d80/classcv_1_1cuda_1_1HoughCirclesDetector.html)
-    - [X] [cv::cuda::HoughLinesDetector](https://docs.opencv.org/master/d2/dcd/classcv_1_1cuda_1_1HoughLinesDetector.html)
-    - [X] [cv::cuda::HoughSegmentDetector](https://docs.opencv.org/master/d6/df9/classcv_1_1cuda_1_1HoughSegmentDetector.html)
     - [ ] [cv::cuda::createGoodFeaturesToTrackDetector](https://docs.opencv.org/master/dc/d6d/group__cudaimgproc__feature.html#ga478b474a598ece101f7e706fee2c8e91)
     - [ ] [cv::cuda::createHarrisCorner](https://docs.opencv.org/master/dc/d6d/group__cudaimgproc__feature.html#ga3e5878a803e9bba51added0c10101979)
     - [ ] [cv::cuda::createMinEigenValCorner](https://docs.opencv.org/master/dc/d6d/group__cudaimgproc__feature.html#ga7457fd4b53b025f990b1c1dd1b749915)
@@ -366,6 +353,7 @@ Your pull requests will be greatly appreciated!
 
 - [ ] alphamat. Alpha Matting
 - [ ] aruco. ArUco Marker Detection
+- [ ] barcode. Barcode detecting and decoding methods
 - [X] **bgsegm. Improved Background-Foreground Segmentation Methods - WORK STARTED**
 - [ ] bioinspired. Biologically inspired vision models and derivated tools
 - [ ] ccalib. Custom Calibration Pattern for 3D reconstruction
@@ -385,11 +373,12 @@ Your pull requests will be greatly appreciated!
 - [ ] intensity_transform. The module brings implementations of intensity transformation algorithms to adjust image contrast.
 - [ ] line_descriptor. Binary descriptors for lines extracted from an image
 - [ ] mcc. Macbeth Chart module
-- [ ] matlab. MATLAB Bridge
 - [ ] optflow. Optical Flow Algorithms
 - [ ] ovis. OGRE 3D Visualiser
 - [ ] phase_unwrapping. Phase Unwrapping API
 - [ ] plot. Plot function for Mat data
+- [ ] quality. Image Quality Analysis (IQA) API
+- [ ] rapid. silhouette based 3D object tracking
 - [ ] reg. Image Registration
 - [ ] rgbd. RGB-Depth Processing
 - [ ] saliency. Saliency API
@@ -403,6 +392,7 @@ Your pull requests will be greatly appreciated!
 - [ ] **tracking. Tracking API - WORK STARTED**
 - [ ] videostab. Video Stabilization
 - [ ] viz. 3D Visualizer
+- [ ] wechat_qrcode. WeChat QR code detector for detecting and parsing QR code.
 - [ ] **xfeatures2d. Extra 2D Features Framework - WORK STARTED**
 - [ ] ximgproc. Extended Image Processing
 - [ ] xobjdetect. Extended object detection

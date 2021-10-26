@@ -13,7 +13,6 @@
 //
 // 		go run ./cmd/ssd-facedetect/main.go 0 [protofile] [modelfile]
 //
-// +build example
 
 package main
 

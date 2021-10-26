@@ -6,7 +6,6 @@
 //
 // 		go run ./cmd/find-chessboard/main.go ./images/chessboard_4x6.png
 //
-// +build example
 
 package main
 

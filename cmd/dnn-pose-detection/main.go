@@ -21,7 +21,6 @@
 //
 // go run ./cmd/dnn-pose-detection/main.go 0 ~/Downloads/pose_iter_440000.caffemodel ~/Downloads/openpose_pose_coco.prototxt openvino fp16
 //
-// +build example
 
 package main
 

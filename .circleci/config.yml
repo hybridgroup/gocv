@@ -2,19 +2,22 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: gocv/opencv:4.5.2
+      - image: gocv/opencv:4.5.3
     working_directory: /usr/local/go/src/github.com/hybridgroup/gocv
     environment:
         DISPLAY: 99.0
         GOCV_CAFFE_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
         GOCV_TENSORFLOW_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
-        GOCV_ONNX_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
+        NO_GOCV_ONNX_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
         OPENCV_ENABLE_NONFREE: ON
     steps:
       - checkout
       - run:
           name: Check Go version
           command: go version
+      - run:
+          name: "Enforce Go Formatted Code"
+          command: "test -z $(gofmt -l .) || gofmt -d ."
       - run:
           name: Install dependencies
           command: |
@@ -40,9 +43,6 @@ jobs:
           name: Run main tests
           command: | 
             xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" go test -v -coverprofile=/tmp/coverage.out -count=1 -tags matprofile .
-      - run:
-          name: "Enforce Go Formatted Code"
-          command: "! go fmt ./... 2>&1 | read"
       - run:
           name: Run contrib tests
           command: | 
