@@ -1,5 +1,5 @@
 # to build this docker image:
-#   docker build -f Dockerfile.opencv-gpu-cuda-10 -t gocv/opencv:4.5.3-gpu-cuda-10 .
+#   docker build -f Dockerfile.opencv-gpu-cuda-10 -t gocv/opencv:4.5.4-gpu-cuda-10 .
 FROM nvidia/cuda:10.2-cudnn7-devel AS opencv-gpu-base
 LABEL maintainer="hybridgroup"
 
