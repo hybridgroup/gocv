@@ -68,6 +68,7 @@ func TestAbsDiff(t *testing.T) {
 	defer dimg.Close()
 
 	cimg1.Upload(src1)
+	cimg2.Upload(src1)
 
 	dest := gocv.NewMat()
 	defer dest.Close()
@@ -92,6 +93,7 @@ func TestAdd(t *testing.T) {
 	defer dimg.Close()
 
 	cimg1.Upload(src1)
+	cimg2.Upload(src1)
 
 	dest := gocv.NewMat()
 	defer dest.Close()
@@ -116,6 +118,7 @@ func TestBitwiseAnd(t *testing.T) {
 	defer dimg.Close()
 
 	cimg1.Upload(src1)
+	cimg2.Upload(src1)
 
 	dest := gocv.NewMat()
 	defer dest.Close()
@@ -163,6 +166,7 @@ func TestBitwiseOr(t *testing.T) {
 	defer dimg.Close()
 
 	cimg1.Upload(src1)
+	cimg2.Upload(src1)
 
 	dest := gocv.NewMat()
 	defer dest.Close()
@@ -187,6 +191,7 @@ func TestBitwiseXor(t *testing.T) {
 	defer dimg.Close()
 
 	cimg1.Upload(src1)
+	cimg2.Upload(src1)
 
 	dest := gocv.NewMat()
 	defer dest.Close()
@@ -211,6 +216,7 @@ func TestDivide(t *testing.T) {
 	defer dimg.Close()
 
 	cimg1.Upload(src1)
+	cimg2.Upload(src1)
 
 	dest := gocv.NewMat()
 	defer dest.Close()
@@ -281,6 +287,7 @@ func TestMax(t *testing.T) {
 	defer dimg.Close()
 
 	cimg1.Upload(src1)
+	cimg2.Upload(src1)
 
 	dest := gocv.NewMat()
 	defer dest.Close()
@@ -305,6 +312,7 @@ func TestMin(t *testing.T) {
 	defer dimg.Close()
 
 	cimg1.Upload(src1)
+	cimg2.Upload(src1)
 
 	dest := gocv.NewMat()
 	defer dest.Close()
@@ -329,6 +337,7 @@ func TestMultiply(t *testing.T) {
 	defer dimg.Close()
 
 	cimg1.Upload(src1)
+	cimg2.Upload(src1)
 
 	dest := gocv.NewMat()
 	defer dest.Close()
