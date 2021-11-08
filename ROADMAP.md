@@ -130,7 +130,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [decomposeProjectionMatrix](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [drawChessboardCorners](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [drawFrameAxes](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [estimateAffine2D](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [X] [estimateAffine2D](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [estimateAffine3D](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [filterHomographyDecompByVisibleRefpoints](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [filterSpeckles](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
@@ -353,7 +353,7 @@ Your pull requests will be greatly appreciated!
 ## Contrib modules list
 
 - [ ] alphamat. Alpha Matting
-- [ ] aruco. ArUco Marker Detection
+- [X] **aruco. ArUco Marker Detection - WORK STARTED**
 - [ ] barcode. Barcode detecting and decoding methods
 - [X] **bgsegm. Improved Background-Foreground Segmentation Methods - WORK STARTED**
 - [ ] bioinspired. Biologically inspired vision models and derivated tools
