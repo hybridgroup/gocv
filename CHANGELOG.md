@@ -1,3 +1,26 @@
+0.29.0
+---
+* **all**
+    * update to OpenCV 4.5.4
+* **build**
+    * add static build ability on windows
+    * use tbb for all builds for CPU accelerated operations
+* **cuda**
+    * implement a bunch of per-element operations
+    * add get/set/reset device functions
+    * add NewGpuMatWithSize() to preallocate device memory
+    * Reshape() returns a new GpuMat with the changed data
+    * correct use of Stream by adding WaitForCompletion() and passing pre-allocated GpuMats
+* **docs**
+    * update ROADMAP from recent contributions
+* **videoio**
+    * Fix open video capture with api test (#895)
+* **calib3d**
+    * added EstimateAffine2D
+    * findChessboardCornersSB
+* **aruco**
+    * added many functions as part of initial implementation
+
 0.28.0
 ---
 * **all**
