@@ -114,7 +114,7 @@ Your pull requests will be greatly appreciated!
 
 - [ ] **calib3d. Camera Calibration and 3D Reconstruction - WORK STARTED**. The following functions still need implementation:
     - [ ] **Camera Calibration - WORK STARTED** The following functions still need implementation:
-        - [ ] [calibrateCamera](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [X] [calibrateCamera](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [calibrateCameraRO](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [calibrateHandEye](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [calibrationMatrixValues](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
@@ -130,13 +130,13 @@ Your pull requests will be greatly appreciated!
         - [ ] [decomposeProjectionMatrix](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [drawChessboardCorners](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [drawFrameAxes](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [estimateAffine2D](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [X] [estimateAffine2D](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [estimateAffine3D](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [filterHomographyDecompByVisibleRefpoints](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [filterSpeckles](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [find4QuadCornerSubpix](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [findChessboardCorners](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [findChessboardCornersSB](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [X] [findChessboardCorners](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [X] [findChessboardCornersSB](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [findCirclesGrid](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [findEssentialMat](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [findFundamentalMat](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
@@ -224,32 +224,33 @@ Your pull requests will be greatly appreciated!
         - [ ] [cv::cuda::split](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#gabe5013d55d4ff586b20393913726179e)
         - [ ] [cv::cuda::transpose](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga327b71c3cb811a904ccf5fba37fc29f2)
 
-    - [X] **per-element operations - WORK STARTED** The following functions still need implementation:
-        - [ ] [cv::cuda::absdiff](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac062b283cf46ee90f74a773d3382ab54)
-        - [ ] [cv::cuda::add](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga5d9794bde97ed23d1c1485249074a8b1)
+    - [ ] **per-element operations - WORK STARTED** The following functions still need implementation:
+        - [X] [cv::cuda::absdiff](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac062b283cf46ee90f74a773d3382ab54)
+        - [X] [cv::cuda::add](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga5d9794bde97ed23d1c1485249074a8b1)
         - [ ] [cv::cuda::addWeighted](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga2cd14a684ea70c6ab2a63ee90ffe6201)
-        - [ ] [cv::cuda::bitwise_and](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga78d7c1a013877abd4237fbfc4e13bd76)
-        - [ ] [cv::cuda::bitwise_not](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gae58159a2259ae1acc76b531c171cf06a)
-        - [ ] [cv::cuda::bitwise_or](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gafd098ee3e51c68daa793999c1da3dfb7)
-        - [ ] [cv::cuda::bitwise_xor](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga3d95d4faafb099aacf18e8b915a4ad8d)
+        - [X] [cv::cuda::bitwise_and](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga78d7c1a013877abd4237fbfc4e13bd76)
+        - [X] [cv::cuda::bitwise_not](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gae58159a2259ae1acc76b531c171cf06a)
+        - [X] [cv::cuda::bitwise_or](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gafd098ee3e51c68daa793999c1da3dfb7)
+        - [X] [cv::cuda::bitwise_xor](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga3d95d4faafb099aacf18e8b915a4ad8d)
         - [ ] [cv::cuda::cartToPolar](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga82210c7d1c1d42e616e554bf75a53480)
         - [ ] [cv::cuda::compare](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga4d41cd679f4a83862a3de71a6057db54)
-        - [ ] [cv::cuda::divide](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga124315aa226260841e25cc0b9ea99dc3)
-        - [ ] [cv::cuda::exp](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac6e51541d3bb0a7a396128e4d5919b61)
-        - [ ] [cv::cuda::log](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gaae9c60739e2d1a977b4d3250a0be42ca)
+        - [X] [cv::cuda::divide](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga124315aa226260841e25cc0b9ea99dc3)
+        - [X] [cv::cuda::exp](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac6e51541d3bb0a7a396128e4d5919b61)
+        - [ ] [cv::cuda::inRange](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gaf611ab6b1d85e951feb6f485b1ed9672)
+        - [X] [cv::cuda::log](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gaae9c60739e2d1a977b4d3250a0be42ca)
         - [ ] [cv::cuda::lshift](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gafd072accecb14c9adccdad45e3bf2300)
         - [ ] [cv::cuda::magnitude](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga3d17f4fcd79d7c01fadd217969009463)
         - [ ] [cv::cuda::magnitudeSqr](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga7613e382d257e150033d0ce4d6098f6a)
-        - [ ] [cv::cuda::max](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gadb5dd3d870f10c0866035755b929b1e7)
-        - [ ] [cv::cuda::min](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga74f0b05a65b3d949c237abb5e6c60867)
-        - [ ] [cv::cuda::multiply](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga497cc0615bf717e1e615143b56f00591)
+        - [X] [cv::cuda::max](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gadb5dd3d870f10c0866035755b929b1e7)
+        - [X] [cv::cuda::min](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga74f0b05a65b3d949c237abb5e6c60867)
+        - [X] [cv::cuda::multiply](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga497cc0615bf717e1e615143b56f00591)
         - [ ] [cv::cuda::phase](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga5b75ec01be06dcd6e27ada09a0d4656a)
         - [ ] [cv::cuda::polarToCart](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga01516a286a329c303c2db746513dd9df)
         - [ ] [cv::cuda::pow](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga82d04ef4bcc4dfa9bfbe76488007c6c4)
         - [ ] [cv::cuda::rshift](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga87af0b66358cc302676f35c1fd56c2ed)
-        - [ ] [cv::cuda::sqr](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga8aae233da90ce0ffe309ab8004342acb)
-        - [ ] [cv::cuda::sqrt](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga09303680cb1a5521a922b6d392028d8c)
-        - [ ] [cv::cuda::subtract](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga6eab60fc250059e2fda79c5636bd067f)
+        - [X] [cv::cuda::sqr](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga8aae233da90ce0ffe309ab8004342acb)
+        - [X] [cv::cuda::sqrt](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga09303680cb1a5521a922b6d392028d8c)
+        - [X] [cv::cuda::subtract](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga6eab60fc250059e2fda79c5636bd067f)
 
     - [ ] **matrix reductions** The following functions still need implementation:
         - [ ] [cv::cuda::absSum](https://docs.opencv.org/master/d5/de6/group__cudaarithm__reduce.html#ga690fa79ba4426c53f7d2bebf3d37a32a)
@@ -352,7 +353,7 @@ Your pull requests will be greatly appreciated!
 ## Contrib modules list
 
 - [ ] alphamat. Alpha Matting
-- [ ] aruco. ArUco Marker Detection
+- [X] **aruco. ArUco Marker Detection - WORK STARTED**
 - [ ] barcode. Barcode detecting and decoding methods
 - [X] **bgsegm. Improved Background-Foreground Segmentation Methods - WORK STARTED**
 - [ ] bioinspired. Biologically inspired vision models and derivated tools
