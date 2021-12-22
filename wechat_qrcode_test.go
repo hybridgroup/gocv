@@ -26,6 +26,7 @@ func TestNewWeChatQRCode(t *testing.T) {
 func TestWeChatQRCode_DetectAndDecode(t *testing.T) {
 	mat := IMRead("images/qrcode.png", IMReadColor)
 	mats := make([]Mat, 0)
+	defer mat.Close()
 
 	type args struct {
 		img   Mat
