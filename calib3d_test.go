@@ -484,10 +484,6 @@ func TestCalibrateCamera(t *testing.T) {
 		}
 	}
 
-	if m.Cols() != 3 {
-		t.Errorf("TestEstimateAffine2D(): unexpected cols = %v, want = %v", m.Cols(), 3)
-	}
-
 	cameraMatrix := NewMat()
 	defer cameraMatrix.Close()
 	distCoeffs := NewMat()
