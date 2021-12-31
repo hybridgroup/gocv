@@ -611,6 +611,7 @@ func TestEstimateAffine2DWithParams(t *testing.T) {
 	defer pvdst.Close()
 
 	inliers := NewMat()
+	defer inliers.Close()
 	method := 8
 	ransacProjThreshold := 3.0
 	maxiters := uint(2000)
