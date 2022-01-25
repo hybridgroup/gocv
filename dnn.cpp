@@ -111,10 +111,34 @@ void Net_GetUnconnectedOutLayers(Net net, IntVector* res) {
 
 void Net_GetLayerNames(Net net, CStrings* names) {
     std::vector< cv::String > cstrs(net->getLayerNames());
-    const char **strs = new const char*[cstrs.size()];
 
-    for (size_t i = 0; i < cstrs.size(); ++i) {
-        strs[i] = cstrs[i].c_str();
+    size_t totalStrLen = 0;
+    for (cv::String str : cstrs) {
+        totalStrLen += str.size();
+    }
+
+    // Compute 1D buffer size required to store
+    // 2D array of null-terminated strings
+    size_t numStrings = cstrs.size();
+    size_t bufferLen = numStrings * sizeof(char*) + (totalStrLen + numStrings) * sizeof(char);
+
+    const char **strs = (const char**)new char[bufferLen];
+    memset(strs, 0, bufferLen);
+
+    char* it = (char*)(strs + cstrs.size());
+    const char* end = (char*)(strs) + bufferLen;
+
+    for (size_t i = 0; i < numStrings; ++i, ++it) {
+        strs[i] = it;
+        size_t strlen = cstrs[i].size();
+
+        // Avoid buffer overrun
+        if(end < it + strlen + 1) {
+            break;
+        }
+
+        memcpy(it, cstrs[i].c_str(), strlen);
+        it += strlen;
     }
 
     names->length = cstrs.size();
