@@ -59,18 +59,21 @@ Mat Mat_NewWithSizesFromBytes(IntVector sizes, int type, struct ByteArray buf) {
 }
 
 Mat Eye(int rows, int cols, int type) {
-    cv::Mat temp = cv::Mat::eye(rows, cols, type);
-    return new cv::Mat(rows, cols, type, temp.data);
+    cv::Mat* mat = new cv::Mat(rows, cols, type);
+    *mat = cv::Mat::eye(rows, cols, type);
+    return mat;
 }
 
 Mat Zeros(int rows, int cols, int type) {
-    cv::Mat temp = cv::Mat::zeros(rows, cols, type);
-    return new cv::Mat(rows, cols, type, temp.data);
+    cv::Mat* mat = new cv::Mat(rows, cols, type);
+    *mat = cv::Mat::zeros(rows, cols, type);
+    return mat;
 }
 
 Mat Ones(int rows, int cols, int type) {
-    cv::Mat temp = cv::Mat::ones(rows, cols, type);
-    return new cv::Mat(rows, cols, type, temp.data);
+    cv::Mat* mat = new cv::Mat(rows, cols, type);
+    *mat = cv::Mat::ones(rows, cols, type);
+    return mat;
 }
 
 Mat Mat_FromPtr(Mat m, int rows, int cols, int type, int prow, int pcol) {
