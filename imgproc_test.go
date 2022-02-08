@@ -1959,6 +1959,57 @@ func TestDrawContours(t *testing.T) {
 	}
 }
 
+func TestDrawContoursWithParams(t *testing.T) {
+	img := NewMatWithSize(200, 200, MatTypeCV8UC1)
+	defer img.Close()
+
+	// Draw circle
+	white := color.RGBA{255, 255, 255, 255}
+	black := color.RGBA{0, 0, 0, 255}
+	Circle(&img, image.Pt(100, 100), 80, white, -1)
+	Circle(&img, image.Pt(100, 100), 55, black, -1)
+	Circle(&img, image.Pt(100, 100), 30, white, -1)
+
+	hierarchy := NewMat()
+	defer hierarchy.Close()
+	contours := FindContoursWithParams(img, &hierarchy, RetrievalTree, ChainApproxSimple)
+	defer contours.Close()
+
+	// Draw contours by different line-type and assert value
+	cases := []struct {
+		name        string
+		lineType    LineType
+		expectUChar uint8
+	}{
+		{
+			name:        "draw by Line4", // 4 connected line
+			lineType:    Line4,
+			expectUChar: 255,
+		},
+		{
+			name:        "draw by line8", // 8 connected line
+			lineType:    Line8,
+			expectUChar: 0,
+		},
+		{
+			name:        "draw by line-AA", // anti-aliased line
+			lineType:    LineAA,
+			expectUChar: 68,
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			bg := NewMatWithSize(img.Rows(), img.Cols(), MatTypeCV8UC1)
+			defer bg.Close()
+
+			DrawContoursWithParams(&bg, contours, -1, white, 1, c.lineType, hierarchy, 0, image.Pt(0, 0))
+			if v := bg.GetUCharAt(22, 88); v != c.expectUChar {
+				t.Errorf("TestDrawContoursWithParams(): contour value expect %v but got %v", c.expectUChar, v)
+			}
+		})
+	}
+}
+
 func TestEllipse(t *testing.T) {
 	tests := []struct {
 		name      string      // name of the testcase
