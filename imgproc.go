@@ -1780,6 +1780,26 @@ func DrawContours(img *Mat, contours PointsVector, contourIdx int, c color.RGBA,
 	C.DrawContours(img.p, contours.p, C.int(contourIdx), sColor, C.int(thickness))
 }
 
+// DrawContoursWithParams draws contours outlines or filled contours.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga746c0625f1781f1ffc9056259103edbc
+//
+func DrawContoursWithParams(img *Mat, contours PointsVector, contourIdx int, c color.RGBA, thickness int, lineType LineType, hierarchy Mat, maxLevel int, offset image.Point) {
+	sColor := C.struct_Scalar{
+		val1: C.double(c.B),
+		val2: C.double(c.G),
+		val3: C.double(c.R),
+		val4: C.double(c.A),
+	}
+	offsetP := C.struct_Point{
+		x: C.int(offset.X),
+		y: C.int(offset.Y),
+	}
+
+	C.DrawContoursWithParams(img.p, contours.p, C.int(contourIdx), sColor, C.int(thickness), C.int(lineType), hierarchy.p, C.int(maxLevel), offsetP)
+}
+
 // Remap applies a generic geometrical transformation to an image.
 //
 // For further details, please see:

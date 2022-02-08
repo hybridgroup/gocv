@@ -550,6 +550,19 @@ void DrawContours(Mat src, PointsVector contours, int contourIdx, Scalar color, 
     cv::drawContours(*src, *contours, contourIdx, c, thickness);
 }
 
+void DrawContoursWithParams(Mat src, PointsVector contours, int contourIdx, Scalar color, int thickness, int lineType, Mat hierarchy, int maxLevel, Point offset) {
+    cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
+    cv::Point offsetPt(offset.x, offset.y);
+
+    std::vector<cv::Vec4i> vecHierarchy;
+    if (hierarchy->empty() == 0) {
+        for (int j = 0; j < hierarchy->cols; ++j) {
+            vecHierarchy.push_back(hierarchy->at<cv::Vec4i>(0, j));
+        }
+    }
+    cv::drawContours(*src, *contours, contourIdx, c, thickness, lineType, vecHierarchy, maxLevel, offsetPt);
+}
+
 void Sobel(Mat src, Mat dst, int ddepth, int dx, int dy, int ksize, double scale, double delta, int borderType) {
 	cv::Sobel(*src, *dst, ddepth, dx, dy, ksize, scale, delta, borderType);
 }
