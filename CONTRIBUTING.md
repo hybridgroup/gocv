@@ -81,7 +81,7 @@ go test ./openvino/...
 
 ## Contributing workflow
 
-This section provides a short description of one of many possible workflows you can follow to contribute to `CoCV`. This workflow is based on multiple [git remotes](https://git-scm.com/docs/git-remote) and it's by no means the only workflow you can use to contribute to `GoCV`. However, it's an option that might help you get started quickly without too much hassle as this workflow lets you work off the `gocv` repo directory path!
+This section provides a short description of one of many possible workflows you can follow to contribute to `GoCV`. This workflow is based on multiple [git remotes](https://git-scm.com/docs/git-remote) and it's by no means the only workflow you can use to contribute to `GoCV`. However, it's an option that might help you get started quickly without too much hassle as this workflow lets you work off the `gocv` repo directory path!
 
 Assuming you have already forked the `gocv` repo, you need to add a new `git remote` which will point to your GitHub fork. Notice below that you **must** `cd` to `gocv` repo directory before you add the new `git remote`:
 
