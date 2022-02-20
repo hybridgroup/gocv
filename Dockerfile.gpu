@@ -1,6 +1,6 @@
 # to build this docker image:
 #   docker build -f Dockerfile.gpu .
-FROM gocv/opencv:4.5.4-gpu-cuda-11 AS gocv-gpu
+FROM gocv/opencv:4.5.5-gpu-cuda-11 AS gocv-gpu
 
 ENV GOPATH /go
 
