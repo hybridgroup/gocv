@@ -10,7 +10,7 @@
 
 The GoCV package provides Go language bindings for the [OpenCV 4](http://opencv.org/) computer vision library.
 
-The GoCV package supports the latest releases of Go and OpenCV (v4.5.4) on Linux, macOS, and Windows. We intend to make the Go language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
+The GoCV package supports the latest releases of Go and OpenCV (v4.5.5) on Linux, macOS, and Windows. We intend to make the Go language a "first-class" client compatible with the latest developments in the OpenCV ecosystem.
 
 GoCV supports [CUDA](https://en.wikipedia.org/wiki/CUDA) for hardware acceleration using Nvidia GPUs. Check out the [CUDA README](./cuda/README.md) for more info on how to use GoCV with OpenCV/CUDA.
 
@@ -122,7 +122,7 @@ There are examples in the [cmd directory](./cmd) of this repo in the form of var
 
 ## How to install
 
-To install GoCV, you must first have the matching version of OpenCV installed on your system. The current release of GoCV requires OpenCV 4.5.4.
+To install GoCV, you must first have the matching version of OpenCV installed on your system. The current release of GoCV requires OpenCV 4.5.5.
 
 Here are instructions for Ubuntu, Raspian, macOS, and Windows.
 
@@ -130,7 +130,7 @@ Here are instructions for Ubuntu, Raspian, macOS, and Windows.
 
 ### Installation
 
-You can use `make` to install OpenCV 4.5.4 with the handy `Makefile` included with this repo. If you already have installed OpenCV, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options such as Python or Java wrappers if you have already installed OpenCV some other way.
+You can use `make` to install OpenCV 4.5.5 with the handy `Makefile` included with this repo. If you already have installed OpenCV, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options such as Python or Java wrappers if you have already installed OpenCV some other way.
 
 #### Quick Install
 
@@ -141,7 +141,7 @@ First, change directories to where you want to install GoCV, and then use git to
 
 Make sure to change `$HOME/folder/with/your/src/` to where you actually want to save the code.
 
-Once you have cloned the repo, the following commands should do everything to download and install OpenCV 4.5.4 on Linux:
+Once you have cloned the repo, the following commands should do everything to download and install OpenCV 4.5.5 on Linux:
 
 	cd gocv
 	make install
@@ -153,7 +153,7 @@ If you need static opencv libraries
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
 	gocv version: 0.29.0
-	opencv lib version: 4.5.4
+	opencv lib version: 4.5.5
 
 That's it, now you are ready to use GoCV.
 
@@ -167,7 +167,7 @@ See the [openvino directory](./openvino) for information.
 	
 #### Make Install for OpenVINO and Cuda
 
-The following commands should do everything to download and install OpenCV 4.5.4 with CUDA and OpenVINO on Linux. Make sure to change `$HOME/folder/with/your/src/` to the directory you used to clone GoCV:
+The following commands should do everything to download and install OpenCV 4.5.5 with CUDA and OpenVINO on Linux. Make sure to change `$HOME/folder/with/your/src/` to the directory you used to clone GoCV:
 
 	cd $HOME/folder/with/gocv/
 	make install_all
@@ -179,7 +179,7 @@ If you need static opencv libraries
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
 	gocv version: 0.29.0
-	opencv lib version: 4.5.4-openvino
+	opencv lib version: 4.5.5-openvino
     cuda information:
       Device 0:  "GeForce MX150"  2003Mb, sm_61, Driver/Runtime ver.10.0/10.0
 
@@ -206,7 +206,7 @@ Next, you need to update the system, and install any required packages:
 
 #### Download source
 
-Now, download the OpenCV 4.5.4 and OpenCV Contrib source code:
+Now, download the OpenCV 4.5.5 and OpenCV Contrib source code:
 
 	make download
 
@@ -241,7 +241,7 @@ Now you should be able to build or run any of the examples:
 The version program should output the following:
 
 	gocv version: 0.29.0
-	opencv lib version: 4.5.4
+	opencv lib version: 4.5.5
 
 #### Cleanup extra files
 
@@ -320,7 +320,7 @@ There is a Docker image with Alpine 3.7 that has been created by project contrib
 
 ### Installation
 
-We have a special installation for the Raspberry Pi that includes some hardware optimizations. You use `make` to install OpenCV 4.5.4 with the handy `Makefile` included with this repo. If you already have installed OpenCV, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options such as Python or Java wrappers if you have already installed OpenCV some other way.
+We have a special installation for the Raspberry Pi that includes some hardware optimizations. You use `make` to install OpenCV 4.5.5 with the handy `Makefile` included with this repo. If you already have installed OpenCV, you do not need to do so again. The installation performed by the `Makefile` is minimal, so it may remove OpenCV options such as Python or Java wrappers if you have already installed OpenCV some other way.
 
 #### Quick Install
 
@@ -331,7 +331,7 @@ First, change directories to where you want to install GoCV, and then use git to
 
 Make sure to change `$HOME/folder/with/your/src/` to where you actually want to save the code.
 
-The following make command should do everything to download and install OpenCV 4.5.4 on Raspbian:
+The following make command should do everything to download and install OpenCV 4.5.5 on Raspbian:
 
 	cd $HOME/folder/with/your/src/gocv
 	make install_raspi
@@ -339,7 +339,7 @@ The following make command should do everything to download and install OpenCV 4
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
 	gocv version: 0.29.0
-	opencv lib version: 4.5.4
+	opencv lib version: 4.5.5
 
 That's it, now you are ready to use GoCV.
 
@@ -347,13 +347,13 @@ That's it, now you are ready to use GoCV.
 
 ### Installation
 
-You can install OpenCV 4.5.4 using Homebrew.
+You can install OpenCV 4.5.5 using Homebrew.
 
 If you already have an earlier version of OpenCV (3.4.x) installed, you should probably remove it before installing the new version:
 
 	brew uninstall opencv
 
-You can then install OpenCV 4.5.4:
+You can then install OpenCV 4.5.5:
 
 	brew install opencv
 
@@ -378,7 +378,7 @@ Now you should be able to build or run any of the examples:
 The version program should output the following:
 
 	gocv version: 0.29.0
-	opencv lib version: 4.5.4
+	opencv lib version: 4.5.5
 
 ### Custom Environment
 
@@ -387,8 +387,8 @@ By default, pkg-config is used to determine the correct flags for compiling and 
 For example:
 
 	export CGO_CXXFLAGS="--std=c++11"
-	export CGO_CPPFLAGS="-I/usr/local/Cellar/opencv/4.5.4/include"
-	export CGO_LDFLAGS="-L/usr/local/Cellar/opencv/4.5.4/lib -lopencv_stitching -lopencv_superres -lopencv_videostab -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dnn_objdetect -lopencv_dpm -lopencv_face -lopencv_photo -lopencv_fuzzy -lopencv_hfs -lopencv_img_hash -lopencv_line_descriptor -lopencv_optflow -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_dnn -lopencv_plot -lopencv_xfeatures2d -lopencv_shape -lopencv_video -lopencv_ml -lopencv_ximgproc -lopencv_calib3d -lopencv_features2d -lopencv_highgui -lopencv_videoio -lopencv_flann -lopencv_xobjdetect -lopencv_imgcodecs -lopencv_objdetect -lopencv_xphoto -lopencv_imgproc -lopencv_core"
+	export CGO_CPPFLAGS="-I/usr/local/Cellar/opencv/4.5.5/include"
+	export CGO_LDFLAGS="-L/usr/local/Cellar/opencv/4.5.5/lib -lopencv_stitching -lopencv_superres -lopencv_videostab -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dnn_objdetect -lopencv_dpm -lopencv_face -lopencv_photo -lopencv_fuzzy -lopencv_hfs -lopencv_img_hash -lopencv_line_descriptor -lopencv_optflow -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_dnn -lopencv_plot -lopencv_xfeatures2d -lopencv_shape -lopencv_video -lopencv_ml -lopencv_ximgproc -lopencv_calib3d -lopencv_features2d -lopencv_highgui -lopencv_videoio -lopencv_flann -lopencv_xobjdetect -lopencv_imgcodecs -lopencv_objdetect -lopencv_xphoto -lopencv_imgproc -lopencv_core"
 
 Please note that you will need to run these 3 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables. Once you have done so, you can execute code that uses GoCV with your custom environment like this:
 
@@ -400,7 +400,7 @@ Please note that you will need to run these 3 lines of code one time in your cur
 
 The following assumes that you are running a 64-bit version of Windows 10.
 
-In order to build and install OpenCV 4.5.4 on Windows, you must first download and install MinGW-W64 and CMake, as follows.
+In order to build and install OpenCV 4.5.5 on Windows, you must first download and install MinGW-W64 and CMake, as follows.
 
 #### MinGW-W64
 
@@ -416,9 +416,9 @@ Add the `C:\Program Files\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev2\mingw64\bi
 
 Download and install CMake [https://cmake.org/download/](https://cmake.org/download/) to the default location. CMake installer will add CMake to your system path.
 
-#### OpenCV 4.5.4 and OpenCV Contrib Modules
+#### OpenCV 4.5.5 and OpenCV Contrib Modules
 
-The following commands should do everything to download and install OpenCV 4.5.4 on Windows:
+The following commands should do everything to download and install OpenCV 4.5.5 on Windows:
 
 	chdir %GOPATH%\src\gocv.io\x\gocv
 	win_build_opencv.cmd
@@ -440,7 +440,7 @@ Now you should be able to build or run any of the command examples:
 The version program should output the following:
 
 	gocv version: 0.29.0
-	opencv lib version: 4.5.4
+	opencv lib version: 4.5.5
 
 That's it, now you are ready to use GoCV.
 
