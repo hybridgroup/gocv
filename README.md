@@ -404,13 +404,13 @@ In order to build and install OpenCV 4.5.5 on Windows, you must first download a
 
 #### MinGW-W64
 
-Download and run the MinGW-W64 compiler installer from [https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/7.3.0/](https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/7.3.0/).
+Download and run the MinGW-W64 compiler installer from [https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/8.1.0/](https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/8.1.0/).
 
-The latest version of the MinGW-W64 toolchain is `7.3.0`, but any version from `7.X` on should work.
+The latest version of the MinGW-W64 toolchain is `8.1.0`, but any version from `8.X` on should work.
 
-Choose the options for "posix" threads, and for "seh" exceptions handling, then install to the default location `c:\Program Files\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev2`.
+Choose the options for "posix" threads, and for "seh" exceptions handling, then install to the default location `c:\Program Files\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0`.
 
-Add the `C:\Program Files\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev2\mingw64\bin` path to your System Path.
+Add the `C:\Program Files\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin` path to your System Path.
 
 #### CMake
 
