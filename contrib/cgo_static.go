@@ -1,7 +1,7 @@
 //go:build !customenv && static
 // +build !customenv,static
 
-package gocv
+package contrib
 
 // Changes here should be mirrored in contrib/cgo_static.go and cuda/cgo_static.go.
 
