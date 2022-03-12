@@ -28,6 +28,10 @@ jobs:
             mkdir -p testdata
             curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/master/testdata/dnn/bvlc_googlenet.prototxt > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/bvlc_googlenet.prototxt
             curl -sL http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/bvlc_googlenet.caffemodel
+            curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.caffemodel > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/detect.caffemodel
+            curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.prototxt > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/detect.prototxt
+            curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.caffemodel > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/sr.caffemodel
+            curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.prototxt > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/sr.prototxt
       - run:
           name: "Install Tensorflow test model"
           command: |
