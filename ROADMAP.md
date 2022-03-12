@@ -188,9 +188,9 @@ Your pull requests will be greatly appreciated!
 - [ ] **photo. Computational Photography - WORK STARTED** The following functions still need implementation:
     - [ ] [inpaint](https://docs.opencv.org/master/d7/d8b/group__photo__inpaint.html#gaedd30dfa0214fec4c88138b51d678085)
     - [ ] [denoise_TVL1](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga7602ed5ae17b7de40152b922227c4e4f)
-    - [ ] [fastNlMeansDenoising](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga4c6b0031f56ea3f98f768881279ffe93)
-    - [ ] [fastNlMeansDenoisingColored](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga03aa4189fc3e31dafd638d90de335617)
-    - [ ] [fastNlMeansDenoisingMulti](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#gaf4421bf068c4d632ea7f0aa38e0bf172)
+    - [X] [fastNlMeansDenoising](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga4c6b0031f56ea3f98f768881279ffe93)
+    - [X] [fastNlMeansDenoisingColored](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga03aa4189fc3e31dafd638d90de335617)
+    - [X] [fastNlMeansDenoisingMulti](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#gaf4421bf068c4d632ea7f0aa38e0bf172)
     - [ ] [createCalibrateDebevec](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga7fed9707ad5f2cc0e633888867109f90)
     - [ ] [createCalibrateRobertson](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#gae77813a21cd351a596619e5ff013be5d)
     - [ ] [createMergeDebevec](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#gaa8eab36bc764abb2a225db7c945f87f9)
@@ -393,7 +393,7 @@ Your pull requests will be greatly appreciated!
 - [ ] **tracking. Tracking API - WORK STARTED**
 - [ ] videostab. Video Stabilization
 - [ ] viz. 3D Visualizer
-- [ ] wechat_qrcode. WeChat QR code detector for detecting and parsing QR code.
+- [X] **wechat_qrcode. WeChat QR code detector for detecting and parsing QR code**
 - [ ] **xfeatures2d. Extra 2D Features Framework - WORK STARTED**
 - [ ] ximgproc. Extended Image Processing
 - [ ] xobjdetect. Extended object detection
