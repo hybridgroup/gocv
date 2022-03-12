@@ -14,6 +14,22 @@ StringsVector NewStringsVector() {
     return new std::vector<std::string>;
 }
 
+void WeChatQRCode_CStrings_Close(struct CStrings cstrs) {
+    for ( int i = 0; i < cstrs.length; i++ ) {
+        delete [] cstrs.strs[i];
+    }
+    delete [] cstrs.strs;
+}
+
+void WeChatQRCode_Mats_to(struct Mats mats, int i, Mat dst) {
+    mats.mats[i]->copyTo(*dst);;
+}
+
+void WeChatQRCode_Mats_Close(struct Mats mats) {
+    delete[] mats.mats;
+}
+
+
 CStrings WeChatQRCode_DetectAndDecode(WeChatQRCode wq, Mat img, struct Mats *points, StringsVector codes) {
     std::vector <cv::Mat> Points;
     *codes = ((*wq)->detectAndDecode(*img, Points));

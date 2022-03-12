@@ -1,6 +1,7 @@
-package gocv
+package contrib
 
 import (
+	"gocv.io/x/gocv"
 	"os"
 	"reflect"
 	"testing"
@@ -31,13 +32,13 @@ func TestNewWeChatQRCode(t *testing.T) {
 }
 
 func TestWeChatQRCode_DetectAndDecode(t *testing.T) {
-	mat := IMRead("images/qrcode.png", IMReadColor)
-	mats := make([]Mat, 0)
+	mat := gocv.IMRead("../images/qrcode.png", gocv.IMReadColor)
+	mats := make([]gocv.Mat, 0)
 	defer mat.Close()
 
 	type args struct {
-		img   Mat
-		point *[]Mat
+		img   gocv.Mat
+		point *[]gocv.Mat
 	}
 	tests := []struct {
 		name     string
