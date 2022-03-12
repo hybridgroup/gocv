@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-#include "core.h"
+#include "../core.h"
 
 #ifdef __cplusplus
 typedef cv::Ptr<cv::wechat_qrcode::WeChatQRCode> *WeChatQRCode;
@@ -23,6 +23,10 @@ WeChatQRCode NewWeChatQRCode(const char *detector_prototxt_path, const char *det
                              const char *super_resolution_prototxt_path, const char *super_resolution_caffe_model_path);
 CStrings WeChatQRCode_DetectAndDecode(WeChatQRCode wq, Mat img, struct Mats *points, StringsVector codes);
 StringsVector NewStringsVector();
+void WeChatQRCode_CStrings_Close(struct CStrings cstrs);
+void WeChatQRCode_Mats_Close(struct Mats mats);
+void WeChatQRCode_Mats_to(struct Mats mats, int i, Mat dst);
+
 
 #ifdef __cplusplus
 }

@@ -1,4 +1,4 @@
-package gocv
+package contrib
 
 /*
 #include <stdlib.h>
@@ -6,6 +6,7 @@ package gocv
 */
 import "C"
 import (
+	"gocv.io/x/gocv"
 	"unsafe"
 )
 
@@ -26,19 +27,20 @@ func NewWeChatQRCode(detectProtoTxt, detectCaffe, superProtoTxt, superCaffe stri
 	return &WeChatQRCode{p: C.NewWeChatQRCode(dp, dc, sp, sc)}
 }
 
-func (wq *WeChatQRCode) DetectAndDecode(img Mat, point *[]Mat) []string {
+func (wq *WeChatQRCode) DetectAndDecode(img gocv.Mat, point *[]gocv.Mat) []string {
 	cMats := C.struct_Mats{}
-	defer C.Mats_Close(cMats)
+	defer C.WeChatQRCode_Mats_Close(cMats)
 	cDecoded := C.CStrings{}
-	defer C.CStrings_Close(cDecoded)
+	defer C.WeChatQRCode_CStrings_Close(cDecoded)
 	cCodes := C.NewStringsVector()
 	defer C.free(unsafe.Pointer(cCodes))
 
 	cDecoded = C.WeChatQRCode_DetectAndDecode((C.WeChatQRCode)(wq.p), (C.Mat)(img.Ptr()), &(cMats), cCodes)
-	ps := make([]Mat, cMats.length)
+	ps := make([]gocv.Mat, cMats.length)
 
 	for i := C.int(0); i < cMats.length; i++ {
-		ps[i].p = C.Mats_get(cMats, i)
+		ps[i] = gocv.NewMat()
+		C.WeChatQRCode_Mats_to(cMats, i, (C.Mat)(ps[i].Ptr()))
 	}
 
 	*point = ps
@@ -49,4 +51,14 @@ func (wq *WeChatQRCode) DetectAndDecode(img Mat, point *[]Mat) []string {
 	}
 
 	return result
+}
+
+func toGoStrings(strs C.CStrings) []string {
+	length := int(strs.length)
+	tmpslice := (*[1 << 20]*C.char)(unsafe.Pointer(strs.strs))[:length:length]
+	gostrings := make([]string, length)
+	for i, s := range tmpslice {
+		gostrings[i] = C.GoString(s)
+	}
+	return gostrings
 }
