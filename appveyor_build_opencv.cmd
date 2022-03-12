@@ -17,6 +17,10 @@ cmake C:\opencv\opencv-4.5.5 -G "MinGW Makefiles" -BC:\opencv\build -DENABLE_CXX
 mingw32-make -j%NUMBER_OF_PROCESSORS%
 mingw32-make install
 appveyor DownloadFile https://raw.githubusercontent.com/opencv/opencv_extra/master/testdata/dnn/bvlc_googlenet.prototxt -FileName C:\opencv\testdata\bvlc_googlenet.prototxt
+appveyor DownloadFile https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.caffemodel -FileName C:\opencv\testdata\detect.caffemodel
+appveyor DownloadFile https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.prototxt -FileName C:\opencv\testdata\detect.prototxt
+appveyor DownloadFile https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.caffemodel -FileName C:\opencv\testdata\sr.caffemodel
+appveyor DownloadFile https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.prototxt -FileName C:\opencv\testdata\sr.prototxt
 appveyor DownloadFile http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel -FileName C:\opencv\testdata\bvlc_googlenet.caffemodel
 appveyor DownloadFile https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip -FileName C:\opencv\testdata\inception5h.zip
 appveyor DownloadFile https://github.com/onnx/models/raw/main/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx -FileName C:\opencv\testdata\googlenet-9.onnx
