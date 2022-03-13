@@ -100,3 +100,7 @@ void FastNlMeansDenoisingColored(Mat src, Mat dst) {
 void FastNlMeansDenoisingColoredWithParams(Mat src, Mat dst, float h, float hColor, int templateWindowSize, int searchWindowSize) {
     cv::fastNlMeansDenoisingColored(*src, *dst, h, hColor, templateWindowSize, searchWindowSize);
 }
+
+void Stylization(Mat src, Mat dst, float sigma_s, float sigma_r) {
+    cv::stylization(*src, *dst, sigma_s, sigma_r);
+}

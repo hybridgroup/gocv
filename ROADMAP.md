@@ -203,7 +203,7 @@ Your pull requests will be greatly appreciated!
     - [ ] [detailEnhance](https://docs.opencv.org/master/df/dac/group__photo__render.html#ga0de660cb6f371a464a74c7b651415975)
     - [ ] [edgePreservingFilter](https://docs.opencv.org/master/df/dac/group__photo__render.html#gafaee2977597029bc8e35da6e67bd31f7)
     - [ ] [pencilSketch](https://docs.opencv.org/master/df/dac/group__photo__render.html#gae5930dd822c713b36f8529b21ddebd0c)
-    - [ ] [stylization](https://docs.opencv.org/master/df/dac/group__photo__render.html#gacb0f7324017df153d7b5d095aed53206)
+    - [X] [stylization](https://docs.opencv.org/master/df/dac/group__photo__render.html#gacb0f7324017df153d7b5d095aed53206)
 
 - [ ] stitching. Images stitching
 

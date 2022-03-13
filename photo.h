@@ -44,6 +44,8 @@ AlignMTB AlignMTB_CreateWithParams(int max_bits, int exclude_range, bool cut);
 void AlignMTB_Process(AlignMTB b, struct Mats src, struct Mats *dst);
 void AlignMTB_Close(AlignMTB b);
 
+void Stylization(Mat src, Mat dst, float sigma_s, float sigma_r);
+
 #ifdef __cplusplus
 }
 #endif

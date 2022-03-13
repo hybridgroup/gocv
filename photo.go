@@ -264,3 +264,15 @@ func FastNlMeansDenoisingColored(src Mat, dst *Mat) {
 func FastNlMeansDenoisingColoredWithParams(src Mat, dst *Mat, h float32, hColor float32, templateWindowSize int, searchWindowSize int) {
 	C.FastNlMeansDenoisingColoredWithParams(src.p, dst.p, C.float(h), C.float(hColor), C.int(templateWindowSize), C.int(searchWindowSize))
 }
+
+// Stylization aims to produce digital imagery with a wide variety of effects
+// not focused on photorealism. Edge-aware filters are ideal for stylization,
+// as they can abstract regions of low contrast while preserving, or enhancing,
+// high-contrast features.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/df/dac/group__photo__render.html#gacb0f7324017df153d7b5d095aed53206
+//
+func Stylization(src Mat, dst *Mat, sigma_s, sigma_r float32) {
+	C.Stylization(src.p, dst.p, C.float(sigma_s), C.float(sigma_r))
+}
