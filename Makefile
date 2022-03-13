@@ -252,6 +252,9 @@ install_openvino: deps download download_openvino sudo_pre_install_clean build_o
 # Do everything statically.
 install_static: deps download sudo_pre_install_clean build_static sudo_install clean verify
 
+# Do everything with non-free modules from cpencv_contrib.
+install_nonfree: deps download sudo_pre_install_clean build_nonfree sudo_install clean verify
+
 # Do everything with openvino and cuda.
 install_all: deps download download_openvino sudo_pre_install_clean build_openvino_package sudo_install_openvino build_all sudo_install clean verify_openvino verify_cuda
 
