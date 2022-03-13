@@ -227,18 +227,40 @@ func (b *AlignMTB) Process(src []Mat, dst *[]Mat) {
 	return
 }
 
+// FastNlMeansDenoising performs image denoising using Non-local Means Denoising algorithm
+// http://www.ipol.im/pub/algo/bcm_non_local_means_denoising/
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d1/d79/group__photo__denoise.html#ga4c6b0031f56ea3f98f768881279ffe93
+//
 func FastNlMeansDenoising(src Mat, dst *Mat) {
 	C.FastNlMeansDenoising(src.p, dst.p)
 }
 
+// FastNlMeansDenoisingWithParams performs image denoising using Non-local Means Denoising algorithm
+// http://www.ipol.im/pub/algo/bcm_non_local_means_denoising/
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d1/d79/group__photo__denoise.html#ga4c6b0031f56ea3f98f768881279ffe93
+//
 func FastNlMeansDenoisingWithParams(src Mat, dst *Mat, h float32, templateWindowSize int, searchWindowSize int) {
 	C.FastNlMeansDenoisingWithParams(src.p, dst.p, C.float(h), C.int(templateWindowSize), C.int(searchWindowSize))
 }
 
+// FastNlMeansDenoisingColored is a modification of fastNlMeansDenoising function for colored images.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d1/d79/group__photo__denoise.html#ga21abc1c8b0e15f78cd3eff672cb6c476
+//
 func FastNlMeansDenoisingColored(src Mat, dst *Mat) {
 	C.FastNlMeansDenoisingColored(src.p, dst.p)
 }
 
+// FastNlMeansDenoisingColoredWithParams is a modification of fastNlMeansDenoising function for colored images.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d1/d79/group__photo__denoise.html#ga21abc1c8b0e15f78cd3eff672cb6c476
+//
 func FastNlMeansDenoisingColoredWithParams(src Mat, dst *Mat, h float32, hColor float32, templateWindowSize int, searchWindowSize int) {
 	C.FastNlMeansDenoisingColoredWithParams(src.p, dst.p, C.float(h), C.float(hColor), C.int(templateWindowSize), C.int(searchWindowSize))
 }
