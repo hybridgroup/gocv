@@ -201,3 +201,20 @@ func TestStylization(t *testing.T) {
 		t.Error("Invlalid ColorChange test")
 	}
 }
+
+func TestPencilSketch(t *testing.T) {
+	src := NewMatWithSize(20, 20, MatTypeCV8UC3)
+	defer src.Close()
+	dst1 := NewMat()
+	defer dst1.Close()
+	dst2 := NewMat()
+	defer dst2.Close()
+
+	PencilSketch(src, &dst1, &dst2, 100.0, .5, 0.05)
+	if dst1.Empty() || dst1.Rows() != src.Rows() || dst1.Cols() != src.Cols() {
+		t.Error("Invlalid ColorChange test")
+	}
+	if dst2.Empty() || dst2.Rows() != src.Rows() || dst2.Cols() != src.Cols() {
+		t.Error("Invlalid ColorChange test")
+	}
+}

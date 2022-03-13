@@ -265,6 +265,15 @@ func FastNlMeansDenoisingColoredWithParams(src Mat, dst *Mat, h float32, hColor 
 	C.FastNlMeansDenoisingColoredWithParams(src.p, dst.p, C.float(h), C.float(hColor), C.int(templateWindowSize), C.int(searchWindowSize))
 }
 
+// PencilSketch pencil-like non-photorealistic line drawing.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/df/dac/group__photo__render.html#gae5930dd822c713b36f8529b21ddebd0c
+//
+func PencilSketch(src Mat, dst1, dst2 *Mat, sigma_s, sigma_r, shade_factor float32) {
+	C.PencilSketch(src.p, dst1.p, dst2.p, C.float(sigma_s), C.float(sigma_r), C.float(shade_factor))
+}
+
 // Stylization aims to produce digital imagery with a wide variety of effects
 // not focused on photorealism. Edge-aware filters are ideal for stylization,
 // as they can abstract regions of low contrast while preserving, or enhancing,
