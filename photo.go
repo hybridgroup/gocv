@@ -274,6 +274,26 @@ func DetailEnhance(src Mat, dst *Mat, sigma_s, sigma_r float32) {
 	C.DetailEnhance(src.p, dst.p, C.float(sigma_s), C.float(sigma_r))
 }
 
+type EdgeFilter int
+
+const (
+	// RecursFilter Recursive Filtering.
+	RecursFilter EdgeFilter = 1
+
+	// NormconvFilter Normalized Convolution Filtering.
+	NormconvFilter = 2
+)
+
+// EdgePreservingFilter filtering is the fundamental operation in image and video processing.
+// Edge-preserving smoothing filters are used in many different applications.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/df/dac/group__photo__render.html#gafaee2977597029bc8e35da6e67bd31f7
+//
+func EdgePreservingFilter(src Mat, dst *Mat, filter EdgeFilter, sigma_s, sigma_r float32) {
+	C.EdgePreservingFilter(src.p, dst.p, C.int(filter), C.float(sigma_s), C.float(sigma_r))
+}
+
 // PencilSketch pencil-like non-photorealistic line drawing.
 //
 // For further details, please see:

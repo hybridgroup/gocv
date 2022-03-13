@@ -198,7 +198,19 @@ func TestDetailEnhance(t *testing.T) {
 
 	DetailEnhance(src, &dst, 100.0, .5)
 	if dst.Empty() || dst.Rows() != src.Rows() || dst.Cols() != src.Cols() {
-		t.Error("Invlalid ColorChange test")
+		t.Error("Invlalid DetailEnhance test")
+	}
+}
+
+func TestEdgePreservingFilter(t *testing.T) {
+	src := NewMatWithSize(20, 20, MatTypeCV8UC3)
+	defer src.Close()
+	dst := NewMat()
+	defer dst.Close()
+
+	EdgePreservingFilter(src, &dst, RecursFilter, 100.0, .5)
+	if dst.Empty() || dst.Rows() != src.Rows() || dst.Cols() != src.Cols() {
+		t.Error("Invalid EdgePreservingFilter test")
 	}
 }
 
@@ -210,7 +222,7 @@ func TestStylization(t *testing.T) {
 
 	Stylization(src, &dst, 100.0, .5)
 	if dst.Empty() || dst.Rows() != src.Rows() || dst.Cols() != src.Cols() {
-		t.Error("Invlalid ColorChange test")
+		t.Error("Invlalid Stylization test")
 	}
 }
 
@@ -224,9 +236,9 @@ func TestPencilSketch(t *testing.T) {
 
 	PencilSketch(src, &dst1, &dst2, 100.0, .5, 0.05)
 	if dst1.Empty() || dst1.Rows() != src.Rows() || dst1.Cols() != src.Cols() {
-		t.Error("Invlalid ColorChange test")
+		t.Error("Invlalid PencilSketch test")
 	}
 	if dst2.Empty() || dst2.Rows() != src.Rows() || dst2.Cols() != src.Cols() {
-		t.Error("Invlalid ColorChange test")
+		t.Error("Invlalid PencilSketch test")
 	}
 }

@@ -101,6 +101,10 @@ void FastNlMeansDenoisingColoredWithParams(Mat src, Mat dst, float h, float hCol
     cv::fastNlMeansDenoisingColored(*src, *dst, h, hColor, templateWindowSize, searchWindowSize);
 }
 
+void EdgePreservingFilter(Mat src, Mat dst, int filter, float sigma_s, float sigma_r) {
+    cv::edgePreservingFilter(*src, *dst, filter, sigma_s, sigma_r);
+}
+
 void DetailEnhance(Mat src, Mat dst, float sigma_s, float sigma_r) {
     cv::detailEnhance(*src, *dst, sigma_s, sigma_r);
 }
