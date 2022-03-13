@@ -44,6 +44,7 @@ AlignMTB AlignMTB_CreateWithParams(int max_bits, int exclude_range, bool cut);
 void AlignMTB_Process(AlignMTB b, struct Mats src, struct Mats *dst);
 void AlignMTB_Close(AlignMTB b);
 
+void DetailEnhance(Mat src, Mat dst, float sigma_s, float sigma_r);
 void PencilSketch(Mat src, Mat dst1, Mat dst2, float sigma_s, float sigma_r, float shade_factor);
 void Stylization(Mat src, Mat dst, float sigma_s, float sigma_r);
 

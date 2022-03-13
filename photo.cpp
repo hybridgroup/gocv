@@ -101,6 +101,10 @@ void FastNlMeansDenoisingColoredWithParams(Mat src, Mat dst, float h, float hCol
     cv::fastNlMeansDenoisingColored(*src, *dst, h, hColor, templateWindowSize, searchWindowSize);
 }
 
+void DetailEnhance(Mat src, Mat dst, float sigma_s, float sigma_r) {
+    cv::detailEnhance(*src, *dst, sigma_s, sigma_r);
+}
+
 void PencilSketch(Mat src, Mat dst1, Mat dst2, float sigma_s, float sigma_r, float shade_factor) {
     cv::pencilSketch(*src, *dst1, *dst2, sigma_s, sigma_r, shade_factor);
 }

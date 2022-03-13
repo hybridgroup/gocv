@@ -190,6 +190,18 @@ func TestFastNlMeansDenoisingColoredWithParams(t *testing.T) {
 	}
 }
 
+func TestDetailEnhance(t *testing.T) {
+	src := NewMatWithSize(20, 20, MatTypeCV8UC3)
+	defer src.Close()
+	dst := NewMat()
+	defer dst.Close()
+
+	DetailEnhance(src, &dst, 100.0, .5)
+	if dst.Empty() || dst.Rows() != src.Rows() || dst.Cols() != src.Cols() {
+		t.Error("Invlalid ColorChange test")
+	}
+}
+
 func TestStylization(t *testing.T) {
 	src := NewMatWithSize(20, 20, MatTypeCV8UC3)
 	defer src.Close()

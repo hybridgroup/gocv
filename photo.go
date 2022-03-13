@@ -265,6 +265,15 @@ func FastNlMeansDenoisingColoredWithParams(src Mat, dst *Mat, h float32, hColor 
 	C.FastNlMeansDenoisingColoredWithParams(src.p, dst.p, C.float(h), C.float(hColor), C.int(templateWindowSize), C.int(searchWindowSize))
 }
 
+// DetailEnhance filter enhances the details of a particular image
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/df/dac/group__photo__render.html#gae5930dd822c713b36f8529b21ddebd0c
+//
+func DetailEnhance(src Mat, dst *Mat, sigma_s, sigma_r float32) {
+	C.DetailEnhance(src.p, dst.p, C.float(sigma_s), C.float(sigma_r))
+}
+
 // PencilSketch pencil-like non-photorealistic line drawing.
 //
 // For further details, please see:
