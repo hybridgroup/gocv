@@ -1,3 +1,37 @@
+0.30.0
+---
+* **all**
+    * update to OpenCV 4.5.5
+* **build**
+    * add install_nonfree make task to build all opencv_contrib modules
+    * correct download location for onnx test file
+    * Update Makefile for missing version changes
+* **core**
+    * correct how memory is being allocated for Eye(), Zeros(), and Ones() to address issue #930
+* **calib3d** 
+    * Adding support for estimateAffine2DWithParams (#924)
+* **imgproc**
+    * Add DrawContoursWithParams function
+* **photo**
+    * Add bindings for fastNlMeansDenoising and fastNlMeansDenoisingColored
+    * add detailEnhance function
+    * add EdgePreservingFilter function
+    * add PencilSketch function
+    * add stylization function
+* **docs**
+    * add godoc comments for FastNlMeansDenoising functions
+    * update README with info on latest mingw-w64 t use for Windows builds
+    * dnn pose detect examples correct the order of the argument variable name
+* **examples**
+    * Fixed memory leaks in the motion detection example
+* **openvino**
+    * Update env.sh and README.md
+* **windows**
+    * use mingw-w64 8.1.0 for protobuf compile
+* **contrib**
+    * add cv::wechat_qrcode::WeChatQRCode (#949)
+    * Update cgo_static.go
+
 0.29.0
 ---
 * **all**
