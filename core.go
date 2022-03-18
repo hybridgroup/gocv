@@ -2119,6 +2119,9 @@ func NewPointsVector() PointsVector {
 // NewPointsVectorFromPoints returns a new PointsVector that has been
 // initialized to a slice of slices of image.Point.
 func NewPointsVectorFromPoints(pts [][]image.Point) PointsVector {
+	if len(pts) <= 0 {
+		return NewPointsVector()
+	}
 	points := make([]C.struct_Points, len(pts))
 
 	for i, pt := range pts {
