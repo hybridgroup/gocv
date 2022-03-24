@@ -39,6 +39,8 @@ void CalcOpticalFlowPyrLKWithParams(Mat prevImg, Mat nextImg, Mat prevPts, Mat n
 void CalcOpticalFlowFarneback(Mat prevImg, Mat nextImg, Mat flow, double pyrScale, int levels,
                               int winsize, int iterations, int polyN, double polySigma, int flags);
 
+double FindTransformECC(Mat templateImage, Mat inputImage, Mat warpMatrix, int motionType, TermCriteria criteria, Mat inputMask, int gaussFiltSize);
+
 bool Tracker_Init(Tracker self, Mat image, Rect boundingBox);
 bool Tracker_Update(Tracker self, Mat image, Rect* boundingBox);
 

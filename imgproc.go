@@ -1568,6 +1568,12 @@ const (
 
 	// InterpolationMax indicates use maximum interpolation.
 	InterpolationMax InterpolationFlags = 7
+
+	// WarpFillOutliers fills all of the destination image pixels. If some of them correspond to outliers in the source image, they are set to zero.
+	WarpFillOutliers = 8
+
+	// WarpInverseMap, inverse transformation.
+	WarpInverseMap = 16
 )
 
 // Resize resizes an image.
@@ -1649,6 +1655,7 @@ func WarpAffineWithParams(src Mat, dst *Mat, m Mat, sz image.Point, flags Interp
 }
 
 // WarpPerspective applies a perspective transformation to an image.
+// For more parameters please check WarpPerspectiveWithParams.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gaf73673a7e8e18ec6963e3774e6a94b87
@@ -1659,6 +1666,24 @@ func WarpPerspective(src Mat, dst *Mat, m Mat, sz image.Point) {
 	}
 
 	C.WarpPerspective(src.p, dst.p, m.p, pSize)
+}
+
+// WarpPerspectiveWithParams applies a perspective transformation to an image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#gaf73673a7e8e18ec6963e3774e6a94b87
+func WarpPerspectiveWithParams(src Mat, dst *Mat, m Mat, sz image.Point, flags InterpolationFlags, borderType BorderType, borderValue color.RGBA) {
+	pSize := C.struct_Size{
+		width:  C.int(sz.X),
+		height: C.int(sz.Y),
+	}
+	bv := C.struct_Scalar{
+		val1: C.double(borderValue.B),
+		val2: C.double(borderValue.G),
+		val3: C.double(borderValue.R),
+		val4: C.double(borderValue.A),
+	}
+	C.WarpPerspectiveWithParams(src.p, dst.p, m.p, pSize, C.int(flags), C.int(borderType), bv)
 }
 
 // Watershed performs a marker-based image segmentation using the watershed algorithm.
