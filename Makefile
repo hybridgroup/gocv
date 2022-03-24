@@ -250,7 +250,7 @@ install_cuda: deps download sudo_pre_install_clean build_cuda sudo_install clean
 install_openvino: deps download download_openvino sudo_pre_install_clean build_openvino_package sudo_install_openvino build_openvino sudo_install clean verify_openvino
 
 # Do everything statically.
-install_static: deps download sudo_pre_install_clean build_static sudo_install clean verify
+install_static: deps download sudo_pre_install_clean build_static sudo_install clean verify_static
 
 # Do everything with non-free modules from cpencv_contrib.
 install_nonfree: deps download sudo_pre_install_clean build_nonfree sudo_install clean verify
@@ -275,6 +275,10 @@ sudo_install_openvino:
 # Build a minimal Go app to confirm gocv works.
 verify:
 	go run ./cmd/version/main.go
+
+# Build a minimal Go app to confirm gocv works with statically built OpenCV.
+verify_static:
+	go run -tags static ./cmd/version/main.go
 
 # Build a minimal Go app to confirm gocv cuda works.
 verify_cuda:
