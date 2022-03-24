@@ -501,6 +501,13 @@ void WarpPerspective(Mat src, Mat dst, Mat m, Size dsize) {
     cv::warpPerspective(*src, *dst, *m, sz);
 }
 
+void WarpPerspectiveWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode,
+                               Scalar borderValue) {
+    cv::Size sz(dsize.width, dsize.height);
+    cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
+    cv::warpPerspective(*src, *dst, *rot_mat, sz, flags, borderMode, c);
+}
+
 void Watershed(Mat image, Mat markers) {
     cv::watershed(*image, *markers);
 }

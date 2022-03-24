@@ -47,6 +47,10 @@ void CalcOpticalFlowPyrLKWithParams(Mat prevImg, Mat nextImg, Mat prevPts, Mat n
     cv::calcOpticalFlowPyrLK(*prevImg, *nextImg, *prevPts, *nextPts, *status, *err, sz, maxLevel, *criteria, flags, minEigThreshold);
 }
 
+double FindTransformECC(Mat templateImage, Mat inputImage, Mat warpMatrix, int motionType, TermCriteria criteria, Mat inputMask, int gaussFiltSize){
+    return cv::findTransformECC(*templateImage, *inputImage, *warpMatrix, motionType, *criteria, *inputMask, gaussFiltSize);
+}
+
 bool Tracker_Init(Tracker self, Mat image, Rect boundingBox) {
     cv::Rect bb(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
 
