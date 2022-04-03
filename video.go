@@ -175,7 +175,7 @@ func CalcOpticalFlowPyrLKWithParams(prevImg Mat, nextImg Mat, prevPts Mat, nextP
 // For futther details, please see:
 // https://docs.opencv.org/4.x/dc/d6b/group__video__track.html#ga1aa357007eaec11e9ed03500ecbcbe47
 //
-func FindTransformECC(templateImage Mat, inputImage Mat, warpMatrix Mat, motionType int, criteria TermCriteria, inputMask Mat, gaussFiltSize int) float64 {
+func FindTransformECC(templateImage Mat, inputImage Mat, warpMatrix *Mat, motionType int, criteria TermCriteria, inputMask Mat, gaussFiltSize int) float64 {
 	return float64(C.FindTransformECC(templateImage.p, inputImage.p, warpMatrix.p, C.int(motionType), criteria.p, inputMask.p, C.int(gaussFiltSize)))
 }
 

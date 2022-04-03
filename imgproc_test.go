@@ -1930,6 +1930,48 @@ func TestWarpPerspective(t *testing.T) {
 	}
 }
 
+func TestWarpPerspectiveWithParams(t *testing.T) {
+	img := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer img.Close()
+
+	w := img.Cols()
+	h := img.Rows()
+
+	s := []image.Point{
+		image.Pt(0, 0),
+		image.Pt(10, 5),
+		image.Pt(10, 10),
+		image.Pt(5, 10),
+	}
+	pvs := NewPointVectorFromPoints(s)
+	defer pvs.Close()
+
+	d := []image.Point{
+		image.Pt(0, 0),
+		image.Pt(10, 0),
+		image.Pt(10, 10),
+		image.Pt(0, 10),
+	}
+	pvd := NewPointVectorFromPoints(d)
+	defer pvd.Close()
+
+	m := GetPerspectiveTransform(pvs, pvd)
+	defer m.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	WarpPerspectiveWithParams(img, &dst, m, image.Pt(w, h), InterpolationLinear, BorderConstant, color.RGBA{})
+
+	if dst.Cols() != w {
+		t.Errorf("TestWarpPerspectiveWithParams(): unexpected cols = %v, want = %v", dst.Cols(), w)
+	}
+
+	if dst.Rows() != h {
+		t.Errorf("TestWarpPerspectiveWithParams(): unexpected rows = %v, want = %v", dst.Rows(), h)
+	}
+}
+
 func TestDrawContours(t *testing.T) {
 	img := NewMatWithSize(100, 200, MatTypeCV8UC1)
 	defer img.Close()
