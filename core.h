@@ -304,6 +304,7 @@ int Mat_Cols(Mat m);
 int Mat_Channels(Mat m);
 int Mat_Type(Mat m);
 int Mat_Step(Mat m);
+int Mat_ElemSize(Mat m);
 Mat Eye(int rows, int cols, int type);
 Mat Zeros(int rows, int cols, int type);
 Mat Ones(int rows, int cols, int type);
