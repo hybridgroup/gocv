@@ -210,6 +210,10 @@ int Mat_Total(Mat m) {
     return m->total();
 }
 
+int Mat_ElemSize(Mat m){
+    return m->elemSize();
+}
+
 void Mat_Size(Mat m, IntVector* res) {
     cv::MatSize ms(m->size);
     int* ids = new int[ms.dims()];

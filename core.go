@@ -668,6 +668,11 @@ func (m *Mat) Step() int {
 	return int(C.Mat_Step(m.p))
 }
 
+// ElemSize returns the matrix element size in bytes.
+func (m *Mat) ElemSize() int {
+	return int(C.Mat_ElemSize(m.p))
+}
+
 // GetUCharAt returns a value from a specific row/col
 // in this Mat expecting it to be of type uchar aka CV_8U.
 func (m *Mat) GetUCharAt(row int, col int) uint8 {
