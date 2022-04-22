@@ -188,6 +188,8 @@ const (
 	JPEGFileExt FileExt = ".jpg"
 	// GIFFileExt is the file extension for GIF.
 	GIFFileExt FileExt = ".gif"
+	// WWEBPFileExt is the file extension for WEBP.
+	WWEBPFileExt FileExt = ".webp"
 )
 
 // IMEncode encodes an image Mat into a memory buffer.
