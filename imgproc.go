@@ -1729,41 +1729,6 @@ func GetPerspectiveTransform2f(src, dst Point2fVector) Mat {
 	return newMat(C.GetPerspectiveTransform2f(src.p, dst.p))
 }
 
-// GetAffineTransform returns a 2x3 affine transformation matrix for the
-// corresponding 3 point pairs as image.Point.
-//
-// For further details, please see:
-// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga8f6d378f9f8eebb5cb55cd3ae295a999
-func GetAffineTransform(src, dst PointVector) Mat {
-	return newMat(C.GetAffineTransform(src.p, dst.p))
-}
-
-// GetAffineTransform2f returns a 2x3 affine transformation matrix for the
-// corresponding 3 point pairs as gocv.Point2f.
-//
-// For further details, please see:
-// https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga8f6d378f9f8eebb5cb55cd3ae295a999
-func GetAffineTransform2f(src, dst Point2fVector) Mat {
-	return newMat(C.GetAffineTransform2f(src.p, dst.p))
-}
-
-type HomographyMethod int
-
-const (
-	HomograpyMethodAllPoints HomographyMethod = 0
-	HomograpyMethodLMEDS     HomographyMethod = 4
-	HomograpyMethodRANSAC    HomographyMethod = 8
-)
-
-// FindHomography finds an optimal homography matrix using 4 or more point pairs (as opposed to GetPerspectiveTransform, which uses exactly 4)
-//
-// For further details, please see:
-// https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga4abc2ece9fab9398f2e560d53c8c9780
-//
-func FindHomography(srcPoints Mat, dstPoints *Mat, method HomographyMethod, ransacReprojThreshold float64, mask *Mat, maxIters int, confidence float64) Mat {
-	return newMat(C.FindHomography(srcPoints.Ptr(), dstPoints.Ptr(), C.int(method), C.double(ransacReprojThreshold), mask.Ptr(), C.int(maxIters), C.double(confidence)))
-}
-
 // DrawContours draws contours outlines or filled contours.
 //
 // For further details, please see:
@@ -1929,10 +1894,6 @@ func (c *CLAHE) Close() error {
 //
 func (c *CLAHE) Apply(src Mat, dst *Mat) {
 	C.CLAHE_Apply((C.CLAHE)(c.p), src.p, dst.p)
-}
-
-func InvertAffineTransform(src Mat, dst *Mat) {
-	C.InvertAffineTransform(src.p, dst.p)
 }
 
 // Apply phaseCorrelate.

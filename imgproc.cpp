@@ -527,24 +527,6 @@ Mat GetPerspectiveTransform2f(Point2fVector src, Point2fVector dst) {
     return new cv::Mat(cv::getPerspectiveTransform(*src, *dst));
 }
 
-Mat GetAffineTransform(PointVector src, PointVector dst) {
-    std::vector<cv::Point2f> src_pts;
-    copyPointVectorToPoint2fVector(src, &src_pts);
-
-    std::vector<cv::Point2f> dst_pts;
-    copyPointVectorToPoint2fVector(dst, &dst_pts);
-
-    return new cv::Mat(cv::getAffineTransform(src_pts, dst_pts));
-}
-
-Mat GetAffineTransform2f(Point2fVector src, Point2fVector dst) {
-    return new cv::Mat(cv::getAffineTransform(*src, *dst));
-}
-
-Mat FindHomography(Mat src, Mat dst, int method, double ransacReprojThreshold, Mat mask, const int maxIters, const double confidence) {
-    return new cv::Mat(cv::findHomography(*src, *dst, method, ransacReprojThreshold, *mask, maxIters, confidence));
-}
-
 void DrawContours(Mat src, PointsVector contours, int contourIdx, Scalar color, int thickness) {
     cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
     cv::drawContours(*src, *contours, contourIdx, c, thickness);
@@ -616,10 +598,6 @@ void CLAHE_Close(CLAHE c) {
 
 void CLAHE_Apply(CLAHE c, Mat src, Mat dst) {
     (*c)->apply(*src, *dst);
-}
-
-void InvertAffineTransform(Mat src, Mat dst) {
-	cv::invertAffineTransform(*src, *dst);
 }
 
 Point2f PhaseCorrelate(Mat src1, Mat src2, Mat window, double* response) {

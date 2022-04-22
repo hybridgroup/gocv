@@ -1778,116 +1778,6 @@ func TestGetPerspectiveTransform2f(t *testing.T) {
 	}
 }
 
-func TestGetAffineTransform(t *testing.T) {
-	src := []image.Point{
-		image.Pt(0, 0),
-		image.Pt(10, 5),
-		image.Pt(10, 10),
-	}
-	pvsrc := NewPointVectorFromPoints(src)
-	defer pvsrc.Close()
-
-	dst := []image.Point{
-		image.Pt(0, 0),
-		image.Pt(10, 0),
-		image.Pt(10, 10),
-	}
-	pvdst := NewPointVectorFromPoints(dst)
-	defer pvdst.Close()
-
-	m := GetAffineTransform(pvsrc, pvdst)
-	defer m.Close()
-
-	if m.Cols() != 3 {
-		t.Errorf("TestGetAffineTransform(): unexpected cols = %v, want = %v", m.Cols(), 3)
-	}
-	if m.Rows() != 2 {
-		t.Errorf("TestGetAffineTransform(): unexpected rows = %v, want = %v", m.Rows(), 2)
-	}
-}
-
-func TestGetAffineTransform2f(t *testing.T) {
-	src := []Point2f{
-		{0, 0},
-		{10.5, 5.5},
-		{10.5, 10.5},
-	}
-	dst := []Point2f{
-		{0, 0},
-		{590.20, 24.12},
-		{100.12, 150.21},
-	}
-
-	pvsrc := NewPoint2fVectorFromPoints(src)
-	defer pvsrc.Close()
-
-	pvdst := NewPoint2fVectorFromPoints(dst)
-	defer pvdst.Close()
-
-	m := GetAffineTransform2f(pvsrc, pvdst)
-	defer m.Close()
-
-	if m.Cols() != 3 {
-		t.Errorf("TestGetAffineTransform2f(): unexpected cols = %v, want = %v", m.Cols(), 3)
-	}
-	if m.Rows() != 2 {
-		t.Errorf("TestGetAffineTransform2f(): unexpected rows = %v, want = %v", m.Rows(), 2)
-	}
-}
-
-func TestFindHomography(t *testing.T) {
-	src := NewMatWithSize(4, 1, MatTypeCV64FC2)
-	defer src.Close()
-	dst := NewMatWithSize(4, 1, MatTypeCV64FC2)
-	defer dst.Close()
-
-	srcPoints := []Point2f{
-		{193, 932},
-		{191, 378},
-		{1497, 183},
-		{1889, 681},
-	}
-	dstPoints := []Point2f{
-		{51.51206544281359, -0.10425475260813055},
-		{51.51211051314331, -0.10437947532732306},
-		{51.512222354139325, -0.10437679311830816},
-		{51.51214828037607, -0.1042212249954444},
-	}
-
-	for i, point := range srcPoints {
-		src.SetDoubleAt(i, 0, float64(point.X))
-		src.SetDoubleAt(i, 1, float64(point.Y))
-	}
-
-	for i, point := range dstPoints {
-		dst.SetDoubleAt(i, 0, float64(point.X))
-		dst.SetDoubleAt(i, 1, float64(point.Y))
-	}
-
-	mask := NewMat()
-	defer mask.Close()
-
-	m := FindHomography(src, &dst, HomograpyMethodAllPoints, 3, &mask, 2000, 0.995)
-	defer m.Close()
-
-	pvsrc := NewPoint2fVectorFromPoints(srcPoints)
-	defer pvsrc.Close()
-
-	pvdst := NewPoint2fVectorFromPoints(dstPoints)
-	defer pvdst.Close()
-
-	m2 := GetPerspectiveTransform2f(pvsrc, pvdst)
-	defer m2.Close()
-
-	for row := 0; row < 3; row++ {
-		for col := 0; col < 3; col++ {
-			if math.Abs(m.GetDoubleAt(row, col)-m2.GetDoubleAt(row, col)) > 0.002 {
-				t.Errorf("expected little difference between GetPerspectiveTransform2f and FindHomography results, got %f for row %d col %d", math.Abs(m.GetDoubleAt(row, col)-m2.GetDoubleAt(row, col)), row, col)
-			}
-		}
-	}
-}
-
 func TestWarpPerspective(t *testing.T) {
 	img := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
 	defer img.Close()
@@ -2294,20 +2184,6 @@ func TestFitLine(t *testing.T) {
 
 	if ok := line.Empty(); ok {
 		t.Errorf("FitLine(): line is empty")
-	}
-}
-
-func TestInvertAffineTransform(t *testing.T) {
-	src := NewMatWithSize(2, 3, MatTypeCV32F)
-	defer src.Close()
-
-	dst := NewMatWithSize(2, 3, MatTypeCV32F)
-	defer dst.Close()
-
-	InvertAffineTransform(src, &dst)
-
-	if ok := dst.Empty(); ok {
-		t.Errorf("InvertAffineTransform(): dst is empty")
 	}
 }
 
