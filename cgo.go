@@ -10,6 +10,7 @@ package gocv
 #cgo !windows CFLAGS: -I/usr/local/include -I/usr/local/include/opencv4
 #cgo !windows CPPFLAGS: -I/usr/local/include -I/usr/local/include/opencv4
 #cgo !windows CXXFLAGS: -I/usr/local/include  -I/usr/local/include/opencv4
-#cgo !windows LDFLAGS: -L/usr/local/lib -L/usr/local/lib/opencv4/3rdparty -lopencv_gapi -lopencv_imgcodecs -lopencv_imgproc -lopencv_core -lz -ljpeg -lpng -lgif -ldl -lm -lpthread -lrt -lquadmath
+#cgo linux LDFLAGS: -L/usr/local/lib -L/usr/local/lib/opencv4/3rdparty -lopencv_gapi -lopencv_imgcodecs -lopencv_imgproc -lopencv_core -lz -ljpeg -lpng -lgif -ldl -lm -lpthread -lrt -lquadmath
+#cgo darwin LDFLAGS: -L/usr/local/lib -L/usr/local/lib/opencv4/3rdparty -lopencv_gapi -lopencv_imgcodecs -lopencv_imgproc -lopencv_core -lz -ljpeg -lpng -lgif -ldl -lm -lpthread
 */
 import "C"
