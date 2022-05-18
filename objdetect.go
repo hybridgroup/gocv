@@ -252,7 +252,7 @@ func (a *QRCodeDetector) DetectMulti(input Mat, points *Mat) bool {
 	return bool(result)
 }
 
-// Detects QR codes in image and finds of the quadrangles containing the codes and decode the decode the QRCodes to strings.
+// Detects QR codes in image, finds the quadrangles containing the codes, and decodes the QRCodes to strings.
 //
 // Each quadrangle would be returned as a row in the `points` Mat and each point is a Vecf.
 // Returns true as long as some QR code was detected even in case where the decoding failed
