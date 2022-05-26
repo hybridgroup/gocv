@@ -1,5 +1,9 @@
 #include "ximgproc.h"
 
+void anisotropicDiffusion(Mat src, Mat dst, float alpha, float K, int niters) {
+    cv::ximgproc::anisotropicDiffusion(*src, *dst, alpha, K, niters);	
+}
+
 void edgePreservingFilter(Mat src, Mat dst, int d, float threshold) {
     cv::ximgproc::edgePreservingFilter(*src, *dst, d, threshold);
 }

@@ -9,6 +9,17 @@ import (
 	"gocv.io/x/gocv"
 )
 
+// AnisotropicDiffusion performs anisotropic diffusion on an image.
+//
+// The function applies Perona-Malik anisotropic diffusion to an image.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/df/d2d/group__ximgproc.html#gaffedd976e0a8efb5938107acab185ec2
+//
+func AnisotropicDiffusion(src gocv.Mat, dst *gocv.Mat, alpha float32, k float32, niters int) {
+	C.anisotropicDiffusion(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.float(alpha), C.float(k), C.int(niters))
+}
+
 // EdgePreservingFilter smoothes an image using the Edge-Preserving filter.
 //
 // For further details, please see:
