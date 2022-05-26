@@ -12,6 +12,10 @@ void niBlackThreshold(Mat src, Mat dst, float maxValue, int type, int blockSize,
     cv::ximgproc::niBlackThreshold(*src, *dst, maxValue, type, blockSize, k, binarizationMethod, r);
 }
 
+void PeiLinNormalization(Mat src, Mat dst) {
+    cv::ximgproc::PeiLinNormalization(*src, *dst);
+}
+
 void thinning(Mat src, Mat dst, int typ) {
     cv::ximgproc::thinning(*src, *dst, typ);
 }

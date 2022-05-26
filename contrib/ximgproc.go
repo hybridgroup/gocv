@@ -50,6 +50,16 @@ func NiblackThreshold(src gocv.Mat, dst *gocv.Mat, maxValue float32,
 		C.int(blockSize), C.float(k), C.int(binarizationMethod), C.float(r))
 }
 
+// PeiLinNormalization calculates an affine transformation that normalize
+// given image using Pei&Lin Normalization.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/df/d2d/group__ximgproc.html#ga50d064b92f63916f4162474eea22d656
+//
+func PeiLinNormalization(src gocv.Mat, dst *gocv.Mat) {
+	C.PeiLinNormalization(C.Mat(src.Ptr()), C.Mat(dst.Ptr()))
+}
+
 type ThinningType int
 
 const (
