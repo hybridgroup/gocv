@@ -44,6 +44,19 @@ func TestNiblackThreshold(t *testing.T) {
 	}
 }
 
+func TestPeiLinNormalization(t *testing.T) {
+	src := gocv.NewMatWithSize(200, 200, gocv.MatTypeCV8UC1)
+	defer src.Close()
+	dst := gocv.NewMat()
+	defer dst.Close()
+
+	PeiLinNormalization(src, &dst)
+
+	if src.Empty() || dst.Rows() != 2 || dst.Cols() != 3 {
+		t.Error("invalid PeiLinNormalization test", dst.Rows(), dst.Cols())
+	}
+}
+
 func TestThinning(t *testing.T) {
 	src := gocv.NewMatWithSize(200, 200, gocv.MatTypeCV8UC1)
 	defer src.Close()
