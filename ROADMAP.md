@@ -397,4 +397,4 @@ Your pull requests will be greatly appreciated!
 - [ ] **xfeatures2d. Extra 2D Features Framework - WORK STARTED**
 - [ ] **ximgproc. Extended Image Processing - WORK STARTED**
 - [ ] xobjdetect. Extended object detection
-- [ ] **xphoto. Additional photo processing algorithms - WORK STARTED**
+- [X] **xphoto. Additional photo processing algorithms**
