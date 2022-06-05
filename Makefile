@@ -5,7 +5,7 @@
 GOCV_VERSION?="v0.30.0"
 
 # OpenCV version to use.
-OPENCV_VERSION?=4.5.5
+OPENCV_VERSION?=4.6.0
 
 # Go version to use when building Docker image
 GOVERSION?=1.16.2

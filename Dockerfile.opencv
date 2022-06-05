@@ -1,6 +1,6 @@
 # to build this docker image:
-#   docker build -f Dockerfile.opencv -t gocv/opencv:4.5.5 .
-FROM golang:1.17-buster AS opencv
+#   docker build -f Dockerfile.opencv -t gocv/opencv:4.6.0 .
+FROM golang:1.18-buster AS opencv
 LABEL maintainer="hybridgroup"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
             libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev && \
             rm -rf /var/lib/apt/lists/*
 
-ARG OPENCV_VERSION="4.5.5"
+ARG OPENCV_VERSION="4.6.0"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
