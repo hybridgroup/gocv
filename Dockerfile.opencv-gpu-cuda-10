@@ -3,6 +3,11 @@
 FROM nvidia/cuda:10.2-cudnn8-devel AS opencv-gpu-base
 LABEL maintainer="hybridgroup"
 
+# needed for cuda repo key rotation. see:
+# https://forums.developer.nvidia.com/t/notice-cuda-linux-repository-key-rotation/212771
+#
+RUN apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
             git build-essential cmake pkg-config unzip libgtk2.0-dev \
             wget curl ca-certificates libcurl4-openssl-dev libssl-dev \
