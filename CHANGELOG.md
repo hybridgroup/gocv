@@ -1,3 +1,21 @@
+0.31.0
+---
+* **all**
+    * update to OpenCV 4.6.0
+* **build**
+    * Switch to Github Actions for Linux CI build
+    * Use go -tags static when verifying static build
+* **core**
+    * Add Mat.ElemSize (#964)
+    * avoid index out of range panic in NewPointsVectorFromPoints
+* **video**
+    * add findTransformECC function
+* **contrib/ximgproc**
+    * add PeiLinNormalization() function
+    * add anisotropicDiffusion() function
+    * implement edgePreservingFilter()
+    * implement niBlackThreshold and thinning filters
+
 0.30.0
 ---
 * **all**
