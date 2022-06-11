@@ -152,6 +152,26 @@ func (m *GpuMat) ConvertToWithStream(dst *GpuMat, mt gocv.MatType, s Stream) {
 	return
 }
 
+// ConvertToWithParams converts GpuMat into destination GpuMat.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a3a1b076e54d8a8503014e27a5440d98a
+//
+func (m *GpuMat) ConvertToWithParams(dst *GpuMat, mt gocv.MatType, alpha, beta float32) {
+	C.GpuMat_ConvertToWithParams(m.p, dst.p, C.int(mt),  C.float(alpha), C.float(beta), nil)
+	return
+}
+
+// ConvertToWithParamsStream converts GpuMat into destination GpuMat.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a3a1b076e54d8a8503014e27a5440d98a
+//
+func (m *GpuMat) ConvertToWithParamsStream(dst *GpuMat, mt gocv.MatType, alpha, beta float32, s Stream) {
+	C.GpuMat_ConvertToWithParams(m.p, dst.p, C.int(mt),  C.float(alpha), C.float(beta), s.p)
+	return
+}
+
 // CopyTo copies GpuMat into destination GpuMat.
 //
 // For further details, please see:
