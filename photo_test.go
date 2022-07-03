@@ -241,4 +241,22 @@ func TestPencilSketch(t *testing.T) {
 	if dst2.Empty() || dst2.Rows() != src.Rows() || dst2.Cols() != src.Cols() {
 		t.Error("Invlalid PencilSketch test")
 	}
+} 
+
+func TestInpaint(t *testing.T) {
+	src := IMRead("images/inpaint-src.jpg", IMReadColor)
+	defer src.Close()
+	mask := IMRead("images/inpaint-mask.jpg", IMReadGrayScale)
+	defer mask.Close()
+	dst := NewMatWithSize(src.Rows(), src.Cols(), MatTypeCV8U)
+	defer dst.Close()
+
+	Inpaint(src, mask, &dst, 10, Telea)
+	if dst.Channels() == 1 {
+		t.Error("Invalid inpaint test")
+	}
+
+	if sum := dst.Sum(); sum.Val1 == 0 || sum.Val2 == 0 || sum.Val3 == 0 {
+		t.Error("Invalid inpaint test")
+	}
 }
