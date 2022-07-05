@@ -522,7 +522,7 @@ func (l *Layer) OutputNameToIndex(name string) int {
 //
 // For futher details, please see:
 // https://docs.opencv.org/4.4.0/d6/d0f/group__dnn.html#ga9d118d70a1659af729d01b10233213ee
-func NMSBoxes(bboxes []image.Rectangle, scores []float32, scoreThreshold float32, nmsThreshold float32, indices []int) {
+func NMSBoxes(bboxes []image.Rectangle, scores []float32, scoreThreshold float32, nmsThreshold float32, indices []int, count *int) {
 	bboxesRectArr := []C.struct_Rect{}
 	for _, v := range bboxes {
 		bbox := C.struct_Rect{
@@ -563,6 +563,7 @@ func NMSBoxes(bboxes []image.Rectangle, scores []float32, scoreThreshold float32
 	for i := 0; i < int(indicesVector.length); i++ {
 		indices[i] = int(ptr[i])
 	}
+	*count = int(indicesVector.length)
 	return
 }
 
