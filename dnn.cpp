@@ -143,7 +143,6 @@ void Net_GetLayerNames(Net net, CStrings* names) {
 
     names->length = cstrs.size();
     names->strs = strs;
-    return;
 }
 
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,

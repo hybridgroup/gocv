@@ -5,10 +5,11 @@ LABEL maintainer="hybridgroup"
 ENV DEBIAN_FRONTEND=noninteractive
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
-            git build-essential cmake pkg-config unzip libgtk2.0-dev \
+            git build-essential cmake pkg-config unzip libgtk2.0-dev libgtk-3-0 \
             wget curl ca-certificates libcurl4-openssl-dev libssl-dev \
             libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev \
-            libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev && \
+            libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev libcanberra-gtk-module \
+            libcanberra-gtk3-module && \
             rm -rf /var/lib/apt/lists/*
 
 ARG OPENCV_VERSION="4.6.0"
@@ -39,7 +40,6 @@ RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSIO
             -D BUILD_opencv_python3=NO \
             -D WITH_TBB=ON \
             -D WITH_OPENVINO=1 \
-            -D ENABLE_FAST_MATH=1 \
             -D OPENCV_GENERATE_PKGCONFIG=ON .. && \
     make -j $(nproc --all) && \
     make preinstall && make install && ldconfig && \
