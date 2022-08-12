@@ -1190,6 +1190,33 @@ func ArrowedLine(img *Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thick
 	C.ArrowedLine(img.p, sp1, sp2, sColor, C.int(thickness))
 }
 
+// ArrowedLineWithScalar draws a arrow segment pointing from the first point
+// to the second one using Scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga0a165a3ca093fd488ac709fdf10c05b2
+//
+func ArrowedLineWithScalar(img *Mat, pt1 image.Point, pt2 image.Point, s Scalar, thickness int) {
+	sp1 := C.struct_Point{
+		x: C.int(pt1.X),
+		y: C.int(pt1.Y),
+	}
+
+	sp2 := C.struct_Point{
+		x: C.int(pt2.X),
+		y: C.int(pt2.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
+	}
+
+	C.ArrowedLine(img.p, sp1, sp2, sColor, C.int(thickness))
+}
+
 // Circle draws a circle.
 //
 // For further details, please see:
@@ -1211,6 +1238,27 @@ func Circle(img *Mat, center image.Point, radius int, c color.RGBA, thickness in
 	C.Circle(img.p, pc, C.int(radius), sColor, C.int(thickness))
 }
 
+// CircleWithScalar draws a circle using Scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf10604b069374903dbd0f0488cb43670
+//
+func CircleWithScalar(img *Mat, center image.Point, radius int, s Scalar, thickness int) {
+	pc := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
+	}
+
+	C.Circle(img.p, pc, C.int(radius), sColor, C.int(thickness))
+}
+
 // CircleWithParams draws a circle.
 //
 // For further details, please see:
@@ -1227,6 +1275,27 @@ func CircleWithParams(img *Mat, center image.Point, radius int, c color.RGBA, th
 		val2: C.double(c.G),
 		val3: C.double(c.R),
 		val4: C.double(c.A),
+	}
+
+	C.CircleWithParams(img.p, pc, C.int(radius), sColor, C.int(thickness), C.int(lineType), C.int(shift))
+}
+
+// CircleWithScalarAndParams draws a circle using Scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf10604b069374903dbd0f0488cb43670
+//
+func CircleWithScalarAndParams(img *Mat, center image.Point, radius int, s Scalar, thickness int, lineType LineType, shift int) {
+	pc := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
 	}
 
 	C.CircleWithParams(img.p, pc, C.int(radius), sColor, C.int(thickness), C.int(lineType), C.int(shift))
@@ -1257,6 +1326,31 @@ func Ellipse(img *Mat, center, axes image.Point, angle, startAngle, endAngle flo
 	C.Ellipse(img.p, pc, pa, C.double(angle), C.double(startAngle), C.double(endAngle), sColor, C.int(thickness))
 }
 
+// EllipseWithScalar draws a simple or thick elliptic arc or fills an ellipse sector using Scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga28b2267d35786f5f890ca167236cbc69
+//
+func EllipseWithScalar(img *Mat, center, axes image.Point, angle, startAngle, endAngle float64, s Scalar, thickness int) {
+	pc := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+	pa := C.struct_Point{
+		x: C.int(axes.X),
+		y: C.int(axes.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
+	}
+
+	C.Ellipse(img.p, pc, pa, C.double(angle), C.double(startAngle), C.double(endAngle), sColor, C.int(thickness))
+}
+
 // Ellipse draws a simple or thick elliptic arc or fills an ellipse sector.
 //
 // For further details, please see:
@@ -1277,6 +1371,31 @@ func EllipseWithParams(img *Mat, center, axes image.Point, angle, startAngle, en
 		val2: C.double(c.G),
 		val3: C.double(c.R),
 		val4: C.double(c.A),
+	}
+
+	C.EllipseWithParams(img.p, pc, pa, C.double(angle), C.double(startAngle), C.double(endAngle), sColor, C.int(thickness), C.int(lineType), C.int(shift))
+}
+
+// EllipseWithScalarAndParams draws a simple or thick elliptic arc or fills an ellipse sector using Scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga28b2267d35786f5f890ca167236cbc69
+//
+func EllipseWithScalarAndParams(img *Mat, center, axes image.Point, angle, startAngle, endAngle float64, s Scalar, thickness int, lineType LineType, shift int) {
+	pc := C.struct_Point{
+		x: C.int(center.X),
+		y: C.int(center.Y),
+	}
+	pa := C.struct_Point{
+		x: C.int(axes.X),
+		y: C.int(axes.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
 	}
 
 	C.EllipseWithParams(img.p, pc, pa, C.double(angle), C.double(startAngle), C.double(endAngle), sColor, C.int(thickness), C.int(lineType), C.int(shift))
@@ -1308,6 +1427,32 @@ func Line(img *Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness in
 	C.Line(img.p, sp1, sp2, sColor, C.int(thickness))
 }
 
+// LineWithScalar draws a line segment connecting two points using Scalar.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga7078a9fae8c7e7d13d24dac2520ae4a2
+//
+func LineWithScalar(img *Mat, pt1 image.Point, pt2 image.Point, s Scalar, thickness int) {
+	sp1 := C.struct_Point{
+		x: C.int(pt1.X),
+		y: C.int(pt1.Y),
+	}
+
+	sp2 := C.struct_Point{
+		x: C.int(pt2.X),
+		y: C.int(pt2.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
+	}
+
+	C.Line(img.p, sp1, sp2, sColor, C.int(thickness))
+}
+
 // Rectangle draws a simple, thick, or filled up-right rectangle.
 // It renders a rectangle with the desired characteristics to the target Mat image.
 //
@@ -1327,6 +1472,30 @@ func Rectangle(img *Mat, r image.Rectangle, c color.RGBA, thickness int) {
 		val2: C.double(c.G),
 		val3: C.double(c.R),
 		val4: C.double(c.A),
+	}
+
+	C.Rectangle(img.p, cRect, sColor, C.int(thickness))
+}
+
+// RectangleWithScalar draws a simple, thick, or filled up-right rectangle using Scalar.
+// It renders a rectangle with the desired characteristics to the target Mat image.
+//
+// For further details, please see:
+// http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga346ac30b5c74e9b5137576c9ee9e0e8c
+//
+func RectangleWithScalar(img *Mat, r image.Rectangle, s Scalar, thickness int) {
+	cRect := C.struct_Rect{
+		x:      C.int(r.Min.X),
+		y:      C.int(r.Min.Y),
+		width:  C.int(r.Size().X),
+		height: C.int(r.Size().Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
 	}
 
 	C.Rectangle(img.p, cRect, sColor, C.int(thickness))
@@ -1356,6 +1525,30 @@ func RectangleWithParams(img *Mat, r image.Rectangle, c color.RGBA, thickness in
 	C.RectangleWithParams(img.p, cRect, sColor, C.int(thickness), C.int(lineType), C.int(shift))
 }
 
+// RectangleWithScalarAndParams draws a simple, thick, or filled up-right rectangle using Scalar.
+// It renders a rectangle with the desired characteristics to the target Mat image.
+//
+// For further details, please see:
+// http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga346ac30b5c74e9b5137576c9ee9e0e8c
+//
+func RectangleWithScalarAndParams(img *Mat, r image.Rectangle, s Scalar, thickness int, lineType LineType, shift int) {
+	cRect := C.struct_Rect{
+		x:      C.int(r.Min.X),
+		y:      C.int(r.Min.Y),
+		width:  C.int(r.Size().X),
+		height: C.int(r.Size().Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
+	}
+
+	C.RectangleWithParams(img.p, cRect, sColor, C.int(thickness), C.int(lineType), C.int(shift))
+}
+
 // FillPoly fills the area bounded by one or more polygons.
 //
 // For more information, see:
@@ -1366,6 +1559,21 @@ func FillPoly(img *Mat, pts PointsVector, c color.RGBA) {
 		val2: C.double(c.G),
 		val3: C.double(c.R),
 		val4: C.double(c.A),
+	}
+
+	C.FillPoly(img.p, pts.p, sColor)
+}
+
+// FillPolyWithScalar fills the area bounded by one or more polygons using Scalar.
+//
+// For more information, see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf30888828337aa4c6b56782b5dfbd4b7
+func FillPolyWithScalar(img *Mat, pts PointsVector, s Scalar) {
+	sColor := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
 	}
 
 	C.FillPoly(img.p, pts.p, sColor)
@@ -1391,6 +1599,26 @@ func FillPolyWithParams(img *Mat, pts PointsVector, c color.RGBA, lineType LineT
 	C.FillPolyWithParams(img.p, pts.p, sColor, C.int(lineType), C.int(shift), offsetP)
 }
 
+// FillPolyWithScalarAndParams fills the area bounded by one or more polygons.
+//
+// For more information, see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf30888828337aa4c6b56782b5dfbd4b7
+func FillPolyWithScalarAndParams(img *Mat, pts PointsVector, s Scalar, lineType LineType, shift int, offset image.Point) {
+	offsetP := C.struct_Point{
+		x: C.int(offset.X),
+		y: C.int(offset.Y),
+	}
+
+	sColor := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
+	}
+
+	C.FillPolyWithParams(img.p, pts.p, sColor, C.int(lineType), C.int(shift), offsetP)
+}
+
 // Polylines draws several polygonal curves.
 //
 // For more information, see:
@@ -1401,6 +1629,21 @@ func Polylines(img *Mat, pts PointsVector, isClosed bool, c color.RGBA, thicknes
 		val2: C.double(c.G),
 		val3: C.double(c.R),
 		val4: C.double(c.A),
+	}
+
+	C.Polylines(img.p, pts.p, C.bool(isClosed), sColor, C.int(thickness))
+}
+
+// PolylinesWithScalar draws several polygonal curves.
+//
+// For more information, see:
+// https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga1ea127ffbbb7e0bfc4fd6fd2eb64263c
+func PolylinesWithScalar(img *Mat, pts PointsVector, isClosed bool, s Scalar, thickness int) {
+	sColor := C.struct_Scalar{
+		val1: C.double(s.Val1),
+		val2: C.double(s.Val2),
+		val3: C.double(s.Val3),
+		val4: C.double(s.Val4),
 	}
 
 	C.Polylines(img.p, pts.p, C.bool(isClosed), sColor, C.int(thickness))
