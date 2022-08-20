@@ -27,6 +27,7 @@ bool FindChessboardCornersSB(Mat image, Size patternSize, Mat corners, int flags
 bool FindChessboardCornersSBWithMeta(Mat image, Size patternSize, Mat corners, int flags, Mat meta);
 void DrawChessboardCorners(Mat image, Size patternSize, Mat corners, bool patternWasFound);
 Mat EstimateAffinePartial2D(Point2fVector from, Point2fVector to);
+Mat EstimateAffinePartial2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method, double ransacReprojThreshold, size_t maxIters, double confidence, size_t refineIters);
 Mat EstimateAffine2D(Point2fVector from, Point2fVector to);
 Mat EstimateAffine2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method, double ransacReprojThreshold, size_t maxIters, double confidence, size_t refineIters);
 #ifdef __cplusplus
