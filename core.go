@@ -1011,7 +1011,7 @@ func BatchDistance(src1 Mat, src2 Mat, dist Mat, dtype MatType, nidx Mat, normTy
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga247f571aa6244827d3d798f13892da58
 //
-func BorderInterpolate(p int, len int, borderType CovarFlags) int {
+func BorderInterpolate(p int, len int, borderType BorderType) int {
 	ret := C.Mat_BorderInterpolate(C.int(p), C.int(len), C.int(borderType))
 	return int(ret)
 }
