@@ -69,6 +69,7 @@ void MSER_Close(MSER a);
 struct KeyPoints MSER_Detect(MSER a, Mat src);
 
 ORB ORB_Create();
+ORB ORB_CreateWithParams(int nfeatures, float scaleFactor, int nlevels, int edgeThreshold, int firstLevel, int WTA_K, int scoreType, int patchSize, int fastThreshold);
 void ORB_Close(ORB o);
 struct KeyPoints ORB_Detect(ORB o, Mat src);
 struct KeyPoints ORB_DetectAndCompute(ORB o, Mat src, Mat mask, Mat desc);

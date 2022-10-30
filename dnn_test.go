@@ -594,11 +594,13 @@ func TestNMSBoxes(t *testing.T) {
 	indices := make([]int, 10)
 	scoreThreshold := float32(0.5)
 	nmsThreshold := float32(0.4)
+	var count int
 
-	NMSBoxes(bboxes, scores, scoreThreshold, nmsThreshold, indices)
-
-	if indices[0] != 3 {
-		t.Errorf("Invalid NMSBoxes test indices: %v", indices)
+	NMSBoxes(bboxes, scores, scoreThreshold, nmsThreshold, indices, &count)
+	for i := count - 1; i >= 0; i-- {
+		if indices[i] != 3 {
+			t.Errorf("Invalid NMSBoxes test indices: %v", indices)
+		}
 	}
 }
 

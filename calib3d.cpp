@@ -37,6 +37,10 @@ Mat GetOptimalNewCameraMatrixWithParams(Mat cameraMatrix,Mat distCoeffs,Size siz
     return mat;
 }
 
+double CalibrateCamera(Points3fVector objectPoints, Points2fVector imagePoints, Size imageSize, Mat cameraMatrix, Mat distCoeffs, Mat rvecs, Mat tvecs, int flag) {
+    return cv::calibrateCamera(*objectPoints, *imagePoints, cv::Size(imageSize.width, imageSize.height), *cameraMatrix, *distCoeffs, *rvecs, *tvecs, flag);
+}
+
 void Undistort(Mat src, Mat dst, Mat cameraMatrix, Mat distCoeffs, Mat newCameraMatrix) {
     cv::undistort(*src, *dst, *cameraMatrix, *distCoeffs, *newCameraMatrix);
 }
@@ -50,6 +54,16 @@ bool FindChessboardCorners(Mat image, Size patternSize, Mat corners, int flags) 
     return cv::findChessboardCorners(*image, sz, *corners, flags);
 }
 
+bool FindChessboardCornersSB(Mat image, Size patternSize, Mat corners, int flags) {
+    cv::Size sz(patternSize.width, patternSize.height);
+    return cv::findChessboardCornersSB(*image, sz, *corners, flags);
+}
+
+bool FindChessboardCornersSBWithMeta(Mat image, Size patternSize, Mat corners, int flags, Mat meta) {
+    cv::Size sz(patternSize.width, patternSize.height);
+    return cv::findChessboardCornersSB(*image, sz, *corners, flags, *meta);
+}
+
 void DrawChessboardCorners(Mat image, Size patternSize, Mat corners, bool patternWasFound) {
     cv::Size sz(patternSize.width, patternSize.height);
     cv::drawChessboardCorners(*image, sz, *corners, patternWasFound);
@@ -57,4 +71,12 @@ void DrawChessboardCorners(Mat image, Size patternSize, Mat corners, bool patter
 
 Mat EstimateAffinePartial2D(Point2fVector from, Point2fVector to) {
     return new cv::Mat(cv::estimateAffinePartial2D(*from, *to));
+}
+
+Mat EstimateAffine2D(Point2fVector from, Point2fVector to) {
+    return new cv::Mat(cv::estimateAffine2D(*from, *to));
+}
+
+Mat EstimateAffine2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method, double ransacReprojThreshold, size_t maxIters, double confidence, size_t refineIters) {
+    return new cv::Mat(cv::estimateAffine2D(*from, *to, *inliers, method, ransacReprojThreshold, maxIters, confidence, refineIters));
 }

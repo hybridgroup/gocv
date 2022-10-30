@@ -62,6 +62,10 @@ void Trackbar_Create(const char* winname, const char* trackname, int max) {
     cv::createTrackbar(trackname, winname, NULL, max);
 }
 
+void Trackbar_CreateWithValue(const char* winname, const char* trackname, int* value, int max) {
+    cv::createTrackbar(trackname, winname, value, max);
+}
+
 int Trackbar_GetPos(const char* winname, const char* trackname) {
     return cv::getTrackbarPos(trackname, winname);
 }

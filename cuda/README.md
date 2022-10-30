@@ -12,6 +12,8 @@ GoCV also supports using CUDA as a backend for the OpenCV deep neural network (D
 
 ## How to use
 
+### Deep Neural Network (DNN) module
+
 This code loads a Caffe model, and then uses CUDA to prepare it for execution on the GPU:
 
 ```go
@@ -23,6 +25,64 @@ if net.Empty() {
 
 net.SetPreferableBackend(gocv.NetBackendType(gocv.NetBackendCUDA))
 net.SetPreferableTarget(gocv.NetTargetType(gocv.NetTargetCUDA))
+```
+
+### OpenCV CUDA modules
+
+You can use calls directly to the OpenCV CUDA wrappers, both the synchronous and asynchronous versions.
+
+Here is an example that uses the synchronous CUDA calls:
+
+```go
+    cimg, mimg, dimg := NewGpuMat(), NewGpuMat(), NewGpuMat()
+    defer cimg.Close()
+    defer mimg.Close()
+    defer dimg.Close()
+
+    canny := NewCannyEdgeDetector(50, 100)
+    defer canny.Close()
+
+    detector := NewHoughSegmentDetector(1, math.Pi/180, 150, 50)
+    defer detector.Close()
+
+    dest := gocv.NewMat()
+    defer dest.Close()
+
+    // after each call, CPU thread is blocked until GPU operation is completed.
+    cimg.Upload(src)
+    canny.Detect(cimg, &mimg)
+    detector.Detect(mimg, &dimg)
+    dimg.Download(&dest)
+```
+
+Here is an example that uses the `Stream` type for calling CUDA using the asynchronous interface:
+
+```go
+    cimg, mimg, dimg := NewGpuMat(), NewGpuMat(), NewGpuMat()
+    defer cimg.Close()
+    defer mimg.Close()
+    defer dimg.Close()
+
+    stream := NewStream()
+    defer stream.Close()
+
+    canny := NewCannyEdgeDetector(50, 100)
+    defer canny.Close()
+
+    detector := NewHoughSegmentDetector(1, math.Pi/180, 150, 50)
+    defer detector.Close()
+
+    dest := gocv.NewMat()
+    defer dest.Close()
+
+    // all calls return immediately to CPU, work is scheduled to be done on GPU.
+    cimg.UploadWithStream(src, stream)
+    canny.DetectWithStream(cimg, &mimg, stream)
+    detector.DetectWithStream(mimg, &dimg, stream)
+    dimg.DownloadWithStream(&dest, stream)
+
+    // CPU thread blocks until all GPU calls have completed.
+    stream.WaitForCompletion()
 ```
 
 ## Installing CUDA

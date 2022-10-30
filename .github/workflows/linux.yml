@@ -1,0 +1,53 @@
+name: Linux
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: gocv/opencv:4.6.0
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Enforce Go formatted code
+        run: "test -z $(gofmt -l .) || gofmt -d ."
+      - name: Install dependencies
+        run: apt-get update -yqq && apt-get install xvfb unzip -y
+      - name: Install Caffe test model
+        run: |
+          mkdir -p ${GITHUB_WORKSPACE}/testdata
+          curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/master/testdata/dnn/bvlc_googlenet.prototxt > ${GITHUB_WORKSPACE}/testdata/bvlc_googlenet.prototxt
+          curl -sL http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel > ${GITHUB_WORKSPACE}/testdata/bvlc_googlenet.caffemodel
+          curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.caffemodel > ${GITHUB_WORKSPACE}/testdata/detect.caffemodel
+          curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.prototxt > ${GITHUB_WORKSPACE}/testdata/detect.prototxt
+          curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.caffemodel > ${GITHUB_WORKSPACE}/testdata/sr.caffemodel
+          curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.prototxt > ${GITHUB_WORKSPACE}/testdata/sr.prototxt
+      - name: Install Tensorflow test model
+        run: |
+            mkdir -p ${GITHUB_WORKSPACE}/testdata
+            curl -sL https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip > ${GITHUB_WORKSPACE}/testdata/inception5h.zip
+            unzip -o ${GITHUB_WORKSPACE}/testdata/inception5h.zip tensorflow_inception_graph.pb -d ${GITHUB_WORKSPACE}/testdata
+      - name: Install ONNX test model
+        run: |
+            mkdir -p ${GITHUB_WORKSPACE}/testdata
+            curl -sL https://github.com/onnx/models/blob/master/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx\?raw\=true > ${GITHUB_WORKSPACE}/testdata/googlenet-9.onnx
+      - name: Run main tests
+        run: xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" go test -v -coverprofile=/tmp/coverage.out -count=1 -tags matprofile .
+        env:
+          DISPLAY: 99.0
+          GOCV_CAFFE_TEST_FILES: ${{ github.workspace }}/testdata
+          GOCV_TENSORFLOW_TEST_FILES: ${{ github.workspace }}/testdata
+          NO_GOCV_ONNX_TEST_FILES: ${{ github.workspace }}/testdata
+      - name: Run contrib tests
+        run: xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" go test -v -coverprofile=/tmp/contrib.out -count=1 -tags matprofile ./contrib
+        env:
+          DISPLAY: 99.0
+      - name: Code coverage
+        run: |
+          go tool cover -html=/tmp/coverage.out -o /tmp/coverage.html
+          go tool cover -html=/tmp/contrib.out -o /tmp/contrib.html
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: /tmp/*.html

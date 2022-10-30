@@ -237,6 +237,25 @@ func TestDilate(t *testing.T) {
 	}
 }
 
+func TestDilateWithParams(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in DilateWithParams test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	defer kernel.Close()
+
+	DilateWithParams(img, &dest, kernel, image.Pt(-1, -1), 3, 0, color.RGBA{0, 0, 0, 0})
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid DilateWithParams test")
+	}
+}
+
 func TestDistanceTransform(t *testing.T) {
 	img := IMRead("images/face-detect.jpg", IMReadColor)
 	if img.Empty() {
@@ -491,6 +510,72 @@ func TestFindContoursWithParams(t *testing.T) {
 		if !reflect.DeepEqual(want, got) {
 			t.Errorf("wrong hierarchy at position %d, want %v got %v", i, want, got)
 		}
+	}
+}
+
+func TestPointPolygonTest(t *testing.T) {
+	tests := []struct {
+		name      string      // name of the testcase
+		thickness int         // thickness of the polygon
+		point     image.Point // point to be checked
+		result    float64     // expected result; either distance or -1, 0, 1 based on measure parameter
+		measure   bool        // enable distance measurement, if true
+	}{
+		{
+			name:      "Inside the polygon - measure=false",
+			thickness: 1,
+			point:     image.Point{20, 30},
+			result:    1.0,
+			measure:   false,
+		}, {
+			name:      "Outside the polygon - measure=false",
+			thickness: 1,
+			point:     image.Point{5, 15},
+			result:    -1.0,
+			measure:   false,
+		}, {
+			name:      "On the polygon - measure=false",
+			thickness: 1,
+			point:     image.Point{10, 10},
+			result:    0.0,
+			measure:   false,
+		}, {
+			name:      "Inside the polygon - measure=true",
+			thickness: 1,
+			point:     image.Point{20, 30},
+			result:    10.0,
+			measure:   true,
+		}, {
+			name:      "Outside the polygon - measure=true",
+			thickness: 1,
+			point:     image.Point{5, 15},
+			result:    -5.0,
+			measure:   true,
+		}, {
+			name:      "On the polygon - measure=true",
+			thickness: 1,
+			point:     image.Point{10, 10},
+			result:    0.0,
+			measure:   true,
+		},
+	}
+
+	pts := []image.Point{
+		image.Pt(10, 10),
+		image.Pt(10, 80),
+		image.Pt(80, 80),
+		image.Pt(80, 10),
+	}
+
+	ctr := NewPointVectorFromPoints(pts)
+	defer ctr.Close()
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			if r := PointPolygonTest(ctr, tc.point, tc.measure); r != tc.result {
+				t.Errorf("Wrong result, got = %v, want >= %v", r, tc.result)
+			}
+		})
 	}
 }
 
@@ -1085,6 +1170,162 @@ func TestAdaptiveThreshold(t *testing.T) {
 	AdaptiveThreshold(img, &dest, 255, AdaptiveThresholdMean, ThresholdBinary, 11, 2)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid Threshold test")
+	}
+}
+
+func TestCircle(t *testing.T) {
+	tests := []struct {
+		name      string      // name of the testcase
+		thickness int         // thickness of the circle
+		point     image.Point // point to be checked
+		result    uint8       // expected value at the point to be checked
+	}{
+		{
+			name:      "Without filling",
+			thickness: 3,
+			point:     image.Point{80, 89},
+			result:    255,
+		}, {
+			name:      "With filling",
+			thickness: -1,
+			point:     image.Point{60, 60},
+			result:    255,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run("tc.name", func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
+
+			white := color.RGBA{255, 255, 255, 0}
+			Circle(&img, image.Pt(70, 70), 20, white, tc.thickness)
+
+			if v := img.GetUCharAt(tc.point.X, tc.point.Y); v != tc.result {
+				t.Errorf("Wrong pixel value, got = %v, want = %v", v, tc.result)
+			}
+		})
+	}
+}
+
+func TestCircleWithParams(t *testing.T) {
+	tests := []struct {
+		name      string                // name of the testcase
+		thickness int                   // thickness of the circle
+		shift     int                   // how much to shift and reduce(in size)
+		checks    map[image.Point]uint8 // map of points to be checked and corresponding expected value
+	}{
+		{
+			name:      "Without filling and shift",
+			thickness: 3,
+			shift:     0,
+			checks: map[image.Point]uint8{
+				{80, 89}: 255,
+			},
+		}, {
+			name:      "With filling, without shift",
+			thickness: -1,
+			shift:     0,
+			checks: map[image.Point]uint8{
+				{60, 60}: 255,
+			},
+		}, {
+			name:      "Without filling, with shift",
+			thickness: 3,
+			shift:     1,
+			checks: map[image.Point]uint8{
+				{47, 38}: 255,
+				{48, 38}: 0,
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
+
+			white := color.RGBA{255, 255, 255, 0}
+			CircleWithParams(&img, image.Pt(70, 70), 20, white, tc.thickness, Line4, tc.shift)
+
+			for c, result := range tc.checks {
+				if v := img.GetUCharAt(c.X, c.Y); v != result {
+					t.Errorf("Wrong pixel value, got = %v, want = %v", v, result)
+				}
+			}
+		})
+	}
+}
+
+func TestRectangle(t *testing.T) {
+	tests := []struct {
+		name      string      // name of the testcase
+		thickness int         // thickness of the rectangle
+		point     image.Point // point to be checked
+	}{
+		{
+			name:      "Without filling",
+			thickness: 1,
+			point:     image.Point{10, 60},
+		}, {
+			name:      "With filling",
+			thickness: -1,
+			point:     image.Point{30, 30},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
+
+			white := color.RGBA{255, 255, 255, 0}
+			Rectangle(&img, image.Rect(10, 10, 80, 80), white, tc.thickness)
+
+			if v := img.GetUCharAt(tc.point.X, tc.point.Y); v < 50 {
+				t.Errorf("Wrong pixel value, got = %v, want >= %v", v, 50)
+
+			}
+		})
+	}
+}
+
+func TestRectangleWithParams(t *testing.T) {
+	tests := []struct {
+		name      string      // name of the testcase
+		thickness int         // thickness of the rectangle
+		shift     int         // how much to shift and reduce (in size)
+		point     image.Point // point to be checked
+	}{
+		{
+			name:      "Without filling and shift",
+			thickness: 1,
+			point:     image.Point{10, 60},
+		}, {
+			name:      "With filling, without shift",
+			thickness: -1,
+			point:     image.Point{30, 30},
+		}, {
+			name:      "Without filling, with shift",
+			thickness: 1,
+			shift:     1,
+			point:     image.Point{5, 5},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
+
+			white := color.RGBA{255, 255, 255, 0}
+			RectangleWithParams(&img, image.Rect(10, 10, 80, 80), white, tc.thickness, Line4, tc.shift)
+
+			if v := img.GetUCharAt(tc.point.X, tc.point.Y); v != 255 {
+				t.Errorf("Wrong pixel value, got = %v, want = %v", v, 255)
+			}
+
+		})
 	}
 }
 
@@ -1689,6 +1930,48 @@ func TestWarpPerspective(t *testing.T) {
 	}
 }
 
+func TestWarpPerspectiveWithParams(t *testing.T) {
+	img := IMRead("images/gocvlogo.jpg", IMReadUnchanged)
+	defer img.Close()
+
+	w := img.Cols()
+	h := img.Rows()
+
+	s := []image.Point{
+		image.Pt(0, 0),
+		image.Pt(10, 5),
+		image.Pt(10, 10),
+		image.Pt(5, 10),
+	}
+	pvs := NewPointVectorFromPoints(s)
+	defer pvs.Close()
+
+	d := []image.Point{
+		image.Pt(0, 0),
+		image.Pt(10, 0),
+		image.Pt(10, 10),
+		image.Pt(0, 10),
+	}
+	pvd := NewPointVectorFromPoints(d)
+	defer pvd.Close()
+
+	m := GetPerspectiveTransform(pvs, pvd)
+	defer m.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	WarpPerspectiveWithParams(img, &dst, m, image.Pt(w, h), InterpolationLinear, BorderConstant, color.RGBA{})
+
+	if dst.Cols() != w {
+		t.Errorf("TestWarpPerspectiveWithParams(): unexpected cols = %v, want = %v", dst.Cols(), w)
+	}
+
+	if dst.Rows() != h {
+		t.Errorf("TestWarpPerspectiveWithParams(): unexpected rows = %v, want = %v", dst.Rows(), h)
+	}
+}
+
 func TestDrawContours(t *testing.T) {
 	img := NewMatWithSize(100, 200, MatTypeCV8UC1)
 	defer img.Close()
@@ -1718,15 +2001,151 @@ func TestDrawContours(t *testing.T) {
 	}
 }
 
-func TestEllipse(t *testing.T) {
-	img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+func TestDrawContoursWithParams(t *testing.T) {
+	img := NewMatWithSize(200, 200, MatTypeCV8UC1)
 	defer img.Close()
 
-	white := color.RGBA{255, 255, 255, 0}
-	Ellipse(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white, 2)
+	// Draw circle
+	white := color.RGBA{255, 255, 255, 255}
+	black := color.RGBA{0, 0, 0, 255}
+	Circle(&img, image.Pt(100, 100), 80, white, -1)
+	Circle(&img, image.Pt(100, 100), 55, black, -1)
+	Circle(&img, image.Pt(100, 100), 30, white, -1)
 
-	if v := img.GetUCharAt(24, 50); v != 255 {
-		t.Errorf("TestEllipse(): wrong pixel value = %v, want = %v", v, 255)
+	hierarchy := NewMat()
+	defer hierarchy.Close()
+	contours := FindContoursWithParams(img, &hierarchy, RetrievalTree, ChainApproxSimple)
+	defer contours.Close()
+
+	// Draw contours by different line-type and assert value
+	cases := []struct {
+		name        string
+		lineType    LineType
+		expectUChar uint8
+	}{
+		{
+			name:        "draw by Line4", // 4 connected line
+			lineType:    Line4,
+			expectUChar: 255,
+		},
+		{
+			name:        "draw by line8", // 8 connected line
+			lineType:    Line8,
+			expectUChar: 0,
+		},
+		{
+			name:        "draw by line-AA", // anti-aliased line
+			lineType:    LineAA,
+			expectUChar: 68,
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			bg := NewMatWithSize(img.Rows(), img.Cols(), MatTypeCV8UC1)
+			defer bg.Close()
+
+			DrawContoursWithParams(&bg, contours, -1, white, 1, c.lineType, hierarchy, 0, image.Pt(0, 0))
+			if v := bg.GetUCharAt(22, 88); v != c.expectUChar {
+				t.Errorf("TestDrawContoursWithParams(): contour value expect %v but got %v", c.expectUChar, v)
+			}
+		})
+	}
+}
+
+func TestEllipse(t *testing.T) {
+	tests := []struct {
+		name      string      // name of the testcase
+		thickness int         // thickness of the ellipse
+		point     image.Point // point to be checked
+	}{
+		{
+			name:      "Without filling",
+			thickness: 2,
+			point:     image.Point{24, 50},
+		}, {
+			name:      "With filling",
+			thickness: -1,
+			point:     image.Point{55, 47},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
+
+			white := color.RGBA{255, 255, 255, 0}
+			Ellipse(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white, tc.thickness)
+
+			if v := img.GetUCharAt(tc.point.X, tc.point.Y); v != 255 {
+				t.Errorf("Wrong pixel value, got = %v, want = %v", v, 255)
+			}
+		})
+	}
+}
+
+func TestEllipseWithParams(t *testing.T) {
+	check255 := func(v uint8) bool {
+		return v != 255
+	}
+
+	tests := []struct {
+		name      string                           // name of the testcase
+		thickness int                              // thickness of the ellipse
+		linetype  LineType                         // type of line used for drawing
+		shift     int                              // how much to shift and reduce(in size)
+		checks    map[image.Point]func(uint8) bool // points to be checked and corresponding expected value
+		checkFn   func(uint8) bool                 // function to check if the result is as expected
+
+	}{
+		{
+			name:      "Without filling and shift, line = Line8",
+			thickness: 2,
+			linetype:  Line8,
+			checks: map[image.Point]func(uint8) bool{
+				{24, 50}: check255,
+			},
+		}, {
+			name:      "With filling, without shift, line = Line8",
+			thickness: -1,
+			linetype:  Line8,
+			checks: map[image.Point]func(uint8) bool{
+				{55, 47}: check255,
+			},
+		}, {
+			name:      "Without filling, with shift 2, line = Line8",
+			thickness: 2,
+			linetype:  Line8,
+			shift:     2,
+			checks: map[image.Point]func(uint8) bool{
+				{6, 12}:  check255,
+				{19, 13}: check255,
+			},
+		}, {
+			name:      "Without filling and shift, line = LineAA",
+			thickness: 2,
+			linetype:  LineAA,
+			checks: map[image.Point]func(uint8) bool{
+				{77, 54}: func(v uint8) bool { return v < 10 || v > 220 },
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
+
+			white := color.RGBA{255, 255, 255, 0}
+			EllipseWithParams(&img, image.Pt(50., 50.), image.Pt(25., 25.), 0., 0, 360, white,
+				tc.thickness, tc.linetype, tc.shift)
+
+			for c, fn := range tc.checks {
+				if v := img.GetUCharAt(c.X, c.Y); fn(v) {
+					t.Errorf("Wrong pixel value, got = %v", v)
+				}
+			}
+		})
 	}
 }
 
@@ -1751,6 +2170,50 @@ func TestFillPoly(t *testing.T) {
 
 	if v := img.GetUCharAt(10, 10); v != 255 {
 		t.Errorf("TestFillPoly(): wrong pixel value = %v, want = %v", v, 255)
+	}
+}
+
+func TestFillPolyWithParams(t *testing.T) {
+	tests := []struct {
+		name   string      // name of testcase
+		offset image.Point // offset to the FillPolyWithParams function
+		point  image.Point // point to be checked
+		result uint8       // expected value at the point to be checked
+	}{
+		{
+			name:   "No offset",
+			point:  image.Point{10, 10},
+			result: 255,
+		}, {
+			name:   "Offset of 2",
+			offset: image.Point{2, 2},
+			point:  image.Point{12, 12},
+			result: 255,
+		},
+	}
+	white := color.RGBA{255, 255, 255, 0}
+	pts := [][]image.Point{
+		{
+			image.Pt(10, 10),
+			image.Pt(10, 20),
+			image.Pt(20, 20),
+			image.Pt(20, 10),
+		},
+	}
+	pv := NewPointsVectorFromPoints(pts)
+	defer pv.Close()
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			img := NewMatWithSize(100, 100, MatTypeCV8UC1)
+			defer img.Close()
+
+			FillPolyWithParams(&img, pv, white, Line4, 0, tc.offset)
+
+			if v := img.GetUCharAt(tc.point.X, tc.point.Y); v != tc.result {
+				t.Errorf("Wrong pixel value; got = %v, want = %v", v, tc.result)
+			}
+		})
 	}
 }
 

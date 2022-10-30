@@ -6,7 +6,7 @@
 #   docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix gocv-test
 #   xhost -
 #
-FROM gocv/opencv:4.5.2 AS gocv-test
+FROM gocv/opencv:4.6.0 AS gocv-test
 
 ENV GOPATH /go
 

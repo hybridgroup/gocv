@@ -21,22 +21,20 @@ bool Image_IMWrite_WithParams(const char* filename, Mat img, IntVector params) {
     return cv::imwrite(filename, *img, compression_params);
 }
 
-struct ByteArray Image_IMEncode(const char* fileExt, Mat img) {
-    std::vector<uchar> data;
-    cv::imencode(fileExt, *img, data);
-    return toByteArray(reinterpret_cast<const char*>(&data[0]), data.size());
+void Image_IMEncode(const char* fileExt, Mat img, void* vector) {
+    auto vectorPtr = reinterpret_cast<std::vector<uchar> *>(vector);
+    cv::imencode(fileExt, *img, *vectorPtr);
 }
 
-struct ByteArray Image_IMEncode_WithParams(const char* fileExt, Mat img, IntVector params) {
-    std::vector<uchar> data;
+void Image_IMEncode_WithParams(const char* fileExt, Mat img, IntVector params, void* vector) {
+    auto vectorPtr = reinterpret_cast<std::vector<uchar> *>(vector);
     std::vector<int> compression_params;
 
     for (int i = 0, *v = params.val; i < params.length; ++v, ++i) {
         compression_params.push_back(*v);
     }
 
-    cv::imencode(fileExt, *img, data, compression_params);
-    return toByteArray(reinterpret_cast<const char*>(&data[0]), data.size());
+    cv::imencode(fileExt, *img, *vectorPtr, compression_params);
 }
 
 Mat Image_IMDecode(ByteArray buf, int flags) {

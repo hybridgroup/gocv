@@ -4,9 +4,9 @@
 //
 // How to run:
 //
-// 		go run ./cmd/cuda/main.go
+// 		go run --tags cuda ./cmd/cuda/main.go
 //
-// +build example
+// +build cuda
 
 package main
 

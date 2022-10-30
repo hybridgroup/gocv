@@ -283,6 +283,23 @@ func (w *Window) CreateTrackbar(name string, max int) *Trackbar {
 	return &Trackbar{name: name, parent: w}
 }
 
+// CreateTrackbarWithValue works like CreateTrackbar but also assigns a
+// variable value to be a position synchronized with the trackbar.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/dfc/group__highgui.html#gaf78d2155d30b728fc413803745b67a9b
+//
+func (w *Window) CreateTrackbarWithValue(name string, value *int, max int) *Trackbar {
+	cName := C.CString(w.name)
+	defer C.free(unsafe.Pointer(cName))
+
+	tName := C.CString(name)
+	defer C.free(unsafe.Pointer(tName))
+
+	C.Trackbar_CreateWithValue(cName, tName, (*C.int)(unsafe.Pointer(value)), C.int(max))
+	return &Trackbar{name: name, parent: w}
+}
+
 // GetPos returns the trackbar position.
 //
 // For further details, please see:

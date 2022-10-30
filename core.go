@@ -166,6 +166,10 @@ type Point2f struct {
 	Y float32
 }
 
+func NewPoint2f(x, y float32) Point2f {
+	return Point2f{x, y}
+}
+
 var ErrEmptyByteSlice = errors.New("empty byte array")
 
 // Mat represents an n-dimensional dense numerical single-channel
@@ -662,6 +666,11 @@ func (m *Mat) Type() MatType {
 // Step returns the number of bytes each matrix row occupies.
 func (m *Mat) Step() int {
 	return int(C.Mat_Step(m.p))
+}
+
+// ElemSize returns the matrix element size in bytes.
+func (m *Mat) ElemSize() int {
+	return int(C.Mat_ElemSize(m.p))
 }
 
 // GetUCharAt returns a value from a specific row/col
@@ -2049,6 +2058,12 @@ func NewPointVectorFromPoints(pts []image.Point) PointVector {
 	return PointVector{p: C.PointVector_NewFromPoints(cpoints)}
 }
 
+// NewPointVectorFromMat returns a new PointVector that has been
+// wrapped around a Mat of type CV_32SC2 with a single columm.
+func NewPointVectorFromMat(mat Mat) PointVector {
+	return PointVector{p: C.PointVector_NewFromMat(mat.p)}
+}
+
 // IsNil checks the CGo pointer in the PointVector.
 func (pv PointVector) IsNil() bool {
 	return pv.p == nil
@@ -2109,6 +2124,9 @@ func NewPointsVector() PointsVector {
 // NewPointsVectorFromPoints returns a new PointsVector that has been
 // initialized to a slice of slices of image.Point.
 func NewPointsVectorFromPoints(pts [][]image.Point) PointsVector {
+	if len(pts) <= 0 {
+		return NewPointsVector()
+	}
 	points := make([]C.struct_Points, len(pts))
 
 	for i, pt := range pts {
@@ -2141,6 +2159,10 @@ func NewPointsVectorFromPoints(pts [][]image.Point) PointsVector {
 	}
 
 	return PointsVector{p: C.PointsVector_NewFromPoints(cPoints)}
+}
+
+func (pvs PointsVector) P() C.PointsVector {
+	return pvs.p
 }
 
 // ToPoints returns a slice of slices of image.Point for the data in this PointsVector.
@@ -2229,6 +2251,12 @@ func NewPoint2fVectorFromPoints(pts []Point2f) Point2fVector {
 	}
 
 	return Point2fVector{p: C.Point2fVector_NewFromPoints(cpoints)}
+}
+
+// NewPoint2fVectorFromMat returns a new Point2fVector that has been
+// wrapped around a Mat of type CV_32FC2 with a single columm.
+func NewPoint2fVectorFromMat(mat Mat) Point2fVector {
+	return Point2fVector{p: C.Point2fVector_NewFromMat(mat.p)}
 }
 
 // IsNil checks the CGo pointer in the Point2fVector.
@@ -2521,4 +2549,269 @@ func RandU(mat *Mat, low, high Scalar) {
 	}
 
 	C.RandU(mat.p, lowVal, highVal)
+}
+
+type NativeByteBuffer struct {
+	// std::vector is build of 3 pointers And this will not change ever.
+	stdVectorOpaq [3]uintptr
+}
+
+func newNativeByteBuffer() *NativeByteBuffer {
+	buffer := &NativeByteBuffer{}
+	C.StdByteVectorInitialize(buffer.nativePointer())
+	return buffer
+}
+
+func (buffer *NativeByteBuffer) nativePointer() unsafe.Pointer {
+	return unsafe.Pointer(&buffer.stdVectorOpaq[0])
+}
+
+func (buffer *NativeByteBuffer) dataPointer() unsafe.Pointer {
+	return unsafe.Pointer(C.StdByteVectorData(buffer.nativePointer()))
+}
+
+// GetBytes returns slice of bytes backed by native buffer
+func (buffer *NativeByteBuffer) GetBytes() []byte {
+	var result []byte
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&result))
+	vectorLen := int(C.StdByteVectorLen(buffer.nativePointer()))
+	sliceHeader.Cap = vectorLen
+	sliceHeader.Len = vectorLen
+	sliceHeader.Data = uintptr(buffer.dataPointer())
+	return result
+}
+
+// Len - returns length in bytes of underlying buffer
+func (buffer *NativeByteBuffer) Len() int {
+	return int(C.StdByteVectorLen(buffer.nativePointer()))
+}
+
+// Close the buffer releasing all its resources
+func (buffer *NativeByteBuffer) Close() {
+	C.StdByteVectorFree(buffer.nativePointer())
+}
+// Points2fVector is a wrapper around a std::vector< std::vector< cv::Point2f > >*
+type Points2fVector struct {
+	p C.Points2fVector
+}
+
+// NewPoints2fVector returns a new empty Points2fVector.
+func NewPoints2fVector() Points2fVector {
+	return Points2fVector{p: C.Points2fVector_New()}
+}
+
+// NewPoints2fVectorFromPoints returns a new Points2fVector that has been
+// initialized to a slice of slices of Point2f.
+func NewPoints2fVectorFromPoints(pts [][]Point2f) Points2fVector {
+	pvf := NewPoints2fVector()
+	for j := 0;j<len(pts);j++{
+		pv := NewPoint2fVectorFromPoints(pts[j])
+		pvf.Append(pv)
+		pv.Close()
+	}
+	return pvf
+}
+
+func (pvs Points2fVector) P() C.Points2fVector {
+	return pvs.p
+}
+
+// ToPoints returns a slice of slices of Point2f for the data in this Points2fVector.
+func (pvs Points2fVector) ToPoints() [][]Point2f {
+	ppoints := make([][]Point2f, pvs.Size())
+	for j := 0;j < pvs.Size();j++{
+		pts := pvs.At(j)
+		points := pts.ToPoints()
+		ppoints[j] = points
+	}
+	return ppoints
+}
+
+// IsNil checks the CGo pointer in the Points2fVector.
+func (pvs Points2fVector) IsNil() bool {
+	return pvs.p == nil
+}
+
+// Size returns how many vectors of Points are in the Points2fVector.
+func (pvs Points2fVector) Size() int {
+	return int(C.Points2fVector_Size(pvs.p))
+}
+
+// At returns the Point2fVector at that index of the Points2fVector.
+func (pvs Points2fVector) At(idx int) Point2fVector {
+	if idx > pvs.Size() {
+		return Point2fVector{}
+	}
+	return Point2fVector{p : C.Points2fVector_At(pvs.p, C.int(idx))}
+}
+
+// Append appends a Point2fVector at end of the Points2fVector.
+func (pvs Points2fVector) Append(pv Point2fVector) {
+	if !pv.IsNil() {
+		C.Points2fVector_Append(pvs.p, pv.p)
+	}
+}
+
+// Close closes and frees memory for this Points2fVector.
+func (pvs Points2fVector) Close() {
+	C.Points2fVector_Close(pvs.p)
+}
+
+type Point3f struct {
+	X float32
+	Y float32
+	Z float32
+}
+
+func NewPoint3f(x, y, z float32) Point3f {
+	return Point3f{x, y, z}
+}
+
+// Point3fVector is a wrapper around a std::vector< cv::Point3f >*
+type Point3fVector struct {
+	p C.Point3fVector
+}
+
+// NewPoint3fVector returns a new empty Point3fVector.
+func NewPoint3fVector() Point3fVector {
+	return Point3fVector{p: C.Point3fVector_New()}
+}
+
+// NewPoint3fVectorFromPoints returns a new Point3fVector that has been
+// initialized to a slice of image.Point.
+func NewPoint3fVectorFromPoints(pts []Point3f) Point3fVector {
+	p := (*C.struct_Point3f)(C.malloc(C.size_t(C.sizeof_struct_Point3f * len(pts))))
+	defer C.free(unsafe.Pointer(p))
+
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(p)),
+		Len:  len(pts),
+		Cap:  len(pts),
+	}
+	pa := *(*[]C.Point3f)(unsafe.Pointer(h))
+
+	for j, point := range pts {
+		pa[j] = C.struct_Point3f{
+			x: C.float(point.X),
+			y: C.float(point.Y),
+			z: C.float(point.Z),
+		}
+	}
+
+	cPoints := C.struct_Points3f{
+		points: (*C.Point3f)(p),
+		length: C.int(len(pts)),
+	}
+
+	return Point3fVector{p: C.Point3fVector_NewFromPoints(cPoints)}
+}
+
+// NewPoint3fVectorFromMat returns a new Point3fVector that has been
+// wrapped around a Mat of type CV_32FC3 with a single columm.
+func NewPoint3fVectorFromMat(mat Mat) Point3fVector {
+	return Point3fVector{p: C.Point3fVector_NewFromMat(mat.p)}
+}
+
+// IsNil checks the CGo pointer in the Point3fVector.
+func (pfv Point3fVector) IsNil() bool {
+	return pfv.p == nil
+}
+
+// Size returns how many Point are in the Point3fVector.
+func (pfv Point3fVector) Size() int {
+	return int(C.Point3fVector_Size(pfv.p))
+}
+
+// At returns the Point3f
+func (pfv Point3fVector) At(idx int) Point3f {
+	if idx > pfv.Size() {
+		return Point3f{}
+	}
+	cp := C.Point3fVector_At(pfv.p, C.int(idx))
+	return Point3f{X: float32(cp.x), Y: float32(cp.y), Z: float32(cp.z)}
+}
+
+func (pfv Point3fVector) Append(point Point3f) {
+	C.Point3fVector_Append(pfv.p, C.Point3f{
+		x: C.float(point.X),
+		y: C.float(point.Y),
+		z: C.float(point.Z),
+	});
+}
+
+// ToPoints returns a slice of Point3f for the data in this Point3fVector.
+func (pfv Point3fVector) ToPoints() []Point3f {
+	points := make([]Point3f, pfv.Size())
+	for j := 0; j < pfv.Size(); j++ {
+		points[j] = pfv.At(j)
+	}
+	return points
+}
+
+// Close closes and frees memory for this Point3fVector.
+func (pfv Point3fVector) Close() {
+	C.Point3fVector_Close(pfv.p)
+}
+
+// Points3fVector is a wrapper around a std::vector< std::vector< cv::Point3f > >*
+type Points3fVector struct {
+	p C.Points3fVector
+}
+
+// NewPoints3fVector returns a new empty Points3fVector.
+func NewPoints3fVector() Points3fVector {
+	return Points3fVector{p: C.Points3fVector_New()}
+}
+
+// NewPoints3fVectorFromPoints returns a new Points3fVector that has been
+// initialized to a slice of slices of Point3f.
+func NewPoints3fVectorFromPoints(pts [][]Point3f) Points3fVector {
+	pvf := NewPoints3fVector()
+	for j := 0;j<len(pts);j++{
+		pv := NewPoint3fVectorFromPoints(pts[j])
+		pvf.Append(pv)
+		pv.Close()
+	}
+	return pvf
+}
+
+// ToPoints returns a slice of slices of Point3f for the data in this Points3fVector.
+func (pvs Points3fVector) ToPoints() [][]Point3f {
+	ppoints := make([][]Point3f, pvs.Size())
+	for j := 0;j < pvs.Size();j++{
+		pts := pvs.At(j)
+		points := pts.ToPoints()
+		ppoints[j] = points
+	}
+	return ppoints
+}
+
+// IsNil checks the CGo pointer in the Points3fVector.
+func (pvs Points3fVector) IsNil() bool {
+	return pvs.p == nil
+}
+
+// Size returns how many vectors of Points are in the Points3fVector.
+func (pvs Points3fVector) Size() int {
+	return int(C.Points3fVector_Size(pvs.p))
+}
+
+// At returns the Point3fVector at that index of the Points3fVector.
+func (pvs Points3fVector) At(idx int) Point3fVector {
+	if idx > pvs.Size() {
+		return Point3fVector{}
+	}
+	return Point3fVector{p : C.Points3fVector_At(pvs.p, C.int(idx))}
+}
+
+// Append appends a Point3fVector at end of the Points3fVector.
+func (pvs Points3fVector) Append(pv Point3fVector) {
+	if !pv.IsNil() {
+		C.Points3fVector_Append(pvs.p, pv.p)
+	}
+}
+
+// Close closes and frees memory for this Points3fVector.
+func (pvs Points3fVector) Close() {
+	C.Points3fVector_Close(pvs.p)
 }

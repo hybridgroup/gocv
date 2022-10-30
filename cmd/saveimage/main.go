@@ -9,7 +9,6 @@
 //
 // 		go run ./cmd/saveimage/main.go 0 filename.jpg
 //
-// +build example
 
 package main
 

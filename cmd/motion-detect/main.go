@@ -10,7 +10,6 @@
 //
 // 		go run ./cmd/motion-detect/main.go 0
 //
-// +build example
 
 package main
 
@@ -80,8 +79,8 @@ func main() {
 
 		// then dilate
 		kernel := gocv.GetStructuringElement(gocv.MorphRect, image.Pt(3, 3))
-		defer kernel.Close()
 		gocv.Dilate(imgThresh, &imgThresh, kernel)
+		kernel.Close()
 
 		// now find contours
 		contours := gocv.FindContours(imgThresh, gocv.RetrievalExternal, gocv.ChainApproxSimple)
@@ -99,6 +98,8 @@ func main() {
 			rect := gocv.BoundingRect(contours.At(i))
 			gocv.Rectangle(&img, rect, color.RGBA{0, 0, 255, 0}, 2)
 		}
+
+		contours.Close()
 
 		gocv.PutText(&img, status, image.Pt(10, 20), gocv.FontHersheyPlain, 1.2, statusColor, 2)
 

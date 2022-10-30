@@ -1,3 +1,119 @@
+0.31.0
+---
+* **all**
+    * update to OpenCV 4.6.0
+* **build**
+    * Switch to Github Actions for Linux CI build
+    * Use go -tags static when verifying static build
+* **core**
+    * Add Mat.ElemSize (#964)
+    * avoid index out of range panic in NewPointsVectorFromPoints
+* **video**
+    * add findTransformECC function
+* **contrib/ximgproc**
+    * add PeiLinNormalization() function
+    * add anisotropicDiffusion() function
+    * implement edgePreservingFilter()
+    * implement niBlackThreshold and thinning filters
+
+0.30.0
+---
+* **all**
+    * update to OpenCV 4.5.5
+* **build**
+    * add install_nonfree make task to build all opencv_contrib modules
+    * correct download location for onnx test file
+    * Update Makefile for missing version changes
+* **core**
+    * correct how memory is being allocated for Eye(), Zeros(), and Ones() to address issue #930
+* **calib3d** 
+    * Adding support for estimateAffine2DWithParams (#924)
+* **imgproc**
+    * Add DrawContoursWithParams function
+* **photo**
+    * Add bindings for fastNlMeansDenoising and fastNlMeansDenoisingColored
+    * add detailEnhance function
+    * add EdgePreservingFilter function
+    * add PencilSketch function
+    * add stylization function
+* **docs**
+    * add godoc comments for FastNlMeansDenoising functions
+    * update README with info on latest mingw-w64 t use for Windows builds
+    * dnn pose detect examples correct the order of the argument variable name
+* **examples**
+    * Fixed memory leaks in the motion detection example
+* **openvino**
+    * Update env.sh and README.md
+* **windows**
+    * use mingw-w64 8.1.0 for protobuf compile
+* **contrib**
+    * add cv::wechat_qrcode::WeChatQRCode (#949)
+    * Update cgo_static.go
+
+0.29.0
+---
+* **all**
+    * update to OpenCV 4.5.4
+* **build**
+    * add static build ability on windows
+    * use tbb for all builds for CPU accelerated operations
+* **cuda**
+    * implement a bunch of per-element operations
+    * add get/set/reset device functions
+    * add NewGpuMatWithSize() to preallocate device memory
+    * Reshape() returns a new GpuMat with the changed data
+    * correct use of Stream by adding WaitForCompletion() and passing pre-allocated GpuMats
+* **docs**
+    * update ROADMAP from recent contributions
+* **videoio**
+    * Fix open video capture with api test (#895)
+* **calib3d**
+    * added EstimateAffine2D
+    * findChessboardCornersSB
+* **aruco**
+    * added many functions as part of initial implementation
+
+0.28.0
+---
+* **all**
+    * update to OpenCV 4.5.3
+    * make task and build tag for static build of OpenCV/GoCV on Linux
+    * add Makefile tasks for OpenCV install on Nvidia Jetson
+    * add gotest for more colorful test output running tests from containers
+* **build**
+    * correcting output format for code coverage report
+    * enforce rule that all Go code is correctly formatted
+    * remove codecov
+* **core**
+    * add NewPointVectorFromMat() and NewPoint2fVectorFromMat() functions
+    * Fix possible MatProfile race by ordering remove before free.
+* **cuda**
+    * add core functions for GpuMat like Cols(), Rows(), and Type()
+    * initial implementation for the Flip function
+* **docs**
+    * update ROADMAP from recent contributions
+* **examples**
+    * correct list of examples and fix comment
+* **features2d**
+    * Add NewORBWithParams
+* **tracking**
+    * change MOSSE to KCF
+* **highgui**
+    * Add function CreateTrackbarWithValue to Window type.
+* **imgcodec**
+    * optimize IMEncode avoiding multiple data copies.
+* **imgproc**
+    * Add CircleWithParams function
+    * Add DilateWithParams() function (#827)
+    * Add EllipseWithParams function
+    * Add FillPolyWithParams function
+    * Add PointPolygonTest function
+    * Add RectangleWithParams function
+* **photo**
+    * add MergeMertens, AlignMTB and Denoising function (#848)
+* **xphoto**
+    * Add Xphoto contrib (#844)
+
 0.27.0
 ---
 * **all**

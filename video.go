@@ -22,6 +22,20 @@ const (
 	OptflowFarnebackGaussian = 256
 )
 
+/**
+  cv::MOTION_TRANSLATION = 0,
+  cv::MOTION_EUCLIDEAN = 1,
+  cv::MOTION_AFFINE = 2,
+  cv::MOTION_HOMOGRAPHY = 3
+  For further details, please see: https://docs.opencv.org/4.x/dc/d6b/group__video__track.html#ggaaedb1f94e6b143cef163622c531afd88a01106d6d20122b782ff25eaeffe9a5be
+*/
+const (
+	MotionTranslation = 0
+	MotionEuclidean   = 1
+	MotionAffine      = 2
+	MotionHomography  = 3
+)
+
 // BackgroundSubtractorMOG2 is a wrapper around the cv::BackgroundSubtractorMOG2.
 type BackgroundSubtractorMOG2 struct {
 	// C.BackgroundSubtractorMOG2
@@ -154,6 +168,15 @@ func CalcOpticalFlowPyrLKWithParams(prevImg Mat, nextImg Mat, prevPts Mat, nextP
 	}
 	C.CalcOpticalFlowPyrLKWithParams(prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p, err.p, winSz, C.int(maxLevel), criteria.p, C.int(flags), C.double(minEigThreshold))
 	return
+}
+
+// FindTransformECC finds the geometric transform (warp) between two images in terms of the ECC criterion.
+//
+// For futther details, please see:
+// https://docs.opencv.org/4.x/dc/d6b/group__video__track.html#ga1aa357007eaec11e9ed03500ecbcbe47
+//
+func FindTransformECC(templateImage Mat, inputImage Mat, warpMatrix *Mat, motionType int, criteria TermCriteria, inputMask Mat, gaussFiltSize int) float64 {
+	return float64(C.FindTransformECC(templateImage.p, inputImage.p, warpMatrix.p, C.int(motionType), criteria.p, inputMask.p, C.int(gaussFiltSize)))
 }
 
 // Tracker is the base interface for object tracking.

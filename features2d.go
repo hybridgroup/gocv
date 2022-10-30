@@ -321,11 +321,37 @@ type ORB struct {
 // NewORB returns a new ORB algorithm
 //
 // For further details, please see:
-// https://docs.opencv.org/master/d7/d19/classcv_1_1AgastFeatureDetector.html
+// https://docs.opencv.org/master/db/d95/classcv_1_1ORB.html
 //
 func NewORB() ORB {
 	return ORB{p: unsafe.Pointer(C.ORB_Create())}
 }
+
+// NewORBWithParams returns a new ORB algorithm with parameters
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d95/classcv_1_1ORB.html#aeff0cbe668659b7ca14bb85ff1c4073b
+//
+func NewORBWithParams(nFeatures int, scaleFactor float32, nLevels int, edgeThreshold int, firstLevel int, WTAK int, scoreType ORBScoreType, patchSize int, fastThreshold int) ORB {
+	return ORB{p: unsafe.Pointer(C.ORB_CreateWithParams(
+		C.int(nFeatures),
+		C.float(scaleFactor),
+		C.int(nLevels),
+		C.int(edgeThreshold),
+		C.int(firstLevel),
+		C.int(WTAK),
+		C.int(scoreType),
+		C.int(patchSize),
+		C.int(fastThreshold),
+	))}
+}
+
+type ORBScoreType int
+
+const (
+	ORBScoreTypeHarris ORBScoreType = 0
+	ORBScoreTypeFAST   ORBScoreType = 1
+)
 
 // Close ORB.
 func (o *ORB) Close() error {

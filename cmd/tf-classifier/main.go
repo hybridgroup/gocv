@@ -14,7 +14,6 @@
 //
 // 		go run ./cmd/tf-classifier/main.go 0 ~/Downloads/tensorflow_inception_graph.pb ~/Downloads/imagenet_comp_graph_label_strings.txt opencv cpu
 //
-// +build example
 
 package main
 

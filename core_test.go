@@ -2754,6 +2754,16 @@ func TestNewPointVector(t *testing.T) {
 	if pv.Size() != 5 {
 		t.Fatal("unable to append to PointVector")
 	}
+
+	mat := NewMatWithSize(4, 1, MatTypeCV32SC2)
+	defer mat.Close()
+
+	pvm := NewPointVectorFromMat(mat)
+	defer pvm.Close()
+
+	if pvm.Size() != 4 {
+		t.Fatalf("expected size of NewPointVectorFromMat to be 4, was %d", pvm.Size())
+	}
 }
 
 func TestNewPoint2fVector(t *testing.T) {
@@ -2797,5 +2807,240 @@ func TestNewPoint2fVector(t *testing.T) {
 	out := pv.ToPoints()
 	if len(out) != 4 && out[0] != want {
 		t.Fatal("invalid ToPoints()")
+	}
+
+	mat := NewMatWithSize(4, 1, MatTypeCV32FC2)
+	defer mat.Close()
+
+	pvm := NewPoint2fVectorFromMat(mat)
+	defer pvm.Close()
+
+	if pvm.Size() != 4 {
+		t.Fatalf("expected size of NewPoint2fVectorFromMat to be 4, was %d", pvm.Size())
+	}
+}
+
+func TestNewPoints2fVector(t *testing.T) {
+	epv := NewPoints2fVector()
+	defer epv.Close()
+
+	if epv.Size() != 0 {
+		t.Fatal("expected empty points2fvector size not 0")
+	}
+
+	pts := [][]Point2f{
+		{
+			NewPoint2f(10.0, 10.0),
+			NewPoint2f(10.0, 20.0),
+			NewPoint2f(20.0, 20.0),
+			NewPoint2f(20.0, 10.0),
+		},
+	}
+
+	psv := NewPoints2fVectorFromPoints(pts)
+	defer psv.Close()
+
+	if psv.IsNil() {
+		t.Fatal("points2fvector pointer was nil")
+	}
+
+	if psv.Size() != 1 {
+		t.Fatal("expected points2fvector size 1")
+	}
+
+	ipv := psv.At(10)
+	if !ipv.IsNil() {
+		t.Fatal("expected pointvector nil")
+	}
+
+	pv := psv.At(0)
+	if pv.Size() != 4 {
+		t.Fatal("expected pointvector size 4")
+	}
+
+	p := pv.At(0)
+	if p != NewPoint2f(10.0, 10.0) {
+		t.Fatal("invalid At() point")
+	}
+
+	p = pv.At(10)
+	if p != NewPoint2f(0, 0) {
+		t.Fatal("invalid At() point beyond range")
+	}
+
+	out := psv.ToPoints()
+	if out[0][0] != NewPoint2f(10.0, 10.0) {
+		t.Fatal("invalid ToPoints() point")
+	}
+
+	ps := []Point2f{
+		NewPoint2f(10, 10),
+		NewPoint2f(10, 20),
+		NewPoint2f(20, 20),
+		NewPoint2f(20, 10),
+	}
+
+	apv := NewPoint2fVectorFromPoints(ps)
+	defer apv.Close()
+
+	psv.Append(apv)
+	if psv.Size() != 2 {
+		t.Fatal("unable to append to Points2fVector")
+	}
+}
+
+func TestNewPoint3fVector(t *testing.T) {
+	epv := NewPoint3fVector()
+	defer epv.Close()
+
+	if epv.Size() != 0 {
+		t.Fatal("expected empty pointvector size not 0")
+	}
+
+	pts := []Point3f{
+		{10.0, 10.0, 0.1},
+		{10.0, 20.0, 1.0},
+		{20.5, 21.5, 2.0},
+	}
+
+	pv := NewPoint3fVectorFromPoints(pts)
+	defer pv.Close()
+
+	pv.Append(NewPoint3f(25.5, 30.5, 3.0))
+
+	if pv.IsNil() {
+		t.Fatal("point3fvector pointer was nil")
+	}
+
+	if pv.Size() != 4 {
+		t.Fatal("expected point3fvector size 4")
+	}
+
+	p := pv.At(0)
+	want := Point3f{10.0, 10.0, 0.1}
+	if p != want {
+		t.Fatal("invalid point")
+	}
+
+	want2 := NewPoint3f(25.5, 30.5, 3.0)
+	if pv.At(3) != want2 {
+		t.Fatal("fail to append point to Point3fVector")
+	}
+
+	p = pv.At(10)
+	nopoint := Point3f{0, 0, 0}
+	if p != nopoint {
+		t.Fatal("invalid At() point beyond range")
+	}
+
+	out := pv.ToPoints()
+	if len(out) != 4 && out[0] != want {
+		t.Fatal("invalid ToPoints()")
+	}
+
+	mat := NewMatWithSize(4, 1, MatTypeCV32FC3)
+	defer mat.Close()
+
+	pvm := NewPoint3fVectorFromMat(mat)
+	defer pvm.Close()
+
+	if pvm.Size() != 4 {
+		t.Fatalf("expected size of NewPoint3fVectorFromMat to be 4, was %d", pvm.Size())
+	}
+}
+
+func TestNewPoints3fVector(t *testing.T) {
+	epv := NewPoints3fVector()
+	defer epv.Close()
+
+	if epv.Size() != 0 {
+		t.Fatal("expected empty points3fvector size not 0")
+	}
+
+	pts := [][]Point3f{
+		{
+			NewPoint3f(10.0, 10.0, 0.1),
+			NewPoint3f(10.0, 20.0, 0.2),
+			NewPoint3f(20.0, 20.0, 0.3),
+			NewPoint3f(20.0, 10.0, 0.4),
+		},
+	}
+
+	psv := NewPoints3fVectorFromPoints(pts)
+	defer psv.Close()
+
+	if psv.IsNil() {
+		t.Fatal("points3fvector pointer was nil")
+	}
+
+	if psv.Size() != 1 {
+		t.Fatal("expected points3fvector size 1")
+	}
+
+	ipv := psv.At(10)
+	if !ipv.IsNil() {
+		t.Fatal("expected pointvector nil")
+	}
+
+	pv := psv.At(0)
+	if pv.Size() != 4 {
+		t.Fatal("expected pointvector size 4")
+	}
+
+	p := pv.At(0)
+	if p != NewPoint3f(10.0, 10.0, 0.1) {
+		t.Fatal("invalid At() point")
+	}
+
+	p = pv.At(10)
+	if p != NewPoint3f(0, 0, 0) {
+		t.Fatal("invalid At() point beyond range")
+	}
+
+	out := psv.ToPoints()
+	if out[0][0] != NewPoint3f(10.0, 10.0, 0.1) {
+		t.Fatal("invalid ToPoints() point")
+	}
+
+	ps := []Point3f{
+		NewPoint3f(10, 10, 0.1),
+		NewPoint3f(10, 20, 0.2),
+		NewPoint3f(20, 20, 0.3),
+		NewPoint3f(20, 10, 0.4),
+	}
+
+	apv := NewPoint3fVectorFromPoints(ps)
+	defer apv.Close()
+
+	psv.Append(apv)
+	if psv.Size() != 2 {
+		t.Fatal("unable to append to Points3fVector")
+	}
+}
+
+func TestElemSize(t *testing.T) {
+	m1 := NewMat()
+	defer m1.Close()
+	if m1.ElemSize() != 0 {
+		t.Error("incorrect element size")
+	}
+
+	m2 := NewMatWithSize(2, 2, MatTypeCV16S)
+	defer m2.Close()
+	if m2.ElemSize() != 2 {
+		t.Error("incorrect element size of MatTypeCV16S")
+	}
+
+	m3 := NewMatWithSize(2, 2, MatTypeCV16SC3)
+	defer m3.Close()
+	if m3.ElemSize() != 6 {
+		t.Error("incorrect element size of MatTypeCV16SC3")
+	}
+
+	m4 := NewMatWithSize(2, 2, MatTypeCV32SC4)
+	defer m4.Close()
+	if m4.ElemSize() != 16 {
+		t.Error("incorrect element size of MatTypeCV32SC4")
+		return
 	}
 }

@@ -2,19 +2,22 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: gocv/opencv:4.5.2
+      - image: gocv/opencv:4.6.0
     working_directory: /usr/local/go/src/github.com/hybridgroup/gocv
     environment:
         DISPLAY: 99.0
         GOCV_CAFFE_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
         GOCV_TENSORFLOW_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
-        GOCV_ONNX_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
+        NO_GOCV_ONNX_TEST_FILES: "/usr/local/go/src/github.com/hybridgroup/gocv/testdata"
         OPENCV_ENABLE_NONFREE: ON
     steps:
       - checkout
       - run:
           name: Check Go version
           command: go version
+      - run:
+          name: "Enforce Go Formatted Code"
+          command: "test -z $(gofmt -l .) || gofmt -d ."
       - run:
           name: Install dependencies
           command: |
@@ -25,6 +28,10 @@ jobs:
             mkdir -p testdata
             curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/master/testdata/dnn/bvlc_googlenet.prototxt > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/bvlc_googlenet.prototxt
             curl -sL http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/bvlc_googlenet.caffemodel
+            curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.caffemodel > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/detect.caffemodel
+            curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.prototxt > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/detect.prototxt
+            curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.caffemodel > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/sr.caffemodel
+            curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.prototxt > /usr/local/go/src/github.com/hybridgroup/gocv/testdata/sr.prototxt
       - run:
           name: "Install Tensorflow test model"
           command: |

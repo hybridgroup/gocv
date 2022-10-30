@@ -6,7 +6,6 @@
 //
 // 		go run ./cmd/version/main.go
 //
-// +build example
 
 package main
 

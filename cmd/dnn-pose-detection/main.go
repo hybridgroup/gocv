@@ -21,7 +21,6 @@
 //
 // go run ./cmd/dnn-pose-detection/main.go 0 ~/Downloads/pose_iter_440000.caffemodel ~/Downloads/openpose_pose_coco.prototxt openvino fp16
 //
-// +build example
 
 package main
 
@@ -47,8 +46,8 @@ func main() {
 
 	// parse args
 	deviceID := os.Args[1]
-	proto := os.Args[2]
-	model := os.Args[3]
+	model := os.Args[2]
+	proto := os.Args[3]
 	backend := gocv.NetBackendDefault
 	if len(os.Args) > 4 {
 		backend = gocv.ParseNetBackend(os.Args[4])
