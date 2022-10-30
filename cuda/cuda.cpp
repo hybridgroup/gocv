@@ -68,6 +68,14 @@ void GpuMat_ConvertTo(GpuMat m, GpuMat dst, int type, Stream s) {
     m->convertTo(*dst, type, *s);
 }
 
+void GpuMat_ConvertToWithParams(GpuMat m, GpuMat dst, int type, float alpha, float beta, Stream s) {
+    if (s == NULL) {
+        m->convertTo(*dst, type, alpha, beta);
+        return;
+    }
+    m->convertTo(*dst, type, alpha, beta, *s);
+}
+
 void GpuMat_CopyTo(GpuMat m, GpuMat dst, Stream s) {
     if (s == NULL) {
         m->copyTo(*dst);

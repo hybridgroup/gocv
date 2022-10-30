@@ -1,0 +1,64 @@
+# to build this docker image:
+#   docker build -f Dockerfile.opencv-gpu-cuda-11 -t gocv/opencv:4.6.0-gpu-cuda-11.2.2 .
+FROM nvidia/cuda:11.2.2-cudnn8-devel-ubuntu20.04 AS opencv-gpu-cuda-11-base
+LABEL maintainer="hybridgroup"
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+            git build-essential cmake pkg-config unzip libgtk2.0-dev \
+            wget curl ca-certificates libcurl4-openssl-dev libssl-dev \
+            libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev \
+            libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev && \
+            rm -rf /var/lib/apt/lists/*
+
+ARG OPENCV_VERSION="4.6.0"
+ENV OPENCV_VERSION $OPENCV_VERSION
+
+RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv.zip && \
+    curl -Lo opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv_contrib.zip && \
+    rm opencv.zip opencv_contrib.zip && \
+    cd opencv-${OPENCV_VERSION} && \
+    mkdir build && cd build && \
+    cmake -D CMAKE_BUILD_TYPE=RELEASE \
+            -D WITH_IPP=OFF \
+            -D WITH_OPENGL=OFF \
+            -D WITH_QT=OFF \
+            -D CMAKE_INSTALL_PREFIX=/usr/local \
+            -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules \
+            -D OPENCV_ENABLE_NONFREE=ON \
+            -D WITH_JASPER=OFF \
+            -D BUILD_DOCS=OFF \
+            -D BUILD_EXAMPLES=OFF \
+            -D BUILD_TESTS=OFF \
+            -D BUILD_PERF_TESTS=OFF \
+            -D BUILD_opencv_java=NO \
+            -D BUILD_opencv_python=NO \
+            -D BUILD_opencv_python2=NO \
+            -D BUILD_opencv_python3=NO \
+            -D WITH_TBB=ON \
+            -D WITH_CUDA=ON \
+            -D ENABLE_FAST_MATH=1 \
+            -D CUDA_FAST_MATH=1 \
+            -D WITH_CUBLAS=1 \
+            -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda/ \
+            -D BUILD_opencv_cudacodec=OFF \
+            -D WITH_CUDNN=ON \
+            -D OPENCV_DNN_CUDA=ON \
+            -D CUDA_GENERATION=Auto \
+            -D OPENCV_GENERATE_PKGCONFIG=ON .. && \
+    make -j $(nproc --all) && \
+    make preinstall && make install && ldconfig && \
+    cd / && rm -rf opencv*
+
+# install golang here
+FROM opencv-gpu-cuda-11-base AS opencv-gpu-cuda-11-golang
+
+ENV GO_RELEASE=1.18.3
+RUN wget https://dl.google.com/go/go${GO_RELEASE}.linux-amd64.tar.gz && \
+    tar xfv go${GO_RELEASE}.linux-amd64.tar.gz -C /usr/local && \
+    rm go${GO_RELEASE}.linux-amd64.tar.gz
+ENV PATH="${PATH}:/usr/local/go/bin"
+
+CMD ["go version"]
