@@ -4,6 +4,7 @@
 # To run tests:
 #   docker run -it --rm --gpus all gocv-test-gpu-cuda-10
 #
+
 FROM gocv/opencv:4.6.0-gpu-cuda-10 AS gocv-gpu-test-cuda-10
 
 ENV GOPATH /go

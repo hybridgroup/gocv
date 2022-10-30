@@ -73,6 +73,10 @@ Mat EstimateAffinePartial2D(Point2fVector from, Point2fVector to) {
     return new cv::Mat(cv::estimateAffinePartial2D(*from, *to));
 }
 
+Mat EstimateAffinePartial2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method, double ransacReprojThreshold, size_t maxIters, double confidence, size_t refineIters) {
+    return new cv::Mat(cv::estimateAffinePartial2D(*from, *to, *inliers, method, ransacReprojThreshold, maxIters, confidence, refineIters));
+}
+
 Mat EstimateAffine2D(Point2fVector from, Point2fVector to) {
     return new cv::Mat(cv::estimateAffine2D(*from, *to));
 }

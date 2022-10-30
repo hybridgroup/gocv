@@ -1,4 +1,4 @@
-echo off
+@echo off
 
 if not exist "C:\opencv" mkdir "C:\opencv"
 if not exist "C:\opencv\build" mkdir "C:\opencv\build"
@@ -28,7 +28,7 @@ echo.
 echo Done with downloading and extracting sources.
 echo.
 
-echo on
+@echo on
 
 cd /D C:\opencv\build
 set PATH=%PATH%;C:\Program Files (x86)\CMake\bin;C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin

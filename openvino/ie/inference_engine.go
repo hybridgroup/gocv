@@ -7,8 +7,11 @@ package ie
 import (
 	"C"
 )
+import "unsafe"
 
 // Version returns the current Inference Engine library version
 func Version() string {
-	return C.GoString(C.OpenVinoVersion())
+	v := C.OpenVinoVersion()
+	defer C.free(unsafe.Pointer(v))
+	return C.GoString(v)
 }

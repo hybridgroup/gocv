@@ -1,0 +1,48 @@
+# to build this docker image:
+#   docker build -f Dockerfile.opencv -t gocv/opencv:4.6.0 .
+FROM golang:1.18-buster AS opencv
+LABEL maintainer="hybridgroup"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+            git build-essential cmake pkg-config unzip libgtk2.0-dev \
+            curl ca-certificates libcurl4-openssl-dev libssl-dev \
+            libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev \
+            libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev && \
+            rm -rf /var/lib/apt/lists/*
+
+ARG OPENCV_VERSION="4.6.0"
+ENV OPENCV_VERSION $OPENCV_VERSION
+
+RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
+            unzip -q opencv.zip && \
+            curl -Lo opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip && \
+            unzip -q opencv_contrib.zip && \
+            rm opencv.zip opencv_contrib.zip
+RUN cd opencv-${OPENCV_VERSION} && \
+            mkdir build && cd build && \
+            cmake -D CMAKE_BUILD_TYPE=RELEASE \
+                -D CMAKE_INSTALL_PREFIX=/usr/local \
+                -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules \
+                -D ENABLE_NEON=ON \
+                -D WITH_FFMPEG=ON \
+                -D WITH_TBB=ON \
+                -D BUILD_TBB=ON \
+                -D BUILD_TESTS=OFF \
+                -D WITH_EIGEN=OFF \
+                -D WITH_GSTREAMER=OFF \
+                -D WITH_V4L=ON \
+                -D WITH_LIBV4L=ON \
+                -D WITH_VTK=OFF \
+                -D WITH_QT=OFF \
+                -D OPENCV_ENABLE_NONFREE=ON \
+                -D INSTALL_C_EXAMPLES=OFF \
+                -D INSTALL_PYTHON_EXAMPLES=OFF \
+                -D BUILD_opencv_python3=TRUE \
+                -D OPENCV_GENERATE_PKGCONFIG=ON \
+                -D BUILD_EXAMPLES=OFF \
+                -D CMAKE_TOOLCHAIN_FILE=../platforms/linux/aarch64-gnu.toolchain.cmake .. && \
+            make -j $(nproc --all) && \
+            make preinstall && make install && ldconfig && \
+            cd / && rm -rf opencv*
+
+CMD ["go version"]
