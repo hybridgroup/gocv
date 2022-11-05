@@ -2609,7 +2609,7 @@ func TestMatToImageYUVWithParams(t *testing.T) {
 	}
 }
 
-//Tests that image is the same after converting to Mat and back to Image
+// Tests that image is the same after converting to Mat and back to Image
 func TestImageToMatRGBA(t *testing.T) {
 	file, err := os.Open("images/gocvlogo.png")
 	if err != nil {
@@ -2643,7 +2643,7 @@ func TestImageToMatRGBA(t *testing.T) {
 	defer mat3.Close()
 }
 
-//Tests that image is the same after converting to Mat and back to Image
+// Tests that image is the same after converting to Mat and back to Image
 func TestImageToMatRGB(t *testing.T) {
 	file, err := os.Open("images/gocvlogo.jpg")
 	if err != nil {

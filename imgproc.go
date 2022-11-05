@@ -18,7 +18,6 @@ import (
 // For further details, please see:
 //
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8d26483c636be6b35c3ec6335798a47c
-//
 func ArcLength(curve PointVector, isClosed bool) float64 {
 	return float64(C.ArcLength(curve.p, C.bool(isClosed)))
 }
@@ -28,7 +27,6 @@ func ArcLength(curve PointVector, isClosed bool) float64 {
 // For further details, please see:
 //
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga0012a5fdaea70b8a9970165d98722b4c
-//
 func ApproxPolyDP(curve PointVector, epsilon float64, closed bool) PointVector {
 	return PointVector{p: C.ApproxPolyDP(curve.p, C.double(epsilon), C.bool(closed))}
 }
@@ -37,7 +35,6 @@ func ApproxPolyDP(curve PointVector, epsilon float64, closed bool) PointVector {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga014b28e56cb8854c0de4a211cb2be656
-//
 func ConvexHull(points PointVector, hull *Mat, clockwise bool, returnPoints bool) {
 	C.ConvexHull(points.p, hull.p, C.bool(clockwise), C.bool(returnPoints))
 }
@@ -46,7 +43,6 @@ func ConvexHull(points PointVector, hull *Mat, clockwise bool, returnPoints bool
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gada4437098113fd8683c932e0567f47ba
-//
 func ConvexityDefects(contour PointVector, hull Mat, result *Mat) {
 	C.ConvexityDefects(contour.p, hull.p, result.p)
 }
@@ -57,7 +53,6 @@ func ConvexityDefects(contour PointVector, hull Mat, result *Mat) {
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga4e0972be5de079fed4e3a10e24ef5ef0
-//
 func CvtColor(src Mat, dst *Mat, code ColorConversionCode) {
 	C.CvtColor(src.p, dst.p, C.int(code))
 }
@@ -184,7 +179,6 @@ func CompareHist(hist1 Mat, hist2 Mat, method HistCompMethod) float32 {
 // ClipLine clips the line against the image rectangle.
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf483cb46ad6b049bc35ec67052ef1c2c
-//
 func ClipLine(imgSize image.Point, pt1 image.Point, pt2 image.Point) bool {
 	pSize := C.struct_Size{
 		width:  C.int(imgSize.X),
@@ -214,7 +208,6 @@ func ClipLine(imgSize image.Point, pt1 image.Point, pt2 image.Point) bool {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga9d7064d478c95d60003cf839430737ed
-//
 func BilateralFilter(src Mat, dst *Mat, diameter int, sigmaColor float64, sigmaSpace float64) {
 	C.BilateralFilter(src.p, dst.p, C.int(diameter), C.double(sigmaColor), C.double(sigmaSpace))
 }
@@ -223,7 +216,6 @@ func BilateralFilter(src Mat, dst *Mat, diameter int, sigmaColor float64, sigmaS
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga8c45db9afe636703801b0b2e440fce37
-//
 func Blur(src Mat, dst *Mat, ksize image.Point) {
 	pSize := C.struct_Size{
 		width:  C.int(ksize.X),
@@ -237,7 +229,6 @@ func Blur(src Mat, dst *Mat, ksize image.Point) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gad533230ebf2d42509547d514f7d3fbc3
-//
 func BoxFilter(src Mat, dst *Mat, depth int, ksize image.Point) {
 	pSize := C.struct_Size{
 		height: C.int(ksize.X),
@@ -250,7 +241,6 @@ func BoxFilter(src Mat, dst *Mat, depth int, ksize image.Point) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga045028184a9ef65d7d2579e5c4bff6c0
-//
 func SqBoxFilter(src Mat, dst *Mat, depth int, ksize image.Point) {
 	pSize := C.struct_Size{
 		height: C.int(ksize.X),
@@ -263,7 +253,6 @@ func SqBoxFilter(src Mat, dst *Mat, depth int, ksize image.Point) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga4ff0f3318642c4f469d0e11f242f3b6c
-//
 func Dilate(src Mat, dst *Mat, kernel Mat) {
 	C.Dilate(src.p, dst.p, kernel.p)
 }
@@ -318,7 +307,6 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8a0b7fdfcb7a13dde018988ba3a43042
-//
 func DistanceTransform(src Mat, dst *Mat, labels *Mat, distType DistanceTypes, maskSize DistanceTransformMasks, labelType DistanceTransformLabelTypes) {
 	C.DistanceTransform(src.p, dst.p, labels.p, C.int(distType), C.int(maskSize), C.int(labelType))
 }
@@ -327,7 +315,6 @@ func DistanceTransform(src Mat, dst *Mat, labels *Mat, distType DistanceTypes, m
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaeb1e0c1033e3f6b891a25d0511362aeb
-//
 func Erode(src Mat, dst *Mat, kernel Mat) {
 	C.Erode(src.p, dst.p, kernel.p)
 }
@@ -336,7 +323,6 @@ func Erode(src Mat, dst *Mat, kernel Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaeb1e0c1033e3f6b891a25d0511362aeb
-//
 func ErodeWithParams(src Mat, dst *Mat, kernel Mat, anchor image.Point, iterations, borderType int) {
 	cAnchor := C.struct_Point{
 		x: C.int(anchor.X),
@@ -401,7 +387,6 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#gacb413ddce8e48ff3ca61ed7cf626a366
-//
 func BoundingRect(contour PointVector) image.Rectangle {
 	r := C.BoundingRect(contour.p)
 	rect := image.Rect(int(r.x), int(r.y), int(r.x+r.width), int(r.y+r.height))
@@ -412,7 +397,6 @@ func BoundingRect(contour PointVector) image.Rectangle {
 //
 // For further Details, please see:
 // https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#gaf78d467e024b4d7936cf9397185d2f5c
-//
 func BoxPoints(rect RotatedRect, pts *Mat) {
 	rPoints := toCPoints(rect.Points)
 
@@ -448,7 +432,6 @@ func BoxPoints(rect RotatedRect, pts *Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#ga2c759ed9f497d4a618048a2f56dc97f1
-//
 func ContourArea(contour PointVector) float64 {
 	result := C.ContourArea(contour.p)
 	return float64(result)
@@ -464,7 +447,6 @@ type RotatedRect struct {
 }
 
 // toPoints converts C.Contour to []image.Points
-//
 func toPoints(points C.Contour) []image.Point {
 	pArray := points.points
 	pLength := int(points.length)
@@ -487,7 +469,6 @@ func toPoints(points C.Contour) []image.Point {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga3d476a3417130ae5154aea421ca7ead9
-//
 func MinAreaRect(points PointVector) RotatedRect {
 	result := C.MinAreaRect(points.p)
 	defer C.Points_Close(result.pts)
@@ -506,7 +487,6 @@ func MinAreaRect(points PointVector) RotatedRect {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf259efaad93098103d6c27b9e4900ffa
-//
 func FitEllipse(pts PointVector) RotatedRect {
 	cRect := C.FitEllipse(pts.p)
 	defer C.Points_Close(cRect.pts)
@@ -539,7 +519,6 @@ func MinEnclosingCircle(pts PointVector) (x, y, radius float32) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga95f5b48d01abc7c2e0732db24689837b
-//
 func FindContours(src Mat, mode RetrievalMode, method ContourApproximationMode) PointsVector {
 	hierarchy := NewMat()
 	defer hierarchy.Close()
@@ -550,7 +529,6 @@ func FindContours(src Mat, mode RetrievalMode, method ContourApproximationMode) 
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga17ed9f5d79ae97bd4c7cf18403e1689a
-//
 func FindContoursWithParams(src Mat, hierarchy *Mat, mode RetrievalMode, method ContourApproximationMode) PointsVector {
 	return PointsVector{p: C.FindContours(src.p, hierarchy.p, C.int(mode), C.int(method))}
 }
@@ -559,7 +537,6 @@ func FindContoursWithParams(src Mat, hierarchy *Mat, mode RetrievalMode, method 
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga1a539e8db2135af2566103705d7a5722
-//
 func PointPolygonTest(pts PointVector, pt image.Point, measureDist bool) float64 {
 	cp := C.struct_Point{
 		x: C.int(pt.X),
@@ -568,7 +545,7 @@ func PointPolygonTest(pts PointVector, pt image.Point, measureDist bool) float64
 	return float64(C.PointPolygonTest(pts.p, cp, C.bool(measureDist)))
 }
 
-//ConnectedComponentsAlgorithmType specifies the type for ConnectedComponents
+// ConnectedComponentsAlgorithmType specifies the type for ConnectedComponents
 type ConnectedComponentsAlgorithmType int
 
 const (
@@ -586,7 +563,6 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaedef8c7340499ca391d459122e51bef5
-//
 func ConnectedComponents(src Mat, labels *Mat) int {
 	return int(C.ConnectedComponents(src.p, labels.p, C.int(8), C.int(MatTypeCV32S), C.int(CCL_DEFAULT)))
 }
@@ -595,7 +571,6 @@ func ConnectedComponents(src Mat, labels *Mat) int {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaedef8c7340499ca391d459122e51bef5
-//
 func ConnectedComponentsWithParams(src Mat, labels *Mat, conn int, ltype MatType,
 	ccltype ConnectedComponentsAlgorithmType) int {
 	return int(C.ConnectedComponents(src.p, labels.p, C.int(conn), C.int(ltype), C.int(ccltype)))
@@ -628,7 +603,6 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga107a78bf7cd25dec05fb4dfc5c9e765f
-//
 func ConnectedComponentsWithStats(src Mat, labels *Mat, stats *Mat, centroids *Mat) int {
 	return int(C.ConnectedComponentsWithStats(src.p, labels.p, stats.p, centroids.p,
 		C.int(8), C.int(MatTypeCV32S), C.int(CCL_DEFAULT)))
@@ -639,7 +613,6 @@ func ConnectedComponentsWithStats(src Mat, labels *Mat, stats *Mat, centroids *M
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga107a78bf7cd25dec05fb4dfc5c9e765f
-//
 func ConnectedComponentsWithStatsWithParams(src Mat, labels *Mat, stats *Mat, centroids *Mat,
 	conn int, ltype MatType, ccltype ConnectedComponentsAlgorithmType) int {
 	return int(C.ConnectedComponentsWithStats(src.p, labels.p, stats.p, centroids.p, C.int(conn),
@@ -668,7 +641,6 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/df/dfb/group__imgproc__object.html#ga586ebfb0a7fb604b35a23d85391329be
-//
 func MatchTemplate(image Mat, templ Mat, result *Mat, method TemplateMatchMode, mask Mat) {
 	C.MatchTemplate(image.p, templ.p, result.p, C.int(method), mask.p)
 }
@@ -678,7 +650,6 @@ func MatchTemplate(image Mat, templ Mat, result *Mat, method TemplateMatchMode, 
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga556a180f43cab22649c23ada36a8a139
-//
 func Moments(src Mat, binaryImage bool) map[string]float64 {
 	r := C.Moments(src.p, C.bool(binaryImage))
 
@@ -715,7 +686,6 @@ func Moments(src Mat, binaryImage bool) map[string]float64 {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaf9bba239dfca11654cb7f50f889fc2ff
-//
 func PyrDown(src Mat, dst *Mat, ksize image.Point, borderType BorderType) {
 	pSize := C.struct_Size{
 		height: C.int(ksize.X),
@@ -728,7 +698,6 @@ func PyrDown(src Mat, dst *Mat, ksize image.Point, borderType BorderType) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gada75b59bdaaca411ed6fee10085eb784
-//
 func PyrUp(src Mat, dst *Mat, ksize image.Point, borderType BorderType) {
 	pSize := C.struct_Size{
 		height: C.int(ksize.X),
@@ -742,7 +711,6 @@ func PyrUp(src Mat, dst *Mat, ksize image.Point, borderType BorderType) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga94756fad83d9d24d29c9bf478558c40a
-//
 func MorphologyDefaultBorderValue() Scalar {
 	var scalar C.Scalar = C.MorphologyDefaultBorderValue()
 	return NewScalar(float64(scalar.val1), float64(scalar.val2), float64(scalar.val3), float64(scalar.val4))
@@ -752,7 +720,6 @@ func MorphologyDefaultBorderValue() Scalar {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga67493776e3ad1a3df63883829375201f
-//
 func MorphologyEx(src Mat, dst *Mat, op MorphType, kernel Mat) {
 	C.MorphologyEx(src.p, dst.p, C.int(op), kernel.p)
 }
@@ -761,7 +728,6 @@ func MorphologyEx(src Mat, dst *Mat, op MorphType, kernel Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga67493776e3ad1a3df63883829375201f
-//
 func MorphologyExWithParams(src Mat, dst *Mat, op MorphType, kernel Mat, iterations int, borderType BorderType) {
 	pt := C.struct_Point{
 		x: C.int(-1),
@@ -789,7 +755,6 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gac342a1bb6eabf6f55c803b09268e36dc
-//
 func GetStructuringElement(shape MorphShape, ksize image.Point) Mat {
 	sz := C.struct_Size{
 		width:  C.int(ksize.X),
@@ -863,7 +828,6 @@ const (
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaabe8c836e97159a9193fb0b11ac52cf1
-//
 func GaussianBlur(src Mat, dst *Mat, ksize image.Point, sigmaX float64,
 	sigmaY float64, borderType BorderType) {
 	pSize := C.struct_Size{
@@ -894,7 +858,6 @@ func GetGaussianKernelWithParams(ksize int, sigma float64, ktype MatType) Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gacea54f142e81b6758cb6f375ce782c8d
-//
 func Sobel(src Mat, dst *Mat, ddepth MatType, dx, dy, ksize int, scale, delta float64, borderType BorderType) {
 	C.Sobel(src.p, dst.p, C.int(ddepth), C.int(dx), C.int(dy), C.int(ksize), C.double(scale), C.double(delta), C.int(borderType))
 }
@@ -903,7 +866,6 @@ func Sobel(src Mat, dst *Mat, ddepth MatType, dx, dy, ksize int, scale, delta fl
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga405d03b20c782b65a4daf54d233239a2
-//
 func SpatialGradient(src Mat, dx, dy *Mat, ksize MatType, borderType BorderType) {
 	C.SpatialGradient(src.p, dx.p, dy.p, C.int(ksize), C.int(borderType))
 }
@@ -912,7 +874,6 @@ func SpatialGradient(src Mat, dx, dy *Mat, ksize MatType, borderType BorderType)
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gad78703e4c8fe703d479c1860d76429e6
-//
 func Laplacian(src Mat, dst *Mat, dDepth MatType, size int, scale float64,
 	delta float64, borderType BorderType) {
 	C.Laplacian(src.p, dst.p, C.int(dDepth), C.int(size), C.double(scale), C.double(delta), C.int(borderType))
@@ -922,7 +883,6 @@ func Laplacian(src Mat, dst *Mat, dDepth MatType, size int, scale float64,
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaa13106761eedf14798f37aa2d60404c9
-//
 func Scharr(src Mat, dst *Mat, dDepth MatType, dx int, dy int, scale float64,
 	delta float64, borderType BorderType) {
 	C.Scharr(src.p, dst.p, C.int(dDepth), C.int(dx), C.int(dy), C.double(scale), C.double(delta), C.int(borderType))
@@ -932,7 +892,6 @@ func Scharr(src Mat, dst *Mat, dDepth MatType, dx int, dy int, scale float64,
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga564869aa33e58769b4469101aac458f9
-//
 func MedianBlur(src Mat, dst *Mat, ksize int) {
 	C.MedianBlur(src.p, dst.p, C.int(ksize))
 }
@@ -947,7 +906,6 @@ func MedianBlur(src Mat, dst *Mat, ksize int) {
 //
 // For further details, please see:
 // http://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga04723e007ed888ddf11d9ba04e2232de
-//
 func Canny(src Mat, edges *Mat, t1 float32, t2 float32) {
 	C.Canny(src.p, edges.p, C.double(t1), C.double(t2))
 }
@@ -957,7 +915,6 @@ func Canny(src Mat, edges *Mat, t1 float32, t2 float32) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga354e0d7c86d0d9da75de9b9701a9a87e
-//
 func CornerSubPix(img Mat, corners *Mat, winSize image.Point, zeroZone image.Point, criteria TermCriteria) {
 	winSz := C.struct_Size{
 		width:  C.int(winSize.X),
@@ -978,7 +935,6 @@ func CornerSubPix(img Mat, corners *Mat, winSize image.Point, zeroZone image.Poi
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga1d6bb77486c8f92d79c8793ad995d541
-//
 func GoodFeaturesToTrack(img Mat, corners *Mat, maxCorners int, quality float64, minDist float64) {
 	C.GoodFeaturesToTrack(img.p, corners.p, C.int(maxCorners), C.double(quality), C.double(minDist))
 }
@@ -1005,7 +961,6 @@ const (
 // The function implements the GrabCut image segmentation algorithm.
 // For further details, please see:
 // https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga909c1dda50efcbeaa3ce126be862b37f
-//
 func GrabCut(img Mat, mask *Mat, r image.Rectangle, bgdModel *Mat, fgdModel *Mat, iterCount int, mode GrabCutMode) {
 	cRect := C.struct_Rect{
 		x:      C.int(r.Min.X),
@@ -1042,7 +997,6 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d
-//
 func HoughCircles(src Mat, circles *Mat, method HoughMode, dp, minDist float64) {
 	C.HoughCircles(src.p, circles.p, C.int(method), C.double(dp), C.double(minDist))
 }
@@ -1052,7 +1006,6 @@ func HoughCircles(src Mat, circles *Mat, method HoughMode, dp, minDist float64) 
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga47849c3be0d0406ad3ca45db65a25d2d
-//
 func HoughCirclesWithParams(src Mat, circles *Mat, method HoughMode, dp, minDist, param1, param2 float64, minRadius, maxRadius int) {
 	C.HoughCirclesWithParams(src.p, circles.p, C.int(method), C.double(dp), C.double(minDist), C.double(param1), C.double(param2), C.int(minRadius), C.int(maxRadius))
 }
@@ -1063,7 +1016,6 @@ func HoughCirclesWithParams(src Mat, circles *Mat, method HoughMode, dp, minDist
 //
 // For further details, please see:
 // http://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga46b4e588934f6c8dfd509cc6e0e4545a
-//
 func HoughLines(src Mat, lines *Mat, rho float32, theta float32, threshold int) {
 	C.HoughLines(src.p, lines.p, C.double(rho), C.double(theta), C.int(threshold))
 }
@@ -1074,7 +1026,6 @@ func HoughLines(src Mat, lines *Mat, rho float32, theta float32, threshold int) 
 //
 // For further details, please see:
 // http://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga8618180a5948286384e3b7ca02f6feeb
-//
 func HoughLinesP(src Mat, lines *Mat, rho float32, theta float32, threshold int) {
 	C.HoughLinesP(src.p, lines.p, C.double(rho), C.double(theta), C.int(threshold))
 }
@@ -1088,7 +1039,6 @@ func HoughLinesPWithParams(src Mat, lines *Mat, rho float32, theta float32, thre
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga2858ef61b4e47d1919facac2152a160e
-//
 func HoughLinesPointSet(points Mat, lines *Mat, linesMax int, threshold int,
 	minRho float32, maxRho float32, rhoStep float32,
 	minTheta float32, maxTheta float32, thetaStep float32) {
@@ -1100,7 +1050,6 @@ func HoughLinesPointSet(points Mat, lines *Mat, linesMax int, threshold int,
 // Integral calculates one or more integral images for the source image.
 // For further details, please see:
 // https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga97b87bec26908237e8ba0f6e96d23e28
-//
 func Integral(src Mat, sum *Mat, sqsum *Mat, tilted *Mat) {
 	C.Integral(src.p, sum.p, sqsum.p, tilted.p)
 }
@@ -1138,7 +1087,6 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/3.3.0/d7/d1b/group__imgproc__misc.html#gae8a4a146d1ca78c626a53577199e9c57
-//
 func Threshold(src Mat, dst *Mat, thresh float32, maxvalue float32, typ ThresholdType) (threshold float32) {
 	return float32(C.Threshold(src.p, dst.p, C.double(thresh), C.double(maxvalue), C.int(typ)))
 }
@@ -1158,7 +1106,6 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga72b913f352e4a1b1b397736707afcde3
-//
 func AdaptiveThreshold(src Mat, dst *Mat, maxValue float32, adaptiveTyp AdaptiveThresholdType, typ ThresholdType, blockSize int, c float32) {
 	C.AdaptiveThreshold(src.p, dst.p, C.double(maxValue), C.int(adaptiveTyp), C.int(typ), C.int(blockSize), C.double(c))
 }
@@ -1168,7 +1115,6 @@ func AdaptiveThreshold(src Mat, dst *Mat, maxValue float32, adaptiveTyp Adaptive
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga0a165a3ca093fd488ac709fdf10c05b2
-//
 func ArrowedLine(img *Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness int) {
 	sp1 := C.struct_Point{
 		x: C.int(pt1.X),
@@ -1194,7 +1140,6 @@ func ArrowedLine(img *Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thick
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf10604b069374903dbd0f0488cb43670
-//
 func Circle(img *Mat, center image.Point, radius int, c color.RGBA, thickness int) {
 	pc := C.struct_Point{
 		x: C.int(center.X),
@@ -1215,7 +1160,6 @@ func Circle(img *Mat, center image.Point, radius int, c color.RGBA, thickness in
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf10604b069374903dbd0f0488cb43670
-//
 func CircleWithParams(img *Mat, center image.Point, radius int, c color.RGBA, thickness int, lineType LineType, shift int) {
 	pc := C.struct_Point{
 		x: C.int(center.X),
@@ -1236,7 +1180,6 @@ func CircleWithParams(img *Mat, center image.Point, radius int, c color.RGBA, th
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga28b2267d35786f5f890ca167236cbc69
-//
 func Ellipse(img *Mat, center, axes image.Point, angle, startAngle, endAngle float64, c color.RGBA, thickness int) {
 	pc := C.struct_Point{
 		x: C.int(center.X),
@@ -1261,7 +1204,6 @@ func Ellipse(img *Mat, center, axes image.Point, angle, startAngle, endAngle flo
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga28b2267d35786f5f890ca167236cbc69
-//
 func EllipseWithParams(img *Mat, center, axes image.Point, angle, startAngle, endAngle float64, c color.RGBA, thickness int, lineType LineType, shift int) {
 	pc := C.struct_Point{
 		x: C.int(center.X),
@@ -1286,7 +1228,6 @@ func EllipseWithParams(img *Mat, center, axes image.Point, angle, startAngle, en
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga7078a9fae8c7e7d13d24dac2520ae4a2
-//
 func Line(img *Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness int) {
 	sp1 := C.struct_Point{
 		x: C.int(pt1.X),
@@ -1313,7 +1254,6 @@ func Line(img *Mat, pt1 image.Point, pt2 image.Point, c color.RGBA, thickness in
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga346ac30b5c74e9b5137576c9ee9e0e8c
-//
 func Rectangle(img *Mat, r image.Rectangle, c color.RGBA, thickness int) {
 	cRect := C.struct_Rect{
 		x:      C.int(r.Min.X),
@@ -1337,7 +1277,6 @@ func Rectangle(img *Mat, r image.Rectangle, c color.RGBA, thickness int) {
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga346ac30b5c74e9b5137576c9ee9e0e8c
-//
 func RectangleWithParams(img *Mat, r image.Rectangle, c color.RGBA, thickness int, lineType LineType, shift int) {
 	cRect := C.struct_Rect{
 		x:      C.int(r.Min.X),
@@ -1411,7 +1350,6 @@ func Polylines(img *Mat, pts PointsVector, isClosed bool, c color.RGBA, thicknes
 //
 // For more information, see:
 // http://sources.isc.org/utils/misc/hershey-font.txt
-//
 type HersheyFont int
 
 const (
@@ -1441,7 +1379,6 @@ const (
 //
 // For more information, see:
 // https://vovkos.github.io/doxyrest-showcase/opencv/sphinx_rtd_theme/enum_cv_LineTypes.html
-//
 type LineType int
 
 const (
@@ -1461,7 +1398,6 @@ const (
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga3d2abfcb995fd2db908c8288199dba82
-//
 func GetTextSize(text string, fontFace HersheyFont, fontScale float64, thickness int) image.Point {
 	cText := C.CString(text)
 	defer C.free(unsafe.Pointer(cText))
@@ -1476,7 +1412,6 @@ func GetTextSize(text string, fontFace HersheyFont, fontScale float64, thickness
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga3d2abfcb995fd2db908c8288199dba82
-//
 func GetTextSizeWithBaseline(text string, fontFace HersheyFont, fontScale float64, thickness int) (image.Point, int) {
 	cText := C.CString(text)
 	defer C.free(unsafe.Pointer(cText))
@@ -1493,7 +1428,6 @@ func GetTextSizeWithBaseline(text string, fontFace HersheyFont, fontScale float6
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga5126f47f883d730f633d74f07456c576
-//
 func PutText(img *Mat, text string, org image.Point, fontFace HersheyFont, fontScale float64, c color.RGBA, thickness int) {
 	cText := C.CString(text)
 	defer C.free(unsafe.Pointer(cText))
@@ -1521,7 +1455,6 @@ func PutText(img *Mat, text string, org image.Point, fontFace HersheyFont, fontS
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga5126f47f883d730f633d74f07456c576
-//
 func PutTextWithParams(img *Mat, text string, org image.Point, fontFace HersheyFont, fontScale float64, c color.RGBA, thickness int, lineType LineType, bottomLeftOrigin bool) {
 	cText := C.CString(text)
 	defer C.free(unsafe.Pointer(cText))
@@ -1784,7 +1717,6 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga4abc2ece9fab9398f2e560d53c8c9780
-//
 func FindHomography(srcPoints Mat, dstPoints *Mat, method HomographyMethod, ransacReprojThreshold float64, mask *Mat, maxIters int, confidence float64) Mat {
 	return newMat(C.FindHomography(srcPoints.Ptr(), dstPoints.Ptr(), C.int(method), C.double(ransacReprojThreshold), mask.Ptr(), C.int(maxIters), C.double(confidence)))
 }
@@ -1793,7 +1725,6 @@ func FindHomography(srcPoints Mat, dstPoints *Mat, method HomographyMethod, rans
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga746c0625f1781f1ffc9056259103edbc
-//
 func DrawContours(img *Mat, contours PointsVector, contourIdx int, c color.RGBA, thickness int) {
 	sColor := C.struct_Scalar{
 		val1: C.double(c.B),
@@ -1809,7 +1740,6 @@ func DrawContours(img *Mat, contours PointsVector, contourIdx int, c color.RGBA,
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga746c0625f1781f1ffc9056259103edbc
-//
 func DrawContoursWithParams(img *Mat, contours PointsVector, contourIdx int, c color.RGBA, thickness int, lineType LineType, hierarchy Mat, maxLevel int, offset image.Point) {
 	sColor := C.struct_Scalar{
 		val1: C.double(c.B),
@@ -1922,7 +1852,6 @@ type CLAHE struct {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/db6/classcv_1_1CLAHE.html
-//
 func NewCLAHE() CLAHE {
 	return CLAHE{p: unsafe.Pointer(C.CLAHE_Create())}
 }
@@ -1931,7 +1860,6 @@ func NewCLAHE() CLAHE {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/db6/classcv_1_1CLAHE.html
-//
 func NewCLAHEWithParams(clipLimit float64, tileGridSize image.Point) CLAHE {
 	pSize := C.struct_Size{
 		width:  C.int(tileGridSize.X),
@@ -1951,7 +1879,6 @@ func (c *CLAHE) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/db6/classcv_1_1CLAHE.html#a4e92e0e427de21be8d1fae8dcd862c5e
-//
 func (c *CLAHE) Apply(src Mat, dst *Mat) {
 	C.CLAHE_Apply((C.CLAHE)(c.p), src.p, dst.p)
 }
@@ -1964,7 +1891,6 @@ func InvertAffineTransform(src Mat, dst *Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga552420a2ace9ef3fb053cd630fdb4952
-//
 func PhaseCorrelate(src1, src2, window Mat) (phaseShift Point2f, response float64) {
 	var responseDouble C.double
 	result := C.PhaseCorrelate(src1.p, src2.p, window.p, &responseDouble)
@@ -2180,7 +2106,6 @@ func Accumulate(src Mat, dst *Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga1a567a79901513811ff3b9976923b199
-//
 func AccumulateWithMask(src Mat, dst *Mat, mask Mat) {
 	C.Mat_AccumulateWithMask(src.p, dst.p, mask.p)
 }
@@ -2189,7 +2114,6 @@ func AccumulateWithMask(src Mat, dst *Mat, mask Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#gacb75e7ffb573227088cef9ceaf80be8c
-//
 func AccumulateSquare(src Mat, dst *Mat) {
 	C.Mat_AccumulateSquare(src.p, dst.p)
 }
@@ -2198,7 +2122,6 @@ func AccumulateSquare(src Mat, dst *Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#gacb75e7ffb573227088cef9ceaf80be8c
-//
 func AccumulateSquareWithMask(src Mat, dst *Mat, mask Mat) {
 	C.Mat_AccumulateSquareWithMask(src.p, dst.p, mask.p)
 }
@@ -2207,7 +2130,6 @@ func AccumulateSquareWithMask(src Mat, dst *Mat, mask Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga82518a940ecfda49460f66117ac82520
-//
 func AccumulateProduct(src1 Mat, src2 Mat, dst *Mat) {
 	C.Mat_AccumulateProduct(src1.p, src2.p, dst.p)
 }
@@ -2216,7 +2138,6 @@ func AccumulateProduct(src1 Mat, src2 Mat, dst *Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga82518a940ecfda49460f66117ac82520
-//
 func AccumulateProductWithMask(src1 Mat, src2 Mat, dst *Mat, mask Mat) {
 	C.Mat_AccumulateProductWithMask(src1.p, src2.p, dst.p, mask.p)
 }
@@ -2225,7 +2146,6 @@ func AccumulateProductWithMask(src1 Mat, src2 Mat, dst *Mat, mask Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga4f9552b541187f61f6818e8d2d826bc7
-//
 func AccumulatedWeighted(src Mat, dst *Mat, alpha float64) {
 	C.Mat_AccumulatedWeighted(src.p, dst.p, C.double(alpha))
 }
@@ -2234,7 +2154,6 @@ func AccumulatedWeighted(src Mat, dst *Mat, alpha float64) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga4f9552b541187f61f6818e8d2d826bc7
-//
 func AccumulatedWeightedWithMask(src Mat, dst *Mat, alpha float64, mask Mat) {
 	C.Mat_AccumulatedWeightedWithMask(src.p, dst.p, C.double(alpha), mask.p)
 }
