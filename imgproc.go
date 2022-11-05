@@ -1842,6 +1842,26 @@ func FitLine(pts PointVector, line *Mat, distType DistanceTypes, param, reps, ae
 	C.FitLine(pts.p, line.p, C.int(distType), C.double(param), C.double(reps), C.double(aeps))
 }
 
+// Shape matching methods.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d3/dc0/group__imgproc__shape.html#gaadc90cb16e2362c9bd6e7363e6e4c317
+type ShapeMatchModes int
+
+const (
+	ContoursMatchI1 ShapeMatchModes = 1
+	ContoursMatchI2 ShapeMatchModes = 2
+	ContoursMatchI3 ShapeMatchModes = 3
+)
+
+// Compares two shapes.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d3/dc0/group__imgproc__shape.html#gaadc90cb16e2362c9bd6e7363e6e4c317
+func MatchShapes(contour1 PointVector, contour2 PointVector, method ShapeMatchModes, parameter float64) float64 {
+	return float64(C.MatchShapes(contour1.p, contour2.p, C.int(method), C.double(parameter)))
+}
+
 // CLAHE is a wrapper around the cv::CLAHE algorithm.
 type CLAHE struct {
 	// C.CLAHE

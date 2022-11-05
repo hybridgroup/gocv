@@ -608,6 +608,10 @@ void LinearPolar(Mat src, Mat dst, Point center, double maxRadius, int flags) {
 	cv::linearPolar(*src, *dst, centerPt, maxRadius, flags);
 }
 
+double MatchShapes(PointVector contour1, PointVector contour2, int method, double parameter) {
+    return cv::matchShapes(*contour1, *contour2, method, parameter);
+}
+
 CLAHE CLAHE_Create() {
     return new cv::Ptr<cv::CLAHE>(cv::createCLAHE());
 }

@@ -2339,6 +2339,29 @@ func TestFitLine(t *testing.T) {
 	}
 }
 
+func TestMatchShapes(t *testing.T) {
+	points1 := []image.Point{image.Pt(0, 0), image.Pt(1, 0), image.Pt(2, 2), image.Pt(3, 3), image.Pt(3, 4)}
+	points2 := []image.Point{image.Pt(0, 0), image.Pt(1, 0), image.Pt(2, 3), image.Pt(3, 3), image.Pt(3, 5)}
+	lowerSimilarity := 2.0
+	upperSimilarity := 3.0
+
+	contour1 := NewPointVectorFromPoints(points1)
+	defer contour1.Close()
+
+	contour2 := NewPointVectorFromPoints(points2)
+	defer contour2.Close()
+
+	similarity := MatchShapes(contour1, contour2, ContoursMatchI2, 0)
+
+	if similarity < lowerSimilarity {
+		t.Errorf("MatchShapes(): incorrect calculation, should be more than %f, got %f", lowerSimilarity, similarity)
+	}
+
+	if similarity > upperSimilarity {
+		t.Errorf("MatchShapes(): incorrect calculation, should be lower than %f, got %f", upperSimilarity, similarity)
+	}
+}
+
 func TestInvertAffineTransform(t *testing.T) {
 	src := NewMatWithSize(2, 3, MatTypeCV32F)
 	defer src.Close()
