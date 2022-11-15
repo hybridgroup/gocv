@@ -62,9 +62,9 @@ download:
 	rm -rf $(TMP_DIR)opencv
 	mkdir $(TMP_DIR)opencv
 	cd $(TMP_DIR)opencv
-	curl -Lo opencv.zip https://github.com/opencv/opencv/archive/$(OPENCV_VERSION).zip
+	curl -Lo opencv.zip https://github.com/opencv/opencv/archive/refs/heads/4.x.zip
 	unzip -q opencv.zip
-	curl -Lo opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/$(OPENCV_VERSION).zip
+	curl -Lo opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip
 	unzip -q opencv_contrib.zip
 	rm opencv.zip opencv_contrib.zip
 	cd -
