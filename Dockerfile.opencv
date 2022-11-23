@@ -38,7 +38,7 @@ RUN curl -Lo opencv.zip ${OPENCV_FILE} && \
                   -D WITH_TBB=ON \
                   -D BUILD_JPEG=ON \
                   -D WITH_SIMD=ON \
-                  -D WITH_LIBJPEG_TURBO_SIMD=ON \
+                  -D ENABLE_LIBJPEG_TURBO_SIMD=ON \
                   -D BUILD_DOCS=OFF \
                   -D BUILD_EXAMPLES=OFF \
                   -D BUILD_TESTS=OFF \
