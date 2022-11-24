@@ -42,3 +42,8 @@ Mat Image_IMDecode(ByteArray buf, int flags) {
     cv::Mat img = cv::imdecode(data, flags);
     return new cv::Mat(img);
 }
+
+void Image_IMDecodeIntoMat(ByteArray buf, int flags, Mat dest) {
+    std::vector<uchar> data(buf.data, buf.data + buf.length);
+    cv::imdecode(data, flags, dest);
+}

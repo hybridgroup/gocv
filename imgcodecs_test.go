@@ -149,6 +149,25 @@ func TestIMDecode(t *testing.T) {
 		t.Error("Should not decode empty array")
 	}
 }
+
+func TestIMDecodeIntoMat(t *testing.T) {
+	mat := NewMat()
+	defer mat.Close()
+	content, err := ioutil.ReadFile("images/face-detect.jpg")
+	if err != nil {
+		t.Error("Invalid ReadFile in IMDecode")
+	}
+
+	err = IMDecodeIntoMat(content, IMReadColor, &mat)
+	if err != nil {
+		t.Error(err.Error())
+	}
+	if mat.Empty() {
+		t.Error("Invalid Mat in IMDecode")
+	}
+
+}
+
 func TestIMDecodeWebp(t *testing.T) {
 	content, err := ioutil.ReadFile("images/sample.webp")
 	if err != nil {

@@ -250,3 +250,19 @@ func IMDecode(buf []byte, flags IMReadFlag) (Mat, error) {
 	}
 	return newMat(C.Image_IMDecode(*data, C.int(flags))), nil
 }
+
+// IMDecodeIntoMat reads an image from a buffer in memory into a matrix.
+// The function IMDecodeIntoMat reads an image from the specified buffer in memory.
+// If the buffer is too short or contains invalid data, the function
+// returns an error
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d4/da8/group__imgcodecs.html#ga5a0acefe5cbe0a81e904e452ec7ca733
+func IMDecodeIntoMat(buf []byte, flags IMReadFlag, dest *Mat) error {
+	data, err := toByteArray(buf)
+	if err != nil {
+		return err
+	}
+	C.Image_IMDecodeIntoMat(*data, C.int(flags), dest.p)
+	return nil
+}
