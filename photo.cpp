@@ -116,3 +116,7 @@ void PencilSketch(Mat src, Mat dst1, Mat dst2, float sigma_s, float sigma_r, flo
 void Stylization(Mat src, Mat dst, float sigma_s, float sigma_r) {
     cv::stylization(*src, *dst, sigma_s, sigma_r);
 }
+
+void PhotoInpaint(Mat src, Mat mask, Mat dst, float inpaint_radius, int algorithm_type) {
+    cv::inpaint(*src, *mask, *dst, inpaint_radius, algorithm_type);
+}

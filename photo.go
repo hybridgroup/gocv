@@ -314,3 +314,26 @@ func PencilSketch(src Mat, dst1, dst2 *Mat, sigma_s, sigma_r, shade_factor float
 func Stylization(src Mat, dst *Mat, sigma_s, sigma_r float32) {
 	C.Stylization(src.p, dst.p, C.float(sigma_s), C.float(sigma_r))
 }
+
+// InpaintMethods is the methods for inpainting process.
+type InpaintMethods int
+
+const (
+	// NS inpaints using Navier-Stokes based method, created by Bertalmio, Marcelo,
+	// Andrea L. Bertozzi, and Guillermo Sapiro in 2001
+	NS InpaintMethods = 0
+
+	// Telea inpaints using Fast Marching Method proposed by Alexandru Telea in 2004.
+	Telea InpaintMethods = 1
+)
+
+// Inpaint reconstructs the selected image area from the pixel near the area boundary.
+// The function may be used to remove dust and scratches from a scanned photo, or to
+// remove undesirable objects from still images or video.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d7/d8b/group__photo__inpaint.html#gaedd30dfa0214fec4c88138b51d678085
+//
+func Inpaint(src Mat, mask Mat, dst *Mat, inpaintRadius float32, algorithmType InpaintMethods) {
+	C.PhotoInpaint(C.Mat(src.Ptr()), C.Mat(mask.Ptr()), C.Mat(dst.Ptr()), C.float(inpaintRadius), C.int(algorithmType))
+}

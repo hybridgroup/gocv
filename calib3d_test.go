@@ -557,6 +557,46 @@ func TestEstimateAffinePartial2D(t *testing.T) {
 	}
 }
 
+func TestEstimateAffinePartial2DWithParams(t *testing.T) {
+	src := []Point2f{
+		{0, 0},
+		{10, 5},
+		{10, 10},
+		{5, 10},
+	}
+
+	dst := []Point2f{
+		{0, 0},
+		{10, 0},
+		{10, 10},
+		{0, 10},
+	}
+
+	pvsrc := NewPoint2fVectorFromPoints(src)
+	defer pvsrc.Close()
+
+	pvdst := NewPoint2fVectorFromPoints(dst)
+	defer pvdst.Close()
+
+	inliers := NewMat()
+	defer inliers.Close()
+	method := 8
+	ransacProjThreshold := 3.0
+	maxiters := uint(2000)
+	confidence := 0.99
+	refineIters := uint(10)
+
+	m := EstimateAffinePartial2DWithParams(pvsrc, pvdst, inliers, method, ransacProjThreshold, maxiters, confidence, refineIters)
+	defer m.Close()
+
+	if m.Cols() != 3 {
+		t.Errorf("TestEstimateAffinePartial2D(): unexpected cols = %v, want = %v", m.Cols(), 3)
+	}
+	if m.Rows() != 2 {
+		t.Errorf("TestEstimateAffinePartial2D(): unexpected rows = %v, want = %v", m.Rows(), 2)
+	}
+}
+
 func TestEstimateAffine2D(t *testing.T) {
 	src := []Point2f{
 		{0, 0},
