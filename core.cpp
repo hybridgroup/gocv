@@ -1145,3 +1145,10 @@ void Points3fVector_Close(Points3fVector ps) {
     delete ps;
 }
 
+void SetNumThreads(int n) {
+    cv::setNumThreads(n);
+}
+
+int GetNumThreads() {
+    return cv::getNumThreads();
+}
