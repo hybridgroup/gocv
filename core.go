@@ -2815,3 +2815,13 @@ func (pvs Points3fVector) Append(pv Point3fVector) {
 func (pvs Points3fVector) Close() {
 	C.Points3fVector_Close(pvs.p)
 }
+
+// Set the number of threads for OpenCV.
+func SetNumThreads(n int) {
+	C.SetNumThreads(C.int(n))
+}
+
+// Get the number of threads for OpenCV.
+func GetNumThreads() int {
+	return int(C.GetNumThreads())
+}
