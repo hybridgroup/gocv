@@ -15,12 +15,14 @@ typedef cv::Ptr<cv::BackgroundSubtractorKNN>* BackgroundSubtractorKNN;
 typedef cv::Ptr<cv::Tracker>* Tracker;
 typedef cv::Ptr<cv::TrackerMIL>* TrackerMIL;
 typedef cv::Ptr<cv::TrackerGOTURN>* TrackerGOTURN;
+typedef cv::KalmanFilter* KalmanFilter;
 #else
 typedef void* BackgroundSubtractorMOG2;
 typedef void* BackgroundSubtractorKNN;
 typedef void* Tracker;
 typedef void* TrackerMIL;
 typedef void* TrackerGOTURN;
+typedef void* KalmanFilter;
 #endif
 
 BackgroundSubtractorMOG2 BackgroundSubtractorMOG2_Create();
@@ -46,6 +48,43 @@ bool Tracker_Update(Tracker self, Mat image, Rect* boundingBox);
 
 TrackerMIL TrackerMIL_Create();
 void TrackerMIL_Close(TrackerMIL self);
+
+KalmanFilter KalmanFilter_New(int dynamParams, int measureParams);
+KalmanFilter KalmanFilter_NewWithParams(int dynamParams, int measureParams, int controlParams, int type);
+void KalmanFilter_Close(KalmanFilter kf);
+
+void KalmanFilter_Init(KalmanFilter kf, int dynamParams, int measureParams);
+void KalmanFilter_InitWithParams(KalmanFilter kf, int dynamParams, int measureParams, int controlParams, int type);
+Mat KalmanFilter_Predict(KalmanFilter kf);
+Mat KalmanFilter_PredictWithParams(KalmanFilter kf, Mat control);
+Mat KalmanFilter_Correct(KalmanFilter kf, Mat measurement);
+
+Mat KalmanFilter_GetStatePre(KalmanFilter kf);
+Mat KalmanFilter_GetStatePost(KalmanFilter kf);
+Mat KalmanFilter_GetTransitionMatrix(KalmanFilter kf);
+Mat KalmanFilter_GetControlMatrix(KalmanFilter kf);
+Mat KalmanFilter_GetMeasurementMatrix(KalmanFilter kf);
+Mat KalmanFilter_GetProcessNoiseCov(KalmanFilter kf);
+Mat KalmanFilter_GetMeasurementNoiseCov(KalmanFilter kf);
+Mat KalmanFilter_GetErrorCovPre(KalmanFilter kf);
+Mat KalmanFilter_GetGain(KalmanFilter kf);
+Mat KalmanFilter_GetErrorCovPost(KalmanFilter kf);
+Mat KalmanFilter_GetTemp1(KalmanFilter kf);
+Mat KalmanFilter_GetTemp2(KalmanFilter kf);
+Mat KalmanFilter_GetTemp3(KalmanFilter kf);
+Mat KalmanFilter_GetTemp4(KalmanFilter kf);
+Mat KalmanFilter_GetTemp5(KalmanFilter kf);
+
+void KalmanFilter_SetStatePre(KalmanFilter kf, Mat statePre);
+void KalmanFilter_SetStatePost(KalmanFilter kf, Mat statePost);
+void KalmanFilter_SetTransitionMatrix(KalmanFilter kf, Mat transitionMatrix);
+void KalmanFilter_SetControlMatrix(KalmanFilter kf, Mat controlMatrix);
+void KalmanFilter_SetMeasurementMatrix(KalmanFilter kf, Mat measurementMatrix);
+void KalmanFilter_SetProcessNoiseCov(KalmanFilter kf, Mat processNoiseCov);
+void KalmanFilter_SetMeasurementNoiseCov(KalmanFilter kf, Mat measurementNoiseCov);
+void KalmanFilter_SetErrorCovPre(KalmanFilter kf, Mat errorCovPre);
+void KalmanFilter_SetGain(KalmanFilter kf, Mat gain);
+void KalmanFilter_SetErrorCovPost(KalmanFilter kf, Mat errorCovPost);
 
 #ifdef __cplusplus
 }
