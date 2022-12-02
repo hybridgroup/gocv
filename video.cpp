@@ -75,3 +75,135 @@ TrackerMIL TrackerMIL_Create() {
 void TrackerMIL_Close(TrackerMIL self) {
     delete self;
 }
+
+KalmanFilter KalmanFilter_New(int dynamParams, int measureParams) {
+    return new cv::KalmanFilter(dynamParams, measureParams, 0, CV_32F);
+}
+
+KalmanFilter KalmanFilter_NewWithParams(int dynamParams, int measureParams, int controlParams, int type) {
+    return new cv::KalmanFilter(dynamParams, measureParams, controlParams, type);
+}
+
+void KalmanFilter_Init(KalmanFilter kf, int dynamParams, int measureParams) {
+  kf->init(dynamParams, measureParams, 0, CV_32F);
+}
+
+void KalmanFilter_InitWithParams(KalmanFilter kf, int dynamParams, int measureParams, int controlParams, int type) {
+  kf->init(dynamParams, measureParams, controlParams, type);
+}
+
+void KalmanFilter_Close(KalmanFilter kf) {
+    delete kf;
+}
+
+Mat KalmanFilter_Predict(KalmanFilter kf) {
+ return new cv::Mat(kf->predict());
+}
+
+Mat KalmanFilter_PredictWithParams(KalmanFilter kf, Mat control) {
+ return new cv::Mat(kf->predict(*control));
+}
+
+Mat KalmanFilter_Correct(KalmanFilter kf, Mat measurement) {
+  return new cv::Mat(kf->correct(*measurement));
+}
+
+Mat KalmanFilter_GetStatePre(KalmanFilter kf) {
+  return new cv::Mat(kf->statePre);
+}
+
+Mat KalmanFilter_GetStatePost(KalmanFilter kf) {
+  return new cv::Mat(kf->statePost);
+}
+
+Mat KalmanFilter_GetTransitionMatrix(KalmanFilter kf) {
+  return new cv::Mat(kf->transitionMatrix);
+}
+
+Mat KalmanFilter_GetControlMatrix(KalmanFilter kf) {
+  return new cv::Mat(kf->controlMatrix);
+}
+
+Mat KalmanFilter_GetMeasurementMatrix(KalmanFilter kf) {
+  return new cv::Mat(kf->measurementMatrix);
+}
+
+Mat KalmanFilter_GetProcessNoiseCov(KalmanFilter kf) {
+  return new cv::Mat(kf->processNoiseCov);
+}
+
+Mat KalmanFilter_GetMeasurementNoiseCov(KalmanFilter kf) {
+  return new cv::Mat(kf->measurementNoiseCov);
+}
+
+Mat KalmanFilter_GetErrorCovPre(KalmanFilter kf) {
+  return new cv::Mat(kf->errorCovPre);
+}
+
+Mat KalmanFilter_GetGain(KalmanFilter kf) {
+  return new cv::Mat(kf->gain);
+}
+
+Mat KalmanFilter_GetErrorCovPost(KalmanFilter kf) {
+  return new cv::Mat(kf->errorCovPost);
+}
+
+Mat KalmanFilter_GetTemp1(KalmanFilter kf) {
+  return new cv::Mat(kf->temp1);
+}
+
+Mat KalmanFilter_GetTemp2(KalmanFilter kf) {
+  return new cv::Mat(kf->temp2);
+}
+
+Mat KalmanFilter_GetTemp3(KalmanFilter kf) {
+  return new cv::Mat(kf->temp3);
+}
+
+Mat KalmanFilter_GetTemp4(KalmanFilter kf) {
+  return new cv::Mat(kf->temp4);
+}
+
+Mat KalmanFilter_GetTemp5(KalmanFilter kf) {
+  return new cv::Mat(kf->temp5);
+}
+
+void KalmanFilter_SetStatePre(KalmanFilter kf, Mat statePre) {
+  kf->statePre = *statePre;
+}
+
+void KalmanFilter_SetStatePost(KalmanFilter kf, Mat statePost) {
+  kf->statePost = *statePost;
+}
+
+void KalmanFilter_SetTransitionMatrix(KalmanFilter kf, Mat transitionMatrix) {
+  kf->transitionMatrix = *transitionMatrix;
+}
+
+void KalmanFilter_SetControlMatrix(KalmanFilter kf, Mat controlMatrix) {
+  kf->controlMatrix = *controlMatrix;
+}
+
+void KalmanFilter_SetMeasurementMatrix(KalmanFilter kf, Mat measurementMatrix) {
+  kf->measurementMatrix = *measurementMatrix;
+}
+
+void KalmanFilter_SetProcessNoiseCov(KalmanFilter kf, Mat processNoiseCov) {
+  kf->processNoiseCov = *processNoiseCov;
+}
+
+void KalmanFilter_SetMeasurementNoiseCov(KalmanFilter kf, Mat measurementNoiseCov) {
+  kf->measurementNoiseCov = *measurementNoiseCov;
+}
+
+void KalmanFilter_SetErrorCovPre(KalmanFilter kf, Mat errorCovPre) {
+  kf->errorCovPre = *errorCovPre;
+}
+
+void KalmanFilter_SetGain(KalmanFilter kf, Mat gain) {
+  kf->gain = *gain;
+}
+
+void KalmanFilter_SetErrorCovPost(KalmanFilter kf, Mat errorCovPost) {
+  kf->errorCovPost = *errorCovPost;
+}

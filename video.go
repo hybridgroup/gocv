@@ -256,3 +256,279 @@ func (trk TrackerMIL) Init(img Mat, boundingBox image.Rectangle) bool {
 func (trk TrackerMIL) Update(img Mat) (image.Rectangle, bool) {
 	return trackerUpdate(C.Tracker(trk.p), img)
 }
+
+// KalmanFilter implements a standard Kalman filter http://en.wikipedia.org/wiki/Kalman_filter.
+// However, you can modify transitionMatrix, controlMatrix, and measurementMatrix
+// to get an extended Kalman filter functionality.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html
+//
+type KalmanFilter struct {
+	p C.KalmanFilter
+}
+
+// NewKalmanFilter returns a new KalmanFilter.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#ac0799f0611baee9e7e558f016e4a7b40
+//
+func NewKalmanFilter(dynamParams int, measureParams int) KalmanFilter {
+	return KalmanFilter{p: C.KalmanFilter_New(C.int(dynamParams), C.int(measureParams))}
+}
+
+// NewKalmanFilterWithParams returns a new KalmanFilter.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#abac82ecfa530611a163255bc7d91c088
+//
+func NewKalmanFilterWithParams(dynamParams int, measureParams int, controlParams int, matType MatType) KalmanFilter {
+	return KalmanFilter{p: C.KalmanFilter_NewWithParams(C.int(dynamParams), C.int(measureParams), C.int(controlParams), C.int(matType))}
+}
+
+// Init re-initializes the Kalman filter. The previous content is destroyed.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a4f136c39c016d3530c7c5801dd1ddb3b
+//
+func (kf *KalmanFilter) Init(dynamParams int, measureParams int) {
+	C.KalmanFilter_Init(kf.p, C.int(dynamParams), C.int(measureParams))
+}
+
+// Predict computes a predicted state.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#aa710d2255566bec8d6ce608d103d4fa7
+//
+func (kf *KalmanFilter) Predict() Mat {
+	return newMat(C.KalmanFilter_Predict(kf.p))
+}
+
+// PredictWithParams computes a predicted state.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#aa710d2255566bec8d6ce608d103d4fa7
+//
+func (kf *KalmanFilter) PredictWithParams(control Mat) Mat {
+	return newMat(C.KalmanFilter_PredictWithParams(kf.p, control.p))
+}
+
+// Correct the predicted state from the measurement.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a60eb7feb569222ad0657ef1875884b5e
+//
+func (kf *KalmanFilter) Correct(measurement Mat) Mat {
+	return newMat(C.KalmanFilter_Correct(kf.p, measurement.p))
+}
+
+// Close closes the kalman filter.
+func (kf *KalmanFilter) Close() {
+	C.KalmanFilter_Close(kf.p)
+	kf.p = nil
+}
+
+// GetStatePre returns the Kalman filter's statePre Mat.
+//
+// predicted state (x'(k)): x(k)=A*x(k-1)+B*u(k)
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a60eb7feb569222ad0657ef1875884b5e
+//
+func (kf *KalmanFilter) GetStatePre() Mat {
+	return newMat(C.KalmanFilter_GetStatePre(kf.p))
+}
+
+// GetStatePost returns the Kalman filter's statePost Mat.
+//
+// corrected state (x(k)): x(k)=x'(k)+K(k)*(z(k)-H*x'(k))
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#add8fb5ac9c04b4600b679698dcb0447d
+//
+func (kf *KalmanFilter) GetStatePost() Mat {
+	return newMat(C.KalmanFilter_GetStatePost(kf.p))
+}
+
+// GetTransitionMatrix returns the Kalman filter's transitionMatrix Mat.
+//
+// state transition matrix (A)
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a0657173e411acbf40d2d3c6b46e03b19
+//
+func (kf *KalmanFilter) GetTransitionMatrix() Mat {
+	return newMat(C.KalmanFilter_GetTransitionMatrix(kf.p))
+}
+
+// GetControlMatrix returns the Kalman filter's controlMatrix Mat.
+//
+// control matrix (B) (not used if there is no control)
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a6486e7287114810636fb33953280ed52
+//
+func (kf *KalmanFilter) GetControlMatrix() Mat {
+	return newMat(C.KalmanFilter_GetControlMatrix(kf.p))
+}
+
+// GetMeasurementMatrix returns the Kalman filter's measurementMatrix Mat.
+//
+// measurement matrix (H)
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a0f60b78726d8eccf74a1f2479c2d1f97
+//
+func (kf *KalmanFilter) GetMeasurementMatrix() Mat {
+	return newMat(C.KalmanFilter_GetMeasurementMatrix(kf.p))
+}
+
+// GetProcessNoiseCov returns the Kalman filter's processNoiseCov Mat.
+//
+// process noise covariance matrix (Q)
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#af19be9c0630d0f658bdbaea409a35cda
+//
+func (kf *KalmanFilter) GetProcessNoiseCov() Mat {
+	return newMat(C.KalmanFilter_GetProcessNoiseCov(kf.p))
+}
+
+// GetMeasurementNoiseCov returns the Kalman filter's measurementNoiseCov Mat.
+//
+// measurement noise covariance matrix (R)
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a828d051035ba807966ad65edf288a08e
+//
+func (kf *KalmanFilter) GetMeasurementNoiseCov() Mat {
+	return newMat(C.KalmanFilter_GetMeasurementNoiseCov(kf.p))
+}
+
+// GetErrorCovPre returns the Kalman filter's errorCovPre Mat.
+//
+// priori error estimate covariance matrix (P'(k)): P'(k)=A*P(k-1)*At + Q)*/
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#ae1bd3a86f10753d723e7174d570d9ac1
+//
+func (kf *KalmanFilter) GetErrorCovPre() Mat {
+	return newMat(C.KalmanFilter_GetErrorCovPre(kf.p))
+}
+
+// GetGain returns the Kalman filter's gain Mat.
+//
+// Kalman gain matrix (K(k)): K(k)=P'(k)*Ht*inv(H*P'(k)*Ht+R)
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a077d73eb075b00779dc009a9057c27c3
+//
+func (kf *KalmanFilter) GetGain() Mat {
+	return newMat(C.KalmanFilter_GetGain(kf.p))
+}
+
+// GetErrorCovPost returns the Kalman filter's errorCovPost Mat.
+//
+// posteriori error estimate covariance matrix (P(k)): P(k)=(I-K(k)*H)*P'(k)
+//
+// For further details, please see:
+//https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a446d8e9a0105b0aa35cd66119c529803
+//
+func (kf *KalmanFilter) GetErrorCovPost() Mat {
+	return newMat(C.KalmanFilter_GetErrorCovPost(kf.p))
+}
+
+// GetTemp1 returns the Kalman filter's temp1 Mat.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#aa3d064a9194c2815dbe19c056b6dc763
+//
+func (kf *KalmanFilter) GetTemp1() Mat {
+	return newMat(C.KalmanFilter_GetTemp1(kf.p))
+}
+
+// GetTemp2 returns the Kalman filter's temp2 Mat.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a14866bd506668eb0ed57b3974b3a1ee7
+//
+func (kf *KalmanFilter) GetTemp2() Mat {
+	return newMat(C.KalmanFilter_GetTemp2(kf.p))
+}
+
+// GetTemp3 returns the Kalman filter's temp3 Mat.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#afdbe36066a7d7f560aa02abe6be114d8
+//
+func (kf *KalmanFilter) GetTemp3() Mat {
+	return newMat(C.KalmanFilter_GetTemp3(kf.p))
+}
+
+// GetTemp4 returns the Kalman filter's temp4 Mat.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a84342f2d9dec1e6389025ad229401809
+//
+func (kf *KalmanFilter) GetTemp4() Mat {
+	return newMat(C.KalmanFilter_GetTemp4(kf.p))
+}
+
+// GetTemp5 returns the Kalman filter's temp5 Mat.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a846c2a6222c6e5d8b1385dfbccc83ae0
+//
+func (kf *KalmanFilter) GetTemp5() Mat {
+	return newMat(C.KalmanFilter_GetTemp5(kf.p))
+}
+
+// SetStatePre sets the Kalman filter's statePre Mat.
+func (kf *KalmanFilter) SetStatePre(statePre Mat) {
+	C.KalmanFilter_SetStatePre(kf.p, statePre.p)
+}
+
+// SetStatePost sets the Kalman filter's statePost Mat.
+func (kf *KalmanFilter) SetStatePost(statePost Mat) {
+	C.KalmanFilter_SetStatePost(kf.p, statePost.p)
+}
+
+// SetTransitionMatrix sets the Kalman filter's transitionMatrix Mat.
+func (kf *KalmanFilter) SetTransitionMatrix(transitionMatrix Mat) {
+	C.KalmanFilter_SetTransitionMatrix(kf.p, transitionMatrix.p)
+}
+
+// SetControlMatrix sets the Kalman filter's controlMatrix Mat.
+func (kf *KalmanFilter) SetControlMatrix(controlMatrix Mat) {
+	C.KalmanFilter_SetControlMatrix(kf.p, controlMatrix.p)
+}
+
+// SetMeasurementMatrix sets the Kalman filter's measurementMatrix Mat.
+func (kf *KalmanFilter) SetMeasurementMatrix(measurementMatrix Mat) {
+	C.KalmanFilter_SetMeasurementMatrix(kf.p, measurementMatrix.p)
+}
+
+// SetProcessNoiseCov sets the Kalman filter's processNoiseCov Mat.
+func (kf *KalmanFilter) SetProcessNoiseCov(processNoiseCov Mat) {
+	C.KalmanFilter_SetProcessNoiseCov(kf.p, processNoiseCov.p)
+}
+
+// SetMeasurementNoiseCov sets the Kalman filter's measurementNoiseCov Mat.
+func (kf *KalmanFilter) SetMeasurementNoiseCov(measurementNoiseCov Mat) {
+	C.KalmanFilter_SetMeasurementNoiseCov(kf.p, measurementNoiseCov.p)
+}
+
+// SetErrorCovPre sets the Kalman filter's errorCovPre Mat.
+func (kf *KalmanFilter) SetErrorCovPre(errorCovPre Mat) {
+	C.KalmanFilter_SetErrorCovPre(kf.p, errorCovPre.p)
+}
+
+// SetGain sets the Kalman filter's gain Mat.
+func (kf *KalmanFilter) SetGain(gain Mat) {
+	C.KalmanFilter_SetGain(kf.p, gain.p)
+}
+
+// SetErrorCovPost sets the Kalman filter's errorCovPost Mat.
+func (kf *KalmanFilter) SetErrorCovPost(errorCovPost Mat) {
+	C.KalmanFilter_SetErrorCovPost(kf.p, errorCovPost.p)
+}
