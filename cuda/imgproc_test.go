@@ -281,3 +281,37 @@ func TestHoughSegment_CalcWithStream(t *testing.T) {
 		verify.Values(t, fmt.Sprintf("%d %d", k.X, k.Y), actual[k], v)
 	}
 }
+
+func TestTemplateMatching_Match(t *testing.T) {
+	src := gocv.IMRead("../images/face-detect.jpg", gocv.IMReadGrayScale)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in TemplateMatching test")
+	}
+	defer src.Close()
+
+	cimg, timg, dimg := NewGpuMat(), NewGpuMat(), NewGpuMat()
+	defer cimg.Close()
+	defer timg.Close()
+	defer dimg.Close()
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	matcher := NewTemplateMatching(gocv.MatTypeCV8U, gocv.TmSqdiff)
+	defer matcher.Close()
+
+	cimg.Upload(src)
+	timg.Upload(src)
+	matcher.Match(cimg, timg, &dimg)
+	dimg.Download(&dest)
+
+	if dest.Empty() {
+		t.Error("Empty TemplateMatching test")
+	}
+	if src.Rows() != dest.Rows() {
+		t.Error("Invalid TemplateMatching test rows")
+	}
+	if src.Cols() != dest.Cols() {
+		t.Error("Invalid TemplateMatching test cols")
+	}
+}

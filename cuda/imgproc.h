@@ -16,10 +16,12 @@ extern "C" {
 typedef cv::Ptr<cv::cuda::CannyEdgeDetector>* CannyEdgeDetector;
 typedef cv::Ptr<cv::cuda::HoughLinesDetector>* HoughLinesDetector;
 typedef cv::Ptr<cv::cuda::HoughSegmentDetector>* HoughSegmentDetector;
+typedef cv::Ptr<cv::cuda::TemplateMatching>* TemplateMatching;
 #else
 typedef void* CannyEdgeDetector;
 typedef void* HoughLinesDetector;
 typedef void* HoughSegmentDetector;
+typedef void* TemplateMatching;
 #endif
 
 // standalone functions
@@ -49,6 +51,11 @@ void HoughLinesDetector_Detect(HoughLinesDetector hld, GpuMat img, GpuMat dst, S
 HoughSegmentDetector HoughSegmentDetector_Create(double rho, double theta, int minLineLength, int maxLineGap);
 void HoughSegmentDetector_Close(HoughSegmentDetector hsd);
 void HoughSegmentDetector_Detect(HoughSegmentDetector hsd, GpuMat img, GpuMat dst, Stream s);
+
+// TemplateMatching
+TemplateMatching TemplateMatching_Create(int srcType, int method);
+void TemplateMatching_Close(TemplateMatching tm);
+void TemplateMatching_Match(TemplateMatching tm, GpuMat img, GpuMat tmpl, GpuMat dst, Stream s);
 
 #ifdef __cplusplus
 }
