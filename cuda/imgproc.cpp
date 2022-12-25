@@ -100,3 +100,20 @@ void HoughSegmentDetector_Detect(HoughSegmentDetector hsd, GpuMat img, GpuMat ds
     }
     return;
 }
+
+TemplateMatching TemplateMatching_Create(int srcType, int method) {
+    return new cv::Ptr<cv::cuda::TemplateMatching>(cv::cuda::createTemplateMatching(srcType, method));
+}
+
+void TemplateMatching_Close(TemplateMatching tm) {
+    delete tm;
+}
+
+void TemplateMatching_Match(TemplateMatching tm, GpuMat img, GpuMat tmpl, GpuMat dst, Stream s) {
+    if (s == NULL) {
+        (*tm)->match(*img, *tmpl, *dst);
+    } else {
+        (*tm)->match(*img, *tmpl, *dst, *s);
+    }
+    return;
+}
