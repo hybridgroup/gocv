@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
 
 FROM --platform=linux/amd64 opencv-base-amd64 AS opencv-build-amd64
 
-ARG OPENCV_VERSION="4.6.0"
+ARG OPENCV_VERSION="4.7.0"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 ARG OPENCV_FILE="https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip"
@@ -82,7 +82,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 FROM --platform=linux/arm64 opencv-base-arm64 AS opencv-build-arm64
 
-ARG OPENCV_VERSION="4.6.0"
+ARG OPENCV_VERSION="4.7.0"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 ARG OPENCV_FILE="https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip"
