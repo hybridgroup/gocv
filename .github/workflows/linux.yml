@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: gocv/opencv:4.6.0
+    container: gocv/opencv:4.7.0
 
     steps:
       - name: Checkout

@@ -8,7 +8,7 @@ platform:
 environment:
   GOPATH: c:\gopath
   GOROOT: c:\go
-  GOVERSION: 1.16
+  GOVERSION: 1.19
   TEST_EXTERNAL: 1
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
