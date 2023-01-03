@@ -5,7 +5,7 @@
 GOCV_VERSION?="v0.31.0"
 
 # OpenCV version to use.
-OPENCV_VERSION?=4.6.0
+OPENCV_VERSION?=4.7.0
 
 # Go version to use when building Docker image
 GOVERSION?=1.16.2
@@ -62,9 +62,9 @@ download:
 	rm -rf $(TMP_DIR)opencv
 	mkdir $(TMP_DIR)opencv
 	cd $(TMP_DIR)opencv
-	curl -Lo opencv.zip https://github.com/opencv/opencv/archive/refs/heads/4.x.zip
+	curl -Lo opencv.zip https://github.com/opencv/opencv/archive/refs/tags/$(OPENCV_VERSION).zip
 	unzip -q opencv.zip
-	curl -Lo opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip
+	curl -Lo opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/refs/tags/$(OPENCV_VERSION).zip
 	unzip -q opencv_contrib.zip
 	rm opencv.zip opencv_contrib.zip
 	cd -
