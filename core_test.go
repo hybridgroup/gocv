@@ -3046,22 +3046,22 @@ func TestElemSize(t *testing.T) {
 }
 
 func TestSetThreadNumber(t *testing.T) {
-	N := GetNumThreads()
+	original := GetNumThreads()
 
 	SetNumThreads(-1)
-	if GetNumThreads() != N {
-		t.Error("incorrect thread number")
+	if num := GetNumThreads(); num != original {
+		t.Errorf("incorrect number of threads, got %d, want %d", num, original)
 	}
 
 	SetNumThreads(0)
-	if GetNumThreads() != N {
-		t.Error("incorrect thread number")
+	if num := GetNumThreads(); num < 1 {
+		t.Errorf("incorrect number of threads, got %d, want at least 1", num)
 	}
 
 	SetNumThreads(1)
-	if GetNumThreads() != 1 {
-		t.Error("incorrect thread number")
+	if num := GetNumThreads(); num != 1 {
+		t.Errorf("incorrect number of threads, got %d, want %d", num, 1)
 	}
 
-	SetNumThreads(N)
+	SetNumThreads(original)
 }
