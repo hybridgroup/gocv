@@ -1,3 +1,46 @@
+0.32.0
+---
+* **all**
+    * update to OpenCV 4.7.0
+* **core**
+    * Add the number of thread setter and getter
+* **calib3d**
+    * add EstimateAffinePartial2DWithParams()
+* **imgcodecs**
+    * Add IMDecodeIntoMat to reduce heap allocations (#1035)
+* **imgproc**
+    * add matchShapes function support
+* **objdetect**
+    * move aruco from contrib and also refactor/update to match current OpenCV API
+* **photo**
+    * add inpaint function
+* **video**
+    * cv::KalmanFilter bindings.
+* **cuda**
+    * add support for cuda::TemplateMatching
+* **docker**
+    * update all dockerfiles for OpenCV 4.7.0/GoCV 0.32.0
+    * multiplatform for both amd64 and arm64
+    * install libjpeg-turbo into docker image
+    * add Ubunutu 18.04 and 20.04 prebuilt OpenCV images
+    * add dockerfile for older version of CUDA for those who cannot upgrade
+* **ci**
+    * remove circleci
+    * correct actions that trigger build
+* **make**
+    * change download path for OpenCV release tag
+* **windows**
+    * Update win_build_opencv.cmd
+* **docs**
+    * correct docs on building docker
+    * update ROADMAP
+    * typo in comment
+    * update comments style with gofmt
+* **openvino**
+    * Add openvino Dockerfile
+    * Fix OpenvinoVersion dangling pointer
+    * Update env.sh and README.md for 2022.1
+
 0.31.0
 ---
 * **all**
