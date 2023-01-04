@@ -1,18 +1,16 @@
-package contrib
+package gocv
 
 import (
 	"errors"
 	"fmt"
 	"reflect"
 	"testing"
-
-	"gocv.io/x/gocv"
 )
 
 const (
-	arucoImage6X6_250         = "../images/aruco_6X6_250_6.png"
-	arucoImage6X6_250_contour = "../images/aruco_6X6_250_6_contour.png"
-	arucoImage6X6_250_1       = "../images/aruco_6X6_250_1.png"
+	arucoImage6X6_250         = "./images/aruco_6X6_250_6.png"
+	arucoImage6X6_250_contour = "./images/aruco_6X6_250_6_contour.png"
+	arucoImage6X6_250_1       = "./images/aruco_6X6_250_1.png"
 )
 
 func TestArucoDetectorParams(t *testing.T) {
@@ -167,35 +165,20 @@ func TestArucoDetectorParams(t *testing.T) {
 
 }
 
-func TestDetectMarkersWithDictID(t *testing.T) {
-	path := arucoImage6X6_250
-	img := gocv.IMRead(path, gocv.IMReadColor)
-	if img.Empty() {
-		t.Error(errors.New("Invalid input"))
-	}
-	defer img.Close()
-
-	params := NewArucoDetectorParameters()
-
-	_, markerIds, _ := DetectMarkersWithDictID(img, ArucoDict6x6_250, params)
-	expected := []int{40, 98, 62, 23, 124, 203}
-	if !reflect.DeepEqual(markerIds, expected) {
-		t.Error(fmt.Sprintf("Marker id expected %v got %v", expected, markerIds))
-	}
-}
-
 func TestDetectMarkers(t *testing.T) {
 	path := arucoImage6X6_250
-	img := gocv.IMRead(path, gocv.IMReadColor)
+	img := IMRead(path, IMReadColor)
 	if img.Empty() {
 		t.Error(errors.New("Invalid input"))
 	}
 	defer img.Close()
 
-	params := NewArucoDetectorParameters()
 	dict := GetPredefinedDictionary(ArucoDict6x6_250)
+	params := NewArucoDetectorParameters()
+	detector := NewArucoDetectorWithParams(dict, params)
+	defer detector.Close()
 
-	_, markerIds, _ := DetectMarkers(img, dict, params)
+	_, markerIds, _ := detector.DetectMarkers(img)
 	expected := []int{40, 98, 62, 23, 124, 203}
 	if !reflect.DeepEqual(markerIds, expected) {
 		t.Error(fmt.Sprintf("Marker id expected %v got %v", expected, markerIds))
@@ -203,71 +186,56 @@ func TestDetectMarkers(t *testing.T) {
 }
 
 func TestDrawDetectedMarkers(t *testing.T) {
+	borderColor := NewScalar(200, 0, 0, 0)
 
-	borderColor := gocv.NewScalar(200, 0, 0, 0)
-
-	img := gocv.IMRead(arucoImage6X6_250, gocv.IMReadColor)
+	img := IMRead(arucoImage6X6_250, IMReadColor)
 	defer img.Close()
 	if img.Empty() {
 		t.Error(errors.New("Invalid input"))
 	}
 	defer img.Close()
-	imgExpected := gocv.IMRead(arucoImage6X6_250_contour, gocv.IMReadColor)
+	imgExpected := IMRead(arucoImage6X6_250_contour, IMReadColor)
 	if imgExpected.Empty() {
 		t.Error(errors.New("Invalid input"))
 	}
 	defer imgExpected.Close()
 
+	dict := GetPredefinedDictionary(ArucoDict6x6_250)
 	params := NewArucoDetectorParameters()
-	markerCorners, markerIds, _ := DetectMarkersWithDictID(img, ArucoDict6x6_250, params)
+	detector := NewArucoDetectorWithParams(dict, params)
+	defer detector.Close()
 
-	DrawDetectedMarkers(img, markerCorners, markerIds, borderColor)
-	diff := gocv.NewMat()
+	markerCorners, markerIds, _ := detector.DetectMarkers(img)
+
+	ArucoDrawDetectedMarkers(img, markerCorners, markerIds, borderColor)
+	diff := NewMat()
 	defer diff.Close()
-	gocv.AbsDiff(img, imgExpected, &diff)
+	AbsDiff(img, imgExpected, &diff)
 
-	gray := gocv.NewMat()
+	gray := NewMat()
 	defer gray.Close()
-	gocv.CvtColor(diff, &gray, gocv.ColorBGRToGray)
-	if gocv.CountNonZero(gray) > 0 {
+	CvtColor(diff, &gray, ColorBGRToGray)
+	if CountNonZero(gray) > 0 {
 		t.Errorf("expected output to match %s", arucoImage6X6_250_contour)
 	}
 }
 
-func TestDrawMarker(t *testing.T) {
-	imgExpected := gocv.IMRead(arucoImage6X6_250_1, gocv.IMReadGrayScale)
+func TestArucoGenerateImageMarker(t *testing.T) {
+	imgExpected := IMRead(arucoImage6X6_250_1, IMReadGrayScale)
 	if imgExpected.Empty() {
 		t.Error(fmt.Errorf("Invalid marker image '%s'", arucoImage6X6_250_1))
 	}
 	defer imgExpected.Close()
 
-	img := gocv.NewMat()
+	img := NewMat()
 	defer img.Close()
-	DrawMarker(ArucoDict6x6_250, 1, 200, img, 1)
+	ArucoGenerateImageMarker(ArucoDict6x6_250, 1, 200, img, 1)
 
-	diff := gocv.NewMat()
+	diff := NewMat()
 	defer diff.Close()
-	gocv.AbsDiff(img, imgExpected, &diff)
+	AbsDiff(img, imgExpected, &diff)
 
-	if gocv.CountNonZero(diff) > 0 {
+	if CountNonZero(diff) > 0 {
 		t.Errorf("expected output to match %s", arucoImage6X6_250_1)
-	}
-}
-
-func TestGetPredefinedDictionary(t *testing.T) {
-	path := arucoImage6X6_250
-	img := gocv.IMRead(path, gocv.IMReadColor)
-	if img.Empty() {
-		t.Error(fmt.Errorf("Invalid arucoImage6X6_250 %s", path))
-	}
-	defer img.Close()
-
-	dict := GetPredefinedDictionary(ArucoDict6x6_250)
-
-	params := NewArucoDetectorParameters()
-	_, markerIds, _ := DetectMarkers(img, dict, params)
-	expected := []int{40, 98, 62, 23, 124, 203}
-	if !reflect.DeepEqual(markerIds, expected) {
-		t.Error(fmt.Sprintf("Marker id expected %v got %v", expected, markerIds))
 	}
 }

@@ -1,9 +1,9 @@
-package contrib
+package gocv
 
 /*
 #include <stdlib.h>
 #include "aruco.h"
-#include "../core.h"
+#include "core.h"
 */
 import "C"
 
@@ -35,4 +35,9 @@ const (
 
 type ArucoDictionary struct {
 	p C.ArucoDictionary
+}
+
+func GetPredefinedDictionary(dictionaryId ArucoDictionaryCode) ArucoDictionary {
+	var p C.ArucoDictionary = C.getPredefinedDictionary(C.int(dictionaryId))
+	return ArucoDictionary{p: p}
 }
