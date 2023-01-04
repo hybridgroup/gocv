@@ -1,0 +1,97 @@
+#ifndef _OPENCV3_ARUCO_H_
+#define _OPENCV3_ARUCO_H_
+
+#ifdef __cplusplus
+#include <opencv2/opencv.hpp>
+#include <opencv2/aruco.hpp>
+extern "C" {
+#endif
+
+#include "core.h"
+
+#ifdef __cplusplus
+typedef cv::aruco::Dictionary* ArucoDictionary;
+typedef cv::aruco::DetectorParameters* ArucoDetectorParameters; 
+typedef cv::aruco::ArucoDetector* ArucoDetector;
+#else
+typedef void *ArucoDictionary;
+typedef void *ArucoDetectorParameters;
+typedef void *ArucoDetector;
+#endif
+
+ArucoDetectorParameters ArucoDetectorParameters_Create();
+void ArucoDetectorParameters_SetAdaptiveThreshWinSizeMin(ArucoDetectorParameters ap, int adaptiveThreshWinSizeMin);
+int ArucoDetectorParameters_GetAdaptiveThreshWinSizeMin(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetAdaptiveThreshWinSizeMax(ArucoDetectorParameters ap, int adaptiveThreshWinSizeMax);
+int ArucoDetectorParameters_GetAdaptiveThreshWinSizeMax(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetAdaptiveThreshWinSizeStep(ArucoDetectorParameters ap, int adaptiveThreshWinSizeStep);
+int ArucoDetectorParameters_GetAdaptiveThreshWinSizeStep(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetAdaptiveThreshConstant(ArucoDetectorParameters ap, double adaptiveThreshConstant);
+double ArucoDetectorParameters_GetAdaptiveThreshConstant(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetMinMarkerPerimeterRate(ArucoDetectorParameters ap, double minMarkerPerimeterRate);
+double ArucoDetectorParameters_GetMinMarkerPerimeterRate(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetMaxMarkerPerimeterRate(ArucoDetectorParameters ap, double maxMarkerPerimeterRate);
+double ArucoDetectorParameters_GetMaxMarkerPerimeterRate(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetPolygonalApproxAccuracyRate(ArucoDetectorParameters ap, double polygonalApproxAccuracyRate);
+double ArucoDetectorParameters_GetPolygonalApproxAccuracyRate(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetMinCornerDistanceRate(ArucoDetectorParameters ap, double minCornerDistanceRate);
+double ArucoDetectorParameters_GetMinCornerDistanceRate(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetMinDistanceToBorder(ArucoDetectorParameters ap, int minDistanceToBorder);
+int ArucoDetectorParameters_GetMinDistanceToBorder(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetMinMarkerDistanceRate(ArucoDetectorParameters ap, double minMarkerDistanceRate);
+double ArucoDetectorParameters_GetMinMarkerDistanceRate(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetCornerRefinementMethod(ArucoDetectorParameters ap, int cornerRefinementMethod);
+int ArucoDetectorParameters_GetCornerRefinementMethod(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetCornerRefinementWinSize(ArucoDetectorParameters ap, int cornerRefinementWinSize);
+int ArucoDetectorParameters_GetCornerRefinementWinSize(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetCornerRefinementMaxIterations(ArucoDetectorParameters ap, int cornerRefinementMaxIterations);
+int ArucoDetectorParameters_GetCornerRefinementMaxIterations(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetCornerRefinementMinAccuracy(ArucoDetectorParameters ap, double cornerRefinementMinAccuracy);
+double ArucoDetectorParameters_GetCornerRefinementMinAccuracy(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetMarkerBorderBits(ArucoDetectorParameters ap, int markerBorderBits);
+int ArucoDetectorParameters_GetMarkerBorderBits(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetPerspectiveRemovePixelPerCell(ArucoDetectorParameters ap, int perspectiveRemovePixelPerCell);
+int ArucoDetectorParameters_GetPerspectiveRemovePixelPerCell(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetPerspectiveRemoveIgnoredMarginPerCell(ArucoDetectorParameters ap, double perspectiveRemoveIgnoredMarginPerCell);
+double ArucoDetectorParameters_GetPerspectiveRemoveIgnoredMarginPerCell(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetMaxErroneousBitsInBorderRate(ArucoDetectorParameters ap, double maxErroneousBitsInBorderRate);
+double ArucoDetectorParameters_GetMaxErroneousBitsInBorderRate(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetMinOtsuStdDev(ArucoDetectorParameters ap, double minOtsuStdDev);
+double ArucoDetectorParameters_GetMinOtsuStdDev(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetErrorCorrectionRate(ArucoDetectorParameters ap, double errorCorrectionRate);
+double ArucoDetectorParameters_GetErrorCorrectionRate(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetAprilTagQuadDecimate(ArucoDetectorParameters ap, float aprilTagQuadDecimate);
+float ArucoDetectorParameters_GetAprilTagQuadDecimate(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetAprilTagQuadSigma(ArucoDetectorParameters ap, float aprilTagQuadSigma);
+float ArucoDetectorParameters_GetAprilTagQuadSigma(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetAprilTagMinClusterPixels(ArucoDetectorParameters ap, int aprilTagMinClusterPixels);
+int ArucoDetectorParameters_GetAprilTagMinClusterPixels(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetAprilTagMaxNmaxima(ArucoDetectorParameters ap, int aprilTagMaxNmaxima);
+int ArucoDetectorParameters_GetAprilTagMaxNmaxima(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetAprilTagCriticalRad(ArucoDetectorParameters ap, float aprilTagCriticalRad);
+float ArucoDetectorParameters_GetAprilTagCriticalRad(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetAprilTagMaxLineFitMse(ArucoDetectorParameters ap, float aprilTagMaxLineFitMse);
+float ArucoDetectorParameters_GetAprilTagMaxLineFitMse(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetAprilTagMinWhiteBlackDiff(ArucoDetectorParameters ap, int aprilTagMinWhiteBlackDiff);
+int ArucoDetectorParameters_GetAprilTagMinWhiteBlackDiff(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetAprilTagDeglitch(ArucoDetectorParameters ap, int aprilTagDeglitch);
+int ArucoDetectorParameters_GetAprilTagDeglitch(ArucoDetectorParameters ap);
+void ArucoDetectorParameters_SetDetectInvertedMarker(ArucoDetectorParameters ap, bool detectInvertedMarker);
+bool ArucoDetectorParameters_GetDetectInvertedMarker(ArucoDetectorParameters ap);
+
+
+ArucoDictionary getPredefinedDictionary(int dictionaryId);
+
+ArucoDetector ArucoDetector_New();
+ArucoDetector ArucoDetector_NewWithParams(ArucoDictionary dictionary, ArucoDetectorParameters params);
+void ArucoDetector_Close(ArucoDetector ad);
+void ArucoDetector_DetectMarkers(ArucoDetector ad, Mat inputArr, Points2fVector markerCorners, IntVector *markerIds, Points2fVector rejectedCandidates);
+
+void ArucoDrawDetectedMarkers(Mat image, Points2fVector markerCorners, IntVector markerIds, Scalar borderColor);
+void ArucoGenerateImageMarker(int dictionaryId, int id, int sidePixels, Mat img, int borderBits);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif //_OPENCV3_ARUCO_H_
