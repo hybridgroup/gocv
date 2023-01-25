@@ -20,8 +20,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-	_ "net/http/pprof"
+	"time"
 
 	"github.com/hybridgroup/mjpeg"
 	"gocv.io/x/gocv"
@@ -62,7 +61,14 @@ func main() {
 
 	// start http server
 	http.Handle("/", stream)
-	log.Fatal(http.ListenAndServe(host, nil))
+
+	server := &http.Server{
+		Addr:         host,
+		ReadTimeout:  60 * time.Second,
+		WriteTimeout: 60 * time.Second,
+	}
+
+	log.Fatal(server.ListenAndServe())
 }
 
 func mjpegCapture() {
