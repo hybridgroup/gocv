@@ -48,6 +48,7 @@ func main() {
 	}
 
 	// get image from URL
+	// #nosec
 	res, err := http.Get(imageURL)
 	if err != nil {
 		log.Fatal(err)
