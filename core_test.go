@@ -1566,6 +1566,60 @@ func TestMatReduceToSingleColumn(t *testing.T) {
 	}
 }
 
+func TestMatReduceArgMax(t *testing.T) {
+	rows := 2
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
+	dst := NewMat()
+	defer dst.Close()
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col+1))
+		}
+	}
+
+	ReduceArgMax(src, &dst, 1, false)
+
+	sz := dst.Size()
+	if sz[0] != 2 && sz[1] != 1 {
+		t.Errorf("TestMatReduceArgMax incorrect size: %v\n", sz)
+	}
+
+	if dst.GetUCharAt(0, 0) != 2 || dst.GetUCharAt(1, 0) != 2 {
+		t.Errorf("TestMatReduceArgMax incorrect reduce result: %v at (0, 0) expected 1, %v at (1, 0) expected 1",
+			dst.GetUCharAt(0, 0), dst.GetUCharAt(1, 0))
+	}
+}
+
+func TestMatReduceArgMin(t *testing.T) {
+	rows := 2
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
+	dst := NewMat()
+	defer dst.Close()
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col+1))
+		}
+	}
+
+	ReduceArgMin(src, &dst, 1, false)
+
+	sz := dst.Size()
+	if sz[0] != 2 && sz[1] != 1 {
+		t.Errorf("TestMatReduceArgMax incorrect size: %v\n", sz)
+	}
+
+	if dst.GetUCharAt(0, 0) != 0 || dst.GetUCharAt(1, 0) != 0 {
+		t.Errorf("TestMatReduceArgMax incorrect reduce result: %v at (0, 0) expected 0, %v at (1, 0) expected 0",
+			dst.GetUCharAt(0, 0), dst.GetUCharAt(1, 0))
+	}
+}
+
 func TestRepeat(t *testing.T) {
 	rows := 1
 	cols := 3
