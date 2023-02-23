@@ -690,6 +690,15 @@ void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType) {
     cv::reduce(*src, *dst, dim, rType, dType);
 }
 
+void Mat_ReduceArgMax(Mat src, Mat dst, int axis, bool lastIndex) {
+    cv::reduceArgMax(*src, *dst, axis, lastIndex);
+}
+
+void Mat_ReduceArgMin(Mat src, Mat dst, int axis, bool lastIndex) {
+    cv::reduceArgMin(*src, *dst, axis, lastIndex);
+}
+
+
 void Mat_Repeat(Mat src, int nY, int nX, Mat dst) {
     cv::repeat(*src, nY, nX, *dst);
 }

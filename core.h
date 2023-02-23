@@ -417,6 +417,8 @@ bool Mat_Solve(Mat src1, Mat src2, Mat dst, int flags);
 int Mat_SolveCubic(Mat coeffs, Mat roots);
 double Mat_SolvePoly(Mat coeffs, Mat roots, int maxIters);
 void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType);
+void Mat_ReduceArgMax(Mat src, Mat dst, int axis, bool lastIndex);
+void Mat_ReduceArgMin(Mat src, Mat dst, int axis, bool lastIndex);
 void Mat_Repeat(Mat src, int nY, int nX, Mat dst);
 void Mat_ScaleAdd(Mat src1, double alpha, Mat src2, Mat dst);
 void Mat_SetIdentity(Mat src, double scalar);
