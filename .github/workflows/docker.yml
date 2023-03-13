@@ -51,7 +51,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           context: .
           push: true
-          tags: gocv/opencv:4.7.0-dev
+          tags: gocv/opencv:4.7.0
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -95,7 +95,7 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: gocv/opencv:4.7.0-gpu-cuda-10-dev
+          tags: gocv/opencv:4.7.0-gpu-cuda-10
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -139,7 +139,7 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: gocv/opencv:4.7.0-gpu-cuda-11-dev
+          tags: gocv/opencv:4.7.0-gpu-cuda-11
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -183,7 +183,7 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: gocv/opencv:4.7.0-gpu-cuda-11.2.2-dev
+          tags: gocv/opencv:4.7.0-gpu-cuda-11.2.2
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -227,7 +227,7 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: gocv/opencv:4.7.0-ubuntu-18.04-dev
+          tags: gocv/opencv:4.7.0-ubuntu-18.04
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -271,7 +271,7 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: gocv/opencv:4.7.0-ubuntu-20.04-dev
+          tags: gocv/opencv:4.7.0-ubuntu-20.04
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
