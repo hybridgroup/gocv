@@ -39,7 +39,7 @@ RUN curl -Lo opencv.zip ${OPENCV_FILE} && \
             -D BUILD_DOCS=OFF \
             -D BUILD_EXAMPLES=OFF \
             -D BUILD_TESTS=OFF \
-            -D BUILD_PERF_TESTS=OFF \
+            -D BUILD_PERF_TESTS=ON \
             -D BUILD_opencv_java=NO \
             -D BUILD_opencv_python=NO \
             -D BUILD_opencv_python2=NO \
