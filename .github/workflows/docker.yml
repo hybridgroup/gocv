@@ -29,7 +29,7 @@ jobs:
         with:
           images: |
             gocv/opencv
-            ghcr.io/${{ github.repository }}/opencv
+            ghcr.io/${{ github.repository_owner }}/opencv
           tags: |
             type=sha,format=long
             type=raw,value=latest
@@ -51,7 +51,11 @@ jobs:
           platforms: linux/amd64,linux/arm64
           context: .
           push: true
-          tags: gocv/opencv:4.7.0
+          tags: |
+            gocv/opencv:latest
+            gocv/opencv:4.7.0
+            ghcr.io/${{ github.repository_owner }}/opencv:latest
+            ghcr.io/${{ github.repository_owner }}/opencv:4.7.0
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -72,8 +76,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            gocv/opencv
-            ghcr.io/${{ github.repository }}/opencv
+            gocv/opencv:4.7.0-gpu-cuda-10
+            ghcr.io/${{ github.repository_owner }}/opencv:4.7.0-gpu-cuda-10
           tags: |
             type=sha,format=long
             type=raw,value=latest
@@ -95,7 +99,9 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: gocv/opencv:4.7.0-gpu-cuda-10
+          tags: |
+            gocv/opencv:4.7.0-gpu-cuda-10
+            ghcr.io/${{ github.repository_owner }}/opencv:4.7.0-gpu-cuda-10
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -116,8 +122,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            gocv/opencv
-            ghcr.io/${{ github.repository }}/opencv
+            gocv/4.7.0-gpu-cuda-11
+            ghcr.io/${{ github.repository_owner }}/4.7.0-gpu-cuda-11
           tags: |
             type=sha,format=long
             type=raw,value=latest
@@ -139,7 +145,9 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: gocv/opencv:4.7.0-gpu-cuda-11
+          tags: |
+            gocv/opencv:4.7.0-gpu-cuda-11
+            ghcr.io/${{ github.repository_owner }}/opencv:4.7.0-gpu-cuda-11
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -160,8 +168,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            gocv/opencv
-            ghcr.io/${{ github.repository }}/opencv
+            gocv/opencv:4.7.0-gpu-cuda-11.2.2
+            ghcr.io/${{ github.repository_owner }}/opencv:4.7.0-gpu-cuda-11.2.2
           tags: |
             type=sha,format=long
             type=raw,value=latest
@@ -183,7 +191,9 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: gocv/opencv:4.7.0-gpu-cuda-11.2.2
+          tags: |
+            gocv/opencv:4.7.0-gpu-cuda-11.2.2
+            ghcr.io/${{ github.repository_owner }}/opencv:4.7.0-gpu-cuda-11.2.2
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -204,8 +214,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            gocv/opencv
-            ghcr.io/${{ github.repository }}/opencv
+            gocv/opencv:4.7.0-ubuntu-18.04
+            ghcr.io/${{ github.repository_owner }}/opencv:4.7.0-ubuntu-18.04
           tags: |
             type=sha,format=long
             type=raw,value=latest
@@ -227,7 +237,9 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: gocv/opencv:4.7.0-ubuntu-18.04
+          tags: |
+            gocv/opencv:4.7.0-ubuntu-18.04
+            ghcr.io/${{ github.repository_owner }}/opencv:4.7.0-ubuntu-18.04
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -248,8 +260,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            gocv/opencv
-            ghcr.io/${{ github.repository }}/opencv
+            gocv/opencv:4.7.0-ubuntu-20.04
+            ghcr.io/${{ github.repository_owner }}/opencv:4.7.0-ubuntu-20.04
           tags: |
             type=sha,format=long
             type=raw,value=latest
@@ -262,7 +274,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v4
@@ -271,7 +283,9 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: gocv/opencv:4.7.0-ubuntu-20.04
+          tags: |
+            gocv/opencv:4.7.0-ubuntu-20.04
+            ghcr.io/${{ github.repository_owner }}/opencv:4.7.0-ubuntu-20.04
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
