@@ -270,10 +270,10 @@ The project now provides `Dockerfile` which lets you build [GoCV](https://gocv.i
 make docker
 ```
 
-By default Docker image built by running the command above ships [Go](https://golang.org/) version `1.16.5`, but if you would like to build an image which uses different version of `Go` you can override the default value when running the target command:
+By default Docker image built by running the command above ships [Go](https://golang.org/) version `1.20.2`, but if you would like to build an image which uses different version of `Go` you can override the default value when running the target command:
 
 ```
-make docker GOVERSION='1.15'
+make docker GOVERSION='1.19.4'
 ```
 
 #### Running GUI programs in Docker on macOS

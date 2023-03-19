@@ -1,5 +1,5 @@
 # to build this docker image:
-#   docker build -f Dockerfile.opencv-gpu-cuda-10 -t gocv/opencv:4.7.0-gpu-cuda-10 .
+#   docker build -f Dockerfile.opencv-gpu-cuda-10 -t ghcr.io/hybridgroup/opencv:4.7.0-gpu-cuda-10 .
 FROM nvidia/cuda:10.2-cudnn8-devel AS opencv-gpu-base
 LABEL maintainer="hybridgroup"
 
@@ -59,7 +59,7 @@ RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSIO
 # install golang here
 FROM opencv-gpu-base AS opencv-gpu-golang
 
-ENV GO_RELEASE=1.19.4
+ENV GO_RELEASE=1.20.2
 RUN wget https://dl.google.com/go/go${GO_RELEASE}.linux-amd64.tar.gz && \
     tar xfv go${GO_RELEASE}.linux-amd64.tar.gz -C /usr/local && \
     rm go${GO_RELEASE}.linux-amd64.tar.gz
