@@ -522,7 +522,7 @@ func (l *Layer) OutputNameToIndex(name string) int {
 //
 // For futher details, please see:
 // https://docs.opencv.org/4.4.0/d6/d0f/group__dnn.html#ga9d118d70a1659af729d01b10233213ee
-func NMSBoxes(bboxes []image.Rectangle, scores []float32, scoreThreshold float32, nmsThreshold float32, indices []int) {
+func NMSBoxes(bboxes []image.Rectangle, scores []float32, scoreThreshold float32, nmsThreshold float32) (indices []int) {
 	bboxesRectArr := []C.struct_Rect{}
 	for _, v := range bboxes {
 		bbox := C.struct_Rect{
@@ -560,6 +560,8 @@ func NMSBoxes(bboxes []image.Rectangle, scores []float32, scoreThreshold float32
 
 	ptr := *(*[]C.int)(unsafe.Pointer(h))
 
+
+	indices = make([]int,indicesVector.length)
 	for i := 0; i < int(indicesVector.length); i++ {
 		indices[i] = int(ptr[i])
 	}
@@ -570,7 +572,7 @@ func NMSBoxes(bboxes []image.Rectangle, scores []float32, scoreThreshold float32
 //
 // For futher details, please see:
 // https://docs.opencv.org/4.4.0/d6/d0f/group__dnn.html#ga9d118d70a1659af729d01b10233213ee
-func NMSBoxesWithParams(bboxes []image.Rectangle, scores []float32, scoreThreshold float32, nmsThreshold float32, indices []int, eta float32, topK int) {
+func NMSBoxesWithParams(bboxes []image.Rectangle, scores []float32, scoreThreshold float32, nmsThreshold float32, eta float32, topK int) (indices []int) {
 	bboxesRectArr := []C.struct_Rect{}
 	for _, v := range bboxes {
 		bbox := C.struct_Rect{
@@ -608,6 +610,7 @@ func NMSBoxesWithParams(bboxes []image.Rectangle, scores []float32, scoreThresho
 
 	ptr := *(*[]C.int)(unsafe.Pointer(h))
 
+	indices = make([]int,indicesVector.length)
 	for i := 0; i < int(indicesVector.length); i++ {
 		indices[i] = int(ptr[i])
 	}
