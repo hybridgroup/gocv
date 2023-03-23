@@ -591,11 +591,10 @@ func TestNMSBoxes(t *testing.T) {
 		image.Rect(156, 51, 640, 480),
 	}
 	scores := []float32{0.82094115, 0.7998236, 0.9809663, 0.99717456, 0.89628726}
-	indices := make([]int, 10)
 	scoreThreshold := float32(0.5)
 	nmsThreshold := float32(0.4)
 
-	NMSBoxes(bboxes, scores, scoreThreshold, nmsThreshold, indices)
+	indices := NMSBoxes(bboxes, scores, scoreThreshold, nmsThreshold)
 
 	if indices[0] != 3 {
 		t.Errorf("Invalid NMSBoxes test indices: %v", indices)
@@ -619,11 +618,10 @@ func TestNMSBoxesWithParams(t *testing.T) {
 		image.Rect(156, 51, 640, 480),
 	}
 	scores := []float32{0.82094115, 0.7998236, 0.9809663, 0.99717456, 0.89628726}
-	indices := make([]int, 10)
 	scoreThreshold := float32(0.5)
 	nmsThreshold := float32(0.4)
 
-	NMSBoxesWithParams(bboxes, scores, scoreThreshold, nmsThreshold, indices, float32(1.0), 0)
+	indices := NMSBoxesWithParams(bboxes, scores, scoreThreshold, nmsThreshold, float32(1.0), 0)
 
 	if indices[0] != 3 {
 		t.Errorf("Invalid NMSBoxesWithParams test indices: %v", indices)
