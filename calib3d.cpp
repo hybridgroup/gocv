@@ -92,3 +92,7 @@ void TriangulatePoints(Mat projMatr1, Mat projMatr2, Point2fVector projPoints1, 
 void ConvertPointsFromHomogeneous(Mat src, Mat dst) {
   return cv::convertPointsFromHomogeneous(*src, *dst);
 }
+
+bool SolvePnP(Point3fVector objectPoints, Point2fVector imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, bool useExtrinsicGuess, int flags) {
+    return cv::solvePnP(*objectPoints, *imagePoints, *cameraMatrix, *distCoeffs, *rvec, *tvec, useExtrinsicGuess, flags);
+}

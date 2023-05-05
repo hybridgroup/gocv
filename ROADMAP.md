@@ -167,7 +167,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [RQDecomp3x3](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [sampsonDistance](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [solveP3P](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [solvePnP](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [X] [solvePnP](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [solvePnPGeneric](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [solvePnPRansac](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [solvePnPRefineLM](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)

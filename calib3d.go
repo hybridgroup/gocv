@@ -264,7 +264,7 @@ func EstimateAffine2DWithParams(from Point2fVector, to Point2fVector, inliers Ma
 // For further details, please see:
 // https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#gad3fc9a0c82b08df034234979960b778c
 func TriangulatePoints(projMatr1, projMatr2 Mat, projPoints1, projPoints2 Point2fVector, points4D *Mat) {
-  C.TriangulatePoints(projMatr1.Ptr(), projMatr2.Ptr(), projPoints1.p, projPoints2.p, points4D.Ptr())
+	C.TriangulatePoints(projMatr1.Ptr(), projMatr2.Ptr(), projPoints1.p, projPoints2.p, points4D.Ptr())
 }
 
 // ConvertPointsFromHomogeneous converts points from homogeneous to Euclidean space.
@@ -273,4 +273,12 @@ func TriangulatePoints(projMatr1, projMatr2 Mat, projPoints1, projPoints2 Point2
 // https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#gac42edda3a3a0f717979589fcd6ac0035
 func ConvertPointsFromHomogeneous(src Mat, dst *Mat) {
 	C.ConvertPointsFromHomogeneous(src.Ptr(), dst.Ptr())
+}
+
+// SolvePnP finds an object pose from 3D-2D point correspondences.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.0.0/d9/d0c/group__calib3d.html#ga549c2075fac14829ff4a58bc931c033d
+func SolvePnP(objectPoints Point3fVector, imagePoints Point2fVector, cameraMatrix, distCoeffs, rvec, tvec *Mat, useExtrinsicGuess bool, flags int) bool {
+	return bool(C.SolvePnP(objectPoints.p, imagePoints.p, cameraMatrix.p, distCoeffs.p, rvec.p, tvec.p, C.bool(useExtrinsicGuess), C.int(flags)))
 }
