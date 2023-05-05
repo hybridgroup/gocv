@@ -30,6 +30,7 @@ Mat EstimateAffinePartial2D(Point2fVector from, Point2fVector to);
 Mat EstimateAffinePartial2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method, double ransacReprojThreshold, size_t maxIters, double confidence, size_t refineIters);
 Mat EstimateAffine2D(Point2fVector from, Point2fVector to);
 Mat EstimateAffine2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method, double ransacReprojThreshold, size_t maxIters, double confidence, size_t refineIters);
+bool SolvePnP(Point3fVector objectPoints, Point2fVector imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, bool useExtrinsicGuess, int flags);
 #ifdef __cplusplus
 }
 #endif
