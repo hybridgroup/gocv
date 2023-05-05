@@ -265,6 +265,14 @@ func EstimateAffine2DWithParams(from Point2fVector, to Point2fVector, inliers Ma
 	return newMat(C.EstimateAffine2DWithParams(from.p, to.p, inliers.p, C.int(method), C.double(ransacReprojThreshold), C.size_t(maxIters), C.double(confidence), C.size_t(refineIters)))
 }
 
+// Rodrigues converts a rotation matrix to a rotation vector or vice versa.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.0.0/d9/d0c/group__calib3d.html#ga61585db663d9da06b68e70cfbf6a1eac
+func Rodrigues(src, dst *Mat) {
+	C.Rodrigues(src.p, dst.p)
+}
+
 // SolvePnP finds an object pose from 3D-2D point correspondences.
 //
 // For further details, please see:

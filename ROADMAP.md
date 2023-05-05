@@ -163,7 +163,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [recoverPose](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [rectify3Collinear](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [reprojectImageTo3D](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [Rodrigues](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [X] [Rodrigues](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [RQDecomp3x3](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [sampsonDistance](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [solveP3P](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
