@@ -19,6 +19,7 @@ BUILD_SHARED_LIBS?=ON
 # Package list for each well-known Linux distribution
 RPMS=cmake curl wget git gtk2-devel libpng-devel libjpeg-devel libtiff-devel tbb tbb-devel libdc1394-devel unzip gcc-c++
 DEBS=unzip wget build-essential cmake curl git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
+DEBS_UBUNTU_JAMMY=unzip wget build-essential cmake curl git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev
 JETSON=build-essential cmake git unzip pkg-config libjpeg-dev libpng-dev libtiff-dev libavcodec-dev libavformat-dev libswscale-dev libgtk2.0-dev libcanberra-gtk* libxvidcore-dev libx264-dev libgtk-3-dev libtbb2 libtbb-dev libdc1394-22-dev libv4l-dev v4l-utils libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libavresample-dev libvorbis-dev libxine2-dev libfaac-dev libmp3lame-dev libtheora-dev libopencore-amrnb-dev libopencore-amrwb-dev libopenblas-dev libatlas-base-dev libblas-dev liblapack-dev libeigen3-dev gfortran libhdf5-dev protobuf-compiler libprotobuf-dev libgoogle-glog-dev libgflags-dev
 
 explain:
@@ -30,7 +31,11 @@ ifneq ($(shell which dnf 2>/dev/null),)
 	distro_deps=deps_fedora
 else
 ifneq ($(shell which apt-get 2>/dev/null),)
+ifneq ($(shell cat /etc/os-release 2>/dev/null | grep "Jammy Jellyfish"),)
+	distro_deps=deps_ubuntu_jammy
+else
 	distro_deps=deps_debian
+endif
 else
 ifneq ($(shell which yum 2>/dev/null),)
 	distro_deps=deps_rh_centos
@@ -50,6 +55,10 @@ deps_fedora:
 deps_debian:
 	sudo apt-get -y update
 	sudo apt-get -y install $(DEBS)
+
+deps_ubuntu_jammy:
+	sudo apt-get -y update
+	sudo apt-get -y install $(DEBS_UBUNTU_JAMMY)
 
 deps_jetson:
 	sudo sh -c "echo '/usr/local/cuda/lib64' >> /etc/ld.so.conf.d/nvidia-tegra.conf"
