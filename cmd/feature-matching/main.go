@@ -39,8 +39,15 @@ func main() {
 	defer sift.Close()
 
 	// detecting and computing keypoints using SIFT method
-	kp1, des1 := sift.DetectAndCompute(query, gocv.NewMat())
-	kp2, des2 := sift.DetectAndCompute(train, gocv.NewMat())
+	queryMask := gocv.NewMat()
+	defer queryMask.Close()
+	kp1, des1 := sift.DetectAndCompute(query, queryMask)
+	defer des1.Close()
+
+	trainMask := gocv.NewMat()
+	defer trainMask.Close()
+	kp2, des2 := sift.DetectAndCompute(train, trainMask)
+	defer des2.Close()
 
 	// finding K best matches for each descriptor
 	bf := gocv.NewBFMatcher()
@@ -77,6 +84,7 @@ func main() {
 
 	// new matrix for output image
 	out := gocv.NewMat()
+	defer out.Close()
 	// drawing matches
 	gocv.DrawMatches(query, kp1, train, kp2, good, &out, c1, c2, mask, gocv.DrawDefault)
 
