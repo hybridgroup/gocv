@@ -289,3 +289,49 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  opencv-ubuntu-22-04:
+    name: opencv-ubuntu-22-04
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            gocv/opencv:4.7.0-ubuntu-22.04
+            ghcr.io/${{ github.repository_owner }}/opencv:4.7.0-ubuntu-22.04
+          tags: |
+            type=sha,format=long
+            type=raw,value=latest
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Log in to Github Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          file: Dockerfile.opencv-ubuntu-22.04
+          platforms: linux/amd64
+          context: .
+          push: true
+          tags: |
+            gocv/opencv:4.7.0-ubuntu-22.04
+            ghcr.io/${{ github.repository_owner }}/opencv:4.7.0-ubuntu-22.04
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
