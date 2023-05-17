@@ -232,9 +232,9 @@ Your pull requests will be greatly appreciated!
     - [ ] **core** The following functions still need implementation:
         - [ ] [cv::cuda::copyMakeBorder](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga5368db7656eacf846b40089c98053a49)
         - [ ] [cv::cuda::createLookUpTable](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga2d9d9780dea8c5cd85d3c19b7e01979c)
-        - [ ] [cv::cuda::merge](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#gaac939dc3b178ee92fb6e7078f342622c)
+        - [X] [cv::cuda::merge](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#gaac939dc3b178ee92fb6e7078f342622c)
         - [ ] [cv::cuda::split](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#gabe5013d55d4ff586b20393913726179e)
-        - [ ] [cv::cuda::transpose](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga327b71c3cb811a904ccf5fba37fc29f2)
+        - [X] [cv::cuda::transpose](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga327b71c3cb811a904ccf5fba37fc29f2)
 
     - [ ] **per-element operations - WORK STARTED** The following functions still need implementation:
         - [X] [cv::cuda::absdiff](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac062b283cf46ee90f74a773d3382ab54)

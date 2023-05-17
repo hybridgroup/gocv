@@ -36,6 +36,10 @@ void GpuMat_Close(GpuMat m){
     delete m;
 }
 
+void GpuMats_Close(struct GpuMats mats) {
+    delete[] mats.mats;
+}
+
 void PrintCudaDeviceInfo(int device){
     cv::cuda::printCudaDeviceInfo(device);
 }

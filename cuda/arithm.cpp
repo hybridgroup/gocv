@@ -146,3 +146,26 @@ void GpuFlip(GpuMat src, GpuMat dst, int flipCode, Stream s) {
     }
     cv::cuda::flip(*src, *dst, flipCode, *s);
 }
+
+void GpuMerge(struct GpuMats mats, GpuMat dst, Stream s) {
+    std::vector<cv::cuda::GpuMat> images;
+
+    for (int i = 0; i < mats.length; ++i) {
+        images.push_back(*mats.mats[i]);
+    }
+
+    if (s == NULL) {
+        cv::cuda::merge(image, *dst);
+        return;
+    }
+
+    cv::cuda::merge(images, *dst, *s);
+}
+
+void GpuTranspose(GpuMat src, GpuMat dst, Stream s) {
+    if (s == NULL) {
+        cv::cuda::transpose(*src, *dst);
+        return;
+    }
+    cv::cuda::transpose(*src, *dst, *s);
+}

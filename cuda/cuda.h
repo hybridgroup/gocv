@@ -33,6 +33,14 @@ int GpuMat_Rows(GpuMat m);
 int GpuMat_Channels(GpuMat m);
 int GpuMat_Type(GpuMat m);
 
+// Wrapper for the vector of GpuMat aka std::vector<GpuMat>
+typedef struct GpuMats {
+    GpuMat* mats;
+    int length;
+} GpuMats;
+
+void GpuMats_Close(struct GpuMats mats);
+
 void PrintCudaDeviceInfo(int device);
 void PrintShortCudaDeviceInfo(int device);
 int GetCudaEnabledDeviceCount();
