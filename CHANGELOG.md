@@ -1,3 +1,31 @@
+0.33.0
+---
+* **bugfix**
+    * Remove opencv2/aruco.hpp include
+* **all**
+    * build performance tests with all OpenCV builds
+* **build**
+    * build and push Ubuntu 22.04 base image with OpenCV 4.7.0
+    * docker images with opencv
+    * docker production images with opencv 4.7.0
+    * Docker push to GHCR
+* **core**
+    * Add ReduceArgMax and ReduceArgMin
+* **dnn**
+    * improved NMSBoxes code
+* **docker**
+    * add dockerfile for Ubuntu 22.04 OpenCV base image
+    * updates to migrate to GHCR
+* **examples**
+    * Deallocate Mats in feature-matching example.
+    * Fix G108 (CWE-200) and G114 (CWE-676)
+    * Fix G304 (CWE-22) and G307 (CWE-703)
+    * Fix G304 (CWE-22) and G307 (CWE-703)
+    * Missed #nosec tag
+* **make**
+    * Ubuntu Jammy (22) opencv build support.
+
+
 0.32.0
 ---
 * **all**
