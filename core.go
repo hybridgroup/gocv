@@ -1219,6 +1219,20 @@ func EigenNonSymmetric(src Mat, eigenvalues *Mat, eigenvectors *Mat) {
 	C.Mat_EigenNonSymmetric(src.p, eigenvalues.p, eigenvectors.p)
 }
 
+// PCACompute performs PCA.
+//
+// The computed eigenvalues are sorted from the largest to the smallest and the corresponding
+// eigenvectors are stored as eigenvectors rows.
+//
+// Note: Calling with maxComponents == 0 (opencv default) will cause all components to be retained.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#ga27a565b31d820b05dcbcd47112176b6e
+//
+func PCACompute(src Mat, mean *Mat, eigenvalues *Mat, eigenvectors *Mat, maxComponents int) {
+	C.Mat_PCACompute(src.p, mean.p, eigenvalues.p, eigenvectors.p, C.int(maxComponents))
+}
+
 // Exp calculates the exponent of every array element.
 //
 // For further details, please see:

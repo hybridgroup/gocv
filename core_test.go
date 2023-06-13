@@ -2070,6 +2070,29 @@ func TestMatEigenNonSymmetric(t *testing.T) {
 	eigenvalues.Close()
 }
 
+func TestPCACompute(t *testing.T) {
+	src := NewMatWithSize(10, 10, MatTypeCV32F)
+	// Set some source data so the PCA is done on a non-zero matrix.
+	src.SetFloatAt(0, 0, 17)
+	src.SetFloatAt(2, 1, 5)
+	src.SetFloatAt(9, 9, 25)
+	mean := NewMat()
+	eigenvalues := NewMat()
+	eigenvectors := NewMat()
+	maxComponents := 2
+	PCACompute(src, &mean, &eigenvalues, &eigenvectors, maxComponents)
+	if mean.Empty() || eigenvectors.Empty() || eigenvalues.Empty() {
+		t.Error("TestPCACompute should not have empty eigenvectors or eigenvalues.")
+	}
+	if eigenvectors.Rows() > maxComponents {
+		t.Errorf("TestPCACompute unexpected numComponents, got=%d, want<=%d", eigenvectors.Rows(), maxComponents)
+	}
+	src.Close()
+	mean.Close()
+	eigenvectors.Close()
+	eigenvalues.Close()
+}
+
 func TestMatExp(t *testing.T) {
 	src := NewMatWithSize(10, 10, MatTypeCV32F)
 	dst := NewMat()

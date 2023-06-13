@@ -504,6 +504,10 @@ void Mat_EigenNonSymmetric(Mat src, Mat eigenvalues, Mat eigenvectors) {
     cv::eigenNonSymmetric(*src, *eigenvalues, *eigenvectors);
 }
 
+void Mat_PCACompute(Mat src, Mat mean, Mat eigenvalues, Mat eigenvectors, int maxComponents) {
+    cv::PCACompute(*src, *mean, *eigenvalues, *eigenvectors, maxComponents);
+}
+
 void Mat_Exp(Mat src, Mat dst) {
     cv::exp(*src, *dst);
 }
