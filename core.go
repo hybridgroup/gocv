@@ -1229,8 +1229,8 @@ func EigenNonSymmetric(src Mat, eigenvalues *Mat, eigenvectors *Mat) {
 // For further details, please see:
 // https://docs.opencv.org/4.x/d2/de8/group__core__array.html#ga27a565b31d820b05dcbcd47112176b6e
 //
-func PCACompute(src Mat, mean *Mat, eigenvalues *Mat, eigenvectors *Mat, maxComponents int) {
-	C.Mat_PCACompute(src.p, mean.p, eigenvalues.p, eigenvectors.p, C.int(maxComponents))
+func PCACompute(src Mat, mean *Mat, eigenvectors *Mat, eigenvalues *Mat, maxComponents int) {
+	C.Mat_PCACompute(src.p, mean.p, eigenvectors.p, eigenvalues.p, C.int(maxComponents))
 }
 
 // Exp calculates the exponent of every array element.
