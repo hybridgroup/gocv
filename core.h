@@ -379,7 +379,7 @@ void Mat_DFT(Mat m, Mat dst, int flags);
 void Mat_Divide(Mat src1, Mat src2, Mat dst);
 bool Mat_Eigen(Mat src, Mat eigenvalues, Mat eigenvectors);
 void Mat_EigenNonSymmetric(Mat src, Mat eigenvalues, Mat eigenvectors);
-void Mat_PCACompute(Mat src, Mat mean, Mat eigenvalues, Mat eigenvectors, int maxComponents);
+void Mat_PCACompute(Mat src, Mat mean, Mat eigenvectors, Mat eigenvalues, int maxComponents);
 void Mat_Exp(Mat src, Mat dst);
 void Mat_ExtractChannel(Mat src, Mat dst, int coi);
 void Mat_FindNonZero(Mat src, Mat idx);

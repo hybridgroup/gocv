@@ -2077,10 +2077,10 @@ func TestPCACompute(t *testing.T) {
 	src.SetFloatAt(2, 1, 5)
 	src.SetFloatAt(9, 9, 25)
 	mean := NewMat()
-	eigenvalues := NewMat()
 	eigenvectors := NewMat()
+	eigenvalues := NewMat()
 	maxComponents := 2
-	PCACompute(src, &mean, &eigenvalues, &eigenvectors, maxComponents)
+	PCACompute(src, &mean, &eigenvectors, &eigenvalues, maxComponents)
 	if mean.Empty() || eigenvectors.Empty() || eigenvalues.Empty() {
 		t.Error("TestPCACompute should not have empty eigenvectors or eigenvalues.")
 	}
