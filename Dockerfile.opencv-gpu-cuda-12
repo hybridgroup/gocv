@@ -1,7 +1,7 @@
 # to build this docker image:
-#   docker build -f Dockerfile.opencv-gpu-cuda-11 -t ghcr.io/hybridgroup/opencv:4.8.0-gpu-cuda-11.2.2 .
-#   docker build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv-gpu-cuda-11.2.2 -t ghcr.io/hybridgroup/opencv:4.8.0-dev-gpu-cuda-11.2.2 .
-FROM nvidia/cuda:11.2.2-cudnn8-devel-ubuntu20.04 AS opencv-gpu-cuda-11-base
+#   docker build -f Dockerfile.opencv-gpu-cuda-12 -t ghcr.io/hybridgroup/opencv:4.8.0-gpu-cuda-12 .
+#   docker build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv-gpu-cuda-12 -t ghcr.io/hybridgroup/opencv:4.8.0-dev-gpu-cuda-12 .
+FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04 AS opencv-gpu-cuda-12-base
 LABEL maintainer="hybridgroup"
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
             git build-essential cmake pkg-config unzip libgtk2.0-dev \
             wget curl ca-certificates libcurl4-openssl-dev libssl-dev \
             libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev \
-            libjpeg-turbo8-dev libpng-dev libtiff-dev libdc1394-22-dev nasm && \
+            libjpeg-turbo8-dev libpng-dev libtiff-dev libdc1394-dev nasm && \
             rm -rf /var/lib/apt/lists/*
 
 ARG OPENCV_VERSION="4.8.0"
@@ -63,7 +63,7 @@ RUN curl -Lo opencv.zip ${OPENCV_FILE} && \
     cd / && rm -rf opencv*
 
 # install golang here
-FROM opencv-gpu-cuda-11-base AS opencv-gpu-cuda-11-golang
+FROM opencv-gpu-cuda-12-base AS opencv-gpu-cuda-12-golang
 
 ENV GO_RELEASE=1.20.6
 RUN wget https://dl.google.com/go/go${GO_RELEASE}.linux-amd64.tar.gz && \

@@ -60,52 +60,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  opencv-gpu-cuda-10:
-    name: opencv-gpu-cuda-10
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-    steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Check out the repo
-        uses: actions/checkout@v3
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: |
-            gocv/opencv:4.8.0-gpu-cuda-10
-            ghcr.io/${{ github.repository_owner }}/opencv:4.8.0-gpu-cuda-10
-          tags: |
-            type=sha,format=long
-            type=raw,value=latest
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      - name: Log in to Github Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          file: Dockerfile.opencv-gpu-cuda-10
-          platforms: linux/amd64
-          context: .
-          push: true
-          tags: |
-            gocv/opencv:4.8.0-gpu-cuda-10
-            ghcr.io/${{ github.repository_owner }}/opencv:4.8.0-gpu-cuda-10
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
   opencv-gpu-cuda-11:
     name: opencv-gpu-cuda-11
     runs-on: ubuntu-latest
@@ -198,6 +152,52 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+  opencv-gpu-cuda-12:
+    name: opencv-gpu-cuda-12
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            gocv/4.8.0-gpu-cuda-12
+            ghcr.io/${{ github.repository_owner }}/4.8.0-gpu-cuda-12
+          tags: |
+            type=sha,format=long
+            type=raw,value=latest
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Log in to Github Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          file: Dockerfile.opencv-gpu-cuda-12
+          platforms: linux/amd64
+          context: .
+          push: true
+          tags: |
+            gocv/opencv:4.8.0-gpu-cuda-12
+            ghcr.io/${{ github.repository_owner }}/opencv:4.8.0-gpu-cuda-12
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+        
   opencv-ubuntu-18-04:
     name: opencv-ubuntu-18-04
     runs-on: ubuntu-latest
