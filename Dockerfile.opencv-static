@@ -41,7 +41,9 @@ RUN curl -Lo opencv.zip ${OPENCV_FILE} && \
 RUN cd opencv-${OPENCV_VERSION} && \
             mkdir build && cd build && \
             cmake -D CMAKE_BUILD_TYPE=RELEASE \
-                  -D WITH_IPP=OFF \
+                  -D WITH_IPP=ON \
+                  -D BUILD_WITH_DYNAMIC_IPP=OFF \
+                  -D BUILD_IPP_IW=ON \
                   -D WITH_OPENGL=OFF \
                   -D WITH_QT=OFF \
                   -D CMAKE_INSTALL_PREFIX=/usr/local \
