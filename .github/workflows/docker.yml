@@ -45,7 +45,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v4.1.1
         with:
           file: Dockerfile.opencv
           platforms: linux/amd64,linux/arm64
@@ -95,7 +95,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v4.1.1
         with:
           file: Dockerfile.opencv-static
           platforms: linux/amd64,linux/arm64
@@ -141,7 +141,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v4.1.1
         with:
           file: Dockerfile.opencv-gpu-cuda-11
           platforms: linux/amd64
@@ -187,7 +187,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v4.1.1
         with:
           file: Dockerfile.opencv-gpu-cuda-11.2.2
           platforms: linux/amd64
@@ -233,7 +233,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v4.1.1
         with:
           file: Dockerfile.opencv-gpu-cuda-12
           platforms: linux/amd64
@@ -279,7 +279,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v4.1.1
         with:
           file: Dockerfile.opencv-ubuntu-18.04
           platforms: linux/amd64
@@ -325,7 +325,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v4.1.1
         with:
           file: Dockerfile.opencv-ubuntu-20.04
           platforms: linux/amd64
@@ -371,7 +371,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v4.1.1
         with:
           file: Dockerfile.opencv-ubuntu-22.04
           platforms: linux/amd64
