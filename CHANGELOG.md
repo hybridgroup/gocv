@@ -1,3 +1,18 @@
+0.34.0
+---
+* **all**
+    * Add support for OpenCV 4.8.0
+    * Add support for Go 1.21
+* **build**
+    * update all builds to use OpenCV 4.8.0
+* **core**
+    * Adds support for PCACompute
+* **docker**
+    * add dockerfile for OpenCV static build
+* **make**
+    * Leave one processor free instead of using all of them when building
+
+
 0.33.0
 ---
 * **bugfix**
