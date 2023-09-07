@@ -679,6 +679,18 @@ func (b *BFMatcher) Close() error {
 	return nil
 }
 
+// Match Finds the best match for each descriptor from a query set.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/db/d39/classcv_1_1DescriptorMatcher.html#a0f046f47b68ec7074391e1e85c750cba
+//
+func (b *BFMatcher) Match(query, train Mat) []DMatch {
+	ret := C.BFMatcher_Match((C.BFMatcher)(b.p), query.p, train.p)
+	defer C.DMatches_Close(ret)
+
+	return getDMatches(ret)
+}
+
 // KnnMatch Finds the k best matches for each descriptor from a query set.
 //
 // For further details, please see:

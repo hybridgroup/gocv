@@ -380,6 +380,19 @@ void BFMatcher_Close(BFMatcher b) {
     delete b;
 }
 
+struct DMatches BFMatcher_Match(BFMatcher b, Mat query, Mat train) {
+    std::vector<cv::DMatch> matches;
+    (*b)->match(*query, *train, matches);
+
+    DMatch *dmatches = new DMatch[matches.size()];
+    for (size_t i = 0; i < matches.size(); ++i) {
+        DMatch dmatch = {matches[i].queryIdx, matches[i].trainIdx, matches[i].imgIdx, matches[i].distance};
+        dmatches[i] = dmatch;
+    }
+    DMatches ret = {dmatches, (int) matches.size()};
+    return ret;
+}
+
 struct MultiDMatches BFMatcher_KnnMatch(BFMatcher b, Mat query, Mat train, int k) {
     std::vector< std::vector<cv::DMatch> > matches;
     (*b)->knnMatch(*query, *train, matches, k);

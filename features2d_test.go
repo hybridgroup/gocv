@@ -420,6 +420,11 @@ func TestBFMatcher(t *testing.T) {
 		}
 	}
 
+	matches := bf.Match(desc1, desc2)
+	if len(matches) != 890 {
+		t.Errorf("Matches was excepted to have 890 elements, but it has %d", len(matches))
+	}
+
 	bfParams := NewBFMatcherWithParams(NormHamming, false)
 	defer bfParams.Close()
 
