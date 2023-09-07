@@ -83,6 +83,7 @@ SimpleBlobDetectorParams SimpleBlobDetectorParams_Create();
 BFMatcher BFMatcher_Create();
 BFMatcher BFMatcher_CreateWithParams(int normType, bool crossCheck);
 void BFMatcher_Close(BFMatcher b);
+struct DMatches BFMatcher_Match(BFMatcher b, Mat query, Mat train);
 struct MultiDMatches BFMatcher_KnnMatch(BFMatcher b, Mat query, Mat train, int k);
 
 FlannBasedMatcher FlannBasedMatcher_Create();
