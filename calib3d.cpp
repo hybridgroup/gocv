@@ -84,3 +84,11 @@ Mat EstimateAffine2D(Point2fVector from, Point2fVector to) {
 Mat EstimateAffine2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method, double ransacReprojThreshold, size_t maxIters, double confidence, size_t refineIters) {
     return new cv::Mat(cv::estimateAffine2D(*from, *to, *inliers, method, ransacReprojThreshold, maxIters, confidence, refineIters));
 }
+
+void TriangulatePoints(Mat projMatr1, Mat projMatr2, Point2fVector projPoints1, Point2fVector projPoints2, Mat points4D) {
+  return cv::triangulatePoints(*projMatr1, *projMatr2, *projPoints1, *projPoints2, *points4D);
+}
+
+void ConvertPointsFromHomogeneous(Mat src, Mat dst) {
+  return cv::convertPointsFromHomogeneous(*src, *dst);
+}

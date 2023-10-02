@@ -30,6 +30,8 @@ Mat EstimateAffinePartial2D(Point2fVector from, Point2fVector to);
 Mat EstimateAffinePartial2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method, double ransacReprojThreshold, size_t maxIters, double confidence, size_t refineIters);
 Mat EstimateAffine2D(Point2fVector from, Point2fVector to);
 Mat EstimateAffine2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method, double ransacReprojThreshold, size_t maxIters, double confidence, size_t refineIters);
+void TriangulatePoints(Mat projMatr1, Mat projMatr2, Point2fVector projPoints1, Point2fVector projPoints2, Mat points4D);
+void ConvertPointsFromHomogeneous(Mat src, Mat dst);
 #ifdef __cplusplus
 }
 #endif
