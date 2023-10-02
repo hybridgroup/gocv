@@ -257,3 +257,11 @@ func EstimateAffine2D(from, to Point2fVector) Mat {
 func EstimateAffine2DWithParams(from Point2fVector, to Point2fVector, inliers Mat, method int, ransacReprojThreshold float64, maxIters uint, confidence float64, refineIters uint) Mat {
 	return newMat(C.EstimateAffine2DWithParams(from.p, to.p, inliers.p, C.int(method), C.double(ransacReprojThreshold), C.size_t(maxIters), C.double(confidence), C.size_t(refineIters)))
 }
+
+func TriangulatePoints(projMatr1 Mat, projMatr2 Mat, projPoints1, projPoints2 Point2fVector, points4D *Mat) {
+  C.TriangulatePoints(projMatr1.Ptr(), projMatr2.Ptr(), projPoints1.p, projPoints2.p, points4D.Ptr())
+}
+
+func ConvertPointsFromHomogeneous(src Mat, dst *Mat) {
+	C.ConvertPointsFromHomogeneous(src.Ptr(), dst.Ptr())
+}
