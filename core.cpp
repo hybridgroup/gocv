@@ -628,6 +628,17 @@ void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* 
     maxLoc->y = cMaxLoc.y;
 }
 
+void Mat_MinMaxLocWithMask(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc, Mat mask) {
+    cv::Point cMinLoc;
+    cv::Point cMaxLoc;
+    cv::minMaxLoc(*m, minVal, maxVal, &cMinLoc, &cMaxLoc, *mask);
+
+    minLoc->x = cMinLoc.x;
+    minLoc->y = cMinLoc.y;
+    maxLoc->x = cMaxLoc.x;
+    maxLoc->y = cMaxLoc.y;
+}
+
 void Mat_MixChannels(struct Mats src, struct Mats dst, struct IntVector fromTo) {
     std::vector<cv::Mat> srcMats;
 
