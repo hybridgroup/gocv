@@ -1,10 +1,10 @@
 # OpenCV 4 prebuilt multiarchitecture image
 #
 # To build release:
-#   docker buildx build -f Dockerfile.opencv-static -t ghcr.io/hybridgroup/opencv:4.8.0-static --platform=linux/arm64,linux/amd64 --push .
+#   docker buildx build -f Dockerfile.opencv-static -t ghcr.io/hybridgroup/opencv:4.8.1-static --platform=linux/arm64,linux/amd64 --push .
 #
 # To build prerelease:
-#   docker buildx build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv -t ghcr.io/hybridgroup/opencv:4.8.0-dev --platform=linux/arm64,linux/amd64 --push .
+#   docker buildx build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv -t ghcr.io/hybridgroup/opencv:4.8.1-dev --platform=linux/arm64,linux/amd64 --push .
 
 
 ###################
@@ -19,11 +19,11 @@ RUN apt-get update && apt-get install -y \
       curl ca-certificates libcurl4-openssl-dev libssl-dev \
       libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev \
       libjpeg62-turbo-dev libpng-dev libtiff-dev libdc1394-22-dev nasm && \
-      rm -rf /var/lib/apt/lists/*
+      apt-get autoremove -y && apt-get autoclean -y
 
 FROM --platform=linux/amd64 opencv-base-amd64 AS opencv-build-amd64
 
-ARG OPENCV_VERSION="4.8.0"
+ARG OPENCV_VERSION="4.8.1"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 ARG OPENCV_FILE="https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip"
@@ -84,7 +84,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 FROM --platform=linux/arm64 opencv-base-arm64 AS opencv-build-arm64
 
-ARG OPENCV_VERSION="4.8.0"
+ARG OPENCV_VERSION="4.8.1"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 ARG OPENCV_FILE="https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip"

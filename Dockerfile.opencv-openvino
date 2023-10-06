@@ -1,5 +1,5 @@
 # to build this docker image:
-#   docker build -f Dockerfile.opencv-openvino -t ghcr.io/hybridgroup/opencv:4.8.0-openvino
+#   docker build -f Dockerfile.opencv-openvino -t ghcr.io/hybridgroup/opencv:4.8.1-openvino
 FROM openvino/ubuntu20_dev:2022.1.0 AS opencv-openvino-base
 LABEL maintainer="hybridgroup"
 ENV DEBIAN_FRONTEND=noninteractive
@@ -9,9 +9,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
             wget curl ca-certificates libcurl4-openssl-dev libssl-dev \
             libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev \
             libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev && \
-            rm -rf /var/lib/apt/lists/*
+            apt-get autoremove -y && apt-get autoclean -y
 
-ARG OPENCV_VERSION="4.8.0"
+ARG OPENCV_VERSION="4.8.1"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \

@@ -1,6 +1,6 @@
 # to build this docker image:
-#   docker build -f Dockerfile.opencv-gpu-cuda-11 -t ghcr.io/hybridgroup/opencv:4.8.0-gpu-cuda-11 .
-#   docker build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv-gpu-cuda-11.2.2 -t ghcr.io/hybridgroup/opencv:4.8.0-dev-gpu-cuda-11 .
+#   docker build -f Dockerfile.opencv-gpu-cuda-11 -t ghcr.io/hybridgroup/opencv:4.8.1-gpu-cuda-11 .
+#   docker build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv-gpu-cuda-11.2.2 -t ghcr.io/hybridgroup/opencv:4.8.1-dev-gpu-cuda-11 .
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu20.04 AS opencv-gpu-cuda-11-base
 LABEL maintainer="hybridgroup"
 ENV DEBIAN_FRONTEND=noninteractive
@@ -10,9 +10,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
             wget curl ca-certificates libcurl4-openssl-dev libssl-dev \
             libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev \
             libjpeg-turbo8-dev libpng-dev libtiff-dev libdc1394-22-dev nasm && \
-            rm -rf /var/lib/apt/lists/*
+            apt-get autoremove -y && apt-get autoclean -y
 
-ARG OPENCV_VERSION="4.8.0"
+ARG OPENCV_VERSION="4.8.1"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 ARG OPENCV_FILE="https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip"
@@ -56,7 +56,7 @@ RUN curl -Lo opencv.zip ${OPENCV_FILE} && \
             -D BUILD_opencv_cudacodec=OFF \
             -D WITH_CUDNN=ON \
             -D OPENCV_DNN_CUDA=ON \
-            -D CUDA_GENERATION=Auto \
+            -D CUDA_ARCH_BIN=6.0,6.1,7.0,7.5,8.0,8.6 \
             -D OPENCV_GENERATE_PKGCONFIG=ON .. && \
     make -j $(nproc --all) && \
     make preinstall && make install && ldconfig && \
