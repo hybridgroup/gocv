@@ -235,10 +235,26 @@ clean:
 
 # Cleanup old library files.
 sudo_pre_install_clean:
+ifneq (,$(wildcard /usr/local/lib/libopencv*))
 	sudo rm -rf /usr/local/lib/cmake/opencv4/
 	sudo rm -rf /usr/local/lib/libopencv*
 	sudo rm -rf /usr/local/lib/pkgconfig/opencv*
 	sudo rm -rf /usr/local/include/opencv*
+else
+ifneq (,$(wildcard /usr/local/lib64/libopencv*))
+	sudo rm -rf /usr/local/lib64/cmake/opencv4/
+	sudo rm -rf /usr/local/lib64/libopencv*
+	sudo rm -rf /usr/local/lib64/pkgconfig/opencv*
+	sudo rm -rf /usr/local/include/opencv*
+else
+ifneq (,$(wildcard /usr/local/lib/aarch64-linux-gnu/libopencv*))
+	sudo rm -rf /usr/local/lib/aarch64-linux-gnu/cmake/opencv4/
+	sudo rm -rf /usr/local/lib/aarch64-linux-gnu/libopencv*
+	sudo rm -rf /usr/local/lib/aarch64-linux-gnu/pkgconfig/opencv*
+	sudo rm -rf /usr/local/include/opencv*
+endif
+endif
+endif
 
 # Do everything.
 install: deps download sudo_pre_install_clean build sudo_install clean verify
