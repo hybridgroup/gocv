@@ -56,7 +56,7 @@ RUN curl -Lo opencv.zip ${OPENCV_FILE} && \
             -D BUILD_opencv_cudacodec=OFF \
             -D WITH_CUDNN=ON \
             -D OPENCV_DNN_CUDA=ON \
-            -D CUDA_GENERATION=Auto \
+            -D CUDA_ARCH_BIN=6.0,6.1,7.0,7.5,8.0,8.6,8.9,9.0 \
             -D OPENCV_GENERATE_PKGCONFIG=ON .. && \
     make -j $(nproc --all) && \
     make preinstall && make install && ldconfig && \
