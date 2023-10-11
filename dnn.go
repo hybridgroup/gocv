@@ -15,7 +15,6 @@ import (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/db/d30/classcv_1_1dnn_1_1Net.html
-//
 type Net struct {
 	// C.Net
 	p unsafe.Pointer
@@ -140,7 +139,6 @@ func (net *Net) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/db/d30/classcv_1_1dnn_1_1Net.html#a6a5778787d5b8770deab5eda6968e66c
-//
 func (net *Net) Empty() bool {
 	return bool(C.Net_Empty((C.Net)(net.p)))
 }
@@ -149,7 +147,6 @@ func (net *Net) Empty() bool {
 //
 // For further details, please see:
 // https://docs.opencv.org/trunk/db/d30/classcv_1_1dnn_1_1Net.html#a672a08ae76444d75d05d7bfea3e4a328
-//
 func (net *Net) SetInput(blob Mat, name string) {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
@@ -161,7 +158,6 @@ func (net *Net) SetInput(blob Mat, name string) {
 //
 // For further details, please see:
 // https://docs.opencv.org/trunk/db/d30/classcv_1_1dnn_1_1Net.html#a98ed94cb6ef7063d3697259566da310b
-//
 func (net *Net) Forward(outputName string) Mat {
 	cName := C.CString(outputName)
 	defer C.free(unsafe.Pointer(cName))
@@ -173,7 +169,6 @@ func (net *Net) Forward(outputName string) Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4.1/db/d30/classcv_1_1dnn_1_1Net.html#adb34d7650e555264c7da3b47d967311b
-//
 func (net *Net) ForwardLayers(outBlobNames []string) (blobs []Mat) {
 	cMats := C.struct_Mats{}
 	C.Net_ForwardLayers((C.Net)(net.p), &(cMats), toCStrings(outBlobNames))
@@ -189,7 +184,6 @@ func (net *Net) ForwardLayers(outBlobNames []string) (blobs []Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4/db/d30/classcv_1_1dnn_1_1Net.html#a7f767df11386d39374db49cd8df8f59e
-//
 func (net *Net) SetPreferableBackend(backend NetBackendType) error {
 	C.Net_SetPreferableBackend((C.Net)(net.p), C.int(backend))
 	return nil
@@ -199,7 +193,6 @@ func (net *Net) SetPreferableBackend(backend NetBackendType) error {
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4/db/d30/classcv_1_1dnn_1_1Net.html#a9dddbefbc7f3defbe3eeb5dc3d3483f4
-//
 func (net *Net) SetPreferableTarget(target NetTargetType) error {
 	C.Net_SetPreferableTarget((C.Net)(net.p), C.int(target))
 	return nil
@@ -209,7 +202,6 @@ func (net *Net) SetPreferableTarget(target NetTargetType) error {
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4/d6/d0f/group__dnn.html#ga3b34fe7a29494a6a4295c169a7d32422
-//
 func ReadNet(model string, config string) Net {
 	cModel := C.CString(model)
 	defer C.free(unsafe.Pointer(cModel))
@@ -223,7 +215,6 @@ func ReadNet(model string, config string) Net {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga138439da76f26266fdefec9723f6c5cd
-//
 func ReadNetBytes(framework string, model []byte, config []byte) (Net, error) {
 	cFramework := C.CString(framework)
 	defer C.free(unsafe.Pointer(cFramework))
@@ -242,7 +233,6 @@ func ReadNetBytes(framework string, model []byte, config []byte) (Net, error) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga29d0ea5e52b1d1a6c2681e3f7d68473a
-//
 func ReadNetFromCaffe(prototxt string, caffeModel string) Net {
 	cprototxt := C.CString(prototxt)
 	defer C.free(unsafe.Pointer(cprototxt))
@@ -256,7 +246,6 @@ func ReadNetFromCaffe(prototxt string, caffeModel string) Net {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga946b342af1355185a7107640f868b64a
-//
 func ReadNetFromCaffeBytes(prototxt []byte, caffeModel []byte) (Net, error) {
 	bPrototxt, err := toByteArray(prototxt)
 	if err != nil {
@@ -273,7 +262,6 @@ func ReadNetFromCaffeBytes(prototxt []byte, caffeModel []byte) (Net, error) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d0f/group__dnn.html#gad820b280978d06773234ba6841e77e8d
-//
 func ReadNetFromTensorflow(model string) Net {
 	cmodel := C.CString(model)
 	defer C.free(unsafe.Pointer(cmodel))
@@ -284,7 +272,6 @@ func ReadNetFromTensorflow(model string) Net {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d0f/group__dnn.html#gacdba30a7c20db2788efbf5bb16a7884d
-//
 func ReadNetFromTensorflowBytes(model []byte) (Net, error) {
 	bModel, err := toByteArray(model)
 	if err != nil {
@@ -294,11 +281,11 @@ func ReadNetFromTensorflowBytes(model []byte) (Net, error) {
 }
 
 // ReadNetFromTorch reads a network model stored in Torch framework's format (t7).
-//   check net.Empty() for read failure
+//
+//	check net.Empty() for read failure
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d0f/group__dnn.html#gaaaed8c8530e9e92fe6647700c13d961e
-//
 func ReadNetFromTorch(model string) Net {
 	cmodel := C.CString(model)
 	defer C.free(unsafe.Pointer(cmodel))
@@ -306,11 +293,11 @@ func ReadNetFromTorch(model string) Net {
 }
 
 // ReadNetFromONNX reads a network model stored in ONNX framework's format.
-//   check net.Empty() for read failure
+//
+//	check net.Empty() for read failure
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga7faea56041d10c71dbbd6746ca854197
-//
 func ReadNetFromONNX(model string) Net {
 	cmodel := C.CString(model)
 	defer C.free(unsafe.Pointer(cmodel))
@@ -321,7 +308,6 @@ func ReadNetFromONNX(model string) Net {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga9198ecaac7c32ddf0aa7a1bcbd359567
-//
 func ReadNetFromONNXBytes(model []byte) (Net, error) {
 	bModel, err := toByteArray(model)
 	if err != nil {
@@ -336,7 +322,6 @@ func ReadNetFromONNXBytes(model []byte) (Net, error) {
 //
 // For further details, please see:
 // https://docs.opencv.org/trunk/d6/d0f/group__dnn.html#ga152367f253c81b53fe6862b299f5c5cd
-//
 func BlobFromImage(img Mat, scaleFactor float64, size image.Point, mean Scalar,
 	swapRB bool, crop bool) Mat {
 
@@ -361,7 +346,6 @@ func BlobFromImage(img Mat, scaleFactor float64, size image.Point, mean Scalar,
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga2b89ed84432e4395f5a1412c2926293c
-//
 func BlobFromImages(imgs []Mat, blob *Mat, scaleFactor float64, size image.Point, mean Scalar,
 	swapRB bool, crop bool, ddepth MatType) {
 
@@ -395,7 +379,6 @@ func BlobFromImages(imgs []Mat, blob *Mat, scaleFactor float64, size image.Point
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga4051b5fa2ed5f54b76c059a8625df9f5
-//
 func ImagesFromBlob(blob Mat, imgs []Mat) {
 	cMats := C.struct_Mats{}
 	C.Net_ImagesFromBlob(blob.p, &(cMats))
@@ -407,14 +390,13 @@ func ImagesFromBlob(blob Mat, imgs []Mat) {
 
 // GetBlobChannel extracts a single (2d)channel from a 4 dimensional blob structure
 // (this might e.g. contain the results of a SSD or YOLO detection,
-//  a bones structure from pose detection, or a color plane from Colorization)
 //
+//	a bones structure from pose detection, or a color plane from Colorization)
 func GetBlobChannel(blob Mat, imgidx int, chnidx int) Mat {
 	return newMat(C.Net_GetBlobChannel(blob.p, C.int(imgidx), C.int(chnidx)))
 }
 
 // GetBlobSize retrieves the 4 dimensional size information in (N,C,H,W) order
-//
 func GetBlobSize(blob Mat) Scalar {
 	s := C.Net_GetBlobSize(blob.p)
 	return NewScalar(float64(s.val1), float64(s.val2), float64(s.val3), float64(s.val4))
@@ -430,7 +412,6 @@ type Layer struct {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/db/d30/classcv_1_1dnn_1_1Net.html#a70aec7f768f38c32b1ee25f3a56526df
-//
 func (net *Net) GetLayer(layer int) Layer {
 	return Layer{p: unsafe.Pointer(C.Net_GetLayer((C.Net)(net.p), C.int(layer)))}
 }
@@ -439,7 +420,6 @@ func (net *Net) GetLayer(layer int) Layer {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/db/d30/classcv_1_1dnn_1_1Net.html#a06ce946f675f75d1c020c5ddbc78aedc
-//
 func (net *Net) GetPerfProfile() float64 {
 	return float64(C.Net_GetPerfProfile((C.Net)(net.p)))
 }
@@ -448,7 +428,6 @@ func (net *Net) GetPerfProfile() float64 {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/db/d30/classcv_1_1dnn_1_1Net.html#ae62a73984f62c49fd3e8e689405b056a
-//
 func (net *Net) GetUnconnectedOutLayers() (ids []int) {
 	cids := C.IntVector{}
 	C.Net_GetUnconnectedOutLayers((C.Net)(net.p), &cids)
@@ -471,7 +450,6 @@ func (net *Net) GetUnconnectedOutLayers() (ids []int) {
 //
 // For furtherdetails, please see:
 // https://docs.opencv.org/master/db/d30/classcv_1_1dnn_1_1Net.html#ae8be9806024a0d1d41aba687cce99e6b
-//
 func (net *Net) GetLayerNames() (names []string) {
 	cstrs := C.CStrings{}
 	defer C.CStrings_Close(cstrs)
@@ -500,7 +478,6 @@ func (l *Layer) GetType() string {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/d6c/classcv_1_1dnn_1_1Layer.html#a60ffc8238f3fa26cd3f49daa7ac0884b
-//
 func (l *Layer) InputNameToIndex(name string) int {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
@@ -511,7 +488,6 @@ func (l *Layer) InputNameToIndex(name string) int {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/d6c/classcv_1_1dnn_1_1Layer.html#a60ffc8238f3fa26cd3f49daa7ac0884b
-//
 func (l *Layer) OutputNameToIndex(name string) int {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
@@ -560,8 +536,7 @@ func NMSBoxes(bboxes []image.Rectangle, scores []float32, scoreThreshold float32
 
 	ptr := *(*[]C.int)(unsafe.Pointer(h))
 
-
-	indices = make([]int,indicesVector.length)
+	indices = make([]int, indicesVector.length)
 	for i := 0; i < int(indicesVector.length); i++ {
 		indices[i] = int(ptr[i])
 	}
@@ -610,7 +585,7 @@ func NMSBoxesWithParams(bboxes []image.Rectangle, scores []float32, scoreThresho
 
 	ptr := *(*[]C.int)(unsafe.Pointer(h))
 
-	indices = make([]int,indicesVector.length)
+	indices = make([]int, indicesVector.length)
 	for i := 0; i < int(indicesVector.length); i++ {
 		indices[i] = int(ptr[i])
 	}

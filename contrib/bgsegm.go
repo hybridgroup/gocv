@@ -25,7 +25,6 @@ type BackgroundSubtractorCNT struct {
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4/de/dca/classcv_1_1bgsegm_1_1BackgroundSubtractorCNT.html
-//
 func NewBackgroundSubtractorCNT() BackgroundSubtractorCNT {
 	return BackgroundSubtractorCNT{p: unsafe.Pointer(C.BackgroundSubtractorCNT_Create())}
 }
@@ -42,7 +41,6 @@ func (b *BackgroundSubtractorCNT) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4/de/dca/classcv_1_1bgsegm_1_1BackgroundSubtractorCNT.html
-//
 func (b *BackgroundSubtractorCNT) Apply(src gocv.Mat, dst *gocv.Mat) {
 	C.BackgroundSubtractorCNT_Apply((C.BackgroundSubtractorCNT)(b.p), (C.Mat)(src.Ptr()), (C.Mat)(dst.Ptr()))
 

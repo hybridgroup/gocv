@@ -243,7 +243,7 @@ func WarpAffine(src GpuMat, dst *GpuMat, m GpuMat, sz image.Point, flags Interpo
 // WarpAffineWithStream applies an affine transformation to an image
 // using a Stream for concurrency.
 //
-// For more parameters please check WarpAffineWithParams
+// # For more parameters please check WarpAffineWithParams
 //
 // For further details, please see:
 // https://docs.opencv.org/master/db/d29/group__cudawarping.html#ga9e8dd9e73b96bdc8e27d85c0e83f1130

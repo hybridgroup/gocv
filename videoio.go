@@ -286,7 +286,6 @@ const (
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d8/dfe/classcv_1_1VideoCapture.html
-//
 type VideoCapture struct {
 	p C.VideoCapture
 }
@@ -406,7 +405,6 @@ func (v *VideoCapture) ToCodec(codec string) float64 {
 //
 // For further details, please see:
 // http://docs.opencv.org/master/dd/d9e/classcv_1_1VideoWriter.html
-//
 type VideoWriter struct {
 	mu *sync.RWMutex
 	p  C.VideoWriter
@@ -418,7 +416,6 @@ type VideoWriter struct {
 //
 // For further details, please see:
 // http://docs.opencv.org/master/dd/d9e/classcv_1_1VideoWriter.html#a0901c353cd5ea05bba455317dab81130
-//
 func VideoWriterFile(name string, codec string, fps float64, width int, height int, isColor bool) (vw *VideoWriter, err error) {
 
 	if fps == 0 || width == 0 || height == 0 {
@@ -452,7 +449,6 @@ func (vw *VideoWriter) Close() error {
 //
 // For further details, please see:
 // http://docs.opencv.org/master/dd/d9e/classcv_1_1VideoWriter.html#a9a40803e5f671968ac9efa877c984d75
-//
 func (vw *VideoWriter) IsOpened() bool {
 	isOpend := C.VideoWriter_IsOpened(vw.p)
 	return isOpend != 0
@@ -462,7 +458,6 @@ func (vw *VideoWriter) IsOpened() bool {
 //
 // For further details, please see:
 // http://docs.opencv.org/master/dd/d9e/classcv_1_1VideoWriter.html#a3115b679d612a6a0b5864a0c88ed4b39
-//
 func (vw *VideoWriter) Write(img Mat) error {
 	vw.mu.Lock()
 	defer vw.mu.Unlock()

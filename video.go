@@ -10,11 +10,13 @@ import (
 	"unsafe"
 )
 
-/**
-  cv::OPTFLOW_USE_INITIAL_FLOW = 4,
-  cv::OPTFLOW_LK_GET_MIN_EIGENVALS = 8,
-  cv::OPTFLOW_FARNEBACK_GAUSSIAN = 256
-  For further details, please see: https://docs.opencv.org/master/dc/d6b/group__video__track.html#gga2c6cc144c9eee043575d5b311ac8af08a9d4430ac75199af0cf6fcdefba30eafe
+/*
+*
+
+	cv::OPTFLOW_USE_INITIAL_FLOW = 4,
+	cv::OPTFLOW_LK_GET_MIN_EIGENVALS = 8,
+	cv::OPTFLOW_FARNEBACK_GAUSSIAN = 256
+	For further details, please see: https://docs.opencv.org/master/dc/d6b/group__video__track.html#gga2c6cc144c9eee043575d5b311ac8af08a9d4430ac75199af0cf6fcdefba30eafe
 */
 const (
 	OptflowUseInitialFlow    = 4
@@ -22,12 +24,14 @@ const (
 	OptflowFarnebackGaussian = 256
 )
 
-/**
-  cv::MOTION_TRANSLATION = 0,
-  cv::MOTION_EUCLIDEAN = 1,
-  cv::MOTION_AFFINE = 2,
-  cv::MOTION_HOMOGRAPHY = 3
-  For further details, please see: https://docs.opencv.org/4.x/dc/d6b/group__video__track.html#ggaaedb1f94e6b143cef163622c531afd88a01106d6d20122b782ff25eaeffe9a5be
+/*
+*
+
+	cv::MOTION_TRANSLATION = 0,
+	cv::MOTION_EUCLIDEAN = 1,
+	cv::MOTION_AFFINE = 2,
+	cv::MOTION_HOMOGRAPHY = 3
+	For further details, please see: https://docs.opencv.org/4.x/dc/d6b/group__video__track.html#ggaaedb1f94e6b143cef163622c531afd88a01106d6d20122b782ff25eaeffe9a5be
 */
 const (
 	MotionTranslation = 0
@@ -49,7 +53,6 @@ type BackgroundSubtractorMOG2 struct {
 // For further details, please see:
 // https://docs.opencv.org/master/de/de1/group__video__motion.html#ga2beb2dee7a073809ccec60f145b6b29c
 // https://docs.opencv.org/master/d7/d7b/classcv_1_1BackgroundSubtractorMOG2.html
-//
 func NewBackgroundSubtractorMOG2() BackgroundSubtractorMOG2 {
 	return BackgroundSubtractorMOG2{p: unsafe.Pointer(C.BackgroundSubtractorMOG2_Create())}
 }
@@ -61,7 +64,6 @@ func NewBackgroundSubtractorMOG2() BackgroundSubtractorMOG2 {
 // For further details, please see:
 // https://docs.opencv.org/master/de/de1/group__video__motion.html#ga2beb2dee7a073809ccec60f145b6b29c
 // https://docs.opencv.org/master/d7/d7b/classcv_1_1BackgroundSubtractorMOG2.html
-//
 func NewBackgroundSubtractorMOG2WithParams(history int, varThreshold float64, detectShadows bool) BackgroundSubtractorMOG2 {
 	return BackgroundSubtractorMOG2{p: unsafe.Pointer(C.BackgroundSubtractorMOG2_CreateWithParams(C.int(history), C.double(varThreshold), C.bool(detectShadows)))}
 }
@@ -77,7 +79,6 @@ func (b *BackgroundSubtractorMOG2) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df6/classcv_1_1BackgroundSubtractor.html#aa735e76f7069b3fa9c3f32395f9ccd21
-//
 func (b *BackgroundSubtractorMOG2) Apply(src Mat, dst *Mat) {
 	C.BackgroundSubtractorMOG2_Apply((C.BackgroundSubtractorMOG2)(b.p), src.p, dst.p)
 	return
@@ -96,7 +97,6 @@ type BackgroundSubtractorKNN struct {
 // For further details, please see:
 // https://docs.opencv.org/master/de/de1/group__video__motion.html#gac9be925771f805b6fdb614ec2292006d
 // https://docs.opencv.org/master/db/d88/classcv_1_1BackgroundSubtractorKNN.html
-//
 func NewBackgroundSubtractorKNN() BackgroundSubtractorKNN {
 	return BackgroundSubtractorKNN{p: unsafe.Pointer(C.BackgroundSubtractorKNN_Create())}
 }
@@ -108,7 +108,6 @@ func NewBackgroundSubtractorKNN() BackgroundSubtractorKNN {
 // For further details, please see:
 // https://docs.opencv.org/master/de/de1/group__video__motion.html#gac9be925771f805b6fdb614ec2292006d
 // https://docs.opencv.org/master/db/d88/classcv_1_1BackgroundSubtractorKNN.html
-//
 func NewBackgroundSubtractorKNNWithParams(history int, dist2Threshold float64, detectShadows bool) BackgroundSubtractorKNN {
 	return BackgroundSubtractorKNN{p: unsafe.Pointer(C.BackgroundSubtractorKNN_CreateWithParams(C.int(history), C.double(dist2Threshold), C.bool(detectShadows)))}
 }
@@ -124,7 +123,6 @@ func (k *BackgroundSubtractorKNN) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df6/classcv_1_1BackgroundSubtractor.html#aa735e76f7069b3fa9c3f32395f9ccd21
-//
 func (k *BackgroundSubtractorKNN) Apply(src Mat, dst *Mat) {
 	C.BackgroundSubtractorKNN_Apply((C.BackgroundSubtractorKNN)(k.p), src.p, dst.p)
 	return
@@ -135,7 +133,6 @@ func (k *BackgroundSubtractorKNN) Apply(src Mat, dst *Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga5d10ebbd59fe09c5f650289ec0ece5af
-//
 func CalcOpticalFlowFarneback(prevImg Mat, nextImg Mat, flow *Mat, pyrScale float64, levels int, winsize int,
 	iterations int, polyN int, polySigma float64, flags int) {
 	C.CalcOpticalFlowFarneback(prevImg.p, nextImg.p, flow.p, C.double(pyrScale), C.int(levels), C.int(winsize),
@@ -148,7 +145,6 @@ func CalcOpticalFlowFarneback(prevImg Mat, nextImg Mat, flow *Mat, pyrScale floa
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga473e4b886d0bcc6b65831eb88ed93323
-//
 func CalcOpticalFlowPyrLK(prevImg Mat, nextImg Mat, prevPts Mat, nextPts Mat, status *Mat, err *Mat) {
 	C.CalcOpticalFlowPyrLK(prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p, err.p)
 	return
@@ -159,7 +155,6 @@ func CalcOpticalFlowPyrLK(prevImg Mat, nextImg Mat, prevPts Mat, nextPts Mat, st
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga473e4b886d0bcc6b65831eb88ed93323
-//
 func CalcOpticalFlowPyrLKWithParams(prevImg Mat, nextImg Mat, prevPts Mat, nextPts Mat, status *Mat, err *Mat,
 	winSize image.Point, maxLevel int, criteria TermCriteria, flags int, minEigThreshold float64) {
 	winSz := C.struct_Size{
@@ -174,7 +169,6 @@ func CalcOpticalFlowPyrLKWithParams(prevImg Mat, nextImg Mat, prevPts Mat, nextP
 //
 // For futther details, please see:
 // https://docs.opencv.org/4.x/dc/d6b/group__video__track.html#ga1aa357007eaec11e9ed03500ecbcbe47
-//
 func FindTransformECC(templateImage Mat, inputImage Mat, warpMatrix *Mat, motionType int, criteria TermCriteria, inputMask Mat, gaussFiltSize int) float64 {
 	return float64(C.FindTransformECC(templateImage.p, inputImage.p, warpMatrix.p, C.int(motionType), criteria.p, inputMask.p, C.int(gaussFiltSize)))
 }
@@ -182,7 +176,6 @@ func FindTransformECC(templateImage Mat, inputImage Mat, warpMatrix *Mat, motion
 // Tracker is the base interface for object tracking.
 //
 // see: https://docs.opencv.org/master/d0/d0a/classcv_1_1Tracker.html
-//
 type Tracker interface {
 	// Close closes, as Trackers need to be Closed manually.
 	//
@@ -230,7 +223,6 @@ func trackerUpdate(trk C.Tracker, img Mat) (image.Rectangle, bool) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d26/classcv_1_1TrackerMIL.html
-//
 type TrackerMIL struct {
 	p C.TrackerMIL
 }
@@ -263,7 +255,6 @@ func (trk TrackerMIL) Update(img Mat) (image.Rectangle, bool) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html
-//
 type KalmanFilter struct {
 	p C.KalmanFilter
 }
@@ -272,7 +263,6 @@ type KalmanFilter struct {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#ac0799f0611baee9e7e558f016e4a7b40
-//
 func NewKalmanFilter(dynamParams int, measureParams int) KalmanFilter {
 	return KalmanFilter{p: C.KalmanFilter_New(C.int(dynamParams), C.int(measureParams))}
 }
@@ -281,7 +271,6 @@ func NewKalmanFilter(dynamParams int, measureParams int) KalmanFilter {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#abac82ecfa530611a163255bc7d91c088
-//
 func NewKalmanFilterWithParams(dynamParams int, measureParams int, controlParams int, matType MatType) KalmanFilter {
 	return KalmanFilter{p: C.KalmanFilter_NewWithParams(C.int(dynamParams), C.int(measureParams), C.int(controlParams), C.int(matType))}
 }
@@ -290,7 +279,6 @@ func NewKalmanFilterWithParams(dynamParams int, measureParams int, controlParams
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a4f136c39c016d3530c7c5801dd1ddb3b
-//
 func (kf *KalmanFilter) Init(dynamParams int, measureParams int) {
 	C.KalmanFilter_Init(kf.p, C.int(dynamParams), C.int(measureParams))
 }
@@ -299,7 +287,6 @@ func (kf *KalmanFilter) Init(dynamParams int, measureParams int) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#aa710d2255566bec8d6ce608d103d4fa7
-//
 func (kf *KalmanFilter) Predict() Mat {
 	return newMat(C.KalmanFilter_Predict(kf.p))
 }
@@ -308,7 +295,6 @@ func (kf *KalmanFilter) Predict() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#aa710d2255566bec8d6ce608d103d4fa7
-//
 func (kf *KalmanFilter) PredictWithParams(control Mat) Mat {
 	return newMat(C.KalmanFilter_PredictWithParams(kf.p, control.p))
 }
@@ -317,7 +303,6 @@ func (kf *KalmanFilter) PredictWithParams(control Mat) Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a60eb7feb569222ad0657ef1875884b5e
-//
 func (kf *KalmanFilter) Correct(measurement Mat) Mat {
 	return newMat(C.KalmanFilter_Correct(kf.p, measurement.p))
 }
@@ -334,7 +319,6 @@ func (kf *KalmanFilter) Close() {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a60eb7feb569222ad0657ef1875884b5e
-//
 func (kf *KalmanFilter) GetStatePre() Mat {
 	return newMat(C.KalmanFilter_GetStatePre(kf.p))
 }
@@ -345,7 +329,6 @@ func (kf *KalmanFilter) GetStatePre() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#add8fb5ac9c04b4600b679698dcb0447d
-//
 func (kf *KalmanFilter) GetStatePost() Mat {
 	return newMat(C.KalmanFilter_GetStatePost(kf.p))
 }
@@ -356,7 +339,6 @@ func (kf *KalmanFilter) GetStatePost() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a0657173e411acbf40d2d3c6b46e03b19
-//
 func (kf *KalmanFilter) GetTransitionMatrix() Mat {
 	return newMat(C.KalmanFilter_GetTransitionMatrix(kf.p))
 }
@@ -367,7 +349,6 @@ func (kf *KalmanFilter) GetTransitionMatrix() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a6486e7287114810636fb33953280ed52
-//
 func (kf *KalmanFilter) GetControlMatrix() Mat {
 	return newMat(C.KalmanFilter_GetControlMatrix(kf.p))
 }
@@ -378,7 +359,6 @@ func (kf *KalmanFilter) GetControlMatrix() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a0f60b78726d8eccf74a1f2479c2d1f97
-//
 func (kf *KalmanFilter) GetMeasurementMatrix() Mat {
 	return newMat(C.KalmanFilter_GetMeasurementMatrix(kf.p))
 }
@@ -389,7 +369,6 @@ func (kf *KalmanFilter) GetMeasurementMatrix() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#af19be9c0630d0f658bdbaea409a35cda
-//
 func (kf *KalmanFilter) GetProcessNoiseCov() Mat {
 	return newMat(C.KalmanFilter_GetProcessNoiseCov(kf.p))
 }
@@ -400,7 +379,6 @@ func (kf *KalmanFilter) GetProcessNoiseCov() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a828d051035ba807966ad65edf288a08e
-//
 func (kf *KalmanFilter) GetMeasurementNoiseCov() Mat {
 	return newMat(C.KalmanFilter_GetMeasurementNoiseCov(kf.p))
 }
@@ -411,7 +389,6 @@ func (kf *KalmanFilter) GetMeasurementNoiseCov() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#ae1bd3a86f10753d723e7174d570d9ac1
-//
 func (kf *KalmanFilter) GetErrorCovPre() Mat {
 	return newMat(C.KalmanFilter_GetErrorCovPre(kf.p))
 }
@@ -422,7 +399,6 @@ func (kf *KalmanFilter) GetErrorCovPre() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a077d73eb075b00779dc009a9057c27c3
-//
 func (kf *KalmanFilter) GetGain() Mat {
 	return newMat(C.KalmanFilter_GetGain(kf.p))
 }
@@ -432,8 +408,7 @@ func (kf *KalmanFilter) GetGain() Mat {
 // posteriori error estimate covariance matrix (P(k)): P(k)=(I-K(k)*H)*P'(k)
 //
 // For further details, please see:
-//https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a446d8e9a0105b0aa35cd66119c529803
-//
+// https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a446d8e9a0105b0aa35cd66119c529803
 func (kf *KalmanFilter) GetErrorCovPost() Mat {
 	return newMat(C.KalmanFilter_GetErrorCovPost(kf.p))
 }
@@ -442,7 +417,6 @@ func (kf *KalmanFilter) GetErrorCovPost() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#aa3d064a9194c2815dbe19c056b6dc763
-//
 func (kf *KalmanFilter) GetTemp1() Mat {
 	return newMat(C.KalmanFilter_GetTemp1(kf.p))
 }
@@ -451,7 +425,6 @@ func (kf *KalmanFilter) GetTemp1() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a14866bd506668eb0ed57b3974b3a1ee7
-//
 func (kf *KalmanFilter) GetTemp2() Mat {
 	return newMat(C.KalmanFilter_GetTemp2(kf.p))
 }
@@ -460,7 +433,6 @@ func (kf *KalmanFilter) GetTemp2() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#afdbe36066a7d7f560aa02abe6be114d8
-//
 func (kf *KalmanFilter) GetTemp3() Mat {
 	return newMat(C.KalmanFilter_GetTemp3(kf.p))
 }
@@ -469,7 +441,6 @@ func (kf *KalmanFilter) GetTemp3() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a84342f2d9dec1e6389025ad229401809
-//
 func (kf *KalmanFilter) GetTemp4() Mat {
 	return newMat(C.KalmanFilter_GetTemp4(kf.p))
 }
@@ -478,7 +449,6 @@ func (kf *KalmanFilter) GetTemp4() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a846c2a6222c6e5d8b1385dfbccc83ae0
-//
 func (kf *KalmanFilter) GetTemp5() Mat {
 	return newMat(C.KalmanFilter_GetTemp5(kf.p))
 }

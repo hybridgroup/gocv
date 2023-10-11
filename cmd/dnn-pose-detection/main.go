@@ -228,7 +228,6 @@ func drawPose(frame *gocv.Mat) {
 // PosePairs is a table of the body part connections in the format [model_id][pair_id][from/to]
 // For details please see:
 // https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/output.md
-//
 var PosePairs = [3][20][2]int{
 	{ // COCO body
 		{1, 2}, {1, 5}, {2, 3},

@@ -15,7 +15,6 @@ import (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/dff/classcv_1_1TrackerKCF.html
-//
 type TrackerKCF struct {
 	p C.TrackerKCF
 }
@@ -47,7 +46,6 @@ func (trk TrackerKCF) Update(img gocv.Mat) (image.Rectangle, bool) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/da2/classcv_1_1TrackerCSRT.html
-//
 type TrackerCSRT struct {
 	p C.TrackerCSRT
 }

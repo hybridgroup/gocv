@@ -18,7 +18,6 @@ type SparsePyrLKOpticalFlow struct {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/d05/classcv_1_1cuda_1_1SparsePyrLKOpticalFlow.html#a6bcd2d457532d7db76c3e7f11b60063b
-//
 func NewSparsePyrLKOpticalFlow() SparsePyrLKOpticalFlow {
 	return SparsePyrLKOpticalFlow{p: unsafe.Pointer(C.CudaSparsePyrLKOpticalFlow_Create())}
 }
