@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
             curl ca-certificates libcurl4-openssl-dev libssl-dev \
             libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev \
             libjpeg-turbo8-dev libpng-dev libtiff-dev libdc1394-22-dev nasm && \
-            apt-get autoremove -y && apt-get autoclean -y
+            rm -rf /var/lib/apt/lists/*
 
 ARG OPENCV_VERSION="4.8.1"
 ENV OPENCV_VERSION $OPENCV_VERSION
