@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ghcr.io/hybridgroup/opencv:4.8.0
+    container: ghcr.io/hybridgroup/opencv:4.8.1
 
     steps:
       - name: Checkout
