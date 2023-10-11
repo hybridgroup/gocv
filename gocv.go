@@ -7,5 +7,4 @@
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d1/dfb/intro.html
-//
 package gocv // import "gocv.io/x/gocv"

@@ -14,7 +14,6 @@ import (
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d1/de5/classcv_1_1CascadeClassifier.html
-//
 type CascadeClassifier struct {
 	p C.CascadeClassifier
 }
@@ -35,7 +34,6 @@ func (c *CascadeClassifier) Close() error {
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d1/de5/classcv_1_1CascadeClassifier.html#a1a5884c8cc749422f9eb77c2471958bc
-//
 func (c *CascadeClassifier) Load(name string) bool {
 	cName := C.CString(name)
 	defer C.free(unsafe.Pointer(cName))
@@ -47,7 +45,6 @@ func (c *CascadeClassifier) Load(name string) bool {
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d1/de5/classcv_1_1CascadeClassifier.html#aaf8181cb63968136476ec4204ffca498
-//
 func (c *CascadeClassifier) DetectMultiScale(img Mat) []image.Rectangle {
 	ret := C.CascadeClassifier_DetectMultiScale(c.p, img.p)
 	defer C.Rects_Close(ret)
@@ -60,7 +57,6 @@ func (c *CascadeClassifier) DetectMultiScale(img Mat) []image.Rectangle {
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d1/de5/classcv_1_1CascadeClassifier.html#aaf8181cb63968136476ec4204ffca498
-//
 func (c *CascadeClassifier) DetectMultiScaleWithParams(img Mat, scale float64,
 	minNeighbors, flags int, minSize, maxSize image.Point) []image.Rectangle {
 
@@ -85,7 +81,6 @@ func (c *CascadeClassifier) DetectMultiScaleWithParams(img Mat, scale float64,
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d5/d33/structcv_1_1HOGDescriptor.html#a723b95b709cfd3f95cf9e616de988fc8
-//
 type HOGDescriptor struct {
 	p C.HOGDescriptor
 }
@@ -107,7 +102,6 @@ func (h *HOGDescriptor) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d5/d33/structcv_1_1HOGDescriptor.html#a660e5cd036fd5ddf0f5767b352acd948
-//
 func (h *HOGDescriptor) DetectMultiScale(img Mat) []image.Rectangle {
 	ret := C.HOGDescriptor_DetectMultiScale(h.p, img.p)
 	defer C.Rects_Close(ret)
@@ -120,7 +114,6 @@ func (h *HOGDescriptor) DetectMultiScale(img Mat) []image.Rectangle {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d5/d33/structcv_1_1HOGDescriptor.html#a660e5cd036fd5ddf0f5767b352acd948
-//
 func (h *HOGDescriptor) DetectMultiScaleWithParams(img Mat, hitThresh float64,
 	winStride, padding image.Point, scale, finalThreshold float64, useMeanshiftGrouping bool) []image.Rectangle {
 	wSz := C.struct_Size{
@@ -144,7 +137,6 @@ func (h *HOGDescriptor) DetectMultiScaleWithParams(img Mat, hitThresh float64,
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d5/d33/structcv_1_1HOGDescriptor.html#a660e5cd036fd5ddf0f5767b352acd948
-//
 func HOGDefaultPeopleDetector() Mat {
 	return newMat(C.HOG_GetDefaultPeopleDetector())
 }
@@ -153,7 +145,6 @@ func HOGDefaultPeopleDetector() Mat {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d5/d33/structcv_1_1HOGDescriptor.html#a09e354ad701f56f9c550dc0385dc36f1
-//
 func (h *HOGDescriptor) SetSVMDetector(det Mat) error {
 	C.HOGDescriptor_SetSVMDetector(h.p, det.p)
 	return nil
@@ -163,7 +154,6 @@ func (h *HOGDescriptor) SetSVMDetector(det Mat) error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d5/d54/group__objdetect.html#ga3dba897ade8aa8227edda66508e16ab9
-//
 func GroupRectangles(rects []image.Rectangle, groupThreshold int, eps float64) []image.Rectangle {
 	cRectArray := make([]C.struct_Rect, len(rects))
 	for i, r := range rects {
@@ -189,7 +179,6 @@ func GroupRectangles(rects []image.Rectangle, groupThreshold int, eps float64) [
 //
 // For further details, please see:
 // https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html
-//
 type QRCodeDetector struct {
 	p C.QRCodeDetector
 }
@@ -214,7 +203,6 @@ func (a *QRCodeDetector) Close() error {
 // Returns true as long as some QR code was detected even in case where the decoding failed
 // For further details, please see:
 // https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#a7290bd6a5d59b14a37979c3a14fbf394
-//
 func (a *QRCodeDetector) DetectAndDecode(input Mat, points *Mat, straight_qrcode *Mat) string {
 	goResult := C.GoString(C.QRCodeDetector_DetectAndDecode(a.p, input.p, points.p, straight_qrcode.p))
 	return string(goResult)
@@ -224,7 +212,6 @@ func (a *QRCodeDetector) DetectAndDecode(input Mat, points *Mat, straight_qrcode
 //
 // For further details, please see:
 // https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#a64373f7d877d27473f64fe04bb57d22b
-//
 func (a *QRCodeDetector) Detect(input Mat, points *Mat) bool {
 	result := C.QRCodeDetector_Detect(a.p, input.p, points.p)
 	return bool(result)
@@ -234,7 +221,6 @@ func (a *QRCodeDetector) Detect(input Mat, points *Mat) bool {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#a4172c2eb4825c844fb1b0ae67202d329
-//
 func (a *QRCodeDetector) Decode(input Mat, points Mat, straight_qrcode *Mat) string {
 	goResult := C.GoString(C.QRCodeDetector_DetectAndDecode(a.p, input.p, points.p, straight_qrcode.p))
 	return string(goResult)
@@ -258,7 +244,7 @@ func (a *QRCodeDetector) DetectMulti(input Mat, points *Mat) bool {
 // Returns true as long as some QR code was detected even in case where the decoding failed
 // For usage please see TestQRCodeDetector
 // For further details, please see:
-//https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#a188b63ffa17922b2c65d8a0ab7b70775
+// https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#a188b63ffa17922b2c65d8a0ab7b70775
 func (a *QRCodeDetector) DetectAndDecodeMulti(input Mat, decoded *[]string, points *Mat, qrCodes *[]Mat) bool {
 	cDecoded := C.CStrings{}
 	defer C.CStrings_Close(cDecoded)

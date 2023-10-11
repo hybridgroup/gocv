@@ -14,7 +14,6 @@ import "gocv.io/x/gocv"
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga54a72bd772494ab34d05406fd76df2b6
-//
 func Abs(src GpuMat, dst *GpuMat) {
 	C.GpuAbs(src.p, dst.p, nil)
 }
@@ -24,7 +23,6 @@ func Abs(src GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga54a72bd772494ab34d05406fd76df2b6
-//
 func AbsWithStream(src GpuMat, dst *GpuMat, stream Stream) {
 	C.GpuAbs(src.p, dst.p, stream.p)
 }
@@ -34,7 +32,6 @@ func AbsWithStream(src GpuMat, dst *GpuMat, stream Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac062b283cf46ee90f74a773d3382ab54
-//
 func AbsDiff(src1, src2 GpuMat, dst *GpuMat) {
 	C.GpuAbsDiff(src1.p, src2.p, dst.p, nil)
 }
@@ -44,7 +41,6 @@ func AbsDiff(src1, src2 GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac062b283cf46ee90f74a773d3382ab54
-//
 func AbsDiffWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 	C.GpuAbsDiff(src1.p, src2.p, dst.p, s.p)
 }
@@ -53,7 +49,6 @@ func AbsDiffWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga5d9794bde97ed23d1c1485249074a8b1
-//
 func Add(src1, src2 GpuMat, dst *GpuMat) {
 	C.GpuAdd(src1.p, src2.p, dst.p, nil)
 }
@@ -63,7 +58,6 @@ func Add(src1, src2 GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga5d9794bde97ed23d1c1485249074a8b1
-//
 func AddWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 	C.GpuAdd(src1.p, src2.p, dst.p, s.p)
 }
@@ -73,7 +67,6 @@ func AddWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga78d7c1a013877abd4237fbfc4e13bd76
-//
 func BitwiseAnd(src1, src2 GpuMat, dst *GpuMat) {
 	C.GpuBitwiseAnd(src1.p, src2.p, dst.p, nil)
 }
@@ -83,7 +76,6 @@ func BitwiseAnd(src1, src2 GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga78d7c1a013877abd4237fbfc4e13bd76
-//
 func BitwiseAndWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 	C.GpuBitwiseAnd(src1.p, src2.p, dst.p, s.p)
 }
@@ -92,7 +84,6 @@ func BitwiseAndWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gae58159a2259ae1acc76b531c171cf06a
-//
 func BitwiseNot(src GpuMat, dst *GpuMat) {
 	C.GpuBitwiseNot(src.p, dst.p, nil)
 }
@@ -102,7 +93,6 @@ func BitwiseNot(src GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gae58159a2259ae1acc76b531c171cf06a
-//
 func BitwiseNotWithStream(src GpuMat, dst *GpuMat, s Stream) {
 	C.GpuBitwiseNot(src.p, dst.p, s.p)
 }
@@ -112,7 +102,6 @@ func BitwiseNotWithStream(src GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gafd098ee3e51c68daa793999c1da3dfb7
-//
 func BitwiseOr(src1, src2 GpuMat, dst *GpuMat) {
 	C.GpuBitwiseOr(src1.p, src2.p, dst.p, nil)
 }
@@ -122,7 +111,6 @@ func BitwiseOr(src1, src2 GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gafd098ee3e51c68daa793999c1da3dfb7
-//
 func BitwiseOrWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 	C.GpuBitwiseXor(src1.p, src2.p, dst.p, s.p)
 }
@@ -132,7 +120,6 @@ func BitwiseOrWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga3d95d4faafb099aacf18e8b915a4ad8d
-//
 func BitwiseXor(src1, src2 GpuMat, dst *GpuMat) {
 	C.GpuBitwiseXor(src1.p, src2.p, dst.p, nil)
 }
@@ -142,7 +129,6 @@ func BitwiseXor(src1, src2 GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga3d95d4faafb099aacf18e8b915a4ad8d
-//
 func BitwiseXorWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 	C.GpuBitwiseXor(src1.p, src2.p, dst.p, s.p)
 }
@@ -151,7 +137,6 @@ func BitwiseXorWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga124315aa226260841e25cc0b9ea99dc3
-//
 func Divide(src1, src2 GpuMat, dst *GpuMat) {
 	C.GpuDivide(src1.p, src2.p, dst.p, nil)
 }
@@ -161,7 +146,6 @@ func Divide(src1, src2 GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga124315aa226260841e25cc0b9ea99dc3
-//
 func DivideWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 	C.GpuDivide(src1.p, src2.p, dst.p, s.p)
 }
@@ -170,7 +154,6 @@ func DivideWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac6e51541d3bb0a7a396128e4d5919b61
-//
 func Exp(src GpuMat, dst *GpuMat) {
 	C.GpuExp(src.p, dst.p, nil)
 }
@@ -180,7 +163,6 @@ func Exp(src GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac6e51541d3bb0a7a396128e4d5919b61
-//
 func ExpWithStream(src GpuMat, dst *GpuMat, s Stream) {
 	C.GpuExp(src.p, dst.p, s.p)
 }
@@ -189,7 +171,6 @@ func ExpWithStream(src GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac6e51541d3bb0a7a396128e4d5919b61
-//
 func Log(src GpuMat, dst *GpuMat) {
 	C.GpuLog(src.p, dst.p, nil)
 }
@@ -199,7 +180,6 @@ func Log(src GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac6e51541d3bb0a7a396128e4d5919b61
-//
 func LogWithStream(src GpuMat, dst *GpuMat, s Stream) {
 	C.GpuLog(src.p, dst.p, s.p)
 }
@@ -208,7 +188,6 @@ func LogWithStream(src GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gadb5dd3d870f10c0866035755b929b1e7
-//
 func Max(src1, src2 GpuMat, dst *GpuMat) {
 	C.GpuMax(src1.p, src2.p, dst.p, nil)
 }
@@ -218,7 +197,6 @@ func Max(src1, src2 GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gadb5dd3d870f10c0866035755b929b1e7
-//
 func MaxWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 	C.GpuMax(src1.p, src2.p, dst.p, s.p)
 }
@@ -227,7 +205,6 @@ func MaxWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga74f0b05a65b3d949c237abb5e6c60867
-//
 func Min(src1, src2 GpuMat, dst *GpuMat) {
 	C.GpuMin(src1.p, src2.p, dst.p, nil)
 }
@@ -237,7 +214,6 @@ func Min(src1, src2 GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga74f0b05a65b3d949c237abb5e6c60867
-//
 func MinWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 	C.GpuMin(src1.p, src2.p, dst.p, s.p)
 }
@@ -246,7 +222,6 @@ func MinWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga124315aa226260841e25cc0b9ea99dc3
-//
 func Multiply(src1, src2 GpuMat, dst *GpuMat) {
 	C.GpuMultiply(src1.p, src2.p, dst.p, nil)
 }
@@ -255,7 +230,6 @@ func Multiply(src1, src2 GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga8aae233da90ce0ffe309ab8004342acb
-//
 func Sqr(src GpuMat, dst *GpuMat) {
 	C.GpuSqr(src.p, dst.p, nil)
 }
@@ -265,7 +239,6 @@ func Sqr(src GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga8aae233da90ce0ffe309ab8004342acb
-//
 func SqrWithStream(src GpuMat, dst *GpuMat, s Stream) {
 	C.GpuSqr(src.p, dst.p, s.p)
 }
@@ -274,7 +247,6 @@ func SqrWithStream(src GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga09303680cb1a5521a922b6d392028d8c
-//
 func Sqrt(src GpuMat, dst *GpuMat) {
 	C.GpuSqrt(src.p, dst.p, nil)
 }
@@ -284,7 +256,6 @@ func Sqrt(src GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga09303680cb1a5521a922b6d392028d8c
-//
 func SqrtWithStream(src GpuMat, dst *GpuMat, s Stream) {
 	C.GpuSqrt(src.p, dst.p, s.p)
 }
@@ -293,7 +264,6 @@ func SqrtWithStream(src GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga6eab60fc250059e2fda79c5636bd067f
-//
 func Subtract(src1, src2 GpuMat, dst *GpuMat) {
 	C.GpuSubtract(src1.p, src2.p, dst.p, nil)
 }
@@ -303,7 +273,6 @@ func Subtract(src1, src2 GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga6eab60fc250059e2fda79c5636bd067f
-//
 func SubtractWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 	C.GpuSubtract(src1.p, src2.p, dst.p, s.p)
 }
@@ -312,7 +281,6 @@ func SubtractWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga40f1c94ae9a9456df3cad48e3cb008e1
-//
 func Threshold(src GpuMat, dst *GpuMat, thresh, maxval float64, typ gocv.ThresholdType) {
 	C.GpuThreshold(src.p, dst.p, C.double(thresh), C.double(maxval), C.int(typ), nil)
 }
@@ -322,7 +290,6 @@ func Threshold(src GpuMat, dst *GpuMat, thresh, maxval float64, typ gocv.Thresho
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga40f1c94ae9a9456df3cad48e3cb008e1
-//
 func ThresholdWithStream(src GpuMat, dst *GpuMat, thresh, maxval float64, typ gocv.ThresholdType, s Stream) {
 	C.GpuThreshold(src.p, dst.p, C.double(thresh), C.double(maxval), C.int(typ), s.p)
 }
@@ -331,7 +298,6 @@ func ThresholdWithStream(src GpuMat, dst *GpuMat, thresh, maxval float64, typ go
 //
 // For further details, please see:
 // https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga4d0a3f2b46e8f0f1ec2b5ac178dcd871
-//
 func Flip(src GpuMat, dst *GpuMat, flipCode int) {
 	C.GpuFlip(src.p, dst.p, C.int(flipCode), nil)
 }
@@ -341,7 +307,6 @@ func Flip(src GpuMat, dst *GpuMat, flipCode int) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga4d0a3f2b46e8f0f1ec2b5ac178dcd871
-//
 func FlipWithStream(src GpuMat, dst *GpuMat, flipCode int, stream Stream) {
 	C.GpuFlip(src.p, dst.p, C.int(flipCode), stream.p)
 }

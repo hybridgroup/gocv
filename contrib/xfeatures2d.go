@@ -25,7 +25,6 @@ type SURF struct {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d5/df7/classcv_1_1xfeatures2d_1_1SURF.html
-//
 func NewSURF() SURF {
 	return SURF{p: unsafe.Pointer(C.SURF_Create())}
 }
@@ -41,7 +40,6 @@ func (d *SURF) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
-//
 func (d *SURF) Detect(src gocv.Mat) []gocv.KeyPoint {
 	ret := C.SURF_Detect((C.SURF)(d.p), C.Mat(src.Ptr()))
 
@@ -52,7 +50,6 @@ func (d *SURF) Detect(src gocv.Mat) []gocv.KeyPoint {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#a8be0d1c20b08eb867184b8d74c15a677
-//
 func (d *SURF) DetectAndCompute(src gocv.Mat, mask gocv.Mat) ([]gocv.KeyPoint, gocv.Mat) {
 	desc := gocv.NewMat()
 	ret := C.SURF_DetectAndCompute((C.SURF)(d.p), C.Mat(src.Ptr()), C.Mat(mask.Ptr()),

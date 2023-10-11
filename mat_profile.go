@@ -1,3 +1,4 @@
+//go:build matprofile
 // +build matprofile
 
 package gocv
@@ -25,7 +26,7 @@ import (
 //
 // and you can display the current entries with:
 //
-// 	var b bytes.Buffer
+//	var b bytes.Buffer
 //	gocv.MatProfile.WriteTo(&b, 1)
 //	fmt.Print(b.String())
 //

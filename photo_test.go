@@ -241,7 +241,7 @@ func TestPencilSketch(t *testing.T) {
 	if dst2.Empty() || dst2.Rows() != src.Rows() || dst2.Cols() != src.Cols() {
 		t.Error("Invlalid PencilSketch test")
 	}
-} 
+}
 
 func TestInpaint(t *testing.T) {
 	src := IMRead("images/inpaint-src.jpg", IMReadColor)

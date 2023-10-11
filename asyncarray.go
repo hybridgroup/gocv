@@ -1,3 +1,4 @@
+//go:build openvino
 // +build openvino
 
 package gocv

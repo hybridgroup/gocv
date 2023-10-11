@@ -4,7 +4,6 @@ package gocv
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga4e0972be5de079fed4e3a10e24ef5ef0
-//
 type ColorConversionCode int
 
 const (

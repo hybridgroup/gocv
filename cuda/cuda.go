@@ -25,7 +25,6 @@ type GpuMat struct {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a00ef5bfe18d14623dcf578a35e40a46b
-//
 func (g *GpuMat) Upload(data gocv.Mat) {
 	C.GpuMat_Upload(g.p, C.Mat(data.Ptr()), nil)
 }
@@ -34,7 +33,6 @@ func (g *GpuMat) Upload(data gocv.Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a00ef5bfe18d14623dcf578a35e40a46b
-//
 func (g *GpuMat) UploadWithStream(data gocv.Mat, s Stream) {
 	C.GpuMat_Upload(g.p, C.Mat(data.Ptr()), s.p)
 }
@@ -106,7 +104,6 @@ func GetCudaEnabledDeviceCount() int {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6ded4ed8e4fc483a9863d31f34ec9c0e
-//
 func GetDevice() int {
 	return int(C.GetCudaDevice())
 }
@@ -115,7 +112,6 @@ func GetDevice() int {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gaefa34186b185de47851836dba537828b
-//
 func SetDevice(device int) {
 	C.SetCudaDevice(C.int(device))
 }
@@ -127,7 +123,6 @@ func SetDevice(device int) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6153b6f461101374e655a54fc77e725e
-//
 func ResetDevice() {
 	C.ResetCudaDevice()
 }
@@ -136,7 +131,6 @@ func ResetDevice() {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a3a1b076e54d8a8503014e27a5440d98a
-//
 func (m *GpuMat) ConvertTo(dst *GpuMat, mt gocv.MatType) {
 	C.GpuMat_ConvertTo(m.p, dst.p, C.int(mt), nil)
 	return
@@ -146,7 +140,6 @@ func (m *GpuMat) ConvertTo(dst *GpuMat, mt gocv.MatType) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a3a1b076e54d8a8503014e27a5440d98a
-//
 func (m *GpuMat) ConvertToWithStream(dst *GpuMat, mt gocv.MatType, s Stream) {
 	C.GpuMat_ConvertTo(m.p, dst.p, C.int(mt), s.p)
 	return
@@ -156,7 +149,6 @@ func (m *GpuMat) ConvertToWithStream(dst *GpuMat, mt gocv.MatType, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a948c562ee340c0678a44884bde1f5a3e
-//
 func (m *GpuMat) CopyTo(dst *GpuMat) {
 	C.GpuMat_CopyTo(m.p, dst.p, nil)
 	return
@@ -166,7 +158,6 @@ func (m *GpuMat) CopyTo(dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a948c562ee340c0678a44884bde1f5a3e
-//
 func (m *GpuMat) CopyToWithStream(dst *GpuMat, s Stream) {
 	C.GpuMat_CopyTo(m.p, dst.p, s.p)
 	return
@@ -197,7 +188,6 @@ func (m *GpuMat) Type() gocv.MatType {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d60/classcv_1_1cuda_1_1GpuMat.html#a408e22ed824d1ddf59f58bda895017a8
-//
 func (m *GpuMat) Reshape(cn int, rows int) GpuMat {
 	return newGpuMat(C.GpuMat_Reshape(m.p, C.int(cn), C.int(rows)))
 }
@@ -226,7 +216,6 @@ func (s *Stream) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d9/df3/classcv_1_1cuda_1_1Stream.html#a9fab618395d42fa31987506e42fab1b4
-//
 func (s *Stream) QueryIfComplete() bool {
 	return bool(C.Stream_QueryIfComplete(s.p))
 }
@@ -235,7 +224,6 @@ func (s *Stream) QueryIfComplete() bool {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d9/df3/classcv_1_1cuda_1_1Stream.html#a0e1d939503e8faad741ab584b720bca6
-//
 func (s *Stream) WaitForCompletion() {
 	C.Stream_WaitForCompletion(s.p)
 }
