@@ -1,3 +1,18 @@
+0.35.0
+---
+* **all**
+    * Add support for OpenCV 4.8.1
+    * correct Go formatting
+* **features2d**
+    * Add Match method for BFMatcher
+* **build**
+    * remove extra files from GH actions runner so GPU images builds have enough temp file space to run correctly
+* **make**
+    * for build_raspi added conditional cmake build for 64 and 32bit platforms
+    * remove ENABLE_VFPV3=ON and add WITH_TBB=ON from 64bit build.
+    * added sudo_pre_install_clean to raspberry pi and jetson installs
+    * change sudo_pre_install_clean to support cleanup on 64bit architechtures (arm and x86)
+
 0.34.0
 ---
 * **all**
