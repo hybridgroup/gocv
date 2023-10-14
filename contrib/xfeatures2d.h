@@ -16,6 +16,7 @@ typedef void* SURF;
 #endif
 
 SURF SURF_Create();
+SURF SURF_CreateWithParams(double hessianThreshold, int nOctaves, int nOctaveLayers, bool extended, bool upright);
 void SURF_Close(SURF f);
 struct KeyPoints SURF_Detect(SURF f, Mat src);
 struct KeyPoints SURF_DetectAndCompute(SURF f, Mat src, Mat mask, Mat desc);
