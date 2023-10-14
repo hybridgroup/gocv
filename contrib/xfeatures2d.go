@@ -29,6 +29,14 @@ func NewSURF() SURF {
 	return SURF{p: unsafe.Pointer(C.SURF_Create())}
 }
 
+// NewSURF returns a new SURF algorithm algorithm with parameters
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d5/df7/classcv_1_1xfeatures2d_1_1SURF.html#a436553ca44d9a2238761ddbee5b395e5
+func NewSURFWithParams(hessianThreshold float64, nOctaves int, nOctaveLayers int, extended bool, upright bool) SURF {
+	return SURF{p: unsafe.Pointer(C.SURF_CreateWithParams(C.double(hessianThreshold), C.int(nOctaves), C.int(nOctaveLayers), C.bool(extended), C.bool(upright)))}
+}
+
 // Close SURF.
 func (d *SURF) Close() error {
 	C.SURF_Close((C.SURF)(d.p))

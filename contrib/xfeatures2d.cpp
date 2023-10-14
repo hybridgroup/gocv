@@ -2,8 +2,11 @@
 
 
 SURF SURF_Create() {
-    // TODO: params
     return new cv::Ptr<cv::xfeatures2d::SURF>(cv::xfeatures2d::SURF::create());
+}
+
+SURF SURF_CreateWithParams(double hessianThreshold, int nOctaves, int nOctaveLayers, bool extended, bool upright) {
+    return new cv::Ptr<cv::xfeatures2d::SURF>(cv::xfeatures2d::SURF::create(hessianThreshold, nOctaves, nOctaveLayers, extended, upright));
 }
 
 void SURF_Close(SURF d) {
