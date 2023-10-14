@@ -29,7 +29,7 @@ func NewSURF() SURF {
 	return SURF{p: unsafe.Pointer(C.SURF_Create())}
 }
 
-// NewSURF returns a new SURF algorithm algorithm with parameters
+// NewSURFWithParams returns a new SURF algorithm algorithm with parameters
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d5/df7/classcv_1_1xfeatures2d_1_1SURF.html#a436553ca44d9a2238761ddbee5b395e5
