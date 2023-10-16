@@ -265,10 +265,19 @@ func EstimateAffine2DWithParams(from Point2fVector, to Point2fVector, inliers Ma
 	return newMat(C.EstimateAffine2DWithParams(from.p, to.p, inliers.p, C.int(method), C.double(ransacReprojThreshold), C.size_t(maxIters), C.double(confidence), C.size_t(refineIters)))
 }
 
-func TriangulatePoints(projMatr1 Mat, projMatr2 Mat, projPoints1, projPoints2 Point2fVector, points4D *Mat) {
+// TriangulatePoints reconstructs 3-dimensional points (in homogeneous coordinates)
+// by using their observations with a stereo camera.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#gad3fc9a0c82b08df034234979960b778c
+func TriangulatePoints(projMatr1, projMatr2 Mat, projPoints1, projPoints2 Point2fVector, points4D *Mat) {
   C.TriangulatePoints(projMatr1.Ptr(), projMatr2.Ptr(), projPoints1.p, projPoints2.p, points4D.Ptr())
 }
 
+// ConvertPointsFromHomogeneous converts points from homogeneous to Euclidean space.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#gac42edda3a3a0f717979589fcd6ac0035
 func ConvertPointsFromHomogeneous(src Mat, dst *Mat) {
 	C.ConvertPointsFromHomogeneous(src.Ptr(), dst.Ptr())
 }

@@ -668,7 +668,3 @@ func TestEstimateAffine2DWithParams(t *testing.T) {
 		t.Errorf("TestEstimateAffine2DWithParams(): unexpected rows = %v, want = %v", m.Rows(), 2)
 	}
 }
-
-func TestTriangulatePoints(t *testing.T) {
-
-}
