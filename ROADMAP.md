@@ -133,7 +133,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [checkChessboard](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [composeRT](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [computeCorrespondEpilines](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [convertPointsFromHomogeneous](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [X] [convertPointsFromHomogeneous](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [convertPointsHomogeneous](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [convertPointsToHomogeneous](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [correctMatches](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
@@ -175,7 +175,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [stereoCalibrate](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [stereoRectify](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [stereoRectifyUncalibrated](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [triangulatePoints](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [X] [triangulatePoints](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [validateDisparity](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
 
     - [ ] **Fisheye - WORK STARTED** The following functions still need implementation:

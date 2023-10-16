@@ -1468,9 +1468,8 @@ func MinMaxLoc(input Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
 // MinMaxLocWithMask finds the global minimum and maximum in an array with a mask used to select a sub-array.
 //
 // For further details, please see:
-// https://docs.opencv.org/trunk/d2/de8/group__core__array.html#gab473bf2eb6d14ff97e89b355dac20707
-//
-func MinMaxLocWithMask(input Mat, mask Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#gab473bf2eb6d14ff97e89b355dac20707
+func MinMaxLocWithMask(input, mask Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
 	var cMinVal C.double
 	var cMaxVal C.double
 	var cMinLoc C.struct_Point
