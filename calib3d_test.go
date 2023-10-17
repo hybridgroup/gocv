@@ -668,3 +668,48 @@ func TestEstimateAffine2DWithParams(t *testing.T) {
 		t.Errorf("TestEstimateAffine2DWithParams(): unexpected rows = %v, want = %v", m.Rows(), 2)
 	}
 }
+
+func TestTriangulatePoints(t *testing.T) {
+	projMat1, projMat2 := NewMatWithSize(3, 4, MatTypeCV64F), NewMatWithSize(3, 4, MatTypeCV64F)
+	defer projMat1.Close()
+	defer projMat2.Close()
+	projPoints1, projPoints2 := NewPoint2fVectorFromPoints([]Point2f{{Y: 1.0, X: 2.0}}), NewPoint2fVectorFromPoints([]Point2f{{Y: 3.0, X: 4.0}})
+	defer projPoints1.Close()
+	defer projPoints2.Close()
+	homogeneous := NewMat()
+	defer homogeneous.Close()
+	TriangulatePoints(projMat1, projMat2, projPoints1, projPoints2, &homogeneous)
+	if homogeneous.Empty() {
+		t.Errorf("TriangulatePoints(): output homogeneous mat is empty")
+	}
+}
+
+func TestConvertPointsFromHomogeneous(t *testing.T) {
+	homogeneous := NewMatWithSize(1, 4, MatTypeCV32F)
+	defer homogeneous.Close()
+	homogeneous.SetFloatAt(0, 0, 1)
+	homogeneous.SetFloatAt(0, 1, 2)
+	homogeneous.SetFloatAt(0, 2, 4)
+	homogeneous.SetFloatAt(0, 3, 2)
+	euclidean := NewMat()
+	defer euclidean.Close()
+	ConvertPointsFromHomogeneous(homogeneous, &euclidean)
+	if euclidean.Empty() {
+		t.Fatalf("ConvertPointsFromHomogeneous(): output euclidean mat is empty")
+	}
+	ptsVector := NewPoint3fVectorFromMat(euclidean)
+	defer ptsVector.Close()
+	pts := ptsVector.ToPoints()
+	if len(pts) != 1 {
+		t.Fatalf("ConvertPointsFromHomogeneous(): euclidean mat converted to points is empty")
+	}
+	if pts[0].X != 0.5 {
+		t.Errorf("ConvertPointsFromHomogeneous(): euclidean X - got %v, want %v", pts[0].X, 0.5)
+	}
+	if pts[0].Y != 1 {
+		t.Errorf("ConvertPointsFromHomogeneous(): euclidean Y - got %v, want %v", pts[0].Y, 1)
+	}
+	if pts[0].Z != 2 {
+		t.Errorf("ConvertPointsFromHomogeneous(): euclidean Z - got %v, want %v", pts[0].Z, 2)
+	}
+}

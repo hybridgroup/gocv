@@ -3142,3 +3142,57 @@ func TestSetThreadNumber(t *testing.T) {
 
 	SetNumThreads(original)
 }
+
+func TestMinMaxLoc(t *testing.T) {
+	input := NewMatWithSize(2, 2, MatTypeCV32F)
+	defer input.Close()
+	input.SetFloatAt(0, 0, 1)
+	input.SetFloatAt(0, 1, 2)
+	input.SetFloatAt(1, 0, 3)
+	input.SetFloatAt(1, 1, 4)
+	minVal, maxVal, minLoc, maxLoc := MinMaxLoc(input)
+
+	wantMinVal, wantMaxValue := float32(1.0), float32(4.0)
+	if minVal != wantMinVal {
+		t.Errorf("minVal got: %v, want %v", minVal, wantMinVal)
+	}
+	if maxVal != wantMaxValue {
+		t.Errorf("maxVal got: %v, want %v", maxVal, wantMaxValue)
+	}
+	wantMinLoc, wantMaxLoc := image.Point{Y: 0, X: 0}, image.Point{Y: 1, X: 1}
+	if minLoc != wantMinLoc {
+		t.Errorf("minLoc got: %v, want %v", minLoc, wantMinLoc)
+	}
+	if maxLoc != wantMaxLoc {
+		t.Errorf("maxLoc got: %v, want %v", maxLoc, wantMaxLoc)
+	}
+}
+
+func TestMinMaxLocWithMask(t *testing.T) {
+	input := NewMatWithSize(2, 2, MatTypeCV32F)
+	defer input.Close()
+	input.SetFloatAt(0, 0, 1)
+	input.SetFloatAt(0, 1, 2)
+	input.SetFloatAt(1, 0, 3)
+	input.SetFloatAt(1, 1, 4)
+	mask := NewMatWithSize(2, 2, MatTypeCV8U)
+	defer mask.Close()
+	mask.SetUCharAt(1, 0, 1)
+	mask.SetUCharAt(1, 1, 1)
+	minVal, maxVal, minLoc, maxLoc := MinMaxLocWithMask(input, mask)
+
+	wantMinVal, wantMaxValue := float32(3.0), float32(4.0)
+	if minVal != wantMinVal {
+		t.Errorf("minVal got: %v, want %v", minVal, wantMinVal)
+	}
+	if maxVal != wantMaxValue {
+		t.Errorf("maxVal got: %v, want %v", maxVal, wantMaxValue)
+	}
+	wantMinLoc, wantMaxLoc := image.Point{Y: 1, X: 0}, image.Point{Y: 1, X: 1}
+	if minLoc != wantMinLoc {
+		t.Errorf("minLoc got: %v, want %v", minLoc, wantMinLoc)
+	}
+	if maxLoc != wantMaxLoc {
+		t.Errorf("maxLoc got: %v, want %v", maxLoc, wantMaxLoc)
+	}
+}
