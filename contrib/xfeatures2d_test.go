@@ -99,9 +99,6 @@ func TestBriefDescriptorExtractor(t *testing.T) {
 
 	kp := fast.Detect(img)
 
-	mask := gocv.NewMat()
-	defer mask.Close()
-
 	desc := b.Compute(kp, img)
 
 	if desc.Empty() {
@@ -128,9 +125,6 @@ func TestBriefDescriptorExtractorWithParams(t *testing.T) {
 	defer b.Close()
 
 	kp := fast.Detect(img)
-
-	mask := gocv.NewMat()
-	defer mask.Close()
 
 	desc := b.Compute(kp, img)
 
