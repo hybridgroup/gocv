@@ -84,3 +84,59 @@ func getKeyPoints(ret C.KeyPoints) []gocv.KeyPoint {
 	}
 	return keys
 }
+
+// BriefDescriptorExtractor is a wrapper around the cv::BriefDescriptorExtractor algorithm.
+type BriefDescriptorExtractor struct {
+	// C.BriefDescriptorExtractor
+	p unsafe.Pointer
+}
+
+// NewBriefDescriptorExtractor returns a new BriefDescriptorExtractor algorithm.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d1/d93/classcv_1_1xfeatures2d_1_1BriefDescriptorExtractor.html
+func NewBriefDescriptorExtractor() BriefDescriptorExtractor {
+	return BriefDescriptorExtractor{p: unsafe.Pointer(C.BriefDescriptorExtractor_Create())}
+}
+
+// NewBriefDescriptorExtractorWithParams returns a new BriefDescriptorExtractor algorithm algorithm with parameters
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d1/d93/classcv_1_1xfeatures2d_1_1BriefDescriptorExtractor.html#ae3bc52666010fb137ab6f0d32de51f60
+func NewBriefDescriptorExtractorWithParams(bytes int, useOrientation bool) BriefDescriptorExtractor {
+	return BriefDescriptorExtractor{p: unsafe.Pointer(C.BriefDescriptorExtractor_CreateWithParams(C.int(bytes), C.bool(useOrientation)))}
+}
+
+// Close BriefDescriptorExtractor.
+func (d *BriefDescriptorExtractor) Close() error {
+	C.BriefDescriptorExtractor_Close((C.BriefDescriptorExtractor)(d.p))
+	d.p = nil
+	return nil
+}
+
+// Compute descriptors with given keypoints using BriefDescriptorExtractor
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#ab3cce8d56f4fc5e1d530b5931e1e8dc0
+func (b *BriefDescriptorExtractor) Compute(keyPoints []gocv.KeyPoint, src gocv.Mat) gocv.Mat {
+	desc := gocv.NewMat()
+	cKeyPointArray := make([]C.struct_KeyPoint, len(keyPoints))
+
+	for i, kp := range keyPoints {
+		cKeyPointArray[i].x = C.double(kp.X)
+		cKeyPointArray[i].y = C.double(kp.Y)
+		cKeyPointArray[i].size = C.double(kp.Size)
+		cKeyPointArray[i].angle = C.double(kp.Angle)
+		cKeyPointArray[i].response = C.double(kp.Response)
+		cKeyPointArray[i].octave = C.int(kp.Octave)
+		cKeyPointArray[i].classID = C.int(kp.ClassID)
+	}
+
+	cKeyPoints := C.struct_KeyPoints{
+		keypoints: (*C.struct_KeyPoint)(&cKeyPointArray[0]),
+		length:    (C.int)(len(keyPoints)),
+	}
+
+	C.BriefDescriptorExtractor_Compute((C.BriefDescriptorExtractor)(b.p), C.Mat(src.Ptr()), cKeyPoints, C.Mat(desc.Ptr()))
+	return desc
+}

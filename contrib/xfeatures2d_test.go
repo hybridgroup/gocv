@@ -78,3 +78,57 @@ func TestSURFWithParams(t *testing.T) {
 		t.Error("Invalid Mat desc in SURF DetectAndCompute")
 	}
 }
+
+func TestBriefDescriptorExtractor(t *testing.T) {
+	testNonFree := os.Getenv("OPENCV_ENABLE_NONFREE")
+	if testNonFree == "" {
+		t.Skip("Skipping BriefDescriptorExtractor test since OPENCV_ENABLE_NONFREE was not set")
+	}
+
+	img := gocv.IMRead("../images/face.jpg", gocv.IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid Mat in BriefDescriptorExtractor test")
+	}
+	defer img.Close()
+
+	fast := gocv.NewFastFeatureDetector()
+	defer fast.Close()
+
+	b := NewBriefDescriptorExtractor()
+	defer b.Close()
+
+	kp := fast.Detect(img)
+
+	desc := b.Compute(kp, img)
+
+	if desc.Empty() {
+		t.Error("Invalid Mat desc in BriefDescriptorExtractor Compute")
+	}
+}
+
+func TestBriefDescriptorExtractorWithParams(t *testing.T) {
+	testNonFree := os.Getenv("OPENCV_ENABLE_NONFREE")
+	if testNonFree == "" {
+		t.Skip("Skipping BriefDescriptorExtractorWithParams test since OPENCV_ENABLE_NONFREE was not set")
+	}
+
+	img := gocv.IMRead("../images/face.jpg", gocv.IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid Mat in BriefDescriptorExtractorWithParams test")
+	}
+	defer img.Close()
+
+	fast := gocv.NewFastFeatureDetector()
+	defer fast.Close()
+
+	b := NewBriefDescriptorExtractorWithParams(32, false)
+	defer b.Close()
+
+	kp := fast.Detect(img)
+
+	desc := b.Compute(kp, img)
+
+	if desc.Empty() {
+		t.Error("Invalid Mat desc in BriefDescriptorExtractorWithParams Compute")
+	}
+}
