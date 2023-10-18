@@ -279,7 +279,7 @@ func ConvertPointsFromHomogeneous(src Mat, dst *Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.0.0/d9/d0c/group__calib3d.html#ga61585db663d9da06b68e70cfbf6a1eac
-func Rodrigues(src, dst *Mat) {
+func Rodrigues(src Mat, dst *Mat) {
 	C.Rodrigues(src.p, dst.p)
 }
 
@@ -287,6 +287,6 @@ func Rodrigues(src, dst *Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.0.0/d9/d0c/group__calib3d.html#ga549c2075fac14829ff4a58bc931c033d
-func SolvePnP(objectPoints Point3fVector, imagePoints Point2fVector, cameraMatrix, distCoeffs, rvec, tvec *Mat, useExtrinsicGuess bool, flags int) bool {
+func SolvePnP(objectPoints Point3fVector, imagePoints Point2fVector, cameraMatrix, distCoeffs Mat, rvec, tvec *Mat, useExtrinsicGuess bool, flags int) bool {
 	return bool(C.SolvePnP(objectPoints.p, imagePoints.p, cameraMatrix.p, distCoeffs.p, rvec.p, tvec.p, C.bool(useExtrinsicGuess), C.int(flags)))
 }

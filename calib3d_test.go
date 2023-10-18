@@ -713,3 +713,74 @@ func TestConvertPointsFromHomogeneous(t *testing.T) {
 		t.Errorf("ConvertPointsFromHomogeneous(): euclidean Z - got %v, want %v", pts[0].Z, 2)
 	}
 }
+
+func TestRodrigues(t *testing.T) {
+	k := NewMatWithSize(3, 3, MatTypeCV64F)
+	defer k.Close()
+
+	k.SetDoubleAt(0, 0, 689.21)
+	k.SetDoubleAt(0, 1, 0)
+	k.SetDoubleAt(0, 2, 1295.56)
+
+	k.SetDoubleAt(1, 0, 0)
+	k.SetDoubleAt(1, 1, 690.48)
+	k.SetDoubleAt(1, 2, 942.17)
+
+	k.SetDoubleAt(2, 0, 0)
+	k.SetDoubleAt(2, 1, 0)
+	k.SetDoubleAt(2, 2, 1)
+
+	dest := NewMat()
+	defer dest.Close()
+
+	Rodrigues(k, &dest)
+
+	if dest.Empty() {
+		t.Error("final result is empty")
+		return
+	}
+}
+
+func TestSolvePnP(t *testing.T) {
+	pts := []Point3f{
+		{10.0, 10.0, 0.1},
+		{10.0, 20.0, 1.0},
+		{20.5, 21.5, 2.0},
+		{10.0, 20.0, 1.0},
+	}
+
+	objectPointsVector := NewPoint3fVectorFromPoints(pts)
+	defer objectPointsVector.Close()
+
+	pts2 := []Point2f{
+		{10.0, 10.0},
+		{10.0, 20.0},
+		{20.5, 21.5},
+		{25.5, 30.5},
+	}
+
+	imagePointsVector := NewPoint2fVectorFromPoints(pts2)
+	defer imagePointsVector.Close()
+
+	cameraMatrix := Eye(3, 3, MatTypeCV64F)
+	defer cameraMatrix.Close()
+	distCoeffs := NewMat()
+	defer distCoeffs.Close()
+	rvecs := NewMat()
+	defer rvecs.Close()
+	tvecs := NewMat()
+	defer tvecs.Close()
+
+	SolvePnP(objectPointsVector, imagePointsVector, cameraMatrix, distCoeffs,
+		&rvecs, &tvecs, false, 0)
+
+	if rvecs.Empty() {
+		t.Error("rvecs result is empty")
+		return
+	}
+
+	if tvecs.Empty() {
+		t.Error("tvecs result is empty")
+		return
+	}
+}
