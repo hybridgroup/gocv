@@ -55,6 +55,27 @@ const (
 	CalibFixPrincipalPoint
 )
 
+// FisheyeCalibrate performs camera calibration.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/db/d58/group__calib3d__fisheye.html#gad626a78de2b1dae7489e152a5a5a89e1
+func FisheyeCalibrate(objectPoints Points3fVector, imagePoints Points2fVector, size image.Point, k, d, rvecs, tvecs *Mat, flags CalibFlag) float64 {
+	sz := C.struct_Size{
+		width:  C.int(size.X),
+		height: C.int(size.Y),
+	}
+
+	return float64(C.Fisheye_Calibrate(objectPoints.p, imagePoints.p, sz, k.p, d.p, rvecs.p, tvecs.p, C.int(flags)))
+}
+
+// FisheyeDistortPoints distorts 2D points using fisheye model.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gab738cdf90ceee97b2b52b0d0e7511541
+func FisheyeDistortPoints(undistorted Mat, distorted *Mat, k, d Mat) {
+	C.Fisheye_DistortPoints(undistorted.Ptr(), distorted.Ptr(), k.Ptr(), d.Ptr())
+}
+
 // FisheyeUndistortImage transforms an image to compensate for fisheye lens distortion
 func FisheyeUndistortImage(distorted Mat, undistorted *Mat, k, d Mat) {
 	C.Fisheye_UndistortImage(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr())
@@ -137,6 +158,10 @@ func CalibrateCamera(objectPoints Points3fVector, imagePoints Points2fVector, im
 	return float64(res)
 }
 
+// Undistort transforms an image to compensate for lens distortion.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga69f2545a8b62a6b0fc2ee060dc30559d
 func Undistort(src Mat, dst *Mat, cameraMatrix Mat, distCoeffs Mat, newCameraMatrix Mat) {
 	C.Undistort(src.Ptr(), dst.Ptr(), cameraMatrix.Ptr(), distCoeffs.Ptr(), newCameraMatrix.Ptr())
 }
@@ -147,6 +172,18 @@ func Undistort(src Mat, dst *Mat, cameraMatrix Mat, distCoeffs Mat, newCameraMat
 // https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga55c716492470bfe86b0ee9bf3a1f0f7e
 func UndistortPoints(src Mat, dst *Mat, cameraMatrix, distCoeffs, rectificationTransform, newCameraMatrix Mat) {
 	C.UndistortPoints(src.Ptr(), dst.Ptr(), cameraMatrix.Ptr(), distCoeffs.Ptr(), rectificationTransform.Ptr(), newCameraMatrix.Ptr())
+}
+
+// CheckChessboard renders the detected chessboard corners.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga6a10b0bb120c4907e5eabbcd22319022
+func CheckChessboard(image Mat, size image.Point) bool {
+	sz := C.struct_Size{
+		width:  C.int(size.X),
+		height: C.int(size.Y),
+	}
+	return bool(C.CheckChessboard(image.Ptr(), sz))
 }
 
 // CalibCBFlag value for chessboard calibration

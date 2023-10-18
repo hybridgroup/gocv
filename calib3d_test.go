@@ -8,6 +8,134 @@ import (
 	"testing"
 )
 
+func TestFisheyeCalibrate(t *testing.T) {
+	img := IMRead("images/chessboard_4x6_distort.png", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of chessboard image")
+		return
+	}
+	defer img.Close()
+
+	corners := NewMat()
+	defer corners.Close()
+
+	size := image.Pt(4, 6)
+	found := FindChessboardCorners(img, size, &corners, 0)
+	if !found {
+		t.Error("chessboard pattern not found")
+		return
+	}
+	if corners.Empty() {
+		t.Error("chessboard pattern not found")
+		return
+	}
+
+	imagePoints := NewPoint2fVectorFromMat(corners)
+	defer imagePoints.Close()
+
+	objectPoints := NewPoint3fVector()
+	defer objectPoints.Close()
+
+	for j := 0; j < size.Y; j++ {
+		for i := 0; i < size.X; i++ {
+			objectPoints.Append(Point3f{
+				X: float32(100 * i),
+				Y: float32(100 * j),
+				Z: 0,
+			})
+		}
+	}
+
+	k := NewMat()
+	defer k.Close()
+	d := NewMat()
+	defer d.Close()
+	rvecs := NewMat()
+	defer rvecs.Close()
+	tvecs := NewMat()
+	defer tvecs.Close()
+
+	objectPointsVector := NewPoints3fVector()
+	objectPointsVector.Append(objectPoints)
+	defer objectPointsVector.Close()
+
+	imagePointsVector := NewPoints2fVector()
+	imagePointsVector.Append(imagePoints)
+	defer imagePointsVector.Close()
+
+	FisheyeCalibrate(
+		objectPointsVector, imagePointsVector, image.Pt(img.Cols(), img.Rows()),
+		&k, &d, &rvecs, &tvecs, 0,
+	)
+
+	if rvecs.Empty() {
+		t.Error("rvecs result is empty")
+		return
+	}
+
+	if tvecs.Empty() {
+		t.Error("tvecs result is empty")
+		return
+	}
+}
+
+func TestFisheyeDistortPoints(t *testing.T) {
+	k := NewMatWithSize(3, 3, MatTypeCV64F)
+	defer k.Close()
+
+	k.SetDoubleAt(0, 0, 1094.7249578198823)
+	k.SetDoubleAt(0, 1, 0)
+	k.SetDoubleAt(0, 2, 959.4907612030962)
+
+	k.SetDoubleAt(1, 0, 0)
+	k.SetDoubleAt(1, 1, 1094.9945708128778)
+	k.SetDoubleAt(1, 2, 536.4566143451868)
+
+	k.SetDoubleAt(2, 0, 0)
+	k.SetDoubleAt(2, 1, 0)
+	k.SetDoubleAt(2, 2, 1)
+
+	d := NewMatWithSize(1, 4, MatTypeCV64F)
+	defer d.Close()
+
+	d.SetDoubleAt(0, 0, -0.05207412392075069)
+	d.SetDoubleAt(0, 1, -0.089168300192224)
+	d.SetDoubleAt(0, 2, 0.10465607695792184)
+	d.SetDoubleAt(0, 3, -0.045693446831115585)
+
+	// transform 3 points in one go (X and Y values of points go in each channel)
+	src := NewMatWithSize(3, 1, MatTypeCV64FC2)
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	// This camera matrix is 1920x1080. Points where x < 960 and y < 540 should move toward the top left (x and y get smaller)
+	// The centre point should be mostly unchanged
+	// Points where x > 960 and y > 540 should move toward the bottom right (x and y get bigger)
+
+	// The index being used for col here is actually the channel (i.e. the point's x/y dimensions)
+	// (since there's only 1 column so the formula: (colNumber * numChannels + channelNumber) reduces to
+	// (0 * 2) + channelNumber
+	// so col = 0 is the x coordinate and col = 1 is the y coordinate
+
+	src.SetDoubleAt(0, 0, 480)
+	src.SetDoubleAt(0, 1, 270)
+
+	src.SetDoubleAt(1, 0, 960)
+	src.SetDoubleAt(1, 1, 540)
+
+	src.SetDoubleAt(2, 0, 1440)
+	src.SetDoubleAt(2, 1, 810)
+
+	FisheyeDistortPoints(src, &dst, k, d)
+
+	if dst.Empty() {
+		t.Error("final image is empty")
+		return
+	}
+}
+
 func TestFisheyeUndistorImage(t *testing.T) {
 	img := IMRead("images/fisheye_sample.jpg", IMReadUnchanged)
 	if img.Empty() {
@@ -48,7 +176,6 @@ func TestFisheyeUndistorImage(t *testing.T) {
 		t.Error("final image is empty")
 		return
 	}
-	// IMWrite("images/fisheye_sample-u.jpg", dest)
 }
 
 func TestFisheyeUndistorImageWithParams(t *testing.T) {
@@ -100,7 +227,6 @@ func TestFisheyeUndistorImageWithParams(t *testing.T) {
 		t.Error("final image is empty")
 		return
 	}
-	// IMWrite("images/fisheye_sample-up.jpg", dest)
 }
 
 func TestInitUndistortRectifyMap(t *testing.T) {
@@ -137,8 +263,7 @@ func TestInitUndistortRectifyMap(t *testing.T) {
 	d.SetDoubleAt(0, 2, -2.62985819e-03)
 	d.SetDoubleAt(0, 3, 2.05841873e-04)
 	d.SetDoubleAt(0, 4, -2.35021914e-02)
-	//FisheyeUndistortImage(img, &dest, k, d)
-	//img.Reshape()
+
 	newC, roi := GetOptimalNewCameraMatrixWithParams(k, d, image.Point{X: img.Cols(), Y: img.Rows()}, (float64)(1), image.Point{X: img.Cols(), Y: img.Rows()}, false)
 	if newC.Empty() {
 		t.Error("final image is empty")
@@ -152,7 +277,7 @@ func TestInitUndistortRectifyMap(t *testing.T) {
 	defer mapx.Close()
 	mapy := NewMat()
 	defer mapy.Close()
-	//dest := NewMat()
+
 	InitUndistortRectifyMap(k, d, r, newC, image.Point{X: img.Cols(), Y: img.Rows()}, 5, mapx, mapy)
 
 	Remap(img, &dest, &mapx, &mapy, InterpolationDefault, BorderConstant, color.RGBA{0, 0, 0, 0})
@@ -210,7 +335,6 @@ func TestUndistort(t *testing.T) {
 		t.Error("final image is empty")
 		return
 	}
-	//IMWrite("images/distortion_up.jpg", dest)
 }
 
 func TestUndistortPoint(t *testing.T) {
@@ -351,8 +475,22 @@ func TestFisheyeUndistortPoint(t *testing.T) {
 	if dst.GetDoubleAt(0, 0) == 0 {
 		t.Error("expected destination Mat to be populated")
 	}
-
 }
+
+func TestCheckChessboard(t *testing.T) {
+	img := IMRead("images/chessboard_4x6.png", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of chessboard image")
+		return
+	}
+	defer img.Close()
+
+	if !CheckChessboard(img, image.Point{X: 4, Y: 6}) {
+		t.Error("chessboard pattern not found")
+		return
+	}
+}
+
 func TestFindAndDrawChessboard(t *testing.T) {
 	img := IMRead("images/chessboard_4x6.png", IMReadUnchanged)
 	if img.Empty() {
