@@ -1,5 +1,13 @@
 #include "calib3d.h"
 
+double Fisheye_Calibrate(Points3fVector objectPoints, Points2fVector imagePoints, Size size, Mat k, Mat d, Mat rvecs, Mat tvecs, int flags) {
+    cv::Size sz(size.width, size.height);
+    return cv::fisheye::calibrate(*objectPoints, *imagePoints, sz, *k, *d, *rvecs, *tvecs, flags);
+}
+
+void Fisheye_DistortPoints(Mat undistorted, Mat distorted, Mat k, Mat d) {
+    cv::fisheye::distortPoints(*undistorted, *distorted, *k, *d);
+}
 
 void Fisheye_UndistortImage(Mat distorted, Mat undistorted, Mat k, Mat d) {
     cv::fisheye::undistortImage(*distorted, *undistorted, *k, *d);
@@ -47,6 +55,11 @@ void Undistort(Mat src, Mat dst, Mat cameraMatrix, Mat distCoeffs, Mat newCamera
 
 void UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d, Mat r, Mat p) {
     cv::undistortPoints(*distorted, *undistorted, *k, *d, *r, *p);
+}
+
+bool CheckChessboard(Mat image, Size size) {
+    cv::Size sz(size.width, size.height);
+    return cv::checkChessboard(*image, sz);
 }
 
 bool FindChessboardCorners(Mat image, Size patternSize, Mat corners, int flags) {

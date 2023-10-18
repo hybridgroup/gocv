@@ -126,11 +126,12 @@ Your pull requests will be greatly appreciated!
 
 - [ ] **calib3d. Camera Calibration and 3D Reconstruction - WORK STARTED**. The following functions still need implementation:
     - [ ] **Camera Calibration - WORK STARTED** The following functions still need implementation:
-        - [X] [calibrateCamera](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [calibrateCameraRO](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [calibrateHandEye](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [X] [calibrateCamera](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga3207604e4b1a1758aa66acb6ed5aa65d)
+        - [ ] [calibrateCameraRO](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#gacb6b35670216b24b67c70fcd21519ead)
+        - [ ] [calibrateHandEye](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#gaebfc1c9f7434196a374c382abf43439b)
+        - [ ] [calibrateRobotWorldHandEye](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga41b1a8dd70eae371eba707d101729c36)
         - [ ] [calibrationMatrixValues](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [checkChessboard](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [X] [checkChessboard](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [composeRT](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [computeCorrespondEpilines](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [X] [convertPointsFromHomogeneous](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
@@ -179,8 +180,8 @@ Your pull requests will be greatly appreciated!
         - [ ] [validateDisparity](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
 
     - [ ] **Fisheye - WORK STARTED** The following functions still need implementation:
-        - [ ] [calibrate](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gad626a78de2b1dae7489e152a5a5a89e1)
-        - [ ] [distortPoints](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#ga75d8877a98e38d0b29b6892c5f8d7765)
+        - [X] [calibrate](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gad626a78de2b1dae7489e152a5a5a89e1)
+        - [X] [distortPoints](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#ga75d8877a98e38d0b29b6892c5f8d7765)
         - [ ] [projectPoints](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gab1ad1dc30c42ee1a50ce570019baf2c4)
         - [ ] [stereoCalibrate](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gadbb3a6ca6429528ef302c784df47949b)
         - [ ] [stereoRectify](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gac1af58774006689056b0f2ef1db55ecc)
