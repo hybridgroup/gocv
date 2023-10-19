@@ -23,6 +23,7 @@ void EqualizeHist(Mat src, Mat dst);
 void CalcHist(struct Mats mats, IntVector chans, Mat mask, Mat hist, IntVector sz, FloatVector rng, bool acc);
 void CalcBackProject(struct Mats mats, IntVector chans, Mat hist, Mat backProject, FloatVector rng, bool uniform);
 double CompareHist(Mat hist1, Mat hist2, int method);
+float EMD(Mat sig1, Mat sig2, int distType);
 void ConvexHull(PointVector points, Mat hull, bool clockwise, bool returnPoints);
 void ConvexityDefects(PointVector points, Mat hull, Mat result);
 void BilateralFilter(Mat src, Mat dst, int d, double sc, double ss);

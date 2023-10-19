@@ -76,6 +76,10 @@ double CompareHist(Mat hist1, Mat hist2, int method) {
     return cv::compareHist(*hist1, *hist2, method);
 }
 
+float EMD(Mat sig1, Mat sig2, int distType) {
+    return cv::EMD(*sig1, *sig2, distType);
+}
+
 struct RotatedRect FitEllipse(PointVector pts)
 {
     cv::RotatedRect bRect = cv::fitEllipse(*pts);
