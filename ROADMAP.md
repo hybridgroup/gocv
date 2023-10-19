@@ -83,8 +83,8 @@ Your pull requests will be greatly appreciated!
         - [ ] [rotatedRectangleIntersection](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8740e7645628c59d238b0b22c2abe2d4)
 
     - [ ] **Motion Analysis and Object Tracking - WORK STARTED** The following functions still need implementation:
-        - [ ] [createHanningWindow](https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga80e5c3de52f6bab3a7c1e60e89308e1b)
-        - [ ] [phaseCorrelate](https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga552420a2ace9ef3fb053cd630fdb4952)
+        - [X] [createHanningWindow](https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga80e5c3de52f6bab3a7c1e60e89308e1b)
+        - [X] [phaseCorrelate](https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga552420a2ace9ef3fb053cd630fdb4952)
 
     - [ ] **Feature Detection - WORK STARTED** The following functions still need implementation:
         - [ ] [cornerEigenValsAndVecs](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga4055896d9ef77dd3cacf2c5f60e13f1c)

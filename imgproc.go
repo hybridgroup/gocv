@@ -1921,6 +1921,19 @@ func PhaseCorrelate(src1, src2, window Mat) (phaseShift Point2f, response float6
 	}, float64(responseDouble)
 }
 
+// CreateHanningWindow computes a Hanning window coefficients in two dimensions.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d7/df3/group__imgproc__motion.html#ga80e5c3de52f6bab3a7c1e60e89308e1b
+func CreateHanningWindow(img *Mat, size image.Point, typ MatType) {
+	sz := C.struct_Size{
+		width:  C.int(size.X),
+		height: C.int(size.Y),
+	}
+
+	C.CreateHanningWindow(img.p, sz, C.int(typ))
+}
+
 // ToImage converts a Mat to a image.Image.
 func (m *Mat) ToImage() (image.Image, error) {
 	switch m.Type() {

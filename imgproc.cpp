@@ -643,6 +643,11 @@ Point2f PhaseCorrelate(Mat src1, Mat src2, Mat window, double* response) {
     return result2f;
 }
 
+void CreateHanningWindow(Mat dst, Size size, int typ) {
+    cv::Size sz(size.width, size.height);
+    cv::createHanningWindow(*dst, sz, typ);
+}
+
 void Mat_Accumulate(Mat src, Mat dst) {
     cv::accumulate(*src, *dst);
 }
