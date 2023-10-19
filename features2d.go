@@ -43,6 +43,32 @@ func (a *AKAZE) Detect(src Mat) []KeyPoint {
 	return getKeyPoints(ret)
 }
 
+// Compute keypoints in an image using AKAZE.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d0/d13/classcv_1_1Feature2D.html#ab3cce8d56f4fc5e1d530b5931e1e8dc0
+func (a *AKAZE) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint {
+	kp2arr := make([]C.struct_KeyPoint, len(kps))
+	for i, kp := range kps {
+		kp2arr[i].x = C.double(kp.X)
+		kp2arr[i].y = C.double(kp.Y)
+		kp2arr[i].size = C.double(kp.Size)
+		kp2arr[i].angle = C.double(kp.Angle)
+		kp2arr[i].response = C.double(kp.Response)
+		kp2arr[i].octave = C.int(kp.Octave)
+		kp2arr[i].classID = C.int(kp.ClassID)
+	}
+	cKeyPoints := C.struct_KeyPoints{
+		keypoints: (*C.struct_KeyPoint)(&kp2arr[0]),
+		length:    (C.int)(len(kps)),
+	}
+
+	ret := C.AKAZE_Compute((C.AKAZE)(a.p), src.p, cKeyPoints, desc.p)
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret)
+}
+
 // DetectAndCompute keypoints and compute in an image using AKAZE.
 //
 // For further details, please see:
@@ -114,6 +140,32 @@ func (b *BRISK) Close() error {
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 func (b *BRISK) Detect(src Mat) []KeyPoint {
 	ret := C.BRISK_Detect((C.BRISK)(b.p), src.p)
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret)
+}
+
+// Compute keypoints in an image using BRISK.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d0/d13/classcv_1_1Feature2D.html#ab3cce8d56f4fc5e1d530b5931e1e8dc0
+func (b *BRISK) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint {
+	kp2arr := make([]C.struct_KeyPoint, len(kps))
+	for i, kp := range kps {
+		kp2arr[i].x = C.double(kp.X)
+		kp2arr[i].y = C.double(kp.Y)
+		kp2arr[i].size = C.double(kp.Size)
+		kp2arr[i].angle = C.double(kp.Angle)
+		kp2arr[i].response = C.double(kp.Response)
+		kp2arr[i].octave = C.int(kp.Octave)
+		kp2arr[i].classID = C.int(kp.ClassID)
+	}
+	cKeyPoints := C.struct_KeyPoints{
+		keypoints: (*C.struct_KeyPoint)(&kp2arr[0]),
+		length:    (C.int)(len(kps)),
+	}
+
+	ret := C.BRISK_Compute((C.BRISK)(b.p), src.p, cKeyPoints, desc.p)
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
@@ -250,6 +302,32 @@ func (a *KAZE) Detect(src Mat) []KeyPoint {
 	return getKeyPoints(ret)
 }
 
+// Compute keypoints in an image using KAZE.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d0/d13/classcv_1_1Feature2D.html#ab3cce8d56f4fc5e1d530b5931e1e8dc0
+func (a *KAZE) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint {
+	kp2arr := make([]C.struct_KeyPoint, len(kps))
+	for i, kp := range kps {
+		kp2arr[i].x = C.double(kp.X)
+		kp2arr[i].y = C.double(kp.Y)
+		kp2arr[i].size = C.double(kp.Size)
+		kp2arr[i].angle = C.double(kp.Angle)
+		kp2arr[i].response = C.double(kp.Response)
+		kp2arr[i].octave = C.int(kp.Octave)
+		kp2arr[i].classID = C.int(kp.ClassID)
+	}
+	cKeyPoints := C.struct_KeyPoints{
+		keypoints: (*C.struct_KeyPoint)(&kp2arr[0]),
+		length:    (C.int)(len(kps)),
+	}
+
+	ret := C.KAZE_Compute((C.KAZE)(a.p), src.p, cKeyPoints, desc.p)
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret)
+}
+
 // DetectAndCompute keypoints and compute in an image using KAZE.
 //
 // For further details, please see:
@@ -346,6 +424,32 @@ func (o *ORB) Close() error {
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 func (o *ORB) Detect(src Mat) []KeyPoint {
 	ret := C.ORB_Detect((C.ORB)(o.p), src.p)
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret)
+}
+
+// Compute keypoints in an image using ORB.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d0/d13/classcv_1_1Feature2D.html#ab3cce8d56f4fc5e1d530b5931e1e8dc0
+func (o *ORB) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint {
+	kp2arr := make([]C.struct_KeyPoint, len(kps))
+	for i, kp := range kps {
+		kp2arr[i].x = C.double(kp.X)
+		kp2arr[i].y = C.double(kp.Y)
+		kp2arr[i].size = C.double(kp.Size)
+		kp2arr[i].angle = C.double(kp.Angle)
+		kp2arr[i].response = C.double(kp.Response)
+		kp2arr[i].octave = C.int(kp.Octave)
+		kp2arr[i].classID = C.int(kp.ClassID)
+	}
+	cKeyPoints := C.struct_KeyPoints{
+		keypoints: (*C.struct_KeyPoint)(&kp2arr[0]),
+		length:    (C.int)(len(kps)),
+	}
+
+	ret := C.ORB_Compute((C.ORB)(o.p), src.p, cKeyPoints, desc.p)
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
@@ -818,6 +922,32 @@ func (d *SIFT) Close() error {
 // https://docs.opencv.org/master/d0/d13/classcv_1_1Feature2D.html#aa4e9a7082ec61ebc108806704fbd7887
 func (d *SIFT) Detect(src Mat) []KeyPoint {
 	ret := C.SIFT_Detect((C.SIFT)(d.p), C.Mat(src.Ptr()))
+	defer C.KeyPoints_Close(ret)
+
+	return getKeyPoints(ret)
+}
+
+// Compute keypoints in an image using SIFT.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d0/d13/classcv_1_1Feature2D.html#ab3cce8d56f4fc5e1d530b5931e1e8dc0
+func (d *SIFT) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint {
+	kp2arr := make([]C.struct_KeyPoint, len(kps))
+	for i, kp := range kps {
+		kp2arr[i].x = C.double(kp.X)
+		kp2arr[i].y = C.double(kp.Y)
+		kp2arr[i].size = C.double(kp.Size)
+		kp2arr[i].angle = C.double(kp.Angle)
+		kp2arr[i].response = C.double(kp.Response)
+		kp2arr[i].octave = C.int(kp.Octave)
+		kp2arr[i].classID = C.int(kp.ClassID)
+	}
+	cKeyPoints := C.struct_KeyPoints{
+		keypoints: (*C.struct_KeyPoint)(&kp2arr[0]),
+		length:    (C.int)(len(kps)),
+	}
+
+	ret := C.SIFT_Compute((C.SIFT)(d.p), src.p, cKeyPoints, desc.p)
 	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret)
