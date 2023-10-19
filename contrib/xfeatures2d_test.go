@@ -32,10 +32,8 @@ func TestSURF(t *testing.T) {
 
 	mask := gocv.NewMat()
 	defer mask.Close()
-	desc := gocv.NewMat()
-	defer desc.Close()
 
-	kpc := si.Compute(img, mask, kp, desc)
+	kpc, desc := si.Compute(img, mask, kp)
 	if len(kpc) < 512 {
 		t.Errorf("Invalid KeyPoint array in SURF Compute: %d", len(kpc))
 	}

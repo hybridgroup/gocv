@@ -25,10 +25,8 @@ func TestAKAZE(t *testing.T) {
 
 	mask := NewMat()
 	defer mask.Close()
-	desc := NewMat()
-	defer desc.Close()
 
-	kpc := ak.Compute(img, mask, kp, desc)
+	kpc, desc := ak.Compute(img, mask, kp)
 	if len(kpc) < 512 {
 		t.Errorf("Invalid KeyPoint array in AKAZE Compute: %d", len(kpc))
 	}
@@ -85,10 +83,8 @@ func TestBRISK(t *testing.T) {
 
 	mask := NewMat()
 	defer mask.Close()
-	desc := NewMat()
-	defer desc.Close()
 
-	kpc := br.Compute(img, mask, kp, desc)
+	kpc, desc := br.Compute(img, mask, kp)
 	if len(kpc) < 512 {
 		t.Errorf("Invalid KeyPoint array in BRISK Compute: %d", len(kpc))
 	}
@@ -183,10 +179,8 @@ func TestKAZE(t *testing.T) {
 
 	mask := NewMat()
 	defer mask.Close()
-	desc := NewMat()
-	defer desc.Close()
 
-	kpc := k.Compute(img, mask, kp, desc)
+	kpc, desc := k.Compute(img, mask, kp)
 	if len(kpc) < 512 {
 		t.Errorf("Invalid KeyPoint array in KAZE Compute: %d", len(kpc))
 	}
@@ -243,10 +237,8 @@ func TestORB(t *testing.T) {
 
 	mask := NewMat()
 	defer mask.Close()
-	desc := NewMat()
-	defer desc.Close()
 
-	kpc := od.Compute(img, mask, kp, desc)
+	kpc, desc := od.Compute(img, mask, kp)
 	if len(kpc) < 500 {
 		t.Errorf("Invalid KeyPoint array in ORB Compute: %d", len(kpc))
 	}
@@ -616,10 +608,8 @@ func TestSIFT(t *testing.T) {
 
 	mask := NewMat()
 	defer mask.Close()
-	desc := NewMat()
-	defer desc.Close()
 
-	kpc := si.Compute(img, mask, kp, desc)
+	kpc, desc := si.Compute(img, mask, kp)
 	if len(kpc) < 512 {
 		t.Errorf("Invalid KeyPoint array in SIFT Compute: %d", len(kpc))
 	}

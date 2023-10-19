@@ -47,7 +47,8 @@ func (a *AKAZE) Detect(src Mat) []KeyPoint {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d13/classcv_1_1Feature2D.html#ab3cce8d56f4fc5e1d530b5931e1e8dc0
-func (a *AKAZE) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint {
+func (a *AKAZE) Compute(src Mat, mask Mat, kps []KeyPoint) ([]KeyPoint, Mat) {
+	desc := NewMat()
 	kp2arr := make([]C.struct_KeyPoint, len(kps))
 	for i, kp := range kps {
 		kp2arr[i].x = C.double(kp.X)
@@ -66,7 +67,7 @@ func (a *AKAZE) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint 
 	ret := C.AKAZE_Compute((C.AKAZE)(a.p), src.p, cKeyPoints, desc.p)
 	defer C.KeyPoints_Close(ret)
 
-	return getKeyPoints(ret)
+	return getKeyPoints(ret), desc
 }
 
 // DetectAndCompute keypoints and compute in an image using AKAZE.
@@ -149,7 +150,8 @@ func (b *BRISK) Detect(src Mat) []KeyPoint {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d13/classcv_1_1Feature2D.html#ab3cce8d56f4fc5e1d530b5931e1e8dc0
-func (b *BRISK) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint {
+func (b *BRISK) Compute(src Mat, mask Mat, kps []KeyPoint) ([]KeyPoint, Mat) {
+	desc := NewMat()
 	kp2arr := make([]C.struct_KeyPoint, len(kps))
 	for i, kp := range kps {
 		kp2arr[i].x = C.double(kp.X)
@@ -168,7 +170,7 @@ func (b *BRISK) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint 
 	ret := C.BRISK_Compute((C.BRISK)(b.p), src.p, cKeyPoints, desc.p)
 	defer C.KeyPoints_Close(ret)
 
-	return getKeyPoints(ret)
+	return getKeyPoints(ret), desc
 }
 
 // DetectAndCompute keypoints and compute in an image using BRISK.
@@ -306,7 +308,8 @@ func (a *KAZE) Detect(src Mat) []KeyPoint {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d13/classcv_1_1Feature2D.html#ab3cce8d56f4fc5e1d530b5931e1e8dc0
-func (a *KAZE) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint {
+func (a *KAZE) Compute(src Mat, mask Mat, kps []KeyPoint) ([]KeyPoint, Mat) {
+	desc := NewMat()
 	kp2arr := make([]C.struct_KeyPoint, len(kps))
 	for i, kp := range kps {
 		kp2arr[i].x = C.double(kp.X)
@@ -325,7 +328,7 @@ func (a *KAZE) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint {
 	ret := C.KAZE_Compute((C.KAZE)(a.p), src.p, cKeyPoints, desc.p)
 	defer C.KeyPoints_Close(ret)
 
-	return getKeyPoints(ret)
+	return getKeyPoints(ret), desc
 }
 
 // DetectAndCompute keypoints and compute in an image using KAZE.
@@ -433,7 +436,8 @@ func (o *ORB) Detect(src Mat) []KeyPoint {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d13/classcv_1_1Feature2D.html#ab3cce8d56f4fc5e1d530b5931e1e8dc0
-func (o *ORB) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint {
+func (o *ORB) Compute(src Mat, mask Mat, kps []KeyPoint) ([]KeyPoint, Mat) {
+	desc := NewMat()
 	kp2arr := make([]C.struct_KeyPoint, len(kps))
 	for i, kp := range kps {
 		kp2arr[i].x = C.double(kp.X)
@@ -452,7 +456,7 @@ func (o *ORB) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint {
 	ret := C.ORB_Compute((C.ORB)(o.p), src.p, cKeyPoints, desc.p)
 	defer C.KeyPoints_Close(ret)
 
-	return getKeyPoints(ret)
+	return getKeyPoints(ret), desc
 }
 
 // DetectAndCompute detects keypoints and computes from an image using ORB.
@@ -931,7 +935,8 @@ func (d *SIFT) Detect(src Mat) []KeyPoint {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d13/classcv_1_1Feature2D.html#ab3cce8d56f4fc5e1d530b5931e1e8dc0
-func (d *SIFT) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint {
+func (d *SIFT) Compute(src Mat, mask Mat, kps []KeyPoint) ([]KeyPoint, Mat) {
+	desc := NewMat()
 	kp2arr := make([]C.struct_KeyPoint, len(kps))
 	for i, kp := range kps {
 		kp2arr[i].x = C.double(kp.X)
@@ -950,7 +955,7 @@ func (d *SIFT) Compute(src Mat, mask Mat, kps []KeyPoint, desc Mat) []KeyPoint {
 	ret := C.SIFT_Compute((C.SIFT)(d.p), src.p, cKeyPoints, desc.p)
 	defer C.KeyPoints_Close(ret)
 
-	return getKeyPoints(ret)
+	return getKeyPoints(ret), desc
 }
 
 // DetectAndCompute detects and computes keypoints in an image using SIFT.
