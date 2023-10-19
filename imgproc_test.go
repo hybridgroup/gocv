@@ -2464,6 +2464,17 @@ func TestPhaseCorrelate(t *testing.T) {
 	}
 }
 
+func TestCreateHanningWindow(t *testing.T) {
+	dst := NewMat()
+	defer dst.Close()
+
+	CreateHanningWindow(&dst, image.Pt(100, 100), MatTypeCV32F)
+
+	if dst.Empty() {
+		t.Error("Invalid CreateHanningWindow test")
+	}
+}
+
 func TestMatToImage(t *testing.T) {
 	mat1 := NewMatWithSize(101, 102, MatTypeCV8UC3)
 	defer mat1.Close()

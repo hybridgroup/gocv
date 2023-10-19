@@ -132,6 +132,7 @@ void CLAHE_Close(CLAHE c);
 void CLAHE_Apply(CLAHE c, Mat src, Mat dst);
 void InvertAffineTransform(Mat src, Mat dst);
 Point2f PhaseCorrelate(Mat src1, Mat src2, Mat window, double* response);
+void CreateHanningWindow(Mat dst, Size size, int typ);
 void Mat_Accumulate(Mat src, Mat dst);
 void Mat_AccumulateWithMask(Mat src, Mat dst, Mat mask);
 void Mat_AccumulateSquare(Mat src, Mat dst);
