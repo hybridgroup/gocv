@@ -30,6 +30,30 @@ struct KeyPoints SURF_Detect(SURF d, Mat src) {
     return ret;
 }
 
+struct KeyPoints SURF_Compute(SURF d, Mat src, struct KeyPoints kp, Mat desc) {
+    std::vector<cv::KeyPoint> computed;
+    for (size_t i = 0; i < kp.length; i++) {
+        cv::KeyPoint k = cv::KeyPoint(kp.keypoints[i].x, kp.keypoints[i].y,
+            kp.keypoints[i].size, kp.keypoints[i].angle, kp.keypoints[i].response,
+            kp.keypoints[i].octave, kp.keypoints[i].classID);
+        computed.push_back(k);
+    }
+
+    (*d)->compute(*src, computed, *desc);
+
+    KeyPoint* kps = new KeyPoint[computed.size()];
+
+    for (size_t i = 0; i < computed.size(); ++i) {
+        KeyPoint k = {computed[i].pt.x, computed[i].pt.y, computed[i].size, computed[i].angle,
+                      computed[i].response, computed[i].octave, computed[i].class_id
+                     };
+        kps[i] = k;
+    }
+
+    KeyPoints ret = {kps, (int)computed.size()};
+    return ret;
+}
+
 struct KeyPoints SURF_DetectAndCompute(SURF d, Mat src, Mat mask, Mat desc) {
     std::vector<cv::KeyPoint> detected;
     (*d)->detectAndCompute(*src, *mask, detected, *desc);

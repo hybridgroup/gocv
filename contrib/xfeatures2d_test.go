@@ -32,13 +32,23 @@ func TestSURF(t *testing.T) {
 
 	mask := gocv.NewMat()
 	defer mask.Close()
+	desc := gocv.NewMat()
+	defer desc.Close()
 
-	kp2, desc := si.DetectAndCompute(img, mask)
-	if len(kp2) == 512 {
-		t.Errorf("Invalid KeyPoint array in SURF DetectAndCompute: %d", len(kp2))
+	kpc := si.Compute(img, mask, kp, desc)
+	if len(kpc) < 512 {
+		t.Errorf("Invalid KeyPoint array in SURF Compute: %d", len(kpc))
+	}
+	if desc.Empty() {
+		t.Error("Invalid Mat desc in SURF Compute")
 	}
 
-	if desc.Empty() {
+	kpdc, desc2 := si.DetectAndCompute(img, mask)
+	defer desc2.Close()
+	if len(kpdc) < 512 {
+		t.Errorf("Invalid KeyPoint array in SURF DetectAndCompute: %d", len(kpdc))
+	}
+	if desc2.Empty() {
 		t.Error("Invalid Mat desc in SURF DetectAndCompute")
 	}
 }
