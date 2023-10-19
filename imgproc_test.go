@@ -1412,6 +1412,52 @@ func TestCompareHist(t *testing.T) {
 
 }
 
+func TestEMD(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadUnchanged)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in CompareHist test")
+	}
+	defer img.Close()
+
+	hist1 := NewMat()
+	defer hist1.Close()
+
+	hist2 := NewMat()
+	defer hist2.Close()
+
+	mask := NewMat()
+	defer mask.Close()
+
+	CalcHist([]Mat{img}, []int{0, 1}, mask, &hist1, []int{30, 32}, []float64{0.0, 180.0, 0.0, 255.0}, false)
+	CalcHist([]Mat{img}, []int{0, 1}, mask, &hist2, []int{30, 32}, []float64{0.0, 180.0, 0.0, 255.0}, false)
+
+	sig1 := NewMatWithSize(30*32, 3, MatTypeCV32FC1)
+	defer sig1.Close()
+
+	sig2 := NewMatWithSize(30*32, 3, MatTypeCV32FC1)
+	defer sig2.Close()
+
+	for h := 0; h < 30; h++ {
+		for s := 0; s < 32; s++ {
+			val := hist1.GetFloatAt(h, s)
+			sig1.SetFloatAt(h*32+s, 0, val)
+			sig1.SetFloatAt(h*32+s, 1, float32(h))
+			sig1.SetFloatAt(h*32+s, 2, float32(s))
+
+			val = hist2.GetFloatAt(h, s)
+			sig2.SetFloatAt(h*32+s, 0, val)
+			sig2.SetFloatAt(h*32+s, 1, float32(h))
+			sig2.SetFloatAt(h*32+s, 2, float32(s))
+		}
+	}
+
+	sim := EMD(sig1, sig2, DistL2)
+	if (1-sim)*100 < 99.9 {
+		t.Error("Invalid EMD test", (1-sim)*100)
+	}
+
+}
+
 func TestDrawing(t *testing.T) {
 	img := NewMatWithSize(150, 150, MatTypeCV8U)
 	if img.Empty() {

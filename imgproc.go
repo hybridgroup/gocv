@@ -176,6 +176,14 @@ func CompareHist(hist1 Mat, hist2 Mat, method HistCompMethod) float32 {
 	return float32(C.CompareHist(hist1.p, hist2.p, C.int(method)))
 }
 
+// EMD Computes the "minimal work" distance between two weighted point configurations.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d6/dc7/group__imgproc__hist.html#ga902b8e60cc7075c8947345489221e0e0
+func EMD(signature1, signature2 Mat, typ DistanceTypes) float32 {
+	return float32(C.EMD(signature1.p, signature2.p, C.int(typ)))
+}
+
 // ClipLine clips the line against the image rectangle.
 // For further details, please see:
 // https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#gaf483cb46ad6b049bc35ec67052ef1c2c

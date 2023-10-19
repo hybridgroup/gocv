@@ -68,8 +68,7 @@ Your pull requests will be greatly appreciated!
     - [ ] ColorMaps in OpenCV
     - [ ] Planar Subdivision
     - [ ] **Histograms  - WORK STARTED** The following functions still need implementation:
-        - [ ] [EMD](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga902b8e60cc7075c8947345489221e0e0)
-        - [ ] [wrapperEMD](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga31fdda0864e64ca6b9de252a2611758b)
+        - [X] [EMD](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga902b8e60cc7075c8947345489221e0e0)
 
     - [ ] **Structural Analysis and Shape Descriptors - WORK STARTED** The following functions still need implementation:
         - [ ] [fitEllipse](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf259efaad93098103d6c27b9e4900ffa)
