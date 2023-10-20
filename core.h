@@ -283,6 +283,9 @@ Mat Mat_FromPtr(Mat m, int rows, int cols, int type, int prows, int pcols);
 void Mat_Close(Mat m);
 int Mat_Empty(Mat m);
 bool Mat_IsContinuous(Mat m);
+void Mat_Inv(Mat m);
+Mat Mat_Col(Mat m, int c);
+Mat Mat_Row(Mat m, int r);
 Mat Mat_Clone(Mat m);
 void Mat_CopyTo(Mat m, Mat dst);
 int Mat_Total(Mat m);
@@ -399,6 +402,7 @@ double KMeans(Mat data, int k, Mat bestLabels, TermCriteria criteria, int attemp
 double KMeansPoints(PointVector pts, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers);
 void Mat_Log(Mat src, Mat dst);
 void Mat_Magnitude(Mat x, Mat y, Mat magnitude);
+double Mat_Mahalanobis(Mat v1, Mat v2, Mat icovar);
 void Mat_Max(Mat src1, Mat src2, Mat dst);
 void Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev);
 void Mat_Merge(struct Mats mats, Mat dst);
