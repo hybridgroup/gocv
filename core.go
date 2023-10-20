@@ -343,6 +343,26 @@ func (m *Mat) IsContinuous() bool {
 	return bool(C.Mat_IsContinuous(m.p))
 }
 
+// Inv inverses a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d3/d63/classcv_1_1Mat.html#a039eb3c6740a850696a12519a4b8bfc6
+func (m *Mat) Inv() {
+	C.Mat_Inv(m.p)
+}
+
+// Col creates a matrix header for the specified matrix column.
+// The underlying data of the new matrix is shared with the original matrix.
+func (m *Mat) Col(col int) Mat {
+	return newMat(C.Mat_Col(m.p, C.int(col)))
+}
+
+// Row creates a matrix header for the specified matrix row.
+// The underlying data of the new matrix is shared with the original matrix.
+func (m *Mat) Row(row int) Mat {
+	return newMat(C.Mat_Row(m.p, C.int(row)))
+}
+
 // Clone returns a cloned full copy of the Mat.
 func (m *Mat) Clone() Mat {
 	return newMat(C.Mat_Clone(m.p))
@@ -1389,6 +1409,14 @@ func Log(src Mat, dst *Mat) {
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6d3b097586bca4409873d64a90fe64c3
 func Magnitude(x, y Mat, magnitude *Mat) {
 	C.Mat_Magnitude(x.p, y.p, magnitude.p)
+}
+
+// Mahalanobis calculates the Mahalanobis distance between two vectors.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#ga4493aee129179459cbfc6064f051aa7d
+func Mahalanobis(v1, v2, icovar Mat) float64 {
+	return float64(C.Mat_Mahalanobis(v1.p, v2.p, icovar.p))
 }
 
 // Max calculates per-element maximum of two arrays or an array and a scalar.

@@ -2373,6 +2373,31 @@ func TestMatMagnitude(t *testing.T) {
 	}
 }
 
+func TestMatMahalanobis(t *testing.T) {
+	src := NewMatWithSize(10, 10, MatTypeCV32F)
+	defer src.Close()
+
+	RandU(&src, Scalar{Val1: -128}, Scalar{Val1: 128})
+
+	icovar := NewMatWithSize(10, 10, MatTypeCV32F)
+	defer icovar.Close()
+	mean := NewMatWithSize(1, 10, MatTypeCV32F)
+	defer mean.Close()
+
+	CalcCovarMatrix(src, &icovar, &mean, CovarRows|CovarNormal, MatTypeCV32F)
+	icovar.Inv()
+
+	line1 := src.Row(0)
+	defer line1.Close()
+	line2 := src.Row(1)
+	defer line2.Close()
+
+	result := Mahalanobis(line1, line2, icovar)
+	if result == 0 {
+		t.Error("Mahalanobis result should not be empty.")
+	}
+}
+
 func TestMatMax(t *testing.T) {
 	src1 := NewMatWithSize(4, 4, MatTypeCV32F)
 	defer src1.Close()

@@ -95,6 +95,18 @@ bool Mat_IsContinuous(Mat m) {
     return m->isContinuous();
 }
 
+void Mat_Inv(Mat m) {
+    m->inv();
+}
+
+Mat Mat_Col(Mat m, int c) {
+    return new cv::Mat(m->col(c));
+}
+
+Mat Mat_Row(Mat m, int r) {
+    return new cv::Mat(m->row(r));
+}
+
 // Mat_Clone returns a clone of this Mat
 Mat Mat_Clone(Mat m) {
     return new cv::Mat(m->clone());
@@ -589,6 +601,10 @@ void Mat_Log(Mat src, Mat dst) {
 
 void Mat_Magnitude(Mat x, Mat y, Mat magnitude) {
     cv::magnitude(*x, *y, *magnitude);
+}
+
+double Mat_Mahalanobis(Mat v1, Mat v2, Mat icovar) {
+    return cv::Mahalanobis(*v1, *v2, *icovar);
 }
 
 void Mat_Max(Mat src1, Mat src2, Mat dst) {
