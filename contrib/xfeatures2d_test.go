@@ -34,6 +34,7 @@ func TestSURF(t *testing.T) {
 	defer mask.Close()
 
 	kpc, desc := si.Compute(img, mask, kp)
+	defer desc.Close()
 	if len(kpc) < 512 {
 		t.Errorf("Invalid KeyPoint array in SURF Compute: %d", len(kpc))
 	}
@@ -78,6 +79,7 @@ func TestSURFWithParams(t *testing.T) {
 	defer mask.Close()
 
 	kpc, desc := si.Compute(img, mask, kp)
+	defer desc.Close()
 	if len(kpc) < 512 {
 		t.Errorf("Invalid KeyPoint array in SURF Compute: %d", len(kpc))
 	}
