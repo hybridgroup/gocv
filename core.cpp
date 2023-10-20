@@ -516,8 +516,16 @@ void Mat_EigenNonSymmetric(Mat src, Mat eigenvalues, Mat eigenvectors) {
     cv::eigenNonSymmetric(*src, *eigenvalues, *eigenvectors);
 }
 
+void Mat_PCABackProject(Mat data, Mat mean, Mat eigenvectors, Mat result) {
+    cv::PCABackProject(*data, *mean, *eigenvectors, *result);
+}
+
 void Mat_PCACompute(Mat src, Mat mean, Mat eigenvectors, Mat eigenvalues, int maxComponents) {
     cv::PCACompute(*src, *mean, *eigenvectors, *eigenvalues, maxComponents);
+}
+
+void Mat_PCAProject(Mat data, Mat mean, Mat eigenvectors, Mat result) {
+    cv::PCAProject(*data, *mean, *eigenvectors, *result);
 }
 
 void Mat_Exp(Mat src, Mat dst) {

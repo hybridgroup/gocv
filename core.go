@@ -1196,6 +1196,14 @@ func EigenNonSymmetric(src Mat, eigenvalues *Mat, eigenvectors *Mat) {
 	C.Mat_EigenNonSymmetric(src.p, eigenvalues.p, eigenvectors.p)
 }
 
+// PCABackProject reconstructs vectors from their PC projections.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#gab26049f30ee8e94f7d69d82c124faafc
+func PCABackProject(data Mat, mean Mat, eigenvectors Mat, result *Mat) {
+	C.Mat_PCABackProject(data.p, mean.p, eigenvectors.p, result.p)
+}
+
 // PCACompute performs PCA.
 //
 // The computed eigenvalues are sorted from the largest to the smallest and the corresponding
@@ -1207,6 +1215,14 @@ func EigenNonSymmetric(src Mat, eigenvalues *Mat, eigenvectors *Mat) {
 // https://docs.opencv.org/4.x/d2/de8/group__core__array.html#ga27a565b31d820b05dcbcd47112176b6e
 func PCACompute(src Mat, mean *Mat, eigenvectors *Mat, eigenvalues *Mat, maxComponents int) {
 	C.Mat_PCACompute(src.p, mean.p, eigenvectors.p, eigenvalues.p, C.int(maxComponents))
+}
+
+// PCAProject projects vector(s) to the principal component subspace.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#ga6b9fbc7b3a99ebfd441bbec0a6bc4f88
+func PCAProject(data Mat, mean Mat, eigenvectors Mat, result *Mat) {
+	C.Mat_PCAProject(data.p, mean.p, eigenvectors.p, result.p)
 }
 
 // Exp calculates the exponent of every array element.
