@@ -74,9 +74,7 @@ func (d *SURF) Compute(src gocv.Mat, mask gocv.Mat, kps []gocv.KeyPoint) ([]gocv
 		keypoints: (*C.struct_KeyPoint)(&kp2arr[0]),
 		length:    (C.int)(len(kps)),
 	}
-
 	ret := C.SURF_Compute((C.SURF)(d.p), C.Mat(src.Ptr()), cKeyPoints, C.Mat(desc.Ptr()))
-	defer C.KeyPoints_Close(ret)
 
 	return getKeyPoints(ret), desc
 }
