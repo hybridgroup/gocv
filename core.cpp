@@ -528,6 +528,10 @@ void Mat_PCAProject(Mat data, Mat mean, Mat eigenvectors, Mat result) {
     cv::PCAProject(*data, *mean, *eigenvectors, *result);
 }
 
+double PSNR(Mat src1, Mat src2) {
+    return cv::PSNR(*src1, *src2);
+}
+
 void Mat_Exp(Mat src, Mat dst) {
     cv::exp(*src, *dst);
 }

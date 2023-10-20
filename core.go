@@ -1225,6 +1225,14 @@ func PCAProject(data Mat, mean Mat, eigenvectors Mat, result *Mat) {
 	C.Mat_PCAProject(data.p, mean.p, eigenvectors.p, result.p)
 }
 
+// PSNR computes the Peak Signal-to-Noise Ratio (PSNR) image quality metric.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#ga3119e3ea73010a6f810bb05aa36ac8d6
+func PSNR(src1 Mat, src2 Mat) float64 {
+	return float64(C.PSNR(src1.p, src2.p))
+}
+
 // Exp calculates the exponent of every array element.
 //
 // For further details, please see:

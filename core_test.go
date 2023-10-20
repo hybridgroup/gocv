@@ -2162,6 +2162,19 @@ func TestPCAProject(t *testing.T) {
 	}
 }
 
+func TestPSNR(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadColor)
+	if src.Empty() {
+		t.Error("Invalid read of Source Mat in PSNR test")
+	}
+	defer src.Close()
+
+	result := PSNR(src, src)
+	if result == 0 {
+		t.Error("Unexpected PSNR of 0")
+	}
+}
+
 func TestMatExp(t *testing.T) {
 	src := NewMatWithSize(10, 10, MatTypeCV32F)
 	dst := NewMat()

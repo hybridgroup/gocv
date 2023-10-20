@@ -385,6 +385,7 @@ void Mat_EigenNonSymmetric(Mat src, Mat eigenvalues, Mat eigenvectors);
 void Mat_PCABackProject(Mat data, Mat mean, Mat eigenvectors, Mat result);
 void Mat_PCACompute(Mat src, Mat mean, Mat eigenvectors, Mat eigenvalues, int maxComponents);
 void Mat_PCAProject(Mat data, Mat mean, Mat eigenvectors, Mat result);
+double PSNR(Mat src1, Mat src2);
 void Mat_Exp(Mat src, Mat dst);
 void Mat_ExtractChannel(Mat src, Mat dst, int coi);
 void Mat_FindNonZero(Mat src, Mat idx);
