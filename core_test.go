@@ -2070,6 +2070,36 @@ func TestMatEigenNonSymmetric(t *testing.T) {
 	eigenvalues.Close()
 }
 
+func TestPCABackProject(t *testing.T) {
+	data := NewMatWithSize(3, 1, MatTypeCV32F)
+	defer data.Close()
+	data.SetFloatAt(0, 0, float32(-5))
+	data.SetFloatAt(1, 0, float32(0))
+	data.SetFloatAt(2, 0, float32(-10))
+
+	mean := NewMatWithSize(1, 4, MatTypeCV32F)
+	defer mean.Close()
+	mean.SetFloatAt(0, 0, float32(2))
+	mean.SetFloatAt(0, 1, float32(4))
+	mean.SetFloatAt(0, 2, float32(4))
+	mean.SetFloatAt(0, 3, float32(8))
+
+	vectors := NewMatWithSizeFromScalar(NewScalar(0, 0, 0, 0), 1, 4, MatTypeCV32F)
+	defer vectors.Close()
+	vectors.SetFloatAt(0, 0, float32(0.2))
+	vectors.SetFloatAt(0, 1, float32(0.4))
+	vectors.SetFloatAt(0, 2, float32(0.4))
+	vectors.SetFloatAt(0, 3, float32(0.8))
+
+	result := NewMat()
+	defer result.Close()
+
+	PCABackProject(data, mean, vectors, &result)
+	if result.Empty() {
+		t.Error("PCABackProject should not have empty result.")
+	}
+}
+
 func TestPCACompute(t *testing.T) {
 	src := NewMatWithSize(10, 10, MatTypeCV32F)
 	// Set some source data so the PCA is done on a non-zero matrix.
@@ -2091,6 +2121,45 @@ func TestPCACompute(t *testing.T) {
 	mean.Close()
 	eigenvectors.Close()
 	eigenvalues.Close()
+}
+
+func TestPCAProject(t *testing.T) {
+	data := NewMatWithSize(3, 4, MatTypeCV32F)
+	defer data.Close()
+	data.SetFloatAt(0, 0, float32(1))
+	data.SetFloatAt(0, 1, float32(2))
+	data.SetFloatAt(0, 2, float32(2))
+	data.SetFloatAt(0, 3, float32(4))
+	data.SetFloatAt(1, 0, float32(2))
+	data.SetFloatAt(1, 1, float32(4))
+	data.SetFloatAt(1, 2, float32(4))
+	data.SetFloatAt(1, 3, float32(8))
+	data.SetFloatAt(2, 0, float32(0))
+	data.SetFloatAt(2, 1, float32(0))
+	data.SetFloatAt(2, 2, float32(0))
+	data.SetFloatAt(2, 3, float32(0))
+
+	mean := NewMatWithSize(1, 4, MatTypeCV32F)
+	defer mean.Close()
+	mean.SetFloatAt(0, 0, float32(2))
+	mean.SetFloatAt(0, 1, float32(4))
+	mean.SetFloatAt(0, 2, float32(4))
+	mean.SetFloatAt(0, 3, float32(8))
+
+	vectors := NewMatWithSizeFromScalar(NewScalar(0, 0, 0, 0), 1, 4, MatTypeCV32F)
+	defer vectors.Close()
+	vectors.SetFloatAt(0, 0, float32(0.2))
+	vectors.SetFloatAt(0, 1, float32(0.4))
+	vectors.SetFloatAt(0, 2, float32(0.4))
+	vectors.SetFloatAt(0, 3, float32(0.8))
+
+	result := NewMat()
+	defer result.Close()
+
+	PCAProject(data, mean, vectors, &result)
+	if result.Empty() {
+		t.Error("PCABackProject should not have empty result.")
+	}
 }
 
 func TestMatExp(t *testing.T) {
