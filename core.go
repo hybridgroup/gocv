@@ -1233,6 +1233,22 @@ func PSNR(src1 Mat, src2 Mat) float64 {
 	return float64(C.PSNR(src1.p, src2.p))
 }
 
+// SVBackSubst performs a singular value back substitution.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#gab4e620e6fc6c8a27bb2be3d50a840c0b
+func SVBackSubst(w Mat, u Mat, vt Mat, rhs Mat, dst *Mat) {
+	C.SVBackSubst(w.p, u.p, vt.p, rhs.p, dst.p)
+}
+
+// SVDecomp decomposes matrix and stores the results to user-provided matrices.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#gab477b5b7b39b370bb03e75b19d2d5109
+func SVDecomp(src Mat, w *Mat, u *Mat, vt *Mat) {
+	C.SVDecomp(src.p, w.p, u.p, vt.p)
+}
+
 // Exp calculates the exponent of every array element.
 //
 // For further details, please see:

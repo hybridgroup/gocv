@@ -532,6 +532,14 @@ double PSNR(Mat src1, Mat src2) {
     return cv::PSNR(*src1, *src2);
 }
 
+void SVBackSubst(Mat w, Mat u, Mat vt, Mat rhs, Mat dst) {
+    cv::SVBackSubst(*w, *u, *vt, *rhs, *dst);
+}
+
+void SVDecomp(Mat src, Mat w, Mat u, Mat vt) {
+    cv::SVDecomp(*src, *w, *u, *vt);
+}
+
 void Mat_Exp(Mat src, Mat dst) {
     cv::exp(*src, *dst);
 }

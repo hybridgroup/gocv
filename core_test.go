@@ -2175,6 +2175,51 @@ func TestPSNR(t *testing.T) {
 	}
 }
 
+func TestSVBackSubst(t *testing.T) {
+	w := NewMatWithSizeFromScalar(NewScalar(2, 0, 0, 0), 2, 2, MatTypeCV32F)
+	defer w.Close()
+
+	u := NewMatWithSizeFromScalar(NewScalar(4, 0, 0, 0), 2, 2, MatTypeCV32F)
+	defer u.Close()
+
+	vt := NewMatWithSizeFromScalar(NewScalar(2, 0, 0, 0), 2, 2, MatTypeCV32F)
+	defer vt.Close()
+
+	rhs := NewMatWithSizeFromScalar(NewScalar(1, 0, 0, 0), 2, 2, MatTypeCV32F)
+	defer rhs.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	SVBackSubst(w, u, vt, rhs, &dst)
+	if dst.Empty() {
+		t.Error("SVBackSubst should not have empty result.")
+	}
+}
+
+func TestSVDecomp(t *testing.T) {
+	src := NewMatWithSize(1, 4, MatTypeCV32F)
+	defer src.Close()
+	src.SetFloatAt(0, 0, float32(1))
+	src.SetFloatAt(0, 1, float32(4))
+	src.SetFloatAt(0, 2, float32(8))
+	src.SetFloatAt(0, 3, float32(6))
+
+	w := NewMat()
+	defer w.Close()
+
+	u := NewMat()
+	defer u.Close()
+
+	vt := NewMat()
+	defer vt.Close()
+
+	SVDecomp(src, &w, &u, &vt)
+	if w.Empty() || u.Empty() || vt.Empty() {
+		t.Error("SVDecomp should not have empty results.")
+	}
+}
+
 func TestMatExp(t *testing.T) {
 	src := NewMatWithSize(10, 10, MatTypeCV32F)
 	dst := NewMat()

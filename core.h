@@ -386,6 +386,8 @@ void Mat_PCABackProject(Mat data, Mat mean, Mat eigenvectors, Mat result);
 void Mat_PCACompute(Mat src, Mat mean, Mat eigenvectors, Mat eigenvalues, int maxComponents);
 void Mat_PCAProject(Mat data, Mat mean, Mat eigenvectors, Mat result);
 double PSNR(Mat src1, Mat src2);
+void SVBackSubst(Mat w, Mat u, Mat vt, Mat rhs, Mat dst);
+void SVDecomp(Mat src, Mat w, Mat u, Mat vt);
 void Mat_Exp(Mat src, Mat dst);
 void Mat_ExtractChannel(Mat src, Mat dst, int coi);
 void Mat_FindNonZero(Mat src, Mat idx);
