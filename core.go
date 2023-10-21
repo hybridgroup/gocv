@@ -1459,6 +1459,14 @@ func Mahalanobis(v1, v2, icovar Mat) float64 {
 	return float64(C.Mat_Mahalanobis(v1.p, v2.p, icovar.p))
 }
 
+// MulTransposed calculates the product of a matrix and its transposition.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#gadc4e49f8f7a155044e3be1b9e3b270ab
+func MulTransposed(src Mat, dest *Mat, ata bool) {
+	C.MulTransposed(src.p, dest.p, C.bool(ata))
+}
+
 // Max calculates per-element maximum of two arrays or an array and a scalar.
 //
 // For further details, please see:

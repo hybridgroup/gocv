@@ -2525,6 +2525,19 @@ func TestMatMahalanobis(t *testing.T) {
 	}
 }
 
+func TestMulTransposed(t *testing.T) {
+	src := Eye(10, 10, MatTypeCV32FC1)
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	MulTransposed(src, &dst, true)
+	if dst.Empty() {
+		t.Error("MulTransposed dst should not be empty.")
+	}
+}
+
 func TestMatMax(t *testing.T) {
 	src1 := NewMatWithSize(4, 4, MatTypeCV32F)
 	defer src1.Close()
