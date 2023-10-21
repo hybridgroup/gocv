@@ -14,9 +14,9 @@ Your pull requests will be greatly appreciated!
 
 - [ ] **core. Core functionality - WORK STARTED**
     - [X] **Basic structures**
-    - [ ] **Operations on arrays - WORK STARTED**. The following functions still need implementation:
+    - [X] **Operations on arrays - WORK STARTED**. The following functions still need implementation:
         - [X] [Mahalanobis](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4493aee129179459cbfc6064f051aa7d)
-        - [ ] [mulTransposed](https://docs.opencv.org/master/d2/de8/group__core__array.html#gadc4e49f8f7a155044e3be1b9e3b270ab)
+        - [X] [mulTransposed](https://docs.opencv.org/master/d2/de8/group__core__array.html#gadc4e49f8f7a155044e3be1b9e3b270ab)
         - [X] [PCABackProject](https://docs.opencv.org/master/d2/de8/group__core__array.html#gab26049f30ee8e94f7d69d82c124faafc)
         - [X] [PCACompute](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4e2073c7311f292a0648f04c37b73781)
         - [X] [PCAProject](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6b9fbc7b3a99ebfd441bbec0a6bc4f88)

@@ -408,6 +408,7 @@ double KMeansPoints(PointVector pts, int k, Mat bestLabels, TermCriteria criteri
 void Mat_Log(Mat src, Mat dst);
 void Mat_Magnitude(Mat x, Mat y, Mat magnitude);
 double Mat_Mahalanobis(Mat v1, Mat v2, Mat icovar);
+void MulTransposed(Mat src, Mat dest, bool ata);
 void Mat_Max(Mat src1, Mat src2, Mat dst);
 void Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev);
 void Mat_Merge(struct Mats mats, Mat dst);

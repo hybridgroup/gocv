@@ -627,6 +627,10 @@ double Mat_Mahalanobis(Mat v1, Mat v2, Mat icovar) {
     return cv::Mahalanobis(*v1, *v2, *icovar);
 }
 
+void MulTransposed(Mat src, Mat dest, bool ata) {
+    cv::mulTransposed(*src, *dest, ata);
+}
+
 void Mat_Max(Mat src1, Mat src2, Mat dst) {
     cv::max(*src1, *src2, *dst);
 }
