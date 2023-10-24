@@ -39,6 +39,7 @@ typedef void* SIFT;
 AKAZE AKAZE_Create();
 void AKAZE_Close(AKAZE a);
 struct KeyPoints AKAZE_Detect(AKAZE a, Mat src);
+struct KeyPoints AKAZE_Compute(AKAZE a, Mat src, struct KeyPoints kp, Mat desc);
 struct KeyPoints AKAZE_DetectAndCompute(AKAZE a, Mat src, Mat mask, Mat desc);
 
 AgastFeatureDetector AgastFeatureDetector_Create();
@@ -48,6 +49,7 @@ struct KeyPoints AgastFeatureDetector_Detect(AgastFeatureDetector a, Mat src);
 BRISK BRISK_Create();
 void BRISK_Close(BRISK b);
 struct KeyPoints BRISK_Detect(BRISK b, Mat src);
+struct KeyPoints BRISK_Compute(BRISK b, Mat src, struct KeyPoints kp, Mat desc);
 struct KeyPoints BRISK_DetectAndCompute(BRISK b, Mat src, Mat mask, Mat desc);
 
 FastFeatureDetector FastFeatureDetector_Create();
@@ -62,6 +64,7 @@ struct KeyPoints GFTTDetector_Detect(GFTTDetector a, Mat src);
 KAZE KAZE_Create();
 void KAZE_Close(KAZE a);
 struct KeyPoints KAZE_Detect(KAZE a, Mat src);
+struct KeyPoints KAZE_Compute(KAZE a, Mat src, struct KeyPoints kp, Mat desc);
 struct KeyPoints KAZE_DetectAndCompute(KAZE a, Mat src, Mat mask, Mat desc);
 
 MSER MSER_Create();
@@ -72,6 +75,7 @@ ORB ORB_Create();
 ORB ORB_CreateWithParams(int nfeatures, float scaleFactor, int nlevels, int edgeThreshold, int firstLevel, int WTA_K, int scoreType, int patchSize, int fastThreshold);
 void ORB_Close(ORB o);
 struct KeyPoints ORB_Detect(ORB o, Mat src);
+struct KeyPoints ORB_Compute(ORB o, Mat src, struct KeyPoints kp, Mat desc);
 struct KeyPoints ORB_DetectAndCompute(ORB o, Mat src, Mat mask, Mat desc);
 
 SimpleBlobDetector SimpleBlobDetector_Create();
@@ -95,6 +99,7 @@ void DrawKeyPoints(Mat src, struct KeyPoints kp, Mat dst, const Scalar s, int fl
 SIFT SIFT_Create();
 void SIFT_Close(SIFT f);
 struct KeyPoints SIFT_Detect(SIFT f, Mat src);
+struct KeyPoints SIFT_Compute(SIFT f, Mat src, struct KeyPoints kp, Mat desc);
 struct KeyPoints SIFT_DetectAndCompute(SIFT f, Mat src, Mat mask, Mat desc);
 
 void DrawMatches(Mat img1, struct KeyPoints kp1, Mat img2, struct KeyPoints kp2, struct DMatches matches1to2, Mat outImg, const Scalar matchesColor, const Scalar pointColor, struct ByteArray matchesMask, int flags);

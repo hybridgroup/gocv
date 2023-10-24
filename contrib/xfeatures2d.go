@@ -54,6 +54,31 @@ func (d *SURF) Detect(src gocv.Mat) []gocv.KeyPoint {
 	return getKeyPoints(ret)
 }
 
+// Compute keypoints in an image using SURF.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d0/d13/classcv_1_1Feature2D.html#ab3cce8d56f4fc5e1d530b5931e1e8dc0
+func (d *SURF) Compute(src gocv.Mat, mask gocv.Mat, kps []gocv.KeyPoint) ([]gocv.KeyPoint, gocv.Mat) {
+	desc := gocv.NewMat()
+	kp2arr := make([]C.struct_KeyPoint, len(kps))
+	for i, kp := range kps {
+		kp2arr[i].x = C.double(kp.X)
+		kp2arr[i].y = C.double(kp.Y)
+		kp2arr[i].size = C.double(kp.Size)
+		kp2arr[i].angle = C.double(kp.Angle)
+		kp2arr[i].response = C.double(kp.Response)
+		kp2arr[i].octave = C.int(kp.Octave)
+		kp2arr[i].classID = C.int(kp.ClassID)
+	}
+	cKeyPoints := C.struct_KeyPoints{
+		keypoints: (*C.struct_KeyPoint)(&kp2arr[0]),
+		length:    (C.int)(len(kps)),
+	}
+	ret := C.SURF_Compute((C.SURF)(d.p), C.Mat(src.Ptr()), cKeyPoints, C.Mat(desc.Ptr()))
+
+	return getKeyPoints(ret), desc
+}
+
 // DetectAndCompute detects and computes keypoints in an image using SURF.
 //
 // For further details, please see:
