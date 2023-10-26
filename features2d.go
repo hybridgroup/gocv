@@ -7,15 +7,37 @@ package gocv
 import "C"
 import (
 	"image/color"
+	"io"
 	"reflect"
 	"unsafe"
 )
+
+type Detector interface {
+	Detect(src Mat) []KeyPoint
+}
+
+type Computer interface {
+	Compute(src Mat, mask Mat, kps []KeyPoint) ([]KeyPoint, Mat)
+}
+
+type DetectComputer interface {
+	DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat)
+}
+
+type Feature2D interface {
+	io.Closer
+	Detector
+	Computer
+	DetectComputer
+}
 
 // AKAZE is a wrapper around the cv::AKAZE algorithm.
 type AKAZE struct {
 	// C.AKAZE
 	p unsafe.Pointer
 }
+
+var _ Feature2D = (*AKAZE)(nil)
 
 // NewAKAZE returns a new AKAZE algorithm
 //
@@ -119,6 +141,8 @@ type BRISK struct {
 	// C.BRISK
 	p unsafe.Pointer
 }
+
+var _ Feature2D = (*BRISK)(nil)
 
 // NewBRISK returns a new BRISK algorithm
 //
@@ -278,6 +302,8 @@ type KAZE struct {
 	p unsafe.Pointer
 }
 
+var _ Feature2D = (*KAZE)(nil)
+
 // NewKAZE returns a new KAZE algorithm
 //
 // For further details, please see:
@@ -380,6 +406,8 @@ type ORB struct {
 	// C.ORB
 	p unsafe.Pointer
 }
+
+var _ Feature2D = (*ORB)(nil)
 
 // NewORB returns a new ORB algorithm
 //
@@ -904,6 +932,8 @@ type SIFT struct {
 	// C.SIFT
 	p unsafe.Pointer
 }
+
+var _ Feature2D = (*SIFT)(nil)
 
 // NewSIFT returns a new SIFT algorithm.
 //
