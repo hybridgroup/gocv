@@ -21,6 +21,8 @@ type SURF struct {
 	p unsafe.Pointer
 }
 
+var _ gocv.Feature2D = (*SURF)(nil)
+
 // NewSURF returns a new SURF algorithm.
 //
 // For further details, please see:
