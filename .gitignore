@@ -10,3 +10,4 @@ count.out
 .idea/
 contrib/data.yaml
 contrib/testOilPainting.png
+lbfmodel.yaml
