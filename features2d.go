@@ -12,23 +12,23 @@ import (
 	"unsafe"
 )
 
-type Detector interface {
+type Feature2DDetector interface {
 	Detect(src Mat) []KeyPoint
 }
 
-type Computer interface {
+type Feature2DComputer interface {
 	Compute(src Mat, mask Mat, kps []KeyPoint) ([]KeyPoint, Mat)
 }
 
-type DetectComputer interface {
+type Feature2DDetectComputer interface {
 	DetectAndCompute(src Mat, mask Mat) ([]KeyPoint, Mat)
 }
 
 type Feature2D interface {
 	io.Closer
-	Detector
-	Computer
-	DetectComputer
+	Feature2DDetector
+	Feature2DComputer
+	Feature2DDetectComputer
 }
 
 // AKAZE is a wrapper around the cv::AKAZE algorithm.
