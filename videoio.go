@@ -282,6 +282,43 @@ const (
 	VideoCaptureBitrate VideoCaptureProperties = 47
 )
 
+const (
+	CAP_ANY = 0
+	CAP_VFW = 200
+	CAP_V4L = 200
+	CAP_V4L2 = 200
+	CAP_FIREWIRE = 300
+	CAP_FIREWARE = 300
+	CAP_IEEE1394 = 300
+	CAP_DC1394 = 300
+	CAP_CMU1394 = 300
+	CAP_QT = 500
+	CAP_UNICAP = 600
+	CAP_DSHOW = 700
+	CAP_PVAPI = 800
+	CAP_OPENNI = 900
+	CAP_OPENNI_ASUS = 910
+	CAP_ANDROID = 1000
+	CAP_XIAPI = 1100
+	CAP_AVFOUNDATION = 1200
+	CAP_GIGANETIX = 1300
+	CAP_MSMF = 1400
+	CAP_WINRT = 1410
+	CAP_INTELPERC = 1500
+	CAP_OPENNI2 = 1600
+	CAP_OPENNI2_ASUS = 1610
+	CAP_GPHOTO2 = 1700
+	CAP_GSTREAMER = 1800
+	CAP_FFMPEG = 1900
+	CAP_IMAGES = 2000
+	CAP_ARAVIS = 2100
+	CAP_OPENCV_MJPEG = 2200
+	CAP_INTEL_MFX = 2300
+	CAP_XINE = 2400
+)
+
+
+
 // VideoCapture is a wrapper around the OpenCV VideoCapture class.
 //
 // For further details, please see:
@@ -435,6 +472,32 @@ func VideoWriterFile(name string, codec string, fps float64, width int, height i
 	defer C.free(unsafe.Pointer(cCodec))
 
 	C.VideoWriter_Open(vw.p, cName, cCodec, C.double(fps), C.int(width), C.int(height), C.bool(isColor))
+	return
+}
+
+func VideoWriterCap(name string, apiPreference int, codec string, fps float64, width int, height int, isColor bool) (vw *VideoWriter, err error) {
+
+	if fps == 0 || width == 0 || height == 0 {
+		return nil, fmt.Errorf("one of the numerical parameters "+
+			"is equal to zero: FPS: %f, width: %d, height: %d", fps, width, height)
+	}
+
+	vw = &VideoWriter{
+		p:  C.VideoWriter_New(),
+		mu: &sync.RWMutex{},
+	}
+
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+
+	cCodec := C.CString(codec)
+	defer C.free(unsafe.Pointer(cCodec))
+
+	cApiPreference := C.int(apiPreference)
+	////defer C.free(unsafe.Pointer(apiPreference))
+
+	C.VideoWriter_OpenCap(vw.p, cName, cApiPreference, cCodec, C.double(fps), C.int(width), C.int(height), C.bool(isColor))
+
 	return
 }
 
