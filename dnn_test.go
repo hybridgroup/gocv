@@ -56,8 +56,27 @@ func checkNet(t *testing.T, net Net) {
 		t.Errorf("Invalid len layer names in ReadNet test: %d\n", len(lnames))
 	}
 
-	if len(lnames) == 142 && lnames[1] != "conv1/relu_7x7" {
-		t.Errorf("Invalid layer name in ReadNet test: %s\n", lnames[1])
+	m := map[int]string{
+		0:   "conv1/7x7_s2",
+		10:  "inception_3a/1x1",
+		20:  "inception_3a/pool",
+		30:  "inception_3b/5x5_reduce",
+		40:  "inception_4a/relu_1x1",
+		50:  "inception_4a/pool_proj",
+		60:  "inception_4b/relu_5x5_reduce",
+		70:  "inception_4c/relu_3x3_reduce",
+		80:  "inception_4c/output",
+		90:  "inception_4d/relu_5x5",
+		100: "inception_4e/relu_3x3",
+		110: "inception_5a/1x1",
+		120: "inception_5a/pool",
+		130: "inception_5b/5x5_reduce",
+		140: "loss3/classifier"}
+
+	for k, v := range m {
+		if lnames[k] != v {
+			t.Errorf("Invalid layer name in ReadNet test: \"%s\" (expected=\"%s\")\n", lnames[k], v)
+		}
 	}
 
 	prob := net.ForwardLayers([]string{"prob"})
