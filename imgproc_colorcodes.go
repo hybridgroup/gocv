@@ -9,22 +9,35 @@ type ColorConversionCode int
 const (
 	// ColorBGRToBGRA adds alpha channel to BGR image.
 	ColorBGRToBGRA ColorConversionCode = 0
+	// ColorRGBToRGBA adds alpha channel to RGB image.
+	ColorRGBToRGBA ColorConversionCode = ColorBGRToBGRA
 
 	// ColorBGRAToBGR removes alpha channel from BGR image.
 	ColorBGRAToBGR ColorConversionCode = 1
+	// ColorRGBAToRGB removes alpha channel from RGB image.
+	ColorRGBAToRGB ColorConversionCode = ColorBGRAToBGR
 
 	// ColorBGRToRGBA converts from BGR to RGB with alpha channel.
 	ColorBGRToRGBA ColorConversionCode = 2
+	// ColorRGBToBGRA converts from RGB to BGR with alpha channel.
+	ColorRGBToBGRA ColorConversionCode = ColorBGRToRGBA
 
 	// ColorRGBAToBGR converts from RGB with alpha to BGR color space.
 	ColorRGBAToBGR ColorConversionCode = 3
+	// ColorBGRAToRGB converts from BRG with alpha to RGB color space.
+	ColorBGRAToRGB ColorConversionCode = ColorRGBAToBGR
 
 	// ColorBGRToRGB converts from BGR to RGB without alpha channel.
 	ColorBGRToRGB ColorConversionCode = 4
+	// ColorRGBToBGR converts from RGB to BGR without alpha channel.
+	ColorRGBToBGR ColorConversionCode = ColorBGRToRGB
 
 	// ColorBGRAToRGBA converts from BGR with alpha channel
 	// to RGB with alpha channel.
 	ColorBGRAToRGBA ColorConversionCode = 5
+	// ColorRGBAToBGRA converts from RGB with alpha channel
+	// to BGR with alpha channel.
+	ColorRGBAToBGRA ColorConversionCode = ColorBGRAToRGBA
 
 	// ColorBGRToGray converts from BGR to grayscale.
 	ColorBGRToGray ColorConversionCode = 6
@@ -34,9 +47,13 @@ const (
 
 	// ColorGrayToBGR converts from grayscale to BGR.
 	ColorGrayToBGR ColorConversionCode = 8
+	// ColorGrayToRGB converts from grayscale to RGB.
+	ColorGrayToRGB ColorConversionCode = ColorGrayToBGR
 
 	// ColorGrayToBGRA converts from grayscale to BGR with alpha channel.
 	ColorGrayToBGRA ColorConversionCode = 9
+	// ColorGrayToRGBA converts from grayscale to RGB with alpha channel.
+	ColorGrayToRGBA ColorConversionCode = ColorGrayToBGRA
 
 	// ColorBGRAToGray converts from BGR with alpha channel to grayscale.
 	ColorBGRAToGray ColorConversionCode = 10
@@ -323,6 +340,11 @@ const (
 	ColorBayerRGToBGR ColorConversionCode = 48
 	ColorBayerGRToBGR ColorConversionCode = 49
 
+	ColorBayerBGToRGB ColorConversionCode = ColorBayerRGToBGR
+	ColorBayerGBToRGB ColorConversionCode = ColorBayerGRToBGR
+	ColorBayerRGToRGB ColorConversionCode = ColorBayerBGToBGR
+	ColorBayerGRToRGB ColorConversionCode = ColorBayerGBToBGR
+
 	ColorBayerBGToGRAY ColorConversionCode = 86
 	ColorBayerGBToGRAY ColorConversionCode = 87
 	ColorBayerRGToGRAY ColorConversionCode = 88
@@ -334,17 +356,32 @@ const (
 	ColorBayerRGToBGRVNG ColorConversionCode = 64
 	ColorBayerGRToBGRVNG ColorConversionCode = 65
 
+	ColorBayerBGToRGBVNG ColorConversionCode = ColorBayerRGToBGRVNG
+	ColorBayerGBToRGBVNG ColorConversionCode = ColorBayerGRToBGRVNG
+	ColorBayerRGToRGBVNG ColorConversionCode = ColorBayerBGToBGRVNG
+	ColorBayerGRToRGBVNG ColorConversionCode = ColorBayerGBToBGRVNG
+
 	// Edge-Aware Demosaicing
 	ColorBayerBGToBGREA ColorConversionCode = 135
 	ColorBayerGBToBGREA ColorConversionCode = 136
 	ColorBayerRGToBGREA ColorConversionCode = 137
 	ColorBayerGRToBGREA ColorConversionCode = 138
 
+	ColorBayerBGToRGBEA ColorConversionCode = ColorBayerRGToBGREA
+	ColorBayerGBToRGBEA ColorConversionCode = ColorBayerGRToBGREA
+	ColorBayerRGToRGBEA ColorConversionCode = ColorBayerBGToBGREA
+	ColorBayerGRToRGBEA ColorConversionCode = ColorBayerGBToBGREA
+
 	// Demosaicing with alpha channel
 	ColorBayerBGToBGRA ColorConversionCode = 139
 	ColorBayerGBToBGRA ColorConversionCode = 140
 	ColorBayerRGToBGRA ColorConversionCode = 141
 	ColorBayerGRToBGRA ColorConversionCode = 142
+
+	ColorBayerBGToRGBA ColorConversionCode = ColorBayerRGToBGRA
+	ColorBayerGBToRGBA ColorConversionCode = ColorBayerGRToBGRA
+	ColorBayerRGToRGBA ColorConversionCode = ColorBayerBGToBGRA
+	ColorBayerGRToRGBA ColorConversionCode = ColorBayerGBToBGRA
 
 	ColorCOLORCVTMAX ColorConversionCode = 143
 )
