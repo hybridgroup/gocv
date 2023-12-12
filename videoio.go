@@ -379,6 +379,14 @@ func (v *VideoCapture) Grab(skip int) {
 	C.VideoCapture_Grab(v.p, C.int(skip))
 }
 
+// Retrieve decodes and returns the grabbed video frame. Should be used after Grab
+//
+// For further details, please see:
+// http://docs.opencv.org/master/d8/dfe/classcv_1_1VideoCapture.html#a9ac7f4b1cdfe624663478568486e6712
+func (v *VideoCapture) Retrieve(m *Mat) bool {
+	return C.VideoCapture_Retrieve(v.p, m.p) != 0
+}
+
 // CodecString returns a string representation of FourCC bytes, i.e. the name of a codec
 func (v *VideoCapture) CodecString() string {
 	res := ""
