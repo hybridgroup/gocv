@@ -28,6 +28,7 @@ double VideoCapture_Get(VideoCapture v, int prop);
 int VideoCapture_IsOpened(VideoCapture v);
 int VideoCapture_Read(VideoCapture v, Mat buf);
 void VideoCapture_Grab(VideoCapture v, int skip);
+int VideoCapture_Retrieve(VideoCapture v, Mat buf);
 
 // VideoWriter
 VideoWriter VideoWriter_New();

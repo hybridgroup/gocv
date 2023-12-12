@@ -47,6 +47,10 @@ void VideoCapture_Grab(VideoCapture v, int skip) {
     }
 }
 
+int VideoCapture_Retrieve(VideoCapture v, Mat buf) {
+    return v->retrieve(*buf);
+}
+
 // VideoWriter
 VideoWriter VideoWriter_New() {
     return new cv::VideoWriter();
