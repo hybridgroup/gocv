@@ -221,7 +221,7 @@ func MinWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 // Multiply computes a matrix-matrix or matrix-scalar multiplication.
 //
 // For further details, please see:
-// https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga124315aa226260841e25cc0b9ea99dc3
+// https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga497cc0615bf717e1e615143b56f00591
 func Multiply(src1, src2 GpuMat, dst *GpuMat) {
 	C.GpuMultiply(src1.p, src2.p, dst.p, nil)
 }
@@ -229,7 +229,7 @@ func Multiply(src1, src2 GpuMat, dst *GpuMat) {
 // MultiplyWithStream computes a matrix-matrix or matrix-scalar multiplication.
 //
 // For further details, please see:
-// https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga124315aa226260841e25cc0b9ea99dc3
+// https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga497cc0615bf717e1e615143b56f00591
 func MultiplyWithStream(src1, src2 GpuMat, dst *GpuMat, s Stream) {
 	C.GpuMultiply(src1.p, src2.p, dst.p, s.p)
 }
