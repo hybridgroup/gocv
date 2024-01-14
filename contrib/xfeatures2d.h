@@ -12,9 +12,11 @@ extern "C" {
 #ifdef __cplusplus
 typedef cv::Ptr<cv::xfeatures2d::SURF>* SURF;
 typedef cv::Ptr<cv::xfeatures2d::BEBLID>* BeblidDescriptorExtractor;
+typedef cv::Ptr<cv::xfeatures2d::TEBLID>* TeblidDescriptorExtractor;
 #else
 typedef void* SURF;
 typedef void* BeblidDescriptorExtractor;
+typedef void* TeblidDescriptorExtractor;
 #endif
 
 SURF SURF_Create();
@@ -25,6 +27,10 @@ struct KeyPoints SURF_DetectAndCompute(SURF f, Mat src, Mat mask, Mat desc);
 BeblidDescriptorExtractor BeblidDescriptorExtractor_Create(float scaleFactor, int size);
 void BeblidDescriptorExtractor_Close(BeblidDescriptorExtractor b);
 void BeblidDescriptorExtractor_Compute(BeblidDescriptorExtractor b, Mat src, struct KeyPoints kp, Mat desc);
+
+TeblidDescriptorExtractor TeblidDescriptorExtractor_Create(float scaleFactor, int size);
+void TeblidDescriptorExtractor_Close(TeblidDescriptorExtractor b);
+void TeblidDescriptorExtractor_Compute(TeblidDescriptorExtractor b, Mat src, struct KeyPoints kp, Mat desc);
 
 #ifdef __cplusplus
 }

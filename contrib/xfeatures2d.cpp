@@ -66,3 +66,26 @@ void BeblidDescriptorExtractor_Compute(BeblidDescriptorExtractor b, Mat src, str
 
     (*b)->compute(*src, keypts, *desc);
 }
+
+TeblidDescriptorExtractor TeblidDescriptorExtractor_Create(float scaleFactor, int size) {
+    return new cv::Ptr<cv::xfeatures2d::TEBLID>(cv::xfeatures2d::TEBLID::create(scaleFactor, size));
+}
+
+void TeblidDescriptorExtractor_Close(TeblidDescriptorExtractor b) {
+    delete b;
+}
+
+void TeblidDescriptorExtractor_Compute(TeblidDescriptorExtractor b, Mat src, struct KeyPoints kp, Mat desc) {
+    std::vector<cv::KeyPoint> keypts;
+    keypts.reserve(kp.length);
+    cv::KeyPoint keypt;
+
+    for (int i = 0; i < kp.length; ++i) {
+        keypt = cv::KeyPoint(kp.keypoints[i].x, kp.keypoints[i].y,
+                        kp.keypoints[i].size, kp.keypoints[i].angle, kp.keypoints[i].response,
+                        kp.keypoints[i].octave, kp.keypoints[i].classID);
+        keypts.push_back(keypt);
+    }
+
+    (*b)->compute(*src, keypts, *desc);
+}

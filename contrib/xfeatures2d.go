@@ -77,7 +77,7 @@ func getKeyPoints(ret C.KeyPoints) []gocv.KeyPoint {
 	return keys
 }
 
-// BeblidDescriptorExtractor is a wrapper around the cv::BeblidDescriptorExtractor descriptor algorithm.
+// BeblidDescriptorExtractor is a wrapper around the cv::xfeatures2d::BEBLID descriptor algorithm.
 type BeblidDescriptorExtractor struct {
 	// C.BeblidDescriptorExtractor
 	p unsafe.Pointer
@@ -93,7 +93,7 @@ const (
 // NewBeblidDescriptorExtractor returns a new BEBLID descriptor algorithm.
 //
 // For further details, please see:
-// https://docs.opencv.org/master/d5/df7/classcv_1_1xfeatures2d_1_1SURF.html
+// https://docs.opencv.org/4.9.0/d7/d99/classcv_1_1xfeatures2d_1_1BEBLID.html
 func NewBeblidDescriptorExtractor(scaleFactor float32, size BeblidDescriptorExtractorSize) BeblidDescriptorExtractor {
 	return BeblidDescriptorExtractor{p: unsafe.Pointer(C.BeblidDescriptorExtractor_Create(C.float(scaleFactor), C.int(size)))}
 }
@@ -129,5 +129,60 @@ func (b *BeblidDescriptorExtractor) Compute(keyPoints []gocv.KeyPoint, src gocv.
 	}
 
 	C.BeblidDescriptorExtractor_Compute((C.BeblidDescriptorExtractor)(b.p), C.Mat(src.Ptr()), cKeyPoints, C.Mat(desc.Ptr()))
+	return desc
+}
+
+// TeblidDescriptorExtractor is a wrapper around the cv::xfeatures2d::TEBLID descriptor algorithm.
+type TeblidDescriptorExtractor struct {
+	// C.TeblidDescriptorExtractor
+	p unsafe.Pointer
+}
+
+type TeblidDescriptorExtractorSize = int
+
+const (
+	TEBLID_SIZE_256_BITS TeblidDescriptorExtractorSize = 102
+	TEBLID_SIZE_512_BITS TeblidDescriptorExtractorSize = 103
+)
+
+// NewTeblidDescriptorExtractor returns a new TEBLID descriptor algorithm.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/dd/dc1/classcv_1_1xfeatures2d_1_1TEBLID.html
+func NewTeblidDescriptorExtractor(scaleFactor float32, size TeblidDescriptorExtractorSize) TeblidDescriptorExtractor {
+	return TeblidDescriptorExtractor{p: unsafe.Pointer(C.TeblidDescriptorExtractor_Create(C.float(scaleFactor), C.int(size)))}
+}
+
+// Close TEBLID.
+func (d *TeblidDescriptorExtractor) Close() error {
+	C.TeblidDescriptorExtractor_Close((C.TeblidDescriptorExtractor)(d.p))
+	d.p = nil
+	return nil
+}
+
+// Detect describes keypoints in an image using TEBLID
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/dd/dc1/classcv_1_1xfeatures2d_1_1TEBLID.html
+func (b *TeblidDescriptorExtractor) Compute(keyPoints []gocv.KeyPoint, src gocv.Mat) gocv.Mat {
+	desc := gocv.NewMat()
+	cKeyPointArray := make([]C.struct_KeyPoint, len(keyPoints))
+
+	for i, kp := range keyPoints {
+		cKeyPointArray[i].x = C.double(kp.X)
+		cKeyPointArray[i].y = C.double(kp.Y)
+		cKeyPointArray[i].size = C.double(kp.Size)
+		cKeyPointArray[i].angle = C.double(kp.Angle)
+		cKeyPointArray[i].response = C.double(kp.Response)
+		cKeyPointArray[i].octave = C.int(kp.Octave)
+		cKeyPointArray[i].classID = C.int(kp.ClassID)
+	}
+
+	cKeyPoints := C.struct_KeyPoints{
+		keypoints: (*C.struct_KeyPoint)(&cKeyPointArray[0]),
+		length:    (C.int)(len(keyPoints)),
+	}
+
+	C.TeblidDescriptorExtractor_Compute((C.TeblidDescriptorExtractor)(b.p), C.Mat(src.Ptr()), cKeyPoints, C.Mat(desc.Ptr()))
 	return desc
 }
