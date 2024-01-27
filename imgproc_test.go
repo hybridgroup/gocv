@@ -1,6 +1,7 @@
 package gocv
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"image/draw"
@@ -116,6 +117,100 @@ func TestCvtColor(t *testing.T) {
 	CvtColor(img, &dest, ColorBGRAToGray)
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid convert in CvtColor test")
+	}
+}
+
+func NewBayerFromMat(src Mat, pattern string) (Mat, error) {
+	dest := NewMatWithSize(src.Rows(), src.Cols(), MatTypeCV8UC1)
+
+	switch pattern {
+	case "bg":
+		for y := 0; y < src.Rows(); y++ {
+			for x := 0; x < src.Cols(); x++ {
+				if (x+y)%2 != 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[1])
+				} else if (x % 2) != 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[0])
+				} else {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[2])
+				}
+			}
+		}
+	case "gb":
+		for y := 0; y < src.Rows(); y++ {
+			for x := 0; x < src.Cols(); x++ {
+				if (x+y)%2 == 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[1])
+				} else if (x % 2) == 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[0])
+				} else {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[2])
+				}
+			}
+		}
+	case "rg":
+		for y := 0; y < src.Rows(); y++ {
+			for x := 0; x < src.Cols(); x++ {
+				if (x+y)%2 != 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[1])
+				} else if (x % 2) == 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[0])
+				} else {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[2])
+				}
+			}
+		}
+	case "gr":
+		for y := 0; y < src.Rows(); y++ {
+			for x := 0; x < src.Cols(); x++ {
+				if (x+y)%2 == 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[1])
+				} else if (x % 2) != 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[0])
+				} else {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[2])
+				}
+			}
+		}
+	default:
+		return Mat{}, fmt.Errorf("invalid pattern: %s", pattern)
+	}
+
+	return dest, nil
+}
+
+func TestDemosaicing(t *testing.T) {
+	img := IMRead("images/face.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in Demosaicing test")
+	}
+	defer img.Close()
+
+	patterns := map[string]ColorConversionCode{
+		"bg": ColorBayerBGToBGR,
+		"gb": ColorBayerGBToBGR,
+		"rg": ColorBayerRGToBGR,
+		"gr": ColorBayerGRToBGR,
+	}
+
+	for pattern, code := range patterns {
+		bayerImg, err := NewBayerFromMat(img, pattern)
+		if bayerImg.Empty() {
+			t.Error("Invalid conversion from Mat to Bayer in Demosaicing test")
+		}
+		if err != nil {
+			t.Error(err)
+		}
+
+		dest := NewMat()
+
+		Demosaicing(bayerImg, &dest, code)
+		if dest.Empty() || bayerImg.Rows() != dest.Rows() || bayerImg.Cols() != dest.Cols() {
+			t.Error("Invalid convert in Demosaicing test")
+		}
+
+		bayerImg.Close()
+		dest.Close()
 	}
 }
 

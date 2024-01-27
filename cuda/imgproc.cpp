@@ -10,6 +10,14 @@ void GpuCvtColor(GpuMat src, GpuMat dst, int code, Stream s) {
     cv::cuda::cvtColor(*src, *dst, code, 0, *s);
 }
 
+void GpuDemosaicing(GpuMat src, GpuMat dst, int code, Stream s) {
+    if (s == NULL) {
+        cv::cuda::demosaicing(*src, *dst, code);
+        return;
+    }
+    cv::cuda::demosaicing(*src, *dst, code, -1, *s);
+}
+
 CannyEdgeDetector CreateCannyEdgeDetector(double lowThresh, double highThresh) {
     return new cv::Ptr<cv::cuda::CannyEdgeDetector>(cv::cuda::createCannyEdgeDetector(lowThresh, highThresh));
 }

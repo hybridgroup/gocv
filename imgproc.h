@@ -19,6 +19,7 @@ typedef void* CLAHE;
 double ArcLength(PointVector curve, bool is_closed);
 PointVector ApproxPolyDP(PointVector curve, double epsilon, bool closed);
 void CvtColor(Mat src, Mat dst, int code);
+void Demosaicing(Mat src, Mat dst, int code);
 void EqualizeHist(Mat src, Mat dst);
 void CalcHist(struct Mats mats, IntVector chans, Mat mask, Mat hist, IntVector sz, FloatVector rng, bool acc);
 void CalcBackProject(struct Mats mats, IntVector chans, Mat hist, Mat backProject, FloatVector rng, bool uniform);

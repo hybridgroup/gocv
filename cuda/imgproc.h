@@ -26,6 +26,7 @@ typedef void* TemplateMatching;
 
 // standalone functions
 void GpuCvtColor(GpuMat src, GpuMat dst, int code, Stream s);
+void GpuDemosaicing(GpuMat src, GpuMat dst, int code, Stream s);
 
 // CannyEdgeDetector
 CannyEdgeDetector CreateCannyEdgeDetector(double lowThresh, double highThresh);
