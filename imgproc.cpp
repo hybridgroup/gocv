@@ -15,6 +15,10 @@ void CvtColor(Mat src, Mat dst, int code) {
     cv::cvtColor(*src, *dst, code);
 }
 
+void Demosaicing(Mat src, Mat dst, int code) {
+    cv::demosaicing(*src, *dst, code);
+}
+
 void EqualizeHist(Mat src, Mat dst) {
     cv::equalizeHist(*src, *dst);
 }

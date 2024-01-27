@@ -57,6 +57,16 @@ func CvtColor(src Mat, dst *Mat, code ColorConversionCode) {
 	C.CvtColor(src.p, dst.p, C.int(code))
 }
 
+// Demosaicing converts an image from Bayer pattern to RGB or grayscale.
+// It converts the src Mat image to the dst Mat using the
+// code param containing the desired ColorConversionCode color space.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d7/d1b/group__imgproc__color__conversions.html#ga57261f12fccf872a2b2d66daf29d5bd0
+func Demosaicing(src Mat, dst *Mat, code ColorConversionCode) {
+	C.Demosaicing(src.p, dst.p, C.int(code))
+}
+
 // EqualizeHist normalizes the brightness and increases the contrast of the image.
 //
 // For further details, please see:

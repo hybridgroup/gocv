@@ -320,7 +320,7 @@ Your pull requests will be greatly appreciated!
 - [ ] **cudaimgproc. Image Processing - WORK STARTED** The following functions still need implementation:
     - [X] [cv::cuda::TemplateMatching](https://docs.opencv.org/master/d2/d58/classcv_1_1cuda_1_1TemplateMatching.html)
     - [ ] [cv::cuda::alphaComp](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga08a698700458d9311390997b57fbf8dc)
-    - [ ] [cv::cuda::demosaicing](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga7fb153572b573ebd2d7610fcbe64166e)
+    - [X] [cv::cuda::demosaicing](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga7fb153572b573ebd2d7610fcbe64166e)
     - [ ] [cv::cuda::gammaCorrection](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#gaf4195a8409c3b8fbfa37295c2b2c4729)
     - [ ] [cv::cuda::swapChannels](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga75a29cc4a97cde0d43ea066b01de927e)
     - [ ] [cv::cuda::calcHist](https://docs.opencv.org/master/d8/d0e/group__cudaimgproc__hist.html#gaaf3944106890947020bb4522a7619c26)

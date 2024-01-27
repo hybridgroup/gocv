@@ -142,6 +142,27 @@ func CvtColorWithStream(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode, 
 	C.GpuCvtColor(src.p, dst.p, C.int(code), s.p)
 }
 
+// Demosaicing converts an image from Bayer pattern to RGB or grayscale.
+// It converts the src Mat image to the dst Mat using the
+// code param containing the desired ColorConversionCode color space.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga7fb153572b573ebd2d7610fcbe64166e
+func Demosaicing(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode) {
+	C.GpuDemosaicing(src.p, dst.p, C.int(code), nil)
+}
+
+// DemosaicingWithStream converts an image from Bayer pattern to RGB or grayscale
+// using a Stream for concurrency.
+// It converts the src Mat image to the dst Mat using the
+// code param containing the desired ColorConversionCode color space.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga7fb153572b573ebd2d7610fcbe64166e
+func DemosaicingWithStream(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode, s Stream) {
+	C.GpuDemosaicing(src.p, dst.p, C.int(code), s.p)
+}
+
 // HoughLinesDetector
 //
 // For further details, please see:
