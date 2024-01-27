@@ -173,6 +173,7 @@ func NewBayerFromMat(src Mat, pattern string) (Mat, error) {
 			}
 		}
 	default:
+		dest.Close()
 		return Mat{}, fmt.Errorf("invalid pattern: %s", pattern)
 	}
 
