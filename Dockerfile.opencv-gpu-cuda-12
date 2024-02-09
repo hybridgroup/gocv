@@ -1,18 +1,18 @@
 # to build this docker image:
-#   docker build -f Dockerfile.opencv-gpu-cuda-12 -t ghcr.io/hybridgroup/opencv:4.8.1-gpu-cuda-12 .
-#   docker build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv-gpu-cuda-12 -t ghcr.io/hybridgroup/opencv:4.8.1-dev-gpu-cuda-12 .
+#   docker build -f Dockerfile.opencv-gpu-cuda-12 -t ghcr.io/hybridgroup/opencv:4.9.0-gpu-cuda-12 .
+#   docker build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv-gpu-cuda-12 -t ghcr.io/hybridgroup/opencv:4.9.0-dev-gpu-cuda-12 .
 FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04 AS opencv-gpu-cuda-12-base
 LABEL maintainer="hybridgroup"
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-            git build-essential cmake pkg-config unzip libgtk2.0-dev \
-            wget curl ca-certificates libcurl4-openssl-dev libssl-dev \
-            libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev \
-            libjpeg-turbo8-dev libpng-dev libtiff-dev libdc1394-dev nasm && \
-            rm -rf /var/lib/apt/lists/*
+    git build-essential cmake pkg-config unzip libgtk2.0-dev \
+    wget curl ca-certificates libcurl4-openssl-dev libssl-dev \
+    libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev \
+    libjpeg-turbo8-dev libpng-dev libtiff-dev libdc1394-dev nasm && \
+    rm -rf /var/lib/apt/lists/*
 
-ARG OPENCV_VERSION="4.8.1"
+ARG OPENCV_VERSION="4.9.0"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 ARG OPENCV_FILE="https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip"
@@ -29,35 +29,35 @@ RUN curl -Lo opencv.zip ${OPENCV_FILE} && \
     cd opencv-${OPENCV_VERSION} && \
     mkdir build && cd build && \
     cmake -D CMAKE_BUILD_TYPE=RELEASE \
-            -D WITH_IPP=OFF \
-            -D WITH_OPENGL=OFF \
-            -D WITH_QT=OFF \
-            -D CMAKE_INSTALL_PREFIX=/usr/local \
-            -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules \
-            -D OPENCV_ENABLE_NONFREE=ON \
-            -D WITH_JASPER=OFF \
-            -D BUILD_DOCS=OFF \
-            -D BUILD_EXAMPLES=OFF \
-            -D BUILD_TESTS=OFF \
-            -D BUILD_PERF_TESTS=ON \
-            -D BUILD_opencv_java=NO \
-            -D BUILD_opencv_python=NO \
-            -D BUILD_opencv_python2=NO \
-            -D BUILD_opencv_python3=NO \
-            -D WITH_TBB=ON \
-            -D BUILD_JPEG=ON \
-            -D WITH_SIMD=ON \
-            -D WITH_LIBJPEG_TURBO_SIMD=ON \
-            -D WITH_CUDA=ON \
-            -D ENABLE_FAST_MATH=1 \
-            -D CUDA_FAST_MATH=1 \
-            -D WITH_CUBLAS=1 \
-            -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda/ \
-            -D BUILD_opencv_cudacodec=OFF \
-            -D WITH_CUDNN=ON \
-            -D OPENCV_DNN_CUDA=ON \
-            -D CUDA_ARCH_BIN=6.0,6.1,7.0,7.5,8.0,8.6,8.9,9.0 \
-            -D OPENCV_GENERATE_PKGCONFIG=ON .. && \
+    -D WITH_IPP=OFF \
+    -D WITH_OPENGL=OFF \
+    -D WITH_QT=OFF \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules \
+    -D OPENCV_ENABLE_NONFREE=ON \
+    -D WITH_JASPER=OFF \
+    -D BUILD_DOCS=OFF \
+    -D BUILD_EXAMPLES=OFF \
+    -D BUILD_TESTS=OFF \
+    -D BUILD_PERF_TESTS=ON \
+    -D BUILD_opencv_java=NO \
+    -D BUILD_opencv_python=NO \
+    -D BUILD_opencv_python2=NO \
+    -D BUILD_opencv_python3=NO \
+    -D WITH_TBB=ON \
+    -D BUILD_JPEG=ON \
+    -D WITH_SIMD=ON \
+    -D WITH_LIBJPEG_TURBO_SIMD=ON \
+    -D WITH_CUDA=ON \
+    -D ENABLE_FAST_MATH=1 \
+    -D CUDA_FAST_MATH=1 \
+    -D WITH_CUBLAS=1 \
+    -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda/ \
+    -D BUILD_opencv_cudacodec=OFF \
+    -D WITH_CUDNN=ON \
+    -D OPENCV_DNN_CUDA=ON \
+    -D CUDA_ARCH_BIN=6.0,6.1,7.0,7.5,8.0,8.6,8.9,9.0 \
+    -D OPENCV_GENERATE_PKGCONFIG=ON .. && \
     make -j $(nproc --all) && \
     make preinstall && make install && ldconfig && \
     cd / && rm -rf opencv*
