@@ -273,7 +273,7 @@ make docker
 By default Docker image built by running the command above ships [Go](https://golang.org/) version `1.20.2`, but if you would like to build an image which uses different version of `Go` you can override the default value when running the target command:
 
 ```
-make docker GOVERSION='1.19.4'
+make docker GOVERSION='1.22.0'
 ```
 
 #### Running GUI programs in Docker on macOS
