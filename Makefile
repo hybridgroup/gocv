@@ -8,7 +8,7 @@ GOCV_VERSION?="v0.35.0"
 OPENCV_VERSION?=4.9.0
 
 # Go version to use when building Docker image
-GOVERSION?=1.21.1
+GOVERSION?=1.22.0
 
 # Temporary directory to put files into.
 TMP_DIR?=/tmp/
