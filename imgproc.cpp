@@ -144,10 +144,11 @@ void Erode(Mat src, Mat dst, Mat kernel) {
     cv::erode(*src, *dst, *kernel);
 }
 
-void ErodeWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType) {
+void ErodeWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType, Scalar borderValue) {
     cv::Point pt1(anchor.x, anchor.y);
+    cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
 
-    cv::erode(*src, *dst, *kernel, pt1, iterations, borderType, cv::morphologyDefaultBorderValue());
+    cv::erode(*src, *dst, *kernel, pt1, iterations, borderType, c);
 }
 
 void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask) {
@@ -227,7 +228,7 @@ PointsVector FindContours(Mat src, Mat hierarchy, int mode, int method) {
     return contours;
 }
 
-double PointPolygonTest(PointVector pts, Point pt, bool measureDist) {
+double PointPolygonTest(PointVector pts, Point2f pt, bool measureDist) {
 	cv::Point2f pt1(pt.x, pt.y);
 
   return cv::pointPolygonTest(*pts, pt1, measureDist);
@@ -473,14 +474,14 @@ void Resize(Mat src, Mat dst, Size dsize, double fx, double fy, int interp) {
     cv::resize(*src, *dst, sz, fx, fy, interp);
 }
 
-void GetRectSubPix(Mat src, Size patchSize, Point center, Mat dst) {
+void GetRectSubPix(Mat src, Size patchSize, Point2f center, Mat dst) {
     cv::Size sz(patchSize.width, patchSize.height);
-    cv::Point pt(center.x, center.y);
+    cv::Point2f pt(center.x, center.y);
     cv::getRectSubPix(*src, sz, pt, *dst);
 }
 
-Mat GetRotationMatrix2D(Point center, double angle, double scale) {
-    cv::Point pt(center.x, center.y);
+Mat GetRotationMatrix2D(Point2f center, double angle, double scale) {
+    cv::Point2f pt(center.x, center.y);
     return new  cv::Mat(cv::getRotationMatrix2D(pt, angle, scale));
 }
 
@@ -594,7 +595,7 @@ void SepFilter2D(Mat src, Mat dst, int ddepth, Mat kernelX, Mat kernelY, Point a
 	cv::sepFilter2D(*src, *dst, ddepth, *kernelX, *kernelY, anchorPt, delta, borderType);
 }
 
-void LogPolar(Mat src, Mat dst, Point center, double m, int flags) {
+void LogPolar(Mat src, Mat dst, Point2f center, double m, int flags) {
 	cv::Point2f centerPt(center.x, center.y);
 	cv::logPolar(*src, *dst, centerPt, m, flags);
 }
@@ -603,7 +604,7 @@ void FitLine(PointVector pts, Mat line, int distType, double param, double reps,
 	cv::fitLine(*pts, *line, distType, param, reps, aeps);
 }
 
-void LinearPolar(Mat src, Mat dst, Point center, double maxRadius, int flags) {
+void LinearPolar(Mat src, Mat dst, Point2f center, double maxRadius, int flags) {
 	cv::Point2f centerPt(center.x, center.y);
 	cv::linearPolar(*src, *dst, centerPt, maxRadius, flags);
 }

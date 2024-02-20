@@ -37,13 +37,11 @@ void Image_IMEncode_WithParams(const char* fileExt, Mat img, IntVector params, v
     cv::imencode(fileExt, *img, *vectorPtr, compression_params);
 }
 
-Mat Image_IMDecode(ByteArray buf, int flags) {
-    std::vector<uchar> data(buf.data, buf.data + buf.length);
-    cv::Mat img = cv::imdecode(data, flags);
+Mat Image_IMDecode(UCharVector buf, int flags) {
+    cv::Mat img = cv::imdecode(*buf, flags);
     return new cv::Mat(img);
 }
 
-void Image_IMDecodeIntoMat(ByteArray buf, int flags, Mat dest) {
-    std::vector<uchar> data(buf.data, buf.data + buf.length);
-    cv::imdecode(data, flags, dest);
+void Image_IMDecodeIntoMat(UCharVector buf, int flags, Mat dest) {
+    cv::imdecode(*buf, flags, dest);
 }

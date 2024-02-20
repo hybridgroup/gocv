@@ -69,3 +69,7 @@ int VideoWriter_IsOpened(VideoWriter vw) {
 void VideoWriter_Write(VideoWriter vw, Mat img) {
     *vw << *img;
 }
+
+int VideoWriter_Fourcc(char c1, char c2, char c3, char c4){
+    return cv::VideoWriter::fourcc(c1, c2, c3, c4);
+}

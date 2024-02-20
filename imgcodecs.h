@@ -16,8 +16,8 @@ bool Image_IMWrite_WithParams(const char* filename, Mat img, IntVector params);
 void Image_IMEncode(const char* fileExt, Mat img, void* vector);
 
 void Image_IMEncode_WithParams(const char* fileExt, Mat img, IntVector params, void* vector);
-Mat Image_IMDecode(ByteArray buf, int flags);
-void Image_IMDecodeIntoMat(ByteArray buf, int flag, Mat dest);
+Mat Image_IMDecode(UCharVector buf, int flags);
+void Image_IMDecodeIntoMat(UCharVector buf, int flag, Mat dest);
 
 #ifdef __cplusplus
 }

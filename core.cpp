@@ -1,6 +1,11 @@
 #include "core.h"
 #include <string.h>
 
+// cv::noArray()
+InputOutputArray noArray(){
+    return new cv::_InputOutputArray();
+}
+
 // Mat_New creates a new empty Mat
 Mat Mat_New() {
     return new cv::Mat();
@@ -13,7 +18,7 @@ Mat Mat_NewWithSize(int rows, int cols, int type) {
 
 // Mat_NewWithSizes creates a new Mat with specific dimension sizes and number of channels.
 Mat Mat_NewWithSizes(struct IntVector sizes, int type) {
-	std::vector<int> sizess;
+    std::vector<int> sizess;
     for (int i = 0; i < sizes.length; ++i) {
         sizess.push_back(sizes.val[i]);
     }
@@ -59,19 +64,19 @@ Mat Mat_NewWithSizesFromBytes(IntVector sizes, int type, struct ByteArray buf) {
 }
 
 Mat Eye(int rows, int cols, int type) {
-    cv::Mat* mat = new cv::Mat(rows, cols, type);
+    cv::Mat *mat = new cv::Mat(rows, cols, type);
     *mat = cv::Mat::eye(rows, cols, type);
     return mat;
 }
 
 Mat Zeros(int rows, int cols, int type) {
-    cv::Mat* mat = new cv::Mat(rows, cols, type);
+    cv::Mat *mat = new cv::Mat(rows, cols, type);
     *mat = cv::Mat::zeros(rows, cols, type);
     return mat;
 }
 
 Mat Ones(int rows, int cols, int type) {
-    cv::Mat* mat = new cv::Mat(rows, cols, type);
+    cv::Mat *mat = new cv::Mat(rows, cols, type);
     *mat = cv::Mat::ones(rows, cols, type);
     return mat;
 }
@@ -86,7 +91,7 @@ void Mat_Close(Mat m) {
 }
 
 // Mat_Empty tests if a Mat is empty
-int Mat_Empty(Mat m) {
+bool Mat_Empty(Mat m) {
     return m->empty();
 }
 
@@ -120,11 +125,11 @@ void Mat_ConvertToWithParams(Mat m, Mat dst, int type, float alpha, float beta) 
 
 // Mat_ToBytes returns the bytes representation of the underlying data.
 struct ByteArray Mat_ToBytes(Mat m) {
-    return toByteArray(reinterpret_cast<const char*>(m->data), m->total() * m->elemSize());
+    return toByteArray(reinterpret_cast<const char *>(m->data), m->total() * m->elemSize());
 }
 
 struct ByteArray Mat_DataPtr(Mat m) {
-    return ByteArray {reinterpret_cast<char*>(m->data), static_cast<int>(m->total() * m->elemSize())};
+    return ByteArray{reinterpret_cast<char *>(m->data), static_cast<int>(m->total() * m->elemSize())};
 }
 
 // Mat_Region returns a Mat of a region of another Mat
@@ -136,8 +141,8 @@ Mat Mat_Reshape(Mat m, int cn, int rows) {
     return new cv::Mat(m->reshape(cn, rows));
 }
 
-void Mat_PatchNaNs(Mat m) {
-    cv::patchNaNs(*m);
+void Mat_PatchNaNs(Mat m, double val) {
+    cv::patchNaNs(*m, val);
 }
 
 Mat Mat_ConvertFp16(Mat m) {
@@ -167,7 +172,7 @@ Scalar Mat_Mean(Mat m) {
 // independently for each channel, and returns it as Scalar vector
 // while applying the mask.
 
-Scalar Mat_MeanWithMask(Mat m, Mat mask){
+Scalar Mat_MeanWithMask(Mat m, Mat mask) {
     cv::Scalar c = cv::mean(*m, *mask);
     Scalar scal = Scalar();
     scal.val1 = c.val[0];
@@ -210,13 +215,13 @@ int Mat_Total(Mat m) {
     return m->total();
 }
 
-int Mat_ElemSize(Mat m){
+int Mat_ElemSize(Mat m) {
     return m->elemSize();
 }
 
-void Mat_Size(Mat m, IntVector* res) {
+void Mat_Size(Mat m, IntVector *res) {
     cv::MatSize ms(m->size);
-    int* ids = new int[ms.dims()];
+    int *ids = new int[ms.dims()];
 
     for (size_t i = 0; i < ms.dims(); ++i) {
         ids[i] = ms[i];
@@ -408,7 +413,7 @@ void Mat_BitwiseAnd(Mat src1, Mat src2, Mat dst) {
     cv::bitwise_and(*src1, *src2, *dst);
 }
 
-void Mat_BitwiseAndWithMask(Mat src1, Mat src2, Mat dst, Mat mask){
+void Mat_BitwiseAndWithMask(Mat src1, Mat src2, Mat dst, Mat mask) {
     cv::bitwise_and(*src1, *src2, *dst, *mask);
 }
 
@@ -445,11 +450,11 @@ int Mat_BorderInterpolate(int p, int len, int borderType) {
     return cv::borderInterpolate(p, len, borderType);
 }
 
-void  Mat_CalcCovarMatrix(Mat samples, Mat covar, Mat mean, int flags, int ctype) {
+void Mat_CalcCovarMatrix(Mat samples, Mat covar, Mat mean, int flags, int ctype) {
     cv::calcCovarMatrix(*samples, *covar, *mean, flags, ctype);
 }
 
-void  Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees) {
+void Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees) {
     cv::cartToPolar(*x, *y, *magnitude, *angle, angleInDegrees);
 }
 
@@ -576,7 +581,8 @@ double KMeans(Mat data, int k, Mat bestLabels, TermCriteria criteria, int attemp
     return ret;
 }
 
-double KMeansPoints(PointVector points, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers) {
+double
+KMeansPoints(PointVector points, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers) {
     std::vector<cv::Point2f> pts;
     copyPointVectorToPoint2fVector(points, &pts);
     double ret = cv::kmeans(pts, k, *bestLabels, *criteria, attempts, flags, *centers);
@@ -613,11 +619,11 @@ void Mat_Min(Mat src1, Mat src2, Mat dst) {
     cv::min(*src1, *src2, *dst);
 }
 
-void Mat_MinMaxIdx(Mat m, double* minVal, double* maxVal, int* minIdx, int* maxIdx) {
+void Mat_MinMaxIdx(Mat m, double *minVal, double *maxVal, int *minIdx, int *maxIdx) {
     cv::minMaxIdx(*m, minVal, maxVal, minIdx, maxIdx);
 }
 
-void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc) {
+void Mat_MinMaxLoc(Mat m, double *minVal, double *maxVal, Point *minLoc, Point *maxLoc) {
     cv::Point cMinLoc;
     cv::Point cMaxLoc;
     cv::minMaxLoc(*m, minVal, maxVal, &cMinLoc, &cMaxLoc);
@@ -723,7 +729,7 @@ void Mat_SortIdx(Mat src, Mat dst, int flags) {
     cv::sortIdx(*src, *dst, flags);
 }
 
-void Mat_Split(Mat src, struct Mats* mats) {
+void Mat_Split(Mat src, struct Mats *mats) {
     std::vector<cv::Mat> channels;
     cv::split(*src, channels);
     mats->mats = new Mat[channels.size()];
@@ -732,7 +738,7 @@ void Mat_Split(Mat src, struct Mats* mats) {
         mats->mats[i] = new cv::Mat(channels[i]);
     }
 
-    mats->length = (int)channels.size();
+    mats->length = (int) channels.size();
 }
 
 void Mat_Subtract(Mat src1, Mat src2, Mat dst) {
@@ -766,7 +772,7 @@ void Mat_Pow(Mat src, double power, Mat dst) {
 }
 
 void Mat_Phase(Mat x, Mat y, Mat angle, bool angleInDegrees) {
-	cv::phase(*x, *y, *angle, angleInDegrees);
+    cv::phase(*x, *y, *angle, angleInDegrees);
 }
 
 
@@ -794,10 +800,10 @@ void Contours_Close(struct Contours cs) {
 }
 
 void CStrings_Close(struct CStrings cstrs) {
-    for ( int i = 0; i < cstrs.length; i++ ) {
-        delete [] cstrs.strs[i];
+    for (int i = 0; i < cstrs.length; i++) {
+        delete[] cstrs.strs[i];
     }
-    delete [] cstrs.strs;
+    delete[] cstrs.strs;
 }
 
 void KeyPoints_Close(struct KeyPoints ks) {
@@ -813,6 +819,8 @@ void Points_Close(Points ps) {
 }
 
 void Point_Close(Point p) {}
+void Point2f_Close(Point2f p) {}
+void Point3f_Close(Point3f p){}
 
 void Rects_Close(struct Rects rs) {
     delete[] rs.rects;
@@ -847,7 +855,7 @@ void ByteArray_Release(struct ByteArray buf) {
     delete[] buf.data;
 }
 
-struct ByteArray toByteArray(const char* buf, int len) {
+struct ByteArray toByteArray(const char *buf, int len) {
     ByteArray ret = {new char[len], len};
     memcpy(ret.data, buf, len);
     return ret;
@@ -861,20 +869,20 @@ double GetTickFrequency() {
     return cv::getTickFrequency();
 }
 
-Mat Mat_rowRange(Mat m,int startrow,int endrow) {
-    return new cv::Mat(m->rowRange(startrow,endrow));
+Mat Mat_rowRange(Mat m, int startrow, int endrow) {
+    return new cv::Mat(m->rowRange(startrow, endrow));
 }
 
-Mat Mat_colRange(Mat m,int startrow,int endrow) {
-    return new cv::Mat(m->colRange(startrow,endrow));
+Mat Mat_colRange(Mat m, int startrow, int endrow) {
+    return new cv::Mat(m->colRange(startrow, endrow));
 }
 
 PointVector PointVector_New() {
-    return new std::vector< cv::Point >;
+    return new std::vector<cv::Point>;
 }
 
 PointVector PointVector_NewFromPoints(Contour points) {
-    std::vector<cv::Point>* cntr = new std::vector<cv::Point>;
+    std::vector<cv::Point> *cntr = new std::vector<cv::Point>;
 
     for (size_t i = 0; i < points.length; i++) {
         cntr->push_back(cv::Point(points.points[i].x, points.points[i].y));
@@ -884,7 +892,7 @@ PointVector PointVector_NewFromPoints(Contour points) {
 }
 
 PointVector PointVector_NewFromMat(Mat mat) {
-    std::vector<cv::Point>* pts = new std::vector<cv::Point>;
+    std::vector<cv::Point> *pts = new std::vector<cv::Point>;
     *pts = (std::vector<cv::Point>) *mat;
     return pts;
 }
@@ -908,11 +916,11 @@ void PointVector_Close(PointVector p) {
 }
 
 PointsVector PointsVector_New() {
-    return new std::vector< std::vector< cv::Point > >;
+    return new std::vector<std::vector<cv::Point> >;
 }
 
 PointsVector PointsVector_NewFromPoints(Contours points) {
-    std::vector< std::vector< cv::Point > >* pv = new std::vector< std::vector< cv::Point > >;
+    std::vector<std::vector<cv::Point> > *pv = new std::vector<std::vector<cv::Point> >;
 
     for (size_t i = 0; i < points.length; i++) {
         Contour contour = points.contours[i];
@@ -934,7 +942,7 @@ int PointsVector_Size(PointsVector ps) {
 }
 
 PointVector PointsVector_At(PointsVector ps, int idx) {
-    std::vector< cv::Point >* p = &(ps->at(idx));
+    std::vector<cv::Point> *p = &(ps->at(idx));
     return p;
 }
 
@@ -948,11 +956,11 @@ void PointsVector_Close(PointsVector ps) {
 }
 
 Point2fVector Point2fVector_New() {
-    return new std::vector< cv::Point2f >;
+    return new std::vector<cv::Point2f>;
 }
 
 Point2fVector Point2fVector_NewFromPoints(Contour2f points) {
-    std::vector<cv::Point2f>* cntr = new std::vector<cv::Point2f>;
+    std::vector<cv::Point2f> *cntr = new std::vector<cv::Point2f>;
 
     for (size_t i = 0; i < points.length; i++) {
         cntr->push_back(cv::Point2f(points.points[i].x, points.points[i].y));
@@ -962,7 +970,7 @@ Point2fVector Point2fVector_NewFromPoints(Contour2f points) {
 }
 
 Point2fVector Point2fVector_NewFromMat(Mat mat) {
-    std::vector<cv::Point2f>* pts = new std::vector<cv::Point2f>;
+    std::vector<cv::Point2f> *pts = new std::vector<cv::Point2f>;
     *pts = (std::vector<cv::Point2f>) *mat;
     return pts;
 }
@@ -981,9 +989,16 @@ void Point2fVector_Close(Point2fVector pv) {
     delete pv;
 }
 
-
 void IntVector_Close(struct IntVector ivec) {
     delete[] ivec.val;
+}
+
+RNG Rng_NewWithState(uint64_t state){
+    return new cv::RNG(state);
+}
+
+void Rng_Close(RNG rng){
+    delete rng;
 }
 
 RNG TheRNG() {
@@ -1000,6 +1015,13 @@ void RNG_Fill(RNG rng, Mat mat, int distType, double a, double b, bool saturateR
 
 double RNG_Gaussian(RNG rng, double sigma) {
     return rng->gaussian(sigma);
+}
+
+int RNG_Uniform(RNG rng, int a, int b){
+    return rng ->uniform(a, b);
+}
+double RNG_UniformDouble(RNG rng, double a, double b){
+    return rng->uniform(a, b);
 }
 
 unsigned int RNG_Next(RNG rng) {
@@ -1032,8 +1054,8 @@ void copyPointVectorToPoint2fVector(PointVector src, Point2fVector dest) {
     }
 }
 
-void StdByteVectorInitialize(void* data) {
-    new (data) std::vector<uchar>();
+void StdByteVectorInitialize(void *data) {
+    new(data) std::vector<uchar>();
 }
 
 void StdByteVectorFree(void *data) {
@@ -1044,17 +1066,36 @@ size_t StdByteVectorLen(void *data) {
     return reinterpret_cast<std::vector<uchar> *>(data)->size();
 }
 
-uint8_t* StdByteVectorData(void *data) {
+uint8_t *StdByteVectorData(void *data) {
     return reinterpret_cast<std::vector<uchar> *>(data)->data();
 }
 
-Points2fVector Points2fVector_New(){
-    return new std::vector< std::vector< cv::Point2f > >;
+UCharVector UCharVector_New(){
+    return new std::vector<uchar>();
+}
+void UCharVector_Free(UCharVector vec){
+    if (vec != nullptr){
+        vec->clear();
+        delete vec;
+    }
+}
+int UCharVector_Size(UCharVector vec){
+    return vec->size();
+}
+void UCharVector_Append(UCharVector vec, uchar c){
+    vec->push_back(c);
+}
+uchar UCharVector_At(UCharVector vec, int idx){
+    return vec->at(idx);
+}
+
+Points2fVector Points2fVector_New() {
+    return new std::vector<std::vector<cv::Point2f> >;
 }
 
 Points2fVector Points2fVector_NewFromPoints(Contours2f points) {
     Points2fVector pv = Points2fVector_New();
-    for(size_t i = 0;i<points.length;i++){
+    for (size_t i = 0; i < points.length; i++) {
         Contour2f contour2f = points.contours[i];
         Point2fVector cntr = Point2fVector_NewFromPoints(contour2f);
         Points2fVector_Append(pv, cntr);
@@ -1081,17 +1122,17 @@ void Points2fVector_Close(Points2fVector ps) {
 }
 
 Point3fVector Point3fVector_New() {
-    return new std::vector< cv::Point3f >;
+    return new std::vector<cv::Point3f>;
 }
 
 
 Point3fVector Point3fVector_NewFromPoints(Contour3f points) {
     std::vector<cv::Point3f> *cntr = new std::vector<cv::Point3f>;
-    for(size_t i = 0;i< points.length;i++) {
+    for (size_t i = 0; i < points.length; i++) {
         cntr->push_back(cv::Point3f(
-            points.points[i].x,
-            points.points[i].y,
-            points.points[i].z
+                points.points[i].x,
+                points.points[i].y,
+                points.points[i].z
         ));
     }
 
@@ -1107,9 +1148,9 @@ Point3fVector Point3fVector_NewFromMat(Mat mat) {
 Point3f Point3fVector_At(Point3fVector pfv, int idx) {
     cv::Point3f p = pfv->at(idx);
     return Point3f{
-        .x = p.x,
-        .y = p.y,
-        .z = p.z
+            .x = p.x,
+            .y = p.y,
+            .z = p.z
     };
 }
 
@@ -1126,13 +1167,13 @@ void Point3fVector_Close(Point3fVector pv) {
     delete pv;
 }
 
-Points3fVector Points3fVector_New(){
-    return new std::vector< std::vector< cv::Point3f > >;
+Points3fVector Points3fVector_New() {
+    return new std::vector<std::vector<cv::Point3f> >;
 }
 
 Points3fVector Points3fVector_NewFromPoints(Contours3f points) {
     Points3fVector pv = Points3fVector_New();
-    for(size_t i = 0;i<points.length;i++){
+    for (size_t i = 0; i < points.length; i++) {
         Contour3f contour3f = points.contours[i];
         Point3fVector cntr = Point3fVector_NewFromPoints(contour3f);
         Points3fVector_Append(pv, cntr);
@@ -1165,3 +1206,24 @@ void SetNumThreads(int n) {
 int GetNumThreads() {
     return cv::getNumThreads();
 }
+
+void Point2fVector_Append(Point2fVector pv, Point2f p) {
+    pv->push_back(cv::Point2f(p.x, p.y));
+}
+
+Mats Mats_New() {
+    std::vector<cv::Mat> v;
+    Mats mats = {
+            (Mat *) v.data(),
+            (int) v.size(),
+    };
+    return mats;
+}
+
+//void Mats_Append(Mats mats, Mat mat) {
+//    int n = sizeof(mats.mats) / sizeof(mats.mats[0]);
+//    std::vector<Mat> v(mats.mats, mats.mats + n);
+//    v.push_back(mat);
+//    mats.mats = v.data();
+//    mats.length = (int)v.size();
+//}

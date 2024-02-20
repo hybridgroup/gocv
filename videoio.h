@@ -36,6 +36,7 @@ void VideoWriter_Open(VideoWriter vw, const char* name, const char* codec, doubl
                       int height, bool isColor);
 int VideoWriter_IsOpened(VideoWriter vw);
 void VideoWriter_Write(VideoWriter vw, Mat img);
+int VideoWriter_Fourcc(char c1, char c2, char c3, char c4);
 
 #ifdef __cplusplus
 }

@@ -33,7 +33,7 @@ void Dilate(Mat src, Mat dst, Mat kernel);
 void DilateWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType, Scalar borderValue);
 void DistanceTransform(Mat src, Mat dst, Mat labels, int distanceType, int maskSize, int labelType);
 void Erode(Mat src, Mat dst, Mat kernel);
-void ErodeWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType);
+void ErodeWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType, Scalar borderValue);
 void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask);
 struct Moment Moments(Mat src, bool binaryImage);
 void PyrDown(Mat src, Mat dst, Size dstsize, int borderType);
@@ -45,7 +45,7 @@ struct RotatedRect MinAreaRect(PointVector pts);
 struct RotatedRect FitEllipse(PointVector pts);
 void MinEnclosingCircle(PointVector pts, Point2f* center, float* radius);
 PointsVector FindContours(Mat src, Mat hierarchy, int mode, int method);
-double PointPolygonTest(PointVector pts, Point pt, bool measureDist);
+double PointPolygonTest(PointVector pts, Point2f pt, bool measureDist);
 int ConnectedComponents(Mat src, Mat dst, int connectivity, int ltype, int ccltype);
 int ConnectedComponentsWithStats(Mat src, Mat labels, Mat stats, Mat centroids, int connectivity, int ltype, int ccltype);
 
@@ -98,8 +98,8 @@ void PutText(Mat img, const char* text, Point org, int fontFace, double fontScal
 void PutTextWithParams(Mat img, const char* text, Point org, int fontFace, double fontScale,
                          Scalar color, int thickness, int lineType, bool bottomLeftOrigin);
 void Resize(Mat src, Mat dst, Size sz, double fx, double fy, int interp);
-void GetRectSubPix(Mat src, Size patchSize, Point center, Mat dst);
-Mat GetRotationMatrix2D(Point center, double angle, double scale);
+void GetRectSubPix(Mat src, Size patchSize, Point2f center, Mat dst);
+Mat GetRotationMatrix2D(Point2f center, double angle, double scale);
 void WarpAffine(Mat src, Mat dst, Mat rot_mat, Size dsize);
 void WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode,
                           Scalar borderValue);
@@ -121,9 +121,9 @@ void SpatialGradient(Mat src, Mat dx, Mat dy, int ksize, int borderType);
 void Remap(Mat src, Mat dst, Mat map1, Mat map2, int interpolation, int borderMode, Scalar borderValue);
 void Filter2D(Mat src, Mat dst, int ddepth, Mat kernel, Point anchor, double delta, int borderType);
 void SepFilter2D(Mat src, Mat dst, int ddepth, Mat kernelX, Mat kernelY, Point anchor, double delta, int borderType);
-void LogPolar(Mat src, Mat dst, Point center, double m, int flags);
+void LogPolar(Mat src, Mat dst, Point2f center, double m, int flags);
 void FitLine(PointVector pts, Mat line, int distType, double param, double reps, double aeps);
-void LinearPolar(Mat src, Mat dst, Point center, double maxRadius, int flags);
+void LinearPolar(Mat src, Mat dst, Point2f center, double maxRadius, int flags);
 double MatchShapes(PointVector contour1, PointVector contour2, int method, double parameter);
 bool ClipLine(Size imgSize, Point pt1, Point pt2);
 CLAHE CLAHE_Create();

@@ -230,6 +230,7 @@ typedef struct Moment {
 
 #ifdef __cplusplus
 typedef cv::Mat* Mat;
+typedef cv::_InputOutputArray* InputOutputArray;
 typedef cv::TermCriteria* TermCriteria;
 typedef cv::RNG* RNG;
 typedef std::vector< cv::Point >* PointVector;
@@ -238,8 +239,10 @@ typedef std::vector< cv::Point2f >* Point2fVector;
 typedef std::vector< std::vector< cv::Point2f> >* Points2fVector;
 typedef std::vector< cv::Point3f >* Point3fVector;
 typedef std::vector< std::vector< cv::Point3f > >* Points3fVector;
+typedef std::vector<uchar> * UCharVector;
 #else
 typedef void* Mat;
+typedef void* InputOutputArray;
 typedef void* TermCriteria;
 typedef void* RNG;
 typedef void* PointVector;
@@ -248,14 +251,19 @@ typedef void* Point2fVector;
 typedef void* Points2fVector;
 typedef void* Point3fVector;
 typedef void* Points3fVector;
+typedef void* UCharVector;
+typedef unsigned char uchar;
 #endif
 
+InputOutputArray noArray();
 // Wrapper for the vector of Mat aka std::vector<Mat>
 typedef struct Mats {
     Mat* mats;
     int length;
 } Mats;
 
+Mats Mats_New();
+//void Mats_Append(Mats mats, Mat mat);
 Mat Mats_get(struct Mats mats, int i);
 struct DMatches MultiDMatches_get(struct MultiDMatches mds, int index);
 
@@ -267,6 +275,8 @@ void KeyPoints_Close(struct KeyPoints ks);
 void Rects_Close(struct Rects rs);
 void Mats_Close(struct Mats mats);
 void Point_Close(struct Point p);
+void Point2f_Close(struct Point2f p);
+void Point3f_Close(Point3f p);
 void Points_Close(struct Points ps);
 void DMatches_Close(struct DMatches ds);
 void MultiDMatches_Close(struct MultiDMatches mds);
@@ -281,7 +291,7 @@ Mat Mat_NewWithSizeFromScalar(const Scalar ar, int rows, int cols, int type);
 Mat Mat_NewFromBytes(int rows, int cols, int type, struct ByteArray buf);
 Mat Mat_FromPtr(Mat m, int rows, int cols, int type, int prows, int pcols);
 void Mat_Close(Mat m);
-int Mat_Empty(Mat m);
+bool Mat_Empty(Mat m);
 bool Mat_IsContinuous(Mat m);
 Mat Mat_Clone(Mat m);
 void Mat_CopyTo(Mat m, Mat dst);
@@ -294,7 +304,7 @@ struct ByteArray Mat_ToBytes(Mat m);
 struct ByteArray Mat_DataPtr(Mat m);
 Mat Mat_Region(Mat m, Rect r);
 Mat Mat_Reshape(Mat m, int cn, int rows);
-void Mat_PatchNaNs(Mat m);
+void Mat_PatchNaNs(Mat m, double val);
 Mat Mat_ConvertFp16(Mat m);
 Scalar Mat_Mean(Mat m);
 Scalar Mat_MeanWithMask(Mat m, Mat mask);
@@ -462,6 +472,7 @@ Point2fVector Point2fVector_New();
 void Point2fVector_Close(Point2fVector pfv);
 Point2fVector Point2fVector_NewFromPoints(Contour2f pts);
 Point2fVector Point2fVector_NewFromMat(Mat mat);
+void Point2fVector_Append(Point2fVector pv, Point2f p);
 Point2f Point2fVector_At(Point2fVector pfv, int idx);
 int Point2fVector_Size(Point2fVector pfv);
 
@@ -469,6 +480,8 @@ void IntVector_Close(struct IntVector ivec);
 
 void CStrings_Close(struct CStrings cstrs);
 
+RNG Rng_NewWithState(uint64_t state);
+void Rng_Close(RNG rng);
 RNG TheRNG();
 
 void SetRNGSeed(int seed);
@@ -476,6 +489,8 @@ void SetRNGSeed(int seed);
 void RNG_Fill(RNG rng, Mat mat, int distType, double a, double b, bool saturateRange);
 
 double RNG_Gaussian(RNG rng, double sigma);
+int RNG_Uniform(RNG rng, int a, int b);
+double RNG_UniformDouble(RNG rng, double a, double b);
 
 unsigned int RNG_Next(RNG rng);
 
@@ -493,6 +508,13 @@ void StdByteVectorInitialize(void* data);
 void StdByteVectorFree(void *data);
 size_t StdByteVectorLen(void *data);
 uint8_t* StdByteVectorData(void *data);
+
+UCharVector UCharVector_New();
+void UCharVector_Free(UCharVector vec);
+int UCharVector_Size(UCharVector vec);
+void UCharVector_Append(UCharVector vec, uchar c);
+uchar UCharVector_At(UCharVector vec, int idx);
+//uchar UCharVector_GetData(UCharVector vec);
 
 Points2fVector Points2fVector_New();
 Points2fVector Points2fVector_NewFromPoints(Contours2f points);
