@@ -19,6 +19,7 @@ typedef void *ArucoDetector;
 #endif
 
 ArucoDetectorParameters ArucoDetectorParameters_Create();
+void ArucoDetectorParameters_Close(ArucoDetectorParameters ap);
 void ArucoDetectorParameters_SetAdaptiveThreshWinSizeMin(ArucoDetectorParameters ap, int adaptiveThreshWinSizeMin);
 int ArucoDetectorParameters_GetAdaptiveThreshWinSizeMin(ArucoDetectorParameters ap);
 void ArucoDetectorParameters_SetAdaptiveThreshWinSizeMax(ArucoDetectorParameters ap, int adaptiveThreshWinSizeMax);

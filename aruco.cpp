@@ -32,6 +32,10 @@ ArucoDetectorParameters ArucoDetectorParameters_Create()
     return new cv::aruco::DetectorParameters();
 }
 
+void ArucoDetectorParameters_Close(ArucoDetectorParameters ap){
+    delete ap;
+}
+
 void ArucoDetectorParameters_SetAdaptiveThreshWinSizeMin(ArucoDetectorParameters ap, int adaptiveThreshWinSizeMin) {
     ap->adaptiveThreshWinSizeMin = adaptiveThreshWinSizeMin;
 }
