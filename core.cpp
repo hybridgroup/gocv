@@ -252,6 +252,16 @@ int8_t Mat_GetSChar3(Mat m, int x, int y, int z) {
     return m->at<schar>(x, y, z);
 }
 
+// Mat_GetUShort returns a specific row/col value from this Mat expecting
+// each element to contain a short aka CV_16U.
+uint16_t Mat_GetUShort(Mat m, int row, int col) {
+    return m->at<ushort>(row, col);
+}
+
+uint16_t Mat_GetUShort3(Mat m, int x, int y, int z) {
+    return m->at<ushort>(x, y, z);
+}
+
 // Mat_GetShort returns a specific row/col value from this Mat expecting
 // each element to contain a short aka CV_16S.
 int16_t Mat_GetShort(Mat m, int row, int col) {
@@ -373,6 +383,22 @@ void Mat_DivideUChar(Mat m, uint8_t val) {
     *m /= val;
 }
 
+void Mat_AddI32(Mat m, int32_t val){
+    *m += val;
+}
+
+void Mat_SubtractI32(Mat m, int32_t val){
+    *m -= val;
+}
+
+void Mat_MultiplyI32(Mat m, int32_t val){
+    *m *= val;
+}
+
+void Mat_DivideI32(Mat m, int32_t val){
+    *m /= val;
+}
+
 void Mat_AddFloat(Mat m, float val) {
     *m += val;
 }
@@ -386,6 +412,19 @@ void Mat_MultiplyFloat(Mat m, float val) {
 }
 
 void Mat_DivideFloat(Mat m, float val) {
+    *m /= val;
+}
+
+void Mat_AddF64(Mat m, double_t val){
+    *m += val;
+}
+void Mat_SubtractF64(Mat m, double_t val){
+    *m -= val;
+}
+void Mat_MultiplyF64(Mat m, double_t val){
+    *m *= val;
+}
+void Mat_DivideF64(Mat m, double_t val){
     *m /= val;
 }
 

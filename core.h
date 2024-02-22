@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "math.h"
 
 // Wrapper for std::vector<string>
 typedef struct CStrings {
@@ -323,6 +324,8 @@ uint8_t Mat_GetUChar(Mat m, int row, int col);
 uint8_t Mat_GetUChar3(Mat m, int x, int y, int z);
 int8_t Mat_GetSChar(Mat m, int row, int col);
 int8_t Mat_GetSChar3(Mat m, int x, int y, int z);
+uint16_t Mat_GetUShort(Mat m, int row, int col);
+uint16_t Mat_GetUShort3(Mat m, int x, int y, int z);
 int16_t Mat_GetShort(Mat m, int row, int col);
 int16_t Mat_GetShort3(Mat m, int x, int y, int z);
 int32_t Mat_GetInt(Mat m, int row, int col);
@@ -350,10 +353,21 @@ void Mat_AddUChar(Mat m, uint8_t val);
 void Mat_SubtractUChar(Mat m, uint8_t val);
 void Mat_MultiplyUChar(Mat m, uint8_t val);
 void Mat_DivideUChar(Mat m, uint8_t val);
-void Mat_AddFloat(Mat m, float val);
-void Mat_SubtractFloat(Mat m, float val);
-void Mat_MultiplyFloat(Mat m, float val);
-void Mat_DivideFloat(Mat m, float val);
+
+void Mat_AddI32(Mat m, int32_t val);
+void Mat_SubtractI32(Mat m, int32_t val);
+void Mat_MultiplyI32(Mat m, int32_t val);
+void Mat_DivideI32(Mat m, int32_t val);
+
+void Mat_AddFloat(Mat m, float_t val);
+void Mat_SubtractFloat(Mat m, float_t val);
+void Mat_MultiplyFloat(Mat m, float_t val);
+void Mat_DivideFloat(Mat m, float_t val);
+
+void Mat_AddF64(Mat m, double_t val);
+void Mat_SubtractF64(Mat m, double_t val);
+void Mat_MultiplyF64(Mat m, double_t val);
+void Mat_DivideF64(Mat m, double_t val);
 Mat Mat_MultiplyMatrix(Mat x, Mat y);
 
 Mat Mat_T(Mat x);
