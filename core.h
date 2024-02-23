@@ -342,6 +342,8 @@ void Mat_SetSChar(Mat m, int row, int col, int8_t val);
 void Mat_SetSChar3(Mat m, int x, int y, int z, int8_t val);
 void Mat_SetShort(Mat m, int row, int col, int16_t val);
 void Mat_SetShort3(Mat m, int x, int y, int z, int16_t val);
+void Mat_SetUShort(Mat m, int row, int col, uint16_t val);
+void Mat_SetUShort3(Mat m, int x, int y, int z, uint16_t val);
 void Mat_SetInt(Mat m, int row, int col, int32_t val);
 void Mat_SetInt3(Mat m, int x, int y, int z, int32_t val);
 void Mat_SetFloat(Mat m, int row, int col, float val);
@@ -391,7 +393,7 @@ void Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int no
 int Mat_BorderInterpolate(int p, int len, int borderType);
 void Mat_CalcCovarMatrix(Mat samples, Mat covar, Mat mean, int flags, int ctype);
 void Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees);
-bool Mat_CheckRange(Mat m);
+bool Mat_CheckRange(Mat m, bool quiet, Point *pos, double minVal, double maxVal);
 void Mat_CompleteSymm(Mat m, bool lowerToUpper);
 void Mat_ConvertScaleAbs(Mat src, Mat dst, double alpha, double beta);
 void Mat_CopyMakeBorder(Mat src, Mat dst, int top, int bottom, int left, int right, int borderType,
@@ -453,7 +455,7 @@ void Mat_Split(Mat src, struct Mats* mats);
 void Mat_Subtract(Mat src1, Mat src2, Mat dst);
 Scalar Mat_Trace(Mat src);
 void Mat_Transform(Mat src, Mat dst, Mat tm);
-void Mat_Transpose(Mat src, Mat dst);
+int Mat_Transpose(Mat src, Mat dst);
 void Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees);
 void Mat_Pow(Mat src, double power, Mat dst);
 void Mat_Phase(Mat x, Mat y, Mat angle, bool angleInDegrees);

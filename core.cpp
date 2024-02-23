@@ -2,7 +2,7 @@
 #include <string.h>
 
 // cv::noArray()
-InputOutputArray noArray(){
+InputOutputArray noArray() {
     return new cv::_InputOutputArray();
 }
 
@@ -337,6 +337,14 @@ void Mat_SetShort3(Mat m, int x, int y, int z, int16_t val) {
     m->at<short>(x, y, z) = val;
 }
 
+void Mat_SetUShort(Mat m, int row, int col, uint16_t val){
+    m->at<ushort>(row, col) = val;
+}
+
+void Mat_SetUShort3(Mat m, int x, int y, int z, uint16_t val){
+    m->at<ushort>(x, y, z) = val;
+}
+
 // Mat_SetInt set a specific row/col value from this Mat expecting
 // each element to contain an int aka CV_32S.
 void Mat_SetInt(Mat m, int row, int col, int32_t val) {
@@ -383,19 +391,19 @@ void Mat_DivideUChar(Mat m, uint8_t val) {
     *m /= val;
 }
 
-void Mat_AddI32(Mat m, int32_t val){
+void Mat_AddI32(Mat m, int32_t val) {
     *m += val;
 }
 
-void Mat_SubtractI32(Mat m, int32_t val){
+void Mat_SubtractI32(Mat m, int32_t val) {
     *m -= val;
 }
 
-void Mat_MultiplyI32(Mat m, int32_t val){
+void Mat_MultiplyI32(Mat m, int32_t val) {
     *m *= val;
 }
 
-void Mat_DivideI32(Mat m, int32_t val){
+void Mat_DivideI32(Mat m, int32_t val) {
     *m /= val;
 }
 
@@ -415,16 +423,19 @@ void Mat_DivideFloat(Mat m, float val) {
     *m /= val;
 }
 
-void Mat_AddF64(Mat m, double_t val){
+void Mat_AddF64(Mat m, double_t val) {
     *m += val;
 }
-void Mat_SubtractF64(Mat m, double_t val){
+
+void Mat_SubtractF64(Mat m, double_t val) {
     *m -= val;
 }
-void Mat_MultiplyF64(Mat m, double_t val){
+
+void Mat_MultiplyF64(Mat m, double_t val) {
     *m *= val;
 }
-void Mat_DivideF64(Mat m, double_t val){
+
+void Mat_DivideF64(Mat m, double_t val) {
     *m /= val;
 }
 
@@ -497,8 +508,12 @@ void Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees
     cv::cartToPolar(*x, *y, *magnitude, *angle, angleInDegrees);
 }
 
-bool Mat_CheckRange(Mat m) {
-    return cv::checkRange(*m);
+bool Mat_CheckRange(Mat m, bool quiet, Point *pos, double minVal, double maxVal) {
+    cv::Point pos1;
+    bool ret = cv::checkRange(*m, quiet, &pos1, minVal, maxVal);
+    pos->x = pos1.x;
+    pos->y = pos1.y;
+    return ret;
 }
 
 void Mat_Compare(Mat src1, Mat src2, Mat dst, int ct) {
@@ -798,8 +813,13 @@ void Mat_Transform(Mat src, Mat dst, Mat tm) {
     cv::transform(*src, *dst, *tm);
 }
 
-void Mat_Transpose(Mat src, Mat dst) {
-    cv::transpose(*src, *dst);
+int Mat_Transpose(Mat src, Mat dst) {
+    try {
+        cv::transpose(*src, *dst);
+        return cv::Error::Code::StsOk;
+    } catch (...) {
+        return cv::Error::Code::StsError;
+    }
 }
 
 void Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees) {
@@ -858,8 +878,10 @@ void Points_Close(Points ps) {
 }
 
 void Point_Close(Point p) {}
+
 void Point2f_Close(Point2f p) {}
-void Point3f_Close(Point3f p){}
+
+void Point3f_Close(Point3f p) {}
 
 void Rects_Close(struct Rects rs) {
     delete[] rs.rects;
@@ -1032,11 +1054,11 @@ void IntVector_Close(struct IntVector ivec) {
     delete[] ivec.val;
 }
 
-RNG Rng_NewWithState(uint64_t state){
+RNG Rng_NewWithState(uint64_t state) {
     return new cv::RNG(state);
 }
 
-void Rng_Close(RNG rng){
+void Rng_Close(RNG rng) {
     delete rng;
 }
 
@@ -1056,10 +1078,11 @@ double RNG_Gaussian(RNG rng, double sigma) {
     return rng->gaussian(sigma);
 }
 
-int RNG_Uniform(RNG rng, int a, int b){
-    return rng ->uniform(a, b);
+int RNG_Uniform(RNG rng, int a, int b) {
+    return rng->uniform(a, b);
 }
-double RNG_UniformDouble(RNG rng, double a, double b){
+
+double RNG_UniformDouble(RNG rng, double a, double b) {
     return rng->uniform(a, b);
 }
 
@@ -1084,7 +1107,7 @@ void RandShuffleWithParams(Mat mat, double iterFactor, RNG rng) {
 void RandU(Mat mat, Scalar low, Scalar high) {
     cv::Scalar l = cv::Scalar(low.val1, low.val2, low.val3, low.val4);
     cv::Scalar h = cv::Scalar(high.val1, high.val2, high.val3, high.val4);
-    cv::randn(*mat, l, h);
+    cv::randu(*mat, l, h);
 }
 
 void copyPointVectorToPoint2fVector(PointVector src, Point2fVector dest) {
@@ -1109,22 +1132,26 @@ uint8_t *StdByteVectorData(void *data) {
     return reinterpret_cast<std::vector<uchar> *>(data)->data();
 }
 
-UCharVector UCharVector_New(){
+UCharVector UCharVector_New() {
     return new std::vector<uchar>();
 }
-void UCharVector_Free(UCharVector vec){
-    if (vec != nullptr){
+
+void UCharVector_Free(UCharVector vec) {
+    if (vec != nullptr) {
         vec->clear();
         delete vec;
     }
 }
-int UCharVector_Size(UCharVector vec){
+
+int UCharVector_Size(UCharVector vec) {
     return vec->size();
 }
-void UCharVector_Append(UCharVector vec, uchar c){
+
+void UCharVector_Append(UCharVector vec, uchar c) {
     vec->push_back(c);
 }
-uchar UCharVector_At(UCharVector vec, int idx){
+
+uchar UCharVector_At(UCharVector vec, int idx) {
     return vec->at(idx);
 }
 
