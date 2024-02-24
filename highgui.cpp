@@ -59,7 +59,7 @@ struct Rects Window_SelectROIs(const char* winname, Mat img) {
 
 // Trackbar
 void Trackbar_Create(const char* winname, const char* trackname, int max) {
-    cv::createTrackbar(trackname, winname, NULL, max);
+    cv::createTrackbar(trackname, winname, nullptr, max);
 }
 
 void Trackbar_CreateWithValue(const char* winname, const char* trackname, int* value, int max) {
@@ -81,3 +81,4 @@ void Trackbar_SetMin(const char* winname, const char* trackname, int pos) {
 void Trackbar_SetMax(const char* winname, const char* trackname, int pos) {
     cv::setTrackbarMax(trackname, winname, pos);
 }
+
