@@ -41,6 +41,10 @@ int VideoCapture_Read(VideoCapture v, Mat buf) {
     return v->read(*buf);
 }
 
+void VideoCapture_Release(VideoCapture v){
+    v->release();
+}
+
 void VideoCapture_Grab(VideoCapture v, int skip) {
     for (int i = 0; i < skip; i++) {
         v->grab();
@@ -68,6 +72,10 @@ int VideoWriter_IsOpened(VideoWriter vw) {
 
 void VideoWriter_Write(VideoWriter vw, Mat img) {
     *vw << *img;
+}
+
+void VideoWriter_Release(VideoWriter vw) {
+    vw->release();
 }
 
 int VideoWriter_Fourcc(char c1, char c2, char c3, char c4){

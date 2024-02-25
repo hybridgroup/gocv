@@ -27,6 +27,7 @@ void VideoCapture_Set(VideoCapture v, int prop, double param);
 double VideoCapture_Get(VideoCapture v, int prop);
 int VideoCapture_IsOpened(VideoCapture v);
 int VideoCapture_Read(VideoCapture v, Mat buf);
+void VideoCapture_Release(VideoCapture v);
 void VideoCapture_Grab(VideoCapture v, int skip);
 
 // VideoWriter
@@ -36,6 +37,7 @@ void VideoWriter_Open(VideoWriter vw, const char* name, const char* codec, doubl
                       int height, bool isColor);
 int VideoWriter_IsOpened(VideoWriter vw);
 void VideoWriter_Write(VideoWriter vw, Mat img);
+void VideoWriter_Release(VideoWriter vw);
 int VideoWriter_Fourcc(char c1, char c2, char c3, char c4);
 
 #ifdef __cplusplus

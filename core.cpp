@@ -1054,6 +1054,10 @@ void IntVector_Close(struct IntVector ivec) {
     delete[] ivec.val;
 }
 
+RNG Rng_New(){
+    return new cv::RNG();
+}
+
 RNG Rng_NewWithState(uint64_t state) {
     return new cv::RNG(state);
 }
@@ -1063,7 +1067,7 @@ void Rng_Close(RNG rng) {
 }
 
 RNG TheRNG() {
-    return &cv::theRNG();
+    return  &cv::theRNG();
 }
 
 void SetRNGSeed(int seed) {

@@ -496,6 +496,7 @@ void IntVector_Close(struct IntVector ivec);
 
 void CStrings_Close(struct CStrings cstrs);
 
+RNG Rng_New();
 RNG Rng_NewWithState(uint64_t state);
 void Rng_Close(RNG rng);
 RNG TheRNG();

@@ -57,6 +57,10 @@ struct Rects Window_SelectROIs(const char* winname, Mat img) {
     return ret;
 }
 
+void destroyAllWindows(){
+    cv::destroyAllWindows();
+}
+
 // Trackbar
 void Trackbar_Create(const char* winname, const char* trackname, int max) {
     cv::createTrackbar(trackname, winname, nullptr, max);
