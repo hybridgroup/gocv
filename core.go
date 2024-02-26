@@ -1512,15 +1512,24 @@ func Min(src1, src2 Mat, dst *Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga7622c466c628a75d9ed008b42250a73f
-func MinMaxIdx(input Mat) (minVal, maxVal float32, minIdx, maxIdx int) {
+func MinMaxIdx(input Mat) (minVal, maxVal float32, minIdx, maxIdx []int) {
 	var cMinVal C.double
 	var cMaxVal C.double
-	var cMinIdx C.int
-	var cMaxIdx C.int
 
-	C.Mat_MinMaxIdx(input.p, &cMinVal, &cMaxVal, &cMinIdx, &cMaxIdx)
+	dims := len(input.Size())
+	cMinIdx := make([]C.int, dims)
+	cMaxIdx := make([]C.int, dims)
 
-	return float32(cMinVal), float32(cMaxVal), int(minIdx), int(maxIdx)
+	C.Mat_MinMaxIdx(input.p, &cMinVal, &cMaxVal, &cMinIdx[0], &cMaxIdx[0])
+
+	for i := 0; i < dims; i++ {
+		minIdx = append(minIdx, int(cMinIdx[i]))
+	}
+	for i := 0; i < dims; i++ {
+		maxIdx = append(maxIdx, int(cMaxIdx[i]))
+	}
+
+	return float32(cMinVal), float32(cMaxVal), minIdx, maxIdx
 }
 
 // MinMaxLoc finds the global minimum and maximum in an array.
