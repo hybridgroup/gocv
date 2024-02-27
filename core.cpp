@@ -654,7 +654,16 @@ void Mat_Min(Mat src1, Mat src2, Mat dst) {
 }
 
 void Mat_MinMaxIdx(Mat m, double* minVal, double* maxVal, int* minIdx, int* maxIdx) {
-    cv::minMaxIdx(*m, minVal, maxVal, minIdx, maxIdx);
+    int cMinIdx[m->dims];
+    int cMaxIdx[m->dims];
+    cv::minMaxIdx(*m, minVal, maxVal, cMinIdx, cMaxIdx);
+
+    for(unsigned int a = 0; a < sizeof(cMinIdx)/sizeof(cMinIdx[0]); a++) {
+        minIdx[a] = cMinIdx[a];
+    }
+    for(unsigned int a = 0; a < sizeof(cMaxIdx)/sizeof(cMaxIdx[0]); a++) {
+        maxIdx[a] = cMaxIdx[a];
+    }
 }
 
 void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc) {
