@@ -2619,7 +2619,6 @@ func TestMatMinMaxIdx3d(t *testing.T) {
 	if minIdx[0] != 0 || minIdx[1] != 0 || minIdx[2] != 0 {
 		t.Errorf("TestMatMinMaxIdx3d minIdx should be [0,0,0], was [%d,%d,%d]", minIdx[0], minIdx[1], minIdx[2])
 	}
-
 }
 
 func TestMixChannels(t *testing.T) {
