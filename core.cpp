@@ -337,11 +337,11 @@ void Mat_SetShort3(Mat m, int x, int y, int z, int16_t val) {
     m->at<short>(x, y, z) = val;
 }
 
-void Mat_SetUShort(Mat m, int row, int col, uint16_t val){
+void Mat_SetUShort(Mat m, int row, int col, uint16_t val) {
     m->at<ushort>(row, col) = val;
 }
 
-void Mat_SetUShort3(Mat m, int x, int y, int z, uint16_t val){
+void Mat_SetUShort3(Mat m, int x, int y, int z, uint16_t val) {
     m->at<ushort>(x, y, z) = val;
 }
 
@@ -1054,7 +1054,7 @@ void IntVector_Close(struct IntVector ivec) {
     delete[] ivec.val;
 }
 
-RNG Rng_New(){
+RNG Rng_New() {
     return new cv::RNG();
 }
 
@@ -1067,7 +1067,7 @@ void Rng_Close(RNG rng) {
 }
 
 RNG TheRNG() {
-    return  &cv::theRNG();
+    return &cv::theRNG();
 }
 
 void SetRNGSeed(int seed) {
@@ -1217,11 +1217,12 @@ Point3fVector Point3fVector_NewFromMat(Mat mat) {
 
 Point3f Point3fVector_At(Point3fVector pfv, int idx) {
     cv::Point3f p = pfv->at(idx);
-    return Point3f{
-            .x = p.x,
-            .y = p.y,
-            .z = p.z
+    Point3f pp = Point3f{
+            .x =  p.x,
+            .y =  p.y,
+            .z =  p.z
     };
+    return pp;
 }
 
 void Point3fVector_Append(Point3fVector pfv, Point3f point) {
