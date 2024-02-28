@@ -2575,7 +2575,6 @@ func TestMatMinMaxIdx(t *testing.T) {
 	src.SetFloatAt(4, 4, 16)
 
 	minVal, maxVal, minIdx, maxIdx := MinMaxIdx(src)
-
 	if minVal != 0 {
 		t.Error("TestMatMinMaxIdx minVal should be 0.")
 	}
@@ -2593,6 +2592,15 @@ func TestMatMinMaxIdx(t *testing.T) {
 func TestMatMinMaxIdx3d(t *testing.T) {
 	src := NewMatWithSizes([]int{3,3,3}, MatTypeCV32FC1)
 	defer src.Close()
+
+	for x := 0; x < 3; x++ {
+		for y := 0; y < 3; y++ {
+			for z := 0; z < 3; z++ {
+				src.SetFloatAt3(x, y, z, 0)
+			}
+		}
+	}
+
 	src.SetFloatAt3(2, 1, 2, 2)
 
 	minVal, maxVal, minIdx, maxIdx := MinMaxIdx(src)

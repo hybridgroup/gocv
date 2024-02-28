@@ -660,8 +660,6 @@ void Mat_MinMaxIdx(Mat m, double* minVal, double* maxVal, int* minIdx, int* maxI
 
     for(unsigned int a = 0; a < sizeof(cMinIdx)/sizeof(cMinIdx[0]); a++) {
         minIdx[a] = cMinIdx[a];
-    }
-    for(unsigned int a = 0; a < sizeof(cMaxIdx)/sizeof(cMaxIdx[0]); a++) {
         maxIdx[a] = cMaxIdx[a];
     }
 }

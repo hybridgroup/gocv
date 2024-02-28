@@ -1517,18 +1517,31 @@ func MinMaxIdx(input Mat) (minVal, maxVal float32, minIdx, maxIdx []int) {
 	var cMaxVal C.double
 
 	dims := len(input.Size())
-	cMinIdx := make([]C.int, dims)
-	cMaxIdx := make([]C.int, dims)
+	cMinIdx := (*C.int)(C.malloc(C.size_t(C.sizeof_int * dims)))
+	cMaxIdx := (*C.int)(C.malloc(C.size_t(C.sizeof_int * dims)))
+	defer C.free(unsafe.Pointer(cMinIdx))
+	defer C.free(unsafe.Pointer(cMaxIdx))
 
-	C.Mat_MinMaxIdx(input.p, &cMinVal, &cMaxVal, &cMinIdx[0], &cMaxIdx[0])
+	C.Mat_MinMaxIdx(input.p, &cMinVal, &cMaxVal, cMinIdx, cMaxIdx)
+
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cMinIdx)),
+		Len:  dims,
+		Cap:  dims,
+	}
+	minIndex := *(*[]C.int)(unsafe.Pointer(h))
+
+	h = &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cMaxIdx)),
+		Len:  dims,
+		Cap:  dims,
+	}
+	maxIndex := *(*[]C.int)(unsafe.Pointer(h))
 
 	for i := 0; i < dims; i++ {
-		minIdx = append(minIdx, int(cMinIdx[i]))
+		minIdx = append(minIdx, int(minIndex[i]))
+		maxIdx = append(maxIdx, int(maxIndex[i]))
 	}
-	for i := 0; i < dims; i++ {
-		maxIdx = append(maxIdx, int(cMaxIdx[i]))
-	}
-
 	return float32(cMinVal), float32(cMaxVal), minIdx, maxIdx
 }
 
