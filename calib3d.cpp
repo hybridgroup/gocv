@@ -14,22 +14,27 @@ void Fisheye_UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d, Mat r
     cv::fisheye::undistortPoints(*distorted, *undistorted, *k, *d, *r, *p);
 }
 
-void Fisheye_EstimateNewCameraMatrixForUndistortRectify(Mat k, Mat d, Size imgSize, Mat r, Mat p, double balance, Size newSize, double fovScale) {
+void Fisheye_EstimateNewCameraMatrixForUndistortRectify(Mat k, Mat d, Size imgSize, Mat r, Mat p, double balance,
+                                                        Size newSize, double fovScale) {
     cv::Size newSz(newSize.width, newSize.height);
     cv::Size imgSz(imgSize.width, imgSize.height);
     cv::fisheye::estimateNewCameraMatrixForUndistortRectify(*k, *d, imgSz, *r, *p, balance, newSz, fovScale);
 }
 
-void InitUndistortRectifyMap(Mat cameraMatrix,Mat distCoeffs,Mat r,Mat newCameraMatrix,Size size,int m1type,Mat map1,Mat map2) {
+void
+InitUndistortRectifyMap(Mat cameraMatrix, Mat distCoeffs, Mat r, Mat newCameraMatrix, Size size, int m1type, Mat map1,
+                        Mat map2) {
     cv::Size sz(size.width, size.height);
-    cv::initUndistortRectifyMap(*cameraMatrix,*distCoeffs,*r,*newCameraMatrix,sz,m1type,*map1,*map2);
+    cv::initUndistortRectifyMap(*cameraMatrix, *distCoeffs, *r, *newCameraMatrix, sz, m1type, *map1, *map2);
 }
 
-Mat GetOptimalNewCameraMatrixWithParams(Mat cameraMatrix,Mat distCoeffs,Size size,double alpha,Size newImgSize,Rect* validPixROI,bool centerPrincipalPoint) {
+Mat GetOptimalNewCameraMatrixWithParams(Mat cameraMatrix, Mat distCoeffs, Size size, double alpha, Size newImgSize,
+                                        Rect *validPixROI, bool centerPrincipalPoint) {
     cv::Size sz(size.width, size.height);
     cv::Size newSize(newImgSize.width, newImgSize.height);
-    cv::Rect rect(validPixROI->x,validPixROI->y,validPixROI->width,validPixROI->height);
-    cv::Mat* mat = new cv::Mat(cv::getOptimalNewCameraMatrix(*cameraMatrix,*distCoeffs,sz,alpha,newSize,&rect,centerPrincipalPoint));
+    cv::Rect rect(validPixROI->x, validPixROI->y, validPixROI->width, validPixROI->height);
+    cv::Mat *mat = new cv::Mat(
+            cv::getOptimalNewCameraMatrix(*cameraMatrix, *distCoeffs, sz, alpha, newSize, &rect, centerPrincipalPoint));
     validPixROI->x = rect.x;
     validPixROI->y = rect.y;
     validPixROI->width = rect.width;
@@ -37,8 +42,10 @@ Mat GetOptimalNewCameraMatrixWithParams(Mat cameraMatrix,Mat distCoeffs,Size siz
     return mat;
 }
 
-double CalibrateCamera(Points3fVector objectPoints, Points2fVector imagePoints, Size imageSize, Mat cameraMatrix, Mat distCoeffs, Mat rvecs, Mat tvecs, int flag) {
-    return cv::calibrateCamera(*objectPoints, *imagePoints, cv::Size(imageSize.width, imageSize.height), *cameraMatrix, *distCoeffs, *rvecs, *tvecs, flag);
+double CalibrateCamera(Points3fVector objectPoints, Points2fVector imagePoints, Size imageSize, Mat cameraMatrix,
+                       Mat distCoeffs, Mat rvecs, Mat tvecs, int flag, TermCriteria criteria) {
+    return cv::calibrateCamera(*objectPoints, *imagePoints, cv::Size(imageSize.width, imageSize.height), *cameraMatrix,
+                               *distCoeffs, *rvecs, *tvecs, flag, *criteria);
 }
 
 void Undistort(Mat src, Mat dst, Mat cameraMatrix, Mat distCoeffs, Mat newCameraMatrix) {
@@ -73,14 +80,21 @@ Mat EstimateAffinePartial2D(Point2fVector from, Point2fVector to) {
     return new cv::Mat(cv::estimateAffinePartial2D(*from, *to));
 }
 
-Mat EstimateAffinePartial2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method, double ransacReprojThreshold, size_t maxIters, double confidence, size_t refineIters) {
-    return new cv::Mat(cv::estimateAffinePartial2D(*from, *to, *inliers, method, ransacReprojThreshold, maxIters, confidence, refineIters));
+Mat EstimateAffinePartial2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method,
+                                      double ransacReprojThreshold, size_t maxIters, double confidence,
+                                      size_t refineIters) {
+    return new cv::Mat(
+            cv::estimateAffinePartial2D(*from, *to, *inliers, method, ransacReprojThreshold, maxIters, confidence,
+                                        refineIters));
 }
 
 Mat EstimateAffine2D(Point2fVector from, Point2fVector to) {
     return new cv::Mat(cv::estimateAffine2D(*from, *to));
 }
 
-Mat EstimateAffine2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method, double ransacReprojThreshold, size_t maxIters, double confidence, size_t refineIters) {
-    return new cv::Mat(cv::estimateAffine2D(*from, *to, *inliers, method, ransacReprojThreshold, maxIters, confidence, refineIters));
+Mat
+EstimateAffine2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method, double ransacReprojThreshold,
+                           size_t maxIters, double confidence, size_t refineIters) {
+    return new cv::Mat(cv::estimateAffine2D(*from, *to, *inliers, method, ransacReprojThreshold, maxIters, confidence,
+                                            refineIters));
 }
