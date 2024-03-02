@@ -7,7 +7,7 @@
 
 // Wrapper for std::vector<string>
 typedef struct CStrings {
-    const char** strs;
+    char** strs;
     int length;
 } CStrings;
 
@@ -241,6 +241,7 @@ typedef std::vector< std::vector< cv::Point2f> >* Points2fVector;
 typedef std::vector< cv::Point3f >* Point3fVector;
 typedef std::vector< std::vector< cv::Point3f > >* Points3fVector;
 typedef std::vector<uchar> * UCharVector;
+typedef cv::Exception* CvException;
 #else
 typedef void* Mat;
 typedef void* InputOutputArray;
@@ -254,6 +255,7 @@ typedef void* Point3fVector;
 typedef void* Points3fVector;
 typedef void* UCharVector;
 typedef unsigned char uchar;
+typedef void* CvException;
 #endif
 
 InputOutputArray noArray();
@@ -492,7 +494,11 @@ void Point2fVector_Append(Point2fVector pv, Point2f p);
 Point2f Point2fVector_At(Point2fVector pfv, int idx);
 int Point2fVector_Size(Point2fVector pfv);
 
+// IntVector* IntVector_New();
 void IntVector_Close(struct IntVector ivec);
+
+// FloatVector* FloatVector_New();
+void FloatVector_Close(struct FloatVector ivec);
 
 void CStrings_Close(struct CStrings cstrs);
 

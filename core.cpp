@@ -1050,8 +1050,22 @@ void Point2fVector_Close(Point2fVector pv) {
     delete pv;
 }
 
+// IntVector* IntVector_New(){
+//     auto vec = new std::vector<int>();
+//     return new IntVector {.val=vec->data(), .length=(int)vec->size()};
+// }
+
 void IntVector_Close(struct IntVector ivec) {
     delete[] ivec.val;
+}
+
+// FloatVector* FloatVector_New(){
+//     auto vec = new std::vector<float>();
+//     return new FloatVector {.val=vec->data(), .length=(int)vec->size()};
+// }
+
+void FloatVector_Close(struct FloatVector fvec){
+    delete[] fvec.val;
 }
 
 RNG Rng_New() {
