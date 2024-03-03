@@ -170,7 +170,7 @@ bool QRCodeDetector_DetectAndDecodeMulti(QRCodeDetector qr, Mat input, CStrings*
 
   char **strs = new char*[decodedCodes.size()];
   for (size_t i = 0; i < decodedCodes.size(); ++i) {
-      strs[i] = _strdup(decodedCodes[i].c_str());
+      strs[i] = strdup(decodedCodes[i].c_str());
   }
   decoded->length = decodedCodes.size();
   decoded->strs = strs;

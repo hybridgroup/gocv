@@ -126,7 +126,7 @@ void Net_GetLayerNames(Net net, CStrings *names) {
     char **strs = new char *[cstrs.size()];
 
     for (size_t i = 0; i < cstrs.size(); ++i) {
-        strs[i] = _strdup(cstrs.at(i).c_str());
+        strs[i] = strdup(cstrs.at(i).c_str());
     }
 
     names->length = (int)cstrs.size();
