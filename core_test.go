@@ -2569,7 +2569,7 @@ func TestMatMin(t *testing.T) {
 }
 
 func TestMatMinMaxIdx(t *testing.T) {
-	src := NewMatWithSize(10, 10, MatTypeCV32FC1)
+	src := NewMatWithSize(10, 10, MatTypeCV32F)
 	defer src.Close()
 	src.SetFloatAt(3, 3, 17)
 	src.SetFloatAt(4, 4, 16)
@@ -2590,7 +2590,7 @@ func TestMatMinMaxIdx(t *testing.T) {
 }
 
 func TestMatMinMaxIdx3d(t *testing.T) {
-	src := NewMatWithSizes([]int{3,3,3}, MatTypeCV32FC1)
+	src := NewMatWithSizes([]int{3,3,3}, MatTypeCV32F)
 	defer src.Close()
 
 	for x := 0; x < 3; x++ {
