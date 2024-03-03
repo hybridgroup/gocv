@@ -45,7 +45,7 @@ Net Net_ReadNetFromTFLiteBytes(struct ByteArray bufferModel) {
     return new cv::dnn::Net(cv::dnn::readNetFromTFLite(bufferModel.data, bufferModel.length));
 }
 
-Net Net_ReadNetFromTorch(const char *model, bool isBinary = true, bool evaluate = true) {
+Net Net_ReadNetFromTorch(const char *model, bool isBinary, bool evaluate) {
     Net n = new cv::dnn::Net(cv::dnn::readNetFromTorch(model, isBinary, evaluate));
     return n;
 }

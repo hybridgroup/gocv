@@ -28,7 +28,7 @@ Net Net_ReadNetFromTensorflow(const char* model, const char* config);
 Net Net_ReadNetFromTensorflowBytes(struct ByteArray model, struct ByteArray config);
 Net Net_ReadNetFromTFLite(const char* model);
 Net Net_ReadNetFromTFLiteBytes(struct ByteArray bufferModel);
-Net Net_ReadNetFromTorch(const char* model);
+Net Net_ReadNetFromTorch(const char *model, bool isBinary, bool evaluate);
 Net Net_ReadNetFromONNX(const char* model);
 Net Net_ReadNetFromONNXBytes(struct ByteArray model);
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
