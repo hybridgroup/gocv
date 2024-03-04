@@ -1,9 +1,24 @@
+#pragma warning(disable : 4996)
 #ifndef _OPENCV3_CORE_H_
 #define _OPENCV3_CORE_H_
 
 #include <stdint.h>
 #include <stdbool.h>
 #include "math.h"
+
+#ifdef __cplusplus
+#include <opencv2/opencv.hpp>
+extern "C" {
+#endif
+
+// #if defined WIN32 || defined _WIN32
+// #define BEGIN_WRAP
+// #define END_WRAP(sts) return sts;
+// #else
+#define BEGIN_WRAP try{
+#define END_WRAP CvStatus s = {.code = 0}; return s;}catch(cv::Exception &e){CvStatus s = {.code=e.code, .msg=strdup(e.msg.c_str()), .err=strdup(e.err.c_str()), .func=strdup(e.func.c_str()), .file=strdup(e.file.c_str()), .line=e.line}; return s;}
+
+typedef int CV_STATUS;
 
 // Wrapper for std::vector<string>
 typedef struct CStrings {
@@ -27,11 +42,6 @@ typedef struct FloatVector {
     float* val;
     int length;
 } FloatVector;
-
-#ifdef __cplusplus
-#include <opencv2/opencv.hpp>
-extern "C" {
-#endif
 
 typedef struct RawData {
     int width;
@@ -257,6 +267,15 @@ typedef void* UCharVector;
 typedef unsigned char uchar;
 typedef void* CvException;
 #endif
+
+typedef struct CvStatus{
+    int code;
+    char* msg;
+    char* err;
+    char* func;
+    char* file;
+    int line;
+} CvStatus;
 
 InputOutputArray noArray();
 // Wrapper for the vector of Mat aka std::vector<Mat>
