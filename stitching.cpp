@@ -1,22 +1,24 @@
 #include "stitching.h"
 
-CvStatus Stitcher_Create(int mode, Stitcher *rval)
+CvStatus Stitcher_Create(int mode, PtrStitcher *rval)
 {
     BEGIN_WRAP
-    *rval = cv::Stitcher::create(static_cast<cv::Stitcher::Mode>(mode));
+    const auto ptr = cv::Stitcher::create(static_cast<cv::Stitcher::Mode>(mode));
+    *rval = new cv::Ptr<cv::Stitcher>(ptr);
     END_WRAP
 }
 
-void Stitcher_Close(Stitcher stitcher)
+void Stitcher_Close(PtrStitcher stitcher)
 {
     delete stitcher;
 }
 
-// CvStatus Stitcher_Get(Stitcher* stitcher, Stitcher* rval){
-//     BEGIN_WRAP
-//     *rval = (*stitcher)->get();
-//     END_WRAP
-// }
+CvStatus Stitcher_Get(PtrStitcher stitcher, Stitcher *rval)
+{
+    BEGIN_WRAP
+    *rval = stitcher->get();
+    END_WRAP
+}
 
 CvStatus Stitcher_GetRegistrationResol(Stitcher stitcher, double *rval)
 {
@@ -87,7 +89,7 @@ CvStatus Stitcher_SetWaveCorrection(Stitcher stitcher, bool inval)
 CvStatus Stitcher_GetInterpolationFlags(Stitcher stitcher, int *rval)
 {
     BEGIN_WRAP
-    *rval = stitcher->interpolationFlags();
+    *rval = static_cast<int>(stitcher->interpolationFlags());
     END_WRAP
 }
 CvStatus Stitcher_SetInterpolationFlags(Stitcher stitcher, int inval)
@@ -100,7 +102,7 @@ CvStatus Stitcher_SetInterpolationFlags(Stitcher stitcher, int inval)
 CvStatus Stitcher_GetWaveCorrectKind(Stitcher stitcher, int *rval)
 {
     BEGIN_WRAP
-    *rval = stitcher->waveCorrectKind();
+    *rval = static_cast<int>(stitcher->waveCorrectKind());
     END_WRAP
 }
 CvStatus Stitcher_SetWaveCorrectKind(Stitcher stitcher, int inval)
@@ -110,35 +112,28 @@ CvStatus Stitcher_SetWaveCorrectKind(Stitcher stitcher, int inval)
     END_WRAP
 }
 
-CvStatus Stitcher_EstimateTransform(Stitcher stitcher, Mats mats, Rects masks, int *rval)
+CvStatus Stitcher_EstimateTransform(Stitcher stitcher, Mats mats, Mats masks, int *rval)
 {
     BEGIN_WRAP
     std::vector<cv::Mat> _mats;
     for (size_t i = 0; i < mats.length; i++)
-    {
         _mats.push_back(*mats.mats[i]);
-    }
     if (masks.length > 0)
     {
-        std::vector<cv::Rect> _masks;
+        std::vector<cv::Mat> _masks;
         for (size_t i = 0; i < masks.length; i++)
-        {
-            Rect r = masks.rects[i];
-            _masks.push_back(cv::Rect(r.x, r.y, r.width, r.height));
-        }
-        *rval = stitcher->estimateTransform(_mats, _masks);
+            _masks.push_back(*masks.mats[i]);
+        *rval = static_cast<int>(stitcher->estimateTransform(_mats, _masks));
     }
     else
-    {
-        *rval = stitcher->estimateTransform(_mats);
-    }
+        *rval = static_cast<int>(stitcher->estimateTransform(_mats));
     END_WRAP
 }
 
 CvStatus Stitcher_ComposePanorama(Stitcher stitcher, Mat rpano, int *rval)
 {
     BEGIN_WRAP
-    *rval = stitcher->composePanorama(*rpano);
+    *rval = static_cast<int>(stitcher->composePanorama(*rpano));
     END_WRAP
 }
 CvStatus Stitcher_ComposePanorama_1(Stitcher stitcher, Mats mats, Mat rpano, int *rval)
@@ -146,10 +141,8 @@ CvStatus Stitcher_ComposePanorama_1(Stitcher stitcher, Mats mats, Mat rpano, int
     BEGIN_WRAP
     std::vector<cv::Mat> _mats;
     for (size_t i = 0; i < mats.length; i++)
-    {
         _mats.push_back(*mats.mats[i]);
-    }
-    *rval = stitcher->composePanorama(_mats, *rpano);
+    *rval = static_cast<int>(stitcher->composePanorama(_mats, *rpano));
     END_WRAP
 }
 
@@ -158,28 +151,20 @@ CvStatus Stitcher_Stitch(Stitcher stitcher, Mats mats, Mat rpano, int *rval)
     BEGIN_WRAP
     std::vector<cv::Mat> _mats;
     for (size_t i = 0; i < mats.length; ++i)
-    {
         _mats.push_back(*mats.mats[i]);
-    }
-    stitcher->stitch(_mats, *rpano);
-    printf("GGGGGG\n");
+    *rval = static_cast<int>(stitcher->stitch(_mats, *rpano));
     END_WRAP
 }
-CvStatus Stitcher_Stitch_1(Stitcher stitcher, Mats mats, Rects masks, Mat rpano, int *rval)
+CvStatus Stitcher_Stitch_1(Stitcher stitcher, Mats mats, Mats masks, Mat rpano, int *rval)
 {
     BEGIN_WRAP
     std::vector<cv::Mat> _mats;
     for (size_t i = 0; i < mats.length; i++)
-    {
         _mats.push_back(*mats.mats[i]);
-    }
-    std::vector<cv::Rect> _masks;
+    std::vector<cv::Mat> _masks;
     for (size_t i = 0; i < masks.length; i++)
-    {
-        Rect r = masks.rects[i];
-        _masks.push_back(cv::Rect(r.x, r.y, r.width, r.height));
-    }
-    *rval = stitcher->stitch(_mats, _masks, *rpano);
+        _masks.push_back(*masks.mats[i]);
+    *rval = static_cast<int>(stitcher->stitch(_mats, _masks, *rpano));
     END_WRAP
 }
 
@@ -191,9 +176,7 @@ CvStatus Stitcher_Component(Stitcher stitcher, IntVector *rval)
     (*rval).length = (int)_rval.size();
     int *vals = new int[_rval.size()];
     for (size_t i = 0; i < _rval.size(); i++)
-    {
         vals[i] = _rval.at(i);
-    }
     (*rval).val = vals;
     END_WRAP
 }

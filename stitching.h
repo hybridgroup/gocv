@@ -28,14 +28,16 @@ extern "C"
     };
 
 #ifdef __cplusplus
+    typedef cv::Ptr<cv::Stitcher> *PtrStitcher;
     typedef cv::Stitcher *Stitcher;
 #else
-typedef void *Stitcher;
+    typedef void **PtrStitcher;
+    typedef void *Stitcher;
 #endif
 
-    CvStatus Stitcher_Create(int mode, Stitcher *rval);
-    void Stitcher_Close(Stitcher stitcher);
-    // CvStatus Stitcher_Get(Stitcher* stitcher);
+    CvStatus Stitcher_Create(int mode, PtrStitcher *rval);
+    void Stitcher_Close(PtrStitcher stitcher);
+    CvStatus Stitcher_Get(PtrStitcher stitcher, Stitcher *rval);
 
 #pragma region getter/setter
     CvStatus Stitcher_GetRegistrationResol(Stitcher stitcher, double *rval);
@@ -61,13 +63,13 @@ typedef void *Stitcher;
 #pragma endregion
 
 #pragma region functions
-    CvStatus Stitcher_EstimateTransform(Stitcher stitcher, Mats mats, Rects masks, int *rval);
+    CvStatus Stitcher_EstimateTransform(Stitcher stitcher, Mats mats, Mats masks, int *rval);
 
     CvStatus Stitcher_ComposePanorama(Stitcher stitcher, Mat rpano, int *rval);
     CvStatus Stitcher_ComposePanorama_1(Stitcher stitcher, Mats mats, Mat rpano, int *rval);
 
     CvStatus Stitcher_Stitch(Stitcher stitcher, Mats mats, Mat rpano, int *rval);
-    CvStatus Stitcher_Stitch_1(Stitcher stitcher, Mats mats, Rects masks, Mat rpano, int *rval);
+    CvStatus Stitcher_Stitch_1(Stitcher stitcher, Mats mats, Mats masks, Mat rpano, int *rval);
 
     CvStatus Stitcher_Component(Stitcher stitcher, IntVector *rval);
 #pragma endregion
