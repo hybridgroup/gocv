@@ -9,6 +9,7 @@ extern "C" {
 #include "core.h"
 
 const char* openCVVersion();
+const char* getBuildInfo();
 
 #ifdef __cplusplus
 }
