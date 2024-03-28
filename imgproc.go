@@ -340,6 +340,28 @@ func ErodeWithParams(src Mat, dst *Mat, kernel Mat, anchor image.Point, iteratio
 	C.ErodeWithParams(src.p, dst.p, kernel.p, cAnchor, C.int(iterations), C.int(borderType))
 }
 
+// ErodeWithParamsAndBorderValue erodes an image by using a specific structuring
+// element. Same as ErodeWithParams but requires an additional borderValue
+// parameter.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaeb1e0c1033e3f6b891a25d0511362aeb
+func ErodeWithParamsAndBorderValue(src Mat, dst *Mat, kernel Mat, anchor image.Point, iterations, borderType int, borderValue Scalar) {
+	cAnchor := C.struct_Point{
+		x: C.int(anchor.X),
+		y: C.int(anchor.Y),
+	}
+
+	bv := C.struct_Scalar{
+		val1: C.double(borderValue.Val1),
+		val2: C.double(borderValue.Val2),
+		val3: C.double(borderValue.Val3),
+		val4: C.double(borderValue.Val4),
+	}
+
+	C.ErodeWithParamsAndBorderValue(src.p, dst.p, kernel.p, cAnchor, C.int(iterations), C.int(borderType), bv)
+}
+
 // RetrievalMode is the mode of the contour retrieval algorithm.
 type RetrievalMode int
 

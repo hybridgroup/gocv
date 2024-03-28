@@ -35,6 +35,7 @@ void DilateWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations
 void DistanceTransform(Mat src, Mat dst, Mat labels, int distanceType, int maskSize, int labelType);
 void Erode(Mat src, Mat dst, Mat kernel);
 void ErodeWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType);
+void ErodeWithParamsAndBorderValue(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType, Scalar borderValue);
 void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask);
 struct Moment Moments(Mat src, bool binaryImage);
 void PyrDown(Mat src, Mat dst, Size dstsize, int borderType);

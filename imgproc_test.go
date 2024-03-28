@@ -692,6 +692,25 @@ func TestErodeWithParams(t *testing.T) {
 	}
 }
 
+func TestErodeWithParamsAndBorderValue(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in ErodeWithParamsAndBorderValue test")
+	}
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
+	defer kernel.Close()
+
+	ErodeWithParamsAndBorderValue(img, &dest, kernel, image.Pt(-1, -1), 3, 0, NewScalar(0,0,0,0))
+	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
+		t.Error("Invalid ErodeWithParamsAndBorderValue test")
+	}
+}
+
 func TestMorphologyDefaultBorderValue(t *testing.T) {
 	zeroScalar := Scalar{}
 	morphologyDefaultBorderValue := MorphologyDefaultBorderValue()
