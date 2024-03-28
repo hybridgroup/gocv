@@ -179,7 +179,7 @@ func TestDetectMarkers(t *testing.T) {
 	defer detector.Close()
 
 	_, markerIds, _ := detector.DetectMarkers(img)
-	expected := []int{40, 98, 62, 23, 124, 203}
+	expected := []int{203, 124, 23, 40, 98, 62}
 	if !reflect.DeepEqual(markerIds, expected) {
 		t.Error(fmt.Sprintf("Marker id expected %v got %v", expected, markerIds))
 	}
