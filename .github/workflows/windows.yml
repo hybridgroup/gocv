@@ -39,9 +39,10 @@ jobs:
             curl https://github.com/opencv/opencv_contrib/archive/4.9.0.zip --output ./opencv/opencv_contrib-4.9.0.zip
       - name: Extract OpenCV source
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
+        shell: bash
         run: |
-            Expand-Archive -Path .\opencv\opencv-4.9.0.zip -DestinationPath .\opencv
-            Expand-Archive -Path .\opencv\opencv_contrib-4.9.0.zip -DestinationPath .\opencv
+            7z x .\opencv\opencv-4.9.0.zip -o.\opencv
+            7z x .\opencv\opencv_contrib-4.9.0.zip -o.\opencv
       - name: Save cached OpenCV source
         uses: actions/cache/save@v4
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
