@@ -865,6 +865,16 @@ void Points_Close(Points ps) {
 
 void Point_Close(Point p) {}
 
+void Points2f_Close(Points2f ps) {
+    for (size_t i = 0; i < ps.length; i++) {
+        Point2f_Close(ps.points[i]);
+    }
+
+    delete[] ps.points;
+}
+
+void Point2f_Close(Point2f p) {}
+
 void Rects_Close(struct Rects rs) {
     delete[] rs.rects;
 }

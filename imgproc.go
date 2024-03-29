@@ -458,6 +458,41 @@ func BoxPoints(rect RotatedRect, pts *Mat) {
 	C.BoxPoints(r, pts.p)
 }
 
+// BoxPoints finds the four vertices of a rotated rect. Useful to draw the rotated rectangle.
+//
+// For further Details, please see:
+// https://docs.opencv.org/3.3.0/d3/dc0/group__imgproc__shape.html#gaf78d467e024b4d7936cf9397185d2f5c
+func BoxPoints2f(rect RotatedRect2f, pts *Mat) {
+	rPoints := toCPoints2f(rect.Points)
+
+	rRect := C.struct_Rect{
+		x:      C.int(rect.BoundingRect.Min.X),
+		y:      C.int(rect.BoundingRect.Min.Y),
+		width:  C.int(rect.BoundingRect.Max.X - rect.BoundingRect.Min.X),
+		height: C.int(rect.BoundingRect.Max.Y - rect.BoundingRect.Min.Y),
+	}
+
+	rCenter := C.struct_Point2f{
+		x: C.float(rect.Center.X),
+		y: C.float(rect.Center.Y),
+	}
+
+	rSize := C.struct_Size2f{
+		width:  C.float(rect.Width),
+		height: C.float(rect.Height),
+	}
+
+	r := C.struct_RotatedRect2f{
+		pts:          rPoints,
+		boundingRect: rRect,
+		center:       rCenter,
+		size:         rSize,
+		angle:        C.double(rect.Angle),
+	}
+
+	C.BoxPoints2f(r, pts.p)
+}
+
 // ContourArea calculates a contour area.
 //
 // For further details, please see:
@@ -473,6 +508,15 @@ type RotatedRect struct {
 	Center       image.Point
 	Width        int
 	Height       int
+	Angle        float64
+}
+
+type RotatedRect2f struct {
+	Points       []Point2f
+	BoundingRect image.Rectangle
+	Center       Point2f
+	Width        float32
+	Height       float32
 	Angle        float64
 }
 
@@ -495,6 +539,25 @@ func toPoints(points C.Contour) []image.Point {
 	return points4
 }
 
+// toPoints2f converts C.Contour2f to []Point2f
+func toPoints2f(points C.Contour2f) []Point2f {
+	pArray := points.points
+	pLength := int(points.length)
+
+	pHdr := reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(pArray)),
+		Len:  pLength,
+		Cap:  pLength,
+	}
+	sPoints := *(*[]C.Point)(unsafe.Pointer(&pHdr))
+
+	points4 := make([]Point2f, pLength)
+	for j, pt := range sPoints {
+		points4[j] = NewPoint2f(float32(pt.x), float32(pt.y))
+	}
+	return points4
+}
+
 // MinAreaRect finds a rotated rectangle of the minimum area enclosing the input 2D point set.
 //
 // For further details, please see:
@@ -509,6 +572,24 @@ func MinAreaRect(points PointVector) RotatedRect {
 		Center:       image.Pt(int(result.center.x), int(result.center.y)),
 		Width:        int(result.size.width),
 		Height:       int(result.size.height),
+		Angle:        float64(result.angle),
+	}
+}
+
+// MinAreaRect finds a rotated rectangle of the minimum area enclosing the input 2D point set.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga3d476a3417130ae5154aea421ca7ead9
+func MinAreaRect2f(points PointVector) RotatedRect2f {
+	result := C.MinAreaRect2f(points.p)
+	defer C.Points2f_Close(result.pts)
+
+	return RotatedRect2f{
+		Points:       toPoints2f(result.pts),
+		BoundingRect: image.Rect(int(result.boundingRect.x), int(result.boundingRect.y), int(result.boundingRect.x)+int(result.boundingRect.width), int(result.boundingRect.y)+int(result.boundingRect.height)),
+		Center:       NewPoint2f(float32(result.center.x), float32(result.center.y)),
+		Width:        float32(result.size.width),
+		Height:       float32(result.size.height),
 		Angle:        float64(result.angle),
 	}
 }

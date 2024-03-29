@@ -198,6 +198,13 @@ void BoxPoints(RotatedRect rect, Mat boxPts){
     cv::boxPoints(rotatedRectangle, *boxPts);
 }
 
+void BoxPoints2f(RotatedRect2f rect, Mat boxPts){
+    cv::Point2f centerPt(rect.center.x , rect.center.y);
+    cv::Size2f rSize(rect.size.width, rect.size.height);
+    cv::RotatedRect rotatedRectangle(centerPt, rSize, rect.angle);
+    cv::boxPoints(rotatedRectangle, *boxPts);
+}
+
 double ContourArea(PointVector pts) {
     return cv::contourArea(*pts);
 }
@@ -222,6 +229,29 @@ struct RotatedRect MinAreaRect(PointVector pts){
     Size szsz = {int(lroundf(cvrect.size.width)), int(lroundf(cvrect.size.height))};
 
     RotatedRect retrect = {(Contour){rpts, 4}, r, centrpt, szsz, cvrect.angle};
+    return retrect;
+}
+
+struct RotatedRect2f MinAreaRect2f(PointVector pts){
+    cv::RotatedRect cvrect = cv::minAreaRect(*pts);
+
+    Point2f* rpts = new Point2f[4];
+    cv::Point2f* pts4 = new cv::Point2f[4];
+    cvrect.points(pts4);
+
+    for (size_t j = 0; j < 4; j++) {
+        Point2f pt = {pts4[j].x, pts4[j].y};
+        rpts[j] = pt;
+    }
+
+    delete[] pts4;
+
+    cv::Rect bRect = cvrect.boundingRect();
+    Rect r = {bRect.x, bRect.y, bRect.width, bRect.height};
+    Point2f centrpt = {cvrect.center.x, cvrect.center.y};
+    Size2f szsz = {cvrect.size.width, cvrect.size.height};
+
+    RotatedRect2f retrect = {(Contour2f){rpts, 4}, r, centrpt, szsz, cvrect.angle};
     return retrect;
 }
 
