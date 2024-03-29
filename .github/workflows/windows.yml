@@ -41,7 +41,7 @@ jobs:
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
         shell: bash
         run: |
-            7z x ./opencv/*.zip -o./opencv/*
+            7z x opencv\*.zip -oopencv\*
       - name: Save cached OpenCV source
         uses: actions/cache/save@v4
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
