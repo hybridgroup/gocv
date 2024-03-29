@@ -1,0 +1,69 @@
+name: Windows
+
+on:
+  pull_request:
+  push:
+    branches:
+      - dev
+      - release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-windows:
+    runs-on: windows-2022
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache: true
+      - name: Restore cached OpenCV source
+        uses: actions/cache/restore@v4
+        id: cache-opencv-source
+        with:
+          key: opencv-source-490-windows-v1
+          path: |
+            opencv-build
+      - name: Download OpenCV source
+        if: steps.cache-opencv-source.outputs.cache-hit != 'true'
+        run: BUILD_DIR=opencv-build make download
+      - name: Save cached OpenCV source
+        uses: actions/cache/save@v4
+        if: steps.cache-opencv-source.outputs.cache-hit != 'true'
+        with:
+          key: ${{ steps.cache-opencv-source.outputs.cache-primary-key }}
+          path: |
+            opencv-build
+      - name: Restore cached OpenCV build
+        uses: actions/cache/restore@v4
+        id: cache-opencv-build
+        with:
+          key: opencv-build-490-windows-v1
+          path: opencv-build
+      - name: Build OpenCV
+        if: steps.cache-opencv-build.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+            BUILD_DIR=opencv-build make build_nonfree_task
+      - name: Save cached OpenCV build
+        uses: actions/cache/save@v4
+        if: steps.cache-opencv-build.outputs.cache-hit != 'true'
+        with:
+          key: ${{ steps.cache-opencv-build.outputs.cache-primary-key }}
+          path: opencv-build
+      - name: Test GoCV
+        shell: bash
+        run: |
+            go test -v -tags matprofile .
+      - name: Test GoCV Contrib
+        shell: bash
+        run: |
+            go test -v -tags matprofile ./contrib
+    
