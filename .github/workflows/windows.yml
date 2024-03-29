@@ -34,8 +34,9 @@ jobs:
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
         shell: bash
         run: |
-            wget https://github.com/opencv/opencv/archive/4.9.0.zip -O ./opencv/opencv-4.9.0.zip
-            wget https://github.com/opencv/opencv_contrib/archive/4.9.0.zip -O ./opencv/opencv_contrib-4.9.0.zip
+            mkdir -p ./opencv
+            curl https://github.com/opencv/opencv/archive/4.9.0.zip --output ./opencv/opencv-4.9.0.zip
+            curl https://github.com/opencv/opencv_contrib/archive/4.9.0.zip --output ./opencv/opencv_contrib-4.9.0.zip
       - name: Extract OpenCV source
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
         run: |
