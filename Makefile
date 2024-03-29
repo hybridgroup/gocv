@@ -78,7 +78,8 @@ deps_jetson:
 # Download OpenCV source tarballs.
 download-clean:
 	rm -rf $(BUILD_DIR)/opencv
-	mkdir $(BUILD_DIR)/opencv
+	mkdir -p $(BUILD_DIR)
+	mkdir -p $(BUILD_DIR)/opencv
 
 # Download OpenCV source tarballs.
 download-opencv-source:
