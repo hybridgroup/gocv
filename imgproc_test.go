@@ -417,6 +417,77 @@ func TestMinAreaRect(t *testing.T) {
 	}
 }
 
+func TestBoxPoints2f(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in BoxPoints2f test")
+	}
+	defer img.Close()
+
+	threshImg := NewMat()
+	defer threshImg.Close()
+
+	Threshold(img, &threshImg, 25, 255, ThresholdBinary)
+
+	contours := FindContours(threshImg, RetrievalExternal, ChainApproxSimple)
+	defer contours.Close()
+
+	contour := contours.At(0)
+
+	hull := NewMat()
+	defer hull.Close()
+	ConvexHull(contour, &hull, false, false)
+	hullPoints := []image.Point{}
+	for i := 0; i < hull.Cols(); i++ {
+		for j := 0; j < hull.Rows(); j++ {
+			p := hull.GetIntAt(j, i)
+			hullPoints = append(hullPoints, contour.At(int(p)))
+		}
+	}
+
+	pvhp := NewPointVectorFromPoints(hullPoints)
+	defer pvhp.Close()
+
+	rect := MinAreaRect2f(pvhp)
+	pts := NewMat()
+	defer pts.Close()
+	BoxPoints2f(rect, &pts)
+
+	if pts.Empty() || pts.Rows() != 4 || pts.Cols() != 2 {
+		t.Error("Invalid BoxPoints2f test")
+	}
+}
+
+func TestMinAreaRect2f(t *testing.T) {
+	src := []image.Point{
+		image.Pt(0, 2),
+		image.Pt(2, 0),
+		image.Pt(8, 4),
+		image.Pt(4, 8),
+	}
+
+	pv := NewPointVectorFromPoints(src)
+	defer pv.Close()
+
+	m := MinAreaRect2f(pv)
+
+	if m.Center.X != 3.5 {
+		t.Errorf("TestMinAreaRect2f(): unexpected center.X = %v, want = %v", m.Center.X, 3.5)
+	}
+	if m.Center.Y != 3.5 {
+		t.Errorf("TestMinAreaRect2f(): unexpected center.Y = %v, want = %v", m.Center.Y, 3.5)
+	}
+	if m.Width != 7.071067810058594 {
+		t.Errorf("TestMinAreaRect2f(): unexpected width = %v, want = %v", m.Width, 7.071067810058594)
+	}
+	if m.Height != 5.656853675842285 {
+		t.Errorf("TestMinAreaRect2f(): unexpected height = %v, want = %v", m.Height, 5.656853675842285)
+	}
+	if m.Angle != 45.0 {
+		t.Errorf("TestMinAreaRect2f(): unexpected angle = %v, want = %v", m.Angle, 45.0)
+	}
+}
+
 func TestFitEllipse(t *testing.T) {
 	src := []image.Point{
 		image.Pt(1, 1),

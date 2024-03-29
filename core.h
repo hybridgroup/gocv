@@ -121,6 +121,12 @@ typedef struct Size {
     int height;
 } Size;
 
+// Wrapper for an individual cv::cvSize
+typedef struct Size2f {
+    float width;
+    float height;
+} Size2f;
+
 // Wrapper for an individual cv::RotatedRect
 typedef struct RotatedRect {
     Points pts;
@@ -129,6 +135,15 @@ typedef struct RotatedRect {
     Size size;
     double angle;
 } RotatedRect;
+
+// Wrapper for an individual cv::RotatedRect
+typedef struct RotatedRect2f {
+    Points2f pts;
+    Rect boundingRect;
+    Point2f center;
+    Size2f size;
+    double angle;
+} RotatedRect2f;
 
 // Wrapper for an individual cv::cvScalar
 typedef struct Scalar {
@@ -268,6 +283,8 @@ void Rects_Close(struct Rects rs);
 void Mats_Close(struct Mats mats);
 void Point_Close(struct Point p);
 void Points_Close(struct Points ps);
+void Point2f_Close(struct Point2f p);
+void Points2f_Close(struct Points2f ps);
 void DMatches_Close(struct DMatches ds);
 void MultiDMatches_Close(struct MultiDMatches mds);
 
