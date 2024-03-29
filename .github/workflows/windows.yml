@@ -42,7 +42,7 @@ jobs:
         shell: bash
         run: |
             cd ./opencv
-            7z x *.zip
+            7z x *.zip -o*
       - name: Save cached OpenCV source
         uses: actions/cache/save@v4
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
