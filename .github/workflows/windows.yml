@@ -33,20 +33,14 @@ jobs:
       - name: Download OpenCV source
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
         run: |
-            echo Downloading: opencv-4.9.0.zip
-            powershell -command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://github.com/opencv/opencv/archive/4.9.0.zip -OutFile .\opencv\opencv-4.9.0.zip"
-            echo Extracting...
-            powershell -command "$ProgressPreference = 'SilentlyContinue'; Expand-Archive -Path .\opencv\opencv-4.9.0.zip -DestinationPath .\opencv"
-            del .\opencv\opencv-4.9.0.zip
-            echo.
-        
-            echo Downloading: opencv_contrib-4.9.0.zip
-            powershell -command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://github.com/opencv/opencv_contrib/archive/4.9.0.zip -OutFile .\opencv\opencv_contrib-4.9.0.zip"
-            echo Extracting...
-            powershell -command "$ProgressPreference = 'SilentlyContinue'; Expand-Archive -Path .\opencv\opencv_contrib-4.9.0.zip -DestinationPath .\opencv"
-            del .\opencv\opencv_contrib-4.9.0.zip
-            echo.
-
+            wget https://github.com/opencv/opencv/archive/4.9.0.zip -O ./opencv/opencv-4.9.0.zip
+            wget https://github.com/opencv/opencv_contrib/archive/4.9.0.zip -O ./opencv/opencv_contrib-4.9.0.zip
+      - name: Extract OpenCV source
+        if: steps.cache-opencv-source.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+            Expand-Archive -Path .\opencv\opencv-4.9.0.zip -DestinationPath .\opencv
+            Expand-Archive -Path .\opencv\opencv_contrib-4.9.0.zip -DestinationPath .\opencv
       - name: Save cached OpenCV source
         uses: actions/cache/save@v4
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
