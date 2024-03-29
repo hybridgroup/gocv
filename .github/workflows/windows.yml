@@ -35,14 +35,13 @@ jobs:
         shell: bash
         run: |
             mkdir -p opencv
-            curl https://github.com/opencv/opencv/archive/4.9.0.zip --output opencv/opencv-4.9.0.zip
-            curl https://github.com/opencv/opencv_contrib/archive/4.9.0.zip --output opencv/opencv_contrib-4.9.0.zip
+            curl https://github.com/opencv/opencv/archive/4.9.0.zip --output opencv\opencv-4.9.0.zip
+            curl https://github.com/opencv/opencv_contrib/archive/4.9.0.zip --output opencv\opencv_contrib-4.9.0.zip
       - name: Extract OpenCV source
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
         shell: bash
         run: |
-            7z x opencv\opencv-4.9.0.zip -oopencv\*
-            7z x opencv\opencv_contrib-4.9.0.zip -oopencv\*
+            7z x opencv\*.zip -oopencv\*
       - name: Save cached OpenCV source
         uses: actions/cache/save@v4
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
