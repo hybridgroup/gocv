@@ -58,14 +58,16 @@ jobs:
         uses: actions/cache/restore@v4
         id: cache-opencv-build
         with:
-          key: opencv-build-490-windows-v1a
+          key: opencv-build-490-windows-v1b
           path: |
             ./opencv/build
       - name: Build OpenCV
         if: steps.cache-opencv-build.outputs.cache-hit != 'true'
         run: |
             cmake .\opencv\opencv-4.9.0 -G "MinGW Makefiles" -B.\opencv\build -DENABLE_CXX11=ON -DOPENCV_EXTRA_MODULES_PATH=.\opencv\opencv_contrib-4.9.0\modules -DBUILD_SHARED_LIBS=ON -DWITH_IPP=OFF -DWITH_MSMF=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=ON -DBUILD_opencv_java=OFF -DBUILD_opencv_python=OFF -DBUILD_opencv_python2=OFF -DBUILD_opencv_python3=OFF -DBUILD_DOCS=OFF -DENABLE_PRECOMPILED_HEADERS=OFF -DBUILD_opencv_saliency=OFF -DBUILD_opencv_wechat_qrcode=ON -DCPU_DISPATCH= -DOPENCV_GENERATE_PKGCONFIG=ON -DWITH_OPENCL_D3D11_NV=OFF -DOPENCV_ALLOCATOR_STATS_COUNTER_TYPE=int64_t -Wno-dev
-            cmake --build .\opencv\build
+            cd ./opencv/build
+            mingw32-make
+            mingw32-make install
       - name: Save cached OpenCV build
         uses: actions/cache/save@v4
         if: steps.cache-opencv-build.outputs.cache-hit != 'true'
