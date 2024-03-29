@@ -34,7 +34,7 @@ jobs:
       - name: Download OpenCV source
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
         run: |
-            make download BUILD_DIR=opencv-build
+            make download BUILD_DIR=./opencv-build
       - name: Save cached OpenCV source
         uses: actions/cache/save@v4
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
@@ -52,7 +52,7 @@ jobs:
         if: steps.cache-opencv-build.outputs.cache-hit != 'true'
         shell: bash
         run: |
-            make build_nonfree_task BUILD_DIR=opencv-build
+            make build_nonfree_task BUILD_DIR=./opencv-build
       - name: Save cached OpenCV build
         uses: actions/cache/save@v4
         if: steps.cache-opencv-build.outputs.cache-hit != 'true'
