@@ -26,7 +26,7 @@ jobs:
         uses: actions/cache/restore@v4
         id: cache-opencv-source
         with:
-          key: opencv-source-490-windows-v1
+          key: opencv-source-490-windows-v1a
           path: |
             ./opencv/opencv-4.9.0
             ./opencv/opencv_contrib-4.9.0
