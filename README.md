@@ -458,7 +458,7 @@ For example:
 
     set CGO_CXXFLAGS="--std=c++11"
     set CGO_CPPFLAGS=-IC:\opencv\build\install\include
-    set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core481 -lopencv_face481 -lopencv_videoio481 -lopencv_imgproc481 -lopencv_highgui481 -lopencv_imgcodecs481 -lopencv_objdetect481 -lopencv_features2d481 -lopencv_video481 -lopencv_dnn481 -lopencv_xfeatures2d481 -lopencv_plot481 -lopencv_tracking481 -lopencv_img_hash481
+    set CGO_LDFLAGS=-LC:\opencv\build\install\x64\mingw\lib -lopencv_core490 -lopencv_face490 -lopencv_videoio490 -lopencv_imgproc490 -lopencv_highgui490 -lopencv_imgcodecs490 -lopencv_objdetect490 -lopencv_features2d490 -lopencv_video490 -lopencv_dnn490 -lopencv_xfeatures2d490 -lopencv_plot490 -lopencv_tracking490 -lopencv_img_hash490
 
 Please note that you will need to run these 3 lines of code one time in your current session in order to build or run the code, in order to setup the needed ENV variables. Once you have done so, you can execute code that uses GoCV with your custom environment like this:
 
@@ -467,7 +467,7 @@ Please note that you will need to run these 3 lines of code one time in your cur
 ## Android
 
 There is some work in progress for running GoCV on Android using Gomobile. For information on how to install OpenCV/GoCV for Android, please see:
-https://gist.github.com/ogero/c19458cf64bd3e91faae85c3ac887481
+https://gist.github.com/ogero/c19458cf64bd3e91faae85c3ac887490
 
 See original discussion here:
 https://github.com/hybridgroup/gocv/issues/235
