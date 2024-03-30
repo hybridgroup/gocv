@@ -80,10 +80,10 @@ jobs:
             set CGO_CXXFLAGS="--std=c++11"
             set CGO_CPPFLAGS="-ID:/a/gocv/gocv/opencv/build/install/include"
             set CGO_LDFLAGS="-LD:/a/gocv/gocv/opencv/build/install/x64/mingw/lib -lopencv_core490 -lopencv_face490 -lopencv_videoio490 -lopencv_imgproc490 -lopencv_highgui490 -lopencv_imgcodecs490 -lopencv_objdetect490 -lopencv_features2d490 -lopencv_video490 -lopencv_dnn490 -lopencv_xfeatures2d490 -lopencv_plot490 -lopencv_tracking490 -lopencv_img_hash490 -lopencv_calib3d490 -lopencv_bgsegm490 -lopencv_photo490 -lopencv_aruco490 -lopencv_wechat_qrcode490 -lopencv_ximgproc490"
-            go test -v -tags=matprofile,customenv .
+            go test -v -tags="matprofile,customenv" .
       - name: Test GoCV Contrib
         run: |
             set CGO_CXXFLAGS="--std=c++11"
             set CGO_CPPFLAGS="-ID:/a/gocv/gocv/opencv/build/install/include"
             set CGO_LDFLAGS="-LD:/a/gocv/gocv/opencv/build/install/x64/mingw/lib -lopencv_core490 -lopencv_face490 -lopencv_videoio490 -lopencv_imgproc490 -lopencv_highgui490 -lopencv_imgcodecs490 -lopencv_objdetect490 -lopencv_features2d490 -lopencv_video490 -lopencv_dnn490 -lopencv_xfeatures2d490 -lopencv_plot490 -lopencv_tracking490 -lopencv_img_hash490 -lopencv_calib3d490 -lopencv_bgsegm490 -lopencv_photo490 -lopencv_aruco490 -lopencv_wechat_qrcode490 -lopencv_ximgproc490"
-            go test -v -tags=matprofile,customenv ./contrib
+            go test -v -tags="matprofile,customenv" ./contrib
