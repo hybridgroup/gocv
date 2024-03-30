@@ -4,7 +4,7 @@
 
 [![Go Reference](https://pkg.go.dev/badge/gocv.io/x/gocv.svg)](https://pkg.go.dev/gocv.io/x/gocv)
 [![Linux](https://github.com/hybridgroup/gocv/actions/workflows/linux.yml/badge.svg?branch=dev)](https://github.com/hybridgroup/gocv/actions/workflows/linux.yml)
-[![Windows](https://ci.appveyor.com/api/projects/status/9asd5foet54ru69q/branch/dev?svg=true)](https://ci.appveyor.com/project/deadprogram/gocv/branch/dev)
+[![Windows](https://github.com/hybridgroup/gocv/actions/workflows/windows.yml/badge.svg?branch=dev)](https://github.com/hybridgroup/gocv/actions/workflows/windows.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hybridgroup/gocv)](https://goreportcard.com/report/github.com/hybridgroup/gocv)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/hybridgroup/gocv/blob/release/LICENSE.txt)
 
