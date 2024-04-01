@@ -152,7 +152,7 @@ If you need static opencv libraries
 
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
-    gocv version: 0.35.0
+    gocv version: 0.36.0
     opencv lib version: 4.9.0
 
 That's it, now you are ready to use GoCV.
@@ -178,7 +178,7 @@ If you need static opencv libraries
 
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
-    gocv version: 0.35.0
+    gocv version: 0.36.0
     opencv lib version: 4.9.0-openvino
     cuda information:
       Device 0:  "GeForce MX150"  2003Mb, sm_61, Driver/Runtime ver.10.0/10.0
@@ -240,7 +240,7 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-    gocv version: 0.35.0
+    gocv version: 0.36.0
     opencv lib version: 4.9.0
 
 #### Cleanup extra files
@@ -341,7 +341,7 @@ The following make command should do everything to download and install OpenCV 4
 
 If it works correctly, at the end of the entire process, the following message should be displayed:
 
-    gocv version: 0.35.0
+    gocv version: 0.36.0
     opencv lib version: 4.9.0
 
 That's it, now you are ready to use GoCV.
@@ -381,7 +381,7 @@ Now you should be able to build or run any of the examples:
 
 The version program should output the following:
 
-    gocv version: 0.35.0
+    gocv version: 0.36.0
     opencv lib version: 4.9.0
 
 ### Custom Environment
@@ -443,7 +443,7 @@ Now you should be able to build or run any of the command examples:
 
 The version program should output the following:
 
-    gocv version: 0.35.0
+    gocv version: 0.36.0
     opencv lib version: 4.9.0
 
 That's it, now you are ready to use GoCV.
