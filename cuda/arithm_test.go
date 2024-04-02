@@ -228,6 +228,36 @@ func TestDivide(t *testing.T) {
 	}
 }
 
+func TestDivideWithStream(t *testing.T) {
+	src1 := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadColor)
+	if src1.Empty() {
+		t.Error("Invalid read of Mat in Divide test")
+	}
+	defer src1.Close()
+
+	var cimg1, cimg2, dimg = NewGpuMat(), NewGpuMat(), NewGpuMat()
+	var s = NewStream()
+	defer cimg1.Close()
+	defer cimg2.Close()
+	defer dimg.Close()
+	defer s.Close()
+
+	cimg1.UploadWithStream(src1, s)
+	cimg2.UploadWithStream(src1, s)
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	DivideWithStream(cimg1, cimg2, &dimg, s)
+	dimg.DownloadWithStream(&dest, s)
+
+	s.WaitForCompletion()
+
+	if dest.Empty() || src1.Rows() != dest.Rows() || src1.Cols() != dest.Cols() {
+		t.Error("Invalid Divide test")
+	}
+}
+
 func TestExp(t *testing.T) {
 	src1 := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadColor)
 	if src1.Empty() {
