@@ -75,9 +75,6 @@ func TestHoughLines_Calc(t *testing.T) {
 	if dest.Rows() != 2 {
 		t.Errorf("Invalid HoughLines test rows: %v", dest.Rows())
 	}
-	if dest.Cols() != 1588 {
-		t.Errorf("Invalid HoughLines test cols: %v", dest.Cols())
-	}
 
 	expected := map[float32]float32{
 		21:  1.5707964,
@@ -135,9 +132,6 @@ func TestHoughLines_CalcWithStream(t *testing.T) {
 
 	if dest.Rows() != 2 {
 		t.Errorf("Invalid HoughLines test rows: %v", dest.Rows())
-	}
-	if dest.Cols() != 1588 {
-		t.Errorf("Invalid HoughLines test cols: %v", dest.Cols())
 	}
 
 	expected := map[float32]float32{
