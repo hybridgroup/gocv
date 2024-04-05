@@ -1,3 +1,12 @@
+0.36.1
+---
+* **bugfix**
+    * Correct error in CUDA function signature
+* **test**
+    * correct CUDA tests
+* **docker**
+    * add test image for CUDA 12
+
 0.36.0
 ---
 * **all**
