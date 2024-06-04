@@ -1,5 +1,5 @@
 # to build this docker image:
-#   docker build -f Dockerfile.opencv-openvino -t ghcr.io/hybridgroup/opencv:4.9.0-openvino
+#   docker build -f Dockerfile.opencv-openvino -t ghcr.io/hybridgroup/opencv:4.10.0-openvino
 FROM openvino/ubuntu20_dev:2022.1.0 AS opencv-openvino-base
 LABEL maintainer="hybridgroup"
 ENV DEBIAN_FRONTEND=noninteractive
@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev && \
     rm -rf /var/lib/apt/lists/*
 
-ARG OPENCV_VERSION="4.9.0"
+ARG OPENCV_VERSION="4.10.0"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
@@ -48,7 +48,7 @@ RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSIO
 # install golang here
 FROM opencv-openvino-base AS opencv-openvino-golang
 
-ENV GO_RELEASE=1.22.0
+ENV GO_RELEASE=1.22.3
 RUN wget https://dl.google.com/go/go${GO_RELEASE}.linux-amd64.tar.gz && \
     tar xfv go${GO_RELEASE}.linux-amd64.tar.gz -C /usr/local && \
     rm go${GO_RELEASE}.linux-amd64.tar.gz
