@@ -1,6 +1,6 @@
 # to build this docker image:
-#   docker build -f Dockerfile.opencv-gpu-cuda-12 -t ghcr.io/hybridgroup/opencv:4.9.0-gpu-cuda-12 .
-#   docker build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv-gpu-cuda-12 -t ghcr.io/hybridgroup/opencv:4.9.0-dev-gpu-cuda-12 .
+#   docker build -f Dockerfile.opencv-gpu-cuda-12 -t ghcr.io/hybridgroup/opencv:4.10.0-gpu-cuda-12 .
+#   docker build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv-gpu-cuda-12 -t ghcr.io/hybridgroup/opencv:4.10.0-dev-gpu-cuda-12 .
 FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04 AS opencv-gpu-cuda-12-base
 LABEL maintainer="hybridgroup"
 ENV DEBIAN_FRONTEND=noninteractive
@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libjpeg-turbo8-dev libpng-dev libtiff-dev libdc1394-dev nasm && \
     rm -rf /var/lib/apt/lists/*
 
-ARG OPENCV_VERSION="4.9.0"
+ARG OPENCV_VERSION="4.10.0"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 ARG OPENCV_FILE="https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip"
@@ -65,7 +65,7 @@ RUN curl -Lo opencv.zip ${OPENCV_FILE} && \
 # install golang here
 FROM opencv-gpu-cuda-12-base AS opencv-gpu-cuda-12-golang
 
-ENV GO_RELEASE=1.22.0
+ENV GO_RELEASE=1.22.3
 RUN wget https://dl.google.com/go/go${GO_RELEASE}.linux-amd64.tar.gz && \
     tar xfv go${GO_RELEASE}.linux-amd64.tar.gz -C /usr/local && \
     rm go${GO_RELEASE}.linux-amd64.tar.gz
