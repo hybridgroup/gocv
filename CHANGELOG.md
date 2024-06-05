@@ -1,3 +1,8 @@
+0.37.0
+---
+* **all**
+    * Add support for OpenCV 4.10.0
+
 0.36.1
 ---
 * **bugfix**
