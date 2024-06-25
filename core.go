@@ -1905,6 +1905,24 @@ func Transpose(src Mat, dst *Mat) {
 	C.Mat_Transpose(src.p, dst.p)
 }
 
+// TransposeND transpose for n-dimensional matrices.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gab1b1274b4a563be34cdfa55b8919a4ec
+func TransposeND(src Mat, order []int, dst *Mat) {
+	cOrderArray := make([]C.int, len(order))
+	for i, o := range order {
+		cOrderArray[i] = C.int(o)
+	}
+
+	cOrderVector := C.IntVector{
+		val:    (*C.int)(&cOrderArray[0]),
+		length: C.int(len(order)),
+	}
+
+	C.Mat_TransposeND(src.p, cOrderVector, dst.p)
+}
+
 // Pow raises every array element to a power.
 //
 // For further details, please see:

@@ -1862,6 +1862,26 @@ func TestMatTranspose(t *testing.T) {
 	}
 }
 
+func TestMatTransposeND(t *testing.T) {
+	rows := 1
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col))
+		}
+	}
+
+	dst := NewMat()
+	defer dst.Close()
+	TransposeND(src, []int{1, 0}, &dst)
+	if dst.Empty() {
+		t.Error("TransposeND error")
+	}
+}
+
 func TestPolarToCart(t *testing.T) {
 	magnitude := NewMatWithSize(101, 102, MatTypeCV32F)
 	angle := NewMatWithSize(101, 102, MatTypeCV32F)

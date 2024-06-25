@@ -808,6 +808,15 @@ void Mat_Transpose(Mat src, Mat dst) {
     cv::transpose(*src, *dst);
 }
 
+void Mat_TransposeND(Mat src, struct IntVector order, Mat dst) {
+    std::vector<int> _order;
+    for (int i = 0, *v = order.val; i < order.length; ++v, ++i) {
+        _order.push_back(*v);
+    }
+
+    cv::transposeND(*src, _order, *dst);
+}
+
 void Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees) {
     cv::polarToCart(*magnitude, *degree, *x, *y, angleInDegrees);
 }
