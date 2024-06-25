@@ -128,6 +128,26 @@ func ParseNetTarget(target string) NetTargetType {
 	}
 }
 
+type DataLayoutType int
+
+const (
+	DataLayoutUnknown DataLayoutType = iota
+	DataLayoutND
+	DataLayoutNCHW
+	DataLayoutNCDHW
+	DataLayoutNHWC
+	DataLayoutNDHWC
+	DataLayoutPLANAR
+)
+
+type PaddingModeType int
+
+const (
+	PaddingModeNull PaddingModeType = iota
+	PaddingModeCropCenter
+	PaddingModeLetterbox
+)
+
 // Close Net
 func (net *Net) Close() error {
 	C.Net_Close((C.Net)(net.p))
@@ -340,6 +360,37 @@ func BlobFromImage(img Mat, scaleFactor float64, size image.Point, mean Scalar,
 	return newMat(C.Net_BlobFromImage(img.p, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop)))
 }
 
+// BlobFromImageWithParams creates 4-dimensional blob from image. Optionally resizes and crops
+// image from center, subtract mean values, scales values by scalefactor,
+// swap Blue and Red channels.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.10.0/d6/d0f/group__dnn.html#gadc12e5f4a801fd3c1d802f4c8c5d311c
+func BlobFromImageWithParams(img Mat, scaleFactor float64, size image.Point, mean Scalar,
+	swapRB bool, ddepth MatType, dataLayout DataLayoutType, paddingMode PaddingModeType, borderValue Scalar) Mat {
+
+	sz := C.struct_Size{
+		width:  C.int(size.X),
+		height: C.int(size.Y),
+	}
+
+	sMean := C.struct_Scalar{
+		val1: C.double(mean.Val1),
+		val2: C.double(mean.Val2),
+		val3: C.double(mean.Val3),
+		val4: C.double(mean.Val4),
+	}
+
+	bv := C.struct_Scalar{
+		val1: C.double(borderValue.Val1),
+		val2: C.double(borderValue.Val2),
+		val3: C.double(borderValue.Val3),
+		val4: C.double(borderValue.Val4),
+	}
+
+	return newMat(C.Net_BlobFromImageWithParams(img.p, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.int(ddepth), C.int(dataLayout), C.int(paddingMode), bv))
+}
+
 // BlobFromImages Creates 4-dimensional blob from series of images.
 // Optionally resizes and crops images from center, subtract mean values,
 // scales values by scalefactor, swap Blue and Red channels.
@@ -372,6 +423,47 @@ func BlobFromImages(imgs []Mat, blob *Mat, scaleFactor float64, size image.Point
 	}
 
 	C.Net_BlobFromImages(cMats, blob.p, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop), C.int(ddepth))
+}
+
+// BlobFromImagesWithParams Creates 4-dimensional blob from series of images.
+// Optionally resizes and crops images from center, subtract mean values,
+// scales values by scalefactor, swap Blue and Red channels.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga2b89ed84432e4395f5a1412c2926293c
+func BlobFromImagesWithParams(imgs []Mat, blob *Mat, scaleFactor float64, size image.Point, mean Scalar,
+	swapRB bool, ddepth MatType, dataLayout DataLayoutType, paddingMode PaddingModeType, borderValue Scalar) {
+
+	cMatArray := make([]C.Mat, len(imgs))
+	for i, r := range imgs {
+		cMatArray[i] = r.p
+	}
+
+	cMats := C.struct_Mats{
+		mats:   (*C.Mat)(&cMatArray[0]),
+		length: C.int(len(imgs)),
+	}
+
+	sz := C.struct_Size{
+		width:  C.int(size.X),
+		height: C.int(size.Y),
+	}
+
+	sMean := C.struct_Scalar{
+		val1: C.double(mean.Val1),
+		val2: C.double(mean.Val2),
+		val3: C.double(mean.Val3),
+		val4: C.double(mean.Val4),
+	}
+
+	bv := C.struct_Scalar{
+		val1: C.double(borderValue.Val1),
+		val2: C.double(borderValue.Val2),
+		val3: C.double(borderValue.Val3),
+		val4: C.double(borderValue.Val4),
+	}
+
+	C.Net_BlobFromImagesWithParams(cMats, blob.p, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.int(ddepth), C.int(dataLayout), C.int(paddingMode), bv)
 }
 
 // ImagesFromBlob Parse a 4D blob and output the images it contains as
