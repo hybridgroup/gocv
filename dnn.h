@@ -28,6 +28,10 @@ Net Net_ReadNetFromTensorflowBytes(struct ByteArray model);
 Net Net_ReadNetFromTorch(const char* model);
 Net Net_ReadNetFromONNX(const char* model);
 Net Net_ReadNetFromONNXBytes(struct ByteArray model);
+struct Rect Net_BlobRectToImageRect(struct Rect rect, Size originalSize, double scalefactor, Size size, Scalar mean, bool swapRB,
+                    int ddepth, int dataLayout, int paddingMode, Scalar borderValue);
+struct Rects Net_BlobRectsToImageRects(struct Rects rects, Size originalSize, double scalefactor, Size size, Scalar mean, bool swapRB,
+                    int ddepth, int dataLayout, int paddingMode, Scalar borderValue);
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
                       bool crop);
 Mat Net_BlobFromImageWithParams(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,

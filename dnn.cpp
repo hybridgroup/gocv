@@ -122,6 +122,56 @@ void Net_GetLayerNames(Net net, CStrings* names) {
     return;
 }
 
+struct Rect Net_BlobRectToImageRect(struct Rect rect, Size originalSize, double scalefactor, Size size, Scalar mean, bool swapRB,
+                    int ddepth, int dataLayout, int paddingMode, Scalar borderValue) {
+
+    cv::Scalar sf(scalefactor);
+    cv::Size sz(size.width, size.height);
+    cv::Scalar cm(mean.val1, mean.val2, mean.val3, mean.val4);
+    cv::dnn::DataLayout dl = static_cast<cv::dnn::DataLayout>(dataLayout);
+    cv::dnn::ImagePaddingMode pm = static_cast<cv::dnn::ImagePaddingMode>(paddingMode);
+    cv::Scalar bv(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
+    cv::dnn::Image2BlobParams params = cv::dnn::Image2BlobParams(sf, sz, cm, swapRB, ddepth, dl, pm, bv);
+
+    cv::Rect bRect = params.blobRectToImageRect(cv::Rect(rect.x, rect.y, rect.width, rect.height), cv::Size(originalSize.width, originalSize.height));
+    Rect r = {bRect.x, bRect.y, bRect.width, bRect.height};
+    return r;
+}
+
+struct Rects Net_BlobRectsToImageRects(struct Rects rects, Size originalSize, double scalefactor, Size size, Scalar mean, bool swapRB,
+                    int ddepth, int dataLayout, int paddingMode, Scalar borderValue) {
+
+    std::vector<cv::Rect> _cRects;
+    for (int i = 0; i < rects.length; ++i) {
+        _cRects.push_back(cv::Rect(
+            rects.rects[i].x,
+            rects.rects[i].y,
+            rects.rects[i].width,
+            rects.rects[i].height
+        ));
+    }
+
+    cv::Scalar sf(scalefactor);
+    cv::Size sz(size.width, size.height);
+    cv::Scalar cm(mean.val1, mean.val2, mean.val3, mean.val4);
+    cv::dnn::DataLayout dl = static_cast<cv::dnn::DataLayout>(dataLayout);
+    cv::dnn::ImagePaddingMode pm = static_cast<cv::dnn::ImagePaddingMode>(paddingMode);
+    cv::Scalar bv(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
+    cv::dnn::Image2BlobParams params = cv::dnn::Image2BlobParams(sf, sz, cm, swapRB, ddepth, dl, pm, bv);
+
+    std::vector<cv::Rect> detected;
+    params.blobRectsToImageRects(_cRects, detected, cv::Size(originalSize.width, originalSize.height));
+    Rect* drects = new Rect[detected.size()];
+
+    for (size_t i = 0; i < detected.size(); ++i) {
+        Rect r = {detected[i].x, detected[i].y, detected[i].width, detected[i].height};
+        drects[i] = r;
+    }
+
+    Rects ret = {drects, (int)detected.size()};
+    return ret;
+}
+
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
                       bool crop) {
     cv::Size sz(size.width, size.height);
