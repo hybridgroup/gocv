@@ -30,8 +30,12 @@ Net Net_ReadNetFromONNX(const char* model);
 Net Net_ReadNetFromONNXBytes(struct ByteArray model);
 Mat Net_BlobFromImage(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
                       bool crop);
+Mat Net_BlobFromImageWithParams(Mat image, double scalefactor, Size size, Scalar mean, bool swapRB,
+                      int ddepth, int dataLayout, int paddingMode, Scalar borderValue);
 void Net_BlobFromImages(struct Mats images, Mat blob,  double scalefactor, Size size, 
                         Scalar mean, bool swapRB, bool crop, int ddepth);
+void Net_BlobFromImagesWithParams(struct Mats images, Mat blob, double scalefactor, Size size, 
+                        Scalar mean, bool swapRB, int ddepth, int dataLayout, int paddingMode, Scalar borderValue);
 void Net_ImagesFromBlob(Mat blob_, struct Mats* images_);
 void Net_Close(Net net);
 bool Net_Empty(Net net);
