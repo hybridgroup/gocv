@@ -429,7 +429,8 @@ func TestBlobFromImageWithParams(t *testing.T) {
 	}
 	defer img.Close()
 
-	blob := BlobFromImageWithParams(img, 1.0, image.Pt(25, 25), NewScalar(0, 0, 0, 0), false, MatTypeCV32F, DataLayoutNCHW, PaddingModeCropCenter, NewScalar(0, 0, 0, 0))
+	params := NewImageToBlobParams(1.0, image.Pt(25, 25), NewScalar(0, 0, 0, 0), false, MatTypeCV32F, DataLayoutNCHW, PaddingModeCropCenter, NewScalar(0, 0, 0, 0))
+	blob := BlobFromImageWithParams(img, params)
 	defer blob.Close()
 
 	sz := GetBlobSize(blob)
@@ -450,8 +451,9 @@ func TestBlobFromImagesWithParams(t *testing.T) {
 	imgs = append(imgs, img)
 	imgs = append(imgs, img)
 
+	params := NewImageToBlobParams(1.0, image.Pt(25, 25), NewScalar(0, 0, 0, 0), false, MatTypeCV32F, DataLayoutNCHW, PaddingModeCropCenter, NewScalar(0, 0, 0, 0))
 	blob := NewMat()
-	BlobFromImagesWithParams(imgs, &blob, 1.0, image.Pt(25, 25), NewScalar(0, 0, 0, 0), false, MatTypeCV32F, DataLayoutNCHW, PaddingModeCropCenter, NewScalar(0, 0, 0, 0))
+	BlobFromImagesWithParams(imgs, &blob, params)
 	defer blob.Close()
 
 	sz := GetBlobSize(blob)
