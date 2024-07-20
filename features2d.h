@@ -97,7 +97,7 @@ struct MultiDMatches FlannBasedMatcher_KnnMatch(FlannBasedMatcher f, Mat query, 
 void DrawKeyPoints(Mat src, struct KeyPoints kp, Mat dst, const Scalar s, int flags);
 
 SIFT SIFT_Create();
-SIFT SIFT_CreateCustom(int nfeatures, int nOctaveLayers, double contrastThreshold, double edgeThreshold, double sigma);
+SIFT SIFT_CreateWithParams(int nfeatures, int nOctaveLayers, double contrastThreshold, double edgeThreshold, double sigma);
 void SIFT_Close(SIFT f);
 struct KeyPoints SIFT_Detect(SIFT f, Mat src);
 struct KeyPoints SIFT_Compute(SIFT f, Mat src, struct KeyPoints kp, Mat desc);
