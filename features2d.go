@@ -943,6 +943,34 @@ func NewSIFT() SIFT {
 	return SIFT{p: unsafe.Pointer(C.SIFT_Create())}
 }
 
+func NewSIFTCustom(nfeatures *int, nOctaveLayers *int, contrastThreshold *float64, edgeThreshold *float64, sigma *float64) SIFT {
+	numFeatures := 0
+	if nfeatures != nil {
+		numFeatures = *nfeatures
+	}
+	numOctaveLayers := 3
+	if nOctaveLayers != nil {
+		numOctaveLayers = *nOctaveLayers
+	}
+
+	var numContrastThreshold float64 = 0.04
+	if contrastThreshold != nil {
+		numContrastThreshold = *contrastThreshold
+	}
+
+	var numEdgeThreshold float64 = 10
+	if edgeThreshold != nil {
+		numEdgeThreshold = *edgeThreshold
+	}
+
+	var numSigma float64 = 1.6
+	if sigma != nil {
+		numSigma = *sigma
+	}
+
+	return SIFT{p: unsafe.Pointer(C.SIFT_CreateCustom(C.int(numFeatures), C.int(numOctaveLayers), C.double(numContrastThreshold), C.double(numEdgeThreshold), C.double(numSigma)))}
+}
+
 // Close SIFT.
 func (d *SIFT) Close() error {
 	C.SIFT_Close((C.SIFT)(d.p))

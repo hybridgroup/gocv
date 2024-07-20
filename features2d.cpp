@@ -590,6 +590,10 @@ SIFT SIFT_Create() {
     return new cv::Ptr<cv::SIFT>(cv::SIFT::create());
 }
 
+SIFT SIFT_CreateCustom(int nfeatures, int nOctaveLayers, double contrastThreshold, double edgeThreshold, double sigma) {
+    return new cv::Ptr<cv::SIFT>(cv::SIFT::create(nfeatures, nOctaveLayers, contrastThreshold, edgeThreshold, sigma));
+}
+
 void SIFT_Close(SIFT d) {
     delete d;
 }
