@@ -162,6 +162,16 @@ func (w *Window) WaitKey(delay int) int {
 	return int(C.Window_WaitKey(C.int(delay)))
 }
 
+// WaitKeyEx Similar to waitKey, but returns full key code.
+// Note
+// Key code is implementation specific and depends on used backend: QT/GTK/Win32/etc
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d7/dfc/group__highgui.html#gafa15c0501e0ddd90918f17aa071d3dd0
+func (w *Window) WaitKeyEx(delay int) int {
+	return int(C.Window_WaitKey(C.int(delay)))
+}
+
 // MoveWindow moves window to the specified position.
 //
 // For further details, please see:
