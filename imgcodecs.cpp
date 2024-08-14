@@ -1,9 +1,42 @@
+#include <stdlib.h>
 #include "imgcodecs.h"
 
 // Image
 Mat Image_IMRead(const char* filename, int flags) {
     cv::Mat img = cv::imread(filename, flags);
     return new cv::Mat(img);
+}
+
+Mats Image_IMReadMulti(const char* filename, int flags) {
+    std::vector<cv::Mat> dst;
+    Mats m = Mats();
+
+    bool b = cv::imreadmulti(filename, dst, flags);
+    if (b) {
+        m.mats = new Mat[dst.size()];
+        for (size_t i = 0; i < dst.size(); ++i) {
+            m.mats[i] = new cv::Mat(dst[i]);
+        }
+        m.length = (int)dst.size();        
+    }
+
+    return m;
+}
+
+Mats Image_IMReadMulti_WithParams(const char* filename, int start, int count, int flags) {
+    std::vector<cv::Mat> dst;
+    auto m = Mats();
+    
+    auto b = cv::imreadmulti(filename, dst, start, count, flags);
+    if (b) {
+        m.mats = new Mat[dst.size()];
+        for (size_t i = 0; i < dst.size(); ++i) {
+            m.mats[i] = new cv::Mat(dst[i]);
+        }
+        m.length = (int)dst.size();        
+    }
+
+    return m;
 }
 
 
