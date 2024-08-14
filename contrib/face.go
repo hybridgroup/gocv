@@ -6,6 +6,7 @@ package contrib
 */
 import "C"
 import (
+	"image"
 	"unsafe"
 
 	"gocv.io/x/gocv"
@@ -107,6 +108,16 @@ func (fr *LBPHFaceRecognizer) PredictExtendedResponse(sample gocv.Mat) PredictRe
 	return resp
 }
 
+// GetThreshold gets the threshold value of the model, i.e. the threshold
+// applied in the prediction.
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#acf2a6993eb4347b3f89009da693a3f70
+func (fr *LBPHFaceRecognizer) GetThreshold() float32 {
+	t := C.LBPHFaceRecognizer_GetThreshold(fr.p)
+	return float32(t)
+}
+
 // SetThreshold sets the threshold value of the model, i.e. the threshold
 // applied in the prediction.
 //
@@ -163,4 +174,49 @@ func (fr *LBPHFaceRecognizer) LoadFile(fname string) {
 	cName := C.CString(fname)
 	defer C.free(unsafe.Pointer(cName))
 	C.LBPHFaceRecognizer_LoadFile(fr.p, cName)
+}
+
+// SetGridX sets grid's X value
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#ad65975baee31dbf3bd2a750feef74831
+func (fr *LBPHFaceRecognizer) SetGridX(x int) {
+	C.LBPHFaceRecognizer_SetGridX(fr.p, C.int(x))
+}
+
+// SetGridY sets grid's Y value
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#a9cebb0138dbb3553b27beb2df3924ae6
+func (fr *LBPHFaceRecognizer) SetGridY(y int) {
+	C.LBPHFaceRecognizer_SetGridY(fr.p, C.int(y))
+}
+
+// GetGridX gets grid's X value
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#ada6839bed931a8f68c5127e1af7a8b83
+func (fr *LBPHFaceRecognizer) GetGridX() int {
+	x := C.LBPHFaceRecognizer_GetGridX(fr.p)
+	return int(x)
+}
+
+// GetGridY gets grid's Y value
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#a22c68c0baf3eb9e852f47ae9241dbf15
+func (fr *LBPHFaceRecognizer) GetGridY() int {
+	y := C.LBPHFaceRecognizer_GetGridY(fr.p)
+	return int(y)
+}
+
+// SetGrid helper for SetGrid* functions
+func (fr *LBPHFaceRecognizer) SetGrid(p image.Point) {
+	fr.SetGridX(p.X)
+	fr.SetGridY(p.Y)
+}
+
+// GetGrid helper for GetGrid* functions
+func (fr *LBPHFaceRecognizer) GetGrid() image.Point {
+	return image.Point{X: fr.GetGridX(), Y: fr.GetGridY()}
 }

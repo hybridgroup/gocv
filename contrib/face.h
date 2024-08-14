@@ -26,12 +26,19 @@ void LBPHFaceRecognizer_Train(LBPHFaceRecognizer fr, Mats images, IntVector labe
 void LBPHFaceRecognizer_Update(LBPHFaceRecognizer fr, Mats images, IntVector labels);
 int LBPHFaceRecognizer_Predict(LBPHFaceRecognizer fr, Mat sample);
 struct PredictResponse LBPHFaceRecognizer_PredictExtended(LBPHFaceRecognizer fr, Mat sample);
+double LBPHFaceRecognizer_GetThreshold(LBPHFaceRecognizer fr);
 void LBPHFaceRecognizer_SetThreshold(LBPHFaceRecognizer fr, double threshold);
 void LBPHFaceRecognizer_SetRadius(LBPHFaceRecognizer fr, int radius);
 void LBPHFaceRecognizer_SetNeighbors(LBPHFaceRecognizer fr, int neighbors);
 void LBPHFaceRecognizer_SaveFile(LBPHFaceRecognizer fr, const char*  filename);
 void LBPHFaceRecognizer_LoadFile(LBPHFaceRecognizer fr, const char*  filename);
 int LBPHFaceRecognizer_GetNeighbors(LBPHFaceRecognizer fr);
+void LBPHFaceRecognizer_SetGridX(LBPHFaceRecognizer fr, int x);
+void LBPHFaceRecognizer_SetGridY(LBPHFaceRecognizer fr, int y);
+int LBPHFaceRecognizer_GetGridX(LBPHFaceRecognizer fr);
+int LBPHFaceRecognizer_GetGridY(LBPHFaceRecognizer fr);
+
+
 
 #ifdef __cplusplus
 }

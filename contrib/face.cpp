@@ -60,6 +60,10 @@ struct PredictResponse LBPHFaceRecognizer_PredictExtended(LBPHFaceRecognizer fr,
     return response;
 }
 
+double LBPHFaceRecognizer_GetThreshold(LBPHFaceRecognizer fr){
+    return (*fr)->getThreshold();
+}
+
 void LBPHFaceRecognizer_SetThreshold(LBPHFaceRecognizer fr, double threshold) {
     (*fr)->setThreshold(threshold);
 
@@ -99,4 +103,26 @@ void LBPHFaceRecognizer_LoadFile(LBPHFaceRecognizer fr, const char*  filename) {
     return;
 }
 
+void LBPHFaceRecognizer_SetGridX(LBPHFaceRecognizer fr, int x) {
+    (*fr)->setGridX(x);
+
+    return;
+}
+
+void LBPHFaceRecognizer_SetGridY(LBPHFaceRecognizer fr, int y) {
+    (*fr)->setGridY(y);
+
+    return;
+}
+
+int LBPHFaceRecognizer_GetGridX(LBPHFaceRecognizer fr) {
+    int n = (*fr)->getGridX();
+
+    return n;
+}
+
+int LBPHFaceRecognizer_GetGridY(LBPHFaceRecognizer fr) {
+    int n = (*fr)->getGridY();
+    return n;
+}
 

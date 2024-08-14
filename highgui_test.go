@@ -121,5 +121,14 @@ func TestPollKey(t *testing.T) {
 	if v := w.PollKey(); v != -1 {
 		t.Errorf("got %d want -1", v)
 	}
+}
 
+func TestWaitKeyEx(t *testing.T) {
+
+	w := NewWindow("wait")
+	defer w.Close()
+
+	if w.WaitKeyEx(1) != -1 {
+		t.Error("WaitKeyEx failed!")
+	}
 }
