@@ -1,9 +1,11 @@
 package contrib
 
 import (
-	"gocv.io/x/gocv"
+	"image"
 	"math"
 	"testing"
+
+	"gocv.io/x/gocv"
 )
 
 func TestLBPHFaceRecognizer_Methods(t *testing.T) {
@@ -88,5 +90,23 @@ func TestLBPHFaceRecognizer_Methods(t *testing.T) {
 	label = modelNew.Predict(sample)
 	if label != 3 {
 		t.Errorf("Invalid loaded data: %d", label)
+	}
+}
+
+func TestLBPHFaceRecognizer_SetGridY_GetGridY(t *testing.T) {
+	facer := NewLBPHFaceRecognizer()
+	facer.SetGridY(5)
+
+	if v := facer.GetGridY(); v != 5 {
+		t.Errorf("got %d want 5", v)
+	}
+}
+
+func TestLBPHFaceRecognizer_SetGrid_GetGrid(t *testing.T) {
+	facer := NewLBPHFaceRecognizer()
+	facer.SetGrid(image.Point{7, 5})
+
+	if p := facer.GetGrid(); p.X != 7 || p.Y != 5 {
+		t.Errorf("got %+v want {7, 5}", p)
 	}
 }
