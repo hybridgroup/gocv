@@ -113,6 +113,16 @@ func TestTrackbarWithValue(t *testing.T) {
 	}
 }
 
+func TestPollKey(t *testing.T) {
+
+	w := NewWindow("polly")
+	defer w.Close()
+
+	if v := w.PollKey(); v != -1 {
+		t.Errorf("got %d want -1", v)
+	}
+}
+
 func TestWaitKeyEx(t *testing.T) {
 
 	w := NewWindow("wait")

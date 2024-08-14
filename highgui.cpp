@@ -33,6 +33,10 @@ int Window_WaitKeyEx(int delay = 0) {
     return cv::waitKeyEx(delay);
 }
 
+int Window_PollKey(void) {
+    return cv::pollKey();
+}
+
 void Window_Move(const char* winname, int x, int y) {
     cv::moveWindow(winname, x, y);
 }
