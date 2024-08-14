@@ -142,6 +142,58 @@ func IMRead(name string, flags IMReadFlag) Mat {
 	return newMat(C.Image_IMRead(cName, C.int(flags)))
 }
 
+// IMReadMulti reads multi-page image from a file into a []Mat.
+// The flags param is one of the IMReadFlag flags.
+// If the image cannot be read (because of missing file, improper permissions,
+// unsupported or invalid format), the function returns an empty []Mat.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d4/da8/group__imgcodecs.html#gaaeb5e219c706fd6aa1ec6cf17b172080
+func IMReadMulti(name string, flags IMReadFlag) []Mat {
+	var mats []Mat
+	multiRead := C.struct_Mats{}
+
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+
+	multiRead = C.Image_IMReadMulti(cName, C.int(flags))
+	defer C.Mats_Close(multiRead)
+
+	if multiRead.length > C.int(0) {
+		mats = make([]Mat, multiRead.length)
+		for i := 0; i < int(multiRead.length); i++ {
+			mats[i].p = C.Mats_get(multiRead, C.int(i))
+		}
+	}
+	return mats
+}
+
+// IMReadMulti reads multi-page image from a file into a []Mat.
+// The flags param is one of the IMReadFlag flags.
+// If the image cannot be read (because of missing file, improper permissions,
+// unsupported or invalid format), the function returns an empty []Mat.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d4/da8/group__imgcodecs.html#ga55e88dc40b65807cfbe2c62d27f7fdf9
+func IMReadMulti_WithParams(name string, start int, count int, flags IMReadFlag) []Mat {
+	var mats []Mat
+	multiRead := C.struct_Mats{}
+
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+
+	multiRead = C.Image_IMReadMulti_WithParams(cName, C.int(start), C.int(count), C.int(flags))
+	defer C.Mats_Close(multiRead)
+
+	if multiRead.length > C.int(0) {
+		mats = make([]Mat, multiRead.length)
+		for i := 0; i < int(multiRead.length); i++ {
+			mats[i].p = C.Mats_get(multiRead, C.int(i))
+		}
+	}
+	return mats
+}
+
 // IMWrite writes a Mat to an image file.
 //
 // For further details, please see:
