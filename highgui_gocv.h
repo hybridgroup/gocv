@@ -16,6 +16,7 @@ double Window_GetProperty(const char* winname, int flag);
 void Window_SetProperty(const char* winname, int flag, double value);
 void Window_SetTitle(const char* winname, const char* title);
 int Window_WaitKey(int);
+int Window_WaitKeyEx(int);
 void Window_Move(const char* winname, int x, int y);
 void Window_Resize(const char* winname, int width, int height);
 struct Rect Window_SelectROI(const char* winname, Mat img);
