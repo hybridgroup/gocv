@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       tzdata git build-essential cmake pkg-config wget unzip libgtk2.0-dev \
       curl ca-certificates libcurl4-openssl-dev libssl-dev \
       libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev \
+      libharfbuzz-dev libfreetype6-dev \
       libjpeg-turbo8-dev libpng-dev libtiff-dev libdc1394-dev nasm && \
       rm -rf /var/lib/apt/lists/*
 
@@ -34,6 +35,7 @@ RUN curl -Lo opencv.zip ${OPENCV_FILE} && \
       -D WITH_IPP=OFF \
       -D WITH_OPENGL=OFF \
       -D WITH_QT=OFF \
+      -D WITH_FREETYPE=ON \
       -D CMAKE_INSTALL_PREFIX=/usr/local \
       -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules \
       -D OPENCV_ENABLE_NONFREE=ON \
