@@ -1819,10 +1819,10 @@ func GetAffineTransform2f(src, dst Point2fVector) Mat {
 type HomographyMethod int
 
 const (
-	HomograpyMethodAllPoints HomographyMethod = 0
-	HomograpyMethodLMEDS     HomographyMethod = 4
-	HomograpyMethodRANSAC    HomographyMethod = 8
-	HomograpyMethodRHO       HomographyMethod = 16
+	HomographyMethodAllPoints HomographyMethod = 0
+	HomographyMethodLMEDS     HomographyMethod = 4
+	HomographyMethodRANSAC    HomographyMethod = 8
+	HomographyMethodRHO       HomographyMethod = 16
 )
 
 // FindHomography finds an optimal homography matrix using 4 or more point pairs (as opposed to GetPerspectiveTransform, which uses exactly 4)

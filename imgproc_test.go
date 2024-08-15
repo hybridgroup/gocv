@@ -776,7 +776,7 @@ func TestErodeWithParamsAndBorderValue(t *testing.T) {
 	kernel := GetStructuringElement(MorphRect, image.Pt(1, 1))
 	defer kernel.Close()
 
-	ErodeWithParamsAndBorderValue(img, &dest, kernel, image.Pt(-1, -1), 3, 0, NewScalar(0,0,0,0))
+	ErodeWithParamsAndBorderValue(img, &dest, kernel, image.Pt(-1, -1), 3, 0, NewScalar(0, 0, 0, 0))
 	if dest.Empty() || img.Rows() != dest.Rows() || img.Cols() != dest.Cols() {
 		t.Error("Invalid ErodeWithParamsAndBorderValue test")
 	}
@@ -2003,7 +2003,7 @@ func TestFindHomography(t *testing.T) {
 	mask := NewMat()
 	defer mask.Close()
 
-	m := FindHomography(src, &dst, HomograpyMethodAllPoints, 3, &mask, 2000, 0.995)
+	m := FindHomography(src, &dst, HomographyMethodAllPoints, 3, &mask, 2000, 0.995)
 	defer m.Close()
 
 	pvsrc := NewPoint2fVectorFromPoints(srcPoints)
