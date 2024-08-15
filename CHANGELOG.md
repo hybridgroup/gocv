@@ -1,3 +1,62 @@
+0.37.0
+---
+* **all**
+    * Add support for OpenCV 4.10.0
+
+0.36.1
+---
+* **bugfix**
+    * Correct error in CUDA function signature
+* **test**
+    * correct CUDA tests
+* **docker**
+    * add test image for CUDA 12
+
+0.36.0
+---
+* **all**
+    * Add support for OpenCV 4.9.0
+    * update Go to version 1.22
+    * update minimum go version to 1.21
+* **bugfix**
+    * aruco: correct test from latest OpenCV update
+* **build**
+    * add GH action for Windows
+    * remove appveyor
+    * adjusted Makefile to build for debian bookworm
+* **core**
+    * Add additional signature for MinMaxLoc.
+    * add color conversion alias
+    * add Mahalanobis(), Inv(), Row(), amd Col() functions
+    * add MulTransposed() function
+    * add PCABackProject() and PCAProject() functions
+    * add PSNR() function
+    * add SVBackSubst() and SVDecomp() functions
+* **calib3d**
+    * add FisheyeCalibrate, FisheyeDistortPoints, and CheckChessboard functions
+    * Add func comments and update readme
+    * add Rodrigues function
+    * add SolvePnP function
+    * Add more smoke tests
+    * Initial commit of more stereo bindings
+* **feature2d**
+    * Add interface for `Feature2D` algorithms
+    * Asserting some algorithms conform to `Feature2D`
+    * Prepend "Feature2D" prefix to component interfaces of Feature2D
+* **imgproc**
+    * add CreateHanningWindow()
+    * add EMD()
+    * Add float version of BoxPoints and MinAreaRect
+    * Add new binding for cv::Erode.
+* **videoio**
+    * add Retrieve function
+* **contrib/xfeatures2d**
+    * Add BriefDescriptorExtractor to xfeatures2d (#1114)
+    * add NewSURFWithParams func
+    * Add separate "Compute" bindings for detection algorithms (#1117)
+* **cuda/core**
+    * ADD Cuda MultiplyWithStream (#1142)
+
 0.35.0
 ---
 * **all**

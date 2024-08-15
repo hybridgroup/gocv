@@ -26,13 +26,21 @@ func TestAKAZE(t *testing.T) {
 	mask := NewMat()
 	defer mask.Close()
 
-	kp2, desc := ak.DetectAndCompute(img, mask)
+	kpc, desc := ak.Compute(img, mask, kp)
 	defer desc.Close()
-	if len(kp2) < 512 {
-		t.Errorf("Invalid KeyPoint array in AKAZE DetectAndCompute: %d", len(kp2))
+	if len(kpc) < 512 {
+		t.Errorf("Invalid KeyPoint array in AKAZE Compute: %d", len(kpc))
+	}
+	if desc.Empty() {
+		t.Error("Invalid Mat desc in AKAZE Compute")
 	}
 
-	if desc.Empty() {
+	kpdc, desc2 := ak.DetectAndCompute(img, mask)
+	defer desc2.Close()
+	if len(kpdc) < 512 {
+		t.Errorf("Invalid KeyPoint array in AKAZE DetectAndCompute: %d", len(kpdc))
+	}
+	if desc2.Empty() {
 		t.Error("Invalid Mat desc in AKAZE DetectAndCompute")
 	}
 }
@@ -77,14 +85,22 @@ func TestBRISK(t *testing.T) {
 	mask := NewMat()
 	defer mask.Close()
 
-	kp2, desc := br.DetectAndCompute(img, mask)
+	kpc, desc := br.Compute(img, mask, kp)
 	defer desc.Close()
-	if len(kp2) != 1105 {
-		t.Errorf("Invalid KeyPoint array in BRISK DetectAndCompute: %d", len(kp2))
+	if len(kpc) < 512 {
+		t.Errorf("Invalid KeyPoint array in BRISK Compute: %d", len(kpc))
+	}
+	if desc.Empty() {
+		t.Error("Invalid Mat desc in BRISK Compute")
 	}
 
-	if desc.Empty() {
-		t.Error("Invalid Mat desc in AKAZE DetectAndCompute")
+	kpdc, desc2 := br.DetectAndCompute(img, mask)
+	defer desc2.Close()
+	if len(kpdc) < 512 {
+		t.Errorf("Invalid KeyPoint array in BRISK DetectAndCompute: %d", len(kpdc))
+	}
+	if desc2.Empty() {
+		t.Error("Invalid Mat desc in BRISK DetectAndCompute")
 	}
 }
 
@@ -166,13 +182,21 @@ func TestKAZE(t *testing.T) {
 	mask := NewMat()
 	defer mask.Close()
 
-	kp2, desc := k.DetectAndCompute(img, mask)
+	kpc, desc := k.Compute(img, mask, kp)
 	defer desc.Close()
-	if len(kp2) < 512 {
-		t.Errorf("Invalid KeyPoint array in KAZE DetectAndCompute: %d", len(kp2))
+	if len(kpc) < 512 {
+		t.Errorf("Invalid KeyPoint array in KAZE Compute: %d", len(kpc))
+	}
+	if desc.Empty() {
+		t.Error("Invalid Mat desc in KAZE Compute")
 	}
 
-	if desc.Empty() {
+	kpdc, desc2 := k.DetectAndCompute(img, mask)
+	defer desc2.Close()
+	if len(kpdc) < 512 {
+		t.Errorf("Invalid KeyPoint array in KAZE DetectAndCompute: %d", len(kpdc))
+	}
+	if desc2.Empty() {
 		t.Error("Invalid Mat desc in KAZE DetectAndCompute")
 	}
 }
@@ -217,13 +241,21 @@ func TestORB(t *testing.T) {
 	mask := NewMat()
 	defer mask.Close()
 
-	kp2, desc := od.DetectAndCompute(img, mask)
+	kpc, desc := od.Compute(img, mask, kp)
 	defer desc.Close()
-	if len(kp2) != 500 {
-		t.Errorf("Invalid KeyPoint array in ORB DetectAndCompute: %d", len(kp2))
+	if len(kpc) < 500 {
+		t.Errorf("Invalid KeyPoint array in ORB Compute: %d", len(kpc))
+	}
+	if desc.Empty() {
+		t.Error("Invalid Mat desc in ORB Compute")
 	}
 
-	if desc.Empty() {
+	kpdc, desc2 := od.DetectAndCompute(img, mask)
+	defer desc2.Close()
+	if len(kpdc) < 500 {
+		t.Errorf("Invalid KeyPoint array in ORB DetectAndCompute: %d", len(kpdc))
+	}
+	if desc2.Empty() {
 		t.Error("Invalid Mat desc in ORB DetectAndCompute")
 	}
 }
@@ -581,13 +613,66 @@ func TestSIFT(t *testing.T) {
 	mask := NewMat()
 	defer mask.Close()
 
-	kp2, desc := si.DetectAndCompute(img, mask)
+	kpc, desc := si.Compute(img, mask, kp)
 	defer desc.Close()
-	if len(kp2) == 512 {
-		t.Errorf("Invalid KeyPoint array in SIFT DetectAndCompute: %d", len(kp2))
+	if len(kpc) < 512 {
+		t.Errorf("Invalid KeyPoint array in SIFT Compute: %d", len(kpc))
+	}
+	if desc.Empty() {
+		t.Error("Invalid Mat desc in SIFT Compute")
 	}
 
+	kpdc, desc2 := si.DetectAndCompute(img, mask)
+	defer desc2.Close()
+	if len(kpdc) < 512 {
+		t.Errorf("Invalid KeyPoint array in SIFT DetectAndCompute: %d", len(kpdc))
+	}
+	if desc2.Empty() {
+		t.Error("Invalid Mat desc in SIFT DetectAndCompute")
+	}
+}
+
+func TestSIFTWithParams(t *testing.T) {
+	img := IMRead("./images/face.jpg", IMReadGrayScale)
+	if img.Empty() {
+		t.Error("Invalid Mat in SIFT test")
+	}
+	defer img.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	nFeatures := 256
+	nOctaveLayers := 3
+	contrastThreshold := 0.039
+	var edgeThreshold float64 = 11
+	sigma := 1.55
+	si := NewSIFTWithParams(&nFeatures, &nOctaveLayers, &contrastThreshold, &edgeThreshold, &sigma)
+	defer si.Close()
+
+	kp := si.Detect(img)
+	if len(kp) != 256 {
+		t.Errorf("Invalid KeyPoint array in SIFT test: %d", len(kp))
+	}
+
+	mask := NewMat()
+	defer mask.Close()
+
+	kpc, desc := si.Compute(img, mask, kp)
+	defer desc.Close()
+	if len(kpc) != 256 {
+		t.Errorf("Invalid KeyPoint array in SIFT Compute: %d", len(kpc))
+	}
 	if desc.Empty() {
+		t.Error("Invalid Mat desc in SIFT Compute")
+	}
+
+	kpdc, desc2 := si.DetectAndCompute(img, mask)
+	defer desc2.Close()
+	if len(kpdc) != 256 {
+		t.Errorf("Invalid KeyPoint array in SIFT DetectAndCompute: %d", len(kpdc))
+	}
+	if desc2.Empty() {
 		t.Error("Invalid Mat desc in SIFT DetectAndCompute")
 	}
 }

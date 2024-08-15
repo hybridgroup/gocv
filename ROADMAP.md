@@ -14,21 +14,7 @@ Your pull requests will be greatly appreciated!
 
 - [ ] **core. Core functionality - WORK STARTED**
     - [X] **Basic structures**
-    - [ ] **Operations on arrays - WORK STARTED**. The following functions still need implementation:
-        - [ ] [Mahalanobis](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4493aee129179459cbfc6064f051aa7d)
-        - [ ] [mulTransposed](https://docs.opencv.org/master/d2/de8/group__core__array.html#gadc4e49f8f7a155044e3be1b9e3b270ab)
-        - [ ] [PCABackProject](https://docs.opencv.org/master/d2/de8/group__core__array.html#gab26049f30ee8e94f7d69d82c124faafc)
-        - [X] [PCACompute](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga4e2073c7311f292a0648f04c37b73781)
-        - [ ] [PCAProject](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6b9fbc7b3a99ebfd441bbec0a6bc4f88)
-        - [ ] [PSNR](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga07aaf34ae31d226b1b847d8bcff3698f)
-        - [ ] [randn](https://docs.opencv.org/master/d2/de8/group__core__array.html#gaeff1f61e972d133a04ce3a5f81cf6808)
-        - [ ] [randShuffle](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga6a789c8a5cb56c6dd62506179808f763)
-        - [ ] [randu](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga1ba1026dca0807b27057ba6a49d258c0)
-        - [ ] [setRNGSeed](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga757e657c037410d9e19e819569e7de0f)
-        - [ ] [SVBackSubst](https://docs.opencv.org/master/d2/de8/group__core__array.html#gab4e620e6fc6c8a27bb2be3d50a840c0b)
-        - [ ] [SVDecomp](https://docs.opencv.org/master/d2/de8/group__core__array.html#gab477b5b7b39b370bb03e75b19d2d5109)
-        - [ ] [theRNG](https://docs.opencv.org/master/d2/de8/group__core__array.html#ga75843061d150ad6564b5447e38e57722)
-
+    - [X] **Operations on arrays**
     - [ ] XML/YAML Persistence
         - [ ] [FileStorage](https://docs.opencv.org/master/da/d56/classcv_1_1FileStorage.html)
 
@@ -56,8 +42,10 @@ Your pull requests will be greatly appreciated!
         - [ ] [undistort](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga69f2545a8b62a6b0fc2ee060dc30559d)
 
     - [ ] **Miscellaneous Image Transformations - WORK STARTED** The following functions still need implementation:
-        - [ ] [cvtColorTwoPlane](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8e873314e72a1a6c0252375538fbf753)
-        - [ ] [floodFill](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#gaf1f55a048f8a45bc3383586e80b1f0d0)
+        - [ ] [blendLinear](https://docs.opencv.org/4.x/d7/d1b/group__imgproc__misc.html#ga5e76540a679333d7c6cd0617c452c23d)
+        - [ ] [cvtColorTwoPlane](https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html#ga8d4cb64f7c6f03cc2b1f2356734b909d)
+        - [ ] [demosaicing](https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html#ga57261f12fccf872a2b2d66daf29d5bd0)
+        - [ ] [floodFill](https://docs.opencv.org/4.x/d7/d1b/group__imgproc__misc.html#ga366aae45a6c1289b341d140839f18717)
 
     - [ ] **Drawing Functions - WORK STARTED** The following functions still need implementation:
         - [ ] [drawMarker](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga482fa7b0f578fcdd8a174904592a6250)
@@ -66,11 +54,12 @@ Your pull requests will be greatly appreciated!
         - [ ] [getFontScaleFromHeight](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga442ff925c1a957794a1309e0ed3ba2c3)
 
     - [ ] ColorMaps in OpenCV
-    - [ ] Planar Subdivision
-    - [ ] **Histograms  - WORK STARTED** The following functions still need implementation:
-        - [ ] [EMD](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga902b8e60cc7075c8947345489221e0e0)
-        - [ ] [wrapperEMD](https://docs.opencv.org/master/d6/dc7/group__imgproc__hist.html#ga31fdda0864e64ca6b9de252a2611758b)
+        - [ ] [applyColorMap](https://docs.opencv.org/4.10.0/d3/d50/group__imgproc__colormap.html#gacb22288ddccc55f9bd9e6d492b409cae)
 
+    - [ ] Planar Subdivision
+        - [ ] [Subdiv2D](https://docs.opencv.org/4.10.0/df/dbf/classcv_1_1Subdiv2D.html)
+
+    - [X] **Histograms**
     - [ ] **Structural Analysis and Shape Descriptors - WORK STARTED** The following functions still need implementation:
         - [ ] [fitEllipse](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf259efaad93098103d6c27b9e4900ffa)
         - [ ] [fitEllipseAMS](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga69e90cda55c4e192a8caa0b99c3e4550)
@@ -78,14 +67,10 @@ Your pull requests will be greatly appreciated!
         - [ ] [HuMoments](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gab001db45c1f1af6cbdbe64df04c4e944)
         - [ ] [intersectConvexConvex](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8e840f3f3695613d32c052bec89e782c)
         - [ ] [isContourConvex](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8abf8010377b58cbc16db6734d92941b)
-        - [X] [matchShapes](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaadc90cb16e2362c9bd6e7363e6e4c317)
         - [ ] [minEnclosingTriangle](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga1513e72f6bbdfc370563664f71e0542f)
         - [ ] [rotatedRectangleIntersection](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga8740e7645628c59d238b0b22c2abe2d4)
 
-    - [ ] **Motion Analysis and Object Tracking - WORK STARTED** The following functions still need implementation:
-        - [ ] [createHanningWindow](https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga80e5c3de52f6bab3a7c1e60e89308e1b)
-        - [ ] [phaseCorrelate](https://docs.opencv.org/master/d7/df3/group__imgproc__motion.html#ga552420a2ace9ef3fb053cd630fdb4952)
-
+    - [X] **Motion Analysis and Object Tracking**
     - [ ] **Feature Detection - WORK STARTED** The following functions still need implementation:
         - [ ] [cornerEigenValsAndVecs](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga4055896d9ef77dd3cacf2c5f60e13f1c)
         - [ ] [cornerHarris](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#gac1fc3598018010880e370e2f709b4345)
@@ -95,10 +80,7 @@ Your pull requests will be greatly appreciated!
 
     - [ ] **Object Detection - WORK STARTED**
         - [ ] **aruco. ArUco Marker Detection - WORK STARTED**
-            - [X] [detectMarkers](https://docs.opencv.org/4.x/d2/d1a/classcv_1_1aruco_1_1ArucoDetector.html#a0c1d14251bf1cbb06277f49cfe1c9b61)
             - [ ] [refineDetectedMarkers](https://docs.opencv.org/4.x/d2/d1a/classcv_1_1aruco_1_1ArucoDetector.html#ad806c9310cfc826a178b0aefdf09bab6)
-            - [X] [drawDetectedMarkers](https://docs.opencv.org/4.x/de/d67/group__objdetect__aruco.html#ga2ad34b0f277edebb6a132d3069ed2909)
-            - [X] [generateImageMarker](https://docs.opencv.org/4.x/de/d67/group__objdetect__aruco.html#ga631cb40c63945cc5b9ef6b064a5f4fc2)
             - [ ] [refineDetectedMarkers](https://docs.opencv.org/4.x/d2/d1a/classcv_1_1aruco_1_1ArucoDetector.html#ad806c9310cfc826a178b0aefdf09bab6)
             - [ ] [drawDetectedCornersCharuco](https://docs.opencv.org/4.x/de/d67/group__objdetect__aruco.html#ga7225eee644190f791e1583c499b7ab10)
             - [ ] [drawDetectedDiamonds](https://docs.opencv.org/4.x/de/d67/group__objdetect__aruco.html#ga0dbf27203267fb8e9f282554cf0d3433)
@@ -120,20 +102,17 @@ Your pull requests will be greatly appreciated!
         - [ ] [CamShift](https://docs.opencv.org/master/dc/d6b/group__video__track.html#gaef2bd39c8356f423124f1fe7c44d54a1)
         - [ ] [DualTVL1OpticalFlow](https://docs.opencv.org/master/dc/d47/classcv_1_1DualTVL1OpticalFlow.html)
         - [ ] [FarnebackOpticalFlow](https://docs.opencv.org/master/de/d9e/classcv_1_1FarnebackOpticalFlow.html)
-        - [X] [KalmanFilter](https://docs.opencv.org/master/dd/d6a/classcv_1_1KalmanFilter.html)
         - [ ] [SparsePyrLKOpticalFlow](https://docs.opencv.org/master/d7/d08/classcv_1_1SparsePyrLKOpticalFlow.html)
         - [ ] [GOTURN](https://docs.opencv.org/master/d7/d4c/classcv_1_1TrackerGOTURN.html)
 
 - [ ] **calib3d. Camera Calibration and 3D Reconstruction - WORK STARTED**. The following functions still need implementation:
     - [ ] **Camera Calibration - WORK STARTED** The following functions still need implementation:
-        - [X] [calibrateCamera](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [calibrateCameraRO](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [calibrateHandEye](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [ ] [calibrateCameraRO](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#gacb6b35670216b24b67c70fcd21519ead)
+        - [ ] [calibrateHandEye](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#gaebfc1c9f7434196a374c382abf43439b)
+        - [ ] [calibrateRobotWorldHandEye](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga41b1a8dd70eae371eba707d101729c36)
         - [ ] [calibrationMatrixValues](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [checkChessboard](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [composeRT](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [computeCorrespondEpilines](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [convertPointsFromHomogeneous](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [convertPointsHomogeneous](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [convertPointsToHomogeneous](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [correctMatches](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
@@ -142,13 +121,10 @@ Your pull requests will be greatly appreciated!
         - [ ] [decomposeProjectionMatrix](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [drawChessboardCorners](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [drawFrameAxes](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [X] [estimateAffine2D](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [estimateAffine3D](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [filterHomographyDecompByVisibleRefpoints](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [filterSpeckles](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [find4QuadCornerSubpix](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [X] [findChessboardCorners](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [X] [findChessboardCornersSB](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [findCirclesGrid](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [findEssentialMat](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [findFundamentalMat](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
@@ -163,11 +139,9 @@ Your pull requests will be greatly appreciated!
         - [ ] [recoverPose](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [rectify3Collinear](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [reprojectImageTo3D](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [Rodrigues](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [RQDecomp3x3](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [sampsonDistance](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [solveP3P](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [solvePnP](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [solvePnPGeneric](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [solvePnPRansac](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [solvePnPRefineLM](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
@@ -175,12 +149,9 @@ Your pull requests will be greatly appreciated!
         - [ ] [stereoCalibrate](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [stereoRectify](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [stereoRectifyUncalibrated](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [triangulatePoints](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [validateDisparity](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
 
     - [ ] **Fisheye - WORK STARTED** The following functions still need implementation:
-        - [ ] [calibrate](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gad626a78de2b1dae7489e152a5a5a89e1)
-        - [ ] [distortPoints](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#ga75d8877a98e38d0b29b6892c5f8d7765)
         - [ ] [projectPoints](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gab1ad1dc30c42ee1a50ce570019baf2c4)
         - [ ] [stereoCalibrate](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gadbb3a6ca6429528ef302c784df47949b)
         - [ ] [stereoRectify](https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gac1af58774006689056b0f2ef1db55ecc)
@@ -196,13 +167,26 @@ Your pull requests will be greatly appreciated!
 - [X] **objdetect. Object Detection**
 - [X] **dnn. Deep Neural Network module**
 - [ ] ml. Machine Learning
+    - [ ] [ANN_MLP](https://docs.opencv.org/4.x/d0/dce/classcv_1_1ml_1_1ANN__MLP.html)
+    - [ ] [Boost](https://docs.opencv.org/4.x/d6/d7a/classcv_1_1ml_1_1Boost.html)
+    - [ ] [DTrees](https://docs.opencv.org/4.x/d8/d89/classcv_1_1ml_1_1DTrees.html)
+    - [ ] [EM](https://docs.opencv.org/4.x/d1/dfb/classcv_1_1ml_1_1EM.html)
+    - [ ] [KNearest](https://docs.opencv.org/4.x/dd/de1/classcv_1_1ml_1_1KNearest.html)
+    - [ ] [LogisticRegression](https://docs.opencv.org/4.x/d6/df9/classcv_1_1ml_1_1LogisticRegression.html)
+    - [ ] [NormalBayesClassifier](https://docs.opencv.org/4.x/d4/d8e/classcv_1_1ml_1_1NormalBayesClassifier.html)
+    - [ ] [ParamGrid](https://docs.opencv.org/4.x/d6/dca/classcv_1_1ml_1_1ParamGrid.html)
+    - [ ] [RTrees](https://docs.opencv.org/4.x/d0/d65/classcv_1_1ml_1_1RTrees.html)
+    - [ ] [SimulatedAnnealingSolverSystem](https://docs.opencv.org/4.x/dc/db4/structcv_1_1ml_1_1SimulatedAnnealingSolverSystem.html)
+    - [ ] [SVM](https://docs.opencv.org/4.x/d1/d2d/classcv_1_1ml_1_1SVM.html)
+    - [ ] [SVMSVG](https://docs.opencv.org/4.x/de/d54/classcv_1_1ml_1_1SVMSGD.html)
+    - [ ] [TrainData](https://docs.opencv.org/4.x/dc/d32/classcv_1_1ml_1_1TrainData.html)
+
 - [ ] flann. Clustering and Search in Multi-Dimensional Spaces
+    - [ ] [hierarchicalClustering](https://docs.opencv.org/4.x/dc/de5/group__flann.html#gaf89c8914eb439855c9a24c3de01bfd82)
+
 - [ ] **photo. Computational Photography - WORK STARTED** The following functions still need implementation:
     - [ ] [inpaint](https://docs.opencv.org/master/d7/d8b/group__photo__inpaint.html#gaedd30dfa0214fec4c88138b51d678085)
     - [ ] [denoise_TVL1](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga7602ed5ae17b7de40152b922227c4e4f)
-    - [X] [fastNlMeansDenoising](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga4c6b0031f56ea3f98f768881279ffe93)
-    - [X] [fastNlMeansDenoisingColored](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga03aa4189fc3e31dafd638d90de335617)
-    - [X] [fastNlMeansDenoisingMulti](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#gaf4421bf068c4d632ea7f0aa38e0bf172)
     - [ ] [createCalibrateDebevec](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga7fed9707ad5f2cc0e633888867109f90)
     - [ ] [createCalibrateRobertson](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#gae77813a21cd351a596619e5ff013be5d)
     - [ ] [createMergeDebevec](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#gaa8eab36bc764abb2a225db7c945f87f9)
@@ -212,21 +196,15 @@ Your pull requests will be greatly appreciated!
     - [ ] [createTonemapMantiuk](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga3b3f3bf083b7515802f039a6a70f2d21)
     - [ ] [createTonemapReinhard](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#gadabe7f6bf1fa96ad0fd644df9182c2fb)
     - [ ] [decolor](https://docs.opencv.org/master/d4/d32/group__photo__decolor.html#ga4864d4c007bda5dacdc5e9d4ed7e222c)
-    - [X] [detailEnhance](https://docs.opencv.org/master/df/dac/group__photo__render.html#ga0de660cb6f371a464a74c7b651415975)
-    - [X] [edgePreservingFilter](https://docs.opencv.org/master/df/dac/group__photo__render.html#gafaee2977597029bc8e35da6e67bd31f7)
-    - [X] [pencilSketch](https://docs.opencv.org/master/df/dac/group__photo__render.html#gae5930dd822c713b36f8529b21ddebd0c)
-    - [X] [stylization](https://docs.opencv.org/master/df/dac/group__photo__render.html#gacb0f7324017df153d7b5d095aed53206)
 
 - [ ] stitching. Images stitching
+    - [ ] [Stitcher](https://docs.opencv.org/4.x/d2/d8d/classcv_1_1Stitcher.html)
 
 ## CUDA
 
 - [ ] **core. - WORK STARTED** The following functions still need implementation:
     - [ ] [cv::cuda::convertFp16](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gaa1c52258763197958eb9e6681917f723)
     - [ ] [cv::cuda::deviceSupports](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga170b10cc9af4aa8cce8c0afdb4b1d08c)
-    - [X] [cv::cuda::getDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6ded4ed8e4fc483a9863d31f34ec9c0e)
-    - [X] [cv::cuda::resetDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6153b6f461101374e655a54fc77e725e)
-    - [X] [cv::cuda::setDevice](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gaefa34186b185de47851836dba537828b)
 
 - [ ] **cudaarithm. Operations on Matrices - WORK STARTED** The following functions still need implementation:
     - [ ] **core** The following functions still need implementation:
@@ -237,32 +215,17 @@ Your pull requests will be greatly appreciated!
         - [ ] [cv::cuda::transpose](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga327b71c3cb811a904ccf5fba37fc29f2)
 
     - [ ] **per-element operations - WORK STARTED** The following functions still need implementation:
-        - [X] [cv::cuda::absdiff](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac062b283cf46ee90f74a773d3382ab54)
-        - [X] [cv::cuda::add](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga5d9794bde97ed23d1c1485249074a8b1)
         - [ ] [cv::cuda::addWeighted](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga2cd14a684ea70c6ab2a63ee90ffe6201)
-        - [X] [cv::cuda::bitwise_and](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga78d7c1a013877abd4237fbfc4e13bd76)
-        - [X] [cv::cuda::bitwise_not](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gae58159a2259ae1acc76b531c171cf06a)
-        - [X] [cv::cuda::bitwise_or](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gafd098ee3e51c68daa793999c1da3dfb7)
-        - [X] [cv::cuda::bitwise_xor](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga3d95d4faafb099aacf18e8b915a4ad8d)
         - [ ] [cv::cuda::cartToPolar](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga82210c7d1c1d42e616e554bf75a53480)
         - [ ] [cv::cuda::compare](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga4d41cd679f4a83862a3de71a6057db54)
-        - [X] [cv::cuda::divide](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga124315aa226260841e25cc0b9ea99dc3)
-        - [X] [cv::cuda::exp](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gac6e51541d3bb0a7a396128e4d5919b61)
         - [ ] [cv::cuda::inRange](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gaf611ab6b1d85e951feb6f485b1ed9672)
-        - [X] [cv::cuda::log](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gaae9c60739e2d1a977b4d3250a0be42ca)
         - [ ] [cv::cuda::lshift](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gafd072accecb14c9adccdad45e3bf2300)
         - [ ] [cv::cuda::magnitude](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga3d17f4fcd79d7c01fadd217969009463)
         - [ ] [cv::cuda::magnitudeSqr](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga7613e382d257e150033d0ce4d6098f6a)
-        - [X] [cv::cuda::max](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#gadb5dd3d870f10c0866035755b929b1e7)
-        - [X] [cv::cuda::min](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga74f0b05a65b3d949c237abb5e6c60867)
-        - [X] [cv::cuda::multiply](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga497cc0615bf717e1e615143b56f00591)
         - [ ] [cv::cuda::phase](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga5b75ec01be06dcd6e27ada09a0d4656a)
         - [ ] [cv::cuda::polarToCart](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga01516a286a329c303c2db746513dd9df)
         - [ ] [cv::cuda::pow](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga82d04ef4bcc4dfa9bfbe76488007c6c4)
         - [ ] [cv::cuda::rshift](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga87af0b66358cc302676f35c1fd56c2ed)
-        - [X] [cv::cuda::sqr](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga8aae233da90ce0ffe309ab8004342acb)
-        - [X] [cv::cuda::sqrt](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga09303680cb1a5521a922b6d392028d8c)
-        - [X] [cv::cuda::subtract](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga6eab60fc250059e2fda79c5636bd067f)
 
     - [ ] **matrix reductions** The following functions still need implementation:
         - [ ] [cv::cuda::absSum](https://docs.opencv.org/master/d5/de6/group__cudaarithm__reduce.html#ga690fa79ba4426c53f7d2bebf3d37a32a)
@@ -318,7 +281,6 @@ Your pull requests will be greatly appreciated!
     - [ ] [cv::cuda::createSeparableLinearFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaf7b79a9a92992044f328dad07a52c4bf)
 
 - [ ] **cudaimgproc. Image Processing - WORK STARTED** The following functions still need implementation:
-    - [X] [cv::cuda::TemplateMatching](https://docs.opencv.org/master/d2/d58/classcv_1_1cuda_1_1TemplateMatching.html)
     - [ ] [cv::cuda::alphaComp](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga08a698700458d9311390997b57fbf8dc)
     - [X] [cv::cuda::demosaicing](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga7fb153572b573ebd2d7610fcbe64166e)
     - [ ] [cv::cuda::gammaCorrection](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#gaf4195a8409c3b8fbfa37295c2b2c4729)
@@ -366,7 +328,7 @@ Your pull requests will be greatly appreciated!
 
 - [ ] alphamat. Alpha Matting
 - [ ] barcode. Barcode detecting and decoding methods
-- [X] **bgsegm. Improved Background-Foreground Segmentation Methods - WORK STARTED**
+- [ ] **bgsegm. Improved Background-Foreground Segmentation Methods - WORK STARTED**
 - [ ] bioinspired. Biologically inspired vision models and derivated tools
 - [ ] ccalib. Custom Calibration Pattern for 3D reconstruction
 - [ ] cnn_3dobj. 3D object recognition and pose estimation API
@@ -377,7 +339,7 @@ Your pull requests will be greatly appreciated!
 - [ ] dnn_superres. DNN used for super resolution
 - [ ] dpm. Deformable Part-based Models
 - [ ] **face. Face Recognition - WORK STARTED**
-- [ ] freetype. Drawing UTF-8 strings with freetype/harfbuzz
+- [X] freetype. Drawing UTF-8 strings with freetype/harfbuzz
 - [ ] fuzzy. Image processing based on fuzzy mathematics
 - [ ] hdf. Hierarchical Data Format I/O routines
 - [ ] hfs. Hierarchical Feature Selection for Efficient Image Segmentation
@@ -396,6 +358,7 @@ Your pull requests will be greatly appreciated!
 - [ ] saliency. Saliency API
 - [ ] sfm. Structure From Motion
 - [ ] shape. Shape Distance and Matching
+- [ ] signal. Signal Processing
 - [ ] stereo. Stereo Correspondance Algorithms
 - [ ] structured_light. Structured Light API
 - [ ] superres. Super Resolution

@@ -1,5 +1,13 @@
 #include "calib3d.h"
 
+double Fisheye_Calibrate(Points3fVector objectPoints, Points2fVector imagePoints, Size size, Mat k, Mat d, Mat rvecs, Mat tvecs, int flags) {
+    cv::Size sz(size.width, size.height);
+    return cv::fisheye::calibrate(*objectPoints, *imagePoints, sz, *k, *d, *rvecs, *tvecs, flags);
+}
+
+void Fisheye_DistortPoints(Mat undistorted, Mat distorted, Mat k, Mat d) {
+    cv::fisheye::distortPoints(*undistorted, *distorted, *k, *d);
+}
 
 void Fisheye_UndistortImage(Mat distorted, Mat undistorted, Mat k, Mat d) {
     cv::fisheye::undistortImage(*distorted, *undistorted, *k, *d);
@@ -49,6 +57,11 @@ void UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d, Mat r, Mat p)
     cv::undistortPoints(*distorted, *undistorted, *k, *d, *r, *p);
 }
 
+bool CheckChessboard(Mat image, Size size) {
+    cv::Size sz(size.width, size.height);
+    return cv::checkChessboard(*image, sz);
+}
+
 bool FindChessboardCorners(Mat image, Size patternSize, Mat corners, int flags) {
     cv::Size sz(patternSize.width, patternSize.height);
     return cv::findChessboardCorners(*image, sz, *corners, flags);
@@ -83,4 +96,20 @@ Mat EstimateAffine2D(Point2fVector from, Point2fVector to) {
 
 Mat EstimateAffine2DWithParams(Point2fVector from, Point2fVector to, Mat inliers, int method, double ransacReprojThreshold, size_t maxIters, double confidence, size_t refineIters) {
     return new cv::Mat(cv::estimateAffine2D(*from, *to, *inliers, method, ransacReprojThreshold, maxIters, confidence, refineIters));
+}
+
+void TriangulatePoints(Mat projMatr1, Mat projMatr2, Point2fVector projPoints1, Point2fVector projPoints2, Mat points4D) {
+  return cv::triangulatePoints(*projMatr1, *projMatr2, *projPoints1, *projPoints2, *points4D);
+}
+
+void ConvertPointsFromHomogeneous(Mat src, Mat dst) {
+  return cv::convertPointsFromHomogeneous(*src, *dst);
+}
+
+void Rodrigues(Mat src, Mat dst) {
+	cv::Rodrigues(*src, *dst);
+}
+
+bool SolvePnP(Point3fVector objectPoints, Point2fVector imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, bool useExtrinsicGuess, int flags) {
+    return cv::solvePnP(*objectPoints, *imagePoints, *cameraMatrix, *distCoeffs, *rvec, *tvec, useExtrinsicGuess, flags);
 }

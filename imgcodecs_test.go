@@ -184,3 +184,27 @@ func TestIMDecodeWebp(t *testing.T) {
 	dec.Close()
 
 }
+
+func TestIMReadMulti(t *testing.T) {
+
+	mats := IMReadMulti("images/multipage.tif", IMReadAnyColor)
+
+	for i, page := range mats {
+		if page.Empty() {
+			t.Errorf("page %d empty", i)
+		}
+	}
+
+}
+
+func TestIMReadMulti_WithParams(t *testing.T) {
+
+	mats := IMReadMulti_WithParams("images/multipage.tif", 2, 3, IMReadAnyColor)
+
+	for i, page := range mats {
+		if page.Empty() {
+			t.Errorf("page %d empty", i)
+		}
+	}
+
+}

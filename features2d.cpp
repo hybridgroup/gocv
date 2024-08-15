@@ -26,6 +26,30 @@ struct KeyPoints AKAZE_Detect(AKAZE a, Mat src) {
     return ret;
 }
 
+struct KeyPoints AKAZE_Compute(AKAZE a, Mat src, struct KeyPoints kp, Mat desc) {
+    std::vector<cv::KeyPoint> computed;
+    for (size_t i = 0; i < kp.length; i++) {
+        cv::KeyPoint k = cv::KeyPoint(kp.keypoints[i].x, kp.keypoints[i].y,
+            kp.keypoints[i].size, kp.keypoints[i].angle, kp.keypoints[i].response,
+            kp.keypoints[i].octave, kp.keypoints[i].classID);
+        computed.push_back(k);
+    }
+
+    (*a)->compute(*src, computed, *desc);
+
+    KeyPoint* kps = new KeyPoint[computed.size()];
+
+    for (size_t i = 0; i < computed.size(); ++i) {
+        KeyPoint k = {computed[i].pt.x, computed[i].pt.y, computed[i].size, computed[i].angle,
+                      computed[i].response, computed[i].octave, computed[i].class_id
+                     };
+        kps[i] = k;
+    }
+
+    KeyPoints ret = {kps, (int)computed.size()};
+    return ret;
+}
+
 struct KeyPoints AKAZE_DetectAndCompute(AKAZE a, Mat src, Mat mask, Mat desc) {
     std::vector<cv::KeyPoint> detected;
     (*a)->detectAndCompute(*src, *mask, detected, *desc);
@@ -95,6 +119,30 @@ struct KeyPoints BRISK_Detect(BRISK b, Mat src) {
     return ret;
 }
 
+struct KeyPoints BRISK_Compute(BRISK b, Mat src, struct KeyPoints kp, Mat desc) {
+    std::vector<cv::KeyPoint> computed;
+    for (size_t i = 0; i < kp.length; i++) {
+        cv::KeyPoint k = cv::KeyPoint(kp.keypoints[i].x, kp.keypoints[i].y,
+            kp.keypoints[i].size, kp.keypoints[i].angle, kp.keypoints[i].response,
+            kp.keypoints[i].octave, kp.keypoints[i].classID);
+        computed.push_back(k);
+    }
+
+    (*b)->compute(*src, computed, *desc);
+
+    KeyPoint* kps = new KeyPoint[computed.size()];
+
+    for (size_t i = 0; i < computed.size(); ++i) {
+        KeyPoint k = {computed[i].pt.x, computed[i].pt.y, computed[i].size, computed[i].angle,
+                      computed[i].response, computed[i].octave, computed[i].class_id
+                     };
+        kps[i] = k;
+    }
+
+    KeyPoints ret = {kps, (int)computed.size()};
+    return ret;
+}
+
 struct KeyPoints BRISK_DetectAndCompute(BRISK b, Mat src, Mat mask, Mat desc) {
     std::vector<cv::KeyPoint> detected;
     (*b)->detectAndCompute(*src, *mask, detected, *desc);
@@ -161,6 +209,30 @@ struct KeyPoints KAZE_Detect(KAZE a, Mat src) {
     }
 
     KeyPoints ret = {kps, (int)detected.size()};
+    return ret;
+}
+
+struct KeyPoints KAZE_Compute(KAZE a, Mat src, struct KeyPoints kp, Mat desc) {
+    std::vector<cv::KeyPoint> computed;
+    for (size_t i = 0; i < kp.length; i++) {
+        cv::KeyPoint k = cv::KeyPoint(kp.keypoints[i].x, kp.keypoints[i].y,
+            kp.keypoints[i].size, kp.keypoints[i].angle, kp.keypoints[i].response,
+            kp.keypoints[i].octave, kp.keypoints[i].classID);
+        computed.push_back(k);
+    }
+
+    (*a)->compute(*src, computed, *desc);
+
+    KeyPoint* kps = new KeyPoint[computed.size()];
+
+    for (size_t i = 0; i < computed.size(); ++i) {
+        KeyPoint k = {computed[i].pt.x, computed[i].pt.y, computed[i].size, computed[i].angle,
+                      computed[i].response, computed[i].octave, computed[i].class_id
+                     };
+        kps[i] = k;
+    }
+
+    KeyPoints ret = {kps, (int)computed.size()};
     return ret;
 }
 
@@ -262,6 +334,30 @@ struct KeyPoints ORB_Detect(ORB o, Mat src) {
     }
 
     KeyPoints ret = {kps, (int)detected.size()};
+    return ret;
+}
+
+struct KeyPoints ORB_Compute(ORB o, Mat src, struct KeyPoints kp, Mat desc) {
+    std::vector<cv::KeyPoint> computed;
+    for (size_t i = 0; i < kp.length; i++) {
+        cv::KeyPoint k = cv::KeyPoint(kp.keypoints[i].x, kp.keypoints[i].y,
+            kp.keypoints[i].size, kp.keypoints[i].angle, kp.keypoints[i].response,
+            kp.keypoints[i].octave, kp.keypoints[i].classID);
+        computed.push_back(k);
+    }
+
+    (*o)->compute(*src, computed, *desc);
+
+    KeyPoint* kps = new KeyPoint[computed.size()];
+
+    for (size_t i = 0; i < computed.size(); ++i) {
+        KeyPoint k = {computed[i].pt.x, computed[i].pt.y, computed[i].size, computed[i].angle,
+                      computed[i].response, computed[i].octave, computed[i].class_id
+                     };
+        kps[i] = k;
+    }
+
+    KeyPoints ret = {kps, (int)computed.size()};
     return ret;
 }
 
@@ -494,6 +590,11 @@ SIFT SIFT_Create() {
     return new cv::Ptr<cv::SIFT>(cv::SIFT::create());
 }
 
+SIFT SIFT_CreateWithParams(int nfeatures, int nOctaveLayers, double contrastThreshold, double edgeThreshold, double sigma) {
+    return new cv::Ptr<cv::SIFT>(cv::SIFT::create(nfeatures, nOctaveLayers, contrastThreshold, edgeThreshold, sigma));
+}
+
+
 void SIFT_Close(SIFT d) {
     delete d;
 }
@@ -512,6 +613,30 @@ struct KeyPoints SIFT_Detect(SIFT d, Mat src) {
     }
 
     KeyPoints ret = {kps, (int)detected.size()};
+    return ret;
+}
+
+struct KeyPoints SIFT_Compute(SIFT d, Mat src, struct KeyPoints kp, Mat desc) {
+    std::vector<cv::KeyPoint> computed;
+    for (size_t i = 0; i < kp.length; i++) {
+        cv::KeyPoint k = cv::KeyPoint(kp.keypoints[i].x, kp.keypoints[i].y,
+            kp.keypoints[i].size, kp.keypoints[i].angle, kp.keypoints[i].response,
+            kp.keypoints[i].octave, kp.keypoints[i].classID);
+        computed.push_back(k);
+    }
+
+    (*d)->compute(*src, computed, *desc);
+
+    KeyPoint* kps = new KeyPoint[computed.size()];
+
+    for (size_t i = 0; i < computed.size(); ++i) {
+        KeyPoint k = {computed[i].pt.x, computed[i].pt.y, computed[i].size, computed[i].angle,
+                      computed[i].response, computed[i].octave, computed[i].class_id
+                     };
+        kps[i] = k;
+    }
+
+    KeyPoints ret = {kps, (int)computed.size()};
     return ret;
 }
 

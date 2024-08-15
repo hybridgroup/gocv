@@ -422,6 +422,46 @@ func TestBlobFromImageGreyscale(t *testing.T) {
 	}
 }
 
+func TestBlobFromImageWithParams(t *testing.T) {
+	img := IMRead("images/space_shuttle.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in BlobFromImages test")
+	}
+	defer img.Close()
+
+	params := NewImageToBlobParams(1.0, image.Pt(25, 25), NewScalar(0, 0, 0, 0), false, MatTypeCV32F, DataLayoutNCHW, PaddingModeCropCenter, NewScalar(0, 0, 0, 0))
+	blob := BlobFromImageWithParams(img, params)
+	defer blob.Close()
+
+	sz := GetBlobSize(blob)
+	if sz.Val1 != 1 || sz.Val2 != 3 || sz.Val3 != 25 || sz.Val4 != 25 {
+		t.Errorf("GetBlobSize in BlobFromImagesWithParams retrieved wrong values: %v\n", sz)
+	}
+}
+
+func TestBlobFromImagesWithParams(t *testing.T) {
+	imgs := make([]Mat, 0)
+
+	img := IMRead("images/space_shuttle.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid Mat in BlobFromImagesWithParams test")
+	}
+	defer img.Close()
+
+	imgs = append(imgs, img)
+	imgs = append(imgs, img)
+
+	params := NewImageToBlobParams(1.0, image.Pt(25, 25), NewScalar(0, 0, 0, 0), false, MatTypeCV32F, DataLayoutNCHW, PaddingModeCropCenter, NewScalar(0, 0, 0, 0))
+	blob := NewMat()
+	BlobFromImagesWithParams(imgs, &blob, params)
+	defer blob.Close()
+
+	sz := GetBlobSize(blob)
+	if sz.Val1 != 2 || sz.Val2 != 3 || sz.Val3 != 25 || sz.Val4 != 25 {
+		t.Errorf("GetBlobSize in BlobFromImagesWithParams retrieved wrong values: %v\n", sz)
+	}
+}
+
 func TestImagesFromBlob(t *testing.T) {
 	imgs := make([]Mat, 0)
 

@@ -112,3 +112,23 @@ func TestTrackbarWithValue(t *testing.T) {
 		t.Error("Trackbar pos should have been 50")
 	}
 }
+
+func TestPollKey(t *testing.T) {
+
+	w := NewWindow("polly")
+	defer w.Close()
+
+	if v := w.PollKey(); v != -1 {
+		t.Errorf("got %d want -1", v)
+	}
+}
+
+func TestWaitKeyEx(t *testing.T) {
+
+	w := NewWindow("wait")
+	defer w.Close()
+
+	if w.WaitKeyEx(1) != -1 {
+		t.Error("WaitKeyEx failed!")
+	}
+}

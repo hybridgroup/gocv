@@ -80,6 +80,10 @@ double CompareHist(Mat hist1, Mat hist2, int method) {
     return cv::compareHist(*hist1, *hist2, method);
 }
 
+float EMD(Mat sig1, Mat sig2, int distType) {
+    return cv::EMD(*sig1, *sig2, distType);
+}
+
 struct RotatedRect FitEllipse(PointVector pts)
 {
     cv::RotatedRect bRect = cv::fitEllipse(*pts);
@@ -154,6 +158,14 @@ void ErodeWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations,
     cv::erode(*src, *dst, *kernel, pt1, iterations, borderType, cv::morphologyDefaultBorderValue());
 }
 
+void ErodeWithParamsAndBorderValue(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType, Scalar borderValue) {
+    cv::Point pt1(anchor.x, anchor.y);
+    cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
+
+    cv::erode(*src, *dst, *kernel, pt1, iterations, borderType, c);
+}
+
+
 void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask) {
     cv::matchTemplate(*image, *templ, *result, method, *mask);
 }
@@ -190,6 +202,13 @@ void BoxPoints(RotatedRect rect, Mat boxPts){
     cv::boxPoints(rotatedRectangle, *boxPts);
 }
 
+void BoxPoints2f(RotatedRect2f rect, Mat boxPts){
+    cv::Point2f centerPt(rect.center.x , rect.center.y);
+    cv::Size2f rSize(rect.size.width, rect.size.height);
+    cv::RotatedRect rotatedRectangle(centerPt, rSize, rect.angle);
+    cv::boxPoints(rotatedRectangle, *boxPts);
+}
+
 double ContourArea(PointVector pts) {
     return cv::contourArea(*pts);
 }
@@ -214,6 +233,29 @@ struct RotatedRect MinAreaRect(PointVector pts){
     Size szsz = {int(lroundf(cvrect.size.width)), int(lroundf(cvrect.size.height))};
 
     RotatedRect retrect = {(Contour){rpts, 4}, r, centrpt, szsz, cvrect.angle};
+    return retrect;
+}
+
+struct RotatedRect2f MinAreaRect2f(PointVector pts){
+    cv::RotatedRect cvrect = cv::minAreaRect(*pts);
+
+    Point2f* rpts = new Point2f[4];
+    cv::Point2f* pts4 = new cv::Point2f[4];
+    cvrect.points(pts4);
+
+    for (size_t j = 0; j < 4; j++) {
+        Point2f pt = {pts4[j].x, pts4[j].y};
+        rpts[j] = pt;
+    }
+
+    delete[] pts4;
+
+    cv::Rect bRect = cvrect.boundingRect();
+    Rect r = {bRect.x, bRect.y, bRect.width, bRect.height};
+    Point2f centrpt = {cvrect.center.x, cvrect.center.y};
+    Size2f szsz = {cvrect.size.width, cvrect.size.height};
+
+    RotatedRect2f retrect = {(Contour2f){rpts, 4}, r, centrpt, szsz, cvrect.angle};
     return retrect;
 }
 
@@ -645,6 +687,11 @@ Point2f PhaseCorrelate(Mat src1, Mat src2, Mat window, double* response) {
         .y = float(result.y),
     };
     return result2f;
+}
+
+void CreateHanningWindow(Mat dst, Size size, int typ) {
+    cv::Size sz(size.width, size.height);
+    cv::createHanningWindow(*dst, sz, typ);
 }
 
 void Mat_Accumulate(Mat src, Mat dst) {

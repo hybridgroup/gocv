@@ -162,6 +162,35 @@ func (w *Window) WaitKey(delay int) int {
 	return int(C.Window_WaitKey(C.int(delay)))
 }
 
+// WaitKeyEx Similar to waitKey, but returns full key code.
+// Note
+// Key code is implementation specific and depends on used backend: QT/GTK/Win32/etc
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d7/dfc/group__highgui.html#gafa15c0501e0ddd90918f17aa071d3dd0
+func (w *Window) WaitKeyEx(delay int) int {
+	return int(C.Window_WaitKey(C.int(delay)))
+}
+
+// PollKey polls for a pressed key.
+// The function pollKey polls for a key event without waiting.
+// It returns the code of the pressed key or -1 if no key was pressed since
+// the last invocation. To wait until a key was pressed, use waitKey.
+//
+// The functions waitKey and pollKey are the only methods in HighGUI that can
+// fetch and handle GUI events, so one of them needs to be called periodically
+// for normal event processing unless HighGUI is used within an environment that
+// takes care of event processing.
+// The function only works if there is at least one HighGUI window created and
+// the window is active. If there are several HighGUI windows, any of them can
+// be active.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d7/dfc/group__highgui.html#ga6d20fbd3100ec3badc1eaa653aff99d7
+func (w *Window) PollKey() int {
+	return int(C.Window_PollKey())
+}
+
 // MoveWindow moves window to the specified position.
 //
 // For further details, please see:

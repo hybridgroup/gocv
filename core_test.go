@@ -1862,6 +1862,26 @@ func TestMatTranspose(t *testing.T) {
 	}
 }
 
+func TestMatTransposeND(t *testing.T) {
+	rows := 1
+	cols := 3
+	src := NewMatWithSize(rows, cols, MatTypeCV8U)
+	defer src.Close()
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			src.SetUCharAt(row, col, uint8(col))
+		}
+	}
+
+	dst := NewMat()
+	defer dst.Close()
+	TransposeND(src, []int{1, 0}, &dst)
+	if dst.Empty() {
+		t.Error("TransposeND error")
+	}
+}
+
 func TestPolarToCart(t *testing.T) {
 	magnitude := NewMatWithSize(101, 102, MatTypeCV32F)
 	angle := NewMatWithSize(101, 102, MatTypeCV32F)
@@ -2070,6 +2090,36 @@ func TestMatEigenNonSymmetric(t *testing.T) {
 	eigenvalues.Close()
 }
 
+func TestPCABackProject(t *testing.T) {
+	data := NewMatWithSize(3, 1, MatTypeCV32F)
+	defer data.Close()
+	data.SetFloatAt(0, 0, float32(-5))
+	data.SetFloatAt(1, 0, float32(0))
+	data.SetFloatAt(2, 0, float32(-10))
+
+	mean := NewMatWithSize(1, 4, MatTypeCV32F)
+	defer mean.Close()
+	mean.SetFloatAt(0, 0, float32(2))
+	mean.SetFloatAt(0, 1, float32(4))
+	mean.SetFloatAt(0, 2, float32(4))
+	mean.SetFloatAt(0, 3, float32(8))
+
+	vectors := NewMatWithSizeFromScalar(NewScalar(0, 0, 0, 0), 1, 4, MatTypeCV32F)
+	defer vectors.Close()
+	vectors.SetFloatAt(0, 0, float32(0.2))
+	vectors.SetFloatAt(0, 1, float32(0.4))
+	vectors.SetFloatAt(0, 2, float32(0.4))
+	vectors.SetFloatAt(0, 3, float32(0.8))
+
+	result := NewMat()
+	defer result.Close()
+
+	PCABackProject(data, mean, vectors, &result)
+	if result.Empty() {
+		t.Error("PCABackProject should not have empty result.")
+	}
+}
+
 func TestPCACompute(t *testing.T) {
 	src := NewMatWithSize(10, 10, MatTypeCV32F)
 	// Set some source data so the PCA is done on a non-zero matrix.
@@ -2091,6 +2141,103 @@ func TestPCACompute(t *testing.T) {
 	mean.Close()
 	eigenvectors.Close()
 	eigenvalues.Close()
+}
+
+func TestPCAProject(t *testing.T) {
+	data := NewMatWithSize(3, 4, MatTypeCV32F)
+	defer data.Close()
+	data.SetFloatAt(0, 0, float32(1))
+	data.SetFloatAt(0, 1, float32(2))
+	data.SetFloatAt(0, 2, float32(2))
+	data.SetFloatAt(0, 3, float32(4))
+	data.SetFloatAt(1, 0, float32(2))
+	data.SetFloatAt(1, 1, float32(4))
+	data.SetFloatAt(1, 2, float32(4))
+	data.SetFloatAt(1, 3, float32(8))
+	data.SetFloatAt(2, 0, float32(0))
+	data.SetFloatAt(2, 1, float32(0))
+	data.SetFloatAt(2, 2, float32(0))
+	data.SetFloatAt(2, 3, float32(0))
+
+	mean := NewMatWithSize(1, 4, MatTypeCV32F)
+	defer mean.Close()
+	mean.SetFloatAt(0, 0, float32(2))
+	mean.SetFloatAt(0, 1, float32(4))
+	mean.SetFloatAt(0, 2, float32(4))
+	mean.SetFloatAt(0, 3, float32(8))
+
+	vectors := NewMatWithSizeFromScalar(NewScalar(0, 0, 0, 0), 1, 4, MatTypeCV32F)
+	defer vectors.Close()
+	vectors.SetFloatAt(0, 0, float32(0.2))
+	vectors.SetFloatAt(0, 1, float32(0.4))
+	vectors.SetFloatAt(0, 2, float32(0.4))
+	vectors.SetFloatAt(0, 3, float32(0.8))
+
+	result := NewMat()
+	defer result.Close()
+
+	PCAProject(data, mean, vectors, &result)
+	if result.Empty() {
+		t.Error("PCABackProject should not have empty result.")
+	}
+}
+
+func TestPSNR(t *testing.T) {
+	src := IMRead("images/gocvlogo.jpg", IMReadColor)
+	if src.Empty() {
+		t.Error("Invalid read of Source Mat in PSNR test")
+	}
+	defer src.Close()
+
+	result := PSNR(src, src)
+	if result == 0 {
+		t.Error("Unexpected PSNR of 0")
+	}
+}
+
+func TestSVBackSubst(t *testing.T) {
+	w := NewMatWithSizeFromScalar(NewScalar(2, 0, 0, 0), 2, 2, MatTypeCV32F)
+	defer w.Close()
+
+	u := NewMatWithSizeFromScalar(NewScalar(4, 0, 0, 0), 2, 2, MatTypeCV32F)
+	defer u.Close()
+
+	vt := NewMatWithSizeFromScalar(NewScalar(2, 0, 0, 0), 2, 2, MatTypeCV32F)
+	defer vt.Close()
+
+	rhs := NewMatWithSizeFromScalar(NewScalar(1, 0, 0, 0), 2, 2, MatTypeCV32F)
+	defer rhs.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	SVBackSubst(w, u, vt, rhs, &dst)
+	if dst.Empty() {
+		t.Error("SVBackSubst should not have empty result.")
+	}
+}
+
+func TestSVDecomp(t *testing.T) {
+	src := NewMatWithSize(1, 4, MatTypeCV32F)
+	defer src.Close()
+	src.SetFloatAt(0, 0, float32(1))
+	src.SetFloatAt(0, 1, float32(4))
+	src.SetFloatAt(0, 2, float32(8))
+	src.SetFloatAt(0, 3, float32(6))
+
+	w := NewMat()
+	defer w.Close()
+
+	u := NewMat()
+	defer u.Close()
+
+	vt := NewMat()
+	defer vt.Close()
+
+	SVDecomp(src, &w, &u, &vt)
+	if w.Empty() || u.Empty() || vt.Empty() {
+		t.Error("SVDecomp should not have empty results.")
+	}
 }
 
 func TestMatExp(t *testing.T) {
@@ -2370,6 +2517,44 @@ func TestMatMagnitude(t *testing.T) {
 	Magnitude(src1, src2, &dst)
 	if dst.Empty() {
 		t.Error("Magnitude dst should not be empty.")
+	}
+}
+
+func TestMatMahalanobis(t *testing.T) {
+	src := NewMatWithSize(10, 10, MatTypeCV32F)
+	defer src.Close()
+
+	RandU(&src, Scalar{Val1: -128}, Scalar{Val1: 128})
+
+	icovar := NewMatWithSize(10, 10, MatTypeCV32F)
+	defer icovar.Close()
+	mean := NewMatWithSize(1, 10, MatTypeCV32F)
+	defer mean.Close()
+
+	CalcCovarMatrix(src, &icovar, &mean, CovarRows|CovarNormal, MatTypeCV32F)
+	icovar.Inv()
+
+	line1 := src.Row(0)
+	defer line1.Close()
+	line2 := src.Row(1)
+	defer line2.Close()
+
+	result := Mahalanobis(line1, line2, icovar)
+	if result == 0 {
+		t.Error("Mahalanobis result should not be empty.")
+	}
+}
+
+func TestMulTransposed(t *testing.T) {
+	src := Eye(10, 10, MatTypeCV32FC1)
+	defer src.Close()
+
+	dst := NewMat()
+	defer dst.Close()
+
+	MulTransposed(src, &dst, true)
+	if dst.Empty() {
+		t.Error("MulTransposed dst should not be empty.")
 	}
 }
 
@@ -3141,4 +3326,58 @@ func TestSetThreadNumber(t *testing.T) {
 	}
 
 	SetNumThreads(original)
+}
+
+func TestMinMaxLoc(t *testing.T) {
+	input := NewMatWithSize(2, 2, MatTypeCV32F)
+	defer input.Close()
+	input.SetFloatAt(0, 0, 1)
+	input.SetFloatAt(0, 1, 2)
+	input.SetFloatAt(1, 0, 3)
+	input.SetFloatAt(1, 1, 4)
+	minVal, maxVal, minLoc, maxLoc := MinMaxLoc(input)
+
+	wantMinVal, wantMaxValue := float32(1.0), float32(4.0)
+	if minVal != wantMinVal {
+		t.Errorf("minVal got: %v, want %v", minVal, wantMinVal)
+	}
+	if maxVal != wantMaxValue {
+		t.Errorf("maxVal got: %v, want %v", maxVal, wantMaxValue)
+	}
+	wantMinLoc, wantMaxLoc := image.Point{Y: 0, X: 0}, image.Point{Y: 1, X: 1}
+	if minLoc != wantMinLoc {
+		t.Errorf("minLoc got: %v, want %v", minLoc, wantMinLoc)
+	}
+	if maxLoc != wantMaxLoc {
+		t.Errorf("maxLoc got: %v, want %v", maxLoc, wantMaxLoc)
+	}
+}
+
+func TestMinMaxLocWithMask(t *testing.T) {
+	input := NewMatWithSize(2, 2, MatTypeCV32F)
+	defer input.Close()
+	input.SetFloatAt(0, 0, 1)
+	input.SetFloatAt(0, 1, 2)
+	input.SetFloatAt(1, 0, 3)
+	input.SetFloatAt(1, 1, 4)
+	mask := NewMatWithSize(2, 2, MatTypeCV8U)
+	defer mask.Close()
+	mask.SetUCharAt(1, 0, 1)
+	mask.SetUCharAt(1, 1, 1)
+	minVal, maxVal, minLoc, maxLoc := MinMaxLocWithMask(input, mask)
+
+	wantMinVal, wantMaxValue := float32(3.0), float32(4.0)
+	if minVal != wantMinVal {
+		t.Errorf("minVal got: %v, want %v", minVal, wantMinVal)
+	}
+	if maxVal != wantMaxValue {
+		t.Errorf("maxVal got: %v, want %v", maxVal, wantMaxValue)
+	}
+	wantMinLoc, wantMaxLoc := image.Point{Y: 1, X: 0}, image.Point{Y: 1, X: 1}
+	if minLoc != wantMinLoc {
+		t.Errorf("minLoc got: %v, want %v", minLoc, wantMinLoc)
+	}
+	if maxLoc != wantMaxLoc {
+		t.Errorf("maxLoc got: %v, want %v", maxLoc, wantMaxLoc)
+	}
 }

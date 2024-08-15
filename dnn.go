@@ -128,6 +128,132 @@ func ParseNetTarget(target string) NetTargetType {
 	}
 }
 
+type DataLayoutType int
+
+const (
+	DataLayoutUnknown DataLayoutType = iota
+	DataLayoutND
+	DataLayoutNCHW
+	DataLayoutNCDHW
+	DataLayoutNHWC
+	DataLayoutNDHWC
+	DataLayoutPLANAR
+)
+
+type PaddingModeType int
+
+const (
+	PaddingModeNull PaddingModeType = iota
+	PaddingModeCropCenter
+	PaddingModeLetterbox
+)
+
+type ImageToBlobParams struct {
+	ScaleFactor float64
+	Size        image.Point
+	Mean        Scalar
+	SwapRB      bool
+	Ddepth      MatType
+	DataLayout  DataLayoutType
+	PaddingMode PaddingModeType
+	BorderValue Scalar
+}
+
+func NewImageToBlobParams(scale float64, size image.Point, mean Scalar,
+	swapRB bool, ddepth MatType, dataLayout DataLayoutType, paddingMode PaddingModeType, border Scalar) ImageToBlobParams {
+	return ImageToBlobParams{
+		ScaleFactor: scale,
+		Size:        size,
+		Mean:        mean,
+		SwapRB:      swapRB,
+		Ddepth:      ddepth,
+		DataLayout:  dataLayout,
+		PaddingMode: paddingMode,
+		BorderValue: border,
+	}
+}
+
+// BlobRectToImageRect gets rectangle coordinates in original image system from rectangle in blob coordinates.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.10.0/d9/d3c/structcv_1_1dnn_1_1Image2BlobParams.html#a40b2b5a731da82f042279650ffb3c3ee
+func (p *ImageToBlobParams) BlobRectToImageRect(rect image.Rectangle, size image.Point) image.Rectangle {
+	cRect := C.struct_Rect{
+		x:      C.int(rect.Min.X),
+		y:      C.int(rect.Min.Y),
+		width:  C.int(rect.Size().X),
+		height: C.int(rect.Size().Y),
+	}
+
+	cSize := C.struct_Size{width: C.int(size.X), height: C.int(size.Y)}
+
+	sz := C.struct_Size{
+		width:  C.int(p.Size.X),
+		height: C.int(p.Size.Y),
+	}
+
+	sMean := C.struct_Scalar{
+		val1: C.double(p.Mean.Val1),
+		val2: C.double(p.Mean.Val2),
+		val3: C.double(p.Mean.Val3),
+		val4: C.double(p.Mean.Val4),
+	}
+
+	bv := C.struct_Scalar{
+		val1: C.double(p.BorderValue.Val1),
+		val2: C.double(p.BorderValue.Val2),
+		val3: C.double(p.BorderValue.Val3),
+		val4: C.double(p.BorderValue.Val4),
+	}
+
+	return toRect(C.Net_BlobRectToImageRect(cRect, cSize, C.double(p.ScaleFactor), sz, sMean, C.bool(p.SwapRB), C.int(p.Ddepth), C.int(p.DataLayout), C.int(p.PaddingMode), bv))
+}
+
+// BlobRectsToImageRects converts rectangle coordinates in original image system from rectangles in blob coordinates.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.10.0/d9/d3c/structcv_1_1dnn_1_1Image2BlobParams.html#a822728804c0d35fc3b743644ee192f60
+func (p *ImageToBlobParams) BlobRectsToImageRects(rects []image.Rectangle, size image.Point) []image.Rectangle {
+	cRectArr := []C.struct_Rect{}
+	for _, v := range rects {
+		rect := C.struct_Rect{
+			x:      C.int(v.Min.X),
+			y:      C.int(v.Min.Y),
+			width:  C.int(v.Size().X),
+			height: C.int(v.Size().Y),
+		}
+		cRectArr = append(cRectArr, rect)
+	}
+
+	cRects := C.Rects{
+		rects:  (*C.Rect)(&cRectArr[0]),
+		length: C.int(len(rects)),
+	}
+
+	cSize := C.struct_Size{width: C.int(size.X), height: C.int(size.Y)}
+
+	sz := C.struct_Size{
+		width:  C.int(p.Size.X),
+		height: C.int(p.Size.Y),
+	}
+
+	sMean := C.struct_Scalar{
+		val1: C.double(p.Mean.Val1),
+		val2: C.double(p.Mean.Val2),
+		val3: C.double(p.Mean.Val3),
+		val4: C.double(p.Mean.Val4),
+	}
+
+	bv := C.struct_Scalar{
+		val1: C.double(p.BorderValue.Val1),
+		val2: C.double(p.BorderValue.Val2),
+		val3: C.double(p.BorderValue.Val3),
+		val4: C.double(p.BorderValue.Val4),
+	}
+
+	return toRectangles(C.Net_BlobRectsToImageRects(cRects, cSize, C.double(p.ScaleFactor), sz, sMean, C.bool(p.SwapRB), C.int(p.Ddepth), C.int(p.DataLayout), C.int(p.PaddingMode), bv))
+}
+
 // Close Net
 func (net *Net) Close() error {
 	C.Net_Close((C.Net)(net.p))
@@ -340,6 +466,35 @@ func BlobFromImage(img Mat, scaleFactor float64, size image.Point, mean Scalar,
 	return newMat(C.Net_BlobFromImage(img.p, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop)))
 }
 
+// BlobFromImageWithParams creates 4-dimensional blob from image. Optionally resizes and crops
+// image from center, subtract mean values, scales values by scalefactor,
+// swap Blue and Red channels.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.10.0/d6/d0f/group__dnn.html#gadc12e5f4a801fd3c1d802f4c8c5d311c
+func BlobFromImageWithParams(img Mat, params ImageToBlobParams) Mat {
+	sz := C.struct_Size{
+		width:  C.int(params.Size.X),
+		height: C.int(params.Size.Y),
+	}
+
+	sMean := C.struct_Scalar{
+		val1: C.double(params.Mean.Val1),
+		val2: C.double(params.Mean.Val2),
+		val3: C.double(params.Mean.Val3),
+		val4: C.double(params.Mean.Val4),
+	}
+
+	bv := C.struct_Scalar{
+		val1: C.double(params.BorderValue.Val1),
+		val2: C.double(params.BorderValue.Val2),
+		val3: C.double(params.BorderValue.Val3),
+		val4: C.double(params.BorderValue.Val4),
+	}
+
+	return newMat(C.Net_BlobFromImageWithParams(img.p, C.double(params.ScaleFactor), sz, sMean, C.bool(params.SwapRB), C.int(params.Ddepth), C.int(params.DataLayout), C.int(params.PaddingMode), bv))
+}
+
 // BlobFromImages Creates 4-dimensional blob from series of images.
 // Optionally resizes and crops images from center, subtract mean values,
 // scales values by scalefactor, swap Blue and Red channels.
@@ -372,6 +527,45 @@ func BlobFromImages(imgs []Mat, blob *Mat, scaleFactor float64, size image.Point
 	}
 
 	C.Net_BlobFromImages(cMats, blob.p, C.double(scaleFactor), sz, sMean, C.bool(swapRB), C.bool(crop), C.int(ddepth))
+}
+
+// BlobFromImagesWithParams Creates 4-dimensional blob from series of images.
+// Optionally resizes and crops images from center, subtract mean values,
+// scales values by scalefactor, swap Blue and Red channels.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d6/d0f/group__dnn.html#ga2b89ed84432e4395f5a1412c2926293c
+func BlobFromImagesWithParams(imgs []Mat, blob *Mat, params ImageToBlobParams) {
+	cMatArray := make([]C.Mat, len(imgs))
+	for i, r := range imgs {
+		cMatArray[i] = r.p
+	}
+
+	cMats := C.struct_Mats{
+		mats:   (*C.Mat)(&cMatArray[0]),
+		length: C.int(len(imgs)),
+	}
+
+	sz := C.struct_Size{
+		width:  C.int(params.Size.X),
+		height: C.int(params.Size.Y),
+	}
+
+	sMean := C.struct_Scalar{
+		val1: C.double(params.Mean.Val1),
+		val2: C.double(params.Mean.Val2),
+		val3: C.double(params.Mean.Val3),
+		val4: C.double(params.Mean.Val4),
+	}
+
+	bv := C.struct_Scalar{
+		val1: C.double(params.BorderValue.Val1),
+		val2: C.double(params.BorderValue.Val2),
+		val3: C.double(params.BorderValue.Val3),
+		val4: C.double(params.BorderValue.Val4),
+	}
+
+	C.Net_BlobFromImagesWithParams(cMats, blob.p, C.double(params.ScaleFactor), sz, sMean, C.bool(params.SwapRB), C.int(params.Ddepth), C.int(params.DataLayout), C.int(params.PaddingMode), bv)
 }
 
 // ImagesFromBlob Parse a 4D blob and output the images it contains as

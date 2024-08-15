@@ -95,6 +95,18 @@ bool Mat_IsContinuous(Mat m) {
     return m->isContinuous();
 }
 
+void Mat_Inv(Mat m) {
+    m->inv();
+}
+
+Mat Mat_Col(Mat m, int c) {
+    return new cv::Mat(m->col(c));
+}
+
+Mat Mat_Row(Mat m, int r) {
+    return new cv::Mat(m->row(r));
+}
+
 // Mat_Clone returns a clone of this Mat
 Mat Mat_Clone(Mat m) {
     return new cv::Mat(m->clone());
@@ -504,8 +516,28 @@ void Mat_EigenNonSymmetric(Mat src, Mat eigenvalues, Mat eigenvectors) {
     cv::eigenNonSymmetric(*src, *eigenvalues, *eigenvectors);
 }
 
+void Mat_PCABackProject(Mat data, Mat mean, Mat eigenvectors, Mat result) {
+    cv::PCABackProject(*data, *mean, *eigenvectors, *result);
+}
+
 void Mat_PCACompute(Mat src, Mat mean, Mat eigenvectors, Mat eigenvalues, int maxComponents) {
     cv::PCACompute(*src, *mean, *eigenvectors, *eigenvalues, maxComponents);
+}
+
+void Mat_PCAProject(Mat data, Mat mean, Mat eigenvectors, Mat result) {
+    cv::PCAProject(*data, *mean, *eigenvectors, *result);
+}
+
+double PSNR(Mat src1, Mat src2) {
+    return cv::PSNR(*src1, *src2);
+}
+
+void SVBackSubst(Mat w, Mat u, Mat vt, Mat rhs, Mat dst) {
+    cv::SVBackSubst(*w, *u, *vt, *rhs, *dst);
+}
+
+void SVDecomp(Mat src, Mat w, Mat u, Mat vt) {
+    cv::SVDecomp(*src, *w, *u, *vt);
 }
 
 void Mat_Exp(Mat src, Mat dst) {
@@ -591,6 +623,14 @@ void Mat_Magnitude(Mat x, Mat y, Mat magnitude) {
     cv::magnitude(*x, *y, *magnitude);
 }
 
+double Mat_Mahalanobis(Mat v1, Mat v2, Mat icovar) {
+    return cv::Mahalanobis(*v1, *v2, *icovar);
+}
+
+void MulTransposed(Mat src, Mat dest, bool ata) {
+    cv::mulTransposed(*src, *dest, ata);
+}
+
 void Mat_Max(Mat src1, Mat src2, Mat dst) {
     cv::max(*src1, *src2, *dst);
 }
@@ -621,6 +661,17 @@ void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* 
     cv::Point cMinLoc;
     cv::Point cMaxLoc;
     cv::minMaxLoc(*m, minVal, maxVal, &cMinLoc, &cMaxLoc);
+
+    minLoc->x = cMinLoc.x;
+    minLoc->y = cMinLoc.y;
+    maxLoc->x = cMaxLoc.x;
+    maxLoc->y = cMaxLoc.y;
+}
+
+void Mat_MinMaxLocWithMask(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc, Mat mask) {
+    cv::Point cMinLoc;
+    cv::Point cMaxLoc;
+    cv::minMaxLoc(*m, minVal, maxVal, &cMinLoc, &cMaxLoc, *mask);
 
     minLoc->x = cMinLoc.x;
     minLoc->y = cMinLoc.y;
@@ -757,6 +808,15 @@ void Mat_Transpose(Mat src, Mat dst) {
     cv::transpose(*src, *dst);
 }
 
+void Mat_TransposeND(Mat src, struct IntVector order, Mat dst) {
+    std::vector<int> _order;
+    for (int i = 0, *v = order.val; i < order.length; ++v, ++i) {
+        _order.push_back(*v);
+    }
+
+    cv::transposeND(*src, _order, *dst);
+}
+
 void Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees) {
     cv::polarToCart(*magnitude, *degree, *x, *y, angleInDegrees);
 }
@@ -813,6 +873,16 @@ void Points_Close(Points ps) {
 }
 
 void Point_Close(Point p) {}
+
+void Points2f_Close(Points2f ps) {
+    for (size_t i = 0; i < ps.length; i++) {
+        Point2f_Close(ps.points[i]);
+    }
+
+    delete[] ps.points;
+}
+
+void Point2f_Close(Point2f p) {}
 
 void Rects_Close(struct Rects rs) {
     delete[] rs.rects;

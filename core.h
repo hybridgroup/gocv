@@ -121,6 +121,12 @@ typedef struct Size {
     int height;
 } Size;
 
+// Wrapper for an individual cv::cvSize
+typedef struct Size2f {
+    float width;
+    float height;
+} Size2f;
+
 // Wrapper for an individual cv::RotatedRect
 typedef struct RotatedRect {
     Points pts;
@@ -129,6 +135,15 @@ typedef struct RotatedRect {
     Size size;
     double angle;
 } RotatedRect;
+
+// Wrapper for an individual cv::RotatedRect
+typedef struct RotatedRect2f {
+    Points2f pts;
+    Rect boundingRect;
+    Point2f center;
+    Size2f size;
+    double angle;
+} RotatedRect2f;
 
 // Wrapper for an individual cv::cvScalar
 typedef struct Scalar {
@@ -268,6 +283,8 @@ void Rects_Close(struct Rects rs);
 void Mats_Close(struct Mats mats);
 void Point_Close(struct Point p);
 void Points_Close(struct Points ps);
+void Point2f_Close(struct Point2f p);
+void Points2f_Close(struct Points2f ps);
 void DMatches_Close(struct DMatches ds);
 void MultiDMatches_Close(struct MultiDMatches mds);
 
@@ -283,6 +300,9 @@ Mat Mat_FromPtr(Mat m, int rows, int cols, int type, int prows, int pcols);
 void Mat_Close(Mat m);
 int Mat_Empty(Mat m);
 bool Mat_IsContinuous(Mat m);
+void Mat_Inv(Mat m);
+Mat Mat_Col(Mat m, int c);
+Mat Mat_Row(Mat m, int r);
 Mat Mat_Clone(Mat m);
 void Mat_CopyTo(Mat m, Mat dst);
 int Mat_Total(Mat m);
@@ -379,7 +399,12 @@ void Mat_DFT(Mat m, Mat dst, int flags);
 void Mat_Divide(Mat src1, Mat src2, Mat dst);
 bool Mat_Eigen(Mat src, Mat eigenvalues, Mat eigenvectors);
 void Mat_EigenNonSymmetric(Mat src, Mat eigenvalues, Mat eigenvectors);
+void Mat_PCABackProject(Mat data, Mat mean, Mat eigenvectors, Mat result);
 void Mat_PCACompute(Mat src, Mat mean, Mat eigenvectors, Mat eigenvalues, int maxComponents);
+void Mat_PCAProject(Mat data, Mat mean, Mat eigenvectors, Mat result);
+double PSNR(Mat src1, Mat src2);
+void SVBackSubst(Mat w, Mat u, Mat vt, Mat rhs, Mat dst);
+void SVDecomp(Mat src, Mat w, Mat u, Mat vt);
 void Mat_Exp(Mat src, Mat dst);
 void Mat_ExtractChannel(Mat src, Mat dst, int coi);
 void Mat_FindNonZero(Mat src, Mat idx);
@@ -399,12 +424,15 @@ double KMeans(Mat data, int k, Mat bestLabels, TermCriteria criteria, int attemp
 double KMeansPoints(PointVector pts, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers);
 void Mat_Log(Mat src, Mat dst);
 void Mat_Magnitude(Mat x, Mat y, Mat magnitude);
+double Mat_Mahalanobis(Mat v1, Mat v2, Mat icovar);
+void MulTransposed(Mat src, Mat dest, bool ata);
 void Mat_Max(Mat src1, Mat src2, Mat dst);
 void Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev);
 void Mat_Merge(struct Mats mats, Mat dst);
 void Mat_Min(Mat src1, Mat src2, Mat dst);
 void Mat_MinMaxIdx(Mat m, double* minVal, double* maxVal, int* minIdx, int* maxIdx);
 void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc);
+void Mat_MinMaxLocWithMask(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc, Mat mask);
 void Mat_MixChannels(struct Mats src, struct Mats dst, struct IntVector fromTo);
 void Mat_MulSpectrums(Mat a, Mat b, Mat c, int flags);
 void Mat_Multiply(Mat src1, Mat src2, Mat dst);
@@ -430,6 +458,7 @@ void Mat_Subtract(Mat src1, Mat src2, Mat dst);
 Scalar Mat_Trace(Mat src);
 void Mat_Transform(Mat src, Mat dst, Mat tm);
 void Mat_Transpose(Mat src, Mat dst);
+void Mat_TransposeND(Mat src, struct IntVector order, Mat dst);
 void Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees);
 void Mat_Pow(Mat src, double power, Mat dst);
 void Mat_Phase(Mat x, Mat y, Mat angle, bool angleInDegrees);

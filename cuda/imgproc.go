@@ -254,10 +254,9 @@ type TemplateMatching struct {
 }
 
 // NewTemplateMatching returns a new TemplateMatching.
-func NewTemplateMatching(srcType int, method gocv.TemplateMatchMode) TemplateMatching {
+func NewTemplateMatching(srcType gocv.MatType, method gocv.TemplateMatchMode) TemplateMatching {
 	return TemplateMatching{p: unsafe.Pointer(C.TemplateMatching_Create(C.int(srcType), C.int(method)))}
 }
-
 // Close TemplateMatching
 func (tm *TemplateMatching) Close() error {
 	C.TemplateMatching_Close((C.TemplateMatching)(tm.p))

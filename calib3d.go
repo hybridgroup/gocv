@@ -55,6 +55,27 @@ const (
 	CalibFixPrincipalPoint
 )
 
+// FisheyeCalibrate performs camera calibration.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/db/d58/group__calib3d__fisheye.html#gad626a78de2b1dae7489e152a5a5a89e1
+func FisheyeCalibrate(objectPoints Points3fVector, imagePoints Points2fVector, size image.Point, k, d, rvecs, tvecs *Mat, flags CalibFlag) float64 {
+	sz := C.struct_Size{
+		width:  C.int(size.X),
+		height: C.int(size.Y),
+	}
+
+	return float64(C.Fisheye_Calibrate(objectPoints.p, imagePoints.p, sz, k.p, d.p, rvecs.p, tvecs.p, C.int(flags)))
+}
+
+// FisheyeDistortPoints distorts 2D points using fisheye model.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/db/d58/group__calib3d__fisheye.html#gab738cdf90ceee97b2b52b0d0e7511541
+func FisheyeDistortPoints(undistorted Mat, distorted *Mat, k, d Mat) {
+	C.Fisheye_DistortPoints(undistorted.Ptr(), distorted.Ptr(), k.Ptr(), d.Ptr())
+}
+
 // FisheyeUndistortImage transforms an image to compensate for fisheye lens distortion
 func FisheyeUndistortImage(distorted Mat, undistorted *Mat, k, d Mat) {
 	C.Fisheye_UndistortImage(distorted.Ptr(), undistorted.Ptr(), k.Ptr(), d.Ptr())
@@ -137,6 +158,10 @@ func CalibrateCamera(objectPoints Points3fVector, imagePoints Points2fVector, im
 	return float64(res)
 }
 
+// Undistort transforms an image to compensate for lens distortion.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga69f2545a8b62a6b0fc2ee060dc30559d
 func Undistort(src Mat, dst *Mat, cameraMatrix Mat, distCoeffs Mat, newCameraMatrix Mat) {
 	C.Undistort(src.Ptr(), dst.Ptr(), cameraMatrix.Ptr(), distCoeffs.Ptr(), newCameraMatrix.Ptr())
 }
@@ -147,6 +172,18 @@ func Undistort(src Mat, dst *Mat, cameraMatrix Mat, distCoeffs Mat, newCameraMat
 // https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga55c716492470bfe86b0ee9bf3a1f0f7e
 func UndistortPoints(src Mat, dst *Mat, cameraMatrix, distCoeffs, rectificationTransform, newCameraMatrix Mat) {
 	C.UndistortPoints(src.Ptr(), dst.Ptr(), cameraMatrix.Ptr(), distCoeffs.Ptr(), rectificationTransform.Ptr(), newCameraMatrix.Ptr())
+}
+
+// CheckChessboard renders the detected chessboard corners.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga6a10b0bb120c4907e5eabbcd22319022
+func CheckChessboard(image Mat, size image.Point) bool {
+	sz := C.struct_Size{
+		width:  C.int(size.X),
+		height: C.int(size.Y),
+	}
+	return bool(C.CheckChessboard(image.Ptr(), sz))
 }
 
 // CalibCBFlag value for chessboard calibration
@@ -256,4 +293,37 @@ func EstimateAffine2D(from, to Point2fVector) Mat {
 // https://docs.opencv.org/4.0.0/d9/d0c/group__calib3d.html#ga27865b1d26bac9ce91efaee83e94d4dd
 func EstimateAffine2DWithParams(from Point2fVector, to Point2fVector, inliers Mat, method int, ransacReprojThreshold float64, maxIters uint, confidence float64, refineIters uint) Mat {
 	return newMat(C.EstimateAffine2DWithParams(from.p, to.p, inliers.p, C.int(method), C.double(ransacReprojThreshold), C.size_t(maxIters), C.double(confidence), C.size_t(refineIters)))
+}
+
+// TriangulatePoints reconstructs 3-dimensional points (in homogeneous coordinates)
+// by using their observations with a stereo camera.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#gad3fc9a0c82b08df034234979960b778c
+func TriangulatePoints(projMatr1, projMatr2 Mat, projPoints1, projPoints2 Point2fVector, points4D *Mat) {
+	C.TriangulatePoints(projMatr1.Ptr(), projMatr2.Ptr(), projPoints1.p, projPoints2.p, points4D.Ptr())
+}
+
+// ConvertPointsFromHomogeneous converts points from homogeneous to Euclidean space.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#gac42edda3a3a0f717979589fcd6ac0035
+func ConvertPointsFromHomogeneous(src Mat, dst *Mat) {
+	C.ConvertPointsFromHomogeneous(src.Ptr(), dst.Ptr())
+}
+
+// Rodrigues converts a rotation matrix to a rotation vector or vice versa.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.0.0/d9/d0c/group__calib3d.html#ga61585db663d9da06b68e70cfbf6a1eac
+func Rodrigues(src Mat, dst *Mat) {
+	C.Rodrigues(src.p, dst.p)
+}
+
+// SolvePnP finds an object pose from 3D-2D point correspondences.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.0.0/d9/d0c/group__calib3d.html#ga549c2075fac14829ff4a58bc931c033d
+func SolvePnP(objectPoints Point3fVector, imagePoints Point2fVector, cameraMatrix, distCoeffs Mat, rvec, tvec *Mat, useExtrinsicGuess bool, flags int) bool {
+	return bool(C.SolvePnP(objectPoints.p, imagePoints.p, cameraMatrix.p, distCoeffs.p, rvec.p, tvec.p, C.bool(useExtrinsicGuess), C.int(flags)))
 }

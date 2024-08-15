@@ -343,6 +343,26 @@ func (m *Mat) IsContinuous() bool {
 	return bool(C.Mat_IsContinuous(m.p))
 }
 
+// Inv inverses a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d3/d63/classcv_1_1Mat.html#a039eb3c6740a850696a12519a4b8bfc6
+func (m *Mat) Inv() {
+	C.Mat_Inv(m.p)
+}
+
+// Col creates a matrix header for the specified matrix column.
+// The underlying data of the new matrix is shared with the original matrix.
+func (m *Mat) Col(col int) Mat {
+	return newMat(C.Mat_Col(m.p, C.int(col)))
+}
+
+// Row creates a matrix header for the specified matrix row.
+// The underlying data of the new matrix is shared with the original matrix.
+func (m *Mat) Row(row int) Mat {
+	return newMat(C.Mat_Row(m.p, C.int(row)))
+}
+
 // Clone returns a cloned full copy of the Mat.
 func (m *Mat) Clone() Mat {
 	return newMat(C.Mat_Clone(m.p))
@@ -1176,6 +1196,14 @@ func EigenNonSymmetric(src Mat, eigenvalues *Mat, eigenvectors *Mat) {
 	C.Mat_EigenNonSymmetric(src.p, eigenvalues.p, eigenvectors.p)
 }
 
+// PCABackProject reconstructs vectors from their PC projections.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#gab26049f30ee8e94f7d69d82c124faafc
+func PCABackProject(data Mat, mean Mat, eigenvectors Mat, result *Mat) {
+	C.Mat_PCABackProject(data.p, mean.p, eigenvectors.p, result.p)
+}
+
 // PCACompute performs PCA.
 //
 // The computed eigenvalues are sorted from the largest to the smallest and the corresponding
@@ -1187,6 +1215,38 @@ func EigenNonSymmetric(src Mat, eigenvalues *Mat, eigenvectors *Mat) {
 // https://docs.opencv.org/4.x/d2/de8/group__core__array.html#ga27a565b31d820b05dcbcd47112176b6e
 func PCACompute(src Mat, mean *Mat, eigenvectors *Mat, eigenvalues *Mat, maxComponents int) {
 	C.Mat_PCACompute(src.p, mean.p, eigenvectors.p, eigenvalues.p, C.int(maxComponents))
+}
+
+// PCAProject projects vector(s) to the principal component subspace.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#ga6b9fbc7b3a99ebfd441bbec0a6bc4f88
+func PCAProject(data Mat, mean Mat, eigenvectors Mat, result *Mat) {
+	C.Mat_PCAProject(data.p, mean.p, eigenvectors.p, result.p)
+}
+
+// PSNR computes the Peak Signal-to-Noise Ratio (PSNR) image quality metric.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#ga3119e3ea73010a6f810bb05aa36ac8d6
+func PSNR(src1 Mat, src2 Mat) float64 {
+	return float64(C.PSNR(src1.p, src2.p))
+}
+
+// SVBackSubst performs a singular value back substitution.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#gab4e620e6fc6c8a27bb2be3d50a840c0b
+func SVBackSubst(w Mat, u Mat, vt Mat, rhs Mat, dst *Mat) {
+	C.SVBackSubst(w.p, u.p, vt.p, rhs.p, dst.p)
+}
+
+// SVDecomp decomposes matrix and stores the results to user-provided matrices.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#gab477b5b7b39b370bb03e75b19d2d5109
+func SVDecomp(src Mat, w *Mat, u *Mat, vt *Mat) {
+	C.SVDecomp(src.p, w.p, u.p, vt.p)
 }
 
 // Exp calculates the exponent of every array element.
@@ -1391,6 +1451,22 @@ func Magnitude(x, y Mat, magnitude *Mat) {
 	C.Mat_Magnitude(x.p, y.p, magnitude.p)
 }
 
+// Mahalanobis calculates the Mahalanobis distance between two vectors.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#ga4493aee129179459cbfc6064f051aa7d
+func Mahalanobis(v1, v2, icovar Mat) float64 {
+	return float64(C.Mat_Mahalanobis(v1.p, v2.p, icovar.p))
+}
+
+// MulTransposed calculates the product of a matrix and its transposition.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#gadc4e49f8f7a155044e3be1b9e3b270ab
+func MulTransposed(src Mat, dest *Mat, ata bool) {
+	C.MulTransposed(src.p, dest.p, C.bool(ata))
+}
+
 // Max calculates per-element maximum of two arrays or an array and a scalar.
 //
 // For further details, please see:
@@ -1458,6 +1534,24 @@ func MinMaxLoc(input Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
 	var cMaxLoc C.struct_Point
 
 	C.Mat_MinMaxLoc(input.p, &cMinVal, &cMaxVal, &cMinLoc, &cMaxLoc)
+
+	minLoc = image.Pt(int(cMinLoc.x), int(cMinLoc.y))
+	maxLoc = image.Pt(int(cMaxLoc.x), int(cMaxLoc.y))
+
+	return float32(cMinVal), float32(cMaxVal), minLoc, maxLoc
+}
+
+// MinMaxLocWithMask finds the global minimum and maximum in an array with a mask used to select a sub-array.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#gab473bf2eb6d14ff97e89b355dac20707
+func MinMaxLocWithMask(input, mask Mat) (minVal, maxVal float32, minLoc, maxLoc image.Point) {
+	var cMinVal C.double
+	var cMaxVal C.double
+	var cMinLoc C.struct_Point
+	var cMaxLoc C.struct_Point
+
+	C.Mat_MinMaxLocWithMask(input.p, &cMinVal, &cMaxVal, &cMinLoc, &cMaxLoc, mask.p)
 
 	minLoc = image.Pt(int(cMinLoc.x), int(cMinLoc.y))
 	maxLoc = image.Pt(int(cMaxLoc.x), int(cMaxLoc.y))
@@ -1809,6 +1903,24 @@ func Transform(src Mat, dst *Mat, tm Mat) {
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga46630ed6c0ea6254a35f447289bd7404
 func Transpose(src Mat, dst *Mat) {
 	C.Mat_Transpose(src.p, dst.p)
+}
+
+// TransposeND transpose for n-dimensional matrices.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d2/de8/group__core__array.html#gab1b1274b4a563be34cdfa55b8919a4ec
+func TransposeND(src Mat, order []int, dst *Mat) {
+	cOrderArray := make([]C.int, len(order))
+	for i, o := range order {
+		cOrderArray[i] = C.int(o)
+	}
+
+	cOrderVector := C.IntVector{
+		val:    (*C.int)(&cOrderArray[0]),
+		length: C.int(len(order)),
+	}
+
+	C.Mat_TransposeND(src.p, cOrderVector, dst.p)
 }
 
 // Pow raises every array element to a power.
