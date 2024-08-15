@@ -42,8 +42,10 @@ Your pull requests will be greatly appreciated!
         - [ ] [undistort](https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga69f2545a8b62a6b0fc2ee060dc30559d)
 
     - [ ] **Miscellaneous Image Transformations - WORK STARTED** The following functions still need implementation:
-        - [ ] [cvtColorTwoPlane](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#ga8e873314e72a1a6c0252375538fbf753)
-        - [ ] [floodFill](https://docs.opencv.org/master/d7/d1b/group__imgproc__misc.html#gaf1f55a048f8a45bc3383586e80b1f0d0)
+        - [ ] [blendLinear](https://docs.opencv.org/4.x/d7/d1b/group__imgproc__misc.html#ga5e76540a679333d7c6cd0617c452c23d)
+        - [ ] [cvtColorTwoPlane](https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html#ga8d4cb64f7c6f03cc2b1f2356734b909d)
+        - [ ] [demosaicing](https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html#ga57261f12fccf872a2b2d66daf29d5bd0)
+        - [ ] [floodFill](https://docs.opencv.org/4.x/d7/d1b/group__imgproc__misc.html#ga366aae45a6c1289b341d140839f18717)
 
     - [ ] **Drawing Functions - WORK STARTED** The following functions still need implementation:
         - [ ] [drawMarker](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga482fa7b0f578fcdd8a174904592a6250)
@@ -52,7 +54,11 @@ Your pull requests will be greatly appreciated!
         - [ ] [getFontScaleFromHeight](https://docs.opencv.org/master/d6/d6e/group__imgproc__draw.html#ga442ff925c1a957794a1309e0ed3ba2c3)
 
     - [ ] ColorMaps in OpenCV
+        - [ ] [applyColorMap](https://docs.opencv.org/4.10.0/d3/d50/group__imgproc__colormap.html#gacb22288ddccc55f9bd9e6d492b409cae)
+
     - [ ] Planar Subdivision
+        - [ ] [Subdiv2D](https://docs.opencv.org/4.10.0/df/dbf/classcv_1_1Subdiv2D.html)
+
     - [X] **Histograms**
     - [ ] **Structural Analysis and Shape Descriptors - WORK STARTED** The following functions still need implementation:
         - [ ] [fitEllipse](https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaf259efaad93098103d6c27b9e4900ffa)
@@ -161,7 +167,23 @@ Your pull requests will be greatly appreciated!
 - [X] **objdetect. Object Detection**
 - [X] **dnn. Deep Neural Network module**
 - [ ] ml. Machine Learning
+    - [ ] [ANN_MLP](https://docs.opencv.org/4.x/d0/dce/classcv_1_1ml_1_1ANN__MLP.html)
+    - [ ] [Boost](https://docs.opencv.org/4.x/d6/d7a/classcv_1_1ml_1_1Boost.html)
+    - [ ] [DTrees](https://docs.opencv.org/4.x/d8/d89/classcv_1_1ml_1_1DTrees.html)
+    - [ ] [EM](https://docs.opencv.org/4.x/d1/dfb/classcv_1_1ml_1_1EM.html)
+    - [ ] [KNearest](https://docs.opencv.org/4.x/dd/de1/classcv_1_1ml_1_1KNearest.html)
+    - [ ] [LogisticRegression](https://docs.opencv.org/4.x/d6/df9/classcv_1_1ml_1_1LogisticRegression.html)
+    - [ ] [NormalBayesClassifier](https://docs.opencv.org/4.x/d4/d8e/classcv_1_1ml_1_1NormalBayesClassifier.html)
+    - [ ] [ParamGrid](https://docs.opencv.org/4.x/d6/dca/classcv_1_1ml_1_1ParamGrid.html)
+    - [ ] [RTrees](https://docs.opencv.org/4.x/d0/d65/classcv_1_1ml_1_1RTrees.html)
+    - [ ] [SimulatedAnnealingSolverSystem](https://docs.opencv.org/4.x/dc/db4/structcv_1_1ml_1_1SimulatedAnnealingSolverSystem.html)
+    - [ ] [SVM](https://docs.opencv.org/4.x/d1/d2d/classcv_1_1ml_1_1SVM.html)
+    - [ ] [SVMSVG](https://docs.opencv.org/4.x/de/d54/classcv_1_1ml_1_1SVMSGD.html)
+    - [ ] [TrainData](https://docs.opencv.org/4.x/dc/d32/classcv_1_1ml_1_1TrainData.html)
+
 - [ ] flann. Clustering and Search in Multi-Dimensional Spaces
+    - [ ] [hierarchicalClustering](https://docs.opencv.org/4.x/dc/de5/group__flann.html#gaf89c8914eb439855c9a24c3de01bfd82)
+
 - [ ] **photo. Computational Photography - WORK STARTED** The following functions still need implementation:
     - [ ] [inpaint](https://docs.opencv.org/master/d7/d8b/group__photo__inpaint.html#gaedd30dfa0214fec4c88138b51d678085)
     - [ ] [denoise_TVL1](https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#ga7602ed5ae17b7de40152b922227c4e4f)
@@ -176,6 +198,7 @@ Your pull requests will be greatly appreciated!
     - [ ] [decolor](https://docs.opencv.org/master/d4/d32/group__photo__decolor.html#ga4864d4c007bda5dacdc5e9d4ed7e222c)
 
 - [ ] stitching. Images stitching
+    - [ ] [Stitcher](https://docs.opencv.org/4.x/d2/d8d/classcv_1_1Stitcher.html)
 
 ## CUDA
 
@@ -335,6 +358,7 @@ Your pull requests will be greatly appreciated!
 - [ ] saliency. Saliency API
 - [ ] sfm. Structure From Motion
 - [ ] shape. Shape Distance and Matching
+- [ ] signal. Signal Processing
 - [ ] stereo. Stereo Correspondance Algorithms
 - [ ] structured_light. Structured Light API
 - [ ] superres. Super Resolution
