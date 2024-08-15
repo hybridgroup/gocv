@@ -1,3 +1,6 @@
+
+#ifndef _WIN32  // Exclude compiling on Windows platforms
+
 #include "freetype.h"
 
 FreeType2 FreeType2_CreateFreeType2() {
@@ -29,3 +32,5 @@ Size FreeType2_GetTextSize(FreeType2 f, const char *text,
     cv::Size sz = (*f)->getTextSize(text, fontHeight, thickness, baseLine);
     return Size{sz.width, sz.height};
 }
+
+#endif // _WIN32
