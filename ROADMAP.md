@@ -316,7 +316,7 @@ Your pull requests will be greatly appreciated!
 - [ ] dnn_superres. DNN used for super resolution
 - [ ] dpm. Deformable Part-based Models
 - [ ] **face. Face Recognition - WORK STARTED**
-- [ ] freetype. Drawing UTF-8 strings with freetype/harfbuzz
+- [X] freetype. Drawing UTF-8 strings with freetype/harfbuzz
 - [ ] fuzzy. Image processing based on fuzzy mathematics
 - [ ] hdf. Hierarchical Data Format I/O routines
 - [ ] hfs. Hierarchical Feature Selection for Efficient Image Segmentation
