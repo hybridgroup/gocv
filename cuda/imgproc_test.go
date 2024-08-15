@@ -310,3 +310,151 @@ func TestTemplateMatching_Match(t *testing.T) {
 		t.Errorf("Max confidence of %f is too low. MatchTemplate could not find template in scene.", maxConfidence)
 	}
 }
+
+func TestDemosaicing(t *testing.T) {
+	img := gocv.IMRead("../images/face.jpg", gocv.IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in Demosaicing test")
+	}
+	defer img.Close()
+
+	patterns := map[string]gocv.ColorConversionCode{
+		"bg": gocv.ColorBayerBGToBGR,
+		"gb": gocv.ColorBayerGBToBGR,
+		"rg": gocv.ColorBayerRGToBGR,
+		"gr": gocv.ColorBayerGRToBGR,
+	}
+
+	for pattern, code := range patterns {
+		bayerImg, err := NewBayerFromMat(img, pattern)
+		if bayerImg.Empty() {
+			t.Error("Invalid conversion from Mat to Bayer in Demosaicing test")
+		}
+		if err != nil {
+			t.Error(err)
+		}
+
+		cimg, dimg := NewGpuMat(), NewGpuMat()
+		cimg.Upload(bayerImg)
+
+		dest := gocv.NewMat()
+
+		Demosaicing(cimg, &dimg, code)
+
+		dimg.Download(&dest)
+		if dest.Empty() || bayerImg.Rows() != dest.Rows() || bayerImg.Cols() != dest.Cols() {
+			t.Error("Invalid convert in Demosaicing test")
+		}
+
+		bayerImg.Close()
+		cimg.Close()
+		dimg.Close()
+		dest.Close()
+	}
+}
+
+func TestDemosaicing_WithStream(t *testing.T) {
+	img := gocv.IMRead("../images/face.jpg", gocv.IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in Demosaicing test")
+	}
+	defer img.Close()
+
+	patterns := map[string]gocv.ColorConversionCode{
+		"bg": gocv.ColorBayerBGToBGR,
+		"gb": gocv.ColorBayerGBToBGR,
+		"rg": gocv.ColorBayerRGToBGR,
+		"gr": gocv.ColorBayerGRToBGR,
+	}
+
+	for pattern, code := range patterns {
+		stream := NewStream()
+
+		bayerImg, err := NewBayerFromMat(img, pattern)
+		if bayerImg.Empty() {
+			t.Error("Invalid conversion from Mat to Bayer in DemosaicingWithStream test")
+		}
+		if err != nil {
+			t.Error(err)
+		}
+
+		cimg, dimg := NewGpuMat(), NewGpuMat()
+		dest := gocv.NewMat()
+
+		cimg.UploadWithStream(bayerImg, stream)
+		DemosaicingWithStream(cimg, &dimg, code, stream)
+		dimg.DownloadWithStream(&dest, stream)
+
+		stream.WaitForCompletion()
+
+		if dest.Empty() || bayerImg.Rows() != dest.Rows() || bayerImg.Cols() != dest.Cols() {
+			t.Error("Invalid convert in DemosaicingWithStream test")
+		}
+
+		bayerImg.Close()
+		cimg.Close()
+		dimg.Close()
+		dest.Close()
+		stream.Close()
+	}
+}
+
+func NewBayerFromMat(src gocv.Mat, pattern string) (gocv.Mat, error) {
+	dest := gocv.NewMatWithSize(src.Rows(), src.Cols(), gocv.MatTypeCV8UC1)
+
+	switch pattern {
+	case "bg":
+		for y := 0; y < src.Rows(); y++ {
+			for x := 0; x < src.Cols(); x++ {
+				if (x+y)%2 != 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[1])
+				} else if (x % 2) != 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[0])
+				} else {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[2])
+				}
+			}
+		}
+	case "gb":
+		for y := 0; y < src.Rows(); y++ {
+			for x := 0; x < src.Cols(); x++ {
+				if (x+y)%2 == 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[1])
+				} else if (x % 2) == 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[0])
+				} else {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[2])
+				}
+			}
+		}
+	case "rg":
+		for y := 0; y < src.Rows(); y++ {
+			for x := 0; x < src.Cols(); x++ {
+				if (x+y)%2 != 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[1])
+				} else if (x % 2) == 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[0])
+				} else {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[2])
+				}
+			}
+		}
+	case "gr":
+		for y := 0; y < src.Rows(); y++ {
+			for x := 0; x < src.Cols(); x++ {
+				if (x+y)%2 == 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[1])
+				} else if (x % 2) != 0 {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[0])
+				} else {
+					dest.SetUCharAt(y, x, src.GetVecbAt(y, x)[2])
+				}
+			}
+		}
+	default:
+		dest.Close()
+		return gocv.Mat{}, fmt.Errorf("invalid pattern: %s", pattern)
+	}
+
+	return dest, nil
+}
