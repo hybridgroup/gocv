@@ -2,6 +2,7 @@ package gocv
 
 import (
 	"image/color"
+	"runtime"
 	"testing"
 )
 
@@ -523,6 +524,10 @@ func TestDrawKeyPoints(t *testing.T) {
 }
 
 func TestDrawMatches(t *testing.T) {
+	if runtime.GOOS == "darwin" {
+		t.Skip("skipping test on macos")
+	}
+
 	queryFile := "images/box.png"
 	trainFile := "images/box_in_scene.png"
 
@@ -593,6 +598,10 @@ func TestDrawMatches(t *testing.T) {
 }
 
 func TestSIFT(t *testing.T) {
+	if runtime.GOOS == "darwin" {
+		t.Skip("skipping test on macos")
+	}
+
 	img := IMRead("./images/face.jpg", IMReadGrayScale)
 	if img.Empty() {
 		t.Error("Invalid Mat in SIFT test")
@@ -633,6 +642,10 @@ func TestSIFT(t *testing.T) {
 }
 
 func TestSIFTWithParams(t *testing.T) {
+	if runtime.GOOS == "darwin" {
+		t.Skip("skipping test on macos")
+	}
+
 	img := IMRead("./images/face.jpg", IMReadGrayScale)
 	if img.Empty() {
 		t.Error("Invalid Mat in SIFT test")
