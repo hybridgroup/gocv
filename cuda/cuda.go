@@ -13,6 +13,26 @@ package cuda
 import "C"
 import "gocv.io/x/gocv"
 
+type FeatureSet int
+
+const (
+	FeatureSetCompute10            FeatureSet = 10
+	FeatureSetCompute11            FeatureSet = 11
+	FeatureSetCompute12            FeatureSet = 12
+	FeatureSetCompute13            FeatureSet = 13
+	FeatureSetCompute20            FeatureSet = 20
+	FeatureSetCompute21            FeatureSet = 21
+	FeatureSetCompute30            FeatureSet = 30
+	FeatureSetCompute32            FeatureSet = 32
+	FeatureSetCompute35            FeatureSet = 35
+	FeatureSetCompute50            FeatureSet = 50
+	FeatureSetGlobalAtomics                   = FeatureSetCompute11
+	FeatureSetSharedAtomics                   = FeatureSetCompute12
+	FeatureSetNativeDouble                    = FeatureSetCompute13
+	FeatureSetWarpShuffleFunctions            = FeatureSetCompute30
+	FeatureSetDynamicParallelism              = FeatureSetCompute35
+)
+
 // GpuMat is the GPU version of a Mat
 //
 // For further details, please see:
@@ -125,6 +145,14 @@ func SetDevice(device int) {
 // https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga6153b6f461101374e655a54fc77e725e
 func ResetDevice() {
 	C.ResetCudaDevice()
+}
+
+// DeviceSupports checks whether current device supports the given feature.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d40/group__cudacore__init.html#ga170b10cc9af4aa8cce8c0afdb4b1d08c
+func DeviceSupports(feature FeatureSet) bool {
+	return bool(C.CudaDeviceSupports(C.int(feature)))
 }
 
 // ConvertTo converts GpuMat into destination GpuMat.

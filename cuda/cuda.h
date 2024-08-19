@@ -40,6 +40,7 @@ int GetCudaEnabledDeviceCount();
 int GetCudaDevice();
 void SetCudaDevice(int device);
 void ResetCudaDevice();
+bool CudaDeviceSupports(int features);
 
 Stream Stream_New();
 void Stream_Close(Stream s);
