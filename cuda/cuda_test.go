@@ -103,3 +103,9 @@ func TestConvertFp16(t *testing.T) {
 		t.Error("incorrect type for fp16mat", fp16mat.Type())
 	}
 }
+
+func TestCudaDeviceSupports(t *testing.T) {
+	if !DeviceSupports(FeatureSetCompute10) {
+		t.Fatal("expected FeatureSetCompute10 on cuda enabled device")
+	}
+}
