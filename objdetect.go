@@ -245,7 +245,7 @@ func (a *QRCodeDetector) DetectMulti(input Mat, points *Mat) bool {
 // For usage please see TestQRCodeDetector
 // For further details, please see:
 // https://docs.opencv.org/master/de/dc3/classcv_1_1QRCodeDetector.html#a188b63ffa17922b2c65d8a0ab7b70775
-func (a *QRCodeDetector) DetectAndDecodeMulti(input Mat, decoded *[]string, points *Mat, qrCodes *[]Mat) bool {
+func (a *QRCodeDetector) DetectAndDecodeMulti(input Mat, decoded []string, points *Mat, qrCodes []Mat) bool {
 	cDecoded := C.CStrings{}
 	defer C.CStrings_Close(cDecoded)
 	cQrCodes := C.struct_Mats{}
@@ -261,11 +261,11 @@ func (a *QRCodeDetector) DetectAndDecodeMulti(input Mat, decoded *[]string, poin
 	}
 
 	for _, qr := range tmpCodes {
-		*qrCodes = append(*qrCodes, qr)
+		qrCodes = append(qrCodes, qr)
 	}
 
 	for _, s := range toGoStrings(cDecoded) {
-		*decoded = append(*decoded, s)
+		decoded = append(decoded, s)
 	}
 	return bool(success)
 }

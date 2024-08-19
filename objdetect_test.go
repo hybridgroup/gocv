@@ -173,7 +173,7 @@ func TestQRCodeDetector(t *testing.T) {
 			q.Close()
 		}
 	}()
-	success := detector.DetectAndDecodeMulti(img2, &decoded, &multiBox2, &qrCodes)
+	success := detector.DetectAndDecodeMulti(img2, decoded, &multiBox2, qrCodes)
 	if !success {
 		t.Errorf("Error in TestQRCodeDetector Multi test: returned false")
 	}
@@ -188,14 +188,14 @@ func TestQRCodeDetector(t *testing.T) {
 		defer tmpInput.Close()
 		tmpDecoded = detector.Decode(tmpInput, tmpPoints, &tmpQr)
 		if tmpDecoded != s {
-			t.Errorf("Error in TestQRCodeDetector Multi test: decoded straight QR code=%s, decoded[%d] =%s", tmpDecoded, i, s)
+			t.Errorf("Error in TestQRCodeDetector Multi test: decoded straight QR code=%s, decoded[%d] = %s", tmpDecoded, i, s)
 		}
 	}
 
 	emptyMat := NewMatWithSize(100, 200, MatTypeCV8UC3)
-	success = detector.DetectAndDecodeMulti(emptyMat, &decoded, &multiBox2, &qrCodes)
+	success = detector.DetectAndDecodeMulti(emptyMat, decoded, &multiBox2, qrCodes)
 	if success {
-		t.Errorf("Error in TestQRCodeDetector Multi test: empty Mat returned sucess=true")
+		t.Errorf("Error in TestQRCodeDetector Multi test: empty Mat returned success=true")
 	}
 	emptyMat.Close()
 }
