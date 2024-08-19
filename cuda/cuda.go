@@ -145,6 +145,15 @@ func (m *GpuMat) ConvertToWithStream(dst *GpuMat, mt gocv.MatType, s Stream) {
 	return
 }
 
+// ConvertFp16 converts an array to half precision floating number.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d40/group__cudacore__init.html#gaa1c52258763197958eb9e6681917f723
+func (m *GpuMat) ConvertFp16(dst *GpuMat) {
+	C.GpuMat_ConvertFp16(m.p, dst.p)
+	return
+}
+
 // CopyTo copies GpuMat into destination GpuMat.
 //
 // For further details, please see:
