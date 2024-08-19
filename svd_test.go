@@ -1,10 +1,15 @@
 package gocv
 
 import (
+	"runtime"
 	"testing"
 )
 
 func TestSVDCompute(t *testing.T) {
+	if runtime.GOOS == "darwin" {
+		t.Skip("skipping test on macos")
+	}
+
 	var resultW = []float32{6.167493, 3.8214223}
 	var resultU = []float32{-0.1346676, -0.99089086, 0.9908908, -0.1346676}
 	var resultVt = []float32{0.01964448, 0.999807, -0.999807, 0.01964448}

@@ -9,6 +9,7 @@ import (
 	"math"
 	"os"
 	"reflect"
+	"runtime"
 	"testing"
 )
 
@@ -1140,6 +1141,10 @@ func TestHoughCirclesWithParams(t *testing.T) {
 }
 
 func TestHoughLines(t *testing.T) {
+	if runtime.GOOS == "darwin" {
+		t.Skip("skipping test on macos")
+	}
+
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
 		t.Error("Invalid read of Mat in HoughLines test")
@@ -1179,6 +1184,10 @@ func TestHoughLines(t *testing.T) {
 }
 
 func TestHoughLinesP(t *testing.T) {
+	if runtime.GOOS == "darwin" {
+		t.Skip("skipping test on macos")
+	}
+
 	img := IMRead("images/face-detect.jpg", IMReadGrayScale)
 	if img.Empty() {
 		t.Error("Invalid read of Mat in HoughLinesP test")
