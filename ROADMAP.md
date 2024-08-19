@@ -202,9 +202,7 @@ Your pull requests will be greatly appreciated!
 
 ## CUDA
 
-- [ ] **core. - WORK STARTED** The following functions still need implementation:
-    - [ ] [cv::cuda::convertFp16](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#gaa1c52258763197958eb9e6681917f723)
-    - [ ] [cv::cuda::deviceSupports](https://docs.opencv.org/master/d8/d40/group__cudacore__init.html#ga170b10cc9af4aa8cce8c0afdb4b1d08c)
+- [X] **core**
 
 - [ ] **cudaarithm. Operations on Matrices - WORK STARTED** The following functions still need implementation:
     - [ ] **core** The following functions still need implementation:
