@@ -1,0 +1,55 @@
+name: macOS
+on:
+  pull_request:
+  push:
+    branches:
+      - dev
+      - release
+
+jobs:
+  build:
+    strategy:
+        matrix:
+          os: [macos-13, macos-14]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Install OpenCV
+        run: |
+          rm /usr/local/bin/2to3*
+          rm /usr/local/bin/idle3*
+          rm /usr/local/bin/pydoc*
+          rm /usr/local/bin/python3*
+          brew install opencv
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+          cache: true
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Caffe test model
+        run: |
+          mkdir -p ${GITHUB_WORKSPACE}/testdata
+          curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/master/testdata/dnn/bvlc_googlenet.prototxt > ${GITHUB_WORKSPACE}/testdata/bvlc_googlenet.prototxt
+          curl -sL http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel > ${GITHUB_WORKSPACE}/testdata/bvlc_googlenet.caffemodel
+          curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.caffemodel > ${GITHUB_WORKSPACE}/testdata/detect.caffemodel
+          curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.prototxt > ${GITHUB_WORKSPACE}/testdata/detect.prototxt
+          curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.caffemodel > ${GITHUB_WORKSPACE}/testdata/sr.caffemodel
+          curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.prototxt > ${GITHUB_WORKSPACE}/testdata/sr.prototxt
+      - name: Install Tensorflow test model
+        run: |
+          mkdir -p ${GITHUB_WORKSPACE}/testdata
+          curl -sL https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip > ${GITHUB_WORKSPACE}/testdata/inception5h.zip
+          unzip -o ${GITHUB_WORKSPACE}/testdata/inception5h.zip tensorflow_inception_graph.pb -d ${GITHUB_WORKSPACE}/testdata
+      - name: Install ONNX test model
+        run: |
+          mkdir -p ${GITHUB_WORKSPACE}/testdata
+          curl -sL https://github.com/onnx/models/blob/master/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx\?raw\=true > ${GITHUB_WORKSPACE}/testdata/googlenet-9.onnx
+      - name: Run main tests
+        run: go test -v -tags matprofile .
+        env:
+          GOCV_CAFFE_TEST_FILES: ${{ github.workspace }}/testdata
+          GOCV_TENSORFLOW_TEST_FILES: ${{ github.workspace }}/testdata
+          NO_GOCV_ONNX_TEST_FILES: ${{ github.workspace }}/testdata
+      - name: Run contrib tests
+        run: go test -v -tags matprofile ./contrib
