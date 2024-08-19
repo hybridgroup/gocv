@@ -55,6 +55,9 @@ const (
 	// MatTypeCV64F is a Mat of 64-bit float
 	MatTypeCV64F MatType = 6
 
+	// MatTypeCV16F is a Mat of 16-bit (half) float
+	MatTypeCV16F MatType = 7
+
 	// MatTypeCV8UC1 is a Mat of 8-bit unsigned int with a single channel
 	MatTypeCV8UC1 = MatTypeCV8U + MatChannels1
 
@@ -135,6 +138,18 @@ const (
 
 	// MatTypeCV64FC4 is a Mat of 64-bit float int with 4 channels
 	MatTypeCV64FC4 = MatTypeCV64F + MatChannels4
+
+	// MatTypeCV16FC1 is a Mat of 16-bit float with a single channel
+	MatTypeCV16FC1 = MatTypeCV16F + MatChannels1
+
+	// MatTypeCV16FC2 is a Mat of 16-bit float with 2 channels
+	MatTypeCV16FC2 = MatTypeCV16F + MatChannels2
+
+	// MatTypeCV16FC3 is a Mat of 16-bit float with 3 channels
+	MatTypeCV16FC3 = MatTypeCV16F + MatChannels3
+
+	// MatTypeCV16FC4 is a Mat of 16-bit float with 4 channels
+	MatTypeCV16FC4 = MatTypeCV16F + MatChannels4
 )
 
 // CompareType is used for Compare operations to indicate which kind of
