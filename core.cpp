@@ -1235,3 +1235,57 @@ void SetNumThreads(int n) {
 int GetNumThreads() {
     return cv::getNumThreads();
 }
+
+struct RotatedRect RotatedRect_Create(struct Point2f center, int width, int height, float angle){
+
+    cv::Point2f cvpoint2f = cv::Point2f(center.x, center.y);
+    cv::Size2f cvsize2f = cv::Size2f(width, height);
+
+    cv::RotatedRect cvrect = cv::RotatedRect(cvpoint2f, cvsize2f, angle);
+
+    Point* rpts = new Point[4];
+    cv::Point2f* pts4 = new cv::Point2f[4];
+    cvrect.points(pts4);
+
+    for (size_t j = 0; j < 4; j++) {
+        Point pt = {int(lroundf(pts4[j].x)), int(lroundf(pts4[j].y))};
+        rpts[j] = pt;
+    }
+
+    delete[] pts4;
+
+    cv::Rect bRect = cvrect.boundingRect();
+    Rect r = {bRect.x, bRect.y, bRect.width, bRect.height};
+    Point centrpt = {int(lroundf(cvrect.center.x)), int(lroundf(cvrect.center.y))};
+    Size szsz = {int(lroundf(cvrect.size.width)), int(lroundf(cvrect.size.height))};
+
+    RotatedRect retrect = {(Contour){rpts, 4}, r, centrpt, szsz, cvrect.angle};
+    return retrect;
+}
+
+struct RotatedRect2f RotatedRect2f_Create(struct Point2f center, float width, float height, float angle){
+
+    cv::Point2f cvpoint2f = cv::Point2f(center.x, center.y);
+    cv::Size2f cvsize2f = cv::Size2f(width, height);
+
+    cv::RotatedRect cvrect = cv::RotatedRect(cvpoint2f, cvsize2f, angle);
+
+    Point2f* rpts = new Point2f[4];
+    cv::Point2f* pts4 = new cv::Point2f[4];
+    cvrect.points(pts4);
+
+    for (size_t j = 0; j < 4; j++) {
+        Point2f pt = {pts4[j].x, pts4[j].y};
+        rpts[j] = pt;
+    }
+
+    delete[] pts4;
+
+    cv::Rect bRect = cvrect.boundingRect();
+    Rect r = {bRect.x, bRect.y, bRect.width, bRect.height};
+    Point2f centrpt = {cvrect.center.x, cvrect.center.y};
+    Size2f szsz = {cvrect.size.width, cvrect.size.height};
+
+    RotatedRect2f retrect = {(Contour2f){rpts, 4}, r, centrpt, szsz, cvrect.angle};
+    return retrect;
+}

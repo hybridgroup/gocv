@@ -3381,3 +3381,26 @@ func TestMinMaxLocWithMask(t *testing.T) {
 		t.Errorf("maxLoc got: %v, want %v", maxLoc, wantMaxLoc)
 	}
 }
+
+func TestNewRotatedRect(t *testing.T) {
+
+	rr := NewRotatedRect(image.Pt(1, 1), 10, 10, 75.0)
+	if rr.Angle != 75.0 {
+		t.Errorf("NewRotatedRect not working as intended")
+	}
+
+}
+
+func TestNewRotatedRect2f(t *testing.T) {
+
+	pts := Point2f{
+		X: 1.5,
+		Y: 1.5,
+	}
+
+	rr := NewRotatedRect2f(pts, 10.5, 10.5, 75.0)
+	if rr.Angle != 75.0 {
+		t.Errorf("NewRotatedRect not working as intended")
+	}
+
+}
