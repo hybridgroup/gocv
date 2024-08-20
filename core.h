@@ -109,6 +109,14 @@ typedef struct Rect {
     int height;
 } Rect;
 
+// Wrapper for an individual cv::cvRect2f
+typedef struct Rect2f {
+    float x;
+    float y;
+    float width;
+    float height;
+} Rect2f;
+
 // Wrapper for the vector of Rect struct aka std::vector<Rect>
 typedef struct Rects {
     Rect* rects;
@@ -136,7 +144,7 @@ typedef struct RotatedRect {
     double angle;
 } RotatedRect;
 
-// Wrapper for an individual cv::RotatedRect
+// Wrapper for an individual cv::RotatedRect2f
 typedef struct RotatedRect2f {
     Points2f pts;
     Rect boundingRect;
@@ -253,6 +261,7 @@ typedef std::vector< cv::Point2f >* Point2fVector;
 typedef std::vector< std::vector< cv::Point2f> >* Points2fVector;
 typedef std::vector< cv::Point3f >* Point3fVector;
 typedef std::vector< std::vector< cv::Point3f > >* Points3fVector;
+typedef cv::RotatedRect* RotatedRectT;
 #else
 typedef void* Mat;
 typedef void* TermCriteria;
@@ -263,6 +272,7 @@ typedef void* Point2fVector;
 typedef void* Points2fVector;
 typedef void* Point3fVector;
 typedef void* Points3fVector;
+typedef void* RotatedRectT;
 #endif
 
 // Wrapper for the vector of Mat aka std::vector<Mat>
@@ -546,6 +556,11 @@ void Points3fVector_Close(Points3fVector ps);
 
 void SetNumThreads(int n);
 int GetNumThreads();
+
+
+struct RotatedRect RotatedRect_Create(struct Point2f center, int width, int height, float angle);
+struct RotatedRect2f RotatedRect2f_Create(struct Point2f center, float width, float height, float angle);
+
 
 #ifdef __cplusplus
 }

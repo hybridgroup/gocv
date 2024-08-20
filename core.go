@@ -2870,3 +2870,50 @@ func SetNumThreads(n int) {
 func GetNumThreads() int {
 	return int(C.GetNumThreads())
 }
+
+// NewRotatedRect creates [RotatedRect] (i.e. not up-right) rectangle on a plane.
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/db/dd6/classcv_1_1RotatedRect.html#aba20dfc8444fff72bd820b616f0297ee
+func NewRotatedRect(center image.Point, width int, height int, angle float64) RotatedRect {
+
+	p2f := C.struct_Point2f{
+		x: C.float(float32(center.X)),
+		y: C.float(float32(center.Y)),
+	}
+
+	c_rotRect := C.RotatedRect_Create(p2f, C.int(width), C.int(height), C.float(angle))
+	defer C.Points_Close(c_rotRect.pts)
+
+	return RotatedRect{
+		Points:       toPoints(c_rotRect.pts),
+		BoundingRect: image.Rect(int(c_rotRect.boundingRect.x), int(c_rotRect.boundingRect.y), int(c_rotRect.boundingRect.x)+int(c_rotRect.boundingRect.width), int(c_rotRect.boundingRect.y)+int(c_rotRect.boundingRect.height)),
+		Center:       image.Pt(int(c_rotRect.center.x), int(c_rotRect.center.y)),
+		Width:        int(c_rotRect.size.width),
+		Height:       int(c_rotRect.size.height),
+		Angle:        float64(c_rotRect.angle),
+	}
+
+}
+
+// NewRotatedRect2f creates [RotatedRect2f] (i.e. not up-right) rectangle on a plane.
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/db/dd6/classcv_1_1RotatedRect.html#aba20dfc8444fff72bd820b616f0297ee
+func NewRotatedRect2f(center Point2f, width float32, height float32, angle float64) RotatedRect2f {
+	p2f := C.struct_Point2f{
+		x: C.float(center.X),
+		y: C.float(center.Y),
+	}
+	c_rotRect2f := C.RotatedRect2f_Create(p2f, C.float(width), C.float(height), C.float(angle))
+	defer C.Points2f_Close(c_rotRect2f.pts)
+
+	return RotatedRect2f{
+		Points:       toPoints2f(c_rotRect2f.pts),
+		BoundingRect: image.Rect(int(c_rotRect2f.boundingRect.x), int(c_rotRect2f.boundingRect.y), int(c_rotRect2f.boundingRect.x)+int(c_rotRect2f.boundingRect.width), int(c_rotRect2f.boundingRect.y)+int(c_rotRect2f.boundingRect.height)),
+		Center:       NewPoint2f(float32(c_rotRect2f.center.x), float32(c_rotRect2f.center.y)),
+		Width:        float32(c_rotRect2f.size.width),
+		Height:       float32(c_rotRect2f.size.height),
+		Angle:        float64(c_rotRect2f.angle),
+	}
+}
