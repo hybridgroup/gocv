@@ -7,6 +7,8 @@ package gocv
 import "C"
 import "unsafe"
 
+import "C"
+
 type FileNodeType int
 
 const (
@@ -75,6 +77,7 @@ func (fn *FileNode) Keys() []string {
 
 	for i := 0; i < int(c_keys_count); i++ {
 		keys[i] = C.GoString(c_keys_slice[i])
+
 	}
 	return keys
 }
