@@ -3,12 +3,9 @@ package gocv
 /*
 #include <stdlib.h>
 #include "persistence.h"
-
-static char* getArrayItem(char** arr, int i) {
-	return arr[i];
-}
 */
 import "C"
+import "unsafe"
 
 type FileNodeType int
 
@@ -74,9 +71,10 @@ func (fn *FileNode) Keys() []string {
 	defer C.FileNode_KeysFree(c_keys, c_keys_count)
 
 	keys := make([]string, int(c_keys_count))
+	c_keys_slice := unsafe.Slice(c_keys, c_keys_count)
 
 	for i := 0; i < int(c_keys_count); i++ {
-		keys[i] = C.GoString(C.getArrayItem(c_keys, C.int(i)))
+		keys[i] = C.GoString(c_keys_slice[i])
 	}
 	return keys
 }
