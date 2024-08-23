@@ -100,14 +100,16 @@ func TestTrackbarWithValue(t *testing.T) {
 	window := NewWindow("trackbar")
 	defer window.Close()
 
-	value := 20
-	tracker := window.CreateTrackbarWithValue("trackme", &value, 100)
+	//value := 20
+	//tracker := window.CreateTrackbarWithValue("trackme", &value, 100)
+	tracker := window.CreateTrackbarWithValue("trackme", nil, 100)
+	tracker.SetPos(20)
 	if tracker.GetPos() != 20 {
 		t.Error("Trackbar pos should have been 20")
 	}
 
 	tracker.SetPos(50)
-
+	value := tracker.GetPos()
 	if value != 50 {
 		t.Error("Trackbar pos should have been 50")
 	}
