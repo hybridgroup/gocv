@@ -1,0 +1,24 @@
+{
+    "gocv": {
+        "type_id": "person",
+        "mat": {
+            "type_id": "opencv-matrix",
+            "rows": 0,
+            "cols": 0,
+            "dt": "u",
+            "data": []
+        },
+        "string": "string value",
+        "stringArray": [
+            "string",
+            "array"
+        ],
+        "double": 3.1415927410125732,
+        "int": 42 // no comments
+        
+    },
+    "gocv2": [
+        0,
+        0
+    ]
+}
