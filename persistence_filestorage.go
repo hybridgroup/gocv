@@ -40,7 +40,7 @@ type FileStorage struct {
 	p C.FileStorage
 }
 
-func MewFileStorage() *FileStorage {
+func NewFileStorage() *FileStorage {
 	return &FileStorage{p: C.FileStorage_Create()}
 }
 
