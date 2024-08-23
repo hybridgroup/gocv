@@ -15,6 +15,7 @@ func TestFileStorage(t *testing.T) {
 	fs.IsOpened()
 
 	m := NewMat()
+	defer m.Close()
 	fs.WriteMat("mat", m)
 
 	fs.WriteString("string", "string value")
