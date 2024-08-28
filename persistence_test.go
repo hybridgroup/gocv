@@ -1,12 +1,15 @@
 package gocv
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 )
 
 func TestFileStorage(t *testing.T) {
 
-	fs := NewFileStorageWithParams("testdata/filestorage", FileStorageModeWrite|FileStorageModeFormatJson, "utf-8")
+	fileStorageTestFilename := filepath.Join(os.TempDir(), "filestorage.json")
+	fs := NewFileStorageWithParams(fileStorageTestFilename, FileStorageModeWrite|FileStorageModeFormatJson, "utf-8")
 
 	fs.StartWriteStruct("gocv", FileNodeTypeMap, "person")
 	fs.ElName()
@@ -36,7 +39,7 @@ func TestFileStorage(t *testing.T) {
 	fs.ReleaseAndGetString()
 
 	fs = NewFileStorage()
-	fs.Open("testdata/filestorage", FileStorageModeRead, "utf-8")
+	fs.Open(fileStorageTestFilename, FileStorageModeRead|FileStorageModeFormatJson, "utf-8")
 
 	fn := fs.GetFirstTopLevelNode()
 	defer fn.Close()
