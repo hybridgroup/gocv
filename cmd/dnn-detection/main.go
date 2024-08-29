@@ -106,8 +106,12 @@ func main() {
 			continue
 		}
 
+		// convert image Mat DataType to CV_32F
+		img_CV32F := img.Clone()
+		img_CV32F.ConvertTo(&img_CV32F, gocv.MatTypeCV32F)
+
 		// convert image Mat to 300x300 blob that the object detector can analyze
-		blob := gocv.BlobFromImage(img, ratio, image.Pt(300, 300), mean, swapRGB, false)
+		blob := gocv.BlobFromImage(img_CV32F, ratio, image.Pt(300, 300), mean, swapRGB, false)
 
 		// feed the blob into the detector
 		net.SetInput(blob, "")
