@@ -249,6 +249,57 @@ func (trk TrackerMIL) Update(img Mat) (image.Rectangle, bool) {
 	return trackerUpdate(C.Tracker(trk.p), img)
 }
 
+type TrackerGOTURN struct {
+	p C.TrackerGOTURN
+}
+
+// NewTrackerGOTURN the GOTURN (Generic Object Tracking Using Regression Networks) tracker
+// GOTURN ([122]) is kind of trackers based on Convolutional Neural Networks (CNN).
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d7/d4c/classcv_1_1TrackerGOTURN.html#details
+func NewTrackerGOTURN() TrackerGOTURN {
+	return TrackerGOTURN{p: C.TrackerGOTURN_Create()}
+}
+
+// NewTrackerGOTURNWithParams the GOTURN (Generic Object Tracking Using Regression Networks) tracker
+// GOTURN ([122]) is kind of trackers based on Convolutional Neural Networks (CNN).
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d7/d4c/classcv_1_1TrackerGOTURN.html#details
+func NewTrackerGOTURNWithParams(modelBin string, modelTxt string) TrackerGOTURN {
+	c_modelBin := C.CString(modelBin)
+	c_modelTxt := C.CString(modelTxt)
+	defer C.free(unsafe.Pointer(c_modelBin))
+	defer C.free(unsafe.Pointer(c_modelTxt))
+
+	return TrackerGOTURN{p: C.TrackerGOTURN_CreateWithParams(c_modelBin, c_modelTxt)}
+}
+
+// Init initializes the tracker with a known bounding box that surrounded the target.
+// Note: this can only be called once. If you lose the object, you have to Close() the instance,
+// create a new one, and call Init() on it again.
+//
+// see: https://docs.opencv.org/master/d0/d0a/classcv_1_1Tracker.html#a4d285747589b1bdd16d2e4f00c3255dc
+func (t TrackerGOTURN) Init(mat Mat, boundingBox image.Rectangle) bool {
+	return trackerInit(C.Tracker(t.p), mat, boundingBox)
+}
+
+// Update updates the tracker, returns a new bounding box and a boolean determining whether the tracker lost the target.
+//
+// see: https://docs.opencv.org/master/d0/d0a/classcv_1_1Tracker.html#a549159bd0553e6a8de356f3866df1f18
+func (t TrackerGOTURN) Update(mat Mat) (image.Rectangle, bool) {
+	return trackerUpdate(C.Tracker(t.p), mat)
+
+}
+
+func (t TrackerGOTURN) Close() error {
+	C.TrackerGOTURN_Close(t.p)
+	t.p = nil
+	return nil
+
+}
+
 // KalmanFilter implements a standard Kalman filter http://en.wikipedia.org/wiki/Kalman_filter.
 // However, you can modify transitionMatrix, controlMatrix, and measurementMatrix
 // to get an extended Kalman filter functionality.
