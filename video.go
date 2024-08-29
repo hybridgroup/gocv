@@ -249,6 +249,30 @@ func (trk TrackerMIL) Update(img Mat) (image.Rectangle, bool) {
 	return trackerUpdate(C.Tracker(trk.p), img)
 }
 
+type TrackerGOTURN struct {
+	p C.TrackerGOTURN
+}
+
+func NewTrackerGOTURN() TrackerGOTURN {
+	return TrackerGOTURN{p: C.TrackerGOTURN_Create()}
+}
+
+func (t TrackerGOTURN) Init(mat Mat, boundingBox image.Rectangle) bool {
+	return trackerInit(C.Tracker(t.p), mat, boundingBox)
+}
+
+func (t TrackerGOTURN) Update(mat Mat) (image.Rectangle, bool) {
+	return trackerUpdate(C.Tracker(t.p), mat)
+
+}
+
+func (t TrackerGOTURN) Close() error {
+	C.TrackerGOTURN_Close(t.p)
+	t.p = nil
+	return nil
+
+}
+
 // KalmanFilter implements a standard Kalman filter http://en.wikipedia.org/wiki/Kalman_filter.
 // However, you can modify transitionMatrix, controlMatrix, and measurementMatrix
 // to get an extended Kalman filter functionality.

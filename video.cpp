@@ -76,6 +76,14 @@ void TrackerMIL_Close(TrackerMIL self) {
     delete self;
 }
 
+TrackerGOTURN TrackerGOTURN_Create(void){
+  return new cv::Ptr<cv::TrackerGOTURN>(cv::TrackerGOTURN::create());
+}
+
+void TrackerGOTURN_Close(TrackerGOTURN tr) {
+    delete tr;
+}
+
 KalmanFilter KalmanFilter_New(int dynamParams, int measureParams) {
     return new cv::KalmanFilter(dynamParams, measureParams, 0, CV_32F);
 }
@@ -207,3 +215,5 @@ void KalmanFilter_SetGain(KalmanFilter kf, Mat gain) {
 void KalmanFilter_SetErrorCovPost(KalmanFilter kf, Mat errorCovPost) {
   kf->errorCovPost = *errorCovPost;
 }
+
+

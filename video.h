@@ -49,6 +49,9 @@ bool Tracker_Update(Tracker self, Mat image, Rect* boundingBox);
 TrackerMIL TrackerMIL_Create();
 void TrackerMIL_Close(TrackerMIL self);
 
+TrackerGOTURN TrackerGOTURN_Create(void);
+void TrackerGOTURN_Close(TrackerGOTURN tr);
+
 KalmanFilter KalmanFilter_New(int dynamParams, int measureParams);
 KalmanFilter KalmanFilter_NewWithParams(int dynamParams, int measureParams, int controlParams, int type);
 void KalmanFilter_Close(KalmanFilter kf);
@@ -85,6 +88,8 @@ void KalmanFilter_SetMeasurementNoiseCov(KalmanFilter kf, Mat measurementNoiseCo
 void KalmanFilter_SetErrorCovPre(KalmanFilter kf, Mat errorCovPre);
 void KalmanFilter_SetGain(KalmanFilter kf, Mat gain);
 void KalmanFilter_SetErrorCovPost(KalmanFilter kf, Mat errorCovPost);
+
+
 
 #ifdef __cplusplus
 }
