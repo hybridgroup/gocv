@@ -136,7 +136,6 @@ func (fs *FileStorage) WriteStringArray(name string, val []string) {
 	c_name := C.CString(name)
 	defer C.free(unsafe.Pointer(c_name))
 
-	//c_val := []*C.char{}
 	c_val := make([]*C.char, 0, len(val))
 
 	for _, v := range val {
@@ -146,8 +145,6 @@ func (fs *FileStorage) WriteStringArray(name string, val []string) {
 		for _, p := range c_val {
 			C.free(unsafe.Pointer(p))
 		}
-		//C.free(unsafe.Pointer(c_val))
-		//possible leak?
 	}()
 	C.FileStorage_WriteStringArray(fs.p, c_name, &c_val[0], C.size_t(len(val)))
 }
