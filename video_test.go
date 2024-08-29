@@ -291,7 +291,7 @@ func TestSingleTrackers(t *testing.T) {
 		tracker Tracker
 	}{
 		{"MIL", NewTrackerMIL()},
-		// {"GOTURN", NewTrackerGOTURN()},
+		{"GOTURN", NewTrackerGOTURN()},
 	}
 
 	for _, test := range tab {
