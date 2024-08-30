@@ -12,6 +12,7 @@ import (
 )
 
 type FaceRecognizer interface {
+	Empty() bool
 	Train(images []gocv.Mat, labels []int)
 	Update(newImages []gocv.Mat, newLabels []int)
 	Predict(sample gocv.Mat) int
@@ -21,6 +22,11 @@ type FaceRecognizer interface {
 	SaveFile(fname string)
 	LoadFile(fname string)
 	Close() error
+}
+
+func faceRecognizer_Empty(fr C.FaceRecognizer) bool {
+	b := C.FaceRecognizer_Empty(fr)
+	return bool(b)
 }
 
 func faceRecognizer_Train(fr C.FaceRecognizer, images []gocv.Mat, labels []int) {

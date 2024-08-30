@@ -14,6 +14,8 @@ func TestLBPHFaceRecognizer_Methods(t *testing.T) {
 		t.Errorf("Invalid NewLBPHFaceRecognizer call %v", model)
 	}
 
+	model.Empty()
+
 	labels := []int{1, 1, 1, 1, 2, 2, 2, 2}
 	images := []gocv.Mat{
 		gocv.IMRead("./att_faces/s1/1.pgm", gocv.IMReadGrayScale),

@@ -25,6 +25,10 @@ type LBPHFaceRecognizer struct {
 	p C.LBPHFaceRecognizer
 }
 
+func (fr *LBPHFaceRecognizer) Empty() bool {
+	return faceRecognizer_Empty(C.FaceRecognizer(fr.p))
+}
+
 // NewLBPHFaceRecognizer creates a new LBPH Recognizer model.
 //
 // For further information, see:

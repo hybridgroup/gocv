@@ -23,6 +23,7 @@ struct PredictResponse {
     double confidence;
 };
 
+bool FaceRecognizer_Empty(FaceRecognizer fr);
 void FaceRecognizer_Train(FaceRecognizer fr, Mats images, IntVector labels);
 void FaceRecognizer_Update(FaceRecognizer fr, Mats images, IntVector labels);
 int FaceRecognizer_Predict(FaceRecognizer fr, Mat sample);
@@ -43,6 +44,9 @@ void LBPHFaceRecognizer_SetGridY(LBPHFaceRecognizer fr, int y);
 int LBPHFaceRecognizer_GetGridX(LBPHFaceRecognizer fr);
 int LBPHFaceRecognizer_GetGridY(LBPHFaceRecognizer fr);
 void LBPHFaceRecognizer_Close(LBPHFaceRecognizer fr);
+
+
+
 
 #ifdef __cplusplus
 }

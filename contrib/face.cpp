@@ -1,5 +1,9 @@
 #include "face.h"
 
+bool FaceRecognizer_Empty(FaceRecognizer fr) {
+    return (*fr)->empty();
+}
+
 void FaceRecognizer_Train(FaceRecognizer fr, Mats mats, IntVector labels_in) {
     std::vector<int> labels;
 
