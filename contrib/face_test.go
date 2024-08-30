@@ -104,6 +104,7 @@ func TestLBPHFaceRecognizer_SetGridY_GetGridY(t *testing.T) {
 
 func TestLBPHFaceRecognizer_SetGrid_GetGrid(t *testing.T) {
 	facer := NewLBPHFaceRecognizer()
+	defer facer.Close()
 	facer.SetGrid(image.Point{7, 5})
 
 	if p := facer.GetGrid(); p.X != 7 || p.Y != 5 {

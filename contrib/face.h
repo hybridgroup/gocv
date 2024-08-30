@@ -12,8 +12,10 @@ extern "C" {
 
 #ifdef __cplusplus
 typedef cv::Ptr<cv::face::LBPHFaceRecognizer>* LBPHFaceRecognizer;
+typedef cv::Ptr<cv::face::FaceRecognizer>* FaceRecognizer;
 #else
 typedef void* LBPHFaceRecognizer;
+typedef void* FaceRecognizer;
 #endif
 
 struct PredictResponse {
@@ -21,24 +23,26 @@ struct PredictResponse {
     double confidence;
 };
 
+void FaceRecognizer_Train(FaceRecognizer fr, Mats images, IntVector labels);
+void FaceRecognizer_Update(FaceRecognizer fr, Mats images, IntVector labels);
+int FaceRecognizer_Predict(FaceRecognizer fr, Mat sample);
+struct PredictResponse FaceRecognizer_PredictExtended(FaceRecognizer fr, Mat sample);
+double FaceRecognizer_GetThreshold(FaceRecognizer fr);
+void FaceRecognizer_SetThreshold(FaceRecognizer fr, double threshold);
+void FaceRecognizer_SaveFile(FaceRecognizer fr, const char*  filename);
+void FaceRecognizer_LoadFile(FaceRecognizer fr, const char*  filename);
+
+
+
 LBPHFaceRecognizer CreateLBPHFaceRecognizer();
-void LBPHFaceRecognizer_Train(LBPHFaceRecognizer fr, Mats images, IntVector labels);
-void LBPHFaceRecognizer_Update(LBPHFaceRecognizer fr, Mats images, IntVector labels);
-int LBPHFaceRecognizer_Predict(LBPHFaceRecognizer fr, Mat sample);
-struct PredictResponse LBPHFaceRecognizer_PredictExtended(LBPHFaceRecognizer fr, Mat sample);
-double LBPHFaceRecognizer_GetThreshold(LBPHFaceRecognizer fr);
-void LBPHFaceRecognizer_SetThreshold(LBPHFaceRecognizer fr, double threshold);
 void LBPHFaceRecognizer_SetRadius(LBPHFaceRecognizer fr, int radius);
 void LBPHFaceRecognizer_SetNeighbors(LBPHFaceRecognizer fr, int neighbors);
-void LBPHFaceRecognizer_SaveFile(LBPHFaceRecognizer fr, const char*  filename);
-void LBPHFaceRecognizer_LoadFile(LBPHFaceRecognizer fr, const char*  filename);
 int LBPHFaceRecognizer_GetNeighbors(LBPHFaceRecognizer fr);
 void LBPHFaceRecognizer_SetGridX(LBPHFaceRecognizer fr, int x);
 void LBPHFaceRecognizer_SetGridY(LBPHFaceRecognizer fr, int y);
 int LBPHFaceRecognizer_GetGridX(LBPHFaceRecognizer fr);
 int LBPHFaceRecognizer_GetGridY(LBPHFaceRecognizer fr);
-
-
+void LBPHFaceRecognizer_Close(LBPHFaceRecognizer fr);
 
 #ifdef __cplusplus
 }
