@@ -15,8 +15,7 @@ Your pull requests will be greatly appreciated!
 - [ ] **core. Core functionality - WORK STARTED**
     - [X] **Basic structures**
     - [X] **Operations on arrays**
-    - [ ] XML/YAML Persistence
-        - [ ] [FileStorage](https://docs.opencv.org/master/da/d56/classcv_1_1FileStorage.html)
+    - [X] **XML/YAML Persistence**
 
     - [ ] **Clustering - WORK STARTED**. The following functions still need implementation:
         - [ ] [partition](https://docs.opencv.org/master/d5/d38/group__core__cluster.html#ga2037c989e69b499c1aa271419f3a9b34)
@@ -205,7 +204,7 @@ Your pull requests will be greatly appreciated!
 - [X] **core**
 
 - [ ] **cudaarithm. Operations on Matrices - WORK STARTED** The following functions still need implementation:
-    - [ ] **core** The following functions still need implementation:
+    - [ ] **core - WORK STARTED** The following functions still need implementation:
         - [ ] [cv::cuda::copyMakeBorder](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga5368db7656eacf846b40089c98053a49)
         - [ ] [cv::cuda::createLookUpTable](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga2d9d9780dea8c5cd85d3c19b7e01979c)
         - [ ] [cv::cuda::merge](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#gaac939dc3b178ee92fb6e7078f342622c)
@@ -225,7 +224,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [cv::cuda::pow](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga82d04ef4bcc4dfa9bfbe76488007c6c4)
         - [ ] [cv::cuda::rshift](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga87af0b66358cc302676f35c1fd56c2ed)
 
-    - [ ] **matrix reductions** The following functions still need implementation:
+    - [ ] **matrix reductions - WORK STARTED** The following functions still need implementation:
         - [ ] [cv::cuda::absSum](https://docs.opencv.org/master/d5/de6/group__cudaarithm__reduce.html#ga690fa79ba4426c53f7d2bebf3d37a32a)
         - [ ] [cv::cuda::calcAbsSum](https://docs.opencv.org/master/d5/de6/group__cudaarithm__reduce.html#ga15c403b76ab2c4d7ed0f5edc09891b7e)
         - [ ] [cv::cuda::calcNorm](https://docs.opencv.org/master/d5/de6/group__cudaarithm__reduce.html#ga39d2826990d29b7e4b69dbe02bdae2e1)
@@ -247,7 +246,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [cv::cuda::sqlSum](https://docs.opencv.org/master/d5/de6/group__cudaarithm__reduce.html#ga056c804ebf5d2eb9f6f35e3dcb01524c)
         - [ ] [cv::cuda::sum](https://docs.opencv.org/master/d5/de6/group__cudaarithm__reduce.html#ga1f582844670199281e8012733b50c582)
 
-    - [ ] **Operations on matrices** The following functions still need implementation:
+    - [ ] **Operations on matrices - WORK STARTED** The following functions still need implementation:
         - [ ] [cv::cuda::createConvolution](https://docs.opencv.org/4.5.0/d9/d88/group__cudaarithm__arithm.html#ga2695e05ef624bf3ce03cfbda383a821d)
         - [ ] [cv::cuda::createDFT](https://docs.opencv.org/4.5.0/d9/d88/group__cudaarithm__arithm.html#ga0f72d063b73c8bb995678525eb076f10)
         - [ ] [cv::cuda::dft](https://docs.opencv.org/4.5.0/d9/d88/group__cudaarithm__arithm.html#gadea99cb15a715c983bcc2870d65a2e78)
