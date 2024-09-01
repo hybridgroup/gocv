@@ -14,6 +14,8 @@ func TestLBPHFaceRecognizer_Methods(t *testing.T) {
 		t.Errorf("Invalid NewLBPHFaceRecognizer call %v", model)
 	}
 
+	model.Empty()
+
 	labels := []int{1, 1, 1, 1, 2, 2, 2, 2}
 	images := []gocv.Mat{
 		gocv.IMRead("./att_faces/s1/1.pgm", gocv.IMReadGrayScale),
@@ -104,6 +106,7 @@ func TestLBPHFaceRecognizer_SetGridY_GetGridY(t *testing.T) {
 
 func TestLBPHFaceRecognizer_SetGrid_GetGrid(t *testing.T) {
 	facer := NewLBPHFaceRecognizer()
+	defer facer.Close()
 	facer.SetGrid(image.Point{7, 5})
 
 	if p := facer.GetGrid(); p.X != 7 || p.Y != 5 {
