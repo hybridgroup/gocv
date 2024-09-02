@@ -11,7 +11,7 @@ import (
 	"gocv.io/x/gocv"
 )
 
-type IFaceRecognizer interface {
+type FaceRecognizer interface {
 	Empty() bool
 	Train(images []gocv.Mat, labels []int)
 	Update(newImages []gocv.Mat, newLabels []int)
@@ -24,7 +24,7 @@ type IFaceRecognizer interface {
 	Close() error
 }
 
-type IBasicFaceRecognizer interface {
+type BasicFaceRecognizer interface {
 	GetEigenValues() gocv.Mat
 	GetEigenVectors() gocv.Mat
 	GetLabels() gocv.Mat
@@ -34,14 +34,6 @@ type IBasicFaceRecognizer interface {
 	GetProjections() []gocv.Mat
 	SaveFile(fname string)
 	LoadFile(fname string)
-}
-
-type FaceRecognizer struct {
-	p unsafe.Pointer
-}
-
-type BasicFaceRecognizer struct {
-	FaceRecognizer
 }
 
 func faceRecognizer_Empty(fr C.FaceRecognizer) bool {

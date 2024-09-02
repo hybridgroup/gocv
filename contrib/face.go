@@ -17,11 +17,11 @@ type PredictResponse struct {
 	Confidence float32 `json:"confidence"`
 }
 
-var _ IFaceRecognizer = (*LBPHFaceRecognizer)(nil)
-var _ IFaceRecognizer = (*FisherFaceRecognizer)(nil)
-var _ IBasicFaceRecognizer = (*FisherFaceRecognizer)(nil)
-var _ IFaceRecognizer = (*EigenFaceRecognizer)(nil)
-var _ IBasicFaceRecognizer = (*EigenFaceRecognizer)(nil)
+var _ FaceRecognizer = (*LBPHFaceRecognizer)(nil)
+var _ FaceRecognizer = (*FisherFaceRecognizer)(nil)
+var _ BasicFaceRecognizer = (*FisherFaceRecognizer)(nil)
+var _ FaceRecognizer = (*EigenFaceRecognizer)(nil)
+var _ BasicFaceRecognizer = (*EigenFaceRecognizer)(nil)
 
 // LBPHFaceRecognizer is a wrapper for the OpenCV Local Binary Patterns
 // Histograms face recognizer.
