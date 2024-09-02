@@ -206,6 +206,11 @@ func NewMat() Mat {
 	return newMat(C.Mat_New())
 }
 
+// NewMatFromCMat returns a new Mat from an unsafe.Pointer(C.Mat).
+func NewMatFromCMat(c_mat unsafe.Pointer) Mat {
+	return newMat(C.Mat(c_mat))
+}
+
 // NewMatWithSize returns a new Mat with a specific size and type.
 func NewMatWithSize(rows int, cols int, mt MatType) Mat {
 	return newMat(C.Mat_NewWithSize(C.int(rows), C.int(cols), C.int(mt)))

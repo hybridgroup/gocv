@@ -113,3 +113,131 @@ func TestLBPHFaceRecognizer_SetGrid_GetGrid(t *testing.T) {
 		t.Errorf("got %+v want {7, 5}", p)
 	}
 }
+
+func TestEigenFaceRecognizer_Methods(t *testing.T) {
+	model := NewEigenFaceRecognizer()
+	if model == nil {
+		t.Errorf("Invalid NewEigenFaceRecognizer call %v", model)
+	}
+
+	model.Empty()
+
+	m := model.GetEigenValues()
+	defer m.Close()
+	m2 := model.GetEigenVectors()
+	defer m2.Close()
+	m3 := model.GetMean()
+	defer m3.Close()
+
+	nc := model.GetNumComponents()
+	t.Logf("numComponents %d\n", nc)
+
+	labels := []int{1, 1, 1, 1, 2, 2, 2, 2}
+	images := []gocv.Mat{
+		gocv.IMRead("./att_faces/s1/1.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s1/2.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s1/3.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s1/4.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s2/1.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s2/2.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s2/3.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s2/4.pgm", gocv.IMReadGrayScale),
+	}
+	model.Train(images, labels)
+
+	sample := gocv.IMRead("./att_faces/s2/5.pgm", gocv.IMReadGrayScale)
+	label := model.Predict(sample)
+	if label != 2 {
+		t.Errorf("Invalid simple predict! label: %d", label)
+	}
+	resp := model.PredictExtendedResponse(sample)
+	if resp.Label != 2 {
+		t.Errorf("Invalid extended result predict! label: %d", resp.Label)
+	}
+
+	// set wrong threshold
+	model.SetThreshold(0.0)
+	label = model.Predict(sample)
+	if label != -1 {
+		t.Errorf("Invalid set wrong threshold! label: %d", label)
+	}
+
+	// test save and load
+	fName := "data.yaml"
+	model.SaveFile(fName)
+	modelNew := NewEigenFaceRecognizer()
+	modelNew.LoadFile(fName)
+	label = modelNew.Predict(sample)
+	if label != 2 {
+		t.Errorf("Invalid loaded data: %d", label)
+	}
+}
+
+func TestFisherFaceRecognizer_Methods(t *testing.T) {
+	model := NewFisherFaceRecognizer()
+	if model == nil {
+		t.Errorf("Invalid NewFisherFaceRecognizer call %v", model)
+	}
+
+	model.Empty()
+
+	m := model.GetEigenValues()
+	defer m.Close()
+	m2 := model.GetEigenVectors()
+	defer m2.Close()
+	m3 := model.GetMean()
+	defer m3.Close()
+
+	nc := model.GetNumComponents()
+	t.Logf("numComponents %d\n", nc)
+	labels := []int{1, 1, 1, 1, 2, 2, 2, 2}
+	images := []gocv.Mat{
+		gocv.IMRead("./att_faces/s1/1.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s1/2.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s1/3.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s1/4.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s2/1.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s2/2.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s2/3.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s2/4.pgm", gocv.IMReadGrayScale),
+	}
+	model.Train(images, labels)
+
+	sample := gocv.IMRead("./att_faces/s2/5.pgm", gocv.IMReadGrayScale)
+	label := model.Predict(sample)
+	if label != 2 {
+		t.Errorf("Invalid simple predict! label: %d", label)
+	}
+	resp := model.PredictExtendedResponse(sample)
+	if resp.Label != 2 {
+		t.Errorf("Invalid extended result predict! label: %d", resp.Label)
+	}
+
+	// add new data
+	sample = gocv.IMRead("./att_faces/s3/10.pgm", gocv.IMReadGrayScale)
+	newLabels := []int{1, 3, 3, 3, 3, 3, 3}
+	newImages := []gocv.Mat{
+		gocv.IMRead("./att_faces/s1/1.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s3/1.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s3/2.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s3/3.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s3/4.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s3/5.pgm", gocv.IMReadGrayScale),
+		gocv.IMRead("./att_faces/s3/6.pgm", gocv.IMReadGrayScale),
+	}
+	model.Update(newImages, newLabels)
+	label = model.Predict(sample)
+	if label != 3 {
+		t.Errorf("Invalid new data update: %d", label)
+	}
+
+	// test save and load
+	fName := "data.yaml"
+	model.SaveFile(fName)
+	modelNew := NewFisherFaceRecognizer()
+	modelNew.LoadFile(fName)
+	label = modelNew.Predict(sample)
+	if label != 3 {
+		t.Errorf("Invalid loaded data: %d", label)
+	}
+}
