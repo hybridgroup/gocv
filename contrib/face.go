@@ -29,6 +29,7 @@ type LBPHFaceRecognizer struct {
 	p C.LBPHFaceRecognizer
 }
 
+// Empty returns true if the model is empty.
 func (fr *LBPHFaceRecognizer) Empty() bool {
 	return faceRecognizer_Empty(C.FaceRecognizer(fr.p))
 }
@@ -199,14 +200,27 @@ type FisherFaceRecognizer struct {
 	p C.FisherFaceRecognizer
 }
 
+// NewFisherFaceRecognizer creates a new Fisher Recognizer model.
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/d2/de9/classcv_1_1face_1_1FisherFaceRecognizer.html#ac6e204df6d7e526f4c77d3e0389dfbaa
 func NewFisherFaceRecognizer() *FisherFaceRecognizer {
 	return &FisherFaceRecognizer{p: C.FisherFaceRecognizer_Create()}
 }
 
+// NewFisherFaceRecognizerWithParams creates a new Fisher Recognizer model.
+//
+// [num_components]	The number of components (read: Fisherfaces) kept for this Linear Discriminant Analysis with the Fisherfaces criterion. It's useful to keep all components, that means the number of your classes c (read: subjects, persons you want to recognize). If you leave this at the default (0) or set it to a value less-equal 0 or greater (c-1), it will be set to the correct number (c-1) automatically.
+//
+// [threshold] The threshold applied in the prediction. If the distance to the nearest neighbor is larger than the threshold, this method returns -1.
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/d2/de9/classcv_1_1face_1_1FisherFaceRecognizer.html#ac6e204df6d7e526f4c77d3e0389dfbaa
 func NewFisherFaceRecognizerWithParams(numComponents int, threshold float32) *FisherFaceRecognizer {
 	return &FisherFaceRecognizer{p: C.FisherFaceRecognizer_CreateWithParams(C.int(numComponents), C.float(threshold))}
 }
 
+// Empty returns true if the model is empty.
 func (fr *FisherFaceRecognizer) Empty() bool {
 	b := faceRecognizer_Empty(C.FaceRecognizer(fr.p))
 	return bool(b)
@@ -240,33 +254,70 @@ func (fr *FisherFaceRecognizer) GetProjections() []gocv.Mat {
 	return basicFaceRecognizer_GetProjections(C.BasicFaceRecognizer(fr.p))
 }
 
+// GetThreshold gets the threshold value of the model, i.e. the threshold
+// applied in the prediction.
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#acf2a6993eb4347b3f89009da693a3f70
 func (fr *FisherFaceRecognizer) GetThreshold() float32 {
 	return faceRecognizer_GetThreshold(C.FaceRecognizer(fr.p))
 }
 
+// SetThreshold sets the threshold value of the model, i.e. the threshold
+// applied in the prediction.
+//
+// For further information, see:
+// https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a3182081e5f8023e658ad8ab96656dd63
 func (fr *FisherFaceRecognizer) SetThreshold(threshold float32) {
 	faceRecognizer_SetThreshold(C.FaceRecognizer(fr.p), threshold)
 }
 
+// LoadFile loads a trained model data from file.
+//
+// For further information, see:
+// https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#acc42e5b04595dba71f0777c7179af8c3
 func (fr *FisherFaceRecognizer) LoadFile(filename string) {
 	basicFaceRecognizer_LoadFile(C.BasicFaceRecognizer(fr.p), filename)
 }
 
+// SaveFile saves the trained model data to file.
+//
+// For further information, see:
+// https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a2adf2d555550194244b05c91fefcb4d6
 func (fr *FisherFaceRecognizer) SaveFile(filename string) {
 	basicFaceRecognizer_SaveFile(C.BasicFaceRecognizer(fr.p), filename)
 }
 
+// Predict predicts a label for a given input image. It returns the label for
+// correctly predicted image or -1 if not found.
+//
+// For further information, see:
+// https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#aa2d2f02faffab1bf01317ae6502fb631
 func (fr *FisherFaceRecognizer) Predict(sample gocv.Mat) int {
 	return faceRecognizer_Predict(C.FaceRecognizer(fr.p), sample)
 }
 
+// PredictExtendedResponse returns a label and associated confidence (e.g.
+// distance) for a given input image. It is the extended version of
+// `Predict()`.
+//
+// For further information, see:
+// https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#ab0d593e53ebd9a0f350c989fcac7f251
 func (fr *FisherFaceRecognizer) PredictExtendedResponse(sample gocv.Mat) PredictResponse {
 	return faceRecognizer_PredictExtendedResponse(C.FaceRecognizer(fr.p), sample)
 }
 
+// Train loaded model with images and their labels
+//
+// see https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#ac8680c2aa9649ad3f55e27761165c0d6
 func (fr *FisherFaceRecognizer) Train(images []gocv.Mat, labels []int) {
 	basicFaceRecognizer_Train(C.BasicFaceRecognizer(fr.p), images, labels)
 }
+
+// Update This model does not support updating.
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/d2/de9/classcv_1_1face_1_1FisherFaceRecognizer.html#ac6e204df6d7e526f4c77d3e0389dfbaa
 func (fr *FisherFaceRecognizer) Update(newImages []gocv.Mat, newLabels []int) {
 	faceRecognizer_Train(C.FaceRecognizer(fr.p), newImages, newLabels)
 
@@ -282,14 +333,26 @@ type EigenFaceRecognizer struct {
 	p C.EigenFaceRecognizer
 }
 
+// NewEigenFaceRecognizer creates a new Eigen Recognizer model.
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/dd/d7c/classcv_1_1face_1_1EigenFaceRecognizer.html#a22c8392f27a20b24d04351b675e7b6db
 func NewEigenFaceRecognizer() *EigenFaceRecognizer {
 	return &EigenFaceRecognizer{p: C.EigenFaceRecognizer_Create()}
 }
 
+// NewEigenFaceRecognizerWithParams creates a new Eigen Recognizer model.
+//
+// [num_components]	The number of components (read: Eigenfaces) kept for this Principal Component Analysis.
+// [threshold]	The threshold applied in the prediction.
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/dd/d7c/classcv_1_1face_1_1EigenFaceRecognizer.html#a22c8392f27a20b24d04351b675e7b6db
 func NewEigenFaceRecognizerWithParams(numComponents int, threshold float32) *EigenFaceRecognizer {
 	return &EigenFaceRecognizer{p: C.EigenFaceRecognizer_CreateWithParams(C.int(numComponents), C.float(threshold))}
 }
 
+// Empty returns true if the model is empty.
 func (fr *EigenFaceRecognizer) Empty() bool {
 	b := faceRecognizer_Empty(C.FaceRecognizer(fr.p))
 	return bool(b)
@@ -323,34 +386,70 @@ func (fr *EigenFaceRecognizer) GetProjections() []gocv.Mat {
 	return basicFaceRecognizer_GetProjections(C.BasicFaceRecognizer(fr.p))
 }
 
+// GetThreshold gets the threshold value of the model, i.e. the threshold
+// applied in the prediction.
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/df/d25/classcv_1_1face_1_1LBPHFaceRecognizer.html#acf2a6993eb4347b3f89009da693a3f70
 func (fr *EigenFaceRecognizer) GetThreshold() float32 {
 	return faceRecognizer_GetThreshold(C.FaceRecognizer(fr.p))
 }
 
+// SetThreshold sets the threshold value of the model, i.e. the threshold
+// applied in the prediction.
+//
+// For further information, see:
+// https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a3182081e5f8023e658ad8ab96656dd63
 func (fr *EigenFaceRecognizer) SetThreshold(threshold float32) {
 	faceRecognizer_SetThreshold(C.FaceRecognizer(fr.p), threshold)
 }
 
+// LoadFile loads a trained model data from file.
+//
+// For further information, see:
+// https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#acc42e5b04595dba71f0777c7179af8c3
 func (fr *EigenFaceRecognizer) LoadFile(filename string) {
 	basicFaceRecognizer_LoadFile(C.BasicFaceRecognizer(fr.p), filename)
 }
 
+// SaveFile saves the trained model data to file.
+//
+// For further information, see:
+// https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a2adf2d555550194244b05c91fefcb4d6
 func (fr *EigenFaceRecognizer) SaveFile(filename string) {
 	basicFaceRecognizer_SaveFile(C.BasicFaceRecognizer(fr.p), filename)
 }
 
+// Predict predicts a label for a given input image. It returns the label for
+// correctly predicted image or -1 if not found.
+//
+// For further information, see:
+// https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#aa2d2f02faffab1bf01317ae6502fb631
 func (fr *EigenFaceRecognizer) Predict(sample gocv.Mat) int {
 	return faceRecognizer_Predict(C.FaceRecognizer(fr.p), sample)
 }
 
+// PredictExtendedResponse returns a label and associated confidence (e.g.
+// distance) for a given input image. It is the extended version of
+// `Predict()`.
+//
+// For further information, see:
+// https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#ab0d593e53ebd9a0f350c989fcac7f251
 func (fr *EigenFaceRecognizer) PredictExtendedResponse(sample gocv.Mat) PredictResponse {
 	return faceRecognizer_PredictExtendedResponse(C.FaceRecognizer(fr.p), sample)
 }
 
+// Train loaded model with images and their labels
+//
+// see https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#ac8680c2aa9649ad3f55e27761165c0d6
 func (fr *EigenFaceRecognizer) Train(images []gocv.Mat, labels []int) {
 	basicFaceRecognizer_Train(C.BasicFaceRecognizer(fr.p), images, labels)
 }
 
+// Update This model does not support updating.
+//
+// For further information, see:
+// https://docs.opencv.org/4.x/dd/d7c/classcv_1_1face_1_1EigenFaceRecognizer.html#a22c8392f27a20b24d04351b675e7b6db
 func (fr *EigenFaceRecognizer) Update(newImages []gocv.Mat, newLabels []int) {
 	basicFaceRecognizer_Train(C.BasicFaceRecognizer(fr.p), newImages, newLabels)
 }
