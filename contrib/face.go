@@ -18,6 +18,10 @@ type PredictResponse struct {
 }
 
 var _ FaceRecognizer = (*LBPHFaceRecognizer)(nil)
+var _ FaceRecognizer = (*FisherFaceRecognizer)(nil)
+var _ BasicFaceRecognizer = (*FisherFaceRecognizer)(nil)
+var _ FaceRecognizer = (*EigenFaceRecognizer)(nil)
+var _ BasicFaceRecognizer = (*EigenFaceRecognizer)(nil)
 
 // LBPHFaceRecognizer is a wrapper for the OpenCV Local Binary Patterns
 // Histograms face recognizer.
@@ -187,6 +191,172 @@ func (fr *LBPHFaceRecognizer) GetGrid() image.Point {
 
 func (fr *LBPHFaceRecognizer) Close() error {
 	C.LBPHFaceRecognizer_Close(fr.p)
+	fr.p = nil
+	return nil
+}
+
+type FisherFaceRecognizer struct {
+	p C.FisherFaceRecognizer
+}
+
+func NewFisherFaceRecognizer() *FisherFaceRecognizer {
+	return &FisherFaceRecognizer{p: C.FisherFaceRecognizer_Create()}
+}
+
+func NewFisherFaceRecognizerWithParams(numComponents int, threshold float32) *FisherFaceRecognizer {
+	return &FisherFaceRecognizer{p: C.FisherFaceRecognizer_CreateWithParams(C.int(numComponents), C.float(threshold))}
+}
+
+func (fr *FisherFaceRecognizer) Empty() bool {
+	b := faceRecognizer_Empty(C.FaceRecognizer(fr.p))
+	return bool(b)
+}
+
+func (fr *FisherFaceRecognizer) GetEigenValues() gocv.Mat {
+	return basicFaceRecognizer_GetEigenValues(C.BasicFaceRecognizer(fr.p))
+}
+
+func (fr *FisherFaceRecognizer) GetEigenVectors() gocv.Mat {
+	return basicFaceRecognizer_GetEigenVectors(C.BasicFaceRecognizer(fr.p))
+}
+
+func (fr *FisherFaceRecognizer) GetLabels() gocv.Mat {
+	return basicFaceRecognizer_GetLabels(C.BasicFaceRecognizer(fr.p))
+}
+
+func (fr *FisherFaceRecognizer) GetMean() gocv.Mat {
+	return basicFaceRecognizer_GetMean(C.BasicFaceRecognizer(fr.p))
+}
+
+func (fr *FisherFaceRecognizer) GetNumComponents() int {
+	return basicFaceRecognizer_GetNumComponents(C.BasicFaceRecognizer(fr.p))
+}
+
+func (fr *FisherFaceRecognizer) SetNumComponents(val int) {
+	basicFaceRecognizer_SetNumComponents(C.BasicFaceRecognizer(fr.p), val)
+}
+
+func (fr *FisherFaceRecognizer) GetProjections() []gocv.Mat {
+	return basicFaceRecognizer_GetProjections(C.BasicFaceRecognizer(fr.p))
+}
+
+func (fr *FisherFaceRecognizer) GetThreshold() float32 {
+	return faceRecognizer_GetThreshold(C.FaceRecognizer(fr.p))
+}
+
+func (fr *FisherFaceRecognizer) SetThreshold(threshold float32) {
+	faceRecognizer_SetThreshold(C.FaceRecognizer(fr.p), threshold)
+}
+
+func (fr *FisherFaceRecognizer) LoadFile(filename string) {
+	basicFaceRecognizer_LoadFile(C.BasicFaceRecognizer(fr.p), filename)
+}
+
+func (fr *FisherFaceRecognizer) SaveFile(filename string) {
+	basicFaceRecognizer_SaveFile(C.BasicFaceRecognizer(fr.p), filename)
+}
+
+func (fr *FisherFaceRecognizer) Predict(sample gocv.Mat) int {
+	return faceRecognizer_Predict(C.FaceRecognizer(fr.p), sample)
+}
+
+func (fr *FisherFaceRecognizer) PredictExtendedResponse(sample gocv.Mat) PredictResponse {
+	return faceRecognizer_PredictExtendedResponse(C.FaceRecognizer(fr.p), sample)
+}
+
+func (fr *FisherFaceRecognizer) Train(images []gocv.Mat, labels []int) {
+	basicFaceRecognizer_Train(C.BasicFaceRecognizer(fr.p), images, labels)
+}
+func (fr *FisherFaceRecognizer) Update(newImages []gocv.Mat, newLabels []int) {
+	faceRecognizer_Train(C.FaceRecognizer(fr.p), newImages, newLabels)
+
+}
+
+func (fr *FisherFaceRecognizer) Close() error {
+	C.FisherFaceRecognizer_Close(fr.p)
+	fr.p = nil
+	return nil
+}
+
+type EigenFaceRecognizer struct {
+	p C.EigenFaceRecognizer
+}
+
+func NewEigenFaceRecognizer() *EigenFaceRecognizer {
+	return &EigenFaceRecognizer{p: C.EigenFaceRecognizer_Create()}
+}
+
+func NewEigenFaceRecognizerWithParams(numComponents int, threshold float32) *EigenFaceRecognizer {
+	return &EigenFaceRecognizer{p: C.EigenFaceRecognizer_CreateWithParams(C.int(numComponents), C.float(threshold))}
+}
+
+func (fr *EigenFaceRecognizer) Empty() bool {
+	b := faceRecognizer_Empty(C.FaceRecognizer(fr.p))
+	return bool(b)
+}
+
+func (fr *EigenFaceRecognizer) GetEigenValues() gocv.Mat {
+	return basicFaceRecognizer_GetEigenValues(C.BasicFaceRecognizer(fr.p))
+}
+
+func (fr *EigenFaceRecognizer) GetEigenVectors() gocv.Mat {
+	return basicFaceRecognizer_GetEigenVectors(C.BasicFaceRecognizer(fr.p))
+}
+
+func (fr *EigenFaceRecognizer) GetLabels() gocv.Mat {
+	return basicFaceRecognizer_GetLabels(C.BasicFaceRecognizer(fr.p))
+}
+
+func (fr *EigenFaceRecognizer) GetMean() gocv.Mat {
+	return basicFaceRecognizer_GetMean(C.BasicFaceRecognizer(fr.p))
+}
+
+func (fr *EigenFaceRecognizer) GetNumComponents() int {
+	return basicFaceRecognizer_GetNumComponents(C.BasicFaceRecognizer(fr.p))
+}
+
+func (fr *EigenFaceRecognizer) SetNumComponents(val int) {
+	basicFaceRecognizer_SetNumComponents(C.BasicFaceRecognizer(fr.p), val)
+}
+
+func (fr *EigenFaceRecognizer) GetProjections() []gocv.Mat {
+	return basicFaceRecognizer_GetProjections(C.BasicFaceRecognizer(fr.p))
+}
+
+func (fr *EigenFaceRecognizer) GetThreshold() float32 {
+	return faceRecognizer_GetThreshold(C.FaceRecognizer(fr.p))
+}
+
+func (fr *EigenFaceRecognizer) SetThreshold(threshold float32) {
+	faceRecognizer_SetThreshold(C.FaceRecognizer(fr.p), threshold)
+}
+
+func (fr *EigenFaceRecognizer) LoadFile(filename string) {
+	basicFaceRecognizer_LoadFile(C.BasicFaceRecognizer(fr.p), filename)
+}
+
+func (fr *EigenFaceRecognizer) SaveFile(filename string) {
+	basicFaceRecognizer_SaveFile(C.BasicFaceRecognizer(fr.p), filename)
+}
+
+func (fr *EigenFaceRecognizer) Predict(sample gocv.Mat) int {
+	return faceRecognizer_Predict(C.FaceRecognizer(fr.p), sample)
+}
+
+func (fr *EigenFaceRecognizer) PredictExtendedResponse(sample gocv.Mat) PredictResponse {
+	return faceRecognizer_PredictExtendedResponse(C.FaceRecognizer(fr.p), sample)
+}
+
+func (fr *EigenFaceRecognizer) Train(images []gocv.Mat, labels []int) {
+	basicFaceRecognizer_Train(C.BasicFaceRecognizer(fr.p), images, labels)
+}
+
+func (fr *EigenFaceRecognizer) Update(newImages []gocv.Mat, newLabels []int) {
+	basicFaceRecognizer_Train(C.BasicFaceRecognizer(fr.p), newImages, newLabels)
+}
+
+func (fr *EigenFaceRecognizer) Close() error {
+	C.EigenFaceRecognizer_Close(fr.p)
 	fr.p = nil
 	return nil
 }
