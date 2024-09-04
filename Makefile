@@ -332,6 +332,9 @@ verify_openvino:
 test:
 	go test -tags matprofile . ./contrib
 
+test_cuda:
+	go test -tags matprofile ./cuda
+
 docker:
 	docker build --build-arg OPENCV_VERSION=$(OPENCV_VERSION) --build-arg GOVERSION=$(GOVERSION) .
 
