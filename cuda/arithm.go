@@ -318,3 +318,54 @@ func Flip(src GpuMat, dst *GpuMat, flipCode int) {
 func FlipWithStream(src GpuMat, dst *GpuMat, flipCode int, stream Stream) {
 	C.GpuFlip(src.p, dst.p, C.int(flipCode), stream.p)
 }
+
+// Merge makes a multi-channel matrix out of several single-channel matrices.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/d09/group__cudaarithm__core.html#gafce19eb0fcad23f67ab45d544992436d
+func Merge(mv []GpuMat, dst *GpuMat) {
+	cMatArray := make([]C.GpuMat, len(mv))
+	for i, r := range mv {
+		cMatArray[i] = r.p
+	}
+	cMats := C.GpuMats{
+		mats:   (*C.GpuMat)(&cMatArray[0]),
+		length: C.int(len(mv)),
+	}
+
+	C.GpuMerge(cMats, dst.p, nil)
+}
+
+// MergeWithStream makes a multi-channel matrix out of several single-channel matrices
+// using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/d09/group__cudaarithm__core.html#gafce19eb0fcad23f67ab45d544992436d
+func MergeWithStream(mv []GpuMat, dst *GpuMat, s Stream) {
+	cMatArray := make([]C.GpuMat, len(mv))
+	for i, r := range mv {
+		cMatArray[i] = r.p
+	}
+	cMats := C.GpuMats{
+		mats:   (*C.GpuMat)(&cMatArray[0]),
+		length: C.int(len(mv)),
+	}
+
+	C.GpuMerge(cMats, dst.p, s.p)
+}
+
+// Transpose transposes a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/d09/group__cudaarithm__core.html#ga327b71c3cb811a904ccf5fba37fc29f2
+func Transpose(src GpuMat, dst *GpuMat) {
+	C.GpuTranspose(src.p, dst.p, nil)
+}
+
+// Transpose transposes a matrix using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/d09/group__cudaarithm__core.html#ga327b71c3cb811a904ccf5fba37fc29f2
+func TransposeWithStream(src GpuMat, dst *GpuMat, s Stream) {
+	C.GpuTranspose(src.p, dst.p, s.p)
+}
