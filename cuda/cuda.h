@@ -18,6 +18,12 @@ typedef void* GpuMat;
 typedef void* Stream;
 #endif
 
+// Wrapper for the vector of GpuMat aka std::vector<GpuMat>
+typedef struct GpuMats {
+    GpuMat* mats;
+    int length;
+} GpuMats;
+
 GpuMat GpuMat_New();
 GpuMat GpuMat_NewFromMat(Mat mat);
 GpuMat GpuMat_NewWithSize(int rows, int cols, int type);

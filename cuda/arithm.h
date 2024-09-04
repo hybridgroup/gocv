@@ -29,6 +29,8 @@ void GpuSqrt(GpuMat src, GpuMat dst, Stream s);
 void GpuSubtract(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
 void GpuThreshold(GpuMat src, GpuMat dst, double thresh, double maxval, int typ, Stream s);
 void GpuFlip(GpuMat src, GpuMat dst, int flipCode, Stream s);
+void GpuMerge(struct GpuMats mats, GpuMat dst, Stream s);
+void GpuTranspose(GpuMat src, GpuMat dst, Stream s);
 
 #ifdef __cplusplus
 }

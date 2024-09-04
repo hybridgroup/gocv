@@ -507,3 +507,91 @@ func TestFlipWithStream(t *testing.T) {
 		t.Error("Invalid Flip test")
 	}
 }
+
+func TestMerge(t *testing.T) {
+	src := NewGpuMatWithSize(101, 102, gocv.MatTypeCV8U)
+	defer src.Close()
+	src2 := NewGpuMatWithSize(101, 102, gocv.MatTypeCV8U)
+	defer src2.Close()
+	src3 := NewGpuMatWithSize(101, 102, gocv.MatTypeCV8U)
+	defer src3.Close()
+
+	dstGPU := NewGpuMat()
+	defer dstGPU.Close()
+
+	Merge([]GpuMat{src, src2, src3}, &dstGPU)
+	if dstGPU.Empty() {
+		t.Error("TestMerge dst should not be empty.")
+	}
+}
+
+func TestMergeWithStream(t *testing.T) {
+	src := NewGpuMatWithSize(101, 102, gocv.MatTypeCV8U)
+	defer src.Close()
+	src2 := NewGpuMatWithSize(101, 102, gocv.MatTypeCV8U)
+	defer src2.Close()
+	src3 := NewGpuMatWithSize(101, 102, gocv.MatTypeCV8U)
+	defer src3.Close()
+	s := NewStream()
+	defer s.Close()
+
+	dstGPU := NewGpuMat()
+	defer dstGPU.Close()
+
+	MergeWithStream([]GpuMat{src, src2, src3}, &dstGPU, s)
+
+	s.WaitForCompletion()
+	if dstGPU.Empty() {
+		t.Error("TestMergeWithStream dst should not be empty.")
+	}
+}
+
+func TestTranspose(t *testing.T) {
+	src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in Transpose test")
+	}
+	defer src.Close()
+
+	var cimg, dimg = NewGpuMat(), NewGpuMat()
+	defer cimg.Close()
+	defer dimg.Close()
+
+	cimg.Upload(src)
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	Transpose(cimg, &dimg)
+	dimg.Download(&dest)
+	if dest.Empty() || src.Rows() != dest.Cols() || src.Cols() != dest.Rows() {
+		t.Error("Invalid Transpose test")
+	}
+}
+
+func TestTransposeWithStream(t *testing.T) {
+	src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in TransposeWithStream test")
+	}
+	defer src.Close()
+
+	var cimg, dimg, s = NewGpuMat(), NewGpuMat(), NewStream()
+	defer cimg.Close()
+	defer dimg.Close()
+	defer s.Close()
+
+	cimg.Upload(src)
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	TransposeWithStream(cimg, &dimg, s)
+	dimg.DownloadWithStream(&dest, s)
+
+	s.WaitForCompletion()
+
+	if dest.Empty() || src.Rows() != dest.Cols() || src.Cols() != dest.Rows() {
+		t.Error("Invalid TransposeWithStream test")
+	}
+}
