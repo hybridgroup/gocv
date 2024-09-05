@@ -31,6 +31,8 @@ void GpuThreshold(GpuMat src, GpuMat dst, double thresh, double maxval, int typ,
 void GpuFlip(GpuMat src, GpuMat dst, int flipCode, Stream s);
 void GpuMerge(struct GpuMats mats, GpuMat dst, Stream s);
 void GpuTranspose(GpuMat src, GpuMat dst, Stream s);
+void GpuAddWeighted(GpuMat src1, double alpha, GpuMat src2, double beta, double gamma, GpuMat dst, int dType, Stream s);
+void GpuCopyMakeBorder(GpuMat src, GpuMat dst, int top, int bottom, int left, int right, int borderType, Scalar value, Stream s);
 
 #ifdef __cplusplus
 }

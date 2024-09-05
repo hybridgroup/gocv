@@ -369,3 +369,49 @@ func Transpose(src GpuMat, dst *GpuMat) {
 func TransposeWithStream(src GpuMat, dst *GpuMat, s Stream) {
 	C.GpuTranspose(src.p, dst.p, s.p)
 }
+
+// AddWeighted computes a weighted sum of two matrices.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga2cd14a684ea70c6ab2a63ee90ffe6201
+func AddWeighted(src1 GpuMat, alpha float64, src2 GpuMat, beta float64, gamma float64, dst *GpuMat, dType int) {
+	C.GpuAddWeighted(src1.p, C.double(alpha), src2.p, C.double(beta), C.double(gamma), dst.p, C.int(dType), nil)
+}
+
+// AddWeightedWithStream computes a weighted sum of two matrices using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga2cd14a684ea70c6ab2a63ee90ffe6201
+func AddWeightedWithStream(src1 GpuMat, alpha float64, src2 GpuMat, beta float64, gamma float64, dst *GpuMat, dType int, s Stream) {
+	C.GpuAddWeighted(src1.p, C.double(alpha), src2.p, C.double(beta), C.double(gamma), dst.p, C.int(dType), s.p)
+}
+
+// CopyMakeBorder forms a border around an image.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga5368db7656eacf846b40089c98053a49
+func CopyMakeBorder(src GpuMat, dst *GpuMat, top, bottom, left, right int, borderType gocv.BorderType, value gocv.Scalar) {
+	bv := C.struct_Scalar{
+		val1: C.double(value.Val1),
+		val2: C.double(value.Val2),
+		val3: C.double(value.Val3),
+		val4: C.double(value.Val4),
+	}
+
+	C.GpuCopyMakeBorder(src.p, dst.p, C.int(top), C.int(bottom), C.int(left), C.int(right), C.int(borderType), bv, nil)
+}
+
+// CopyMakeBorderWithStream forms a border around an image using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga5368db7656eacf846b40089c98053a49
+func CopyMakeBorderWithStream(src GpuMat, dst *GpuMat, top, bottom, left, right int, borderType gocv.BorderType, value gocv.Scalar, s Stream) {
+	bv := C.struct_Scalar{
+		val1: C.double(value.Val1),
+		val2: C.double(value.Val2),
+		val3: C.double(value.Val3),
+		val4: C.double(value.Val4),
+	}
+
+	C.GpuCopyMakeBorder(src.p, dst.p, C.int(top), C.int(bottom), C.int(left), C.int(right), C.int(borderType), bv, s.p)
+}
