@@ -168,3 +168,22 @@ void GpuTranspose(GpuMat src, GpuMat dst, Stream s) {
     }
     cv::cuda::transpose(*src, *dst, *s);
 }
+
+void GpuAddWeighted(GpuMat src1, double alpha, GpuMat src2, double beta, double gamma, GpuMat dst, int dType, Stream s) {
+    if (s == NULL) {
+        cv::cuda::addWeighted(*src1, alpha, *src2, beta, gamma, *dst, dType);
+        return;
+    }
+
+    cv::cuda::addWeighted(*src1, alpha, *src2, beta, gamma, *dst, dType, *s);
+}
+
+void GpuCopyMakeBorder(GpuMat src, GpuMat dst, int top, int bottom, int left, int right, int borderType, Scalar value, Stream s) {
+    cv::Scalar cValue = cv::Scalar(value.val1, value.val2, value.val3, value.val4);
+
+    if (s == NULL) {
+        cv::cuda::copyMakeBorder(*src, *dst, top, bottom, left, right, borderType, cValue);
+        return;
+    }
+    cv::cuda::copyMakeBorder(*src, *dst, top, bottom, left, right, borderType, cValue, *s);
+}

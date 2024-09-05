@@ -595,3 +595,123 @@ func TestTransposeWithStream(t *testing.T) {
 		t.Error("Invalid TransposeWithStream test")
 	}
 }
+
+func TestAddWeighted(t *testing.T) {
+	src1 := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+	if src1.Empty() {
+		t.Error("Invalid read of Mat in AddWeighted test")
+	}
+	defer src1.Close()
+
+	src2 := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+	if src2.Empty() {
+		t.Error("Invalid read of Mat in AddWeighted test")
+	}
+	defer src2.Close()
+
+	var cimg1, cimg2, dimg = NewGpuMat(), NewGpuMat(), NewGpuMat()
+	defer cimg1.Close()
+	defer cimg2.Close()
+	defer dimg.Close()
+
+	cimg1.Upload(src1)
+	cimg2.Upload(src2)
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	alpha, beta, gamma := 0.5, 0.5, 0.0
+	AddWeighted(cimg1, alpha, cimg2, beta, gamma, &dimg, -1)
+	dimg.Download(&dest)
+
+	if dest.Empty() {
+		t.Error("Invalid AddWeighted test")
+	}
+}
+
+func TestAddWeightedWithStream(t *testing.T) {
+	src1 := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+	if src1.Empty() {
+		t.Error("Invalid read of Mat in AddWeighted test")
+	}
+	defer src1.Close()
+
+	src2 := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+	if src2.Empty() {
+		t.Error("Invalid read of Mat in AddWeighted test")
+	}
+	defer src2.Close()
+
+	var cimg1, cimg2, dimg, s = NewGpuMat(), NewGpuMat(), NewGpuMat(), NewStream()
+	defer cimg1.Close()
+	defer cimg2.Close()
+	defer dimg.Close()
+	defer s.Close()
+
+	cimg1.UploadWithStream(src1, s)
+	cimg2.UploadWithStream(src2, s)
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	alpha, beta, gamma := 0.5, 0.5, 0.0
+	AddWeightedWithStream(cimg1, alpha, cimg2, beta, gamma, &dimg, -1, s)
+	dimg.DownloadWithStream(&dest, s)
+
+	s.WaitForCompletion()
+
+	if dest.Empty() {
+		t.Error("Invalid AddWeightedWithStream test")
+	}
+}
+
+func TestCopyMakeBorder(t *testing.T) {
+	src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in CopyMakeBorder test")
+	}
+	defer src.Close()
+
+	var cimg, dimg = NewGpuMat(), NewGpuMat()
+	defer cimg.Close()
+	defer dimg.Close()
+
+	cimg.Upload(src)
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	CopyMakeBorder(cimg, &dimg, 10, 10, 10, 10, gocv.BorderReflect, gocv.NewScalar(0, 0, 0, 0))
+	dimg.Download(&dest)
+
+	if dest.Empty() {
+		t.Error("Invalid CopyMakeBorder test")
+	}
+}
+
+func TestCopyMakeBorderWithStream(t *testing.T) {
+	src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in CopyMakeBorder test")
+	}
+	defer src.Close()
+
+	var cimg, dimg, s = NewGpuMat(), NewGpuMat(), NewStream()
+	defer cimg.Close()
+	defer dimg.Close()
+	defer s.Close()
+
+	cimg.UploadWithStream(src, s)
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	CopyMakeBorderWithStream(cimg, &dimg, 10, 10, 10, 10, gocv.BorderReflect, gocv.NewScalar(0, 0, 0, 0), s)
+	dimg.DownloadWithStream(&dest, s)
+
+	s.WaitForCompletion()
+
+	if dest.Empty() {
+		t.Error("Invalid CopyMakeBorderWithStream test")
+	}
+}
