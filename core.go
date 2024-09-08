@@ -312,6 +312,14 @@ func NewMatFromBytes(rows int, cols int, mt MatType, data []byte) (Mat, error) {
 	return mat, nil
 }
 
+// NewMatFromCVMat returns a new Mat from native CVMat pointer. This can be used in case
+// some of the application code uses third party native libraries that return CVMat, so we can
+// construct gocv Mat from them. Data is not copied, Copy Constructor of cv::Mat is called.
+func NewMatFromCVMat(cvMatPtr unsafe.Pointer) Mat {
+	newMat := C.Mat_FromCVMat(C.Mat(cvMatPtr))
+	return Mat{p: newMat}
+}
+
 // Returns an identity matrix of the specified size and type.
 //
 // The method returns a Matlab-style identity matrix initializer, similarly to Mat::zeros. Similarly to Mat::ones.
