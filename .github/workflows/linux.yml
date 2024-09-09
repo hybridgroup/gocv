@@ -18,11 +18,9 @@ jobs:
         run: "test -z $(gofmt -l .) || gofmt -d ."
       - name: Install dependencies
         run: apt-get update -yqq && apt-get install xvfb unzip -y
-      - name: Install Caffe test model
+      - name: Install WeChat test model
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/testdata
-          curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/master/testdata/dnn/bvlc_googlenet.prototxt > ${GITHUB_WORKSPACE}/testdata/bvlc_googlenet.prototxt
-          curl -sL http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel > ${GITHUB_WORKSPACE}/testdata/bvlc_googlenet.caffemodel
           curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.caffemodel > ${GITHUB_WORKSPACE}/testdata/detect.caffemodel
           curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.prototxt > ${GITHUB_WORKSPACE}/testdata/detect.prototxt
           curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.caffemodel > ${GITHUB_WORKSPACE}/testdata/sr.caffemodel
@@ -40,7 +38,6 @@ jobs:
         run: xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" go test -v -coverprofile=/tmp/coverage.out -count=1 -tags matprofile .
         env:
           DISPLAY: 99.0
-          GOCV_CAFFE_TEST_FILES: ${{ github.workspace }}/testdata
           GOCV_TENSORFLOW_TEST_FILES: ${{ github.workspace }}/testdata
           NO_GOCV_ONNX_TEST_FILES: ${{ github.workspace }}/testdata
       - name: Run contrib tests
