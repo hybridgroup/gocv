@@ -82,9 +82,21 @@ jobs:
             echo "CGO_CPPFLAGS=-I${env:GITHUB_WORKSPACE}\opencv\build\install\include" >> $env:GITHUB_ENV
             echo "CGO_LDFLAGS=-L${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib -lopencv_core4100 -lopencv_face4100 -lopencv_videoio4100 -lopencv_imgproc4100 -lopencv_highgui4100 -lopencv_imgcodecs4100 -lopencv_objdetect4100 -lopencv_features2d4100 -lopencv_video4100 -lopencv_dnn4100 -lopencv_xfeatures2d4100 -lopencv_plot4100 -lopencv_tracking4100 -lopencv_img_hash4100 -lopencv_calib3d4100 -lopencv_bgsegm4100 -lopencv_photo4100 -lopencv_aruco4100 -lopencv_wechat_qrcode4100 -lopencv_ximgproc4100 -lopencv_xphoto4100" >> $env:GITHUB_ENV
             echo "${env:GITHUB_WORKSPACE}/opencv/build/install/x64/mingw/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-      - name: Test GoCV
+      - name: Install Tensorflow test model
+        run: |
+            mkdir -p ./testdata
+            curl -sL https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip > ./testdata/inception5h.zip
+            unzip -o ./testdata/inception5h.zip tensorflow_inception_graph.pb -d ./testdata
+      - name: Install ONNX test model
+        run: |
+            curl -sL https://github.com/onnx/models/raw/main/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx > ./testdata/googlenet-9.onnx
+      - name: Set GoCV model env
         run: |
             go env
+            echo "GOCV_TENSORFLOW_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
+            echo "GOCV_ONNX_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
+      - name: Test GoCV
+        run: |
             go test -v -tags="matprofile,customenv" .
       - name: Test GoCV Contrib
         run: |
