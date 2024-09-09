@@ -11,7 +11,7 @@
 # amd64 build stage
 ###################
 
-FROM --platform=linux/amd64 golang:1.22-bullseye AS opencv-base-amd64
+FROM --platform=linux/amd64 golang:1.23-bullseye AS opencv-base-amd64
 LABEL maintainer="hybridgroup"
 
 RUN apt-get update && apt-get install -y \
@@ -69,10 +69,10 @@ RUN cd opencv-${OPENCV_VERSION} && \
 
 
 ###################
-# amd64 build stage
+# arm64 build stage
 ###################
 
-FROM --platform=linux/arm64 golang:1.22-bullseye AS opencv-base-arm64
+FROM --platform=linux/arm64 golang:1.23-bullseye AS opencv-base-arm64
 LABEL maintainer="hybridgroup"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \

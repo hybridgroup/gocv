@@ -59,7 +59,7 @@ RUN curl -Lo opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSIO
 # install golang here
 FROM opencv-gpu-base AS opencv-gpu-golang
 
-ENV GO_RELEASE=1.22.3
+ENV GO_RELEASE=1.23.1
 RUN wget https://dl.google.com/go/go${GO_RELEASE}.linux-amd64.tar.gz && \
     tar xfv go${GO_RELEASE}.linux-amd64.tar.gz -C /usr/local && \
     rm go${GO_RELEASE}.linux-amd64.tar.gz
