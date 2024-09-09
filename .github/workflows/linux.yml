@@ -33,13 +33,13 @@ jobs:
       - name: Install ONNX test model
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/testdata
-          curl -sL https://github.com/onnx/models/blob/master/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx\?raw\=true > ${GITHUB_WORKSPACE}/testdata/googlenet-9.onnx
+          curl -sL https://github.com/onnx/models/raw/main/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx > ${GITHUB_WORKSPACE}/testdata/googlenet-9.onnx
       - name: Run main tests
         run: xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" go test -v -coverprofile=/tmp/coverage.out -count=1 -tags matprofile .
         env:
           DISPLAY: 99.0
           GOCV_TENSORFLOW_TEST_FILES: ${{ github.workspace }}/testdata
-          NO_GOCV_ONNX_TEST_FILES: ${{ github.workspace }}/testdata
+          GOCV_ONNX_TEST_FILES: ${{ github.workspace }}/testdata
       - name: Run contrib tests
         run: xvfb-run -a --error-file /var/log/xvfb_error.log --server-args="-screen 0 1024x768x24 +extension RANDR" go test -v -coverprofile=/tmp/contrib.out -count=1 -tags matprofile ./contrib
         env:
