@@ -348,11 +348,17 @@ func ReadNetBytes(framework string, model []byte, config []byte) (Net, error) {
 	if err != nil {
 		return Net{}, err
 	}
-	bConfig, err := toByteArray(config)
-	if err != nil {
-		return Net{}, err
+
+	var bConfig C.ByteArray
+	if len(config) > 0 {
+		pbConfig, err := toByteArray(config)
+		if err != nil {
+			return Net{}, err
+		}
+		bConfig = *pbConfig
 	}
-	return Net{p: unsafe.Pointer(C.Net_ReadNetBytes(cFramework, *bModel, *bConfig))}, nil
+
+	return Net{p: unsafe.Pointer(C.Net_ReadNetBytes(cFramework, *bModel, bConfig))}, nil
 }
 
 // ReadNetFromCaffe reads a network model stored in Caffe framework's format.
