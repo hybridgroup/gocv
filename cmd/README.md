@@ -2,6 +2,12 @@
 
 GoCV comes with various useful command line utilities, that are also examples of how to use the package.
 
+## ASCIIcam
+
+Capture video from a connected webcam, and display it in the current terminal window in ASCII format.
+
+https://github.com/hybridgroup/gocv/blob/release/cmd/asciicam/main.go
+
 ## Basic Drawing
 
 Demonstrates the basic drawing primitives available for drawing on images.
