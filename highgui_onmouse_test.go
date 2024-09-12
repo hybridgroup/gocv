@@ -1,3 +1,8 @@
+// Do not run these tests on mac OS X. They fail with errors suggesting the GUI
+// should only be touched from the main thread.
+//go:build !darwin
+// +build !darwin
+
 package gocv
 
 import (
