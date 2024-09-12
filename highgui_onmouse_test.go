@@ -2,7 +2,6 @@ package gocv
 
 import (
 	"testing"
-	"unsafe"
 )
 
 type mouseHandlerUserData struct {
@@ -22,6 +21,4 @@ func TestMouseHandler(t *testing.T) {
 	}
 
 	w.SetMouseHandler(mouseHandler, &udata)
-	go_onmouse_dispatcher(1, 2, 3, 4, unsafe.Pointer(&windowName))
-
 }
