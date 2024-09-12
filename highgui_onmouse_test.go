@@ -1,39 +1,27 @@
 package gocv
 
 import (
-	"fmt"
 	"testing"
+	"unsafe"
 )
 
-func mcb(event int, x int, y int, flags int, userdata interface{}) {
-	name := *(userdata.(*string))
-	fmt.Println(name, event, x, y, flags)
+type mouseHandlerUserData struct {
+	name string
 }
 
-func TestMouseCallback(t *testing.T) {
-	//t.Skip("TODO: figure out how to implement a test that can exercise the GUI")
+func mouseHandler(event int, x int, y int, flags int, userdata interface{}) {}
 
-	// Comment'd out just for the sake of testing
-	// changes on this feature or until we find a
-	// proper way to run this test.
+func TestMouseHandler(t *testing.T) {
+	windowName := "mouse"
 
-	w := NewWindow("mouse")
+	w := NewWindow(windowName)
 	defer w.Close()
 
-	name := "gocv"
-
-	w.SetMouseCallback(mcb, &name)
-
-	m := IMRead("images/face-detect.jpg", IMReadColor)
-	defer m.Close()
-
-outer_for:
-	for {
-		w.IMShow(m)
-		switch w.WaitKey(5) {
-		case 'q':
-			break outer_for
-		}
+	udata := mouseHandlerUserData{
+		name: "gocv",
 	}
+
+	w.SetMouseHandler(mouseHandler, &udata)
+	go_onmouse_dispatcher(1, 2, 3, 4, unsafe.Pointer(&windowName))
 
 }

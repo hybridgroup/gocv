@@ -13,16 +13,16 @@ import (
 	"unsafe"
 )
 
-type MouseCallbackFunc func(event int, x int, y int, flags int, userdata interface{})
+type MouseHandlerFunc func(event int, x int, y int, flags int, userdata interface{})
 
-type mouseCallbackInfo struct {
+type mouseHandlerInfo struct {
 	c_name_ptr *C.char
-	fn         MouseCallbackFunc
+	fn         MouseHandlerFunc
 	userdata   interface{}
 }
 
 var (
-	onMouseCallbacks = map[string]mouseCallbackInfo{}
+	onMouseHandlers = map[string]mouseHandlerInfo{}
 )
 
 // Window is a wrapper around OpenCV's "HighGUI" named windows.
@@ -61,12 +61,12 @@ func (w *Window) Close() error {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
-	mcbInfo, exists := onMouseCallbacks[w.name]
+	mcbInfo, exists := onMouseHandlers[w.name]
 	if exists {
 		mcbInfo.fn = nil
 		mcbInfo.userdata = nil
 		C.free(unsafe.Pointer(mcbInfo.c_name_ptr))
-		delete(onMouseCallbacks, w.name)
+		delete(onMouseHandlers, w.name)
 	}
 
 	C.Window_Close(cName)
@@ -397,17 +397,17 @@ func go_onmouse_dispatcher(event C.int, x C.int, y C.int, flags C.int, userdata 
 
 	c_winname := (*C.char)(unsafe.Pointer(userdata))
 	winName := C.GoString(c_winname)
-	info, exists := onMouseCallbacks[winName]
+	info, exists := onMouseHandlers[winName]
 	if !exists {
 		return
 	}
 	info.fn(int(event), int(x), int(y), int(flags), info.userdata)
 }
 
-func (w *Window) SetMouseCallback(onMOuse MouseCallbackFunc, userdata interface{}) {
+func (w *Window) SetMouseHandler(onMOuse MouseHandlerFunc, userdata interface{}) {
 	c_winname := C.CString(w.name)
 
-	onMouseCallbacks[w.name] = mouseCallbackInfo{
+	onMouseHandlers[w.name] = mouseHandlerInfo{
 		c_name_ptr: c_winname,
 		fn:         onMOuse,
 		userdata:   userdata,
