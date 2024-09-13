@@ -88,8 +88,8 @@ jobs:
           mkdir -p ./testdata
           curl -sL https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip > ./testdata/inception5h.zip
           unzip -o ./testdata/inception5h.zip tensorflow_inception_graph.pb -d ./testdata
-          - name: Install ONNX test model
-          run: |
+      - name: Install ONNX test model
+        run: |
           curl -sL https://github.com/onnx/models/raw/main/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx > ./testdata/googlenet-9.onnx
 
       - name: Install Caffe test model
