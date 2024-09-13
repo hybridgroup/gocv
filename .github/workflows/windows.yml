@@ -110,7 +110,8 @@ jobs:
             echo "GOCV_TRACKER_GOTURN_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
       - name: Test GoCV
         run: |
-            go test -v -tags="matprofile,customenv" .
+          go env
+          go test -v -tags="matprofile,customenv" .
       - name: Test GoCV Contrib
         run: |
           go test -v -tags="matprofile,customenv" ./contrib
