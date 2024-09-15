@@ -34,6 +34,14 @@ jobs:
           curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.prototxt > ${GITHUB_WORKSPACE}/testdata/detect.prototxt
           curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.caffemodel > ${GITHUB_WORKSPACE}/testdata/sr.caffemodel
           curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.prototxt > ${GITHUB_WORKSPACE}/testdata/sr.prototxt
+          curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.prototxt > ${GITHUB_WORKSPACE}/goturn.prototxt
+          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.001 > ${GITHUB_WORKSPACE}/goturn.caffemodel.zip.001
+          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.002 > ${GITHUB_WORKSPACE}/goturn.caffemodel.zip.002
+          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.003 > ${GITHUB_WORKSPACE}/goturn.caffemodel.zip.003
+          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.004 > ${GITHUB_WORKSPACE}/goturn.caffemodel.zip.004
+          cat ${GITHUB_WORKSPACE}/goturn.caffemodel.zip.001 ${GITHUB_WORKSPACE}/goturn.caffemodel.zip.002 ${GITHUB_WORKSPACE}/goturn.caffemodel.zip.003 ${GITHUB_WORKSPACE}/goturn.caffemodel.zip.004 > ${GITHUB_WORKSPACE}/goturn.caffemodel.zip
+          unzip -o ${GITHUB_WORKSPACE}/goturn.caffemodel.zip goturn.caffemodel -d ${GITHUB_WORKSPACE}/
+
       - name: Install Tensorflow test model
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/testdata
@@ -48,5 +56,6 @@ jobs:
         env:
           GOCV_TENSORFLOW_TEST_FILES: ${{ github.workspace }}/testdata
           GOCV_ONNX_TEST_FILES: ${{ github.workspace }}/testdata
+          GOCV_TRACKER_GOTURN_TEST_FILES: ${{ github.workspace }}
       - name: Run contrib tests
         run: go test -v -tags matprofile ./contrib
