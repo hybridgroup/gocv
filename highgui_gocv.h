@@ -8,6 +8,15 @@ extern "C" {
 
 #include "core.h"
 
+typedef void(*mouse_callback) (int event, int x, int y, int flags, void *userdata);
+
+/* typedef struct mouse_callback_userdata {
+    char* winname;
+    void* userdata;
+} mouse_callback_userdata; */
+
+void Window_SetMouseCallback(char* winname, mouse_callback on_mouse);
+
 // Window
 void Window_New(const char* winname, int flags);
 void Window_Close(const char* winname);

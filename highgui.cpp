@@ -1,5 +1,9 @@
 #include "highgui_gocv.h"
 
+void Window_SetMouseCallback(char* winname, mouse_callback on_mouse) {
+    cv::setMouseCallback(winname, on_mouse, (void*)winname);
+}
+
 // Window
 void Window_New(const char* winname, int flags) {
     cv::namedWindow(winname, flags);

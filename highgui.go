@@ -3,12 +3,26 @@ package gocv
 /*
 #include <stdlib.h>
 #include "highgui_gocv.h"
+
+void go_onmouse_dispatcher(int event, int x, int y, int flags, void *userdata);
 */
 import "C"
 import (
 	"image"
 	"runtime"
 	"unsafe"
+)
+
+type MouseHandlerFunc func(event int, x int, y int, flags int, userdata interface{})
+
+type mouseHandlerInfo struct {
+	c_name_ptr *C.char
+	fn         MouseHandlerFunc
+	userdata   interface{}
+}
+
+var (
+	onMouseHandlers = map[string]mouseHandlerInfo{}
 )
 
 // Window is a wrapper around OpenCV's "HighGUI" named windows.
@@ -46,6 +60,14 @@ func NewWindow(name string) *Window {
 func (w *Window) Close() error {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
+
+	mcbInfo, exists := onMouseHandlers[w.name]
+	if exists {
+		mcbInfo.fn = nil
+		mcbInfo.userdata = nil
+		C.free(unsafe.Pointer(mcbInfo.c_name_ptr))
+		delete(onMouseHandlers, w.name)
+	}
 
 	C.Window_Close(cName)
 	w.open = false
@@ -368,4 +390,28 @@ func (t *Trackbar) SetMax(pos int) {
 	defer C.free(unsafe.Pointer(tName))
 
 	C.Trackbar_SetMax(cName, tName, C.int(pos))
+}
+
+//export go_onmouse_dispatcher
+func go_onmouse_dispatcher(event C.int, x C.int, y C.int, flags C.int, userdata unsafe.Pointer) {
+
+	c_winname := (*C.char)(unsafe.Pointer(userdata))
+	winName := C.GoString(c_winname)
+	info, exists := onMouseHandlers[winName]
+	if !exists {
+		return
+	}
+	info.fn(int(event), int(x), int(y), int(flags), info.userdata)
+}
+
+func (w *Window) SetMouseHandler(onMOuse MouseHandlerFunc, userdata interface{}) {
+	c_winname := C.CString(w.name)
+
+	onMouseHandlers[w.name] = mouseHandlerInfo{
+		c_name_ptr: c_winname,
+		fn:         onMOuse,
+		userdata:   userdata,
+	}
+
+	C.Window_SetMouseCallback(c_winname, C.mouse_callback(C.go_onmouse_dispatcher))
 }
