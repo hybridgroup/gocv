@@ -4,6 +4,7 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"os"
 	"testing"
 )
 
@@ -286,12 +287,14 @@ func BaseTestTracker(t *testing.T, tracker Tracker, name string) {
 }
 
 func TestSingleTrackers(t *testing.T) {
+	goturnPath := os.Getenv("GOCV_TRACKER_GOTURN_TEST_FILES")
+
 	tab := []struct {
 		name    string
 		tracker Tracker
 	}{
 		{"MIL", NewTrackerMIL()},
-		// {"GOTURN", NewTrackerGOTURN()},
+		{"GOTURN", NewTrackerGOTURNWithParams(goturnPath+"/goturn.caffemodel", goturnPath+"/goturn.prototxt")},
 	}
 
 	for _, test := range tab {

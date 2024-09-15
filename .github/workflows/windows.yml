@@ -89,12 +89,24 @@ jobs:
             unzip -o ./testdata/inception5h.zip tensorflow_inception_graph.pb -d ./testdata
       - name: Install ONNX test model
         run: |
-            curl -sL https://github.com/onnx/models/raw/main/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx > ./testdata/googlenet-9.onnx
+          curl -sL https://github.com/onnx/models/raw/main/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx > ./testdata/googlenet-9.onnx
+
+      - name: Install Caffe test model
+        shell: bash
+        run: |
+          curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.prototxt > ./testdata/goturn.prototxt
+          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.001 > ./testdata/goturn.caffemodel.zip.001
+          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.002 > ./testdata/goturn.caffemodel.zip.002
+          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.003 > ./testdata/goturn.caffemodel.zip.003
+          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.004 > ./testdata/goturn.caffemodel.zip.004
+          cat ./testdata/goturn.caffemodel.zip.00*  > ./testdata/goturn.caffemodel.zip
+          unzip -o ./testdata/goturn.caffemodel.zip goturn.caffemodel -d ./testdata/            
       - name: Set GoCV model env
         run: |
             go env
             echo "GOCV_TENSORFLOW_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
             echo "GOCV_ONNX_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
+            echo "GOCV_TRACKER_GOTURN_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
       - name: Test GoCV
         run: |
             go test -v -tags="matprofile,customenv" .
