@@ -355,6 +355,11 @@ func (m *Mat) Empty() bool {
 	return isEmpty != 0
 }
 
+// Closed determines if the Mat is closed or not.
+func (m *Mat) Closed() bool {
+	return m.p == nil
+}
+
 // IsContinuous determines if the Mat is continuous.
 //
 // For further details, please see:

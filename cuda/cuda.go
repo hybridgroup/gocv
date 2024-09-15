@@ -85,6 +85,11 @@ func (g *GpuMat) Close() error {
 	return nil
 }
 
+// Closed determines if the GpuMat is closed or not.
+func (g *GpuMat) Closed() bool {
+	return g.p == nil
+}
+
 // NewGpuMat returns a new empty GpuMat
 func NewGpuMat() GpuMat {
 	return newGpuMat(C.GpuMat_New())
