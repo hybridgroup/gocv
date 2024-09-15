@@ -19,6 +19,14 @@ func TestMat(t *testing.T) {
 	}
 }
 
+func TestMatClosed(t *testing.T) {
+	mat := NewMat()
+	mat.Close()
+	if !mat.Closed() {
+		t.Error("Closed Mat should be closed")
+	}
+}
+
 func TestMatWithSizes(t *testing.T) {
 	t.Run("create mat with multidimensional array", func(t *testing.T) {
 		sizes := []int{100, 100, 100}

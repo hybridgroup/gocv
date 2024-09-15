@@ -15,6 +15,15 @@ func TestNewGpuMat(t *testing.T) {
 	}
 }
 
+func TestGpuMatClosed(t *testing.T) {
+	mat := NewGpuMat()
+	mat.Close()
+
+	if !mat.Closed() {
+		t.Error("Closed GpuMat should be closed")
+	}
+}
+
 func TestNewGpuMatFromMat(t *testing.T) {
 	mat := gocv.NewMat()
 	defer mat.Close()
