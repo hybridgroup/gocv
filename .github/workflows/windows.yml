@@ -90,8 +90,7 @@ jobs:
       - name: Install ONNX test model
         run: |
           curl -sL https://github.com/onnx/models/raw/main/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx > ./testdata/googlenet-9.onnx
-
-      - name: Install Caffe test model
+      - name: Install GOTURN test model
         shell: bash
         run: |
           curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.prototxt > ./testdata/goturn.prototxt
