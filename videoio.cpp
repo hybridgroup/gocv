@@ -17,6 +17,16 @@ bool VideoCapture_OpenWithAPI(VideoCapture v, const char* uri, int apiPreference
     return v->open(uri, apiPreference);
 }
 
+bool VideoCapture_OpenWithAPIParams(VideoCapture v, const char* uri, int apiPreference, int *paramsv, int paramsc) {
+    std::vector< int > params;
+
+    for( int i = 0; i< paramsc; i++) {
+        params.push_back(paramsv[i]);
+    }
+
+    return v->open(uri, apiPreference, params);
+}
+
 bool VideoCapture_OpenDevice(VideoCapture v, int device) {
     return v->open(device);
 }
@@ -24,6 +34,17 @@ bool VideoCapture_OpenDevice(VideoCapture v, int device) {
 bool VideoCapture_OpenDeviceWithAPI(VideoCapture v, int device, int apiPreference) {
     return v->open(device, apiPreference);
 }
+
+bool VideoCapture_OpenDeviceWithAPIParams(VideoCapture v, int device, int apiPreference, int *paramsv, int paramsc) {
+    std::vector< int > params;
+
+    for( int i = 0; i< paramsc; i++) {
+        params.push_back(paramsv[i]);
+    }
+
+    return v->open(device, apiPreference, params);
+}
+
 
 void VideoCapture_Set(VideoCapture v, int prop, double param) {
     v->set(prop, param);

@@ -97,6 +97,18 @@ func TestVideoCaptureWithAPI(t *testing.T) {
 	})
 }
 
+func TestVideoCaptureWithAPIParams(t *testing.T) {
+	vc, _ := OpenVideoCaptureWithAPIParams(0, VideoCaptureAny, []VideoCaptureProperties{VideoCaptureHWAcceleration, 1, VideoCaptureHWDevice, 0})
+	defer vc.Close()
+
+}
+
+func TestVideoCaptureFileWithAPIParams(t *testing.T) {
+	vc, _ := OpenVideoCaptureWithAPIParams("images/small.mp4", VideoCaptureAny, []VideoCaptureProperties{VideoCaptureHWAcceleration, 1, VideoCaptureHWDevice, 0})
+	defer vc.Close()
+
+}
+
 func TestVideoCaptureFile(t *testing.T) {
 	vc, err := VideoCaptureFile("images/small.mp4")
 	defer vc.Close()

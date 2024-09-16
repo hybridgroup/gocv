@@ -280,6 +280,12 @@ const (
 
 	// VideoCaptureBitrate displays the video bitrate in kbits/s. Read-only property.
 	VideoCaptureBitrate VideoCaptureProperties = 47
+
+	// VideoCaptureHWAcceleration Hardware acceleration type.
+	VideoCaptureHWAcceleration VideoCaptureProperties = 50
+
+	// VideoCaptureHWDevice Hardware device index (select GPU if multiple available).
+	VideoCaptureHWDevice VideoCaptureProperties = 51
 )
 
 // VideoCapture is a wrapper around the OpenCV VideoCapture class.
@@ -320,6 +326,21 @@ func VideoCaptureFileWithAPI(uri string, apiPreference VideoCaptureAPI) (vc *Vid
 	return
 }
 
+// VideoCaptureFileWithAPIParams opens a VideoCapture from a file and prepares
+// to start capturing. It returns error if it fails to open the file stored in uri path.
+func VideoCaptureFileWithAPIParams(uri string, apiPreference VideoCaptureAPI, params []VideoCaptureProperties) (vc *VideoCapture, err error) {
+	vc = &VideoCapture{p: C.VideoCapture_New()}
+
+	cURI := C.CString(uri)
+	defer C.free(unsafe.Pointer(cURI))
+
+	if !C.VideoCapture_OpenWithAPIParams(vc.p, cURI, C.int(apiPreference), (*C.int)(unsafe.Pointer(&params[0])), C.int(len(params))) {
+		err = fmt.Errorf("Error opening file: %s with api backend: %d", uri, apiPreference)
+	}
+
+	return
+}
+
 // VideoCaptureDevice opens a VideoCapture from a device and prepares
 // to start capturing. It returns error if it fails to open the video device.
 func VideoCaptureDevice(device int) (vc *VideoCapture, err error) {
@@ -332,12 +353,24 @@ func VideoCaptureDevice(device int) (vc *VideoCapture, err error) {
 	return
 }
 
-// VideoCaptureDevice opens a VideoCapture from a device with the api preference.
+// VideoCaptureDeviceWithAPI opens a VideoCapture from a device with the api preference.
 // It returns error if it fails to open the video device.
 func VideoCaptureDeviceWithAPI(device int, apiPreference VideoCaptureAPI) (vc *VideoCapture, err error) {
 	vc = &VideoCapture{p: C.VideoCapture_New()}
 
 	if !C.VideoCapture_OpenDeviceWithAPI(vc.p, C.int(device), C.int(apiPreference)) {
+		err = fmt.Errorf("Error opening device: %d with api backend: %d", device, apiPreference)
+	}
+
+	return
+}
+
+// VideoCaptureDeviceWithAPIParams opens a VideoCapture from a device with the api preference.
+// It returns error if it fails to open the video device.
+func VideoCaptureDeviceWithAPIParams(device int, apiPreference VideoCaptureAPI, params []VideoCaptureProperties) (vc *VideoCapture, err error) {
+	vc = &VideoCapture{p: C.VideoCapture_New()}
+
+	if !C.VideoCapture_OpenDeviceWithAPIParams(vc.p, C.int(device), C.int(apiPreference), (*C.int)(unsafe.Pointer(&params[0])), C.int(len(params))) {
 		err = fmt.Errorf("Error opening device: %d with api backend: %d", device, apiPreference)
 	}
 
@@ -491,6 +524,9 @@ func OpenVideoCapture(v interface{}) (*VideoCapture, error) {
 	}
 }
 
+// OpenVideoCaptureWithAPI return VideoCapture specified by device ID if v is a
+// number. Return VideoCapture created from video file, URL, or GStreamer
+// pipeline if v is a string.
 func OpenVideoCaptureWithAPI(v interface{}, apiPreference VideoCaptureAPI) (*VideoCapture, error) {
 	switch vv := v.(type) {
 	case int:
@@ -501,6 +537,25 @@ func OpenVideoCaptureWithAPI(v interface{}, apiPreference VideoCaptureAPI) (*Vid
 			return VideoCaptureDeviceWithAPI(id, apiPreference)
 		}
 		return VideoCaptureFileWithAPI(vv, apiPreference)
+	default:
+		return nil, errors.New("argument must be int or string")
+	}
+}
+
+// OpenVideoCaptureWithAPIParams return VideoCapture specified by device ID if v is a
+// number. Return VideoCapture created from video file, URL, or GStreamer
+// pipeline if v is a string.
+func OpenVideoCaptureWithAPIParams(v interface{}, apiPreference VideoCaptureAPI, params []VideoCaptureProperties) (*VideoCapture, error) {
+	switch vv := v.(type) {
+	case int:
+		return VideoCaptureDeviceWithAPIParams(vv, apiPreference, params)
+	case string:
+		id, err := strconv.Atoi(vv)
+		if err == nil {
+			return VideoCaptureDeviceWithAPIParams(id, apiPreference, params)
+		}
+		//TODO: params with files
+		return VideoCaptureFileWithAPIParams(vv, apiPreference, params)
 	default:
 		return nil, errors.New("argument must be int or string")
 	}
