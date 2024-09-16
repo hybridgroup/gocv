@@ -1,3 +1,67 @@
+0.38.0
+---
+* **bugfix**
+    * aruco: correct test from latest OpenCV update
+    * exclude freetype.cpp file from being included in windows build
+    * feat(demosaicing): release mat when conversion to bayer encounters invalid pattern
+    * imgproc HomographyMethod const values typo fixed
+* **build**
+    * add macOS build for GH actions CI
+    * adjust make and docker build files to build freetype support
+    * correct ONNX DNN tests on Linux/macOS
+    * move download for GOTURN models into testdata subdirectory
+    * remove Caffe tests
+    * run DNN tests on Windows
+    * make: add task to run all cuda tests
+    * make: build non-free modules when building opencv with cuda support
+    * skip tests on macOS that are not passing due to OpenCV different results on macOS. See https://forum.opencv.org/t/match-template-different-results-on-mac-m1/10026 and other similar issues.
+    * update all generated docker images to Go 1.23.1
+* **examples**
+    * add asciicam video to ascii in your terminal
+    * add object detection example using YOLOv8
+* **core**
+    * add Closed() function to Mat
+    * add OpenCV types for half-float values
+    * add TransposeND() function
+    * persistance implement Filestorage roadmap (#1208)
+    * RotatedRect type constructors
+* **dnn**
+    * add BlobFromImageWithParams() and BlobFromImagesWithParams() functions
+    * add BlobRectToImageRect() and BlobRectsToImageRects() functions
+    * allow ReadNet() function to only pass model file, and remove tests for Caffe
+* **features2d**
+    * SIFT with params (#1186)
+* **highgui**
+    * added window pollkey function (#1198)
+    * added window WaitKeyEx support (#1195)
+    * Window set mouse callback (#1220)
+* **imgcodecs**
+    * added immultiread support
+* **imgproc**
+    * feat(imgproc): demosaicing wrapper
+    * add HomographyMethodRHO HomographyMethod added
+* **objdetect**
+    * change QRCodeDetector signature to avoid pointer to slice
+* **video**
+    * added TrackerGOTURN (see roadmap)
+* **videoio**
+    * Capture from device and file with HW acceleration
+* **cuda**
+    * add Closed() function to Mat/GpuMat
+    * add DeviceSupports function
+    * add implementations for AddWeighted and CopyMakeBorder functions
+    * add Merge and Transpose functions
+    * add support for convertFp16 function
+    * add tests for demosaicing
+    * feat(imgproc): demosaicing wrapper
+    * correct go fmt error
+* **contrib/face**
+    * added face recognizer interface (#1211)
+    * BasicFaceRecognizer + EigenFaceRecognizer + FisherFaceRecognizer (#1213)
+    * extra setters and getters for LBPHFaceRecognizer (#1194)
+* **contrib/freetype**
+    * imported freetype code by lz1998 from PR 873
+
 0.37.0
 ---
 * **all**
