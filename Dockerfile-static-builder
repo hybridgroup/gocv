@@ -1,0 +1,17 @@
+# to build this docker image:
+#   docker build -f Dockerfile-static-builder -t gocv-static-builder .
+#
+# to use this docker image:
+#   cd /path/to/my/project
+#   docker run --rm -e "BINARYNAME=myapp" -e "SRCPATH=./cmd/mycmd" -v $(pwd):/src -v $(pwd)/build:/build -a stdout -a stderr gocv-static-builder
+#
+# NOTE that you cannot use highgui from the static build!
+#
+FROM ghcr.io/hybridgroup/opencv:4.10.0-static AS gocv-static-builder
+
+WORKDIR /src
+
+ENV BINARYNAME=gocv_static_binary
+ENV SRCPATH=.
+
+CMD go build -tags static -o /build/$BINARYNAME -buildvcs=false $SRCPATH
