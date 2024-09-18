@@ -4,7 +4,7 @@
 #   docker buildx build -f Dockerfile.opencv-static -t ghcr.io/hybridgroup/opencv:4.10.0-static --platform=linux/arm64,linux/amd64 --push .
 #
 # To build prerelease:
-#   docker buildx build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv -t ghcr.io/hybridgroup/opencv:4.10.0-dev --platform=linux/arm64,linux/amd64 --push .
+#   docker buildx build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv-static -t ghcr.io/hybridgroup/opencv:4.10.0-static-dev --platform=linux/arm64,linux/amd64 --push .
 
 
 ###################
@@ -15,11 +15,10 @@ FROM --platform=linux/amd64 golang:1.23-bullseye AS opencv-base-amd64
 LABEL maintainer="hybridgroup"
 
 RUN apt-get update && apt-get install -y \
-      git build-essential cmake pkg-config unzip libgtk2.0-dev \
+      git build-essential cmake pkg-config unzip libgtk-3-dev \
       curl ca-certificates libcurl4-openssl-dev libssl-dev \
-      libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev \
       libharfbuzz-dev libfreetype6-dev \
-      libjpeg62-turbo-dev libpng-dev libtiff-dev libdc1394-22-dev nasm && \
+      nasm && \
       rm -rf /var/lib/apt/lists/*
 
 FROM --platform=linux/amd64 opencv-base-amd64 AS opencv-build-amd64
@@ -45,7 +44,8 @@ RUN cd opencv-${OPENCV_VERSION} && \
       -D WITH_IPP=ON \
       -D BUILD_WITH_DYNAMIC_IPP=OFF \
       -D BUILD_IPP_IW=ON \
-      -D WITH_OPENGL=OFF \
+      -D WITH_OPENGL=ON \
+      -D BUILD_OPENGL=ON \
       -D WITH_QT=OFF \
       -D WITH_FREETYPE=ON \
       -D CMAKE_INSTALL_PREFIX=/usr/local \
@@ -54,9 +54,22 @@ RUN cd opencv-${OPENCV_VERSION} && \
       -D OPENCV_ENABLE_NONFREE=ON \
       -D WITH_JASPER=OFF \
       -D WITH_TBB=ON \
+      -D BUILD_TBB=ON \
       -D BUILD_JPEG=ON \
       -D WITH_SIMD=ON \
-      -D ENABLE_LIBJPEG_TURBO_SIMD=ON \
+      -D ENABLE_LIBJPEG_TURBO_SIMD=OFF \
+      -D WITH_QUIRC=ON \
+      -D WITH_GTK=OFF \
+      -D WITH_FFMPEG=ON \
+      -D BUILD_FFMPEG=ON \
+      -D WITH_1394=ON \
+      -D BUILD_1394=ON \
+      -D WITH_WEBP=ON \
+      -D BUILD_WEBP=ON \
+      -D WITH_OPENJPEG=ON \
+      -D BUILD_OPENJPEG=ON \
+      -D WITH_TIFF=ON \
+      -D BUILD_TIFF=ON \
       -D BUILD_DOCS=OFF \
       -D BUILD_EXAMPLES=OFF \
       -D BUILD_TESTS=OFF \
@@ -77,12 +90,11 @@ RUN cd opencv-${OPENCV_VERSION} && \
 FROM --platform=linux/arm64 golang:1.23-bullseye AS opencv-base-arm64
 LABEL maintainer="hybridgroup"
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-      git build-essential cmake pkg-config unzip libgtk2.0-dev \
+RUN apt-get update && apt-get install -y \
+      git build-essential cmake pkg-config unzip libgtk-3-dev \
       curl ca-certificates libcurl4-openssl-dev libssl-dev \
-      libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev \
       libharfbuzz-dev libfreetype6-dev \
-      libjpeg62-turbo-dev libpng-dev libtiff-dev libdc1394-22-dev && \
+      nasm && \
       rm -rf /var/lib/apt/lists/*
 
 FROM --platform=linux/arm64 opencv-base-arm64 AS opencv-build-arm64
@@ -106,7 +118,8 @@ RUN cd opencv-${OPENCV_VERSION} && \
       mkdir build && cd build && \
       cmake -D CMAKE_BUILD_TYPE=RELEASE \
       -D WITH_IPP=OFF \
-      -D WITH_OPENGL=OFF \
+      -D WITH_OPENGL=ON \
+      -D BUILD_OPENGL=ON \
       -D WITH_QT=OFF \
       -D WITH_FREETYPE=ON \
       -D CMAKE_INSTALL_PREFIX=/usr/local \
@@ -115,9 +128,22 @@ RUN cd opencv-${OPENCV_VERSION} && \
       -D OPENCV_ENABLE_NONFREE=ON \
       -D WITH_JASPER=OFF \
       -D WITH_TBB=ON \
+      -D BUILD_TBB=ON \
       -D BUILD_JPEG=ON \
       -D WITH_SIMD=ON \
-      -D ENABLE_LIBJPEG_TURBO_SIMD=ON \
+      -D ENABLE_LIBJPEG_TURBO_SIMD=OFF \
+      -D WITH_QUIRC=ON \
+      -D WITH_GTK=OFF \
+      -D WITH_FFMPEG=ON \
+      -D BUILD_FFMPEG=ON \
+      -D WITH_1394=ON \
+      -D BUILD_1394=ON \
+      -D WITH_WEBP=ON \
+      -D BUILD_WEBP=ON \
+      -D WITH_OPENJPEG=ON \
+      -D BUILD_OPENJPEG=ON \
+      -D WITH_TIFF=ON \
+      -D BUILD_TIFF=ON \
       -D BUILD_DOCS=OFF \
       -D BUILD_EXAMPLES=OFF \
       -D BUILD_TESTS=OFF \
@@ -137,6 +163,6 @@ ARG TARGETARCH
 # multiarch build stage
 ###################
 
-FROM opencv-build-${TARGETARCH} as opencv-final
+FROM opencv-build-${TARGETARCH} AS opencv-final
 
 CMD ["opencv_version", "-b"]
