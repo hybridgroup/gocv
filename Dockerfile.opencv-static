@@ -127,6 +127,7 @@ RUN cd opencv-${OPENCV_VERSION} && \
       -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules \
       -D OPENCV_ENABLE_NONFREE=ON \
       -D WITH_JASPER=OFF \
+      -D ENABLE_NEON=ON \
       -D WITH_TBB=ON \
       -D BUILD_TBB=ON \
       -D BUILD_JPEG=ON \
