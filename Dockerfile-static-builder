@@ -1,9 +1,11 @@
 # to build this docker image:
 #   docker build -f Dockerfile-static-builder -t gocv-static-builder .
+# or for multi-arch builds:
+#   docker buildx build -f Dockerfile-static-builder -t gocv-static-builder --platform=linux/amd64,linux/arm64 .
 #
 # to use this docker image:
 #   cd /path/to/my/project
-#   docker run --rm -e "BINARYNAME=myapp" -e "SRCPATH=./cmd/mycmd" -v $(pwd):/src -v $(pwd)/build:/build -a stdout -a stderr gocv-static-builder
+#   docker run --rm -e "BINARYNAME=myapp" -e "SRCPATH=./cmd/mycmd" -v $(pwd):/src -v $(pwd)/build:/build -a stdout -a stderr --platform=linux/arm64 gocv-static-builder
 #
 # NOTE that you cannot use highgui from the static build!
 #
