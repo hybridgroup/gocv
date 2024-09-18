@@ -1,0 +1,20 @@
+# to build this docker image:
+#   docker build -f Dockerfile-static -t gocv-static .
+#
+FROM ghcr.io/hybridgroup/opencv:4.10.0-static AS gocv-build
+
+ENV GOPATH /go
+
+COPY . /go/src/gocv.io/x/gocv/
+
+WORKDIR /go/src/gocv.io/x/gocv
+
+RUN ls -la /usr/local/lib/opencv4/3rdparty/
+
+RUN go build -tags static -o /build/gocv_version ./cmd/version/
+
+FROM ubuntu:latest AS final
+
+COPY --from=gocv-build /build/gocv_version /run/gocv_version
+
+CMD ["/run/gocv_version"]
