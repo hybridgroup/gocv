@@ -1985,6 +1985,11 @@ func NewTermCriteria(typ TermCriteriaType, maxCount int, epsilon float64) TermCr
 	return TermCriteria{p: C.TermCriteria_New(C.int(typ), C.int(maxCount), C.double(epsilon))}
 }
 
+// Ptr returns the underlying C.TermCriteria
+func (tc *TermCriteria) Ptr() C.TermCriteria {
+	return tc.p
+}
+
 // Scalar is a 4-element vector widely used in OpenCV to pass pixel values.
 //
 // For further details, please see:

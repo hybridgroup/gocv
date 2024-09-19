@@ -27,6 +27,20 @@ typedef void* TemplateMatching;
 // standalone functions
 void GpuCvtColor(GpuMat src, GpuMat dst, int code, Stream s);
 void GpuDemosaicing(GpuMat src, GpuMat dst, int code, Stream s);
+void AlphaComp(GpuMat img1, GpuMat img2, GpuMat dst, int alpha_op, Stream s);
+void GammaCorrection(GpuMat src, GpuMat dst, bool forward, Stream s);
+void SwapChannels(GpuMat image, int dstOrder[4], Stream s);
+void Cuda_CalcHist(GpuMat src, GpuMat dst, Stream s);
+void Cuda_CalcHist_WithParams(GpuMat src, GpuMat mask, GpuMat dst, Stream s);
+void Cuda_EqualizeHist(GpuMat src, GpuMat dst, Stream s);
+void Cuda_EvenLevels(GpuMat levels, int nLevels, int lowerLevel, int upperLevel, Stream s);
+void Cuda_HistEven(GpuMat src, GpuMat hist, int histSize, int lowerLevel, int upperLevel, Stream s);
+void Cuda_HistRange(GpuMat src, GpuMat hist, GpuMat levels, Stream s);
+void Cuda_BilateralFilter(GpuMat src, GpuMat dst, int kernel_size, float sigma_color, float sigma_spatial, int borderMode, Stream s);
+void Cuda_BlendLinear(GpuMat img1, GpuMat img2, GpuMat weights1, GpuMat weights2, GpuMat result, Stream s);
+void Cuda_MeanShiftFiltering(GpuMat src, GpuMat dst, int sp, int sr, TermCriteria criteria, Stream s);
+void Cuda_MeanShiftProc(GpuMat src, GpuMat dstr, GpuMat dstsp, int sp, int sr, TermCriteria criteria, Stream s);
+void Cuda_MeanShiftSegmentation(GpuMat src, GpuMat dst, int sp, int sr, int minSize, TermCriteria criteria, Stream s);
 
 // CannyEdgeDetector
 CannyEdgeDetector CreateCannyEdgeDetector(double lowThresh, double highThresh);
