@@ -7,6 +7,5 @@ package gocv
 /*
 #cgo CXXFLAGS: --std=c++11
 #cgo pkg-config: --static opencv4
-#cgo LDFLAGS: -static
 */
 import "C"
