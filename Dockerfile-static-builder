@@ -1,15 +1,15 @@
 # to build this docker image:
 #   docker build -f Dockerfile-static-builder -t gocv-static-builder .
 # or for multi-arch builds:
-#   docker buildx build -f Dockerfile-static-builder -t gocv-static-builder --platform=linux/amd64,linux/arm64 .
+#   docker buildx build -f Dockerfile-static-builder -t ghcr.io/hybridgroup/gocv-static-builder --platform=linux/amd64,linux/arm64 --push .
 #
 # to use this docker image:
 #   cd /path/to/my/project
-#   docker run --rm -e "BINARYNAME=myapp" -e "SRCPATH=./cmd/mycmd" -v $(pwd):/src -v $(pwd)/build:/build -a stdout -a stderr --platform=linux/arm64 gocv-static-builder
+#   docker run --rm -e "BINARYNAME=mjpeg-streamer" -e "SRCPATH=./cmd/mjpeg-streamer" -v $(pwd):/src -v $(pwd)/build:/build -a stdout -a stderr --platform linux/amd64 gocv-static-builder
 #
 # NOTE that you cannot use highgui from the static build!
 #
-FROM ghcr.io/hybridgroup/opencv:4.10.0-static AS gocv-static-builder
+FROM --platform=$BUILDPLATFORM ghcr.io/hybridgroup/opencv:4.10.0-static AS gocv-static-builder
 
 WORKDIR /src
 
