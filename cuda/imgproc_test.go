@@ -477,8 +477,33 @@ func TestAlphaComp(t *testing.T) {
 	dst := NewGpuMat()
 	defer dst.Close()
 
-	AlphaComp(m1, m2, &dst, AlphaCompTypeOver, Stream{})
+	AlphaComp(m1, m2, &dst, AlphaCompTypeOver)
 
+}
+
+func TestAlphaCompWithStream(t *testing.T) {
+	img := gocv.IMRead("../images/box.png", gocv.IMReadUnchanged)
+	defer img.Close()
+
+	converted := gocv.NewMat()
+	defer converted.Close()
+
+	gocv.CvtColor(img, &converted, gocv.ColorRGBAToBGRA)
+
+	m1 := NewGpuMatFromMat(converted)
+	defer m1.Close()
+
+	m2 := NewGpuMatFromMat(converted)
+	defer m2.Close()
+
+	dst := NewGpuMat()
+	defer dst.Close()
+
+	s := NewStream()
+	defer s.Close()
+
+	AlphaCompWithStream(m1, m2, &dst, AlphaCompTypeOver, s)
+	s.WaitForCompletion()
 }
 
 func TestGammaCorrection(t *testing.T) {
@@ -496,9 +521,33 @@ func TestGammaCorrection(t *testing.T) {
 	dst := NewGpuMat()
 	defer dst.Close()
 
-	GammaCorrection(m1, &dst, true, Stream{})
+	GammaCorrection(m1, &dst, true)
 
 }
+
+func TestGammaCorrectionWithStream(t *testing.T) {
+	img := gocv.IMRead("../images/box.png", gocv.IMReadUnchanged)
+	defer img.Close()
+
+	converted := gocv.NewMat()
+	defer converted.Close()
+
+	gocv.CvtColor(img, &converted, gocv.ColorRGBAToBGRA)
+
+	m1 := NewGpuMatFromMat(converted)
+	defer m1.Close()
+
+	dst := NewGpuMat()
+	defer dst.Close()
+
+	s := NewStream()
+	defer s.Close()
+
+	GammaCorrectionWithStream(m1, &dst, true, s)
+	s.WaitForCompletion()
+
+}
+
 func TestSwapChannels(t *testing.T) {
 	img := gocv.IMRead("../images/box.png", gocv.IMReadUnchanged)
 	defer img.Close()
@@ -511,7 +560,27 @@ func TestSwapChannels(t *testing.T) {
 	m1 := NewGpuMatFromMat(converted)
 	defer m1.Close()
 
-	SwapChannels(&m1, []int{3, 2, 1, 0}, Stream{})
+	SwapChannels(&m1, []int{3, 2, 1, 0})
+
+}
+
+func TestSwapChannelsWithStream(t *testing.T) {
+	img := gocv.IMRead("../images/box.png", gocv.IMReadUnchanged)
+	defer img.Close()
+
+	converted := gocv.NewMat()
+	defer converted.Close()
+
+	gocv.CvtColor(img, &converted, gocv.ColorRGBAToBGRA)
+
+	m1 := NewGpuMatFromMat(converted)
+	defer m1.Close()
+
+	s := NewStream()
+	defer s.Close()
+
+	SwapChannelsWithStream(&m1, []int{3, 2, 1, 0}, s)
+	s.WaitForCompletion()
 
 }
 
@@ -522,8 +591,28 @@ func TestCalcHist(t *testing.T) {
 	m2 := NewGpuMatWithSize(1, 256, gocv.MatTypeCV32SC1)
 	defer m2.Close()
 
-	CalcHist(m1, &m2, Stream{})
+	CalcHist(m1, &m2)
 	CalcHistWithParams(m1, m1, &m2, Stream{})
+}
+
+func TestCalcHistWithStream(t *testing.T) {
+	m1 := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC1)
+	defer m1.Close()
+
+	m2 := NewGpuMatWithSize(1, 256, gocv.MatTypeCV32SC1)
+	defer m2.Close()
+
+	s := NewStream()
+	defer s.Close()
+
+	s1 := NewStream()
+	defer s1.Close()
+
+	CalcHistWithStream(m1, &m2, s)
+	CalcHistWithParams(m1, m1, &m2, s1)
+
+	s.WaitForCompletion()
+	s1.WaitForCompletion()
 }
 
 func TestEqualizeHist(t *testing.T) {
@@ -533,14 +622,40 @@ func TestEqualizeHist(t *testing.T) {
 	m2 := NewGpuMatWithSize(1, 256, gocv.MatTypeCV32SC1)
 	defer m2.Close()
 
-	EqualizeHist(m1, &m2, Stream{})
+	EqualizeHist(m1, &m2)
+}
+
+func TestEqualizeHistWithStream(t *testing.T) {
+	m1 := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC1)
+	defer m1.Close()
+
+	m2 := NewGpuMatWithSize(1, 256, gocv.MatTypeCV32SC1)
+	defer m2.Close()
+
+	s := NewStream()
+	defer s.Close()
+
+	EqualizeHistWithStream(m1, &m2, s)
+	s.WaitForCompletion()
+
 }
 
 func TestEvenLevels(t *testing.T) {
 	m1 := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC1)
 	defer m1.Close()
 
-	EvenLevels(&m1, 2, 1, 2, Stream{})
+	EvenLevels(&m1, 2, 1, 2)
+}
+
+func TestEvenLevelsWithStream(t *testing.T) {
+	m1 := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC1)
+	defer m1.Close()
+
+	s := NewStream()
+	defer s.Close()
+
+	EvenLevelsWithStream(&m1, 2, 1, 2, s)
+	s.WaitForCompletion()
 }
 
 func TestHistEven(t *testing.T) {
@@ -550,7 +665,21 @@ func TestHistEven(t *testing.T) {
 	m2 := NewGpuMatWithSize(1, 256, gocv.MatTypeCV32SC1)
 	defer m2.Close()
 
-	HistEven(m1, &m2, 256, 1, 2, Stream{})
+	HistEven(m1, &m2, 256, 1, 2)
+}
+
+func TestHistEvenWithStream(t *testing.T) {
+	m1 := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC1)
+	defer m1.Close()
+
+	m2 := NewGpuMatWithSize(1, 256, gocv.MatTypeCV32SC1)
+	defer m2.Close()
+
+	s := NewStream()
+	defer s.Close()
+
+	HistEvenWithStream(m1, &m2, 256, 1, 2, s)
+	s.WaitForCompletion()
 }
 
 func TestHistRange(t *testing.T) {
@@ -563,7 +692,24 @@ func TestHistRange(t *testing.T) {
 	hist := NewGpuMatWithSize(1, 256, gocv.MatTypeCV32SC1)
 	defer hist.Close()
 
-	HistRange(src, &hist, levels, Stream{})
+	HistRange(src, &hist, levels)
+}
+
+func TestHistRangeWithStream(t *testing.T) {
+	src := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC1)
+	defer src.Close()
+
+	levels := NewGpuMatWithSize(1, 256, gocv.MatTypeCV32SC1)
+	defer levels.Close()
+
+	hist := NewGpuMatWithSize(1, 256, gocv.MatTypeCV32SC1)
+	defer hist.Close()
+
+	s := NewStream()
+	defer s.Close()
+
+	HistRangeWithStream(src, &hist, levels, s)
+	s.WaitForCompletion()
 }
 
 func TestBilateralFilter(t *testing.T) {
@@ -573,7 +719,21 @@ func TestBilateralFilter(t *testing.T) {
 	dst := NewGpuMatWithSize(256, 256, gocv.MatTypeCV32SC1)
 	defer dst.Close()
 
-	BilateralFilter(src, &dst, 1, 2.2, 3.3, BorderDefault, Stream{})
+	BilateralFilter(src, &dst, 1, 2.2, 3.3, BorderDefault)
+}
+
+func TestBilateralFilterWithStream(t *testing.T) {
+	src := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC1)
+	defer src.Close()
+
+	dst := NewGpuMatWithSize(256, 256, gocv.MatTypeCV32SC1)
+	defer dst.Close()
+
+	s := NewStream()
+	defer s.Close()
+
+	BilateralFilterWithStream(src, &dst, 1, 2.2, 3.3, BorderDefault, s)
+	s.WaitForCompletion()
 }
 
 func TestBlendLinear(t *testing.T) {
@@ -592,10 +752,33 @@ func TestBlendLinear(t *testing.T) {
 	weights2 := NewGpuMatWithSize(256, 256, gocv.MatTypeCV32FC1)
 	defer weights2.Close()
 
-	BlendLinear(img1, img2, weights1, weights2, &result, Stream{})
+	BlendLinear(img1, img2, weights1, weights2, &result)
 
 }
 
+func TestBlendLinearWithStream(t *testing.T) {
+	img1 := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC1)
+	defer img1.Close()
+
+	img2 := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC1)
+	defer img2.Close()
+
+	result := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC1)
+	defer result.Close()
+
+	weights1 := NewGpuMatWithSize(256, 256, gocv.MatTypeCV32FC1)
+	defer weights1.Close()
+
+	weights2 := NewGpuMatWithSize(256, 256, gocv.MatTypeCV32FC1)
+	defer weights2.Close()
+
+	s := NewStream()
+	defer s.Close()
+
+	BlendLinearWithStream(img1, img2, weights1, weights2, &result, s)
+	s.WaitForCompletion()
+
+}
 func TestMeanShiftFiltering(t *testing.T) {
 	src := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC4)
 	defer src.Close()
@@ -605,7 +788,23 @@ func TestMeanShiftFiltering(t *testing.T) {
 
 	criteria := gocv.NewTermCriteria(gocv.Count, 1, 2.2)
 
-	MeanShiftFiltering(src, &dst, 1, 2, criteria, Stream{})
+	MeanShiftFiltering(src, &dst, 1, 2, criteria)
+}
+
+func TestMeanShiftFilteringWithStream(t *testing.T) {
+	src := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC4)
+	defer src.Close()
+
+	dst := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC4)
+	defer dst.Close()
+
+	criteria := gocv.NewTermCriteria(gocv.Count, 1, 2.2)
+
+	s := NewStream()
+	defer s.Close()
+
+	MeanShiftFilteringWithStream(src, &dst, 1, 2, criteria, s)
+	s.WaitForCompletion()
 }
 
 func TestMeanShiftProc(t *testing.T) {
@@ -620,7 +819,26 @@ func TestMeanShiftProc(t *testing.T) {
 
 	criteria := gocv.NewTermCriteria(gocv.Count, 1, 2.2)
 
-	MeanShiftProc(src, &dstr, &dstsp, 1, 2, criteria, Stream{})
+	MeanShiftProc(src, &dstr, &dstsp, 1, 2, criteria)
+}
+
+func TestMeanShiftProcWithStream(t *testing.T) {
+	src := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC4)
+	defer src.Close()
+
+	dstr := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC4)
+	defer dstr.Close()
+
+	dstsp := NewGpuMatWithSize(256, 256, gocv.MatTypeCV16SC2)
+	defer dstsp.Close()
+
+	criteria := gocv.NewTermCriteria(gocv.Count, 1, 2.2)
+
+	s := NewStream()
+	defer s.Close()
+
+	MeanShiftProcWithStream(src, &dstr, &dstsp, 1, 2, criteria, s)
+	s.WaitForCompletion()
 }
 
 func TestMeanShiftSegmentation(t *testing.T) {
@@ -632,5 +850,21 @@ func TestMeanShiftSegmentation(t *testing.T) {
 
 	criteria := gocv.NewTermCriteria(gocv.Count, 1, 2.2)
 
-	MeanShiftSegmentation(src, &dst, 1, 2, 3, criteria, Stream{})
+	MeanShiftSegmentation(src, &dst, 1, 2, 3, criteria)
+}
+
+func TestMeanShiftSegmentationWithStream(t *testing.T) {
+	src := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC4)
+	defer src.Close()
+
+	dst := NewGpuMatWithSize(256, 256, gocv.MatTypeCV8UC4)
+	defer dst.Close()
+
+	criteria := gocv.NewTermCriteria(gocv.Count, 1, 2.2)
+
+	s := NewStream()
+	defer s.Close()
+
+	MeanShiftSegmentationWithStream(src, &dst, 1, 2, 3, criteria, s)
+	s.WaitForCompletion()
 }
