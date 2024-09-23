@@ -295,7 +295,25 @@ func (tm *TemplateMatching) MatchWithStream(img GpuMat, tmpl GpuMat, dst *GpuMat
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/db/d8c/group__cudaimgproc__color.html#ga08a698700458d9311390997b57fbf8dc
-func AlphaComp(img1 GpuMat, img2 GpuMat, dst *GpuMat, alphaOp AlphaCompTypes, s Stream) {
+func AlphaComp(img1 GpuMat, img2 GpuMat, dst *GpuMat, alphaOp AlphaCompTypes) {
+	C.AlphaComp(img1.p, img2.p, dst.p, C.int(alphaOp), nil)
+}
+
+// AlphaCompWithStream Composites two images using alpha opacity values contained in each image.
+//
+// img1: First image. Supports CV_8UC4 , CV_16UC4 , CV_32SC4 and CV_32FC4 types.
+//
+// img2: Second image. Must have the same size and the same type as img1.
+//
+// dst: Destination image.
+//
+// alpha_op: Flag specifying the alpha-blending operation
+//
+// stream: Stream for the asynchronous version.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/db/d8c/group__cudaimgproc__color.html#ga08a698700458d9311390997b57fbf8dc
+func AlphaCompWithStream(img1 GpuMat, img2 GpuMat, dst *GpuMat, alphaOp AlphaCompTypes, s Stream) {
 	C.AlphaComp(img1.p, img2.p, dst.p, C.int(alphaOp), s.p)
 }
 
@@ -307,15 +325,45 @@ func AlphaComp(img1 GpuMat, img2 GpuMat, dst *GpuMat, alphaOp AlphaCompTypes, s 
 //
 // forward: true for forward gamma correction or false for inverse gamma correction.
 //
+// For further details, please see:
+// https://docs.opencv.org/4.x/db/d8c/group__cudaimgproc__color.html#gaf4195a8409c3b8fbfa37295c2b2c4729
+func GammaCorrection(src GpuMat, dst *GpuMat, forward bool) {
+	C.GammaCorrection(src.p, dst.p, C.bool(forward), nil)
+}
+
+// GammaCorrectionWithStream Routines for correcting image color gamma.
+//
+// src: Source image (3- or 4-channel 8 bit).
+//
+// dst: Destination image.
+//
+// forward: true for forward gamma correction or false for inverse gamma correction.
+//
 // stream: Stream for the asynchronous version.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/db/d8c/group__cudaimgproc__color.html#gaf4195a8409c3b8fbfa37295c2b2c4729
-func GammaCorrection(src GpuMat, dst *GpuMat, forward bool, s Stream) {
+func GammaCorrectionWithStream(src GpuMat, dst *GpuMat, forward bool, s Stream) {
 	C.GammaCorrection(src.p, dst.p, C.bool(forward), s.p)
 }
 
 // SwapChannels Exchanges the color channels of an image in-place.
+//
+// image: Source image. Supports only CV_8UC4 type.
+//
+// dstOrder: Integer array describing how channel values are permutated. The n-th entry of the array
+// contains the number of the channel that is stored in the n-th channel of the output image.
+// E.g. Given an RGBA image, aDstOrder = [3,2,1,0] converts this to ABGR channel order.
+//
+// supports arbitrary permutations of the original channels, including replication.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/db/d8c/group__cudaimgproc__color.html#ga75a29cc4a97cde0d43ea066b01de927e
+func SwapChannels(image *GpuMat, dstOrder []int) {
+	C.SwapChannels(image.p, (*C.int)(unsafe.Pointer(&dstOrder[0])), nil)
+}
+
+// SwapChannelsWithStream Exchanges the color channels of an image in-place.
 //
 // image: Source image. Supports only CV_8UC4 type.
 //
@@ -329,7 +377,7 @@ func GammaCorrection(src GpuMat, dst *GpuMat, forward bool, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/db/d8c/group__cudaimgproc__color.html#ga75a29cc4a97cde0d43ea066b01de927e
-func SwapChannels(image *GpuMat, dstOrder []int, s Stream) {
+func SwapChannelsWithStream(image *GpuMat, dstOrder []int, s Stream) {
 	C.SwapChannels(image.p, (*C.int)(unsafe.Pointer(&dstOrder[0])), s.p)
 }
 
@@ -339,11 +387,23 @@ func SwapChannels(image *GpuMat, dstOrder []int, s Stream) {
 //
 // hist: Destination histogram with one row, 256 columns, and the CV_32SC1 type.
 //
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#gaaf3944106890947020bb4522a7619c26
+func CalcHist(src GpuMat, dst *GpuMat) {
+	C.Cuda_CalcHist(src.p, dst.p, nil)
+}
+
+// CalcHistWithStream Calculates histogram for one channel 8-bit image.
+//
+// src: Source image with CV_8UC1 type.
+//
+// hist: Destination histogram with one row, 256 columns, and the CV_32SC1 type.
+//
 // stream: Stream for the asynchronous version.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#gaaf3944106890947020bb4522a7619c26
-func CalcHist(src GpuMat, dst *GpuMat, s Stream) {
+func CalcHistWithStream(src GpuMat, dst *GpuMat, s Stream) {
 	C.Cuda_CalcHist(src.p, dst.p, s.p)
 }
 
@@ -369,11 +429,23 @@ func CalcHistWithParams(src GpuMat, mask GpuMat, dst *GpuMat, s Stream) {
 //
 // dst: Destination image.
 //
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#ga2384be74bd2feba7e6c46815513f0060
+func EqualizeHist(src GpuMat, dst *GpuMat) {
+	C.Cuda_EqualizeHist(src.p, dst.p, nil)
+}
+
+// EqualizeHistWithStream Equalizes the histogram of a grayscale image.
+//
+// src: Source image with CV_8UC1 type.
+//
+// dst: Destination image.
+//
 // stream: Stream for the asynchronous version.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#ga2384be74bd2feba7e6c46815513f0060
-func EqualizeHist(src GpuMat, dst *GpuMat, s Stream) {
+func EqualizeHistWithStream(src GpuMat, dst *GpuMat, s Stream) {
 	C.Cuda_EqualizeHist(src.p, dst.p, s.p)
 }
 
@@ -387,11 +459,27 @@ func EqualizeHist(src GpuMat, dst *GpuMat, s Stream) {
 //
 // upperLevel: Upper boundary value of the greatest level.
 //
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#ga2f2cbd21dc6d7367a7c4ee1a826f389dFor further details, please see:
+func EvenLevels(levels *GpuMat, nLevels int, lowerLevel int, upperLevel int) {
+	C.Cuda_EvenLevels(levels.p, C.int(nLevels), C.int(lowerLevel), C.int(upperLevel), nil)
+}
+
+// EvenLevelsWithStream Computes levels with even distribution.
+//
+// levels: Destination array. levels has 1 row, nLevels columns, and the CV_32SC1 type.
+//
+// nLevels: Number of computed levels. nLevels must be at least 2.
+//
+// lowerLevel: Lower boundary value of the lowest level.
+//
+// upperLevel: Upper boundary value of the greatest level.
+//
 // stream: Stream for the asynchronous version.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#ga2f2cbd21dc6d7367a7c4ee1a826f389dFor further details, please see:
-func EvenLevels(levels *GpuMat, nLevels int, lowerLevel int, upperLevel int, s Stream) {
+func EvenLevelsWithStream(levels *GpuMat, nLevels int, lowerLevel int, upperLevel int, s Stream) {
 	C.Cuda_EvenLevels(levels.p, C.int(nLevels), C.int(lowerLevel), C.int(upperLevel), s.p)
 }
 
@@ -408,11 +496,30 @@ func EvenLevels(levels *GpuMat, nLevels int, lowerLevel int, upperLevel int, s S
 //
 // upperLevel: Upper boundary of highest-level bin.
 //
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#gacd3b14279fb77a57a510cb8c89a1856f
+func HistEven(src GpuMat, hist *GpuMat, histSize int, lowerLevel int, upperLevel int) {
+	C.Cuda_HistEven(src.p, hist.p, C.int(histSize), C.int(lowerLevel), C.int(upperLevel), nil)
+}
+
+// HistEvenWithStream Calculates a histogram with evenly distributed bins.
+//
+// src: Source image. CV_8U, CV_16U, or CV_16S depth and 1 or 4 channels are supported.
+// For a four-channel image, all channels are processed separately.
+//
+// hist: Destination histogram with one row, histSize columns, and the CV_32S type.
+//
+// histSize: Size of the histogram.
+//
+// lowerLevel: Lower boundary of lowest-level bin.
+//
+// upperLevel: Upper boundary of highest-level bin.
+//
 // stream: Stream for the asynchronous version.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#gacd3b14279fb77a57a510cb8c89a1856f
-func HistEven(src GpuMat, hist *GpuMat, histSize int, lowerLevel int, upperLevel int, s Stream) {
+func HistEvenWithStream(src GpuMat, hist *GpuMat, histSize int, lowerLevel int, upperLevel int, s Stream) {
 	C.Cuda_HistEven(src.p, hist.p, C.int(histSize), C.int(lowerLevel), C.int(upperLevel), s.p)
 }
 
@@ -425,11 +532,26 @@ func HistEven(src GpuMat, hist *GpuMat, histSize int, lowerLevel int, upperLevel
 //
 // levels: Number of levels in the histogram.
 //
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#ga87819085c1059186d9cdeacd92cea783
+func HistRange(src GpuMat, hist *GpuMat, levels GpuMat) {
+	C.Cuda_HistRange(src.p, hist.p, levels.p, nil)
+}
+
+// HistRangeWithStream Calculates a histogram with bins determined by the levels array.
+//
+// src: Source image. CV_8U , CV_16U , or CV_16S depth and 1 or 4 channels are supported.
+// For a four-channel image, all channels are processed separately.
+//
+// hist: Destination histogram with one row, (levels.cols-1) columns, and the CV_32SC1 type.
+//
+// levels: Number of levels in the histogram.
+//
 // stream: Stream for the asynchronous version.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#ga87819085c1059186d9cdeacd92cea783
-func HistRange(src GpuMat, hist *GpuMat, levels GpuMat, s Stream) {
+func HistRangeWithStream(src GpuMat, hist *GpuMat, levels GpuMat, s Stream) {
 	C.Cuda_HistRange(src.p, hist.p, levels.p, s.p)
 }
 
@@ -448,11 +570,32 @@ func HistRange(src GpuMat, hist *GpuMat, levels GpuMat, s Stream) {
 // borderMode: Border type. See borderInterpolate for details.
 // BorderReflect101 , BorderReplicate , BorderConstant , BorderReflect and BorderWrap are supported for now.
 //
+// For further details, please see:
+// https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga6abeaecdd4e7edc0bd1393a04f4f20bd
+func BilateralFilter(src GpuMat, dst *GpuMat, kernelSize int, sigmaColor float32, sigmaSpatial float32, borderMode BorderType) {
+	C.Cuda_BilateralFilter(src.p, dst.p, C.int(kernelSize), C.float(sigmaColor), C.float(sigmaSpatial), C.int(borderMode), nil)
+}
+
+// BilateralFilterWithStream Performs bilateral filtering of passed image.
+//
+// src: Source image. Supports only (channels != 2 && depth() != CV_8S && depth() != CV_32S && depth() != CV_64F).
+//
+// dst: Destination imagwe.
+//
+// kernelSize: Kernel window size.
+//
+// sigmaColor: Filter sigma in the color space.
+//
+// sigmaSpatial: Filter sigma in the coordinate space.
+//
+// borderMode: Border type. See borderInterpolate for details.
+// BorderReflect101 , BorderReplicate , BorderConstant , BorderReflect and BorderWrap are supported for now.
+//
 // stream: Stream for the asynchronous version.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga6abeaecdd4e7edc0bd1393a04f4f20bd
-func BilateralFilter(src GpuMat, dst *GpuMat, kernelSize int, sigmaColor float32, sigmaSpatial float32, borderMode BorderType, s Stream) {
+func BilateralFilterWithStream(src GpuMat, dst *GpuMat, kernelSize int, sigmaColor float32, sigmaSpatial float32, borderMode BorderType, s Stream) {
 	C.Cuda_BilateralFilter(src.p, dst.p, C.int(kernelSize), C.float(sigmaColor), C.float(sigmaSpatial), C.int(borderMode), s.p)
 }
 
@@ -468,11 +611,29 @@ func BilateralFilter(src GpuMat, dst *GpuMat, kernelSize int, sigmaColor float32
 //
 // result: Destination image.
 //
+// For further details, please see:
+// https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga4793607e5729bcc15b27ea33d9fe335e
+func BlendLinear(img1 GpuMat, img2 GpuMat, weights1 GpuMat, weights2 GpuMat, result *GpuMat) {
+	C.Cuda_BlendLinear(img1.p, img2.p, weights1.p, weights2.p, result.p, nil)
+}
+
+// BlendLinearWithStream Performs linear blending of two images.
+//
+// img1: First image. Supports only CV_8U and CV_32F depth.
+//
+// img2: Second image. Must have the same size and the same type as img1 .
+//
+// weights1: Weights for first image. Must have tha same size as img1 . Supports only CV_32F type.
+//
+// weights2: Weights for second image. Must have tha same size as img2 . Supports only CV_32F type.
+//
+// result: Destination image.
+//
 // stream: Stream for the asynchronous version.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga4793607e5729bcc15b27ea33d9fe335e
-func BlendLinear(img1 GpuMat, img2 GpuMat, weights1 GpuMat, weights2 GpuMat, result *GpuMat, s Stream) {
+func BlendLinearWithStream(img1 GpuMat, img2 GpuMat, weights1 GpuMat, weights2 GpuMat, result *GpuMat, s Stream) {
 	C.Cuda_BlendLinear(img1.p, img2.p, weights1.p, weights2.p, result.p, s.p)
 }
 
@@ -490,11 +651,31 @@ func BlendLinear(img1 GpuMat, img2 GpuMat, weights1 GpuMat, weights2 GpuMat, res
 //
 // criteria: Termination criteria. See TermCriteria.
 //
+// For further details, please see:
+// https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#gae13b3035bc6df0e512d876dbb8c00555
+func MeanShiftFiltering(src GpuMat, dst *GpuMat, sp int, sr int, criteria gocv.TermCriteria) {
+	C.Cuda_MeanShiftFiltering(src.p, dst.p, C.int(sp), C.int(sr), C.TermCriteria(criteria.Ptr()), nil)
+}
+
+// MeanShiftFilteringWithStream Performs mean-shift filtering for each point of the source image.
+// It maps each point of the source image into another point.
+// As a result, you have a new color and new position of each point.
+//
+// src: Source image. Only CV_8UC4 images are supported for now.
+//
+// dst: Destination image containing the color of mapped points. It has the same size and type as src .
+//
+// sp: Spatial window radius.
+//
+// sr: Color window radius.
+//
+// criteria: Termination criteria. See TermCriteria.
+//
 // stream: Stream for the asynchronous version.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#gae13b3035bc6df0e512d876dbb8c00555
-func MeanShiftFiltering(src GpuMat, dst *GpuMat, sp int, sr int, criteria gocv.TermCriteria, s Stream) {
+func MeanShiftFilteringWithStream(src GpuMat, dst *GpuMat, sp int, sr int, criteria gocv.TermCriteria, s Stream) {
 	C.Cuda_MeanShiftFiltering(src.p, dst.p, C.int(sp), C.int(sr), C.TermCriteria(criteria.Ptr()), s.p)
 }
 
@@ -513,11 +694,32 @@ func MeanShiftFiltering(src GpuMat, dst *GpuMat, sp int, sr int, criteria gocv.T
 //
 // criteria: Termination criteria. See TermCriteria.
 //
+// For further details, please see:
+// https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga6039dc8ecbe2f912bc83fcc9b3bcca39
+func MeanShiftProc(src GpuMat, dstr *GpuMat, dstsp *GpuMat, sp int, sr int, criteria gocv.TermCriteria) {
+	C.Cuda_MeanShiftProc(src.p, dstr.p, dstsp.p, C.int(sp), C.int(sr), C.TermCriteria(criteria.Ptr()), nil)
+}
+
+// MeanShiftProcWithStream Performs a mean-shift procedure and stores information
+// about processed points (their colors and positions) in two images.
+//
+// src: Source image. Only CV_8UC4 images are supported for now.
+//
+// dstr: Destination image containing the color of mapped points. The size and type is the same as src .
+//
+// dstsp: Destination image containing the position of mapped points. The size is the same as src size. The type is CV_16SC2 .
+//
+// sp: Spatial window radius.
+//
+// sr: Color window radius.
+//
+// criteria: Termination criteria. See TermCriteria.
+//
 // stream: Stream for the asynchronous version.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga6039dc8ecbe2f912bc83fcc9b3bcca39
-func MeanShiftProc(src GpuMat, dstr *GpuMat, dstsp *GpuMat, sp int, sr int, criteria gocv.TermCriteria, s Stream) {
+func MeanShiftProcWithStream(src GpuMat, dstr *GpuMat, dstsp *GpuMat, sp int, sr int, criteria gocv.TermCriteria, s Stream) {
 	C.Cuda_MeanShiftProc(src.p, dstr.p, dstsp.p, C.int(sp), C.int(sr), C.TermCriteria(criteria.Ptr()), s.p)
 }
 
@@ -535,10 +737,30 @@ func MeanShiftProc(src GpuMat, dstr *GpuMat, dstsp *GpuMat, sp int, sr int, crit
 //
 // criteria: Termination criteria. See TermCriteria.
 //
+// For further details, please see:
+// https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga70ed80533a448829dc48cf22b1845c16
+func MeanShiftSegmentation(src GpuMat, dst *GpuMat, sp int, sr int, minSize int, criteria gocv.TermCriteria) {
+	C.Cuda_MeanShiftSegmentation(src.p, dst.p, C.int(sp), C.int(sr), C.int(minSize), C.TermCriteria(criteria.Ptr()), nil)
+}
+
+// MeanShiftSegmentationWithStream Performs a mean-shift segmentation of the source image and eliminates small segments.
+//
+// src: Source image. Only CV_8UC4 images are supported for now.
+//
+// dst: Segmented image with the same size and type as src.
+//
+// sp: Spatial window radius.
+//
+// sr: Color window radius.
+//
+// minsize: Minimum segment size. Smaller segments are merged.
+//
+// criteria: Termination criteria. See TermCriteria.
+//
 // stream: Stream for the asynchronous version.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga70ed80533a448829dc48cf22b1845c16
-func MeanShiftSegmentation(src GpuMat, dst *GpuMat, sp int, sr int, minSize int, criteria gocv.TermCriteria, s Stream) {
+func MeanShiftSegmentationWithStream(src GpuMat, dst *GpuMat, sp int, sr int, minSize int, criteria gocv.TermCriteria, s Stream) {
 	C.Cuda_MeanShiftSegmentation(src.p, dst.p, C.int(sp), C.int(sr), C.int(minSize), C.TermCriteria(criteria.Ptr()), s.p)
 }
