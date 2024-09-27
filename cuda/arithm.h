@@ -11,6 +11,12 @@ extern "C" {
 #endif
 #include "cuda.h"
 
+#ifdef __cplusplus
+typedef cv::Ptr< cv::cuda::LookUpTable >* LookUpTable;
+#else
+typedef void* LookUpTable;
+#endif
+
 void GpuAbs(GpuMat src, GpuMat dst, Stream s);
 void GpuAbsDiff(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
 void GpuAdd(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
@@ -34,6 +40,14 @@ void GpuTranspose(GpuMat src, GpuMat dst, Stream s);
 void GpuAddWeighted(GpuMat src1, double alpha, GpuMat src2, double beta, double gamma, GpuMat dst, int dType, Stream s);
 void GpuCopyMakeBorder(GpuMat src, GpuMat dst, int top, int bottom, int left, int right, int borderType, Scalar value, Stream s);
 
+//LookUpTable
+LookUpTable Cuda_Create_LookUpTable(GpuMat lut);
+void Cuda_LookUpTable_Close(LookUpTable lt);
+void Cuda_LookUpTable_Transform(LookUpTable lt, GpuMat src, GpuMat dst, Stream s);
+
+bool Cuda_LookUpTable_Empty(LookUpTable lut);
+
+void Cuda_Split(GpuMat src, GpuMats dst, Stream s);
 #ifdef __cplusplus
 }
 #endif

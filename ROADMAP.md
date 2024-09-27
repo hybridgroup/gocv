@@ -203,9 +203,9 @@ Your pull requests will be greatly appreciated!
 - [X] **core**
 
 - [ ] **cudaarithm. Operations on Matrices - WORK STARTED** The following functions still need implementation:
-    - [ ] **core - WORK STARTED** The following functions still need implementation:
-        - [ ] [cv::cuda::createLookUpTable](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga2d9d9780dea8c5cd85d3c19b7e01979c)
-        - [ ] [cv::cuda::split](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#gabe5013d55d4ff586b20393913726179e)
+    - [X] **core - WORK STARTED** The following functions still need implementation:
+        - [X] [cv::cuda::createLookUpTable](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga2d9d9780dea8c5cd85d3c19b7e01979c)
+        - [X] [cv::cuda::split](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#gabe5013d55d4ff586b20393913726179e)
 
     - [ ] **per-element operations - WORK STARTED** The following functions still need implementation:
         - [ ] [cv::cuda::cartToPolar](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga82210c7d1c1d42e616e554bf75a53480)
