@@ -187,3 +187,40 @@ void GpuCopyMakeBorder(GpuMat src, GpuMat dst, int top, int bottom, int left, in
     }
     cv::cuda::copyMakeBorder(*src, *dst, top, bottom, left, right, borderType, cValue, *s);
 }
+
+LookUpTable Cuda_Create_LookUpTable(GpuMat lut){
+    return new cv::Ptr<cv::cuda::LookUpTable>(cv::cuda::createLookUpTable(*lut));
+}
+
+void Cuda_LookUpTable_Close(LookUpTable lt) {
+    delete lt;
+}
+
+bool Cuda_LookUpTable_Empty(LookUpTable lut) {
+    return lut->empty();
+}
+
+void Cuda_LookUpTable_Transform(LookUpTable lt, GpuMat src, GpuMat dst, Stream s) {
+    cv::Ptr< cv::cuda::LookUpTable> p = cv::Ptr< cv::cuda::LookUpTable>(*lt);
+
+    if(s == NULL) {
+        p->transform(*src, *dst);
+    } else {
+        p->transform(*src, *dst, *s);
+    }
+}
+
+void Cuda_Split(GpuMat src, GpuMats dst, Stream s) {
+    std::vector< cv::cuda::GpuMat > dstv;
+
+    for(int i = 0; i < dst.length; i++) {
+        dstv.push_back(*(dst.mats[i]));
+    }
+
+    if(s == NULL){
+        cv::cuda::split(*src, dstv);
+    } else {
+        cv::cuda::split(*src, dstv, *s);
+    }
+
+}
