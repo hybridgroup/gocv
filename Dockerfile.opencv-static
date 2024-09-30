@@ -13,13 +13,27 @@
 
 FROM --platform=linux/amd64 golang:1.22-bullseye AS opencv-base-amd64
 LABEL maintainer="hybridgroup"
-
-RUN apt-get update && apt-get install -y \
-      git build-essential cmake pkg-config unzip libgtk-3-dev \
+RUN apt-get update && apt-get -y install \
+      autoconf automake libass-dev libgnutls28-dev \
+      libmp3lame-dev libtool libvorbis-dev \
+      meson ninja-build pkg-config \
+      texinfo wget yasm \
+      zlib1g-dev libx264-dev libvpx-dev \
+      libopus-dev libdav1d-dev \
+      git build-essential cmake pkg-config unzip \
       curl ca-certificates libcurl4-openssl-dev libssl-dev \
       libharfbuzz-dev libfreetype6-dev \
       nasm && \
       rm -rf /var/lib/apt/lists/*
+
+RUN wget -O ffmpeg-5.0.tar.bz2 "https://www.ffmpeg.org/releases/ffmpeg-5.0.3.tar.bz2" && \
+      tar -xf ffmpeg-5.0.tar.bz2
+
+RUN cd ffmpeg-5.0.3 && \
+      ./configure --pkg-config-flags="--static" \
+      --enable-static --disable-shared --enable-gpl --enable-libx264 --enable-libvpx --enable-zlib \
+      --disable-sdl2 --disable-vaapi --disable-vdpau --disable-v4l2-m2m --disable-doc && \
+      make -j $(nproc --all) && make install && ldconfig
 
 FROM --platform=linux/amd64 opencv-base-amd64 AS opencv-build-amd64
 
@@ -61,7 +75,6 @@ RUN cd opencv-${OPENCV_VERSION} && \
       -D WITH_QUIRC=ON \
       -D WITH_GTK=OFF \
       -D WITH_FFMPEG=ON \
-      -D BUILD_FFMPEG=ON \
       -D WITH_1394=ON \
       -D BUILD_1394=ON \
       -D WITH_WEBP=ON \
@@ -89,13 +102,27 @@ RUN cd opencv-${OPENCV_VERSION} && \
 
 FROM --platform=linux/arm64 golang:1.22-bullseye AS opencv-base-arm64
 LABEL maintainer="hybridgroup"
-
-RUN apt-get update && apt-get install -y \
-      git build-essential cmake pkg-config unzip libgtk-3-dev \
+RUN apt-get update && apt-get -y install \
+      autoconf automake libass-dev libgnutls28-dev \
+      libmp3lame-dev libtool libvorbis-dev \
+      meson ninja-build pkg-config \
+      texinfo wget yasm \
+      zlib1g-dev libx264-dev libvpx-dev \
+      libopus-dev libdav1d-dev \
+      git build-essential cmake pkg-config unzip \
       curl ca-certificates libcurl4-openssl-dev libssl-dev \
       libharfbuzz-dev libfreetype6-dev \
       nasm && \
       rm -rf /var/lib/apt/lists/*
+
+RUN wget -O ffmpeg-5.0.tar.bz2 "https://www.ffmpeg.org/releases/ffmpeg-5.0.3.tar.bz2" && \
+      tar -xf ffmpeg-5.0.tar.bz2
+
+RUN cd ffmpeg-5.0.3 && \
+      ./configure --pkg-config-flags="--static" \
+      --enable-static --disable-shared --enable-gpl --enable-libx264 --enable-libvpx --enable-zlib \
+      --disable-sdl2 --disable-vaapi --disable-vdpau --disable-v4l2-m2m --disable-doc && \
+      make -j $(nproc --all) && make install && ldconfig
 
 FROM --platform=linux/arm64 opencv-base-arm64 AS opencv-build-arm64
 
@@ -136,7 +163,6 @@ RUN cd opencv-${OPENCV_VERSION} && \
       -D WITH_QUIRC=ON \
       -D WITH_GTK=OFF \
       -D WITH_FFMPEG=ON \
-      -D BUILD_FFMPEG=ON \
       -D WITH_1394=ON \
       -D BUILD_1394=ON \
       -D WITH_WEBP=ON \
