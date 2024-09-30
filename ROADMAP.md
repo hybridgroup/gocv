@@ -77,16 +77,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [createLineSegmentDetector](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#ga6b2ad2353c337c42551b521a73eeae7d)
         - [ ] [preCornerDetect](https://docs.opencv.org/master/dd/d1a/group__imgproc__feature.html#gaa819f39b5c994871774081803ae22586)
 
-    - [ ] **Object Detection - WORK STARTED**
-        - [ ] **aruco. ArUco Marker Detection - WORK STARTED**
-            - [ ] [refineDetectedMarkers](https://docs.opencv.org/4.x/d2/d1a/classcv_1_1aruco_1_1ArucoDetector.html#ad806c9310cfc826a178b0aefdf09bab6)
-            - [ ] [refineDetectedMarkers](https://docs.opencv.org/4.x/d2/d1a/classcv_1_1aruco_1_1ArucoDetector.html#ad806c9310cfc826a178b0aefdf09bab6)
-            - [ ] [drawDetectedCornersCharuco](https://docs.opencv.org/4.x/de/d67/group__objdetect__aruco.html#ga7225eee644190f791e1583c499b7ab10)
-            - [ ] [drawDetectedDiamonds](https://docs.opencv.org/4.x/de/d67/group__objdetect__aruco.html#ga0dbf27203267fb8e9f282554cf0d3433)
-            - [ ] [extendDictionary](https://docs.opencv.org/4.x/de/d67/group__objdetect__aruco.html#ga928c031e9a782b18405af56c851d9549)
-            - [ ] [CharucoDetector](https://docs.opencv.org/4.x/d9/df5/classcv_1_1aruco_1_1CharucoDetector.html#ad7647d1c3d0e2db97bedc31f743e796b)
-            - [ ] [detectBoard](https://docs.opencv.org/4.x/d9/df5/classcv_1_1aruco_1_1CharucoDetector.html#aacbea601612a3a0feaa45ebb7fb255fd)
-            - [ ] [detectDiamonds](https://docs.opencv.org/4.x/d9/df5/classcv_1_1aruco_1_1CharucoDetector.html#a50342803f68deb1e6b0b79f61d4b1a73)
+    - [X] **Object Detection**
 
 - [X] **imgcodecs. Image file reading and writing.**
 - [X] **videoio. Video I/O**
@@ -162,7 +153,21 @@ Your pull requests will be greatly appreciated!
         - [ ] [BOWImgDescriptorExtractor](https://docs.opencv.org/master/d2/d6b/classcv_1_1BOWImgDescriptorExtractor.html)
         - [ ] [BOWKMeansTrainer](https://docs.opencv.org/master/d4/d72/classcv_1_1BOWKMeansTrainer.html)
 
-- [X] **objdetect. Object Detection**
+- [ ] **objdetect. Object Detection**
+    - [ ] **aruco. ArUco Marker Detection - WORK STARTED**
+        - [ ] [refineDetectedMarkers](https://docs.opencv.org/4.x/d2/d1a/classcv_1_1aruco_1_1ArucoDetector.html#ad806c9310cfc826a178b0aefdf09bab6)
+        - [ ] [refineDetectedMarkers](https://docs.opencv.org/4.x/d2/d1a/classcv_1_1aruco_1_1ArucoDetector.html#ad806c9310cfc826a178b0aefdf09bab6)
+        - [ ] [drawDetectedCornersCharuco](https://docs.opencv.org/4.x/de/d67/group__objdetect__aruco.html#ga7225eee644190f791e1583c499b7ab10)
+        - [ ] [drawDetectedDiamonds](https://docs.opencv.org/4.x/de/d67/group__objdetect__aruco.html#ga0dbf27203267fb8e9f282554cf0d3433)
+        - [ ] [extendDictionary](https://docs.opencv.org/4.x/de/d67/group__objdetect__aruco.html#ga928c031e9a782b18405af56c851d9549)
+        - [ ] [CharucoDetector](https://docs.opencv.org/4.x/d9/df5/classcv_1_1aruco_1_1CharucoDetector.html#ad7647d1c3d0e2db97bedc31f743e796b)
+        - [ ] [detectBoard](https://docs.opencv.org/4.x/d9/df5/classcv_1_1aruco_1_1CharucoDetector.html#aacbea601612a3a0feaa45ebb7fb255fd)
+        - [ ] [detectDiamonds](https://docs.opencv.org/4.x/d9/df5/classcv_1_1aruco_1_1CharucoDetector.html#a50342803f68deb1e6b0b79f61d4b1a73)
+
+    - [ ] Face Detection
+        - [ ] [FaceDetectorYN](https://docs.opencv.org/4.x/df/d20/classcv_1_1FaceDetectorYN.html)
+        - [ ] [FaceRecognizerSF](https://docs.opencv.org/4.x/da/d09/classcv_1_1FaceRecognizerSF.html)
+        
 - [X] **dnn. Deep Neural Network module**
 - [ ] ml. Machine Learning
     - [ ] [ANN_MLP](https://docs.opencv.org/4.x/d0/dce/classcv_1_1ml_1_1ANN__MLP.html)
