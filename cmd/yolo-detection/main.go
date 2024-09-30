@@ -150,19 +150,18 @@ func performDetection(outs []gocv.Mat) ([]image.Rectangle, []float32, []int) {
 	for _, out := range outs {
 		out = out.Reshape(1, out.Size()[1])
 
-		data, _ := out.DataPtrFloat32()
-		for i := 0; i < out.Rows(); i, data = i+1, data[out.Cols():] {
-
+		for i := 0; i < out.Rows(); i++ {
+			cols := out.Cols()
 			scoresCol := out.RowRange(i, i+1)
 
-			scores := scoresCol.ColRange(4, out.Cols())
+			scores := scoresCol.ColRange(4, cols)
 			_, confidence, _, classIDPoint := gocv.MinMaxLoc(scores)
 
 			if confidence > 0.5 {
-				centerX := data[0]
-				centerY := data[1]
-				width := data[2]
-				height := data[3]
+				centerX := out.GetFloatAt(i, cols)
+				centerY := out.GetFloatAt(i, cols+1)
+				width := out.GetFloatAt(i, cols+2)
+				height := out.GetFloatAt(i, cols+3)
 
 				left := centerX - width/2
 				top := centerY - height/2
