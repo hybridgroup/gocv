@@ -226,8 +226,7 @@ func TestFaceDetectorYN(t *testing.T) {
 	faces := NewMat()
 	defer faces.Close()
 
-	// https://github.com/opencv/opencv_zoo/raw/refs/heads/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx
-	fd := NewFaceDetectorYN("testdata/face_detection_yunet_2023mar.onnx", "", s)
+	fd := NewFaceDetectorYN("data/face_detection_yunet_2023mar.onnx", "", s)
 	defer fd.Close()
 
 	sz := fd.GetInputSize()
@@ -264,7 +263,7 @@ func TestFaceDetectorYNWithParams(t *testing.T) {
 	faces := NewMat()
 	defer faces.Close()
 
-	fd := NewFaceDetectorYNWithParams("testdata/face_detection_yunet_2023mar.onnx", "", s, 0.9, 0.3, 5000, 0, 0)
+	fd := NewFaceDetectorYNWithParams("data/face_detection_yunet_2023mar.onnx", "", s, 0.9, 0.3, 5000, 0, 0)
 	defer fd.Close()
 
 	sz := fd.GetInputSize()
@@ -294,9 +293,9 @@ func TestFaceDetectorYNWithParams(t *testing.T) {
 
 func TestFaceDetectorYNFromBytes(t *testing.T) {
 
-	modelBuffer, err := os.ReadFile("testdata/face_detection_yunet_2023mar.onnx")
+	modelBuffer, err := os.ReadFile("data/face_detection_yunet_2023mar.onnx")
 	if err != nil {
-		t.Errorf("%s reading testdata/face_detection_yunet_2023mar.onnx", err.Error())
+		t.Errorf("%s reading data/face_detection_yunet_2023mar.onnx", err.Error())
 	}
 
 	img := IMRead("images/face.jpg", IMReadAnyColor)
@@ -336,9 +335,9 @@ func TestFaceDetectorYNFromBytes(t *testing.T) {
 
 func TestFaceDetectorYNFromBytesWithParams(t *testing.T) {
 
-	modelBuffer, err := os.ReadFile("testdata/face_detection_yunet_2023mar.onnx")
+	modelBuffer, err := os.ReadFile("data/face_detection_yunet_2023mar.onnx")
 	if err != nil {
-		t.Errorf("%s reading testdata/face_detection_yunet_2023mar.onnx", err.Error())
+		t.Errorf("%s reading data/face_detection_yunet_2023mar.onnx", err.Error())
 	}
 
 	img := IMRead("images/face.jpg", IMReadAnyColor)
@@ -378,51 +377,106 @@ func TestFaceDetectorYNFromBytesWithParams(t *testing.T) {
 
 func TestFaceRecognizerSF(t *testing.T) {
 
-	img := IMRead("images/face.jpg", IMReadUnchanged)
-	defer img.Close()
+	rons := IMRead("images/face.jpg", IMReadUnchanged)
+	defer rons.Close()
 
-	IMWrite("testdata/original.png", img)
+	ronsImgSz := rons.Size()
 
-	imgSz := img.Size()
-	s := image.Pt(imgSz[1], imgSz[0])
+	s := image.Pt(ronsImgSz[1], ronsImgSz[0])
 
-	faces := NewMat()
-	defer faces.Close()
-
-	// https://github.com/opencv/opencv_zoo/raw/refs/heads/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx
-	fd := NewFaceDetectorYN("testdata/face_detection_yunet_2023mar.onnx", "", s)
+	fd := NewFaceDetectorYN("data/face_detection_yunet_2023mar.onnx", "", s)
 	defer fd.Close()
 
-	detectRv := fd.Detect(img, &faces)
+	ronsFaces := NewMat()
+	defer ronsFaces.Close()
+
+	detectRv := fd.Detect(rons, &ronsFaces)
 	t.Log("detect rv is", detectRv)
 
-	facesCount := faces.Rows()
+	facesCount := ronsFaces.Rows()
 	if facesCount < 1 {
 		t.Error("no face detected")
 	}
 
-	ronsFaceX := faces.GetFloatAt(0, 0)
-	ronsFaceY := faces.GetFloatAt(0, 1)
-	ronsFaceW := faces.GetFloatAt(0, 2)
-	ronsFaceH := faces.GetFloatAt(0, 3)
+	ronsFaceX0 := ronsFaces.GetFloatAt(0, 0)
+	ronsFaceY0 := ronsFaces.GetFloatAt(0, 1)
+	ronsFaceX1 := ronsFaces.GetFloatAt(0, 0) + ronsFaces.GetFloatAt(0, 2)
+	ronsFaceY1 := ronsFaces.GetFloatAt(0, 1) + ronsFaces.GetFloatAt(0, 3)
 
-	ronsFace := img.Region(image.Rect(int(ronsFaceX), int(ronsFaceY), int(ronsFaceW), int(ronsFaceH)))
+	ronsFace := rons.Region(image.Rect(int(ronsFaceX0), int(ronsFaceY0), int(ronsFaceX1), int(ronsFaceY1)))
 	defer ronsFace.Close()
-	IMWrite("testdata/ronsface.png", ronsFace)
 
-	//https://github.com/opencv/opencv_zoo/raw/refs/heads/main/models/face_recognition_sface/face_recognition_sface_2021dec.onnx
-	fr := NewFaceRecognizerSF("testdata/face_recognition_sface_2021dec.onnx", "")
+	fr := NewFaceRecognizerSF("data/face_recognition_sface_2021dec.onnx", "")
 	defer fr.Close()
 
-	aligned := NewMat()
-	defer aligned.Close()
+	ronsAligned := NewMat()
+	defer ronsAligned.Close()
 
-	fr.AlignCrop(img, ronsFace, &aligned)
+	fr.AlignCrop(rons, ronsFace, &ronsAligned)
 
-	if aligned.Empty() {
+	if ronsAligned.Empty() {
 		t.Error("aligned is empty")
 	}
 
-	IMWrite("testdata/ronsfaceSF.png", ronsFace)
-	IMWrite("testdata/aligned.png", aligned)
+	ronsFaceFeature := NewMat()
+	defer ronsFaceFeature.Close()
+
+	fr.Feature(ronsAligned, &ronsFaceFeature)
+
+	match := fr.Match(ronsFaceFeature, ronsFaceFeature)
+	t.Log("face feature match: ", match)
+
+}
+
+func TestFaceRecognizerSFWithParams(t *testing.T) {
+
+	rons := IMRead("images/face.jpg", IMReadUnchanged)
+	defer rons.Close()
+
+	ronsImgSz := rons.Size()
+
+	s := image.Pt(ronsImgSz[1], ronsImgSz[0])
+
+	fd := NewFaceDetectorYN("data/face_detection_yunet_2023mar.onnx", "", s)
+	defer fd.Close()
+
+	ronsFaces := NewMat()
+	defer ronsFaces.Close()
+
+	detectRv := fd.Detect(rons, &ronsFaces)
+	t.Log("detect rv is", detectRv)
+
+	facesCount := ronsFaces.Rows()
+	if facesCount < 1 {
+		t.Error("no face detected")
+	}
+
+	ronsFaceX0 := ronsFaces.GetFloatAt(0, 0)
+	ronsFaceY0 := ronsFaces.GetFloatAt(0, 1)
+	ronsFaceX1 := ronsFaces.GetFloatAt(0, 0) + ronsFaces.GetFloatAt(0, 2)
+	ronsFaceY1 := ronsFaces.GetFloatAt(0, 1) + ronsFaces.GetFloatAt(0, 3)
+
+	ronsFace := rons.Region(image.Rect(int(ronsFaceX0), int(ronsFaceY0), int(ronsFaceX1), int(ronsFaceY1)))
+	defer ronsFace.Close()
+
+	fr := NewFaceRecognizerSFWithParams("data/face_recognition_sface_2021dec.onnx", "", 0, 0)
+	defer fr.Close()
+
+	ronsAligned := NewMat()
+	defer ronsAligned.Close()
+
+	fr.AlignCrop(rons, ronsFace, &ronsAligned)
+
+	if ronsAligned.Empty() {
+		t.Error("aligned is empty")
+	}
+
+	ronsFaceFeature := NewMat()
+	defer ronsFaceFeature.Close()
+
+	fr.Feature(ronsAligned, &ronsFaceFeature)
+
+	match := fr.MatchWithParams(ronsFaceFeature, ronsFaceFeature, FaceRecognizerSFDisTypeCosine)
+	t.Log("face feature match: ", match)
+
 }
