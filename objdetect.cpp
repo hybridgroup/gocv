@@ -228,7 +228,7 @@ FaceDetectorYN FaceDetectorYN_Create_FromBytes_WithParams(const char* framework,
     for(int i = 0; i < model_size; i ++) {
         bufferModelV.push_back(bmv[i]);
     }
-   for(int i = 0; i < config_size; i ++) {
+    for(int i = 0; i < config_size; i ++) {
         bufferConfigV.push_back(bcv[i]);
     }
 
