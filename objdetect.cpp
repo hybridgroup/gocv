@@ -176,3 +176,139 @@ bool QRCodeDetector_DetectAndDecodeMulti(QRCodeDetector qr, Mat input, CStrings*
   decoded->strs = strs;
   return res;
 }
+
+FaceDetectorYN FaceDetectorYN_Create(const char* model, const char* config, Size size) {
+    cv::String smodel = cv::String(model);
+    cv::String sconfig = cv::String(config);
+    cv::Size   ssize = cv::Size(size.width, size.height);
+
+    return new cv::Ptr<cv::FaceDetectorYN>(cv::FaceDetectorYN::create(smodel, sconfig, ssize));
+}
+
+FaceDetectorYN FaceDetectorYN_Create_WithParams(const char* model, const char* config, Size size, float score_threshold, float nms_threshold, int top_k, int backend_id, int target_id) {
+    cv::String smodel = cv::String(model);
+    cv::String sconfig = cv::String(config);
+    cv::Size   ssize = cv::Size(size.width, size.height);
+
+    return new cv::Ptr<cv::FaceDetectorYN>(cv::FaceDetectorYN::create(smodel, sconfig, ssize, score_threshold, nms_threshold, top_k, backend_id, target_id));
+}
+
+FaceDetectorYN FaceDetectorYN_Create_FromBytes(const char* framework, void* bufferModel, int model_size, void* bufferConfig, int config_size, Size size) {
+    cv::String sframework = cv::String(framework);
+    cv::Size   ssize = cv::Size(size.width, size.height);
+    
+    std::vector<uchar> bufferModelV;
+    std::vector<uchar> bufferConfigV;
+
+    uchar* bmv = (uchar*)bufferModel;
+    uchar* bcv = (uchar*)bufferConfig;
+
+
+    for(int i = 0; i < model_size; i ++) {
+        bufferModelV.push_back(bmv[i]);
+    }
+   for(int i = 0; i < config_size; i ++) {
+        bufferConfigV.push_back(bcv[i]);
+    }
+
+    return new cv::Ptr<cv::FaceDetectorYN>(cv::FaceDetectorYN::create(sframework, bufferModelV, bufferConfigV, ssize));
+}
+
+FaceDetectorYN FaceDetectorYN_Create_FromBytes_WithParams(const char* framework, void* bufferModel, int model_size, void* bufferConfig, int config_size, Size size, float score_threshold, float nms_threshold, int top_k, int backend_id, int target_id) {
+    cv::String sframework = cv::String(framework);
+    cv::Size   ssize = cv::Size(size.width, size.height);
+    
+    std::vector<uchar> bufferModelV;
+    std::vector<uchar> bufferConfigV;
+
+    uchar* bmv = (uchar*)bufferModel;
+    uchar* bcv = (uchar*)bufferConfig;
+
+
+    for(int i = 0; i < model_size; i ++) {
+        bufferModelV.push_back(bmv[i]);
+    }
+   for(int i = 0; i < config_size; i ++) {
+        bufferConfigV.push_back(bcv[i]);
+    }
+
+    return new cv::Ptr<cv::FaceDetectorYN>(cv::FaceDetectorYN::create(sframework, bufferModelV, bufferConfigV, ssize, score_threshold, nms_threshold, top_k, backend_id, target_id));
+}
+
+void FaceDetectorYN_Close(FaceDetectorYN fd) {
+    delete fd;
+}
+
+int FaceDetectorYN_Detect(FaceDetectorYN fd, Mat image, Mat faces) {
+    return (*fd)->detect(*image, *faces);
+}
+
+Size FaceDetectorYN_GetInputSize(FaceDetectorYN fd) {
+    Size sz;
+
+    cv::Size cvsz = (*fd)->getInputSize();
+
+    sz.width = cvsz.width;
+    sz.height = cvsz.height;
+
+    return sz;
+}
+
+float FaceDetectorYN_GetNMSThreshold(FaceDetectorYN fd) {
+    return (*fd)->getNMSThreshold();
+}
+
+float FaceDetectorYN_GetScoreThreshold(FaceDetectorYN fd) {
+    return (*fd)->getScoreThreshold();
+}
+
+int FaceDetectorYN_GetTopK(FaceDetectorYN fd) {
+    return (*fd)->getTopK();
+}
+
+void FaceDetectorYN_SetInputSize(FaceDetectorYN fd, Size input_size){
+    cv::Size isz(input_size.width, input_size.height);
+    (*fd)->setInputSize(isz);
+}
+
+void FaceDetectorYN_SetNMSThreshold(FaceDetectorYN fd, float nms_threshold){
+    (*fd)->setNMSThreshold(nms_threshold);
+}
+
+void FaceDetectorYN_SetScoreThreshold(FaceDetectorYN fd, float score_threshold){
+    (*fd)->setScoreThreshold(score_threshold);
+}
+
+void FaceDetectorYN_SetTopK(FaceDetectorYN fd, int top_k){
+    (*fd)->setTopK(top_k);
+}
+
+FaceRecognizerSF FaceRecognizerSF_Create(const char* model, const char* config) {
+    return FaceRecognizerSF_Create_WithParams(model, config, 0, 0);
+}
+
+FaceRecognizerSF FaceRecognizerSF_Create_WithParams(const char* model, const char* config, int backend_id, int target_id) {
+    cv::Ptr<cv::FaceRecognizerSF>* p = new cv::Ptr<cv::FaceRecognizerSF>(cv::FaceRecognizerSF::create(model, config, backend_id, target_id));
+    return p;
+}
+
+void FaceRecognizerSF_Close(FaceRecognizerSF fr) {
+    delete fr;
+}
+
+void FaceRecognizerSF_AlignCrop(FaceRecognizerSF fr, Mat src_img, Mat face_box, Mat aligned_img) {
+    (*fr)->alignCrop(*src_img, *face_box, *aligned_img);
+}
+
+void FaceRecognizerSF_Feature(FaceRecognizerSF fr, Mat aligned_img, Mat face_feature) {
+    (*fr)->feature(*aligned_img, *face_feature);
+}
+
+float FaceRecognizerSF_Match(FaceRecognizerSF fr, Mat face_feature1, Mat face_feature2) {
+    return FaceRecognizerSF_Match_WithParams(fr, face_feature1, face_feature2, 0);
+}
+
+float FaceRecognizerSF_Match_WithParams(FaceRecognizerSF fr, Mat face_feature1, Mat face_feature2, int dis_type) {
+    double rv = (*fr)->match(*face_feature1, *face_feature2, dis_type);
+    return (float)rv;
+}
