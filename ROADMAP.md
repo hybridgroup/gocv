@@ -164,9 +164,9 @@ Your pull requests will be greatly appreciated!
         - [ ] [detectBoard](https://docs.opencv.org/4.x/d9/df5/classcv_1_1aruco_1_1CharucoDetector.html#aacbea601612a3a0feaa45ebb7fb255fd)
         - [ ] [detectDiamonds](https://docs.opencv.org/4.x/d9/df5/classcv_1_1aruco_1_1CharucoDetector.html#a50342803f68deb1e6b0b79f61d4b1a73)
 
-    - [ ] Face Detection
-        - [ ] [FaceDetectorYN](https://docs.opencv.org/4.x/df/d20/classcv_1_1FaceDetectorYN.html)
-        - [ ] [FaceRecognizerSF](https://docs.opencv.org/4.x/da/d09/classcv_1_1FaceRecognizerSF.html)
+    - [X] Face Detection
+        - [X] [FaceDetectorYN](https://docs.opencv.org/4.x/df/d20/classcv_1_1FaceDetectorYN.html)
+        - [X] [FaceRecognizerSF](https://docs.opencv.org/4.x/da/d09/classcv_1_1FaceRecognizerSF.html)
         
 - [X] **dnn. Deep Neural Network module**
 - [ ] ml. Machine Learning
