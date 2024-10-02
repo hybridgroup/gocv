@@ -226,7 +226,7 @@ func TestFaceDetectorYN(t *testing.T) {
 	faces := NewMat()
 	defer faces.Close()
 
-	fd := NewFaceDetectorYN("data/face_detection_yunet_2023mar.onnx", "", s)
+	fd := NewFaceDetectorYN("testdata/face_detection_yunet_2023mar.onnx", "", s)
 	defer fd.Close()
 
 	sz := fd.GetInputSize()
@@ -263,7 +263,7 @@ func TestFaceDetectorYNWithParams(t *testing.T) {
 	faces := NewMat()
 	defer faces.Close()
 
-	fd := NewFaceDetectorYNWithParams("data/face_detection_yunet_2023mar.onnx", "", s, 0.9, 0.3, 5000, 0, 0)
+	fd := NewFaceDetectorYNWithParams("testdata/face_detection_yunet_2023mar.onnx", "", s, 0.9, 0.3, 5000, 0, 0)
 	defer fd.Close()
 
 	sz := fd.GetInputSize()
@@ -293,9 +293,9 @@ func TestFaceDetectorYNWithParams(t *testing.T) {
 
 func TestFaceDetectorYNFromBytes(t *testing.T) {
 
-	modelBuffer, err := os.ReadFile("data/face_detection_yunet_2023mar.onnx")
+	modelBuffer, err := os.ReadFile("testdata/face_detection_yunet_2023mar.onnx")
 	if err != nil {
-		t.Errorf("%s reading data/face_detection_yunet_2023mar.onnx", err.Error())
+		t.Errorf("%s reading testdata/face_detection_yunet_2023mar.onnx", err.Error())
 	}
 
 	img := IMRead("images/face.jpg", IMReadAnyColor)
@@ -335,9 +335,9 @@ func TestFaceDetectorYNFromBytes(t *testing.T) {
 
 func TestFaceDetectorYNFromBytesWithParams(t *testing.T) {
 
-	modelBuffer, err := os.ReadFile("data/face_detection_yunet_2023mar.onnx")
+	modelBuffer, err := os.ReadFile("testdata/face_detection_yunet_2023mar.onnx")
 	if err != nil {
-		t.Errorf("%s reading data/face_detection_yunet_2023mar.onnx", err.Error())
+		t.Errorf("%s reading testdata/face_detection_yunet_2023mar.onnx", err.Error())
 	}
 
 	img := IMRead("images/face.jpg", IMReadAnyColor)
@@ -384,7 +384,7 @@ func TestFaceRecognizerSF(t *testing.T) {
 
 	s := image.Pt(ronsImgSz[1], ronsImgSz[0])
 
-	fd := NewFaceDetectorYN("data/face_detection_yunet_2023mar.onnx", "", s)
+	fd := NewFaceDetectorYN("testdata/face_detection_yunet_2023mar.onnx", "", s)
 	defer fd.Close()
 
 	ronsFaces := NewMat()
@@ -406,7 +406,7 @@ func TestFaceRecognizerSF(t *testing.T) {
 	ronsFace := rons.Region(image.Rect(int(ronsFaceX0), int(ronsFaceY0), int(ronsFaceX1), int(ronsFaceY1)))
 	defer ronsFace.Close()
 
-	fr := NewFaceRecognizerSF("data/face_recognition_sface_2021dec.onnx", "")
+	fr := NewFaceRecognizerSF("testdata/face_recognition_sface_2021dec.onnx", "")
 	defer fr.Close()
 
 	ronsAligned := NewMat()
@@ -437,7 +437,7 @@ func TestFaceRecognizerSFWithParams(t *testing.T) {
 
 	s := image.Pt(ronsImgSz[1], ronsImgSz[0])
 
-	fd := NewFaceDetectorYN("data/face_detection_yunet_2023mar.onnx", "", s)
+	fd := NewFaceDetectorYN("testdata/face_detection_yunet_2023mar.onnx", "", s)
 	defer fd.Close()
 
 	ronsFaces := NewMat()
@@ -459,7 +459,7 @@ func TestFaceRecognizerSFWithParams(t *testing.T) {
 	ronsFace := rons.Region(image.Rect(int(ronsFaceX0), int(ronsFaceY0), int(ronsFaceX1), int(ronsFaceY1)))
 	defer ronsFace.Close()
 
-	fr := NewFaceRecognizerSFWithParams("data/face_recognition_sface_2021dec.onnx", "", 0, 0)
+	fr := NewFaceRecognizerSFWithParams("testdata/face_recognition_sface_2021dec.onnx", "", 0, 0)
 	defer fr.Close()
 
 	ronsAligned := NewMat()
