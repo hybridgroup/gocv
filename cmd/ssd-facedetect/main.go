@@ -87,8 +87,8 @@ func main() {
 		W := float32(img.Cols())
 		H := float32(img.Rows())
 
-		// convert image Mat to 96x128 blob that the detector can analyze
-		blob := gocv.BlobFromImage(img, 1.0, image.Pt(128, 96), gocv.NewScalar(104.0, 177.0, 123.0, 0), false, false)
+		// convert image Mat to 300x300 blob that the detector can analyze
+		blob := gocv.BlobFromImage(img, 1.0, image.Pt(300, 300), gocv.NewScalar(104.0, 177.0, 123.0, 0), false, false)
 		defer blob.Close()
 
 		// feed the blob into the classifier
