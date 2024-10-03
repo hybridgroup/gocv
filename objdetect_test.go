@@ -235,7 +235,7 @@ func TestFaceDetectorYN(t *testing.T) {
 	}
 	fd.SetInputSize(sz)
 
-	t1 := fd.GetMNSThreshold()
+	t1 := fd.GetNMSThreshold()
 	fd.SetNMSThreshold(t1)
 
 	t2 := fd.GetScoreThreshold()
@@ -272,7 +272,7 @@ func TestFaceDetectorYNWithParams(t *testing.T) {
 	}
 	fd.SetInputSize(sz)
 
-	t1 := fd.GetMNSThreshold()
+	t1 := fd.GetNMSThreshold()
 	fd.SetNMSThreshold(t1)
 
 	t2 := fd.GetScoreThreshold()
@@ -315,7 +315,7 @@ func TestFaceDetectorYNFromBytes(t *testing.T) {
 	}
 	fd.SetInputSize(sz)
 
-	t1 := fd.GetMNSThreshold()
+	t1 := fd.GetNMSThreshold()
 	fd.SetNMSThreshold(t1)
 
 	t2 := fd.GetScoreThreshold()
@@ -357,7 +357,7 @@ func TestFaceDetectorYNFromBytesWithParams(t *testing.T) {
 	}
 	fd.SetInputSize(sz)
 
-	t1 := fd.GetMNSThreshold()
+	t1 := fd.GetNMSThreshold()
 	fd.SetNMSThreshold(t1)
 
 	t2 := fd.GetScoreThreshold()
