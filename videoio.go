@@ -652,7 +652,7 @@ func (VideoRegistryType) GetStreamBackendPluginVersion(api VideoCaptureAPI) (str
 	return desc, int(version_abi), int(version_api)
 }
 
-// GetStreamBackends Returns list of available backends which works via gocv.VideoCapture(int index)
+// GetStreamBackends Returns list of available backends which works via gocv.VideoCapture(filename string)
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga29296d4c06ed9a9ff8bddae9fe581de1
