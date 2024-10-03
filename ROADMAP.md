@@ -81,17 +81,17 @@ Your pull requests will be greatly appreciated!
 
 - [X] **imgcodecs. Image file reading and writing.**
 - [ ] **videoio. Video I/O - WORK STARTED**
-    - [ ] Query I/O API backends registry:
-        - [ ] [getBackendName](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga6723e68832186e20bd44cd3c2b0d8c60)
-        - [ ] [getBackends](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga973abd27c3ea165472f789fa511d9f7b)
-        - [ ] [getCameraBackendPluginVersion](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gab36e3e19ab2396410b74046de141323c)
-        - [ ] [getCameraBackends](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga043347faf6f5590b867a8b621906f7a9)
-        - [ ] [getStreamBackendPluginVersion](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gadf3c0c355f0917ccf754ac1af79d605a)
-        - [ ] [getStreamBackends](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga29296d4c06ed9a9ff8bddae9fe581de1)
-        - [ ] [getWriterBackendPluginVersion](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gac41a544552a08bf3dc8142d687fbe4e5)
-        - [ ] [getWriterBackends](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gaed03e49e6a45ca5b20afe1b9f78955e0)
-        - [ ] [hasBackend](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga9068310d50ef430c2f5f6b185a99a24b)
-        - [ ] [isBackendBuiltIn](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gadf24ec0854bb893a75591306ad9f3878)
+    - [X] Query I/O API backends registry:
+        - [X] [getBackendName](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga6723e68832186e20bd44cd3c2b0d8c60)
+        - [X] [getBackends](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga973abd27c3ea165472f789fa511d9f7b)
+        - [X] [getCameraBackendPluginVersion](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gab36e3e19ab2396410b74046de141323c)
+        - [X] [getCameraBackends](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga043347faf6f5590b867a8b621906f7a9)
+        - [X] [getStreamBackendPluginVersion](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gadf3c0c355f0917ccf754ac1af79d605a)
+        - [X] [getStreamBackends](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga29296d4c06ed9a9ff8bddae9fe581de1)
+        - [X] [getWriterBackendPluginVersion](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gac41a544552a08bf3dc8142d687fbe4e5)
+        - [X] [getWriterBackends](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gaed03e49e6a45ca5b20afe1b9f78955e0)
+        - [X] [hasBackend](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga9068310d50ef430c2f5f6b185a99a24b)
+        - [X] [isBackendBuiltIn](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gadf24ec0854bb893a75591306ad9f3878)
 
 - [X] **highgui. High-level GUI**
 - [ ] **video. Video Analysis - WORK STARTED**
