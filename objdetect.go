@@ -398,7 +398,7 @@ func (fd *FaceDetectorYN) GetInputSize() image.Point {
 	return image.Pt(int(sz.width), int(sz.height))
 }
 
-func (fd *FaceDetectorYN) GetMNSThreshold() float32 {
+func (fd *FaceDetectorYN) GetNMSThreshold() float32 {
 	t := C.FaceDetectorYN_GetNMSThreshold(fd.p)
 	return float32(t)
 }
