@@ -560,3 +560,165 @@ func OpenVideoCaptureWithAPIParams(v interface{}, apiPreference VideoCaptureAPI,
 		return nil, errors.New("argument must be int or string")
 	}
 }
+
+type VideoRegistryType struct{}
+
+// VideoRegistry
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html
+var VideoRegistry VideoRegistryType
+
+// GetBackendName Returns backend API name or "UnknownVideoAPI(xxx)".
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga6723e68832186e20bd44cd3c2b0d8c60
+func (VideoRegistryType) GetBackendName(api VideoCaptureAPI) string {
+
+	c_name := C.Videoio_Registry_GetBackendName(C.int(api))
+	defer C.free(unsafe.Pointer(c_name))
+
+	name := C.GoString(c_name)
+	return name
+}
+
+// GetBackends Returns list of all available backends.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga973abd27c3ea165472f789fa511d9f7b
+func (VideoRegistryType) GetBackends() []VideoCaptureAPI {
+	intVec := C.Videio_Registry_GetBackends()
+	defer C.IntVector_Close(intVec)
+
+	c_ints := unsafe.Slice(intVec.val, int(intVec.length))
+
+	ints := make([]VideoCaptureAPI, len(c_ints))
+
+	for i, val := range c_ints {
+		ints[i] = VideoCaptureAPI(int(val))
+	}
+	return ints
+}
+
+// GetCameraBackendPluginVersion Returns description and ABI/API version of videoio plugin's camera interface.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gab36e3e19ab2396410b74046de141323c
+func (VideoRegistryType) GetCameraBackendPluginVersion(api VideoCaptureAPI) (string, int, int) {
+	var (
+		version_abi C.int
+		version_api C.int
+	)
+
+	c_desc := C.Videoio_Registry_GetCameraBackendPluginVersion(C.int(api), &version_abi, &version_api)
+	defer C.free(unsafe.Pointer(c_desc))
+	desc := C.GoString(c_desc)
+
+	return desc, int(version_abi), int(version_api)
+}
+
+// GetCameraBackends Returns list of available backends which works via gocv.VideoCapture(int index)
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga043347faf6f5590b867a8b621906f7a9
+func (VideoRegistryType) GetCameraBackends() []VideoCaptureAPI {
+	intVec := C.Videoio_Registry_GetCameraBackends()
+	defer C.IntVector_Close(intVec)
+
+	c_ints := unsafe.Slice(intVec.val, int(intVec.length))
+
+	ints := make([]VideoCaptureAPI, len(c_ints))
+
+	for i, val := range c_ints {
+		ints[i] = VideoCaptureAPI(int(val))
+	}
+	return ints
+}
+
+// GetStreamBackendPluginVersion Returns description and ABI/API version of videoio plugin's stream capture interface
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gadf3c0c355f0917ccf754ac1af79d605a
+func (VideoRegistryType) GetStreamBackendPluginVersion(api VideoCaptureAPI) (string, int, int) {
+	var (
+		version_abi C.int
+		version_api C.int
+	)
+
+	c_desc := C.Videoio_Registry_GetStreamBackendPluginVersion(C.int(api), &version_abi, &version_api)
+	defer C.free(unsafe.Pointer(c_desc))
+	desc := C.GoString(c_desc)
+
+	return desc, int(version_abi), int(version_api)
+}
+
+// GetStreamBackends Returns list of available backends which works via gocv.VideoCapture(int index)
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga29296d4c06ed9a9ff8bddae9fe581de1
+func (VideoRegistryType) GetStreamBackends() []VideoCaptureAPI {
+	intVec := C.Videoio_Registry_GetStreamBackends()
+	defer C.IntVector_Close(intVec)
+
+	c_ints := unsafe.Slice(intVec.val, int(intVec.length))
+
+	ints := make([]VideoCaptureAPI, len(c_ints))
+
+	for i, val := range c_ints {
+		ints[i] = VideoCaptureAPI(int(val))
+	}
+	return ints
+}
+
+// GetWriterBackendPluginVersion Returns description and ABI/API version of videoio plugin's writer interface.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gac41a544552a08bf3dc8142d687fbe4e5
+func (VideoRegistryType) GetWriterBackendPluginVersion(api VideoCaptureAPI) (string, int, int) {
+	var (
+		version_abi C.int
+		version_api C.int
+	)
+
+	c_desc := C.Videoio_Registry_GetWriterBackendPluginVersion(C.int(api), &version_abi, &version_api)
+	defer C.free(unsafe.Pointer(c_desc))
+	desc := C.GoString(c_desc)
+
+	return desc, int(version_abi), int(version_api)
+}
+
+// GetWriterBackends Returns list of available backends which works via gocv.VideoWriter()
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gaed03e49e6a45ca5b20afe1b9f78955e0
+func (VideoRegistryType) GetWriterBackends() []VideoCaptureAPI {
+	intVec := C.Videoio_Registry_GetWriterBackends()
+	defer C.IntVector_Close(intVec)
+
+	c_ints := unsafe.Slice(intVec.val, int(intVec.length))
+
+	ints := make([]VideoCaptureAPI, len(c_ints))
+
+	for i, val := range c_ints {
+		ints[i] = VideoCaptureAPI(int(val))
+	}
+	return ints
+}
+
+// HasBackend Returns true if backend is available.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga9068310d50ef430c2f5f6b185a99a24b
+func (VideoRegistryType) HasBackend(api VideoCaptureAPI) bool {
+	b := C.Videoio_Registry_HasBackend(C.int(api))
+	return bool(b)
+}
+
+// IsBackendBuiltIn Returns true if backend is built in (false if backend is used as plugin)
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gadf24ec0854bb893a75591306ad9f3878
+func (VideoRegistryType) IsBackendBuiltIn(api VideoCaptureAPI) bool {
+	b := C.Videoio_Registry_IsBackendBuiltIn(C.int(api))
+	return bool(b)
+}
