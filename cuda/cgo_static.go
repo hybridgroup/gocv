@@ -1,4 +1,4 @@
-//go:build !customenv && static && linux
+//go:build !customenv && opencvstatic && linux
 
 package gocv
 

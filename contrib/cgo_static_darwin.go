@@ -1,4 +1,4 @@
-//go:build !customenv && static && darwin
+//go:build !customenv && opencvstatic && darwin
 
 package gocv
 
