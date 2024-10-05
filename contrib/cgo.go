@@ -1,5 +1,4 @@
-//go:build !customenv && !static
-// +build !customenv,!static
+//go:build !customenv && !opencvstatic
 
 package contrib
 

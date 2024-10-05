@@ -1,4 +1,4 @@
-//go:build !customenv && static && windows
+//go:build !customenv && opencvstatic && windows
 
 package gocv
 
