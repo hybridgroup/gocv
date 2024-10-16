@@ -2602,13 +2602,58 @@ func TestMatMinMaxIdx(t *testing.T) {
 	src.SetFloatAt(3, 3, 17)
 	src.SetFloatAt(4, 4, 16)
 
-	minVal, maxVal, _, _ := MinMaxIdx(src)
-
+	minVal, maxVal, minIdx, maxIdx := MinMaxIdx(src)
 	if minVal != 0 {
 		t.Error("TestMatMinMaxIdx minVal should be 0.")
 	}
 	if maxVal != 17 {
 		t.Errorf("TestMatMinMaxIdx maxVal should be 17, was %f", maxVal)
+	}
+	if minIdx[0] != 0 || minIdx[1] != 0 {
+		t.Errorf("TestMatMinMaxIdx minIdx should be [0,0], was [%d,%d]", minIdx[0], minIdx[1])
+	}
+	if maxIdx[0] != 3 || maxIdx[1] != 3 {
+		t.Errorf("TestMatMinMaxIdx maxIdx should be [3,3], was [%d,%d]", maxIdx[0], maxIdx[1])
+	}
+}
+
+func TestMatMinMaxIdx3d(t *testing.T) {
+	src := NewMatWithSizes([]int{3,3,3}, MatTypeCV32F)
+	defer src.Close()
+
+	for x := 0; x < 3; x++ {
+		for y := 0; y < 3; y++ {
+			for z := 0; z < 3; z++ {
+				src.SetFloatAt3(x, y, z, 0)
+			}
+		}
+	}
+
+	src.SetFloatAt3(2, 1, 2, 2)
+
+	minVal, maxVal, minIdx, maxIdx := MinMaxIdx(src)
+	if len(minIdx) != 3 {
+		t.Errorf("minIdx should have 3 dimensions. %d found", len(minIdx))
+	}
+
+	if len(maxIdx) != 3 {
+		t.Errorf("maxIdx should have 3 dimensions. %d found", len(maxIdx))
+	}
+
+	if minVal != 0 {
+		t.Errorf("TestMatMinMaxIdx3d minVal expected 0, got %f", minVal)
+	}
+	if maxVal != 2 {
+		t.Errorf("TestMatMinMaxIdx3d maxVal should be 2, was %f", maxVal)
+	}
+
+
+	if maxIdx[0] != 2 || maxIdx[1] != 1 || maxIdx[2] != 2 {
+		t.Errorf("TestMatMinMaxIdx3d maxIdx should be [2,1,2], was [%d,%d,%d]", maxIdx[0], maxIdx[1], maxIdx[2])
+	}
+
+	if minIdx[0] != 0 || minIdx[1] != 0 || minIdx[2] != 0 {
+		t.Errorf("TestMatMinMaxIdx3d minIdx should be [0,0,0], was [%d,%d,%d]", minIdx[0], minIdx[1], minIdx[2])
 	}
 }
 

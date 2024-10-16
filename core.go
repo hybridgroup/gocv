@@ -1537,15 +1537,37 @@ func Min(src1, src2 Mat, dst *Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/de8/group__core__array.html#ga7622c466c628a75d9ed008b42250a73f
-func MinMaxIdx(input Mat) (minVal, maxVal float32, minIdx, maxIdx int) {
+func MinMaxIdx(input Mat) (minVal, maxVal float32, minIdx, maxIdx []int) {
 	var cMinVal C.double
 	var cMaxVal C.double
-	var cMinIdx C.int
-	var cMaxIdx C.int
 
-	C.Mat_MinMaxIdx(input.p, &cMinVal, &cMaxVal, &cMinIdx, &cMaxIdx)
+	dims := len(input.Size())
+	cMinIdx := (*C.int)(C.malloc(C.size_t(C.sizeof_int * dims)))
+	cMaxIdx := (*C.int)(C.malloc(C.size_t(C.sizeof_int * dims)))
+	defer C.free(unsafe.Pointer(cMinIdx))
+	defer C.free(unsafe.Pointer(cMaxIdx))
 
-	return float32(cMinVal), float32(cMaxVal), int(minIdx), int(maxIdx)
+	C.Mat_MinMaxIdx(input.p, &cMinVal, &cMaxVal, cMinIdx, cMaxIdx)
+
+	h := &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cMinIdx)),
+		Len:  dims,
+		Cap:  dims,
+	}
+	minIndex := *(*[]C.int)(unsafe.Pointer(h))
+
+	h = &reflect.SliceHeader{
+		Data: uintptr(unsafe.Pointer(cMaxIdx)),
+		Len:  dims,
+		Cap:  dims,
+	}
+	maxIndex := *(*[]C.int)(unsafe.Pointer(h))
+
+	for i := 0; i < dims; i++ {
+		minIdx = append(minIdx, int(minIndex[i]))
+		maxIdx = append(maxIdx, int(maxIndex[i]))
+	}
+	return float32(cMinVal), float32(cMaxVal), minIdx, maxIdx
 }
 
 // MinMaxLoc finds the global minimum and maximum in an array.
