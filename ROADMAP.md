@@ -81,17 +81,7 @@ Your pull requests will be greatly appreciated!
 
 - [X] **imgcodecs. Image file reading and writing.**
 - [ ] **videoio. Video I/O - WORK STARTED**
-    - [X] Query I/O API backends registry:
-        - [X] [getBackendName](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga6723e68832186e20bd44cd3c2b0d8c60)
-        - [X] [getBackends](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga973abd27c3ea165472f789fa511d9f7b)
-        - [X] [getCameraBackendPluginVersion](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gab36e3e19ab2396410b74046de141323c)
-        - [X] [getCameraBackends](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga043347faf6f5590b867a8b621906f7a9)
-        - [X] [getStreamBackendPluginVersion](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gadf3c0c355f0917ccf754ac1af79d605a)
-        - [X] [getStreamBackends](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga29296d4c06ed9a9ff8bddae9fe581de1)
-        - [X] [getWriterBackendPluginVersion](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gac41a544552a08bf3dc8142d687fbe4e5)
-        - [X] [getWriterBackends](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gaed03e49e6a45ca5b20afe1b9f78955e0)
-        - [X] [hasBackend](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#ga9068310d50ef430c2f5f6b185a99a24b)
-        - [X] [isBackendBuiltIn](https://docs.opencv.org/4.x/de/db1/group__videoio__registry.html#gadf24ec0854bb893a75591306ad9f3878)
+    - [ ] VideoWriterWithGStreamer
 
 - [X] **highgui. High-level GUI**
 - [ ] **video. Video Analysis - WORK STARTED**
@@ -177,8 +167,6 @@ Your pull requests will be greatly appreciated!
         - [ ] [detectDiamonds](https://docs.opencv.org/4.x/d9/df5/classcv_1_1aruco_1_1CharucoDetector.html#a50342803f68deb1e6b0b79f61d4b1a73)
 
     - [X] Face Detection
-        - [X] [FaceDetectorYN](https://docs.opencv.org/4.x/df/d20/classcv_1_1FaceDetectorYN.html)
-        - [X] [FaceRecognizerSF](https://docs.opencv.org/4.x/da/d09/classcv_1_1FaceRecognizerSF.html)
         
 - [X] **dnn. Deep Neural Network module**
 - [ ] ml. Machine Learning
@@ -220,10 +208,7 @@ Your pull requests will be greatly appreciated!
 - [X] **core**
 
 - [ ] **cudaarithm. Operations on Matrices - WORK STARTED** The following functions still need implementation:
-    - [X] **core - WORK STARTED** The following functions still need implementation:
-        - [X] [cv::cuda::createLookUpTable](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#ga2d9d9780dea8c5cd85d3c19b7e01979c)
-        - [X] [cv::cuda::split](https://docs.opencv.org/master/de/d09/group__cudaarithm__core.html#gabe5013d55d4ff586b20393913726179e)
-
+    - [X] **core**
     - [ ] **per-element operations - WORK STARTED** The following functions still need implementation:
         - [ ] [cv::cuda::cartToPolar](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga82210c7d1c1d42e616e554bf75a53480)
         - [ ] [cv::cuda::compare](https://docs.opencv.org/master/d8/d34/group__cudaarithm__elem.html#ga4d41cd679f4a83862a3de71a6057db54)
@@ -290,24 +275,11 @@ Your pull requests will be greatly appreciated!
     - [ ] [cv::cuda::createSeparableLinearFilter](https://docs.opencv.org/master/dc/d66/group__cudafilters.html#gaf7b79a9a92992044f328dad07a52c4bf)
 
 - [ ] **cudaimgproc. Image Processing - WORK STARTED** The following functions still need implementation:
-    - [X] [cv::cuda::alphaComp](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga08a698700458d9311390997b57fbf8dc)
-    - [X] [cv::cuda::gammaCorrection](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#gaf4195a8409c3b8fbfa37295c2b2c4729)
-    - [X] [cv::cuda::swapChannels](https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga75a29cc4a97cde0d43ea066b01de927e)
-    - [X] [cv::cuda::calcHist](https://docs.opencv.org/master/d8/d0e/group__cudaimgproc__hist.html#gaaf3944106890947020bb4522a7619c26)
     - [ ] [cv::cuda::CLAHE](https://docs.opencv.org/master/db/d79/classcv_1_1cuda_1_1CLAHE.html)
-    - [X] [cv::cuda::equalizeHist](https://docs.opencv.org/master/d8/d0e/group__cudaimgproc__hist.html#ga2384be74bd2feba7e6c46815513f0060)
-    - [X] [cv::cuda::evenLevels](https://docs.opencv.org/master/d8/d0e/group__cudaimgproc__hist.html#ga2f2cbd21dc6d7367a7c4ee1a826f389d)
-    - [X] [cv::cuda::histEven](https://docs.opencv.org/master/d8/d0e/group__cudaimgproc__hist.html#gacd3b14279fb77a57a510cb8c89a1856f)
-    - [X] [cv::cuda::histRange](https://docs.opencv.org/master/d8/d0e/group__cudaimgproc__hist.html#ga87819085c1059186d9cdeacd92cea783)
     - [ ] [cv::cuda::HoughCirclesDetector](https://docs.opencv.org/master/da/d80/classcv_1_1cuda_1_1HoughCirclesDetector.html)
     - [ ] [cv::cuda::createGoodFeaturesToTrackDetector](https://docs.opencv.org/master/dc/d6d/group__cudaimgproc__feature.html#ga478b474a598ece101f7e706fee2c8e91)
     - [ ] [cv::cuda::createHarrisCorner](https://docs.opencv.org/master/dc/d6d/group__cudaimgproc__feature.html#ga3e5878a803e9bba51added0c10101979)
     - [ ] [cv::cuda::createMinEigenValCorner](https://docs.opencv.org/master/dc/d6d/group__cudaimgproc__feature.html#ga7457fd4b53b025f990b1c1dd1b749915)
-    - [X] [cv::cuda::bilateralFilter](https://docs.opencv.org/master/d0/d05/group__cudaimgproc.html#ga6abeaecdd4e7edc0bd1393a04f4f20bd)
-    - [X] [cv::cuda::blendLinear](https://docs.opencv.org/master/d0/d05/group__cudaimgproc.html#ga4793607e5729bcc15b27ea33d9fe335e)
-    - [X] [cv::cuda::meanShiftFiltering](https://docs.opencv.org/master/d0/d05/group__cudaimgproc.html#gae13b3035bc6df0e512d876dbb8c00555)
-    - [X] [cv::cuda::meanShiftProc](https://docs.opencv.org/master/d0/d05/group__cudaimgproc.html#ga6039dc8ecbe2f912bc83fcc9b3bcca39)
-    - [X] [cv::cuda::meanShiftSegmentation](https://docs.opencv.org/master/d0/d05/group__cudaimgproc.html#ga70ed80533a448829dc48cf22b1845c16)
 
 - [X] **cudaobjdetect. Object Detection**
 

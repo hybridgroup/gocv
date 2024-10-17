@@ -1,3 +1,42 @@
+0.39.0
+---
+- **bugfix**
+  - Fixed MinGW link typo in README.md.
+  - Fixed function name typo (#1236).
+- **core**
+  - Added `FaceDetectorYN` example.
+  - Query I/O API backends registry (#1237).
+  - Face detector YN face recognizer SF (#1232).
+- **cuda**
+  - Added `createLookUpTable` and `split` functions.
+  - Added missing CUDA `imgproc` standalone functions.
+  - Added `XXXWithStream` standalone functions.
+- **docker**
+  - Added Dockerfile for container that can perform static builds of your own GoCV project (HighGUI not supported by static builds).
+  - Added Dockerfile example showing how to build using static linking.
+  - Added static build examples.
+  - Updated version for `gocv-static-builder` image.
+- **build**
+  - Updated workflow for Docker builds to latest versions.
+  - Used most recent NVIDIA CUDA base image.
+  - Used static FFmpeg build for static OpenCV build.
+  - Downgraded static build to Go 1.22 to avoid [Go issue #68976](https://github.com/golang/go/issues/68976).
+  - Modified Dockerfile used for static builds to build own versions for static linking.
+  - Corrected build options for OpenCV on arm64 for static builds.
+  - Separated build tags and linker flags for arm64 and amd64 targets.
+  - Modified LDFLAGS for correct static compilation.
+  - Removed extra file to clear space for static build/standard dev build images.
+  - Added options for Linux arm64 and separate Darwin builds.
+- **cgo**
+  - Changed tags for static OpenCV to `opencvstatic`.
+  - Added options for Linux arm64 and separate Darwin builds.
+  - Removed unneeded lib from link for Linux/arm64.
+  - Modified LDFLAGS for correct static compilation.
+- **docs**
+  - Added missing `videoio` functions to ROADMAP.
+  - Updated ROADMAP with missing `objdetect` functions for DNN faces, and moved `aruco` under `objdetect` module.
+  - Simplified the YOLO example.
+
 0.38.0
 ---
 * **bugfix**
