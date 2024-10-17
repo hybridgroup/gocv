@@ -2,7 +2,7 @@
 .PHONY: test deps download build clean astyle cmds docker
 
 # GoCV version to use.
-GOCV_VERSION?="v0.38.0"
+GOCV_VERSION?="v0.39.0"
 
 # OpenCV version to use.
 OPENCV_VERSION?=4.10.0
