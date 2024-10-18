@@ -8,7 +8,7 @@ FROM --platform=linux/amd64 ghcr.io/hybridgroup/gstreamer:1.24-alpine AS gstream
 FROM --platform=linux/arm64 ghcr.io/hybridgroup/gstreamer:1.24-alpine AS gstreamer-arm64
 
 # Stage 1: Build OpenCV
-FROM --platform=linux/amd64 ghcr.io/hybridgroup/ffmpeg:5.1.6-alpine AS builder-amd64
+FROM --platform=linux/amd64 ghcr.io/hybridgroup/ffmpeg:5.16-alpine AS builder-amd64
 
 # Install dependencies
 RUN apk update && apk add --no-cache \
@@ -86,7 +86,7 @@ RUN cmake -D CMAKE_BUILD_TYPE=Release \
     make -j$(nproc) && \
     make install
 
-FROM --platform=linux/arm64 ghcr.io/hybridgroup/ffmpeg:5.1.6-alpine AS builder-arm64
+FROM --platform=linux/arm64 ghcr.io/hybridgroup/ffmpeg:5.16-alpine AS builder-arm64
 
 # Install dependencies
 RUN apk update && apk add --no-cache \
