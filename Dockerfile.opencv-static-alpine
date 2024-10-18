@@ -1,0 +1,241 @@
+# syntax=docker/dockerfile:1.3
+
+# To build release:
+#   docker buildx build -f Dockerfile.opencv-static-alpine -t ghcr.io/hybridgroup/opencv:4.10-alpine --platform=linux/arm64,linux/amd64 --load .
+
+# Stage 1: Build OpenCV
+FROM --platform=linux/amd64 alpine:3.20 AS builder-amd64
+
+# Install dependencies
+RUN apk update && apk add --no-cache \
+    build-base \
+    cmake \
+    git \
+    diffutils \
+    perl \
+    wget \
+    unzip \
+    pkgconfig \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    libwebp-dev \
+    eigen-dev \
+    nasm yasm \
+    bzip2 xz zlib-dev x264-dev libvpx-dev \
+    opus-dev dav1d-dev \
+    gstreamer-dev gst-plugins-base-dev gstreamer gst-plugins-bad gst-plugins-good gst-plugins-base gst-plugins-ugly openssl gst-libav
+
+# Build and install xz
+ARG XZ_VERSION=5.6.3
+
+RUN wget -O xz-${XZ_VERSION}.tar.bz2 "https://github.com/tukaani-project/xz/releases/download/v${XZ_VERSION}/xz-${XZ_VERSION}.tar.bz2" && \
+        tar -xf xz-${XZ_VERSION}.tar.bz2
+
+RUN cd xz-${XZ_VERSION} && \
+        ./configure --disable-shared && \
+        make && make install
+
+# Build and install bzip2
+RUN wget -O bzip2-master.tar.bz2 "https://gitlab.com/bzip2/bzip2/-/archive/master/bzip2-master.tar.bz2" && \
+        tar -xf bzip2-master.tar.bz2
+
+RUN cd bzip2-master && \
+        mkdir build && cd build && \
+        cmake .. -DCMAKE_BUILD_TYPE="Release" -DENABLE_STATIC_LIB=ON -DENABLE_LIB_ONLY=ON && \
+        cmake --build . --target install
+
+# Build and install ffmpeg
+ARG FFMPEG_VERSION=5.1.6
+
+RUN wget -O ffmpeg-5.0.tar.bz2 "https://www.ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2" && \
+        tar -xf ffmpeg-5.0.tar.bz2
+
+# Build and install libvpx
+RUN cd ffmpeg-${FFMPEG_VERSION} && \
+        git -C libvpx pull 2> /dev/null || git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git && \
+        cd libvpx && \
+        ./configure --enable-static --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm && \
+        make -j $(nproc --all) && make install
+
+# Now finish building ffmpeg
+RUN cd ffmpeg-${FFMPEG_VERSION} && \
+        ./configure --pkg-config-flags="--static" \
+        --enable-static --disable-shared --enable-gpl --enable-libx264 --enable-libvpx --enable-zlib \
+        --disable-sdl2 --disable-vaapi --disable-vdpau --disable-v4l2-m2m --disable-doc && \
+        make -j $(nproc --all) && make install
+    
+# Set OpenCV version
+ARG OPENCV_VERSION=4.10.0
+
+# Download OpenCV source code
+WORKDIR /opencv
+RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv.zip && \
+    mv opencv-${OPENCV_VERSION} opencv
+
+WORKDIR /opencv_contrib
+RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv_contrib.zip && \
+    mv opencv_contrib-${OPENCV_VERSION} opencv_contrib
+
+# Build OpenCV
+WORKDIR /opencv/opencv/build
+RUN cmake -D CMAKE_BUILD_TYPE=Release \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          -D WITH_IPP=ON \
+          -D BUILD_WITH_DYNAMIC_IPP=OFF \
+          -D BUILD_IPP_IW=ON \
+          -D WITH_OPENGL=ON \
+          -D BUILD_OPENGL=ON \
+          -D WITH_QT=OFF \
+          -D WITH_FREETYPE=ON \
+          -D OPENCV_EXTRA_MODULES_PATH=/opencv_contrib/opencv_contrib/modules \
+          -D OPENCV_ENABLE_NONFREE=ON \
+          -D BUILD_SHARED_LIBS=OFF \
+          -D WITH_FFMPEG=ON \
+          -D WITH_GSTREAMER=OFF \
+          -D WITH_TBB=ON \
+          -D WITH_SIMD=ON \
+          -D BUILD_EXAMPLES=OFF \
+          -D BUILD_TESTS=OFF \
+          -D BUILD_PERF_TESTS=OFF \
+          -D OPENCV_GENERATE_PKGCONFIG=ON \
+          -D WITH_WEBP=ON \
+          -D BUILD_WEBP=ON \
+          -D WITH_OPENJPEG=ON \
+          -D BUILD_OPENJPEG=ON \
+          -D BUILD_TIFF=ON \
+          -D BUILD_PNG=ON \
+          -D BUILD_ZLIB=ON \
+          -D BUILD_JPEG=ON \
+          -D WITH_SIMD=ON \
+          -D ENABLE_LIBJPEG_TURBO_SIMD=OFF \
+          -D BUILD_opencv_java=NO \
+          -D BUILD_opencv_python=NO \
+          -D BUILD_opencv_python2=NO \
+          -D BUILD_opencv_python3=NO \
+          .. && \
+    make -j$(nproc) && \
+    make install
+
+FROM --platform=linux/arm64 alpine:3.20 AS builder-arm64
+
+# Install dependencies
+RUN apk update && apk add --no-cache \
+    build-base \
+    cmake \
+    git \
+    diffutils \
+    perl \
+    wget \
+    unzip \
+    pkgconfig \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    libwebp-dev \
+    eigen-dev \
+    nasm yasm \
+    bzip2 xz zlib-dev x264-dev libvpx-dev \
+    opus-dev dav1d-dev \
+    gstreamer-dev gst-plugins-base-dev gstreamer gst-plugins-bad gst-plugins-good gst-plugins-base gst-plugins-ugly openssl gst-libav
+
+# Build and install xz
+ARG XZ_VERSION=5.6.3
+
+RUN wget -O xz-${XZ_VERSION}.tar.bz2 "https://github.com/tukaani-project/xz/releases/download/v${XZ_VERSION}/xz-${XZ_VERSION}.tar.bz2" && \
+        tar -xf xz-${XZ_VERSION}.tar.bz2
+
+RUN cd xz-${XZ_VERSION} && \
+        ./configure --disable-shared && \
+        make && make install
+
+# Build and install bzip2
+RUN wget -O bzip2-master.tar.bz2 "https://gitlab.com/bzip2/bzip2/-/archive/master/bzip2-master.tar.bz2" && \
+        tar -xf bzip2-master.tar.bz2
+
+RUN cd bzip2-master && \
+        mkdir build && cd build && \
+        cmake .. -DCMAKE_BUILD_TYPE="Release" -DENABLE_STATIC_LIB=ON -DENABLE_LIB_ONLY=ON && \
+        cmake --build . --target install
+
+# Build and install ffmpeg
+ARG FFMPEG_VERSION=5.1.6
+
+RUN wget -O ffmpeg-5.0.tar.bz2 "https://www.ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2" && \
+        tar -xf ffmpeg-5.0.tar.bz2
+
+# Build and install libvpx
+RUN cd ffmpeg-${FFMPEG_VERSION} && \
+        git -C libvpx pull 2> /dev/null || git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git && \
+        cd libvpx && \
+        ./configure --enable-static --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm && \
+        make -j $(nproc --all) && make install
+
+# Now finish building ffmpeg
+RUN cd ffmpeg-${FFMPEG_VERSION} && \
+        ./configure --pkg-config-flags="--static" \
+        --enable-static --disable-shared --enable-gpl --enable-libx264 --enable-libvpx --enable-zlib \
+        --disable-sdl2 --disable-vaapi --disable-vdpau --disable-v4l2-m2m --disable-doc && \
+        make -j $(nproc --all) && make install
+    
+# Set OpenCV version
+ARG OPENCV_VERSION=4.10.0
+
+# Download OpenCV source code
+WORKDIR /opencv
+RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv.zip && \
+    mv opencv-${OPENCV_VERSION} opencv
+
+WORKDIR /opencv_contrib
+RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv_contrib.zip && \
+    mv opencv_contrib-${OPENCV_VERSION} opencv_contrib
+
+# Build OpenCV
+WORKDIR /opencv/opencv/build
+RUN cmake -D CMAKE_BUILD_TYPE=Release \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          -D WITH_IPP=OFF \
+          -D ENABLE_NEON=ON \
+          -D WITH_OPENGL=ON \
+          -D BUILD_OPENGL=ON \
+          -D WITH_QT=OFF \
+          -D WITH_FREETYPE=ON \
+          -D OPENCV_EXTRA_MODULES_PATH=/opencv_contrib/opencv_contrib/modules \
+          -D OPENCV_ENABLE_NONFREE=ON \
+          -D BUILD_SHARED_LIBS=OFF \
+          -D WITH_FFMPEG=ON \
+          -D WITH_GSTREAMER=OFF \
+          -D WITH_TBB=ON \
+          -D WITH_SIMD=ON \
+          -D ENABLE_LIBJPEG_TURBO_SIMD=OFF \
+          -D BUILD_EXAMPLES=OFF \
+          -D BUILD_TESTS=OFF \
+          -D BUILD_PERF_TESTS=OFF \
+          -D OPENCV_GENERATE_PKGCONFIG=ON \
+          -D WITH_WEBP=ON \
+          -D BUILD_WEBP=ON \
+          -D WITH_OPENJPEG=ON \
+          -D BUILD_OPENJPEG=ON \
+          -D BUILD_TIFF=ON \
+          -D BUILD_PNG=ON \
+          -D BUILD_ZLIB=ON \
+          -D BUILD_JPEG=ON \
+          -D WITH_SIMD=ON \
+          -D ENABLE_LIBJPEG_TURBO_SIMD=OFF \
+          -D BUILD_opencv_java=NO \
+          -D BUILD_opencv_python=NO \
+          -D BUILD_opencv_python2=NO \
+          -D BUILD_opencv_python3=NO \
+          .. && \
+    make -j$(nproc) && \
+    make install
+
+# Stage 2: Create final image
+FROM builder-${TARGETARCH} AS final
+
+# Set environment variables
+ENV LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib/opencv4/3rdparty:${LD_LIBRARY_PATH}
+
+CMD ["opencv_version", "-b"]
