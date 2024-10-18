@@ -3,8 +3,12 @@
 # To build release:
 #   docker buildx build -f Dockerfile.opencv-static-alpine -t ghcr.io/hybridgroup/opencv:4.10-alpine --platform=linux/arm64,linux/amd64 --load .
 
+FROM --platform=linux/amd64 ghcr.io/hybridgroup/gstreamer:1.24-alpine AS gstreamer-amd64
+
+FROM --platform=linux/arm64 ghcr.io/hybridgroup/gstreamer:1.24-alpine AS gstreamer-arm64
+
 # Stage 1: Build OpenCV
-FROM --platform=linux/amd64 alpine:3.20 AS builder-amd64
+FROM --platform=linux/amd64 ghcr.io/hybridgroup/ffmpeg:5.1.6-alpine AS builder-amd64
 
 # Install dependencies
 RUN apk update && apk add --no-cache \
@@ -22,48 +26,12 @@ RUN apk update && apk add --no-cache \
     eigen-dev \
     nasm yasm \
     bzip2 xz zlib-dev x264-dev libvpx-dev \
-    opus-dev dav1d-dev \
-    gstreamer-dev gst-plugins-base-dev gstreamer gst-plugins-bad gst-plugins-good gst-plugins-base gst-plugins-ugly openssl gst-libav
+    opus-dev dav1d-dev openssl
 
-# Build and install xz
-ARG XZ_VERSION=5.6.3
+# copy gstreamer
+COPY --from=gstreamer-amd64 /gstbin/lib /usr/local/lib
+COPY --from=gstreamer-amd64 /gstbin/include /usr/local/include
 
-RUN wget -O xz-${XZ_VERSION}.tar.bz2 "https://github.com/tukaani-project/xz/releases/download/v${XZ_VERSION}/xz-${XZ_VERSION}.tar.bz2" && \
-        tar -xf xz-${XZ_VERSION}.tar.bz2
-
-RUN cd xz-${XZ_VERSION} && \
-        ./configure --disable-shared && \
-        make && make install
-
-# Build and install bzip2
-RUN wget -O bzip2-master.tar.bz2 "https://gitlab.com/bzip2/bzip2/-/archive/master/bzip2-master.tar.bz2" && \
-        tar -xf bzip2-master.tar.bz2
-
-RUN cd bzip2-master && \
-        mkdir build && cd build && \
-        cmake .. -DCMAKE_BUILD_TYPE="Release" -DENABLE_STATIC_LIB=ON -DENABLE_LIB_ONLY=ON && \
-        cmake --build . --target install
-
-# Build and install ffmpeg
-ARG FFMPEG_VERSION=5.1.6
-
-RUN wget -O ffmpeg-5.0.tar.bz2 "https://www.ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2" && \
-        tar -xf ffmpeg-5.0.tar.bz2
-
-# Build and install libvpx
-RUN cd ffmpeg-${FFMPEG_VERSION} && \
-        git -C libvpx pull 2> /dev/null || git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git && \
-        cd libvpx && \
-        ./configure --enable-static --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm && \
-        make -j $(nproc --all) && make install
-
-# Now finish building ffmpeg
-RUN cd ffmpeg-${FFMPEG_VERSION} && \
-        ./configure --pkg-config-flags="--static" \
-        --enable-static --disable-shared --enable-gpl --enable-libx264 --enable-libvpx --enable-zlib \
-        --disable-sdl2 --disable-vaapi --disable-vdpau --disable-v4l2-m2m --disable-doc && \
-        make -j $(nproc --all) && make install
-    
 # Set OpenCV version
 ARG OPENCV_VERSION=4.10.0
 
@@ -93,7 +61,7 @@ RUN cmake -D CMAKE_BUILD_TYPE=Release \
           -D OPENCV_ENABLE_NONFREE=ON \
           -D BUILD_SHARED_LIBS=OFF \
           -D WITH_FFMPEG=ON \
-          -D WITH_GSTREAMER=OFF \
+          -D WITH_GSTREAMER=ON \
           -D WITH_TBB=ON \
           -D WITH_SIMD=ON \
           -D BUILD_EXAMPLES=OFF \
@@ -118,7 +86,7 @@ RUN cmake -D CMAKE_BUILD_TYPE=Release \
     make -j$(nproc) && \
     make install
 
-FROM --platform=linux/arm64 alpine:3.20 AS builder-arm64
+FROM --platform=linux/arm64 ghcr.io/hybridgroup/ffmpeg:5.1.6-alpine AS builder-arm64
 
 # Install dependencies
 RUN apk update && apk add --no-cache \
@@ -136,48 +104,12 @@ RUN apk update && apk add --no-cache \
     eigen-dev \
     nasm yasm \
     bzip2 xz zlib-dev x264-dev libvpx-dev \
-    opus-dev dav1d-dev \
-    gstreamer-dev gst-plugins-base-dev gstreamer gst-plugins-bad gst-plugins-good gst-plugins-base gst-plugins-ugly openssl gst-libav
+    opus-dev dav1d-dev openssl
 
-# Build and install xz
-ARG XZ_VERSION=5.6.3
+# copy gstreamer
+COPY --from=gstreamer-arm64 /gstbin/lib /usr/local/lib
+COPY --from=gstreamer-arm64 /gstbin/include /usr/local/include
 
-RUN wget -O xz-${XZ_VERSION}.tar.bz2 "https://github.com/tukaani-project/xz/releases/download/v${XZ_VERSION}/xz-${XZ_VERSION}.tar.bz2" && \
-        tar -xf xz-${XZ_VERSION}.tar.bz2
-
-RUN cd xz-${XZ_VERSION} && \
-        ./configure --disable-shared && \
-        make && make install
-
-# Build and install bzip2
-RUN wget -O bzip2-master.tar.bz2 "https://gitlab.com/bzip2/bzip2/-/archive/master/bzip2-master.tar.bz2" && \
-        tar -xf bzip2-master.tar.bz2
-
-RUN cd bzip2-master && \
-        mkdir build && cd build && \
-        cmake .. -DCMAKE_BUILD_TYPE="Release" -DENABLE_STATIC_LIB=ON -DENABLE_LIB_ONLY=ON && \
-        cmake --build . --target install
-
-# Build and install ffmpeg
-ARG FFMPEG_VERSION=5.1.6
-
-RUN wget -O ffmpeg-5.0.tar.bz2 "https://www.ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2" && \
-        tar -xf ffmpeg-5.0.tar.bz2
-
-# Build and install libvpx
-RUN cd ffmpeg-${FFMPEG_VERSION} && \
-        git -C libvpx pull 2> /dev/null || git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git && \
-        cd libvpx && \
-        ./configure --enable-static --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm && \
-        make -j $(nproc --all) && make install
-
-# Now finish building ffmpeg
-RUN cd ffmpeg-${FFMPEG_VERSION} && \
-        ./configure --pkg-config-flags="--static" \
-        --enable-static --disable-shared --enable-gpl --enable-libx264 --enable-libvpx --enable-zlib \
-        --disable-sdl2 --disable-vaapi --disable-vdpau --disable-v4l2-m2m --disable-doc && \
-        make -j $(nproc --all) && make install
-    
 # Set OpenCV version
 ARG OPENCV_VERSION=4.10.0
 
@@ -206,7 +138,7 @@ RUN cmake -D CMAKE_BUILD_TYPE=Release \
           -D OPENCV_ENABLE_NONFREE=ON \
           -D BUILD_SHARED_LIBS=OFF \
           -D WITH_FFMPEG=ON \
-          -D WITH_GSTREAMER=OFF \
+          -D WITH_GSTREAMER=ON \
           -D WITH_TBB=ON \
           -D WITH_SIMD=ON \
           -D ENABLE_LIBJPEG_TURBO_SIMD=OFF \
