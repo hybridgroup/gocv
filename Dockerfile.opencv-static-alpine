@@ -26,11 +26,19 @@ RUN apk update && apk add --no-cache \
     eigen-dev \
     nasm yasm \
     bzip2 xz zlib-dev x264-dev libvpx-dev \
-    opus-dev dav1d-dev openssl
+    opus-dev dav1d-dev openssl \
+    libxml2-dev \
+    bison \
+    flex \
+    glib-dev \
+    gobject-introspection-dev \
+    libcap-dev \
+    libcap-utils \
+    meson
 
 # copy gstreamer
 COPY --from=gstreamer-amd64 /gstbin/lib /usr/local/lib
-COPY --from=gstreamer-amd64 /gstbin/include /usr/local/include
+COPY --from=gstreamer-amd64 /gstbin/include/gstreamer-1.0/gst /usr/local/include/gst
 
 # Set OpenCV version
 ARG OPENCV_VERSION=4.10.0
@@ -56,7 +64,7 @@ RUN cmake -D CMAKE_BUILD_TYPE=Release \
           -D WITH_OPENGL=ON \
           -D BUILD_OPENGL=ON \
           -D WITH_QT=OFF \
-          -D WITH_FREETYPE=ON \
+          -D WITH_FREETYPE=OFF \
           -D OPENCV_EXTRA_MODULES_PATH=/opencv_contrib/opencv_contrib/modules \
           -D OPENCV_ENABLE_NONFREE=ON \
           -D BUILD_SHARED_LIBS=OFF \
@@ -104,11 +112,19 @@ RUN apk update && apk add --no-cache \
     eigen-dev \
     nasm yasm \
     bzip2 xz zlib-dev x264-dev libvpx-dev \
-    opus-dev dav1d-dev openssl
+    opus-dev dav1d-dev openssl \
+    libxml2-dev \
+    bison \
+    flex \
+    glib-dev \
+    gobject-introspection-dev \
+    libcap-dev \
+    libcap-utils \
+    meson
 
 # copy gstreamer
 COPY --from=gstreamer-arm64 /gstbin/lib /usr/local/lib
-COPY --from=gstreamer-arm64 /gstbin/include /usr/local/include
+COPY --from=gstreamer-arm64 /gstbin/include/gstreamer-1.0/gst /usr/local/include/gst
 
 # Set OpenCV version
 ARG OPENCV_VERSION=4.10.0
@@ -133,7 +149,7 @@ RUN cmake -D CMAKE_BUILD_TYPE=Release \
           -D WITH_OPENGL=ON \
           -D BUILD_OPENGL=ON \
           -D WITH_QT=OFF \
-          -D WITH_FREETYPE=ON \
+          -D WITH_FREETYPE=OFF \
           -D OPENCV_EXTRA_MODULES_PATH=/opencv_contrib/opencv_contrib/modules \
           -D OPENCV_ENABLE_NONFREE=ON \
           -D BUILD_SHARED_LIBS=OFF \
