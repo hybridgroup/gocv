@@ -1,0 +1,113 @@
+# To build release:
+#   docker buildx build -f Dockerfile.gstreamer-static-alpine -t ghcr.io/hybridgroup/gstreamer:1.24-alpine --platform=linux/arm64,linux/amd64 --load .
+
+FROM --platform=linux/amd64 alpine:3.20 AS builder-amd64
+
+WORKDIR /gstreamer
+
+ARG GST_BUILD_VERSION=1.24
+RUN wget https://gitlab.freedesktop.org/gstreamer/gstreamer/-/archive/${GST_BUILD_VERSION}/gstreamer-${GST_BUILD_VERSION}.tar.gz && \
+	tar -xzf gstreamer-${GST_BUILD_VERSION}.tar.gz 
+
+WORKDIR /gstreamer/gstreamer-${GST_BUILD_VERSION}
+
+RUN apk update && apk add build-base \
+		libxml2-dev \
+		bison \
+		flex \
+		glib-dev \
+		gobject-introspection-dev \
+		libcap-dev \
+		libcap-utils \
+		meson \
+		perl \
+		wget \
+		git \
+		nasm
+
+RUN	meson --default-library=static --prefix=/gstbin  \
+    -Dgst-full-target-type=static_library \
+    -Dauto_features=disabled \
+	-Dbase=enabled \
+	-Dgood=enabled \
+	-Dbad=enabled \
+	-Dgst-plugins-base:typefind=enabled \
+	-Dgst-plugins-base:playback=enabled \
+	-Dgst-plugins-base:volume=enabled \
+	-Dgst-plugins-base:audioconvert=enabled \
+	-Dgst-plugins-base:app=enabled \
+	-Dgst-plugins-good:isomp4=enabled \
+	-Dgst-plugins-good:rtp=enabled \
+	-Dgst-plugins-good:udp=enabled \
+	-Dgst-plugins-good:rtsp=enabled \
+	-Dgst-plugins-good:rtpmanager=enabled \
+	-Dgst-plugins-good:audioparsers=enabled \
+	-Dgst-plugins-bad:videoparsers=enabled \
+	-Dgst-plugins-bad:codectimestamper=enabled \
+	-Dgst-plugins-bad:openh264=enabled \
+	-Dtools=disabled \
+    build
+
+RUN meson compile -C build
+
+RUN meson install -C build
+
+
+FROM --platform=linux/arm64 alpine:3.20 AS builder-arm64
+
+WORKDIR /gstreamer
+
+ARG GST_BUILD_VERSION=1.24
+RUN wget https://gitlab.freedesktop.org/gstreamer/gstreamer/-/archive/${GST_BUILD_VERSION}/gstreamer-${GST_BUILD_VERSION}.tar.gz && \
+	tar -xzf gstreamer-${GST_BUILD_VERSION}.tar.gz 
+
+WORKDIR /gstreamer/gstreamer-${GST_BUILD_VERSION}
+
+RUN apk update && apk add build-base \
+		libxml2-dev \
+		bison \
+		flex \
+		glib-dev \
+		gobject-introspection-dev \
+		libcap-dev \
+		libcap-utils \
+		meson \
+		perl \
+		wget \
+		git \
+		nasm
+
+RUN	meson --default-library=static --prefix=/gstbin  \
+    -Dgst-full-target-type=static_library \
+    -Dauto_features=disabled \
+	-Dbase=enabled \
+	-Dgood=enabled \
+	-Dbad=enabled \
+	-Dgst-plugins-base:typefind=enabled \
+	-Dgst-plugins-base:playback=enabled \
+	-Dgst-plugins-base:volume=enabled \
+	-Dgst-plugins-base:audioconvert=enabled \
+	-Dgst-plugins-base:app=enabled \
+	-Dgst-plugins-good:isomp4=enabled \
+	-Dgst-plugins-good:rtp=enabled \
+	-Dgst-plugins-good:udp=enabled \
+	-Dgst-plugins-good:rtsp=enabled \
+	-Dgst-plugins-good:rtpmanager=enabled \
+	-Dgst-plugins-good:audioparsers=enabled \
+	-Dgst-plugins-bad:videoparsers=enabled \
+	-Dgst-plugins-bad:codectimestamper=enabled \
+	-Dgst-plugins-bad:openh264=enabled \
+	-Dtools=disabled \
+    build
+
+RUN meson compile -C build
+
+RUN meson install -C build
+
+ARG TARGETARCH
+
+FROM builder-${TARGETARCH} AS final
+
+ENV PATH=/gstbin/bin:${PATH}
+ENV LD_LIBRARY_PATH=/usr/lib:/gstbin/lib:/usr/local/lib:${LD_LIBRARY_PATH}
+ENV PKG_CONFIG_PATH=/gstbin/lib/pkgconfig
