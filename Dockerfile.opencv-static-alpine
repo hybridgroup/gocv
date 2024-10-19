@@ -3,12 +3,26 @@
 # To build release:
 #   docker buildx build -f Dockerfile.opencv-static-alpine -t ghcr.io/hybridgroup/opencv:4.10-alpine --platform=linux/arm64,linux/amd64 --load .
 
-FROM --platform=linux/amd64 ghcr.io/hybridgroup/gstreamer:1.24-alpine AS gstreamer-amd64
+# linux/amd64 build
 
-FROM --platform=linux/arm64 ghcr.io/hybridgroup/gstreamer:1.24-alpine AS gstreamer-arm64
+FROM --platform=linux/amd64 ghcr.io/hybridgroup/gstreamer:1.24-alpine AS gstreamer-amd64
 
 # Stage 1: Build OpenCV
 FROM --platform=linux/amd64 ghcr.io/hybridgroup/ffmpeg:5.16-alpine AS builder-amd64
+
+# Set OpenCV version
+ARG OPENCV_VERSION=4.10.0
+
+# Download OpenCV source code
+WORKDIR /opencv
+RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv.zip && \
+    mv opencv-${OPENCV_VERSION} opencv
+
+WORKDIR /opencv_contrib
+RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv_contrib.zip && \
+    mv opencv_contrib-${OPENCV_VERSION} opencv_contrib
 
 # Install dependencies
 RUN apk update && apk add --no-cache \
@@ -39,20 +53,6 @@ RUN apk update && apk add --no-cache \
 # copy gstreamer
 COPY --from=gstreamer-amd64 /gstbin/lib /usr/local/lib
 COPY --from=gstreamer-amd64 /gstbin/include/gstreamer-1.0/gst /usr/local/include/gst
-
-# Set OpenCV version
-ARG OPENCV_VERSION=4.10.0
-
-# Download OpenCV source code
-WORKDIR /opencv
-RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
-    unzip -q opencv.zip && \
-    mv opencv-${OPENCV_VERSION} opencv
-
-WORKDIR /opencv_contrib
-RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip && \
-    unzip -q opencv_contrib.zip && \
-    mv opencv_contrib-${OPENCV_VERSION} opencv_contrib
 
 # Build OpenCV
 WORKDIR /opencv/opencv/build
@@ -94,7 +94,25 @@ RUN cmake -D CMAKE_BUILD_TYPE=Release \
     make -j$(nproc) && \
     make install
 
+
+# linux/arm64 build
+FROM --platform=linux/arm64 ghcr.io/hybridgroup/gstreamer:1.24-alpine AS gstreamer-arm64
+
 FROM --platform=linux/arm64 ghcr.io/hybridgroup/ffmpeg:5.16-alpine AS builder-arm64
+
+# Set OpenCV version
+ARG OPENCV_VERSION=4.10.0
+
+# Download OpenCV source code
+WORKDIR /opencv
+RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv.zip && \
+    mv opencv-${OPENCV_VERSION} opencv
+
+WORKDIR /opencv_contrib
+RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv_contrib.zip && \
+    mv opencv_contrib-${OPENCV_VERSION} opencv_contrib
 
 # Install dependencies
 RUN apk update && apk add --no-cache \
@@ -125,20 +143,6 @@ RUN apk update && apk add --no-cache \
 # copy gstreamer
 COPY --from=gstreamer-arm64 /gstbin/lib /usr/local/lib
 COPY --from=gstreamer-arm64 /gstbin/include/gstreamer-1.0/gst /usr/local/include/gst
-
-# Set OpenCV version
-ARG OPENCV_VERSION=4.10.0
-
-# Download OpenCV source code
-WORKDIR /opencv
-RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
-    unzip -q opencv.zip && \
-    mv opencv-${OPENCV_VERSION} opencv
-
-WORKDIR /opencv_contrib
-RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip && \
-    unzip -q opencv_contrib.zip && \
-    mv opencv_contrib-${OPENCV_VERSION} opencv_contrib
 
 # Build OpenCV
 WORKDIR /opencv/opencv/build
