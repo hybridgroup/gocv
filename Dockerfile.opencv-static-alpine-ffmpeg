@@ -1,0 +1,181 @@
+# syntax=docker/dockerfile:1.3
+
+# To build release:
+#   docker buildx build -f Dockerfile.opencv-static-alpine-ffmpeg -t ghcr.io/hybridgroup/opencv:4.10-alpine-ffmpeg --platform=linux/arm64,linux/amd64 --load .
+
+# linux/amd64 build
+
+# Stage 1: Build OpenCV
+FROM --platform=linux/amd64 ghcr.io/hybridgroup/ffmpeg:5.16-alpine AS builder-amd64
+
+# Set OpenCV version
+ARG OPENCV_VERSION=4.10.0
+
+# Download OpenCV source code
+WORKDIR /opencv
+RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv.zip && \
+    mv opencv-${OPENCV_VERSION} opencv
+
+WORKDIR /opencv_contrib
+RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv_contrib.zip && \
+    mv opencv_contrib-${OPENCV_VERSION} opencv_contrib
+
+# Install dependencies
+RUN apk update && apk add --no-cache \
+    build-base \
+    cmake \
+    git \
+    diffutils \
+    perl \
+    wget \
+    unzip \
+    pkgconfig \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    libwebp-dev \
+    eigen-dev \
+    nasm yasm \
+    bzip2 xz zlib-dev x264-dev libvpx-dev \
+    opus-dev dav1d-dev openssl \
+    libxml2-dev \
+    bison \
+    flex \
+    glib-dev \
+    gobject-introspection-dev \
+    libcap-dev \
+    libcap-utils \
+    meson
+
+# Build OpenCV
+WORKDIR /opencv/opencv/build
+RUN cmake -D CMAKE_BUILD_TYPE=Release \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          -D WITH_IPP=ON \
+          -D BUILD_WITH_DYNAMIC_IPP=OFF \
+          -D BUILD_IPP_IW=ON \
+          -D WITH_OPENGL=ON \
+          -D BUILD_OPENGL=ON \
+          -D WITH_QT=OFF \
+          -D WITH_FREETYPE=OFF \
+          -D OPENCV_EXTRA_MODULES_PATH=/opencv_contrib/opencv_contrib/modules \
+          -D OPENCV_ENABLE_NONFREE=ON \
+          -D BUILD_SHARED_LIBS=OFF \
+          -D WITH_FFMPEG=ON \
+          -D WITH_GSTREAMER=OFF \
+          -D WITH_TBB=ON \
+          -D WITH_SIMD=ON \
+          -D BUILD_EXAMPLES=OFF \
+          -D BUILD_TESTS=OFF \
+          -D BUILD_PERF_TESTS=OFF \
+          -D OPENCV_GENERATE_PKGCONFIG=ON \
+          -D WITH_WEBP=ON \
+          -D BUILD_WEBP=ON \
+          -D WITH_OPENJPEG=ON \
+          -D BUILD_OPENJPEG=ON \
+          -D BUILD_TIFF=ON \
+          -D BUILD_PNG=ON \
+          -D BUILD_ZLIB=ON \
+          -D BUILD_JPEG=ON \
+          -D WITH_SIMD=ON \
+          -D ENABLE_LIBJPEG_TURBO_SIMD=OFF \
+          -D BUILD_opencv_java=NO \
+          -D BUILD_opencv_python=NO \
+          -D BUILD_opencv_python2=NO \
+          -D BUILD_opencv_python3=NO \
+          .. && \
+    make -j$(nproc) && \
+    make install
+
+
+# linux/arm64 build
+FROM --platform=linux/arm64 ghcr.io/hybridgroup/ffmpeg:5.16-alpine AS builder-arm64
+
+# Set OpenCV version
+ARG OPENCV_VERSION=4.10.0
+
+# Download OpenCV source code
+WORKDIR /opencv
+RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv.zip && \
+    mv opencv-${OPENCV_VERSION} opencv
+
+WORKDIR /opencv_contrib
+RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip && \
+    unzip -q opencv_contrib.zip && \
+    mv opencv_contrib-${OPENCV_VERSION} opencv_contrib
+
+# Install dependencies
+RUN apk update && apk add --no-cache \
+    build-base \
+    cmake \
+    git \
+    diffutils \
+    perl \
+    wget \
+    unzip \
+    pkgconfig \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    libwebp-dev \
+    eigen-dev \
+    nasm yasm \
+    bzip2 xz zlib-dev x264-dev libvpx-dev \
+    opus-dev dav1d-dev openssl \
+    libxml2-dev \
+    bison \
+    flex \
+    glib-dev \
+    gobject-introspection-dev \
+    libcap-dev \
+    libcap-utils \
+    meson
+
+# Build OpenCV
+WORKDIR /opencv/opencv/build
+RUN cmake -D CMAKE_BUILD_TYPE=Release \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          -D WITH_IPP=OFF \
+          -D ENABLE_NEON=ON \
+          -D WITH_OPENGL=ON \
+          -D BUILD_OPENGL=ON \
+          -D WITH_QT=OFF \
+          -D WITH_FREETYPE=OFF \
+          -D OPENCV_EXTRA_MODULES_PATH=/opencv_contrib/opencv_contrib/modules \
+          -D OPENCV_ENABLE_NONFREE=ON \
+          -D BUILD_SHARED_LIBS=OFF \
+          -D WITH_FFMPEG=ON \
+          -D WITH_GSTREAMER=OFF \
+          -D WITH_TBB=ON \
+          -D WITH_SIMD=ON \
+          -D ENABLE_LIBJPEG_TURBO_SIMD=OFF \
+          -D BUILD_EXAMPLES=OFF \
+          -D BUILD_TESTS=OFF \
+          -D BUILD_PERF_TESTS=OFF \
+          -D OPENCV_GENERATE_PKGCONFIG=ON \
+          -D WITH_WEBP=ON \
+          -D BUILD_WEBP=ON \
+          -D WITH_OPENJPEG=ON \
+          -D BUILD_OPENJPEG=ON \
+          -D BUILD_TIFF=ON \
+          -D BUILD_PNG=ON \
+          -D BUILD_ZLIB=ON \
+          -D BUILD_JPEG=ON \
+          -D WITH_SIMD=ON \
+          -D ENABLE_LIBJPEG_TURBO_SIMD=OFF \
+          -D BUILD_opencv_java=NO \
+          -D BUILD_opencv_python=NO \
+          -D BUILD_opencv_python2=NO \
+          -D BUILD_opencv_python3=NO \
+          .. && \
+    make -j$(nproc) && \
+    make install
+
+# Stage 2: Create final image
+FROM builder-${TARGETARCH} AS final
+
+# Set environment variables
+ENV LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib/opencv4/3rdparty:${LD_LIBRARY_PATH}
+
+CMD ["opencv_version", "-b"]
