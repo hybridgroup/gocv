@@ -7,7 +7,7 @@ WORKDIR /gstreamer
 
 ARG GST_BUILD_VERSION=1.24
 RUN wget https://gitlab.freedesktop.org/gstreamer/gstreamer/-/archive/${GST_BUILD_VERSION}/gstreamer-${GST_BUILD_VERSION}.tar.gz && \
-	tar -xvzf gstreamer-${GST_BUILD_VERSION}.tar.gz 
+	tar -xzf gstreamer-${GST_BUILD_VERSION}.tar.gz 
 
 WORKDIR /gstreamer/gstreamer-${GST_BUILD_VERSION}
 
@@ -59,7 +59,7 @@ WORKDIR /gstreamer
 
 ARG GST_BUILD_VERSION=1.24
 RUN wget https://gitlab.freedesktop.org/gstreamer/gstreamer/-/archive/${GST_BUILD_VERSION}/gstreamer-${GST_BUILD_VERSION}.tar.gz && \
-	tar -xvzf gstreamer-${GST_BUILD_VERSION}.tar.gz 
+	tar -xzf gstreamer-${GST_BUILD_VERSION}.tar.gz 
 
 WORKDIR /gstreamer/gstreamer-${GST_BUILD_VERSION}
 

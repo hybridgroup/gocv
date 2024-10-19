@@ -1,10 +1,27 @@
 # syntax=docker/dockerfile:1.3
 
 # To build release:
-#   docker buildx build -f Dockerfile.ffmpeg-static-alpine -t ghcr.io/hybridgroup/ffmpeg:5.1.6-alpine --platform=linux/arm64,linux/amd64 --load .
+#   docker buildx build -f Dockerfile.ffmpeg-static-alpine -t ghcr.io/hybridgroup/ffmpeg:5.16-alpine --platform=linux/arm64,linux/amd64 --load .
 
 # Stage 1: Build OpenCV
 FROM --platform=linux/amd64 alpine:3.20 AS builder-amd64
+
+WORKDIR /
+
+ARG FFMPEG_VERSION=5.1.6
+ARG XZ_VERSION=5.6.3
+
+# download xz
+RUN wget -O xz-${XZ_VERSION}.tar.bz2 "https://github.com/tukaani-project/xz/releases/download/v${XZ_VERSION}/xz-${XZ_VERSION}.tar.bz2" && \
+        tar -xf xz-${XZ_VERSION}.tar.bz2
+
+# download bzip2
+RUN wget -O bzip2-master.tar.bz2 "https://gitlab.com/bzip2/bzip2/-/archive/master/bzip2-master.tar.bz2" && \
+        tar -xf bzip2-master.tar.bz2
+
+# download ffmpeg source
+RUN wget -O ffmpeg-5.0.tar.bz2 "https://www.ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2" && \
+        tar -xf ffmpeg-5.0.tar.bz2
 
 # Install dependencies
 RUN apk update && apk add --no-cache \
@@ -24,30 +41,16 @@ RUN apk update && apk add --no-cache \
     bzip2 xz zlib-dev x264-dev libvpx-dev \
     opus-dev dav1d-dev python3
 
-ARG FFMPEG_VERSION=5.1.6
-ARG XZ_VERSION=5.6.3
-
 # Build and install xz
-RUN wget -O xz-${XZ_VERSION}.tar.bz2 "https://github.com/tukaani-project/xz/releases/download/v${XZ_VERSION}/xz-${XZ_VERSION}.tar.bz2" && \
-        tar -xf xz-${XZ_VERSION}.tar.bz2
-
 RUN cd xz-${XZ_VERSION} && \
         ./configure --disable-shared && \
         make && make install
 
 # Build and install bzip2
-RUN wget -O bzip2-master.tar.bz2 "https://gitlab.com/bzip2/bzip2/-/archive/master/bzip2-master.tar.bz2" && \
-        tar -xf bzip2-master.tar.bz2
-
 RUN cd bzip2-master && \
         mkdir build && cd build && \
         cmake .. -DCMAKE_BUILD_TYPE="Release" -DENABLE_STATIC_LIB=ON -DENABLE_LIB_ONLY=ON && \
         cmake --build . --target install
-
-# Build and install ffmpeg
-
-RUN wget -O ffmpeg-5.0.tar.bz2 "https://www.ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2" && \
-        tar -xf ffmpeg-5.0.tar.bz2
 
 # Build and install libvpx
 RUN cd ffmpeg-${FFMPEG_VERSION} && \
@@ -82,9 +85,6 @@ RUN apk update && apk add --no-cache \
     nasm yasm \
     bzip2 xz zlib-dev x264-dev libvpx-dev \
     opus-dev dav1d-dev python3
-
-ARG FFMPEG_VERSION=5.1.6
-ARG XZ_VERSION=5.6.3
 
 # Build and install xz
 RUN wget -O xz-${XZ_VERSION}.tar.bz2 "https://github.com/tukaani-project/xz/releases/download/v${XZ_VERSION}/xz-${XZ_VERSION}.tar.bz2" && \
