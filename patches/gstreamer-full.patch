@@ -1,0 +1,234 @@
+From d306a36c86c91eccb84496df1dbbcab7d66eaf2c Mon Sep 17 00:00:00 2001
+From: deadprogram <ron@hybridgroup.com>
+Date: Mon, 21 Oct 2024 10:08:11 +0200
+Subject: [PATCH] gstreamer: modify cmake file to handle staticly linked
+ gstreamer lib
+
+Signed-off-by: deadprogram <ron@hybridgroup.com>
+---
+ modules/videoio/cmake/detect_gstreamer.cmake | 209 ++++++++++++++++++-
+ 1 file changed, 208 insertions(+), 1 deletion(-)
+
+diff --git a/modules/videoio/cmake/detect_gstreamer.cmake b/modules/videoio/cmake/detect_gstreamer.cmake
+index b2ab06060d..6108b7f3eb 100644
+--- a/modules/videoio/cmake/detect_gstreamer.cmake
++++ b/modules/videoio/cmake/detect_gstreamer.cmake
+@@ -100,7 +100,214 @@ if(NOT HAVE_GSTREAMER AND PKG_CONFIG_FOUND)
+   ocv_check_modules(GSTREAMER_pbutils gstreamer-pbutils-1.0)
+   ocv_check_modules(GSTREAMER_video gstreamer-video-1.0)
+   ocv_check_modules(GSTREAMER_audio gstreamer-audio-1.0)
+-  if(GSTREAMER_base_FOUND AND GSTREAMER_app_FOUND AND GSTREAMER_riff_FOUND AND GSTREAMER_pbutils_FOUND AND GSTREAMER_video_FOUND AND GSTREAMER_audio_FOUND)
++
++  set(gst_paths "${GSTREAMER_STATIC_LIB}" ENV GSTREAMER_STATIC_LIB)
++  find_library(GSTREAMER_full_LIBRARY
++    NAMES gstreamer-full-1.0
++    PATHS ${gst_paths}/..)
++  if(GSTREAMER_base_FOUND AND GSTREAMER_full_LIBRARY)
++    find_library(GSTREAMER_gstaudioparsers_LIBRARY
++      NAMES gstaudioparsers
++      PATHS ${gst_paths})
++    find_library(GSTREAMER_gstcodectimestamper_LIBRARY
++      NAMES gstcodectimestamper
++      PATHS ${gst_paths})
++    find_library(GSTREAMER_gstcoreelements_LIBRARY
++      NAMES gstcoreelements
++      PATHS ${gst_paths})
++    find_library(GSTREAMER_gstisomp4_LIBRARY
++      NAMES gstisomp4
++      PATHS ${gst_paths})
++    find_library(GSTREAMER_gstopenh264_LIBRARY
++      NAMES gstopenh264
++      PATHS ${gst_paths})
++    find_library(GSTREAMER_gstrtp_LIBRARY
++      NAMES gstrtp
++      PATHS ${gst_paths})
++    find_library(GSTREAMER_gstrtpmanager_LIBRARY
++      NAMES gstrtpmanager
++      PATHS ${gst_paths})
++    find_library(GSTREAMER_gstrtsp_LIBRARY
++      NAMES gstrtsp
++      PATHS ${gst_paths})
++    find_library(GSTREAMER_gstudp_LIBRARY
++      NAMES gstudp
++      PATHS ${gst_paths})
++    find_library(GSTREAMER_gstvideoparsersbad_LIBRARY
++      NAMES gstvideoparsersbad
++      PATHS ${gst_paths})
++    find_library(GSTREAMER_gstadaptivedemux_LIBRARY
++      NAMES gstadaptivedemux-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstallocators_LIBRARY
++      NAMES gstallocators-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstanalytics_LIBRARY
++      NAMES gstanalytics-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstapp_LIBRARY
++      NAMES gstapp-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstaudio_LIBRARY
++      NAMES gstaudio-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstbadaudio_LIBRARY
++      NAMES gstbadaudio-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstbase_LIBRARY
++      NAMES gstbase-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstbasecamerabinsrc_LIBRARY
++      NAMES gstbasecamerabinsrc-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstcodecparsers_LIBRARY
++      NAMES gstcodecparsers-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstcodecs_LIBRARY
++      NAMES gstcodecs-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstcontroller_LIBRARY
++      NAMES gstcontroller-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstcuda_LIBRARY
++      NAMES gstcuda-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstfft_LIBRARY
++      NAMES gstfft-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstinsertbin_LIBRARY
++      NAMES gstinsertbin-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstisoff_LIBRARY
++      NAMES gstisoff-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstmpegts_LIBRARY
++      NAMES gstmpegts-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstmse_LIBRARY
++      NAMES gstmse-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstnet_LIBRARY
++      NAMES gstnet-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstpbutils_LIBRARY
++      NAMES gstpbutils-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstphotography_LIBRARY
++      NAMES gstphotography-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstplay_LIBRARY
++      NAMES gstplay-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstplayer_LIBRARY
++      NAMES gstplayer-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstreamer_LIBRARY
++      NAMES gstreamer-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstriff_LIBRARY
++      NAMES gstriff-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstrtp1_LIBRARY
++      NAMES gstrtp-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstrtsp1_LIBRARY
++      NAMES gstrtsp-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstsctp_LIBRARY
++      NAMES gstsctp-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstsdp_LIBRARY
++      NAMES gstsdp-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gsttag_LIBRARY
++      NAMES gsttag-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gsttranscoder_LIBRARY
++      NAMES gsttranscoder-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gsturidownloader_LIBRARY
++      NAMES gsturidownloader-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstvideo_LIBRARY
++      NAMES gstvideo-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gstwebrtc_LIBRARY
++      NAMES gstwebrtc-1.0
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_openh264_LIBRARY
++      NAMES openh264
++      PATHS ${gst_paths}/..)
++    find_library(GSTREAMER_gio_LIBRARY
++      NAMES gio-2.0)
++    find_library(GSTREAMER_gobject_LIBRARY
++      NAMES gobject-2.0)
++    find_library(GSTREAMER_intl_LIBRARY
++      NAMES intl)
++
++    set(HAVE_GSTREAMER TRUE)
++    set(GSTREAMER_LIBRARIES ${GSTREAMER_full_LIBRARY}
++      ${GSTREAMER_gstaudioparsers_LIBRARY}
++      ${GSTREAMER_gstcodectimestamper_LIBRARY}
++      ${GSTREAMER_gstcoreelements_LIBRARY}
++      ${GSTREAMER_gstisomp4_LIBRARY}
++      ${GSTREAMER_gstopenh264_LIBRARY}
++      ${GSTREAMER_gstrtp_LIBRARY}
++      ${GSTREAMER_gstrtpmanager_LIBRARY}
++      ${GSTREAMER_gstrtsp_LIBRARY}
++      ${GSTREAMER_gstudp_LIBRARY}
++      ${GSTREAMER_gstvideoparsersbad_LIBRARY}
++      ${GSTREAMER_gstadaptivedemux_LIBRARY}
++      ${GSTREAMER_gstallocators_LIBRARY}
++      ${GSTREAMER_gstanalytics_LIBRARY}
++      ${GSTREAMER_gstapp_LIBRARY}
++      ${GSTREAMER_gstaudio_LIBRARY}
++      ${GSTREAMER_gstbadaudio_LIBRARY}
++      ${GSTREAMER_gstbase_LIBRARY}
++      ${GSTREAMER_gstbasecamerabinsrc_LIBRARY}
++      ${GSTREAMER_gstcodecparsers_LIBRARY}
++      ${GSTREAMER_gstcodecs_LIBRARY}
++      ${GSTREAMER_gstcontroller_LIBRARY}
++      ${GSTREAMER_gstcuda_LIBRARY}
++      ${GSTREAMER_gstfft_LIBRARY}
++      ${GSTREAMER_gstinsertbin_LIBRARY}
++      ${GSTREAMER_gstisoff_LIBRARY}
++      ${GSTREAMER_gstmpegts_LIBRARY}
++      ${GSTREAMER_gstmse_LIBRARY}
++      ${GSTREAMER_gstnet_LIBRARY}
++      ${GSTREAMER_gstpbutils_LIBRARY}
++      ${GSTREAMER_gstphotography_LIBRARY}
++      ${GSTREAMER_gstplay_LIBRARY}
++      ${GSTREAMER_gstplayer_LIBRARY}
++      ${GSTREAMER_gstreamer_LIBRARY}
++      ${GSTREAMER_gstriff_LIBRARY}
++      ${GSTREAMER_gstrtp1_LIBRARY}
++      ${GSTREAMER_gstrtsp1_LIBRARY}
++      ${GSTREAMER_gstsctp_LIBRARY}
++      ${GSTREAMER_gstsdp_LIBRARY}
++      ${GSTREAMER_gsttag_LIBRARY}
++      ${GSTREAMER_gsttranscoder_LIBRARY}
++      ${GSTREAMER_gsturidownloader_LIBRARY}
++      ${GSTREAMER_gstvideo_LIBRARY}
++      ${GSTREAMER_gstwebrtc_LIBRARY}
++      ${GSTREAMER_openh264_LIBRARY}
++      ${GSTREAMER_gio_LIBRARY}
++      ${GSTREAMER_gobject_LIBRARY}
++      ${GSTREAMER_intl_LIBRARY}
++      ${GSTREAMER_base_LIBRARIES}
++      ${GSTREAMER_app_LIBRARIES}
++      ${GSTREAMER_riff_LIBRARIES}
++      ${GSTREAMER_pbutils_LIBRARIES}
++      ${GSTREAMER_video_LIBRARIES}
++      ${GSTREAMER_audio_LIBRARIES})
++    set(GSTREAMER_INCLUDE_DIRS 
++      ${GSTREAMER_base_INCLUDE_DIRS}
++      ${GSTREAMER_app_INCLUDE_DIRS}
++      ${GSTREAMER_riff_INCLUDE_DIRS}
++      ${GSTREAMER_pbutils_INCLUDE_DIRS}
++      ${GSTREAMER_video_INCLUDE_DIRS}
++      ${GSTREAMER_audio_INCLUDE_DIRS})
++  else(GSTREAMER_base_FOUND AND GSTREAMER_app_FOUND AND GSTREAMER_riff_FOUND AND GSTREAMER_pbutils_FOUND AND GSTREAMER_video_FOUND AND GSTREAMER_audio_FOUND)
+     set(HAVE_GSTREAMER TRUE)
+     set(GSTREAMER_VERSION ${GSTREAMER_base_VERSION})  # informational
+     set(GSTREAMER_LIBRARIES ${GSTREAMER_base_LIBRARIES} ${GSTREAMER_app_LIBRARIES} ${GSTREAMER_riff_LIBRARIES} ${GSTREAMER_pbutils_LIBRARIES} ${GSTREAMER_video_LIBRARIES} ${GSTREAMER_audio_LIBRARIES})
+-- 
+2.34.1
+
