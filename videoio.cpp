@@ -88,6 +88,25 @@ void VideoWriter_Open(VideoWriter vw, const char* name, const char* codec, doubl
     vw->open(name, codecCode, fps, cv::Size(width, height), isColor);
 }
 
+void VideoWriter_OpenWithAPI(VideoWriter vw, const char* name, int apiPreference, const char* codec, double fps, int width,
+                      int height, bool isColor) {
+    int codecCode = cv::VideoWriter::fourcc(codec[0], codec[1], codec[2], codec[3]);
+    vw->open(name, apiPreference, codecCode, fps, cv::Size(width, height), isColor);
+}
+
+void VideoWriter_OpenWithAPIParams(VideoWriter vw, const char* name, int apiPreference, const char* codec, double fps, int width,
+                      int height, IntVector params) {
+    
+    std::vector<int>  cpp_params;
+
+    for(int i = 0; i < params.length; i++) {
+        cpp_params.push_back(params.val[i]);
+    }
+
+    int codecCode = cv::VideoWriter::fourcc(codec[0], codec[1], codec[2], codec[3]);
+    vw->open(name, apiPreference, codecCode, fps, cv::Size(width, height), cpp_params);
+}
+
 int VideoWriter_IsOpened(VideoWriter vw) {
     return vw->isOpened();
 }
