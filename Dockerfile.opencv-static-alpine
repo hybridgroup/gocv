@@ -44,7 +44,7 @@ RUN apk update && apk add --no-cache \
     libxml2-dev \
     bison \
     flex \
-    glib-dev \
+    glib-dev glib-static \
     gobject-introspection-dev \
     libcap-dev \
     libcap-utils \
@@ -54,7 +54,14 @@ RUN apk update && apk add --no-cache \
 COPY --from=gstreamer-amd64 /gstbin/lib /usr/local/lib
 COPY --from=gstreamer-amd64 /gstbin/include/gstreamer-1.0/gst /usr/local/include/gst
 
+# patch opencv for static gstreamer
+COPY ./patches/gstreamer-full.patch /opencv/opencv
+RUN cd /opencv/opencv && \
+    patch -p1 < gstreamer-full.patch
+
 # Build OpenCV
+ENV GSTREAMER_STATIC_LIB=/usr/local/lib/gstreamer-1.0
+
 WORKDIR /opencv/opencv/build
 RUN cmake -D CMAKE_BUILD_TYPE=Release \
           -D CMAKE_INSTALL_PREFIX=/usr/local \
@@ -134,7 +141,7 @@ RUN apk update && apk add --no-cache \
     libxml2-dev \
     bison \
     flex \
-    glib-dev \
+    glib-dev glib-static \
     gobject-introspection-dev \
     libcap-dev \
     libcap-utils \
@@ -144,7 +151,14 @@ RUN apk update && apk add --no-cache \
 COPY --from=gstreamer-arm64 /gstbin/lib /usr/local/lib
 COPY --from=gstreamer-arm64 /gstbin/include/gstreamer-1.0/gst /usr/local/include/gst
 
+# patch opencv for static gstreamer
+COPY ./patches/gstreamer-full.patch /opencv/opencv
+RUN cd /opencv/opencv && \
+    patch -p1 < gstreamer-full.patch
+
 # Build OpenCV
+ENV GSTREAMER_STATIC_LIB=/usr/local/lib/gstreamer-1.0
+
 WORKDIR /opencv/opencv/build
 RUN cmake -D CMAKE_BUILD_TYPE=Release \
           -D CMAKE_INSTALL_PREFIX=/usr/local \
