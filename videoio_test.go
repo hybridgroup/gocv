@@ -3,6 +3,7 @@ package gocv
 import (
 	"io/ioutil"
 	"math"
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -200,6 +201,53 @@ func TestVideoWriterFile(t *testing.T) {
 	defer img.Close()
 
 	vw, _ := VideoWriterFile(tmpfn, "MJPG", 25, img.Cols(), img.Rows(), true)
+	defer vw.Close()
+
+	if !vw.IsOpened() {
+		t.Error("Unable to open VideoWriterFile")
+	}
+
+	err := vw.Write(img)
+	if err != nil {
+		t.Error("Invalid Write() in VideoWriter")
+	}
+}
+
+func TestVideoWriterFileWithAPI(t *testing.T) {
+	dir := os.TempDir()
+	tmpfn := filepath.Join(dir, "test.avi")
+
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in VideoWriterFile test")
+	}
+	defer img.Close()
+
+	vw, _ := VideoWriterFileWithAPI(tmpfn, VideoCaptureFFmpeg, "MJPG", 25, img.Cols(), img.Rows(), true)
+	defer vw.Close()
+
+	if !vw.IsOpened() {
+		t.Error("Unable to open VideoWriterFile")
+	}
+
+	err := vw.Write(img)
+	if err != nil {
+		t.Error("Invalid Write() in VideoWriter")
+	}
+}
+
+func TestVideoWriterFileWithAPIParams(t *testing.T) {
+	dir := os.TempDir()
+	tmpfn := filepath.Join(dir, "test.avi")
+
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in VideoWriterFile test")
+	}
+	defer img.Close()
+
+	vw, _ := VideoWriterFileWithAPIParams(tmpfn, VideoCaptureFFmpeg, "MJPG", 25, img.Cols(), img.Rows(),
+		[]VideoWriterProperty{VideoWriterHwAcceleration, 0, VideoWriterIsColor, 1})
 	defer vw.Close()
 
 	if !vw.IsOpened() {

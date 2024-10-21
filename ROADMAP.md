@@ -80,8 +80,8 @@ Your pull requests will be greatly appreciated!
     - [X] **Object Detection**
 
 - [X] **imgcodecs. Image file reading and writing.**
-- [ ] **videoio. Video I/O - WORK STARTED**
-    - [ ] VideoWriterWithGStreamer
+- [X] **videoio. Video I/O - WORK STARTED**
+    - [X] VideoWriterWithGStreamer
 
 - [X] **highgui. High-level GUI**
 - [ ] **video. Video Analysis - WORK STARTED**

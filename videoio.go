@@ -288,6 +288,63 @@ const (
 	VideoCaptureHWDevice VideoCaptureProperties = 51
 )
 
+// VideoWriterProperty
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d4/d15/group__videoio__flags__base.html#ga41c5cfa7859ae542b71b1d33bbd4d2b4
+type VideoWriterProperty int
+
+const (
+	// VideoWriterQuality Current quality (0..100%) of the encoded videostream.
+	// Can be adjusted dynamically in some codecs.
+	VideoWriterQuality VideoWriterProperty = 1
+
+	// VideoWriterFramebytes (Read-only): Size of just encoded video frame.
+	// Note that the encoding order may be different from representation order.
+	VideoWriterFramebytes VideoWriterProperty = 2
+
+	// VideoWriterNstripes Number of stripes for parallel encoding. -1 for auto detection.
+	VideoWriterNstripes VideoWriterProperty = 3
+
+	// VideoWriterIsColor If it is not zero, the encoder will expect and encode color frames,
+	// otherwise it will work with grayscale frames.
+	VideoWriterIsColor VideoWriterProperty = 4
+
+	// VideoWriterDepth Defaults to CV8U.
+	VideoWriterDepth VideoWriterProperty = 5
+
+	// VideoWriterHwAcceleration (open-only) Hardware acceleration type
+	// (see https://docs.opencv.org/4.x/dc/dfc/group__videoio__flags__others.html#gaf61f8388a47aad88cd82cbda6d52c391).
+	// Setting supported only via params parameter in VideoWriterFileWithAPIParams.
+	// Default value is backend-specific.
+	VideoWriterHwAcceleration VideoWriterProperty = 6
+
+	// VideoWriterHwDevice (open-only) Hardware device index (select GPU if multiple available).
+	// Device enumeration is acceleration type specific.
+	VideoWriterHwDevice VideoWriterProperty = 7
+
+	// VideoWriterHwAccelerationUseOpencl open-only) If non-zero, create new OpenCL context and bind it to current thread.
+	VideoWriterHwAccelerationUseOpencl VideoWriterProperty = 8
+
+	// VideoWriterRawVideo (open-only) Set to non-zero to enable encapsulation of an encoded raw video stream.
+	VideoWriterRawVideo VideoWriterProperty = 9
+
+	// VideoWriterKeyInterval (open-only) Set the key frame interval using raw video encapsulation
+	// (VideoWriterRawVideo != 0). Defaults to 1 when not set. FFmpeg back-end only.
+	VideoWriterKeyInterval VideoWriterProperty = 10
+
+	// VideoWriterKeyFlag Set to non-zero to signal that the following frames are key frames or zero if not,
+	// when encapsulating raw video (VideoWriterRawVideo != 0). FFmpeg back-end only.
+	VideoWriterKeyFlag VideoWriterProperty = 11
+
+	// VideoWriterPts Specifies the frame presentation timestamp for each frame using the FPS time base.
+	VideoWriterPts VideoWriterProperty = 12
+
+	// VideoWriterDtsDelay Specifies the maximum difference between presentation (pts)
+	// and decompression timestamps (dts) using the FPS time base.
+	VideoWriterDtsDelay VideoWriterProperty = 13
+)
+
 // VideoCapture is a wrapper around the OpenCV VideoCapture class.
 //
 // For further details, please see:
@@ -476,6 +533,71 @@ func VideoWriterFile(name string, codec string, fps float64, width int, height i
 	defer C.free(unsafe.Pointer(cCodec))
 
 	C.VideoWriter_Open(vw.p, cName, cCodec, C.double(fps), C.int(width), C.int(height), C.bool(isColor))
+	return
+}
+
+// VideoWriterFileWithAPI opens a VideoWriter with a specific output file.
+// The "codec" param should be the four-letter code for the desired output
+// codec, for example "MJPG".
+//
+// For further details, please see:
+// http://docs.opencv.org/master/dd/d9e/classcv_1_1VideoWriter.html#a0901c353cd5ea05bba455317dab81130
+func VideoWriterFileWithAPI(name string, apiPreference VideoCaptureAPI, codec string, fps float64, width int, height int, isColor bool) (vw *VideoWriter, err error) {
+
+	if fps == 0 || width == 0 || height == 0 {
+		return nil, fmt.Errorf("one of the numerical parameters "+
+			"is equal to zero: FPS: %f, width: %d, height: %d", fps, width, height)
+	}
+
+	vw = &VideoWriter{
+		p:  C.VideoWriter_New(),
+		mu: &sync.RWMutex{},
+	}
+
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+
+	cCodec := C.CString(codec)
+	defer C.free(unsafe.Pointer(cCodec))
+
+	C.VideoWriter_OpenWithAPI(vw.p, cName, C.int(apiPreference), cCodec, C.double(fps), C.int(width), C.int(height), C.bool(isColor))
+	return
+}
+
+// VideoWriterFileWithAPIParams opens a VideoWriter with a specific output file.
+// The "codec" param should be the four-letter code for the desired output
+// codec, for example "MJPG".
+//
+// For further details, please see:
+// http://docs.opencv.org/master/dd/d9e/classcv_1_1VideoWriter.html#a0901c353cd5ea05bba455317dab81130
+func VideoWriterFileWithAPIParams(name string, apiPreference VideoCaptureAPI, codec string, fps float64, width int, height int, params []VideoWriterProperty) (vw *VideoWriter, err error) {
+
+	if fps == 0 || width == 0 || height == 0 {
+		return nil, fmt.Errorf("one of the numerical parameters "+
+			"is equal to zero: FPS: %f, width: %d, height: %d", fps, width, height)
+	}
+
+	vw = &VideoWriter{
+		p:  C.VideoWriter_New(),
+		mu: &sync.RWMutex{},
+	}
+
+	c_name := C.CString(name)
+	defer C.free(unsafe.Pointer(c_name))
+
+	c_codec := C.CString(codec)
+	defer C.free(unsafe.Pointer(c_codec))
+
+	c_ints := make([]C.int, len(params))
+	for i := range params {
+		c_ints[i] = C.int(params[i])
+	}
+
+	c_params := C.IntVector{
+		val:    unsafe.SliceData(c_ints),
+		length: C.int(len(params)),
+	}
+	C.VideoWriter_OpenWithAPIParams(vw.p, c_name, C.int(apiPreference), c_codec, C.double(fps), C.int(width), C.int(height), c_params)
 	return
 }
 
