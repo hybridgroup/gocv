@@ -1,0 +1,36 @@
+name: Build-ubuntu-opencv
+on:
+  workflow_dispatch:
+    inputs:
+      ubuntu:
+        description: 'ubuntu version (ex: 22.04)'
+        required: true
+        default: '22.04'
+      opencv:
+        description: 'opencv version (ex: 4.10.0)'
+        required: true
+        default: '4.10.0'
+
+jobs:
+  build-arm64:
+    runs-on: [self-hosted, linux, ARM64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build
+        run: UBUNTU_VERSION=${{ github.event.inputs.ubuntu }} OPENCV_VERSION=${{ github.event.inputs.opencv }} ./github/build-ubuntu-arm64.sh
+  build-amd64:
+    runs-on: [self-hosted, linux, X64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build
+        run: UBUNTU_VERSION=${{ github.event.inputs.ubuntu }} OPENCV_VERSION=${{ github.event.inputs.opencv }} ./github/build-ubuntu-amd64.sh
+  build-manifest:
+    runs-on: [self-hosted, linux, X64]
+    needs: [build-arm64, build-amd64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build manifest
+        run: UBUNTU_VERSION=${{ github.event.inputs.ubuntu }} OPENCV_VERSION=${{ github.event.inputs.opencv }} ./github/build-ubuntu-manifest.sh
