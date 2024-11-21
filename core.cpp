@@ -58,6 +58,10 @@ Mat Mat_NewWithSizesFromBytes(IntVector sizes, int type, struct ByteArray buf) {
     return new cv::Mat(_sizes, type, buf.data);
 }
 
+Mat Mat_NewFromPoint2fVector(Point2fVector pfv, bool copy_data) {
+    return new cv::Mat(*pfv, copy_data);
+}
+
 Mat Eye(int rows, int cols, int type) {
     cv::Mat* mat = new cv::Mat(rows, cols, type);
     *mat = cv::Mat::eye(rows, cols, type);

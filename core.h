@@ -306,6 +306,7 @@ Mat Mat_NewWithSizesFromBytes(IntVector sizes, int type, struct ByteArray buf);
 Mat Mat_NewFromScalar(const Scalar ar, int type);
 Mat Mat_NewWithSizeFromScalar(const Scalar ar, int rows, int cols, int type);
 Mat Mat_NewFromBytes(int rows, int cols, int type, struct ByteArray buf);
+Mat Mat_NewFromPoint2fVector(Point2fVector pfv, bool copy_data);
 Mat Mat_FromPtr(Mat m, int rows, int cols, int type, int prows, int pcols);
 void Mat_Close(Mat m);
 int Mat_Empty(Mat m);

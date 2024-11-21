@@ -250,7 +250,7 @@ func NewMatWithSizesWithScalar(sizes []int, mt MatType, s Scalar) Mat {
 	return newMat(C.Mat_NewWithSizesFromScalar(sizesVector, C.int(mt), sVal))
 }
 
-// NewMatWithSizesWithScalar returns a new multidimensional Mat with a specific size, type and preexisting data.
+// NewMatWithSizesFromBytes returns a new multidimensional Mat with a specific size, type and preexisting data.
 func NewMatWithSizesFromBytes(sizes []int, mt MatType, data []byte) (Mat, error) {
 	cBytes, err := toByteArray(data)
 	if err != nil {
@@ -310,6 +310,12 @@ func NewMatFromBytes(rows int, cols int, mt MatType, data []byte) (Mat, error) {
 	mat.d = data
 
 	return mat, nil
+}
+
+// NewMatFromPoint2fVector returns a new Mat from a gocv.Point2fVector.
+func NewMatFromPoint2fVector(pfv Point2fVector, copyData bool) Mat {
+	mat := newMat(C.Mat_NewFromPoint2fVector(pfv.p, C.bool(copyData)))
+	return mat
 }
 
 // Returns an identity matrix of the specified size and type.
