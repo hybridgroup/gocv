@@ -2079,8 +2079,8 @@ func TestGetAffineTransform2f(t *testing.T) {
 func TestFindHomography(t *testing.T) {
 	src := NewMatWithSize(4, 1, MatTypeCV64FC2)
 	defer src.Close()
-	dst := NewMatWithSize(4, 1, MatTypeCV64FC2)
-	defer dst.Close()
+	target := NewMatWithSize(4, 1, MatTypeCV64FC2)
+	defer target.Close()
 
 	srcPoints := []Point2f{
 		{193, 932},
@@ -2088,7 +2088,7 @@ func TestFindHomography(t *testing.T) {
 		{1497, 183},
 		{1889, 681},
 	}
-	dstPoints := []Point2f{
+	targetPoints := []Point2f{
 		{51.51206544281359, -0.10425475260813055},
 		{51.51211051314331, -0.10437947532732306},
 		{51.512222354139325, -0.10437679311830816},
@@ -2100,21 +2100,21 @@ func TestFindHomography(t *testing.T) {
 		src.SetDoubleAt(i, 1, float64(point.Y))
 	}
 
-	for i, point := range dstPoints {
-		dst.SetDoubleAt(i, 0, float64(point.X))
-		dst.SetDoubleAt(i, 1, float64(point.Y))
+	for i, point := range targetPoints {
+		target.SetDoubleAt(i, 0, float64(point.X))
+		target.SetDoubleAt(i, 1, float64(point.Y))
 	}
 
 	mask := NewMat()
 	defer mask.Close()
 
-	m := FindHomography(src, &dst, HomographyMethodAllPoints, 3, &mask, 2000, 0.995)
+	m := FindHomography(src, target, HomographyMethodAllPoints, 3, &mask, 2000, 0.995)
 	defer m.Close()
 
 	pvsrc := NewPoint2fVectorFromPoints(srcPoints)
 	defer pvsrc.Close()
 
-	pvdst := NewPoint2fVectorFromPoints(dstPoints)
+	pvdst := NewPoint2fVectorFromPoints(targetPoints)
 	defer pvdst.Close()
 
 	m2 := GetPerspectiveTransform2f(pvsrc, pvdst)
