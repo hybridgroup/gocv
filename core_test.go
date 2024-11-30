@@ -3412,3 +3412,23 @@ func TestNewRotatedRect2f(t *testing.T) {
 	}
 
 }
+
+func TestNewMatFromPointVector(t *testing.T) {
+
+	img := IMRead("images/face.jpg", IMReadColor)
+	defer img.Close()
+
+	size := img.Size()
+
+	points := []image.Point{
+		image.Pt(0, 0), image.Pt(0, size[0]-1),
+		image.Pt(size[1]-1, size[0]-1),
+		image.Pt(size[1]-1, 0),
+	}
+
+	pv := NewPointVectorFromPoints(points)
+	defer pv.Close()
+
+	m := NewMatFromPointVector(pv, false)
+	defer m.Close()
+}

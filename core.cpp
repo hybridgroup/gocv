@@ -62,6 +62,10 @@ Mat Mat_NewFromPoint2fVector(Point2fVector pfv, bool copy_data) {
     return new cv::Mat(*pfv, copy_data);
 }
 
+Mat Mat_NewFromPointVector(PointVector pv, bool copy_data) {
+    return new cv::Mat(*pv, copy_data);
+}
+
 Mat Eye(int rows, int cols, int type) {
     cv::Mat* mat = new cv::Mat(rows, cols, type);
     *mat = cv::Mat::eye(rows, cols, type);
