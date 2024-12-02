@@ -3416,6 +3416,8 @@ func TestNewRotatedRect2f(t *testing.T) {
 func TestNewMatFromPointVector(t *testing.T) {
 
 	img := NewMatWithSize(320, 200, MatTypeCV32SC1)
+	defer img.Close()
+
 	size := img.Size()
 
 	points := []image.Point{
