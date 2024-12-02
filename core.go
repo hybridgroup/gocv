@@ -318,6 +318,12 @@ func NewMatFromPoint2fVector(pfv Point2fVector, copyData bool) Mat {
 	return mat
 }
 
+// NewMatFromPointVector returns a new Mat from a gocv.PointVector.
+func NewMatFromPointVector(pv PointVector, copyData bool) Mat {
+	mat := newMat(C.Mat_NewFromPointVector(pv.p, C.bool(copyData)))
+	return mat
+}
+
 // Returns an identity matrix of the specified size and type.
 //
 // The method returns a Matlab-style identity matrix initializer, similarly to Mat::zeros. Similarly to Mat::ones.
