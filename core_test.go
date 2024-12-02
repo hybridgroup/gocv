@@ -3415,9 +3415,7 @@ func TestNewRotatedRect2f(t *testing.T) {
 
 func TestNewMatFromPointVector(t *testing.T) {
 
-	img := IMRead("images/face.jpg", IMReadColor)
-	defer img.Close()
-
+	img := NewMatWithSize(320, 200, MatTypeCV32SC1)
 	size := img.Size()
 
 	points := []image.Point{
@@ -3431,4 +3429,23 @@ func TestNewMatFromPointVector(t *testing.T) {
 
 	m := NewMatFromPointVector(pv, false)
 	defer m.Close()
+
+	if m.Empty() {
+		t.Error("Mat shlould not be empty")
+	}
+
+}
+
+func TestNewMatFromPoint2fVector(t *testing.T) {
+
+	pv2f := NewPoint2fVectorFromPoints([]Point2f{NewPoint2f(1.1, 2.2)})
+	defer pv2f.Close()
+
+	m := NewMatFromPoint2fVector(pv2f, false)
+	defer m.Close()
+
+	if m.Empty() {
+		t.Error("Mat shlould not be empty")
+	}
+
 }
