@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Enforce Go formatted code
         run: "test -z $(gofmt -l .) || gofmt -d ."
       - name: Install dependencies
@@ -62,7 +62,7 @@ jobs:
           go tool cover -html=/tmp/coverage.out -o /tmp/coverage.html
           go tool cover -html=/tmp/contrib.out -o /tmp/contrib.html
       - name: Archive code coverage results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: code-coverage-report
           path: /tmp/*.html
