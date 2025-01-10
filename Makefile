@@ -21,6 +21,7 @@ RPMS=cmake curl wget git gtk2-devel libpng-devel libjpeg-devel libtiff-devel tbb
 DEBS=unzip wget build-essential cmake curl git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev libharfbuzz-dev libfreetype6-dev
 DEBS_BOOKWORM=unzip wget build-essential cmake curl git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbbmalloc2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libharfbuzz-dev libfreetype6-dev
 DEBS_UBUNTU_JAMMY=unzip wget build-essential cmake curl git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libharfbuzz-dev libfreetype6-dev
+DEBS_UBUNTU_NOBLE=unzip wget build-essential cmake curl git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbbmalloc2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libharfbuzz-dev libfreetype6-dev
 JETSON=build-essential cmake git unzip pkg-config libjpeg-dev libpng-dev libtiff-dev libavcodec-dev libavformat-dev libswscale-dev libgtk2.0-dev libcanberra-gtk* libxvidcore-dev libx264-dev libgtk-3-dev libtbb2 libtbb-dev libdc1394-22-dev libv4l-dev v4l-utils libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libavresample-dev libvorbis-dev libxine2-dev libfaac-dev libmp3lame-dev libtheora-dev libopencore-amrnb-dev libopencore-amrwb-dev libopenblas-dev libatlas-base-dev libblas-dev liblapack-dev libeigen3-dev gfortran libhdf5-dev protobuf-compiler libprotobuf-dev libgoogle-glog-dev libgflags-dev
 
 explain:
@@ -32,6 +33,9 @@ ifneq ($(shell which dnf 2>/dev/null),)
 	distro_deps=deps_fedora
 else
 ifneq ($(shell which apt-get 2>/dev/null),)
+ifneq ($(shell cat /etc/os-release 2>/dev/null | grep "Noble Numbat"),)
+	distro_deps=deps_ubuntu_noble
+else
 ifneq ($(shell cat /etc/os-release 2>/dev/null | grep "Jammy Jellyfish"),)
 	distro_deps=deps_ubuntu_jammy
 else
@@ -39,6 +43,7 @@ ifneq ($(shell cat /etc/debian_version 2>/dev/null | grep "12."),)
 	distro_deps=deps_debian_bookworm
 else
 	distro_deps=deps_debian
+endif
 endif
 endif
 else
@@ -68,6 +73,10 @@ deps_debian:
 deps_ubuntu_jammy:
 	sudo apt-get -y update
 	sudo apt-get -y install $(DEBS_UBUNTU_JAMMY)
+
+deps_ubuntu_noble:
+	sudo apt-get -y update
+	sudo apt-get -y install $(DEBS_UBUNTU_NOBLE)
 
 deps_jetson:
 	sudo sh -c "echo '/usr/local/cuda/lib64' >> /etc/ld.so.conf.d/nvidia-tegra.conf"
@@ -345,8 +354,11 @@ astyle:
 releaselog:
 	git log --pretty=format:"%s" $(GOCV_VERSION)..HEAD
 
+
+
 CMDS=basic-drawing caffe-classifier captest capwindow counter dnn-detection dnn-pose-detection dnn-style-transfer faceblur facedetect facedetect-from-url feature-matching find-chessboard find-circles find-lines hand-gestures hello img-similarity mjpeg-streamer motion-detect saveimage savevideo showimage ssd-facedetect tf-classifier tracking version xphoto
 cmds:
 	for cmd in $(CMDS) ; do \
 		go build -o build/$$cmd cmd/$$cmd/main.go ;
 	done ; \
+
