@@ -9,7 +9,7 @@
 #
 # NOTE that you cannot use highgui from the static build!
 #
-FROM --platform=$BUILDPLATFORM ghcr.io/hybridgroup/opencv:4.10.0-static AS gocv-static-builder
+FROM --platform=$BUILDPLATFORM ghcr.io/hybridgroup/opencv:4.11.0-static AS gocv-static-builder
 
 WORKDIR /src
 

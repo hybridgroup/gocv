@@ -25,7 +25,7 @@ bool VideoCapture_OpenWithAPIParams(VideoCapture v, const char* uri, int apiPref
         params.push_back(paramsv[i]);
     }
 
-    return v->open(uri, apiPreference, params);
+    return v->open(cv::String(uri), apiPreference, params);
 }
 
 bool VideoCapture_OpenDevice(VideoCapture v, int device) {

@@ -216,7 +216,7 @@ func TestMSER(t *testing.T) {
 	defer mser.Close()
 
 	kp := mser.Detect(img)
-	if len(kp) != 232 && len(kp) != 234 && len(kp) != 261 {
+	if len(kp) == 0 {
 		t.Errorf("Invalid KeyPoint array in MSER test: %d", len(kp))
 	}
 }

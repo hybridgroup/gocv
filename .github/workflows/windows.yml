@@ -26,39 +26,39 @@ jobs:
         uses: actions/cache/restore@v4
         id: cache-opencv-source
         with:
-          key: opencv-source-4100-windows-v1a
+          key: opencv-source-4110-windows-v1a
           path: |
-            ./opencv/opencv-4.10.0
-            ./opencv/opencv_contrib-4.10.0
+            ./opencv/opencv-4.11.0
+            ./opencv/opencv_contrib-4.11.0
       - name: Download OpenCV source
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
         shell: bash
         run: |
             mkdir -p ./opencv
-            curl -Lo ./opencv/opencv-4.10.0.zip https://github.com/opencv/opencv/archive/4.10.0.zip
-            curl -Lo ./opencv/opencv_contrib-4.10.0.zip https://github.com/opencv/opencv_contrib/archive/4.10.0.zip
+            curl -Lo ./opencv/opencv-4.11.0.zip https://github.com/opencv/opencv/archive/4.11.0.zip
+            curl -Lo ./opencv/opencv_contrib-4.11.0.zip https://github.com/opencv/opencv_contrib/archive/4.11.0.zip
       - name: Extract OpenCV source
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
         shell: bash
         run: |
             cd ./opencv
-            mkdir -p opencv-4.10.0
-            mkdir -p opencv_contrib-4.10.0
-            7z x opencv-4.10.0.zip
-            7z x opencv_contrib-4.10.0.zip
+            mkdir -p opencv-4.11.0
+            mkdir -p opencv_contrib-4.11.0
+            7z x opencv-4.11.0.zip
+            7z x opencv_contrib-4.11.0.zip
       - name: Save cached OpenCV source
         uses: actions/cache/save@v4
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
         with:
           key: ${{ steps.cache-opencv-source.outputs.cache-primary-key }}
           path: |
-            ./opencv/opencv-4.10.0
-            ./opencv/opencv_contrib-4.10.0
+            ./opencv/opencv-4.11.0
+            ./opencv/opencv_contrib-4.11.0
       - name: Restore cached OpenCV build
         uses: actions/cache/restore@v4
         id: cache-opencv-build
         with:
-          key: opencv-build-4100-windows-v1d
+          key: opencv-build-4110-windows-v1d
           path: |
             ./opencv/build
       - name: Build OpenCV
@@ -66,7 +66,7 @@ jobs:
         run: |
             mkdir -p ./opencv/build            
             cd ./opencv/build
-            cmake -G "MinGW Makefiles" -DENABLE_CXX11=ON -DOPENCV_EXTRA_MODULES_PATH="../opencv_contrib-4.10.0/modules" -DBUILD_SHARED_LIBS=ON -DWITH_IPP=OFF -DWITH_MSMF=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=ON -DBUILD_opencv_java=OFF -DBUILD_opencv_python=OFF -DBUILD_opencv_python2=OFF -DBUILD_opencv_python3=OFF -DBUILD_DOCS=OFF -DENABLE_PRECOMPILED_HEADERS=OFF -DBUILD_opencv_saliency=OFF -DBUILD_opencv_wechat_qrcode=ON -DCPU_DISPATCH= -DOPENCV_GENERATE_PKGCONFIG=ON -DWITH_OPENCL_D3D11_NV=OFF -DOPENCV_ALLOCATOR_STATS_COUNTER_TYPE=int64_t -DOPENCV_ENABLE_NONFREE=ON -Wno-dev ../opencv-4.10.0
+            cmake -G "MinGW Makefiles" -DENABLE_CXX11=ON -DOPENCV_EXTRA_MODULES_PATH="../opencv_contrib-4.11.0/modules" -DBUILD_SHARED_LIBS=ON -DWITH_IPP=OFF -DWITH_MSMF=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=ON -DBUILD_opencv_java=OFF -DBUILD_opencv_python=OFF -DBUILD_opencv_python2=OFF -DBUILD_opencv_python3=OFF -DBUILD_DOCS=OFF -DENABLE_PRECOMPILED_HEADERS=OFF -DBUILD_opencv_saliency=OFF -DBUILD_opencv_wechat_qrcode=ON -DCPU_DISPATCH= -DOPENCV_GENERATE_PKGCONFIG=ON -DWITH_OPENCL_D3D11_NV=OFF -DOPENCV_ALLOCATOR_STATS_COUNTER_TYPE=int64_t -DOPENCV_ENABLE_NONFREE=ON -Wno-dev ../opencv-4.11.0
             cmake --build . --target install
       - name: Save cached OpenCV build
         uses: actions/cache/save@v4
@@ -80,7 +80,7 @@ jobs:
             go env
             echo "CGO_CXXFLAGS=--std=c++11" >> $env:GITHUB_ENV
             echo "CGO_CPPFLAGS=-I${env:GITHUB_WORKSPACE}\opencv\build\install\include" >> $env:GITHUB_ENV
-            echo "CGO_LDFLAGS=-L${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib -lopencv_core4100 -lopencv_face4100 -lopencv_videoio4100 -lopencv_imgproc4100 -lopencv_highgui4100 -lopencv_imgcodecs4100 -lopencv_objdetect4100 -lopencv_features2d4100 -lopencv_video4100 -lopencv_dnn4100 -lopencv_xfeatures2d4100 -lopencv_plot4100 -lopencv_tracking4100 -lopencv_img_hash4100 -lopencv_calib3d4100 -lopencv_bgsegm4100 -lopencv_photo4100 -lopencv_aruco4100 -lopencv_wechat_qrcode4100 -lopencv_ximgproc4100 -lopencv_xphoto4100" >> $env:GITHUB_ENV
+            echo "CGO_LDFLAGS=-L${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib -lopencv_core4110 -lopencv_face4110 -lopencv_videoio4110 -lopencv_imgproc4110 -lopencv_highgui4110 -lopencv_imgcodecs4110 -lopencv_objdetect4110 -lopencv_features2d4110 -lopencv_video4110 -lopencv_dnn4110 -lopencv_xfeatures2d4110 -lopencv_plot4110 -lopencv_tracking4110 -lopencv_img_hash4110 -lopencv_calib3d4110 -lopencv_bgsegm4110 -lopencv_photo4110 -lopencv_aruco4110 -lopencv_wechat_qrcode4110 -lopencv_ximgproc4110 -lopencv_xphoto4110" >> $env:GITHUB_ENV
             echo "${env:GITHUB_WORKSPACE}/opencv/build/install/x64/mingw/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: Install Tensorflow test model
         run: |

@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.3
 
 # To build release:
-#   docker buildx build -f Dockerfile.opencv-static-alpine -t ghcr.io/hybridgroup/opencv:4.10-alpine --platform=linux/arm64,linux/amd64 --load .
+#   docker buildx build -f Dockerfile.opencv-static-alpine -t ghcr.io/hybridgroup/opencv:4.11-alpine --platform=linux/arm64,linux/amd64 --load .
 
 # linux/amd64 build
 
@@ -11,7 +11,7 @@ FROM --platform=linux/amd64 ghcr.io/hybridgroup/gstreamer:1.24-alpine AS gstream
 FROM --platform=linux/amd64 ghcr.io/hybridgroup/ffmpeg:5.16-alpine AS builder-amd64
 
 # Set OpenCV version
-ARG OPENCV_VERSION=4.10.0
+ARG OPENCV_VERSION=4.11.0
 
 # Download OpenCV source code
 WORKDIR /opencv
@@ -101,7 +101,7 @@ FROM --platform=linux/arm64 ghcr.io/hybridgroup/gstreamer:1.24-alpine AS gstream
 FROM --platform=linux/arm64 ghcr.io/hybridgroup/ffmpeg:5.16-alpine AS builder-arm64
 
 # Set OpenCV version
-ARG OPENCV_VERSION=4.10.0
+ARG OPENCV_VERSION=4.11.0
 
 # Download OpenCV source code
 WORKDIR /opencv

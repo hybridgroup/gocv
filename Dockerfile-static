@@ -1,7 +1,7 @@
 # to build this docker image:
 #   docker buildx build -f Dockerfile-static -t gocv-static --platform=linux/amd64,linux/arm64 .
 #
-FROM --platform=$BUILDPLATFORM ghcr.io/hybridgroup/opencv:4.10.0-static AS gocv-build
+FROM --platform=$BUILDPLATFORM ghcr.io/hybridgroup/opencv:4.11.0-static AS gocv-build
 
 ENV GOPATH /go
 

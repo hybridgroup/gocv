@@ -1,6 +1,6 @@
 # to build this docker image:
-#   docker build -f Dockerfile.opencv-ubuntu-22.04 -t ghcr.io/hybridgroup/opencv:4.10.0-ubuntu-22.04 .
-#   docker build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv-ubuntu-20.04 -t ghcr.io/hybridgroup/opencv:4.10.0-dev-ubuntu-20.04 .
+#   docker build -f Dockerfile.opencv-ubuntu-22.04 -t ghcr.io/hybridgroup/opencv:4.11.0-ubuntu-22.04 .
+#   docker build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv-ubuntu-20.04 -t ghcr.io/hybridgroup/opencv:4.11.0-dev-ubuntu-20.04 .
 FROM ubuntu:22.04 AS opencv-base
 LABEL maintainer="hybridgroup"
 
@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libjpeg-turbo8-dev libpng-dev libtiff-dev libdc1394-dev nasm && \
       rm -rf /var/lib/apt/lists/*
 
-ARG OPENCV_VERSION="4.10.0"
+ARG OPENCV_VERSION="4.11.0"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 ARG OPENCV_FILE="https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip"

@@ -5,7 +5,7 @@
 GOCV_VERSION?="v0.39.0"
 
 # OpenCV version to use.
-OPENCV_VERSION?=4.10.0
+OPENCV_VERSION?=4.11.0
 
 # Go version to use when building Docker image
 GOVERSION?=1.22.4
@@ -332,9 +332,34 @@ verify_cuda:
 verify_openvino:
 	go run -tags openvino ./cmd/version/main.go
 
+# testdata.
+.PHONY: create_testdata_dir download_wechat_testdata download_onnx_testdata download_goturn_testdata testdata
+create_testdata_dir:
+	mkdir -p ./testdata
+
+download_wechat_testdata: create_testdata_dir
+	curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.caffemodel > ./testdata/detect.caffemodel
+	curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.prototxt > ./testdata/detect.prototxt
+	curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.caffemodel > ./testdata/sr.caffemodel
+	curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.prototxt > ./testdata/sr.prototxt
+
+download_onnx_testdata: create_testdata_dir
+	curl -sL https://github.com/onnx/models/raw/main/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx > ./testdata/googlenet-9.onnx
+	curl -sL https://github.com/opencv/opencv_zoo/raw/refs/heads/main/models/face_recognition_sface/face_recognition_sface_2021dec.onnx > ./testdata/face_recognition_sface_2021dec.onnx
+	curl -sL https://github.com/opencv/opencv_zoo/raw/refs/heads/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx > ./testdata/face_detection_yunet_2023mar.onnx
+
+download_goturn_testdata: create_testdata_dir
+	curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.prototxt > ./testdata/goturn.prototxt
+	curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.001 > ./testdata/goturn.caffemodel.zip.001
+	curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.002 > ./testdata/goturn.caffemodel.zip.002
+	curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.003 > ./testdata/goturn.caffemodel.zip.003
+	curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.004 > ./testdata/goturn.caffemodel.zip.004
+	cat ./testdata/goturn.caffemodel.zip.001 ./testdata/goturn.caffemodel.zip.002 ./testdata/goturn.caffemodel.zip.003 ./testdata/goturn.caffemodel.zip.004 > ./testdata/goturn.caffemodel.zip
+	unzip -o ./testdata/goturn.caffemodel.zip goturn.caffemodel -d ./testdata
+
+testdata: create_testdata_dir download_wechat_testdata download_onnx_testdata download_goturn_testdata
+
 # Runs tests.
-# This assumes env.sh was already sourced.
-# pvt is not tested here since it requires additional depenedences.
 test:
 	go test -tags matprofile . ./contrib
 
