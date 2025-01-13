@@ -2,13 +2,13 @@
 .PHONY: test deps download build clean astyle cmds docker
 
 # GoCV version to use.
-GOCV_VERSION?="v0.39.0"
+GOCV_VERSION?="v0.40.0"
 
 # OpenCV version to use.
 OPENCV_VERSION?=4.11.0
 
 # Go version to use when building Docker image
-GOVERSION?=1.22.4
+GOVERSION?=1.23.4
 
 # Temporary directory to put files into.
 TMP_DIR?=/tmp/

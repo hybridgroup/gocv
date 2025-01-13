@@ -1,3 +1,26 @@
+0.40.0
+---
+* **all**
+    - Add support for OpenCV 4.11.0
+    - Update license year to 2025
+- **bugfix**
+    - Correct signature for FindHomography, since dst is actually target format for the operation, not something changed by the operation
+- **core**
+    - Added new Mat constructor and tests
+    - Added NewMatFromPoint2fVector function
+- **videoio**
+    - Change type of VideoCaptureProperties to int32
+    - Added VideoWriterFile with API and API Params
+- **docker**
+    - Alpine static improved (#1243)
+- **make**
+    - Improve Linux distro dtection code, and add specific dependendcies for Ubunutu 24.04
+- **examples**
+    - GStreamer VideoWriter example
+- **build**
+    - Update homebrew when running macOS tests
+    - Update GH actions in linux build to latest versions
+
 0.39.0
 ---
 - **bugfix**
