@@ -72,7 +72,7 @@ https://github.com/hybridgroup/gocv/blob/release/cmd/facedetect/main.go
 
 Using a single image downloaded from a URL, it then uses the CascadeClassifier to detect faces, and draw a rectangle around each of them, before displaying them within a Window.
 
-https://github.com/hybridgroup/gocv/blob/release/cmd/facedetect/main.go
+https://github.com/hybridgroup/gocv/blob/release/cmd/facedetect-from-url/main.go
 
 ## Feature Matching
 
@@ -84,7 +84,7 @@ https://github.com/hybridgroup/gocv/blob/release/cmd/feature-matching/main.go
 
 Find chessboard in an image using FindChessboardCorners.
 
-https://github.com/hybridgroup/gocv/blob/release/cmd/find-circles/main.go
+https://github.com/hybridgroup/gocv/blob/release/cmd/find-chessboard/main.go
 
 ## Find Circles
 
