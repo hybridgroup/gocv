@@ -80,7 +80,7 @@ jobs:
             go env
             echo "CGO_CXXFLAGS=--std=c++11" >> $env:GITHUB_ENV
             echo "CGO_CPPFLAGS=-I${env:GITHUB_WORKSPACE}\opencv\build\install\include" >> $env:GITHUB_ENV
-            echo "CGO_LDFLAGS=-L${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib -lopencv_core4110 -lopencv_face4110 -lopencv_videoio4110 -lopencv_imgproc4110 -lopencv_highgui4110 -lopencv_imgcodecs4110 -lopencv_objdetect4110 -lopencv_features2d4110 -lopencv_video4110 -lopencv_dnn4110 -lopencv_xfeatures2d4110 -lopencv_plot4110 -lopencv_tracking4110 -lopencv_img_hash4110 -lopencv_calib3d4110 -lopencv_bgsegm4110 -lopencv_photo4110 -lopencv_aruco4110 -lopencv_wechat_qrcode4110 -lopencv_ximgproc4110 -lopencv_xphoto4110" >> $env:GITHUB_ENV
+            echo "CGO_LDFLAGS=-L${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib -lopencv_core4110 -lopencv_face4110 -lopencv_videoio4110 -lopencv_imgproc4110 -lopencv_highgui4110 -lopencv_imgcodecs4110 -lopencv_objdetect4110 -lopencv_features2d4110 -lopencv_video4110 -lopencv_dnn4110 -lopencv_xfeatures2d4110 -lopencv_plot4110 -lopencv_tracking4110 -lopencv_img_hash4110 -lopencv_calib3d4110 -lopencv_bgsegm4110 -lopencv_photo4110 -lopencv_aruco4110 -lopencv_wechat_qrcode4110 -lopencv_ximgproc4110 -lopencv_xphoto4110 -lopencv_xobjdetect4110" >> $env:GITHUB_ENV
             echo "${env:GITHUB_WORKSPACE}/opencv/build/install/x64/mingw/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: Install Tensorflow test model
         run: |
