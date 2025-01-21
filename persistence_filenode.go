@@ -32,6 +32,10 @@ type FileNode struct {
 	p C.FileNode
 }
 
+func (fn *FileNode) Ptr() C.FileNode {
+	return fn.p
+}
+
 func (fn *FileNode) Empty() bool {
 	return bool(C.FileNode_Empty(fn.p))
 }

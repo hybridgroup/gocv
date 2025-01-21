@@ -200,3 +200,7 @@ func (fs *FileStorage) Root(streamIdx int) *FileNode {
 	node_p := C.FileStorage_Root(fs.p, C.int(streamIdx))
 	return &FileNode{p: node_p}
 }
+
+func (fs *FileStorage) Ptr() C.FileStorage {
+	return fs.p
+}

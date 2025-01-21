@@ -350,5 +350,5 @@ Your pull requests will be greatly appreciated!
 - [X] **wechat_qrcode. WeChat QR code detector for detecting and parsing QR code**
 - [ ] **xfeatures2d. Extra 2D Features Framework - WORK STARTED**
 - [ ] **ximgproc. Extended Image Processing - WORK STARTED**
-- [ ] xobjdetect. Extended object detection
+- [X] xobjdetect. Extended object detection
 - [X] **xphoto. Additional photo processing algorithms**
