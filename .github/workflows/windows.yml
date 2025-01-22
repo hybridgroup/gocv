@@ -75,6 +75,9 @@ jobs:
           key: ${{ steps.cache-opencv-build.outputs.cache-primary-key }}
           path: |
             ./opencv/build
+      - name: List OpenCV Libraries
+        run: |
+            dir ${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib
       - name: Set GoCV env
         run: |
             go env
