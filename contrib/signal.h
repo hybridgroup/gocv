@@ -3,7 +3,7 @@
 
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
-#include <opencv2/signal/signal_resample.hpp>
+#include <opencv2/signal.hpp>
 extern "C" {
 #endif
 
