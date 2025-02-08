@@ -1,5 +1,5 @@
-#ifndef _OPENCV3_VIDEO_H_
-#define _OPENCV3_VIDEO_H_
+#ifndef _OPENCV3_BGSEGM_H_
+#define _OPENCV3_BGSEGM_H_
 
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
@@ -23,4 +23,4 @@ void BackgroundSubtractorCNT_Apply(BackgroundSubtractorCNT b, Mat src, Mat dst);
 }
 #endif
 
-#endif //_OPENCV3_VIDEO_H_
+#endif //_OPENCV3_BGSEGM_H_
