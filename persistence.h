@@ -1,5 +1,5 @@
-#ifndef _OPENCV3_OBJDETECT_H_
-#define _OPENCV3_OBJDETECT_H_
+#ifndef _OPENCV3_PERSISTENCE_H_
+#define _OPENCV3_PERSISTENCE_H_
 
 #include <stdbool.h>
 
@@ -74,4 +74,4 @@ void FileNode_Close(FileNode fn);
 }
 #endif
 
-#endif //_OPENCV3_OBJDETECT_H_
+#endif //_OPENCV3_PERSISTENCE_H_

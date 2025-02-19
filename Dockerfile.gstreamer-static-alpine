@@ -1,5 +1,5 @@
 # To build release:
-#   docker buildx build -f Dockerfile.gstreamer-static-alpine -t ghcr.io/hybridgroup/gstreamer:1.24-alpine --platform=linux/arm64,linux/amd64 --load .
+#   docker buildx build -f Dockerfile.gstreamer-static-alpine -t ghcr.io/hybridgroup/gstreamer:1.24-alpine --platform=linux/arm64,linux/amd64 --progress plain  --load .
 
 FROM --platform=linux/amd64 alpine:3.20 AS builder-amd64
 
@@ -22,20 +22,19 @@ RUN apk update && apk add build-base \
 		meson \
 		perl \
 		wget \
-		git \
-		nasm
+		git cmake \
+		nasm harfbuzz-static harfbuzz-dev fribidi-static fribidi-dev
 
 RUN	meson --default-library=static --prefix=/gstbin  \
-    -Dgst-full-target-type=static_library \
-    -Dauto_features=disabled \
-	-Dbase=enabled \
-	-Dgood=enabled \
-	-Dbad=enabled \
-	-Dgst-plugins-base:typefind=enabled \
-	-Dgst-plugins-base:playback=enabled \
-	-Dgst-plugins-base:volume=enabled \
-	-Dgst-plugins-base:audioconvert=enabled \
+	-Dgst-full-target-type=static_library \
+	-Dgst-full=enabled \
+	-Dauto_features=disabled \
 	-Dgst-plugins-base:app=enabled \
+	-Dgst-plugins-base:playback=enabled \
+	-Dgst-plugins-base:rawparse=enabled \
+	-Dgst-plugins-base:tcp=enabled \
+	-Dgst-plugins-base:videoconvertscale=enabled \
+	-Dgst-plugins-base:videotestsrc=enabled \
 	-Dgst-plugins-good:isomp4=enabled \
 	-Dgst-plugins-good:rtp=enabled \
 	-Dgst-plugins-good:udp=enabled \
@@ -45,8 +44,8 @@ RUN	meson --default-library=static --prefix=/gstbin  \
 	-Dgst-plugins-bad:videoparsers=enabled \
 	-Dgst-plugins-bad:codectimestamper=enabled \
 	-Dgst-plugins-bad:openh264=enabled \
-	-Dtools=disabled \
-    build
+	-Dtools=enabled \
+	build
 
 RUN meson compile -C build
 
@@ -74,20 +73,19 @@ RUN apk update && apk add build-base \
 		meson \
 		perl \
 		wget \
-		git \
-		nasm
+		git cmake \
+		nasm harfbuzz-static harfbuzz-dev fribidi-static fribidi-dev
 
 RUN	meson --default-library=static --prefix=/gstbin  \
-    -Dgst-full-target-type=static_library \
-    -Dauto_features=disabled \
-	-Dbase=enabled \
-	-Dgood=enabled \
-	-Dbad=enabled \
-	-Dgst-plugins-base:typefind=enabled \
-	-Dgst-plugins-base:playback=enabled \
-	-Dgst-plugins-base:volume=enabled \
-	-Dgst-plugins-base:audioconvert=enabled \
+	-Dgst-full-target-type=static_library \
+	-Dgst-full=enabled \
+	-Dauto_features=disabled \
 	-Dgst-plugins-base:app=enabled \
+	-Dgst-plugins-base:playback=enabled \
+	-Dgst-plugins-base:tcp=enabled \
+	-Dgst-plugins-base:rawparse=enabled \
+	-Dgst-plugins-base:videoconvertscale=enabled \
+	-Dgst-plugins-base:videotestsrc=enabled \
 	-Dgst-plugins-good:isomp4=enabled \
 	-Dgst-plugins-good:rtp=enabled \
 	-Dgst-plugins-good:udp=enabled \
@@ -97,8 +95,8 @@ RUN	meson --default-library=static --prefix=/gstbin  \
 	-Dgst-plugins-bad:videoparsers=enabled \
 	-Dgst-plugins-bad:codectimestamper=enabled \
 	-Dgst-plugins-bad:openh264=enabled \
-	-Dtools=disabled \
-    build
+	-Dtools=enabled \
+	build
 
 RUN meson compile -C build
 
@@ -109,5 +107,4 @@ ARG TARGETARCH
 FROM builder-${TARGETARCH} AS final
 
 ENV PATH=/gstbin/bin:${PATH}
-ENV LD_LIBRARY_PATH=/usr/lib:/gstbin/lib:/usr/local/lib:${LD_LIBRARY_PATH}
 ENV PKG_CONFIG_PATH=/gstbin/lib/pkgconfig
