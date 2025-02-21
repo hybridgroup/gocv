@@ -147,7 +147,7 @@ var _ Feature2D = (*BRISK)(nil)
 // NewBRISK returns a new BRISK algorithm
 //
 // For further details, please see:
-// https://docs.opencv.org/master/d8/d30/classcv_1_1AKAZE.html
+// https://docs.opencv.org/4.x/de/dbf/classcv_1_1BRISK.html
 func NewBRISK() BRISK {
 	return BRISK{p: unsafe.Pointer(C.BRISK_Create())}
 }
