@@ -47,13 +47,13 @@ int VideoWriter_IsOpened(VideoWriter vw);
 void VideoWriter_Write(VideoWriter vw, Mat img);
 
 //Videoio Query I/O API backends registry
-char* Videoio_Registry_GetBackendName(int api);
+const char* Videoio_Registry_GetBackendName(int api);
 IntVector Videio_Registry_GetBackends();
-char* Videoio_Registry_GetCameraBackendPluginVersion(int api, int* version_ABI, int* version_API);
+const char* Videoio_Registry_GetCameraBackendPluginVersion(int api, int* version_ABI, int* version_API);
 IntVector Videoio_Registry_GetCameraBackends();
-char* Videoio_Registry_GetStreamBackendPluginVersion(int api, int* version_ABI, int* version_API);
+const char* Videoio_Registry_GetStreamBackendPluginVersion(int api, int* version_ABI, int* version_API);
 IntVector Videoio_Registry_GetStreamBackends();
-char* Videoio_Registry_GetWriterBackendPluginVersion(int api, int* version_ABI, int* version_API);
+const char* Videoio_Registry_GetWriterBackendPluginVersion(int api, int* version_ABI, int* version_API);
 IntVector Videoio_Registry_GetWriterBackends();
 bool Videoio_Registry_HasBackend(int api);
 bool Videoio_Registry_IsBackendBuiltIn(int api);

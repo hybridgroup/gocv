@@ -13,6 +13,21 @@ import (
 	"unsafe"
 )
 
+// GetLastException returns the last exception code from the OpenCV library.
+func GetLastException() int {
+	return int(C.GetOpenCVException())
+}
+
+// GetLastExceptionMessage returns the last exception message from the OpenCV library.
+func GetLastExceptionMessage() string {
+	return C.GoString(C.GetOpenCVExceptionMessage())
+}
+
+// ClearLastException clears the last exception from the OpenCV library.
+func ClearLastException() {
+	C.ClearOpenCVException()
+}
+
 const (
 	// MatChannels1 is a single channel Mat.
 	MatChannels1 = 0

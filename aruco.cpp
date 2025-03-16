@@ -1,11 +1,21 @@
 #include "aruco.h"
 
 ArucoDetector ArucoDetector_New() {
-    return new cv::aruco::ArucoDetector();
+    try {
+        return new cv::aruco::ArucoDetector();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 ArucoDetector ArucoDetector_NewWithParams(ArucoDictionary dictionary, ArucoDetectorParameters params) {
-    return new cv::aruco::ArucoDetector(*dictionary, *params);
+    try {
+        return new cv::aruco::ArucoDetector(*dictionary, *params);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 void ArucoDetector_Close(ArucoDetector ad) {
@@ -13,23 +23,32 @@ void ArucoDetector_Close(ArucoDetector ad) {
 }
 
 void ArucoDetector_DetectMarkers(ArucoDetector ad, Mat inputArr, Points2fVector markerCorners, IntVector *markerIds, Points2fVector rejectedCandidates) {
-    std::vector<int> _markerIds;
-    ad->detectMarkers(*inputArr, *markerCorners, _markerIds, *rejectedCandidates);
+    try {
+        std::vector<int> _markerIds;
+        ad->detectMarkers(*inputArr, *markerCorners, _markerIds, *rejectedCandidates);
 
-    int *ids = new int[_markerIds.size()];
+        int *ids = new int[_markerIds.size()];
 
-    for (size_t i = 0; i < _markerIds.size(); ++i)
-    {
-        ids[i] = _markerIds[i];
+        for (size_t i = 0; i < _markerIds.size(); ++i)
+        {
+            ids[i] = _markerIds[i];
+        }
+
+        markerIds->length = _markerIds.size();
+        markerIds->val = ids;
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
     }
-
-    markerIds->length = _markerIds.size();
-    markerIds->val = ids;
 }
 
 ArucoDetectorParameters ArucoDetectorParameters_Create()
 {
-    return new cv::aruco::DetectorParameters();
+    try {
+        return new cv::aruco::DetectorParameters();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 void ArucoDetectorParameters_SetAdaptiveThreshWinSizeMin(ArucoDetectorParameters ap, int adaptiveThreshWinSizeMin) {
@@ -266,22 +285,35 @@ bool ArucoDetectorParameters_GetDetectInvertedMarker(ArucoDetectorParameters ap)
 
 void ArucoDrawDetectedMarkers(Mat image, Points2fVector markerCorners, IntVector markerIds, Scalar borderColor)
 {
-    std::vector<int> _markerIds;
-    for (int i = 0, *v = markerIds.val; i < markerIds.length; ++v, ++i)
-    {
-        _markerIds.push_back(*v);
+    try {
+        std::vector<int> _markerIds;
+        for (int i = 0, *v = markerIds.val; i < markerIds.length; ++v, ++i)
+        {
+            _markerIds.push_back(*v);
+        }
+        cv::Scalar _borderColor = cv::Scalar(borderColor.val1, borderColor.val2, borderColor.val3);
+        cv::aruco::drawDetectedMarkers(*image, *markerCorners, _markerIds, _borderColor);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
     }
-    cv::Scalar _borderColor = cv::Scalar(borderColor.val1, borderColor.val2, borderColor.val3);
-    cv::aruco::drawDetectedMarkers(*image, *markerCorners, _markerIds, _borderColor);
 }
 
 void ArucoGenerateImageMarker(int dictionaryId, int id, int sidePixels, Mat img, int borderBits)
 {
-    cv::aruco::Dictionary dict = cv::aruco::getPredefinedDictionary(dictionaryId);
-    cv::aruco::generateImageMarker(dict, id, sidePixels, *img, borderBits);
+    try {
+        cv::aruco::Dictionary dict = cv::aruco::getPredefinedDictionary(dictionaryId);
+        cv::aruco::generateImageMarker(dict, id, sidePixels, *img, borderBits);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 ArucoDictionary getPredefinedDictionary(int dictionaryId)
 {
-    return new cv::aruco::Dictionary(cv::aruco::getPredefinedDictionary(dictionaryId));
+    try {
+        return new cv::aruco::Dictionary(cv::aruco::getPredefinedDictionary(dictionaryId));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }

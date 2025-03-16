@@ -260,6 +260,10 @@ typedef struct Moment {
     double nu03;
 } Moment;
 
+int GetOpenCVException();
+const char* GetOpenCVExceptionMessage();
+void ClearOpenCVException();
+
 #ifdef __cplusplus
 typedef cv::Mat* Mat;
 typedef cv::TermCriteria* TermCriteria;
@@ -283,6 +287,8 @@ typedef void* Point3fVector;
 typedef void* Points3fVector;
 typedef void* RotatedRectT;
 #endif
+
+void setExceptionInfo(int code, const char* message);
 
 // Wrapper for the vector of Mat aka std::vector<Mat>
 typedef struct Mats {

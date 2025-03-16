@@ -1,6 +1,27 @@
 #include "core.h"
 #include <string.h>
 
+int lastException = 0;
+char lastExceptionMessage[1024];
+
+int GetOpenCVException() {
+    return lastException;
+}
+
+const char* GetOpenCVExceptionMessage() {
+    return lastExceptionMessage;
+}
+
+void ClearOpenCVException() {
+    lastException = 0;
+    strncpy(lastExceptionMessage, "", 1024);
+}
+
+void setExceptionInfo(int code, const char* message) {
+    lastException = code;
+    strncpy(lastExceptionMessage, message, 1024);
+}
+
 // Mat_New creates a new empty Mat
 Mat Mat_New() {
     return new cv::Mat();
@@ -67,21 +88,36 @@ Mat Mat_NewFromPointVector(PointVector pv, bool copy_data) {
 }
 
 Mat Eye(int rows, int cols, int type) {
-    cv::Mat* mat = new cv::Mat(rows, cols, type);
-    *mat = cv::Mat::eye(rows, cols, type);
-    return mat;
+    try {
+        cv::Mat* mat = new cv::Mat(rows, cols, type);
+        *mat = cv::Mat::eye(rows, cols, type);
+        return mat;
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
 }
 
 Mat Zeros(int rows, int cols, int type) {
-    cv::Mat* mat = new cv::Mat(rows, cols, type);
-    *mat = cv::Mat::zeros(rows, cols, type);
-    return mat;
+    try {
+        cv::Mat* mat = new cv::Mat(rows, cols, type);
+        *mat = cv::Mat::zeros(rows, cols, type);
+        return mat;
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
 }
 
 Mat Ones(int rows, int cols, int type) {
-    cv::Mat* mat = new cv::Mat(rows, cols, type);
-    *mat = cv::Mat::ones(rows, cols, type);
-    return mat;
+    try {
+        cv::Mat* mat = new cv::Mat(rows, cols, type);
+        *mat = cv::Mat::ones(rows, cols, type);
+        return mat;
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
 }
 
 Mat Mat_FromPtr(Mat m, int rows, int cols, int type, int prow, int pcol) {
@@ -122,20 +158,36 @@ Mat Mat_Clone(Mat m) {
 
 // Mat_CopyTo copies this Mat to another Mat.
 void Mat_CopyTo(Mat m, Mat dst) {
-    m->copyTo(*dst);
+    try {
+        m->copyTo(*dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 // Mat_CopyToWithMask copies this Mat to another Mat while applying the mask
 void Mat_CopyToWithMask(Mat m, Mat dst, Mat mask) {
-    m->copyTo(*dst, *mask);
+    try {
+        m->copyTo(*dst, *mask);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_ConvertTo(Mat m, Mat dst, int type) {
-    m->convertTo(*dst, type);
+    try {
+        m->convertTo(*dst, type);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_ConvertToWithParams(Mat m, Mat dst, int type, float alpha, float beta) {
-    m->convertTo(*dst, type, alpha, beta);
+    try {
+        m->convertTo(*dst, type, alpha, beta);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 // Mat_ToBytes returns the bytes representation of the underlying data.
@@ -153,23 +205,42 @@ Mat Mat_Region(Mat m, Rect r) {
 }
 
 Mat Mat_Reshape(Mat m, int cn, int rows) {
-    return new cv::Mat(m->reshape(cn, rows));
+    try {
+        return new cv::Mat(m->reshape(cn, rows));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
 }
 
 void Mat_PatchNaNs(Mat m) {
-    cv::patchNaNs(*m);
+    try {
+        cv::patchNaNs(*m);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 Mat Mat_ConvertFp16(Mat m) {
-    Mat dst = new cv::Mat();
-    cv::convertFp16(*m, *dst);
-    return dst;
+    try {
+        Mat dst = new cv::Mat();
+        cv::convertFp16(*m, *dst);
+        return dst;
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
 }
 
 Mat Mat_Sqrt(Mat m) {
-    Mat dst = new cv::Mat();
-    cv::sqrt(*m, *dst);
-    return dst;
+    try {
+        Mat dst = new cv::Mat();
+        cv::sqrt(*m, *dst);
+        return dst;
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
 }
 
 // Mat_Mean calculates the mean value M of array elements, independently for each channel, and return it as Scalar vector
@@ -198,7 +269,11 @@ Scalar Mat_MeanWithMask(Mat m, Mat mask){
 }
 
 void LUT(Mat src, Mat lut, Mat dst) {
-    cv::LUT(*src, *lut, *dst);
+    try {
+        cv::LUT(*src, *lut, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 // Mat_Rows returns how many rows in this Mat.
@@ -409,448 +484,830 @@ Mat Mat_MultiplyMatrix(Mat x, Mat y) {
 }
 
 Mat Mat_T(Mat x) {
-    return new cv::Mat(x->t());
+    try {
+        return new cv::Mat(x->t());
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
 }
 
 void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
-    cv::absdiff(*src1, *src2, *dst);
+    try {
+        cv::absdiff(*src1, *src2, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Add(Mat src1, Mat src2, Mat dst) {
-    cv::add(*src1, *src2, *dst);
+    try {
+        cv::add(*src1, *src2, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_AddWeighted(Mat src1, double alpha, Mat src2, double beta, double gamma, Mat dst) {
-    cv::addWeighted(*src1, alpha, *src2, beta, gamma, *dst);
+    try {
+        cv::addWeighted(*src1, alpha, *src2, beta, gamma, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_BitwiseAnd(Mat src1, Mat src2, Mat dst) {
-    cv::bitwise_and(*src1, *src2, *dst);
+    try {
+        cv::bitwise_and(*src1, *src2, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_BitwiseAndWithMask(Mat src1, Mat src2, Mat dst, Mat mask){
-    cv::bitwise_and(*src1, *src2, *dst, *mask);
+    try {
+        cv::bitwise_and(*src1, *src2, *dst, *mask);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_BitwiseNot(Mat src1, Mat dst) {
-    cv::bitwise_not(*src1, *dst);
+    try {
+        cv::bitwise_not(*src1, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_BitwiseNotWithMask(Mat src1, Mat dst, Mat mask) {
-    cv::bitwise_not(*src1, *dst, *mask);
+    try {
+        cv::bitwise_not(*src1, *dst, *mask);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_BitwiseOr(Mat src1, Mat src2, Mat dst) {
-    cv::bitwise_or(*src1, *src2, *dst);
+    try {
+        cv::bitwise_or(*src1, *src2, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_BitwiseOrWithMask(Mat src1, Mat src2, Mat dst, Mat mask) {
-    cv::bitwise_or(*src1, *src2, *dst, *mask);
+    try {
+        cv::bitwise_or(*src1, *src2, *dst, *mask);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst) {
-    cv::bitwise_xor(*src1, *src2, *dst);
+    try {
+        cv::bitwise_xor(*src1, *src2, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_BitwiseXorWithMask(Mat src1, Mat src2, Mat dst, Mat mask) {
-    cv::bitwise_xor(*src1, *src2, *dst, *mask);
+    try {
+        cv::bitwise_xor(*src1, *src2, *dst, *mask);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int normType, int K,
                        Mat mask, int update, bool crosscheck) {
-    cv::batchDistance(*src1, *src2, *dist, dtype, *nidx, normType, K, *mask, update, crosscheck);
+    try {
+        cv::batchDistance(*src1, *src2, *dist, dtype, *nidx, normType, K, *mask, update, crosscheck);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 int Mat_BorderInterpolate(int p, int len, int borderType) {
-    return cv::borderInterpolate(p, len, borderType);
+    try {
+        return cv::borderInterpolate(p, len, borderType);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0;
+    }
 }
 
-void  Mat_CalcCovarMatrix(Mat samples, Mat covar, Mat mean, int flags, int ctype) {
-    cv::calcCovarMatrix(*samples, *covar, *mean, flags, ctype);
+void Mat_CalcCovarMatrix(Mat samples, Mat covar, Mat mean, int flags, int ctype) {
+    try {
+        cv::calcCovarMatrix(*samples, *covar, *mean, flags, ctype);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
-void  Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees) {
-    cv::cartToPolar(*x, *y, *magnitude, *angle, angleInDegrees);
+void Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees) {
+    try {
+        cv::cartToPolar(*x, *y, *magnitude, *angle, angleInDegrees);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 bool Mat_CheckRange(Mat m) {
-    return cv::checkRange(*m);
+    try {
+        return cv::checkRange(*m);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return false;
+    }
 }
 
 void Mat_Compare(Mat src1, Mat src2, Mat dst, int ct) {
-    cv::compare(*src1, *src2, *dst, ct);
+    try {
+        cv::compare(*src1, *src2, *dst, ct);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 int Mat_CountNonZero(Mat src) {
-    return cv::countNonZero(*src);
+    try {
+        return cv::countNonZero(*src);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0;
+    }
 }
 
-
 void Mat_CompleteSymm(Mat m, bool lowerToUpper) {
-    cv::completeSymm(*m, lowerToUpper);
+    try {
+        cv::completeSymm(*m, lowerToUpper);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_ConvertScaleAbs(Mat src, Mat dst, double alpha, double beta) {
-    cv::convertScaleAbs(*src, *dst, alpha, beta);
+    try {
+        cv::convertScaleAbs(*src, *dst, alpha, beta);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_CopyMakeBorder(Mat src, Mat dst, int top, int bottom, int left, int right, int borderType,
                         Scalar value) {
-    cv::Scalar c_value(value.val1, value.val2, value.val3, value.val4);
-    cv::copyMakeBorder(*src, *dst, top, bottom, left, right, borderType, c_value);
+    try {
+        cv::Scalar c_value(value.val1, value.val2, value.val3, value.val4);
+        cv::copyMakeBorder(*src, *dst, top, bottom, left, right, borderType, c_value);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_DCT(Mat src, Mat dst, int flags) {
-    cv::dct(*src, *dst, flags);
+    try {
+        cv::dct(*src, *dst, flags);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 double Mat_Determinant(Mat m) {
-    return cv::determinant(*m);
+    try {
+        return cv::determinant(*m);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 void Mat_DFT(Mat m, Mat dst, int flags) {
-    cv::dft(*m, *dst, flags);
+    try {
+        cv::dft(*m, *dst, flags);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Divide(Mat src1, Mat src2, Mat dst) {
-    cv::divide(*src1, *src2, *dst);
+    try {
+        cv::divide(*src1, *src2, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 bool Mat_Eigen(Mat src, Mat eigenvalues, Mat eigenvectors) {
-    return cv::eigen(*src, *eigenvalues, *eigenvectors);
+    try {
+        return cv::eigen(*src, *eigenvalues, *eigenvectors);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return false;
+    }
 }
 
 void Mat_EigenNonSymmetric(Mat src, Mat eigenvalues, Mat eigenvectors) {
-    cv::eigenNonSymmetric(*src, *eigenvalues, *eigenvectors);
+    try {
+        cv::eigenNonSymmetric(*src, *eigenvalues, *eigenvectors);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_PCABackProject(Mat data, Mat mean, Mat eigenvectors, Mat result) {
-    cv::PCABackProject(*data, *mean, *eigenvectors, *result);
+    try {
+        cv::PCABackProject(*data, *mean, *eigenvectors, *result);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_PCACompute(Mat src, Mat mean, Mat eigenvectors, Mat eigenvalues, int maxComponents) {
-    cv::PCACompute(*src, *mean, *eigenvectors, *eigenvalues, maxComponents);
+    try {
+        cv::PCACompute(*src, *mean, *eigenvectors, *eigenvalues, maxComponents);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_PCAProject(Mat data, Mat mean, Mat eigenvectors, Mat result) {
-    cv::PCAProject(*data, *mean, *eigenvectors, *result);
+    try {
+        cv::PCAProject(*data, *mean, *eigenvectors, *result);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 double PSNR(Mat src1, Mat src2) {
-    return cv::PSNR(*src1, *src2);
+    try {
+        return cv::PSNR(*src1, *src2);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 void SVBackSubst(Mat w, Mat u, Mat vt, Mat rhs, Mat dst) {
-    cv::SVBackSubst(*w, *u, *vt, *rhs, *dst);
+    try {
+        cv::SVBackSubst(*w, *u, *vt, *rhs, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void SVDecomp(Mat src, Mat w, Mat u, Mat vt) {
-    cv::SVDecomp(*src, *w, *u, *vt);
+    try {
+        cv::SVDecomp(*src, *w, *u, *vt);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Exp(Mat src, Mat dst) {
-    cv::exp(*src, *dst);
+    try {
+        cv::exp(*src, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_ExtractChannel(Mat src, Mat dst, int coi) {
-    cv::extractChannel(*src, *dst, coi);
+    try {
+        cv::extractChannel(*src, *dst, coi);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_FindNonZero(Mat src, Mat idx) {
-    cv::findNonZero(*src, *idx);
+    try {
+        cv::findNonZero(*src, *idx);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Flip(Mat src, Mat dst, int flipCode) {
-    cv::flip(*src, *dst, flipCode);
+    try {
+        cv::flip(*src, *dst, flipCode);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Gemm(Mat src1, Mat src2, double alpha, Mat src3, double beta, Mat dst, int flags) {
-    cv::gemm(*src1, *src2, alpha, *src3, beta, *dst, flags);
+    try {
+        cv::gemm(*src1, *src2, alpha, *src3, beta, *dst, flags);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 int Mat_GetOptimalDFTSize(int vecsize) {
-    return cv::getOptimalDFTSize(vecsize);
+    try {
+        return cv::getOptimalDFTSize(vecsize);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0;
+    }
 }
 
 void Mat_Hconcat(Mat src1, Mat src2, Mat dst) {
-    cv::hconcat(*src1, *src2, *dst);
+    try {
+        cv::hconcat(*src1, *src2, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Vconcat(Mat src1, Mat src2, Mat dst) {
-    cv::vconcat(*src1, *src2, *dst);
+    try {
+        cv::vconcat(*src1, *src2, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Rotate(Mat src, Mat dst, int rotateCode) {
-    cv::rotate(*src, *dst, rotateCode);
+    try {
+        cv::rotate(*src, *dst, rotateCode);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Idct(Mat src, Mat dst, int flags) {
-    cv::idct(*src, *dst, flags);
+    try {
+        cv::idct(*src, *dst, flags);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Idft(Mat src, Mat dst, int flags, int nonzeroRows) {
-    cv::idft(*src, *dst, flags, nonzeroRows);
+    try {
+        cv::idft(*src, *dst, flags, nonzeroRows);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst) {
-    cv::inRange(*src, *lowerb, *upperb, *dst);
+    try {
+        cv::inRange(*src, *lowerb, *upperb, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_InRangeWithScalar(Mat src, Scalar lowerb, Scalar upperb, Mat dst) {
-    cv::Scalar lb = cv::Scalar(lowerb.val1, lowerb.val2, lowerb.val3, lowerb.val4);
-    cv::Scalar ub = cv::Scalar(upperb.val1, upperb.val2, upperb.val3, upperb.val4);
-    cv::inRange(*src, lb, ub, *dst);
+    try {
+        cv::Scalar lb = cv::Scalar(lowerb.val1, lowerb.val2, lowerb.val3, lowerb.val4);
+        cv::Scalar ub = cv::Scalar(upperb.val1, upperb.val2, upperb.val3, upperb.val4);
+        cv::inRange(*src, lb, ub, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_InsertChannel(Mat src, Mat dst, int coi) {
-    cv::insertChannel(*src, *dst, coi);
+    try {
+        cv::insertChannel(*src, *dst, coi);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 double Mat_Invert(Mat src, Mat dst, int flags) {
-    double ret = cv::invert(*src, *dst, flags);
-    return ret;
+    try {
+        return cv::invert(*src, *dst, flags);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 double KMeans(Mat data, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers) {
-    double ret = cv::kmeans(*data, k, *bestLabels, *criteria, attempts, flags, *centers);
-    return ret;
+    try {
+        return cv::kmeans(*data, k, *bestLabels, *criteria, attempts, flags, *centers);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 double KMeansPoints(PointVector points, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers) {
-    std::vector<cv::Point2f> pts;
-    copyPointVectorToPoint2fVector(points, &pts);
-    double ret = cv::kmeans(pts, k, *bestLabels, *criteria, attempts, flags, *centers);
-    return ret;
+    try {
+        std::vector<cv::Point2f> pts;
+        copyPointVectorToPoint2fVector(points, &pts);
+        return cv::kmeans(pts, k, *bestLabels, *criteria, attempts, flags, *centers);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 void Mat_Log(Mat src, Mat dst) {
-    cv::log(*src, *dst);
+    try {
+        cv::log(*src, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Magnitude(Mat x, Mat y, Mat magnitude) {
-    cv::magnitude(*x, *y, *magnitude);
+    try {
+        cv::magnitude(*x, *y, *magnitude);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 double Mat_Mahalanobis(Mat v1, Mat v2, Mat icovar) {
-    return cv::Mahalanobis(*v1, *v2, *icovar);
+    try {
+        return cv::Mahalanobis(*v1, *v2, *icovar);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 void MulTransposed(Mat src, Mat dest, bool ata) {
-    cv::mulTransposed(*src, *dest, ata);
+    try {
+        cv::mulTransposed(*src, *dest, ata);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Max(Mat src1, Mat src2, Mat dst) {
-    cv::max(*src1, *src2, *dst);
+    try {
+        cv::max(*src1, *src2, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev) {
-    cv::meanStdDev(*src, *dstMean, *dstStdDev);
+    try {
+        cv::meanStdDev(*src, *dstMean, *dstStdDev);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Merge(struct Mats mats, Mat dst) {
-    std::vector<cv::Mat> images;
+    try {
+        std::vector<cv::Mat> images;
 
-    for (int i = 0; i < mats.length; ++i) {
-        images.push_back(*mats.mats[i]);
+        for (int i = 0; i < mats.length; ++i) {
+            images.push_back(*mats.mats[i]);
+        }
+
+        cv::merge(images, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
     }
-
-    cv::merge(images, *dst);
 }
 
 void Mat_Min(Mat src1, Mat src2, Mat dst) {
-    cv::min(*src1, *src2, *dst);
+    try {
+        cv::min(*src1, *src2, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_MinMaxIdx(Mat m, double* minVal, double* maxVal, int* minIdx, int* maxIdx) {
-    cv::minMaxIdx(*m, minVal, maxVal, minIdx, maxIdx);
+    try {
+        cv::minMaxIdx(*m, minVal, maxVal, minIdx, maxIdx);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc) {
-    cv::Point cMinLoc;
-    cv::Point cMaxLoc;
-    cv::minMaxLoc(*m, minVal, maxVal, &cMinLoc, &cMaxLoc);
+    try {
+        cv::Point cMinLoc;
+        cv::Point cMaxLoc;
+        cv::minMaxLoc(*m, minVal, maxVal, &cMinLoc, &cMaxLoc);
 
-    minLoc->x = cMinLoc.x;
-    minLoc->y = cMinLoc.y;
-    maxLoc->x = cMaxLoc.x;
-    maxLoc->y = cMaxLoc.y;
+        minLoc->x = cMinLoc.x;
+        minLoc->y = cMinLoc.y;
+        maxLoc->x = cMaxLoc.x;
+        maxLoc->y = cMaxLoc.y;
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_MinMaxLocWithMask(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc, Mat mask) {
-    cv::Point cMinLoc;
-    cv::Point cMaxLoc;
-    cv::minMaxLoc(*m, minVal, maxVal, &cMinLoc, &cMaxLoc, *mask);
+    try {
+        cv::Point cMinLoc;
+        cv::Point cMaxLoc;
+        cv::minMaxLoc(*m, minVal, maxVal, &cMinLoc, &cMaxLoc, *mask);
 
-    minLoc->x = cMinLoc.x;
-    minLoc->y = cMinLoc.y;
-    maxLoc->x = cMaxLoc.x;
-    maxLoc->y = cMaxLoc.y;
+        minLoc->x = cMinLoc.x;
+        minLoc->y = cMinLoc.y;
+        maxLoc->x = cMaxLoc.x;
+        maxLoc->y = cMaxLoc.y;
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_MixChannels(struct Mats src, struct Mats dst, struct IntVector fromTo) {
-    std::vector<cv::Mat> srcMats;
+    try {
+        std::vector<cv::Mat> srcMats;
 
-    for (int i = 0; i < src.length; ++i) {
-        srcMats.push_back(*src.mats[i]);
+        for (int i = 0; i < src.length; ++i) {
+            srcMats.push_back(*src.mats[i]);
+        }
+
+        std::vector<cv::Mat> dstMats;
+
+        for (int i = 0; i < dst.length; ++i) {
+            dstMats.push_back(*dst.mats[i]);
+        }
+
+        std::vector<int> fromTos;
+
+        for (int i = 0; i < fromTo.length; ++i) {
+            fromTos.push_back(fromTo.val[i]);
+        }
+
+        cv::mixChannels(srcMats, dstMats, fromTos);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
     }
-
-    std::vector<cv::Mat> dstMats;
-
-    for (int i = 0; i < dst.length; ++i) {
-        dstMats.push_back(*dst.mats[i]);
-    }
-
-    std::vector<int> fromTos;
-
-    for (int i = 0; i < fromTo.length; ++i) {
-        fromTos.push_back(fromTo.val[i]);
-    }
-
-    cv::mixChannels(srcMats, dstMats, fromTos);
 }
 
 void Mat_MulSpectrums(Mat a, Mat b, Mat c, int flags) {
-    cv::mulSpectrums(*a, *b, *c, flags);
+    try {
+        cv::mulSpectrums(*a, *b, *c, flags);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Multiply(Mat src1, Mat src2, Mat dst) {
-    cv::multiply(*src1, *src2, *dst);
+    try {
+        cv::multiply(*src1, *src2, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_MultiplyWithParams(Mat src1, Mat src2, Mat dst, double scale, int dtype) {
-    cv::multiply(*src1, *src2, *dst, scale, dtype);
+    try {
+        cv::multiply(*src1, *src2, *dst, scale, dtype);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
-    cv::normalize(*src, *dst, alpha, beta, typ);
+    try {
+        cv::normalize(*src, *dst, alpha, beta, typ);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 double Norm(Mat src1, int normType) {
-    return cv::norm(*src1, normType);
+    try {
+        return cv::norm(*src1, normType);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 double NormWithMats(Mat src1, Mat src2, int normType) {
-    return cv::norm(*src1, *src2, normType);
+    try {
+        return cv::norm(*src1, *src2, normType);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 void Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm) {
-    cv::perspectiveTransform(*src, *dst, *tm);
+    try {
+        cv::perspectiveTransform(*src, *dst, *tm);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 bool Mat_Solve(Mat src1, Mat src2, Mat dst, int flags) {
-    return cv::solve(*src1, *src2, *dst, flags);
+    try {
+        return cv::solve(*src1, *src2, *dst, flags);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return false;
+    }
 }
 
 int Mat_SolveCubic(Mat coeffs, Mat roots) {
-    return cv::solveCubic(*coeffs, *roots);
+    try {
+        return cv::solveCubic(*coeffs, *roots);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0;
+    }
 }
 
 double Mat_SolvePoly(Mat coeffs, Mat roots, int maxIters) {
-    return cv::solvePoly(*coeffs, *roots, maxIters);
+    try {
+        return cv::solvePoly(*coeffs, *roots, maxIters);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType) {
-    cv::reduce(*src, *dst, dim, rType, dType);
+    try {
+        cv::reduce(*src, *dst, dim, rType, dType);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_ReduceArgMax(Mat src, Mat dst, int axis, bool lastIndex) {
-    cv::reduceArgMax(*src, *dst, axis, lastIndex);
+    try {
+        cv::reduceArgMax(*src, *dst, axis, lastIndex);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_ReduceArgMin(Mat src, Mat dst, int axis, bool lastIndex) {
-    cv::reduceArgMin(*src, *dst, axis, lastIndex);
+    try {
+        cv::reduceArgMin(*src, *dst, axis, lastIndex);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
-
 void Mat_Repeat(Mat src, int nY, int nX, Mat dst) {
-    cv::repeat(*src, nY, nX, *dst);
+    try {
+        cv::repeat(*src, nY, nX, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_ScaleAdd(Mat src1, double alpha, Mat src2, Mat dst) {
-    cv::scaleAdd(*src1, alpha, *src2, *dst);
+    try {
+        cv::scaleAdd(*src1, alpha, *src2, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_SetIdentity(Mat src, double scalar) {
-    cv::setIdentity(*src, scalar);
+    try {
+        cv::setIdentity(*src, scalar);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Sort(Mat src, Mat dst, int flags) {
-    cv::sort(*src, *dst, flags);
+    try {
+        cv::sort(*src, *dst, flags);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_SortIdx(Mat src, Mat dst, int flags) {
-    cv::sortIdx(*src, *dst, flags);
+    try {
+        cv::sortIdx(*src, *dst, flags);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Split(Mat src, struct Mats* mats) {
-    std::vector<cv::Mat> channels;
-    cv::split(*src, channels);
-    mats->mats = new Mat[channels.size()];
+    try {
+        std::vector<cv::Mat> channels;
+        cv::split(*src, channels);
+        mats->mats = new Mat[channels.size()];
 
-    for (size_t i = 0; i < channels.size(); ++i) {
-        mats->mats[i] = new cv::Mat(channels[i]);
+        for (size_t i = 0; i < channels.size(); ++i) {
+            mats->mats[i] = new cv::Mat(channels[i]);
+        }
+
+        mats->length = (int)channels.size();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
     }
-
-    mats->length = (int)channels.size();
 }
 
 void Mat_Subtract(Mat src1, Mat src2, Mat dst) {
-    cv::subtract(*src1, *src2, *dst);
+    try {
+        cv::subtract(*src1, *src2, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 Scalar Mat_Trace(Mat src) {
-    cv::Scalar c = cv::trace(*src);
-    Scalar scal = Scalar();
-    scal.val1 = c.val[0];
-    scal.val2 = c.val[1];
-    scal.val3 = c.val[2];
-    scal.val4 = c.val[3];
-    return scal;
+    try {
+        cv::Scalar c = cv::trace(*src);
+        Scalar scal = Scalar();
+        scal.val1 = c.val[0];
+        scal.val2 = c.val[1];
+        scal.val3 = c.val[2];
+        scal.val4 = c.val[3];
+        return scal;
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return Scalar();
+    }
 }
 
 void Mat_Transform(Mat src, Mat dst, Mat tm) {
-    cv::transform(*src, *dst, *tm);
+    try {
+        cv::transform(*src, *dst, *tm);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Transpose(Mat src, Mat dst) {
-    cv::transpose(*src, *dst);
+    try {
+        cv::transpose(*src, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_TransposeND(Mat src, struct IntVector order, Mat dst) {
-    std::vector<int> _order;
-    for (int i = 0, *v = order.val; i < order.length; ++v, ++i) {
-        _order.push_back(*v);
-    }
+    try {
+        std::vector<int> _order;
+        for (int i = 0, *v = order.val; i < order.length; ++v, ++i) {
+            _order.push_back(*v);
+        }
 
-    cv::transposeND(*src, _order, *dst);
+        cv::transposeND(*src, _order, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees) {
-    cv::polarToCart(*magnitude, *degree, *x, *y, angleInDegrees);
+    try {
+        cv::polarToCart(*magnitude, *degree, *x, *y, angleInDegrees);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Pow(Mat src, double power, Mat dst) {
-    cv::pow(*src, power, *dst);
+    try {
+        cv::pow(*src, power, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Mat_Phase(Mat x, Mat y, Mat angle, bool angleInDegrees) {
-	cv::phase(*x, *y, *angle, angleInDegrees);
+    try {
+        cv::phase(*x, *y, *angle, angleInDegrees);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
-
 Scalar Mat_Sum(Mat src) {
-    cv::Scalar c = cv::sum(*src);
-    Scalar scal = Scalar();
-    scal.val1 = c.val[0];
-    scal.val2 = c.val[1];
-    scal.val3 = c.val[2];
-    scal.val4 = c.val[3];
-    return scal;
+    try {
+        cv::Scalar c = cv::sum(*src);
+        Scalar scal = Scalar();
+        scal.val1 = c.val[0];
+        scal.val2 = c.val[1];
+        scal.val3 = c.val[2];
+        scal.val4 = c.val[3];
+        return scal;
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return Scalar();
+    }
 }
 
 // TermCriteria_New creates a new TermCriteria
 TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon) {
-    return new cv::TermCriteria(typ, maxCount, epsilon);
+    try {
+        return new cv::TermCriteria(typ, maxCount, epsilon);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 void Contours_Close(struct Contours cs) {
@@ -932,19 +1389,39 @@ struct ByteArray toByteArray(const char* buf, int len) {
 }
 
 int64 GetCVTickCount() {
-    return cv::getTickCount();
+    try {
+        return cv::getTickCount();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0;
+    }
 }
 
 double GetTickFrequency() {
-    return cv::getTickFrequency();
+    try {
+        return cv::getTickFrequency();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 Mat Mat_rowRange(Mat m,int startrow,int endrow) {
-    return new cv::Mat(m->rowRange(startrow,endrow));
+    try {
+        return new cv::Mat(m->rowRange(startrow,endrow));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
 }
 
 Mat Mat_colRange(Mat m,int startrow,int endrow) {
-    return new cv::Mat(m->colRange(startrow,endrow));
+    try {
+        return new cv::Mat(m->colRange(startrow,endrow));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
 }
 
 PointVector PointVector_New() {
@@ -1073,35 +1550,65 @@ void SetRNGSeed(int seed) {
 }
 
 void RNG_Fill(RNG rng, Mat mat, int distType, double a, double b, bool saturateRange) {
-    rng->fill(*mat, distType, a, b, saturateRange);
+    try {
+        rng->fill(*mat, distType, a, b, saturateRange);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 double RNG_Gaussian(RNG rng, double sigma) {
-    return rng->gaussian(sigma);
+    try {
+        return rng->gaussian(sigma);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 unsigned int RNG_Next(RNG rng) {
-    return rng->next();
+    try {
+        return rng->next();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0;
+    }
 }
 
 void RandN(Mat mat, Scalar mean, Scalar stddev) {
-    cv::Scalar m = cv::Scalar(mean.val1, mean.val2, mean.val3, mean.val4);
-    cv::Scalar s = cv::Scalar(stddev.val1, stddev.val2, stddev.val3, stddev.val4);
-    cv::randn(*mat, m, s);
+    try {
+        cv::Scalar m = cv::Scalar(mean.val1, mean.val2, mean.val3, mean.val4);
+        cv::Scalar s = cv::Scalar(stddev.val1, stddev.val2, stddev.val3, stddev.val4);
+        cv::randn(*mat, m, s);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void RandShuffle(Mat mat) {
-    cv::randShuffle(*mat);
+    try {
+        cv::randShuffle(*mat);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void RandShuffleWithParams(Mat mat, double iterFactor, RNG rng) {
-    cv::randShuffle(*mat, iterFactor, rng);
+    try {
+        cv::randShuffle(*mat, iterFactor, rng);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void RandU(Mat mat, Scalar low, Scalar high) {
-    cv::Scalar l = cv::Scalar(low.val1, low.val2, low.val3, low.val4);
-    cv::Scalar h = cv::Scalar(high.val1, high.val2, high.val3, high.val4);
-    cv::randn(*mat, l, h);
+    try {
+        cv::Scalar l = cv::Scalar(low.val1, low.val2, low.val3, low.val4);
+        cv::Scalar h = cv::Scalar(high.val1, high.val2, high.val3, high.val4);
+        cv::randn(*mat, l, h);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void copyPointVectorToPoint2fVector(PointVector src, Point2fVector dest) {

@@ -121,6 +121,21 @@ func TestCvtColor(t *testing.T) {
 	}
 }
 
+func TestCvtColorException(t *testing.T) {
+	img := NewMat()
+	defer img.Close()
+
+	dest := NewMat()
+	defer dest.Close()
+
+	CvtColor(img, &dest, ColorBGRAToGray)
+	defer ClearLastException()
+
+	if GetLastException() == 0 || GetLastExceptionMessage() == "" {
+		t.Error("Expected exception in test")
+	}
+}
+
 func NewBayerFromMat(src Mat, pattern string) (Mat, error) {
 	dest := NewMatWithSize(src.Rows(), src.Cols(), MatTypeCV8UC1)
 
