@@ -17,9 +17,9 @@ typedef void* FreeType2;
 
 FreeType2 FreeType2_CreateFreeType2();
 void FreeType2_Close(FreeType2 f);
-void FreeType2_LoadFontData(FreeType2 f, const char* fontFileName, int id);
+OpenCVResult FreeType2_LoadFontData(FreeType2 f, const char* fontFileName, int id);
 void FreeType2_SetSplitNumber(FreeType2 f, int num);
-void FreeType2_PutText(FreeType2 f, Mat img, const char* text, Point org,
+OpenCVResult FreeType2_PutText(FreeType2 f, Mat img, const char* text, Point org,
         int fontHeight, Scalar color,
         int thickness, int line_type, bool bottomLeftOrigin
     );

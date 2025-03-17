@@ -13,15 +13,16 @@ void CudaBackgroundSubtractorMOG2_Close(CudaBackgroundSubtractorMOG2 b) {
     delete b;
 }
 
-void CudaBackgroundSubtractorMOG2_Apply(CudaBackgroundSubtractorMOG2 b, GpuMat src, GpuMat dst, Stream s) {
+OpenCVResult CudaBackgroundSubtractorMOG2_Apply(CudaBackgroundSubtractorMOG2 b, GpuMat src, GpuMat dst, Stream s) {
     try {
         if (s == NULL) {
             (*b)->apply(*src, *dst);
-            return;
+        } else {
+            (*b)->apply(*src, *dst, -1.0, *s);
         }
-        (*b)->apply(*src, *dst, -1.0, *s);    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -38,14 +39,15 @@ void CudaBackgroundSubtractorMOG_Close(CudaBackgroundSubtractorMOG b) {
     delete b;
 }
 
-void CudaBackgroundSubtractorMOG_Apply(CudaBackgroundSubtractorMOG b, GpuMat src, GpuMat dst, Stream s) {
+OpenCVResult CudaBackgroundSubtractorMOG_Apply(CudaBackgroundSubtractorMOG b, GpuMat src, GpuMat dst, Stream s) {
     try {
         if (s == NULL) {
             (*b)->apply(*src, *dst);
-            return;
+        } else {
+            (*b)->apply(*src, *dst, -1.0, *s);
         }
-        (*b)->apply(*src, *dst, -1.0, *s);    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }

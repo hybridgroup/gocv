@@ -39,10 +39,10 @@ func (f *FreeType2) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d9/dfa/classcv_1_1freetype_1_1FreeType2.html#af059d49b806b916ffdd6380b9eb2f59a
-func (f *FreeType2) LoadFontData(fontFileName string, id int) {
+func (f *FreeType2) LoadFontData(fontFileName string, id int) error {
 	cFontFileName := C.CString(fontFileName)
 	defer C.free(unsafe.Pointer(cFontFileName))
-	C.FreeType2_LoadFontData((C.FreeType2)(f.p), cFontFileName, C.int(id))
+	return OpenCVResult(C.FreeType2_LoadFontData((C.FreeType2)(f.p), cFontFileName, C.int(id)))
 }
 
 // SetSplitNumber set the number of split points from bezier-curve to line.
@@ -62,7 +62,7 @@ func (f *FreeType2) SetSplitNumber(num int) {
 // For further details, please see:
 // https://docs.opencv.org/master/d9/dfa/classcv_1_1freetype_1_1FreeType2.html#aba641f774c47a70eaeb76bf7aa865915
 func (f *FreeType2) PutText(img *gocv.Mat, text string, org image.Point,
-	fontHeight int, c color.RGBA, thickness int, lineType gocv.LineType, bottomLeftOrigin bool) {
+	fontHeight int, c color.RGBA, thickness int, lineType gocv.LineType, bottomLeftOrigin bool) error {
 	cText := C.CString(text)
 	defer C.free(unsafe.Pointer(cText))
 
@@ -78,7 +78,7 @@ func (f *FreeType2) PutText(img *gocv.Mat, text string, org image.Point,
 		val4: C.double(c.A),
 	}
 
-	C.FreeType2_PutText((C.FreeType2)(f.p), (C.Mat)(img.Ptr()), cText, sOrg, C.int(fontHeight), sColor, C.int(thickness), C.int(lineType), C.bool(bottomLeftOrigin))
+	return OpenCVResult(C.FreeType2_PutText((C.FreeType2)(f.p), (C.Mat)(img.Ptr()), cText, sOrg, C.int(fontHeight), sColor, C.int(thickness), C.int(lineType), C.bool(bottomLeftOrigin)))
 }
 
 // GetTextSize calculates the width and height of a text string.

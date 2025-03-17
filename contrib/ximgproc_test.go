@@ -1,8 +1,9 @@
 package contrib
 
 import (
-	"gocv.io/x/gocv"
 	"testing"
+
+	"gocv.io/x/gocv"
 )
 
 func TestAnisotropicDiffusion(t *testing.T) {
@@ -15,6 +16,21 @@ func TestAnisotropicDiffusion(t *testing.T) {
 
 	if src.Empty() || dst.Rows() != src.Rows() {
 		t.Error("invalid AnisotropicDiffusion test")
+	}
+}
+
+func TestAnisotropicDiffusionException(t *testing.T) {
+	src := gocv.NewMat()
+	defer src.Close()
+	dst := gocv.NewMat()
+	defer dst.Close()
+
+	err := AnisotropicDiffusion(src, &dst, 0.5, 0.5, 100)
+	if err == nil {
+		t.Error("Expected exception in test")
+	}
+	if len(err.Error()) == 0 {
+		t.Error("Expected exception message in test")
 	}
 }
 

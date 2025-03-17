@@ -10,55 +10,61 @@ double Fisheye_Calibrate(Points3fVector objectPoints, Points2fVector imagePoints
     }
 }
 
-void Fisheye_DistortPoints(Mat undistorted, Mat distorted, Mat k, Mat d) {
+OpenCVResult Fisheye_DistortPoints(Mat undistorted, Mat distorted, Mat k, Mat d) {
     try {
         cv::fisheye::distortPoints(*undistorted, *distorted, *k, *d);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Fisheye_UndistortImage(Mat distorted, Mat undistorted, Mat k, Mat d) {
+OpenCVResult Fisheye_UndistortImage(Mat distorted, Mat undistorted, Mat k, Mat d) {
     try {
         cv::fisheye::undistortImage(*distorted, *undistorted, *k, *d);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Fisheye_UndistortImageWithParams(Mat distorted, Mat undistorted, Mat k, Mat d, Mat knew, Size size) {
+OpenCVResult Fisheye_UndistortImageWithParams(Mat distorted, Mat undistorted, Mat k, Mat d, Mat knew, Size size) {
     try {
         cv::Size sz(size.width, size.height);
         cv::fisheye::undistortImage(*distorted, *undistorted, *k, *d, *knew, sz);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Fisheye_UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d, Mat r, Mat p) {
+OpenCVResult Fisheye_UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d, Mat r, Mat p) {
     try {
         cv::fisheye::undistortPoints(*distorted, *undistorted, *k, *d, *r, *p);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Fisheye_EstimateNewCameraMatrixForUndistortRectify(Mat k, Mat d, Size imgSize, Mat r, Mat p, double balance, Size newSize, double fovScale) {
+OpenCVResult Fisheye_EstimateNewCameraMatrixForUndistortRectify(Mat k, Mat d, Size imgSize, Mat r, Mat p, double balance, Size newSize, double fovScale) {
     try {
         cv::Size newSz(newSize.width, newSize.height);
         cv::Size imgSz(imgSize.width, imgSize.height);
         cv::fisheye::estimateNewCameraMatrixForUndistortRectify(*k, *d, imgSz, *r, *p, balance, newSz, fovScale);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void InitUndistortRectifyMap(Mat cameraMatrix,Mat distCoeffs,Mat r,Mat newCameraMatrix,Size size,int m1type,Mat map1,Mat map2) {
+OpenCVResult InitUndistortRectifyMap(Mat cameraMatrix,Mat distCoeffs,Mat r,Mat newCameraMatrix,Size size,int m1type,Mat map1,Mat map2) {
     try {
         cv::Size sz(size.width, size.height);
         cv::initUndistortRectifyMap(*cameraMatrix,*distCoeffs,*r,*newCameraMatrix,sz,m1type,*map1,*map2);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -88,19 +94,21 @@ double CalibrateCamera(Points3fVector objectPoints, Points2fVector imagePoints, 
     }
 }
 
-void Undistort(Mat src, Mat dst, Mat cameraMatrix, Mat distCoeffs, Mat newCameraMatrix) {
+OpenCVResult Undistort(Mat src, Mat dst, Mat cameraMatrix, Mat distCoeffs, Mat newCameraMatrix) {
     try {
         cv::undistort(*src, *dst, *cameraMatrix, *distCoeffs, *newCameraMatrix);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d, Mat r, Mat p) {
+OpenCVResult UndistortPoints(Mat distorted, Mat undistorted, Mat k, Mat d, Mat r, Mat p) {
     try {
         cv::undistortPoints(*distorted, *undistorted, *k, *d, *r, *p);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -144,12 +152,13 @@ bool FindChessboardCornersSBWithMeta(Mat image, Size patternSize, Mat corners, i
     }
 }
 
-void DrawChessboardCorners(Mat image, Size patternSize, Mat corners, bool patternWasFound) {
+OpenCVResult DrawChessboardCorners(Mat image, Size patternSize, Mat corners, bool patternWasFound) {
     try {
         cv::Size sz(patternSize.width, patternSize.height);
         cv::drawChessboardCorners(*image, sz, *corners, patternWasFound);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -189,27 +198,30 @@ Mat EstimateAffine2DWithParams(Point2fVector from, Point2fVector to, Mat inliers
     }
 }
 
-void TriangulatePoints(Mat projMatr1, Mat projMatr2, Point2fVector projPoints1, Point2fVector projPoints2, Mat points4D) {
+OpenCVResult TriangulatePoints(Mat projMatr1, Mat projMatr2, Point2fVector projPoints1, Point2fVector projPoints2, Mat points4D) {
     try {
         cv::triangulatePoints(*projMatr1, *projMatr2, *projPoints1, *projPoints2, *points4D);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void ConvertPointsFromHomogeneous(Mat src, Mat dst) {
+OpenCVResult ConvertPointsFromHomogeneous(Mat src, Mat dst) {
     try {
         cv::convertPointsFromHomogeneous(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Rodrigues(Mat src, Mat dst) {
+OpenCVResult Rodrigues(Mat src, Mat dst) {
     try {
         cv::Rodrigues(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 

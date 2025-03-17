@@ -1,9 +1,10 @@
 #include "svd.h"
 
-void SVD_Compute(Mat src, Mat w, Mat u, Mat vt) {
+OpenCVResult SVD_Compute(Mat src, Mat w, Mat u, Mat vt) {
     try {
         cv::SVD::compute(*src, *w, *u, *vt, 0);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }

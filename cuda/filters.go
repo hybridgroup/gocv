@@ -43,9 +43,8 @@ func (gf *GaussianFilter) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dc/d2b/classcv_1_1cuda_1_1Filter.html#a20b58d13871027473b4c39cc698cf80f
-func (gf *GaussianFilter) Apply(img GpuMat, dst *GpuMat) {
-	C.GaussianFilter_Apply(C.GaussianFilter(gf.p), img.p, dst.p, nil)
-	return
+func (gf *GaussianFilter) Apply(img GpuMat, dst *GpuMat) error {
+	return OpenCVResult(C.GaussianFilter_Apply(C.GaussianFilter(gf.p), img.p, dst.p, nil))
 }
 
 // ApplyWithStream applies the Gaussian filter
@@ -53,9 +52,8 @@ func (gf *GaussianFilter) Apply(img GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dc/d2b/classcv_1_1cuda_1_1Filter.html#a20b58d13871027473b4c39cc698cf80f
-func (gf *GaussianFilter) ApplyWithStream(img GpuMat, dst *GpuMat, s Stream) {
-	C.GaussianFilter_Apply(C.GaussianFilter(gf.p), img.p, dst.p, s.p)
-	return
+func (gf *GaussianFilter) ApplyWithStream(img GpuMat, dst *GpuMat, s Stream) error {
+	return OpenCVResult(C.GaussianFilter_Apply(C.GaussianFilter(gf.p), img.p, dst.p, s.p))
 }
 
 // SobelFilter
@@ -87,9 +85,8 @@ func (sf *SobelFilter) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dc/d2b/classcv_1_1cuda_1_1Filter.html#a20b58d13871027473b4c39cc698cf80f
-func (sf *SobelFilter) Apply(img GpuMat, dst *GpuMat) {
-	C.SobelFilter_Apply(C.SobelFilter(sf.p), img.p, dst.p, nil)
-	return
+func (sf *SobelFilter) Apply(img GpuMat, dst *GpuMat) error {
+	return OpenCVResult(C.SobelFilter_Apply(C.SobelFilter(sf.p), img.p, dst.p, nil))
 }
 
 // ApplyWithStream applies the Sobel filter
@@ -97,7 +94,6 @@ func (sf *SobelFilter) Apply(img GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dc/d2b/classcv_1_1cuda_1_1Filter.html#a20b58d13871027473b4c39cc698cf80f
-func (sf *SobelFilter) ApplyWithStream(img GpuMat, dst *GpuMat, s Stream) {
-	C.SobelFilter_Apply(C.SobelFilter(sf.p), img.p, dst.p, s.p)
-	return
+func (sf *SobelFilter) ApplyWithStream(img GpuMat, dst *GpuMat, s Stream) error {
+	return OpenCVResult(C.SobelFilter_Apply(C.SobelFilter(sf.p), img.p, dst.p, s.p))
 }

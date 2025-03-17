@@ -39,44 +39,44 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/master/df/da0/group__photo__clone.html#ga6684f35dc669ff6196a7c340dc73b98e
-func ColorChange(src, mask Mat, dst *Mat, red_mul, green_mul, blue_mul float32) {
-	C.ColorChange(src.p, mask.p, dst.p, C.float(red_mul), C.float(green_mul), C.float(blue_mul))
+func ColorChange(src, mask Mat, dst *Mat, red_mul, green_mul, blue_mul float32) error {
+	return OpenCVResult(C.ColorChange(src.p, mask.p, dst.p, C.float(red_mul), C.float(green_mul), C.float(blue_mul)))
 }
 
 // SeamlessClone blend two image by Poisson Blending.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/df/da0/group__photo__clone.html#ga2bf426e4c93a6b1f21705513dfeca49d
-func SeamlessClone(src, dst, mask Mat, p image.Point, blend *Mat, flags SeamlessCloneFlags) {
+func SeamlessClone(src, dst, mask Mat, p image.Point, blend *Mat, flags SeamlessCloneFlags) error {
 	cp := C.struct_Point{
 		x: C.int(p.X),
 		y: C.int(p.Y),
 	}
 
-	C.SeamlessClone(src.p, dst.p, mask.p, cp, blend.p, C.int(flags))
+	return OpenCVResult(C.SeamlessClone(src.p, dst.p, mask.p, cp, blend.p, C.int(flags)))
 }
 
 // IlluminationChange modifies locally the apparent illumination of an image.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/df/da0/group__photo__clone.html#gac5025767cf2febd8029d474278e886c7
-func IlluminationChange(src, mask Mat, dst *Mat, alpha, beta float32) {
-	C.IlluminationChange(src.p, mask.p, dst.p, C.float(alpha), C.float(beta))
+func IlluminationChange(src, mask Mat, dst *Mat, alpha, beta float32) error {
+	return OpenCVResult(C.IlluminationChange(src.p, mask.p, dst.p, C.float(alpha), C.float(beta)))
 }
 
 // TextureFlattening washes out the texture of the selected region, giving its contents a flat aspect.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/df/da0/group__photo__clone.html#gad55df6aa53797365fa7cc23959a54004
-func TextureFlattening(src, mask Mat, dst *Mat, lowThreshold, highThreshold float32, kernelSize int) {
-	C.TextureFlattening(src.p, mask.p, dst.p, C.float(lowThreshold), C.float(highThreshold), C.int(kernelSize))
+func TextureFlattening(src, mask Mat, dst *Mat, lowThreshold, highThreshold float32, kernelSize int) error {
+	return OpenCVResult(C.TextureFlattening(src.p, mask.p, dst.p, C.float(lowThreshold), C.float(highThreshold), C.int(kernelSize)))
 }
 
 // FastNlMeansDenoisingColoredMulti denoises the selected images.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#gaa501e71f52fb2dc17ff8ca5e7d2d3619
-func FastNlMeansDenoisingColoredMulti(src []Mat, dst *Mat, imgToDenoiseIndex int, temporalWindowSize int) {
+func FastNlMeansDenoisingColoredMulti(src []Mat, dst *Mat, imgToDenoiseIndex int, temporalWindowSize int) error {
 	cMatArray := make([]C.Mat, len(src))
 	for i, r := range src {
 		cMatArray[i] = (C.Mat)(r.p)
@@ -85,14 +85,14 @@ func FastNlMeansDenoisingColoredMulti(src []Mat, dst *Mat, imgToDenoiseIndex int
 		mats:   (*C.Mat)(&cMatArray[0]),
 		length: C.int(len(src)),
 	}
-	C.FastNlMeansDenoisingColoredMulti(matsVector, dst.p, C.int(imgToDenoiseIndex), C.int(temporalWindowSize))
+	return OpenCVResult(C.FastNlMeansDenoisingColoredMulti(matsVector, dst.p, C.int(imgToDenoiseIndex), C.int(temporalWindowSize)))
 }
 
 // FastNlMeansDenoisingColoredMulti denoises the selected images.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d1/d79/group__photo__denoise.html#gaa501e71f52fb2dc17ff8ca5e7d2d3619
-func FastNlMeansDenoisingColoredMultiWithParams(src []Mat, dst *Mat, imgToDenoiseIndex int, temporalWindowSize int, h float32, hColor float32, templateWindowSize int, searchWindowSize int) {
+func FastNlMeansDenoisingColoredMultiWithParams(src []Mat, dst *Mat, imgToDenoiseIndex int, temporalWindowSize int, h float32, hColor float32, templateWindowSize int, searchWindowSize int) error {
 	cMatArray := make([]C.Mat, len(src))
 	for i, r := range src {
 		cMatArray[i] = (C.Mat)(r.p)
@@ -101,7 +101,7 @@ func FastNlMeansDenoisingColoredMultiWithParams(src []Mat, dst *Mat, imgToDenois
 		mats:   (*C.Mat)(&cMatArray[0]),
 		length: C.int(len(src)),
 	}
-	C.FastNlMeansDenoisingColoredMultiWithParams(matsVector, dst.p, C.int(imgToDenoiseIndex), C.int(temporalWindowSize), C.float(h), C.float(hColor), C.int(templateWindowSize), C.int(searchWindowSize))
+	return OpenCVResult(C.FastNlMeansDenoisingColoredMultiWithParams(matsVector, dst.p, C.int(imgToDenoiseIndex), C.int(temporalWindowSize), C.float(h), C.float(hColor), C.int(templateWindowSize), C.int(searchWindowSize)))
 }
 
 // NewMergeMertens returns returns a new MergeMertens white LDR merge algorithm.
@@ -139,7 +139,7 @@ func (b *MergeMertens) Close() error {
 // Return a image MAT : 8bits 3 channel image ( RGB 8 bits )
 // For further details, please see:
 // https://docs.opencv.org/master/d7/dd6/classcv_1_1MergeMertens.html#a2d2254b2aab722c16954de13a663644d
-func (b *MergeMertens) Process(src []Mat, dst *Mat) {
+func (b *MergeMertens) Process(src []Mat, dst *Mat) error {
 	cMatArray := make([]C.Mat, len(src))
 	for i, r := range src {
 		cMatArray[i] = (C.Mat)(r.p)
@@ -149,9 +149,10 @@ func (b *MergeMertens) Process(src []Mat, dst *Mat) {
 		mats:   (*C.Mat)(&cMatArray[0]),
 		length: C.int(len(src)),
 	}
-	C.MergeMertens_Process((C.MergeMertens)(b.p), matsVector, dst.p)
+	res := C.MergeMertens_Process((C.MergeMertens)(b.p), matsVector, dst.p)
 	// Convert a series of double [0.0,1.0] to [0,255] with Golang
 	dst.ConvertToWithParams(dst, MatTypeCV8UC3, 255.0, 0.0)
+	return OpenCVResult(res)
 }
 
 // NewAlignMTB returns an AlignMTB for converts images to median threshold bitmaps.
@@ -191,7 +192,7 @@ func (b *AlignMTB) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/db6/classcv_1_1AlignMTB.html#a37b3417d844f362d781f34155cbcb201
-func (b *AlignMTB) Process(src []Mat, dst *[]Mat) {
+func (b *AlignMTB) Process(src []Mat, dst *[]Mat) error {
 
 	cSrcArray := make([]C.Mat, len(src))
 	for i, r := range src {
@@ -204,7 +205,7 @@ func (b *AlignMTB) Process(src []Mat, dst *[]Mat) {
 
 	cDstMats := C.struct_Mats{}
 
-	C.AlignMTB_Process((C.AlignMTB)(b.p), cSrcMats, &cDstMats)
+	res := C.AlignMTB_Process((C.AlignMTB)(b.p), cSrcMats, &cDstMats)
 
 	// Pass the matrices by reference from an OpenCV/C++ to a GoCV::Mat object
 	for i := C.int(0); i < cDstMats.length; i++ {
@@ -212,7 +213,7 @@ func (b *AlignMTB) Process(src []Mat, dst *[]Mat) {
 		tempdst.p = C.Mats_get(cDstMats, i)
 		*dst = append(*dst, tempdst)
 	}
-	return
+	return OpenCVResult(res)
 }
 
 // FastNlMeansDenoising performs image denoising using Non-local Means Denoising algorithm
@@ -220,8 +221,8 @@ func (b *AlignMTB) Process(src []Mat, dst *[]Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d1/d79/group__photo__denoise.html#ga4c6b0031f56ea3f98f768881279ffe93
-func FastNlMeansDenoising(src Mat, dst *Mat) {
-	C.FastNlMeansDenoising(src.p, dst.p)
+func FastNlMeansDenoising(src Mat, dst *Mat) error {
+	return OpenCVResult(C.FastNlMeansDenoising(src.p, dst.p))
 }
 
 // FastNlMeansDenoisingWithParams performs image denoising using Non-local Means Denoising algorithm
@@ -229,32 +230,32 @@ func FastNlMeansDenoising(src Mat, dst *Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d1/d79/group__photo__denoise.html#ga4c6b0031f56ea3f98f768881279ffe93
-func FastNlMeansDenoisingWithParams(src Mat, dst *Mat, h float32, templateWindowSize int, searchWindowSize int) {
-	C.FastNlMeansDenoisingWithParams(src.p, dst.p, C.float(h), C.int(templateWindowSize), C.int(searchWindowSize))
+func FastNlMeansDenoisingWithParams(src Mat, dst *Mat, h float32, templateWindowSize int, searchWindowSize int) error {
+	return OpenCVResult(C.FastNlMeansDenoisingWithParams(src.p, dst.p, C.float(h), C.int(templateWindowSize), C.int(searchWindowSize)))
 }
 
 // FastNlMeansDenoisingColored is a modification of fastNlMeansDenoising function for colored images.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d1/d79/group__photo__denoise.html#ga21abc1c8b0e15f78cd3eff672cb6c476
-func FastNlMeansDenoisingColored(src Mat, dst *Mat) {
-	C.FastNlMeansDenoisingColored(src.p, dst.p)
+func FastNlMeansDenoisingColored(src Mat, dst *Mat) error {
+	return OpenCVResult(C.FastNlMeansDenoisingColored(src.p, dst.p))
 }
 
 // FastNlMeansDenoisingColoredWithParams is a modification of fastNlMeansDenoising function for colored images.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d1/d79/group__photo__denoise.html#ga21abc1c8b0e15f78cd3eff672cb6c476
-func FastNlMeansDenoisingColoredWithParams(src Mat, dst *Mat, h float32, hColor float32, templateWindowSize int, searchWindowSize int) {
-	C.FastNlMeansDenoisingColoredWithParams(src.p, dst.p, C.float(h), C.float(hColor), C.int(templateWindowSize), C.int(searchWindowSize))
+func FastNlMeansDenoisingColoredWithParams(src Mat, dst *Mat, h float32, hColor float32, templateWindowSize int, searchWindowSize int) error {
+	return OpenCVResult(C.FastNlMeansDenoisingColoredWithParams(src.p, dst.p, C.float(h), C.float(hColor), C.int(templateWindowSize), C.int(searchWindowSize)))
 }
 
 // DetailEnhance filter enhances the details of a particular image
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/df/dac/group__photo__render.html#gae5930dd822c713b36f8529b21ddebd0c
-func DetailEnhance(src Mat, dst *Mat, sigma_s, sigma_r float32) {
-	C.DetailEnhance(src.p, dst.p, C.float(sigma_s), C.float(sigma_r))
+func DetailEnhance(src Mat, dst *Mat, sigma_s, sigma_r float32) error {
+	return OpenCVResult(C.DetailEnhance(src.p, dst.p, C.float(sigma_s), C.float(sigma_r)))
 }
 
 type EdgeFilter int
@@ -272,16 +273,16 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/df/dac/group__photo__render.html#gafaee2977597029bc8e35da6e67bd31f7
-func EdgePreservingFilter(src Mat, dst *Mat, filter EdgeFilter, sigma_s, sigma_r float32) {
-	C.EdgePreservingFilter(src.p, dst.p, C.int(filter), C.float(sigma_s), C.float(sigma_r))
+func EdgePreservingFilter(src Mat, dst *Mat, filter EdgeFilter, sigma_s, sigma_r float32) error {
+	return OpenCVResult(C.EdgePreservingFilter(src.p, dst.p, C.int(filter), C.float(sigma_s), C.float(sigma_r)))
 }
 
 // PencilSketch pencil-like non-photorealistic line drawing.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/df/dac/group__photo__render.html#gae5930dd822c713b36f8529b21ddebd0c
-func PencilSketch(src Mat, dst1, dst2 *Mat, sigma_s, sigma_r, shade_factor float32) {
-	C.PencilSketch(src.p, dst1.p, dst2.p, C.float(sigma_s), C.float(sigma_r), C.float(shade_factor))
+func PencilSketch(src Mat, dst1, dst2 *Mat, sigma_s, sigma_r, shade_factor float32) error {
+	return OpenCVResult(C.PencilSketch(src.p, dst1.p, dst2.p, C.float(sigma_s), C.float(sigma_r), C.float(shade_factor)))
 }
 
 // Stylization aims to produce digital imagery with a wide variety of effects
@@ -291,8 +292,8 @@ func PencilSketch(src Mat, dst1, dst2 *Mat, sigma_s, sigma_r, shade_factor float
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/df/dac/group__photo__render.html#gacb0f7324017df153d7b5d095aed53206
-func Stylization(src Mat, dst *Mat, sigma_s, sigma_r float32) {
-	C.Stylization(src.p, dst.p, C.float(sigma_s), C.float(sigma_r))
+func Stylization(src Mat, dst *Mat, sigma_s, sigma_r float32) error {
+	return OpenCVResult(C.Stylization(src.p, dst.p, C.float(sigma_s), C.float(sigma_r)))
 }
 
 // InpaintMethods is the methods for inpainting process.
@@ -313,6 +314,6 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d7/d8b/group__photo__inpaint.html#gaedd30dfa0214fec4c88138b51d678085
-func Inpaint(src Mat, mask Mat, dst *Mat, inpaintRadius float32, algorithmType InpaintMethods) {
-	C.PhotoInpaint(C.Mat(src.Ptr()), C.Mat(mask.Ptr()), C.Mat(dst.Ptr()), C.float(inpaintRadius), C.int(algorithmType))
+func Inpaint(src Mat, mask Mat, dst *Mat, inpaintRadius float32, algorithmType InpaintMethods) error {
+	return OpenCVResult(C.PhotoInpaint(C.Mat(src.Ptr()), C.Mat(mask.Ptr()), C.Mat(dst.Ptr()), C.float(inpaintRadius), C.int(algorithmType)))
 }

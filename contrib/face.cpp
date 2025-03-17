@@ -9,7 +9,7 @@ bool FaceRecognizer_Empty(FaceRecognizer fr) {
     }
 }
 
-void FaceRecognizer_Train(FaceRecognizer fr, Mats mats, IntVector labels_in) {
+OpenCVResult FaceRecognizer_Train(FaceRecognizer fr, Mats mats, IntVector labels_in) {
     try {
         std::vector<int> labels;
 
@@ -24,12 +24,13 @@ void FaceRecognizer_Train(FaceRecognizer fr, Mats mats, IntVector labels_in) {
         }
     
         (*fr)->train(images, labels);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void FaceRecognizer_Update(FaceRecognizer fr, Mats mats, IntVector labels_in) {
+OpenCVResult FaceRecognizer_Update(FaceRecognizer fr, Mats mats, IntVector labels_in) {
     try {
         std::vector<int> labels;
 
@@ -44,8 +45,9 @@ void FaceRecognizer_Update(FaceRecognizer fr, Mats mats, IntVector labels_in) {
         }
     
         (*fr)->update(images, labels);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -96,23 +98,25 @@ void FaceRecognizer_SetThreshold(FaceRecognizer fr, double threshold) {
     }
 }
 
-void FaceRecognizer_SaveFile(FaceRecognizer fr, const char*  filename) {
+OpenCVResult FaceRecognizer_SaveFile(FaceRecognizer fr, const char*  filename) {
     try {
         (*fr)->write(filename);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void FaceRecognizer_LoadFile(FaceRecognizer fr, const char*  filename) {
+OpenCVResult FaceRecognizer_LoadFile(FaceRecognizer fr, const char*  filename) {
     try {
         (*fr)->read(filename);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void BasicFaceRecognizer_Train(BasicFaceRecognizer fr, Mats mats, IntVector labels_in){
+OpenCVResult BasicFaceRecognizer_Train(BasicFaceRecognizer fr, Mats mats, IntVector labels_in){
     try {
         std::vector<int> labels;
 
@@ -127,12 +131,13 @@ void BasicFaceRecognizer_Train(BasicFaceRecognizer fr, Mats mats, IntVector labe
         }
     
         (*fr)->train(images, labels);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void BasicFaceRecognizer_Update(BasicFaceRecognizer fr, Mats mats, IntVector labels_in){
+OpenCVResult BasicFaceRecognizer_Update(BasicFaceRecognizer fr, Mats mats, IntVector labels_in){
     try {
         std::vector<int> labels;
     
@@ -146,8 +151,9 @@ void BasicFaceRecognizer_Update(BasicFaceRecognizer fr, Mats mats, IntVector lab
             images.push_back(*mats.mats[i]);
         }
         (*fr)->update(images, labels);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -224,19 +230,21 @@ void BasicFaceRecognizer_setNumComponents(BasicFaceRecognizer fr, int val){
     }
 }	
 
-void BasicFaceRecognizer_SaveFile(BasicFaceRecognizer fr, const char*  filename){
+OpenCVResult BasicFaceRecognizer_SaveFile(BasicFaceRecognizer fr, const char*  filename){
     try {
         (*fr)->write(filename);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void BasicFaceRecognizer_LoadFile(BasicFaceRecognizer fr, const char*  filename){
+OpenCVResult BasicFaceRecognizer_LoadFile(BasicFaceRecognizer fr, const char*  filename){
     try {
         (*fr)->read(filename);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 

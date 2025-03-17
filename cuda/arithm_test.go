@@ -29,6 +29,28 @@ func TestAbs(t *testing.T) {
 	}
 }
 
+func TestAbsException(t *testing.T) {
+	src := gocv.NewMat()
+	defer src.Close()
+
+	var cimg, dimg = NewGpuMat(), NewGpuMat()
+	defer cimg.Close()
+	defer dimg.Close()
+
+	cimg.Upload(src)
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	err := Abs(cimg, &dimg)
+	if err == nil {
+		t.Error("Expected exception in test")
+	}
+	if len(err.Error()) == 0 {
+		t.Error("Expected exception message in test")
+	}
+}
+
 func TestAbsWithStream(t *testing.T) {
 	src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadColor)
 	if src.Empty() {

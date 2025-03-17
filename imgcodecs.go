@@ -250,8 +250,8 @@ func IMEncode(fileExt FileExt, img Mat) (buf *NativeByteBuffer, err error) {
 	defer C.free(unsafe.Pointer(cfileExt))
 
 	buffer := newNativeByteBuffer()
-	C.Image_IMEncode(cfileExt, img.Ptr(), buffer.nativePointer())
-	return buffer, nil
+	res := C.Image_IMEncode(cfileExt, img.Ptr(), buffer.nativePointer())
+	return buffer, OpenCVResult(res)
 }
 
 // IMEncodeWithParams encodes an image Mat into a memory buffer.
@@ -279,8 +279,8 @@ func IMEncodeWithParams(fileExt FileExt, img Mat, params []int) (buf *NativeByte
 	paramsVector.length = (C.int)(len(cparams))
 
 	b := newNativeByteBuffer()
-	C.Image_IMEncode_WithParams(cfileExt, img.Ptr(), paramsVector, b.nativePointer())
-	return b, nil
+	res := C.Image_IMEncode_WithParams(cfileExt, img.Ptr(), paramsVector, b.nativePointer())
+	return b, OpenCVResult(res)
 }
 
 // IMDecode reads an image from a buffer in memory.
@@ -295,7 +295,7 @@ func IMDecode(buf []byte, flags IMReadFlag) (Mat, error) {
 	if err != nil {
 		return Mat{}, err
 	}
-	return newMat(C.Image_IMDecode(*data, C.int(flags))), nil
+	return newMat(C.Image_IMDecode(*data, C.int(flags))), LastExceptionError()
 }
 
 // IMDecodeIntoMat reads an image from a buffer in memory into a matrix.
@@ -310,6 +310,5 @@ func IMDecodeIntoMat(buf []byte, flags IMReadFlag, dest *Mat) error {
 	if err != nil {
 		return err
 	}
-	C.Image_IMDecodeIntoMat(*data, C.int(flags), dest.p)
-	return nil
+	return OpenCVResult(C.Image_IMDecodeIntoMat(*data, C.int(flags), dest.p))
 }

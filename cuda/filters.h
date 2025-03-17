@@ -23,13 +23,13 @@ typedef void* SobelFilter;
 GaussianFilter CreateGaussianFilter(int srcType, int dstType, Size ksize, double sigma1);
 GaussianFilter CreateGaussianFilterWithParams(int srcType, int dstType, Size ksize, double sigma1, double sigma2, int rowBorderMode, int columnBorderMode);
 void GaussianFilter_Close(GaussianFilter gf);
-void GaussianFilter_Apply(GaussianFilter gf, GpuMat img, GpuMat dst, Stream s);
+OpenCVResult GaussianFilter_Apply(GaussianFilter gf, GpuMat img, GpuMat dst, Stream s);
 
 // SobelFilter
 SobelFilter CreateSobelFilter(int srcType, int dstType, int dx, int dy);
 SobelFilter CreateSobelFilterWithParams(int srcType, int dstType, int dx, int dy, int ksize, double scale, int rowBorderMode, int columnBorderMode);
 void SobelFilter_Close(SobelFilter sf);
-void SobelFilter_Apply(SobelFilter sf, GpuMat img, GpuMat dst, Stream s);
+OpenCVResult SobelFilter_Apply(SobelFilter sf, GpuMat img, GpuMat dst, Stream s);
 
 #ifdef __cplusplus
 }

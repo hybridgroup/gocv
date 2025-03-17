@@ -15,16 +15,16 @@ import (
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/df/d2d/group__ximgproc.html#gaffedd976e0a8efb5938107acab185ec2
-func AnisotropicDiffusion(src gocv.Mat, dst *gocv.Mat, alpha float32, k float32, niters int) {
-	C.anisotropicDiffusion(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.float(alpha), C.float(k), C.int(niters))
+func AnisotropicDiffusion(src gocv.Mat, dst *gocv.Mat, alpha float32, k float32, niters int) error {
+	return OpenCVResult(C.anisotropicDiffusion(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.float(alpha), C.float(k), C.int(niters)))
 }
 
 // EdgePreservingFilter smoothes an image using the Edge-Preserving filter.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/df/d2d/group__ximgproc.html#ga86fcda65ced0aafa2741088d82e9161c
-func EdgePreservingFilter(src gocv.Mat, dst *gocv.Mat, d int, threshold float32) {
-	C.edgePreservingFilter(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.int(d), C.float(threshold))
+func EdgePreservingFilter(src gocv.Mat, dst *gocv.Mat, d int, threshold float32) error {
+	return OpenCVResult(C.edgePreservingFilter(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.int(d), C.float(threshold)))
 }
 
 type BinarizationMethod int
@@ -42,9 +42,9 @@ const (
 // For further details, please see:
 // https://docs.opencv.org/4.x/df/d2d/group__ximgproc.html#gab042a5032bbb85275f1fd3e04e7c7660
 func NiblackThreshold(src gocv.Mat, dst *gocv.Mat, maxValue float32,
-	typ gocv.ThresholdType, blockSize int, k float32, binarizationMethod BinarizationMethod, r float32) {
-	C.niBlackThreshold(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.float(maxValue), C.int(typ),
-		C.int(blockSize), C.float(k), C.int(binarizationMethod), C.float(r))
+	typ gocv.ThresholdType, blockSize int, k float32, binarizationMethod BinarizationMethod, r float32) error {
+	return OpenCVResult(C.niBlackThreshold(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.float(maxValue), C.int(typ),
+		C.int(blockSize), C.float(k), C.int(binarizationMethod), C.float(r)))
 }
 
 // PeiLinNormalization calculates an affine transformation that normalize
@@ -52,8 +52,8 @@ func NiblackThreshold(src gocv.Mat, dst *gocv.Mat, maxValue float32,
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/df/d2d/group__ximgproc.html#ga50d064b92f63916f4162474eea22d656
-func PeiLinNormalization(src gocv.Mat, dst *gocv.Mat) {
-	C.PeiLinNormalization(C.Mat(src.Ptr()), C.Mat(dst.Ptr()))
+func PeiLinNormalization(src gocv.Mat, dst *gocv.Mat) error {
+	return OpenCVResult(C.PeiLinNormalization(C.Mat(src.Ptr()), C.Mat(dst.Ptr())))
 }
 
 type ThinningType int
@@ -71,6 +71,6 @@ const (
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/df/d2d/group__ximgproc.html#ga37002c6ca80c978edb6ead5d6b39740c
-func Thinning(src gocv.Mat, dst *gocv.Mat, typ ThinningType) {
-	C.thinning(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.int(typ))
+func Thinning(src gocv.Mat, dst *gocv.Mat, typ ThinningType) error {
+	return OpenCVResult(C.thinning(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.int(typ)))
 }

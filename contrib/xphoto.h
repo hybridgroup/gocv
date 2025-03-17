@@ -28,10 +28,10 @@ typedef void* TonemapDurand;
 
 // ----------------------- bm3d_image_denoising -----------------------
 
-void Xphoto_ApplyChannelGains(Mat src, Mat dst, float gainB, float gainG, float gainR) ;
+OpenCVResult Xphoto_ApplyChannelGains(Mat src, Mat dst, float gainB, float gainG, float gainR);
 
-void Xphoto_Bm3dDenoising_Step(Mat src, Mat dststep1, Mat dststep2) ;
-void Xphoto_Bm3dDenoising_Step_WithParams(
+OpenCVResult Xphoto_Bm3dDenoising_Step(Mat src, Mat dststep1, Mat dststep2);
+OpenCVResult Xphoto_Bm3dDenoising_Step_WithParams(
     Mat src, Mat dststep1, Mat dststep2,
     float h, int templateWindowSize,
     int searchWindowSize, int blockMatchingStep1,
@@ -39,10 +39,10 @@ void Xphoto_Bm3dDenoising_Step_WithParams(
     int slidingStep, float beta,
     int normType, int step,
     int transformType
-) ;
+);
 
-void Xphoto_Bm3dDenoising(Mat src, Mat dst) ;
-void Xphoto_Bm3dDenoising_WithParams(
+OpenCVResult Xphoto_Bm3dDenoising(Mat src, Mat dst);
+OpenCVResult Xphoto_Bm3dDenoising_WithParams(
     Mat src, Mat dst,
     float h, int templateWindowSize,
     int searchWindowSize, int blockMatchingStep1,
@@ -50,7 +50,7 @@ void Xphoto_Bm3dDenoising_WithParams(
     int slidingStep, float beta,
     int normType, int step,
     int transformType
-) ;
+);
 
 
 // ----------------------- GrayworldWB -----------------------
@@ -59,21 +59,21 @@ GrayworldWB GrayworldWB_Create();
 void GrayworldWB_Close(GrayworldWB b);
 void GrayworldWB_SetSaturationThreshold(GrayworldWB b, float saturationThreshold);
 float GrayworldWB_GetSaturationThreshold(GrayworldWB b);
-void GrayworldWB_BalanceWhite(GrayworldWB b, Mat src, Mat dst);
+OpenCVResult GrayworldWB_BalanceWhite(GrayworldWB b, Mat src, Mat dst);
 
 // ----------------------- LearningBasedWB -----------------------
 
 LearningBasedWB LearningBasedWB_Create();
 LearningBasedWB LearningBasedWB_CreateWithParams(const char* pathmodel);
 void LearningBasedWB_Close(LearningBasedWB b);
-void LearningBasedWB_ExtractSimpleFeatures(LearningBasedWB b, Mat src, Mat dst);
+OpenCVResult LearningBasedWB_ExtractSimpleFeatures(LearningBasedWB b, Mat src, Mat dst);
 int LearningBasedWB_GetHistBinNum(LearningBasedWB b) ;
 int LearningBasedWB_GetRangeMaxVal(LearningBasedWB b) ;
 float LearningBasedWB_GetSaturationThreshold(LearningBasedWB b) ;
 void LearningBasedWB_SetHistBinNum(LearningBasedWB b, int val);
 void LearningBasedWB_SetRangeMaxVal(LearningBasedWB b, int val);
 void LearningBasedWB_SetSaturationThreshold(LearningBasedWB b, float val);
-void LearningBasedWB_BalanceWhite(LearningBasedWB b, Mat src, Mat dst);
+OpenCVResult LearningBasedWB_BalanceWhite(LearningBasedWB b, Mat src, Mat dst);
 
 // ----------------------- SimpleWB -----------------------
 
@@ -89,7 +89,7 @@ void SimpleWB_SetInputMin(SimpleWB b, float val);
 void SimpleWB_SetOutputMax(SimpleWB b, float val);
 void SimpleWB_SetOutputMin(SimpleWB b, float val);
 void SimpleWB_SetP(SimpleWB b, float val);
-void SimpleWB_BalanceWhite(SimpleWB b, Mat src, Mat dst);
+OpenCVResult SimpleWB_BalanceWhite(SimpleWB b, Mat src, Mat dst);
 
 
 // -------------------- TonemapDurand --------------------
@@ -109,15 +109,15 @@ void TonemapDurand_SetSigmaColor(TonemapDurand b, float sigma_color);
 void TonemapDurand_SetSigmaSpace(TonemapDurand b, float sigma_space);
 
 float TonemapDurand_GetGamma(TonemapDurand b);
-void TonemapDurand_Process(TonemapDurand b, Mat src, Mat dst);
+OpenCVResult TonemapDurand_Process(TonemapDurand b, Mat src, Mat dst);
 void TonemapDurand_SetGamma(TonemapDurand b, float gamma);
 
 
 // ------------------------ Inpaint -----------------------
 
-void Inpaint(Mat src, Mat mask, Mat dst, int algorithmType);
-void OilPaintingWithParams(Mat src, Mat dst, int size, int dynRatio, int code);
-void OilPainting(Mat src, Mat dst, int size, int dynRatio);
+OpenCVResult Inpaint(Mat src, Mat mask, Mat dst, int algorithmType);
+OpenCVResult OilPaintingWithParams(Mat src, Mat dst, int size, int dynRatio, int code);
+OpenCVResult OilPainting(Mat src, Mat dst, int size, int dynRatio);
 
 #ifdef __cplusplus
 }

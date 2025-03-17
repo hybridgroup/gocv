@@ -79,16 +79,17 @@ bool Image_IMWrite_WithParams(const char* filename, Mat img, IntVector params) {
     }
 }
 
-void Image_IMEncode(const char* fileExt, Mat img, void* vector) {
+OpenCVResult Image_IMEncode(const char* fileExt, Mat img, void* vector) {
     try {
         auto vectorPtr = reinterpret_cast<std::vector<uchar> *>(vector);
         cv::imencode(fileExt, *img, *vectorPtr);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Image_IMEncode_WithParams(const char* fileExt, Mat img, IntVector params, void* vector) {
+OpenCVResult Image_IMEncode_WithParams(const char* fileExt, Mat img, IntVector params, void* vector) {
     try {
         auto vectorPtr = reinterpret_cast<std::vector<uchar> *>(vector);
         std::vector<int> compression_params;
@@ -98,8 +99,9 @@ void Image_IMEncode_WithParams(const char* fileExt, Mat img, IntVector params, v
         }
     
         cv::imencode(fileExt, *img, *vectorPtr, compression_params);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -114,11 +116,12 @@ Mat Image_IMDecode(ByteArray buf, int flags) {
     }
 }
 
-void Image_IMDecodeIntoMat(ByteArray buf, int flags, Mat dest) {
+OpenCVResult Image_IMDecodeIntoMat(ByteArray buf, int flags, Mat dest) {
     try {
         std::vector<uchar> data(buf.data, buf.data + buf.length);
         cv::imdecode(data, flags, dest);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }

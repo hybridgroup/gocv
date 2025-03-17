@@ -45,16 +45,16 @@ func NewLBPHFaceRecognizer() *LBPHFaceRecognizer {
 // Train loaded model with images and their labels
 //
 // see https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#ac8680c2aa9649ad3f55e27761165c0d6
-func (fr *LBPHFaceRecognizer) Train(images []gocv.Mat, labels []int) {
-	faceRecognizer_Train(C.FaceRecognizer(fr.p), images, labels)
+func (fr *LBPHFaceRecognizer) Train(images []gocv.Mat, labels []int) error {
+	return faceRecognizer_Train(C.FaceRecognizer(fr.p), images, labels)
 }
 
 // Update updates the existing trained model with new images and labels.
 //
 // For further information, see:
 // https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a8a4e73ea878dcd0c235d0487189d25f3
-func (fr *LBPHFaceRecognizer) Update(newImages []gocv.Mat, newLabels []int) {
-	faceRecognizer_Update(C.FaceRecognizer(fr.p), newImages, newLabels)
+func (fr *LBPHFaceRecognizer) Update(newImages []gocv.Mat, newLabels []int) error {
+	return faceRecognizer_Update(C.FaceRecognizer(fr.p), newImages, newLabels)
 }
 
 // Predict predicts a label for a given input image. It returns the label for
@@ -133,16 +133,16 @@ func (fr *LBPHFaceRecognizer) SetRadius(radius int) {
 //
 // For further information, see:
 // https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a2adf2d555550194244b05c91fefcb4d6
-func (fr *LBPHFaceRecognizer) SaveFile(fname string) {
-	faceRecognizer_SaveFile(C.FaceRecognizer(fr.p), fname)
+func (fr *LBPHFaceRecognizer) SaveFile(fname string) error {
+	return faceRecognizer_SaveFile(C.FaceRecognizer(fr.p), fname)
 }
 
 // LoadFile loads a trained model data from file.
 //
 // For further information, see:
 // https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#acc42e5b04595dba71f0777c7179af8c3
-func (fr *LBPHFaceRecognizer) LoadFile(fname string) {
-	faceRecognizer_LoadFile(C.FaceRecognizer(fr.p), fname)
+func (fr *LBPHFaceRecognizer) LoadFile(fname string) error {
+	return faceRecognizer_LoadFile(C.FaceRecognizer(fr.p), fname)
 }
 
 // SetGridX sets grid's X value
@@ -276,16 +276,16 @@ func (fr *FisherFaceRecognizer) SetThreshold(threshold float32) {
 //
 // For further information, see:
 // https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#acc42e5b04595dba71f0777c7179af8c3
-func (fr *FisherFaceRecognizer) LoadFile(filename string) {
-	basicFaceRecognizer_LoadFile(C.BasicFaceRecognizer(fr.p), filename)
+func (fr *FisherFaceRecognizer) LoadFile(filename string) error {
+	return basicFaceRecognizer_LoadFile(C.BasicFaceRecognizer(fr.p), filename)
 }
 
 // SaveFile saves the trained model data to file.
 //
 // For further information, see:
 // https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a2adf2d555550194244b05c91fefcb4d6
-func (fr *FisherFaceRecognizer) SaveFile(filename string) {
-	basicFaceRecognizer_SaveFile(C.BasicFaceRecognizer(fr.p), filename)
+func (fr *FisherFaceRecognizer) SaveFile(filename string) error {
+	return basicFaceRecognizer_SaveFile(C.BasicFaceRecognizer(fr.p), filename)
 }
 
 // Predict predicts a label for a given input image. It returns the label for
@@ -310,16 +310,16 @@ func (fr *FisherFaceRecognizer) PredictExtendedResponse(sample gocv.Mat) Predict
 // Train loaded model with images and their labels
 //
 // see https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#ac8680c2aa9649ad3f55e27761165c0d6
-func (fr *FisherFaceRecognizer) Train(images []gocv.Mat, labels []int) {
-	basicFaceRecognizer_Train(C.BasicFaceRecognizer(fr.p), images, labels)
+func (fr *FisherFaceRecognizer) Train(images []gocv.Mat, labels []int) error {
+	return basicFaceRecognizer_Train(C.BasicFaceRecognizer(fr.p), images, labels)
 }
 
 // Update This model does not support updating.
 //
 // For further information, see:
 // https://docs.opencv.org/4.x/d2/de9/classcv_1_1face_1_1FisherFaceRecognizer.html#ac6e204df6d7e526f4c77d3e0389dfbaa
-func (fr *FisherFaceRecognizer) Update(newImages []gocv.Mat, newLabels []int) {
-	faceRecognizer_Train(C.FaceRecognizer(fr.p), newImages, newLabels)
+func (fr *FisherFaceRecognizer) Update(newImages []gocv.Mat, newLabels []int) error {
+	return faceRecognizer_Train(C.FaceRecognizer(fr.p), newImages, newLabels)
 
 }
 
@@ -408,16 +408,16 @@ func (fr *EigenFaceRecognizer) SetThreshold(threshold float32) {
 //
 // For further information, see:
 // https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#acc42e5b04595dba71f0777c7179af8c3
-func (fr *EigenFaceRecognizer) LoadFile(filename string) {
-	basicFaceRecognizer_LoadFile(C.BasicFaceRecognizer(fr.p), filename)
+func (fr *EigenFaceRecognizer) LoadFile(filename string) error {
+	return basicFaceRecognizer_LoadFile(C.BasicFaceRecognizer(fr.p), filename)
 }
 
 // SaveFile saves the trained model data to file.
 //
 // For further information, see:
 // https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#a2adf2d555550194244b05c91fefcb4d6
-func (fr *EigenFaceRecognizer) SaveFile(filename string) {
-	basicFaceRecognizer_SaveFile(C.BasicFaceRecognizer(fr.p), filename)
+func (fr *EigenFaceRecognizer) SaveFile(filename string) error {
+	return basicFaceRecognizer_SaveFile(C.BasicFaceRecognizer(fr.p), filename)
 }
 
 // Predict predicts a label for a given input image. It returns the label for
@@ -442,16 +442,16 @@ func (fr *EigenFaceRecognizer) PredictExtendedResponse(sample gocv.Mat) PredictR
 // Train loaded model with images and their labels
 //
 // see https://docs.opencv.org/master/dd/d65/classcv_1_1face_1_1FaceRecognizer.html#ac8680c2aa9649ad3f55e27761165c0d6
-func (fr *EigenFaceRecognizer) Train(images []gocv.Mat, labels []int) {
-	basicFaceRecognizer_Train(C.BasicFaceRecognizer(fr.p), images, labels)
+func (fr *EigenFaceRecognizer) Train(images []gocv.Mat, labels []int) error {
+	return basicFaceRecognizer_Train(C.BasicFaceRecognizer(fr.p), images, labels)
 }
 
 // Update This model does not support updating.
 //
 // For further information, see:
 // https://docs.opencv.org/4.x/dd/d7c/classcv_1_1face_1_1EigenFaceRecognizer.html#a22c8392f27a20b24d04351b675e7b6db
-func (fr *EigenFaceRecognizer) Update(newImages []gocv.Mat, newLabels []int) {
-	basicFaceRecognizer_Train(C.BasicFaceRecognizer(fr.p), newImages, newLabels)
+func (fr *EigenFaceRecognizer) Update(newImages []gocv.Mat, newLabels []int) error {
+	return basicFaceRecognizer_Train(C.BasicFaceRecognizer(fr.p), newImages, newLabels)
 }
 
 func (fr *EigenFaceRecognizer) Close() error {

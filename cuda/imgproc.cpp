@@ -2,27 +2,29 @@
 #include "imgproc.h"
 #include <string.h>
 
-void GpuCvtColor(GpuMat src, GpuMat dst, int code, Stream s) {
+OpenCVResult GpuCvtColor(GpuMat src, GpuMat dst, int code, Stream s) {
     try {
         if (s == NULL) {
             cv::cuda::cvtColor(*src, *dst, code);
-            return;
+        } else {
+            cv::cuda::cvtColor(*src, *dst, code, 0, *s);
         }
-        cv::cuda::cvtColor(*src, *dst, code, 0, *s);    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void GpuDemosaicing(GpuMat src, GpuMat dst, int code, Stream s) {
+OpenCVResult GpuDemosaicing(GpuMat src, GpuMat dst, int code, Stream s) {
     try {
         if (s == NULL) {
             cv::cuda::demosaicing(*src, *dst, code);
-            return;
+        } else {
+            cv::cuda::demosaicing(*src, *dst, code, -1, *s);
         }
-        cv::cuda::demosaicing(*src, *dst, code, -1, *s);    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -48,15 +50,16 @@ void CannyEdgeDetector_Close(CannyEdgeDetector det) {
     delete det;
 }
 
-void CannyEdgeDetector_Detect(CannyEdgeDetector det, GpuMat img, GpuMat dst, Stream s) {
+OpenCVResult CannyEdgeDetector_Detect(CannyEdgeDetector det, GpuMat img, GpuMat dst, Stream s) {
     try {
         if (s == NULL) {
             (*det)->detect(*img, *dst);
-            return;
+        } else {
+            (*det)->detect(*img, *dst, *s);
         }
-        (*det)->detect(*img, *dst, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -150,15 +153,16 @@ void HoughLinesDetector_Close(HoughLinesDetector hld) {
     delete hld;
 }
 
-void HoughLinesDetector_Detect(HoughLinesDetector hld, GpuMat img, GpuMat dst, Stream s) {
+OpenCVResult HoughLinesDetector_Detect(HoughLinesDetector hld, GpuMat img, GpuMat dst, Stream s) {
     try {
         if (s == NULL) {
             (*hld)->detect(*img, *dst);
-            return;
+        } else {
+            (*hld)->detect(*img, *dst, *s);
         }
-        (*hld)->detect(*img, *dst, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -175,15 +179,16 @@ void HoughSegmentDetector_Close(HoughSegmentDetector hsd) {
     delete hsd;
 }
 
-void HoughSegmentDetector_Detect(HoughSegmentDetector hsd, GpuMat img, GpuMat dst, Stream s) {
+OpenCVResult HoughSegmentDetector_Detect(HoughSegmentDetector hsd, GpuMat img, GpuMat dst, Stream s) {
     try {
         if (s == NULL) {
             (*hsd)->detect(*img, *dst);
-            return;
+        } else {
+            (*hsd)->detect(*img, *dst, *s);
         }
-        (*hsd)->detect(*img, *dst, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -200,185 +205,198 @@ void TemplateMatching_Close(TemplateMatching tm) {
     delete tm;
 }
 
-void TemplateMatching_Match(TemplateMatching tm, GpuMat img, GpuMat tmpl, GpuMat dst, Stream s) {
+OpenCVResult TemplateMatching_Match(TemplateMatching tm, GpuMat img, GpuMat tmpl, GpuMat dst, Stream s) {
     try {
         if (s == NULL) {
             (*tm)->match(*img, *tmpl, *dst);
-            return;
+        } else {
+            (*tm)->match(*img, *tmpl, *dst, *s);
         }
-        (*tm)->match(*img, *tmpl, *dst, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void AlphaComp(GpuMat img1, GpuMat img2, GpuMat dst, int alpha_op, Stream s) {
+OpenCVResult AlphaComp(GpuMat img1, GpuMat img2, GpuMat dst, int alpha_op, Stream s) {
     try {
         if(s == NULL) {
             cv::cuda::alphaComp(*img1, *img2, *dst, alpha_op);
-            return;
+        } else {
+            cv::cuda::alphaComp(*img1, *img2, *dst, alpha_op, *s);
         }
-        cv::cuda::alphaComp(*img1, *img2, *dst, alpha_op, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void GammaCorrection(GpuMat src, GpuMat dst, bool forward, Stream s) {
+OpenCVResult GammaCorrection(GpuMat src, GpuMat dst, bool forward, Stream s) {
     try {
         if(s == NULL) {
             cv::cuda::gammaCorrection(*src, *dst, forward);
-            return;
+        } else {
+            cv::cuda::gammaCorrection(*src, *dst, forward, *s);
         }
-        cv::cuda::gammaCorrection(*src, *dst, forward, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 
 }
 
-void SwapChannels(GpuMat image, int dstOrder[4], Stream s) {
+OpenCVResult SwapChannels(GpuMat image, int dstOrder[4], Stream s) {
     try {
         if(s == NULL) {
             cv::cuda::swapChannels(*image, dstOrder);
-            return;
+        } else {
+            cv::cuda::swapChannels(*image, dstOrder, *s);
         }
-        cv::cuda::swapChannels(*image, dstOrder, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Cuda_CalcHist(GpuMat src, GpuMat dst, Stream s) {
+OpenCVResult Cuda_CalcHist(GpuMat src, GpuMat dst, Stream s) {
     try {
         if(s == NULL) {
             cv::cuda::calcHist(*src, *dst);
-            return;
+        } else {
+            cv::cuda::calcHist(*src, *dst, *s);
         }
-        cv::cuda::calcHist(*src, *dst, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Cuda_CalcHist_WithParams(GpuMat src, GpuMat mask, GpuMat dst, Stream s) {
+OpenCVResult Cuda_CalcHist_WithParams(GpuMat src, GpuMat mask, GpuMat dst, Stream s) {
     try {
         if(s == NULL) {
             cv::cuda::calcHist(*src, *mask, *dst);
-            return;
+        } else {
+            cv::cuda::calcHist(*src, *mask, *dst, *s);
         }
-        cv::cuda::calcHist(*src, *mask, *dst, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Cuda_EqualizeHist(GpuMat src, GpuMat dst, Stream s) {
+OpenCVResult Cuda_EqualizeHist(GpuMat src, GpuMat dst, Stream s) {
     try {
         if(s == NULL) {
             cv::cuda::equalizeHist(*src, *dst);
-            return;
+        } else {
+            cv::cuda::equalizeHist(*src, *dst, *s);
         }
-        cv::cuda::equalizeHist(*src, *dst, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Cuda_EvenLevels(GpuMat levels, int nLevels, int lowerLevel, int upperLevel, Stream s) {
+OpenCVResult Cuda_EvenLevels(GpuMat levels, int nLevels, int lowerLevel, int upperLevel, Stream s) {
     try {
         if(s == NULL) {
             cv::cuda::evenLevels(*levels, nLevels, lowerLevel, upperLevel);
-            return;
+        } else {
+            cv::cuda::evenLevels(*levels, nLevels, lowerLevel, upperLevel, *s);
         }
-        cv::cuda::evenLevels(*levels, nLevels, lowerLevel, upperLevel, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Cuda_HistEven(GpuMat src, GpuMat hist, int histSize, int lowerLevel, int upperLevel, Stream s) {
+OpenCVResult Cuda_HistEven(GpuMat src, GpuMat hist, int histSize, int lowerLevel, int upperLevel, Stream s) {
     try {
         if(s == NULL) {
             cv::cuda::histEven(*src, *hist, histSize, lowerLevel, upperLevel);
-            return;
+        } else {
+            cv::cuda::histEven(*src, *hist, histSize, lowerLevel, upperLevel, *s);
         }
-        cv::cuda::histEven(*src, *hist, histSize, lowerLevel, upperLevel, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-
-void Cuda_HistRange(GpuMat src, GpuMat hist, GpuMat levels, Stream s){
+OpenCVResult Cuda_HistRange(GpuMat src, GpuMat hist, GpuMat levels, Stream s){
     try {
         if(s == NULL) {
             cv::cuda::histRange(*src, *hist, *levels);
-            return;
+        } else {
+            cv::cuda::histRange(*src, *hist, *levels, *s);
         }
-        cv::cuda::histRange(*src, *hist, *levels, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 } 
 
-void Cuda_BilateralFilter(GpuMat src, GpuMat dst, int kernel_size, float sigma_color, float sigma_spatial, int borderMode, Stream s) {
+OpenCVResult Cuda_BilateralFilter(GpuMat src, GpuMat dst, int kernel_size, float sigma_color, float sigma_spatial, int borderMode, Stream s) {
     try {
         if(s == NULL) {
             cv::cuda::bilateralFilter(*src, *dst, kernel_size, sigma_color, sigma_spatial, borderMode);
-            return;
+        } else {
+            cv::cuda::bilateralFilter(*src, *dst, kernel_size, sigma_color, sigma_spatial, borderMode, *s);
         }
-        cv::cuda::bilateralFilter(*src, *dst, kernel_size, sigma_color, sigma_spatial, borderMode, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Cuda_BlendLinear(GpuMat img1, GpuMat img2, GpuMat weights1, GpuMat weights2, GpuMat result, Stream s) {
+OpenCVResult Cuda_BlendLinear(GpuMat img1, GpuMat img2, GpuMat weights1, GpuMat weights2, GpuMat result, Stream s) {
     try {
         if(s == NULL) {
             cv::cuda::blendLinear(*img1, *img2, *weights1, *weights2, *result);
-            return;
+        } else {
+            cv::cuda::blendLinear(*img1, *img2, *weights1, *weights2, *result, *s);
         }
-        cv::cuda::blendLinear(*img1, *img2, *weights1, *weights2, *result, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Cuda_MeanShiftFiltering(GpuMat src, GpuMat dst, int sp, int sr, TermCriteria criteria, Stream s) {
+OpenCVResult Cuda_MeanShiftFiltering(GpuMat src, GpuMat dst, int sp, int sr, TermCriteria criteria, Stream s) {
     try {
         if(s == NULL) {
             cv::cuda::meanShiftFiltering(*src, *dst, sp, sr, *criteria);
-            return;
+        } else {
+            cv::cuda::meanShiftFiltering(*src, *dst, sp, sr, *criteria, *s);
         }
-        cv::cuda::meanShiftFiltering(*src, *dst, sp, sr, *criteria, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Cuda_MeanShiftProc(GpuMat src, GpuMat dstr, GpuMat dstsp, int sp, int sr, TermCriteria criteria, Stream s) {
+OpenCVResult Cuda_MeanShiftProc(GpuMat src, GpuMat dstr, GpuMat dstsp, int sp, int sr, TermCriteria criteria, Stream s) {
     try {
         if(s == NULL) {
             cv::cuda::meanShiftProc(*src, *dstr, *dstsp, sp, sr, *criteria);
-            return;
+        } else {
+            cv::cuda::meanShiftProc(*src, *dstr, *dstsp, sp, sr, *criteria, *s);
         }
-        cv::cuda::meanShiftProc(*src, *dstr, *dstsp, sp, sr, *criteria, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-
-void Cuda_MeanShiftSegmentation(GpuMat src, GpuMat dst, int sp, int sr, int minSize, TermCriteria criteria, Stream s) {
+OpenCVResult Cuda_MeanShiftSegmentation(GpuMat src, GpuMat dst, int sp, int sr, int minSize, TermCriteria criteria, Stream s) {
     try {
         if(s == NULL) {
             cv::cuda::meanShiftSegmentation(*src, *dst, sp, sr, minSize, *criteria);
-            return;
+        } else {
+            cv::cuda::meanShiftSegmentation(*src, *dst, sp, sr, minSize, *criteria, *s);
         }
-        cv::cuda::meanShiftSegmentation(*src, *dst, sp, sr, minSize, *criteria, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }

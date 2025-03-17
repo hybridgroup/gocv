@@ -41,8 +41,6 @@ func (b *BackgroundSubtractorCNT) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/3.4/de/dca/classcv_1_1bgsegm_1_1BackgroundSubtractorCNT.html
-func (b *BackgroundSubtractorCNT) Apply(src gocv.Mat, dst *gocv.Mat) {
-	C.BackgroundSubtractorCNT_Apply((C.BackgroundSubtractorCNT)(b.p), (C.Mat)(src.Ptr()), (C.Mat)(dst.Ptr()))
-
-	return
+func (b *BackgroundSubtractorCNT) Apply(src gocv.Mat, dst *gocv.Mat) error {
+	return OpenCVResult(C.BackgroundSubtractorCNT_Apply((C.BackgroundSubtractorCNT)(b.p), (C.Mat)(src.Ptr()), (C.Mat)(dst.Ptr())))
 }

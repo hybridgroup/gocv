@@ -465,8 +465,8 @@ func (v *VideoCapture) Read(m *Mat) bool {
 }
 
 // Grab skips a specific number of frames.
-func (v *VideoCapture) Grab(skip int) {
-	C.VideoCapture_Grab(v.p, C.int(skip))
+func (v *VideoCapture) Grab(skip int) error {
+	return OpenCVResult(C.VideoCapture_Grab(v.p, C.int(skip)))
 }
 
 // Retrieve decodes and returns the grabbed video frame. Should be used after Grab
@@ -532,7 +532,7 @@ func VideoWriterFile(name string, codec string, fps float64, width int, height i
 	cCodec := C.CString(codec)
 	defer C.free(unsafe.Pointer(cCodec))
 
-	C.VideoWriter_Open(vw.p, cName, cCodec, C.double(fps), C.int(width), C.int(height), C.bool(isColor))
+	err = OpenCVResult(C.VideoWriter_Open(vw.p, cName, cCodec, C.double(fps), C.int(width), C.int(height), C.bool(isColor)))
 	return
 }
 
@@ -560,7 +560,7 @@ func VideoWriterFileWithAPI(name string, apiPreference VideoCaptureAPI, codec st
 	cCodec := C.CString(codec)
 	defer C.free(unsafe.Pointer(cCodec))
 
-	C.VideoWriter_OpenWithAPI(vw.p, cName, C.int(apiPreference), cCodec, C.double(fps), C.int(width), C.int(height), C.bool(isColor))
+	err = OpenCVResult(C.VideoWriter_OpenWithAPI(vw.p, cName, C.int(apiPreference), cCodec, C.double(fps), C.int(width), C.int(height), C.bool(isColor)))
 	return
 }
 
@@ -597,7 +597,7 @@ func VideoWriterFileWithAPIParams(name string, apiPreference VideoCaptureAPI, co
 		val:    unsafe.SliceData(c_ints),
 		length: C.int(len(params)),
 	}
-	C.VideoWriter_OpenWithAPIParams(vw.p, c_name, C.int(apiPreference), c_codec, C.double(fps), C.int(width), C.int(height), c_params)
+	err = OpenCVResult(C.VideoWriter_OpenWithAPIParams(vw.p, c_name, C.int(apiPreference), c_codec, C.double(fps), C.int(width), C.int(height), c_params))
 	return
 }
 
@@ -624,8 +624,7 @@ func (vw *VideoWriter) IsOpened() bool {
 func (vw *VideoWriter) Write(img Mat) error {
 	vw.mu.Lock()
 	defer vw.mu.Unlock()
-	C.VideoWriter_Write(vw.p, img.p)
-	return nil
+	return OpenCVResult(C.VideoWriter_Write(vw.p, img.p))
 }
 
 // OpenVideoCapture return VideoCapture specified by device ID if v is a

@@ -17,37 +17,37 @@ typedef cv::Ptr< cv::cuda::LookUpTable >* LookUpTable;
 typedef void* LookUpTable;
 #endif
 
-void GpuAbs(GpuMat src, GpuMat dst, Stream s);
-void GpuAbsDiff(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
-void GpuAdd(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
-void GpuBitwiseAnd(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
-void GpuBitwiseNot(GpuMat src, GpuMat dst, Stream s);
-void GpuBitwiseOr(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
-void GpuBitwiseXor(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
-void GpuDivide(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
-void GpuExp(GpuMat src, GpuMat dst, Stream s);
-void GpuLog(GpuMat src, GpuMat dst, Stream s);
-void GpuMax(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
-void GpuMin(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
-void GpuMultiply(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
-void GpuSqr(GpuMat src, GpuMat dst, Stream s);
-void GpuSqrt(GpuMat src, GpuMat dst, Stream s);
-void GpuSubtract(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
-void GpuThreshold(GpuMat src, GpuMat dst, double thresh, double maxval, int typ, Stream s);
-void GpuFlip(GpuMat src, GpuMat dst, int flipCode, Stream s);
-void GpuMerge(struct GpuMats mats, GpuMat dst, Stream s);
-void GpuTranspose(GpuMat src, GpuMat dst, Stream s);
-void GpuAddWeighted(GpuMat src1, double alpha, GpuMat src2, double beta, double gamma, GpuMat dst, int dType, Stream s);
-void GpuCopyMakeBorder(GpuMat src, GpuMat dst, int top, int bottom, int left, int right, int borderType, Scalar value, Stream s);
+OpenCVResult GpuAbs(GpuMat src, GpuMat dst, Stream s);
+OpenCVResult GpuAbsDiff(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
+OpenCVResult GpuAdd(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
+OpenCVResult GpuBitwiseAnd(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
+OpenCVResult GpuBitwiseNot(GpuMat src, GpuMat dst, Stream s);
+OpenCVResult GpuBitwiseOr(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
+OpenCVResult GpuBitwiseXor(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
+OpenCVResult GpuDivide(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
+OpenCVResult GpuExp(GpuMat src, GpuMat dst, Stream s);
+OpenCVResult GpuLog(GpuMat src, GpuMat dst, Stream s);
+OpenCVResult GpuMax(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
+OpenCVResult GpuMin(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
+OpenCVResult GpuMultiply(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
+OpenCVResult GpuSqr(GpuMat src, GpuMat dst, Stream s);
+OpenCVResult GpuSqrt(GpuMat src, GpuMat dst, Stream s);
+OpenCVResult GpuSubtract(GpuMat src1, GpuMat src2, GpuMat dst, Stream s);
+OpenCVResult GpuThreshold(GpuMat src, GpuMat dst, double thresh, double maxval, int typ, Stream s);
+OpenCVResult GpuFlip(GpuMat src, GpuMat dst, int flipCode, Stream s);
+OpenCVResult GpuMerge(struct GpuMats mats, GpuMat dst, Stream s);
+OpenCVResult GpuTranspose(GpuMat src, GpuMat dst, Stream s);
+OpenCVResult GpuAddWeighted(GpuMat src1, double alpha, GpuMat src2, double beta, double gamma, GpuMat dst, int dType, Stream s);
+OpenCVResult GpuCopyMakeBorder(GpuMat src, GpuMat dst, int top, int bottom, int left, int right, int borderType, Scalar value, Stream s);
 
 //LookUpTable
 LookUpTable Cuda_Create_LookUpTable(GpuMat lut);
 void Cuda_LookUpTable_Close(LookUpTable lt);
-void Cuda_LookUpTable_Transform(LookUpTable lt, GpuMat src, GpuMat dst, Stream s);
+OpenCVResult Cuda_LookUpTable_Transform(LookUpTable lt, GpuMat src, GpuMat dst, Stream s);
 
 bool Cuda_LookUpTable_Empty(LookUpTable lut);
 
-void Cuda_Split(GpuMat src, GpuMats dst, Stream s);
+OpenCVResult Cuda_Split(GpuMat src, GpuMats dst, Stream s);
 #ifdef __cplusplus
 }
 #endif

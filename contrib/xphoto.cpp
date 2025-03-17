@@ -1,14 +1,15 @@
 #include "xphoto.h"
 
-void Xphoto_ApplyChannelGains(Mat src, Mat dst, float gainB, float gainG, float gainR) {
+OpenCVResult Xphoto_ApplyChannelGains(Mat src, Mat dst, float gainB, float gainG, float gainR) {
     try {
         cv::xphoto::applyChannelGains(*src, *dst, gainB, gainG, gainR);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Xphoto_Bm3dDenoising_Step(Mat src, Mat dststep1, Mat dststep2) {
+OpenCVResult Xphoto_Bm3dDenoising_Step(Mat src, Mat dststep1, Mat dststep2) {
     try {
         cv::xphoto::bm3dDenoising(
             *src, *dststep1, *dststep2,
@@ -19,13 +20,14 @@ void Xphoto_Bm3dDenoising_Step(Mat src, Mat dststep1, Mat dststep2) {
             cv::NORM_L2, cv::xphoto::BM3D_STEPALL,
             cv::xphoto::HAAR
         );
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
 
-void Xphoto_Bm3dDenoising_Step_WithParams(
+OpenCVResult Xphoto_Bm3dDenoising_Step_WithParams(
     Mat src, Mat dststep1, Mat dststep2,
     float h, int templateWindowSize,
     int searchWindowSize, int blockMatchingStep1,
@@ -44,12 +46,13 @@ void Xphoto_Bm3dDenoising_Step_WithParams(
             normType, step,
             transformType
         );    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Xphoto_Bm3dDenoising(Mat src, Mat dst) {
+OpenCVResult Xphoto_Bm3dDenoising(Mat src, Mat dst) {
     try {
         cv::xphoto::bm3dDenoising(*src, *dst,
             1, 4,
@@ -59,12 +62,15 @@ void Xphoto_Bm3dDenoising(Mat src, Mat dst) {
             cv::NORM_L2, cv::xphoto::BM3D_STEPALL,
             cv::xphoto::HAAR
            );
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+           OpenCVResult result = {0, NULL};
+           return result;
+    } catch(const cv::Exception& e) {
+        OpenCVResult result = {e.code, e.what()};
+        return result;
     }
 }
 
-void Xphoto_Bm3dDenoising_WithParams(
+OpenCVResult Xphoto_Bm3dDenoising_WithParams(
     Mat src, Mat dst, float h, int templateWindowSize,
     int searchWindowSize, int blockMatchingStep1,
     int blockMatchingStep2, int groupSize,
@@ -80,8 +86,11 @@ void Xphoto_Bm3dDenoising_WithParams(
             normType, step,
             transformType
            );
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+           OpenCVResult result = {0, NULL};
+           return result;
+    } catch(const cv::Exception& e) {
+        OpenCVResult result = {e.code, e.what()};
+        return result;
     }
 }
 
@@ -117,11 +126,12 @@ float GrayworldWB_GetSaturationThreshold(GrayworldWB b) {
     }
 }
 
-void GrayworldWB_BalanceWhite(GrayworldWB b, Mat src, Mat dst) {
+OpenCVResult GrayworldWB_BalanceWhite(GrayworldWB b, Mat src, Mat dst) {
     try {
         (*b)->balanceWhite(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -150,11 +160,12 @@ void LearningBasedWB_Close(LearningBasedWB b) {
     delete b;
 }
 
-void LearningBasedWB_ExtractSimpleFeatures(LearningBasedWB b, Mat src, Mat dst) {
+OpenCVResult LearningBasedWB_ExtractSimpleFeatures(LearningBasedWB b, Mat src, Mat dst) {
     try {
         (*b)->extractSimpleFeatures(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -209,11 +220,12 @@ void LearningBasedWB_SetSaturationThreshold(LearningBasedWB b, float val) {
     }
 }
 
-void LearningBasedWB_BalanceWhite(LearningBasedWB b, Mat src, Mat dst) {
+OpenCVResult LearningBasedWB_BalanceWhite(LearningBasedWB b, Mat src, Mat dst) {
     try {
         (*b)->balanceWhite(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -328,11 +340,12 @@ void SimpleWB_SetP(SimpleWB b, float val) {
     }
 }
 
-void SimpleWB_BalanceWhite(SimpleWB b, Mat src, Mat dst) {
+OpenCVResult SimpleWB_BalanceWhite(SimpleWB b, Mat src, Mat dst) {
     try {
         (*b)->balanceWhite(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -449,36 +462,40 @@ void TonemapDurand_SetGamma(TonemapDurand b, float gamma) {
     }
 }
 
-void TonemapDurand_Process(TonemapDurand b, Mat src, Mat dst) {
+OpenCVResult TonemapDurand_Process(TonemapDurand b, Mat src, Mat dst) {
     try {
         (*b)->process(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
 // -------------------- cv::xphoto::Inpaint --------------------
 
-void Inpaint(Mat src, Mat mask, Mat dst, int algorithmType) {
+OpenCVResult Inpaint(Mat src, Mat mask, Mat dst, int algorithmType) {
     try {
         cv::xphoto::inpaint(*src, *mask, *dst, algorithmType);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void OilPaintingWithParams(Mat src, Mat dst, int size, int dynRatio, int code) {
+OpenCVResult OilPaintingWithParams(Mat src, Mat dst, int size, int dynRatio, int code) {
     try {
         cv::xphoto::oilPainting(*src, *dst, size, dynRatio, code);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void OilPainting(Mat src, Mat dst, int size, int dynRatio) {
+OpenCVResult OilPainting(Mat src, Mat dst, int size, int dynRatio) {
     try {
         cv::xphoto::oilPainting(*src, *dst, size, dynRatio);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }

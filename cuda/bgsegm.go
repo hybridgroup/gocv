@@ -40,9 +40,8 @@ func (b *BackgroundSubtractorMOG2) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/df/d23/classcv_1_1cuda_1_1BackgroundSubtractorMOG2.html#a92408f07bf1268c1b778cb186b3113b0
-func (b *BackgroundSubtractorMOG2) Apply(src GpuMat, dst *GpuMat) {
-	C.CudaBackgroundSubtractorMOG2_Apply((C.CudaBackgroundSubtractorMOG2)(b.p), src.p, dst.p, nil)
-	return
+func (b *BackgroundSubtractorMOG2) Apply(src GpuMat, dst *GpuMat) error {
+	return OpenCVResult(C.CudaBackgroundSubtractorMOG2_Apply((C.CudaBackgroundSubtractorMOG2)(b.p), src.p, dst.p, nil))
 }
 
 // ApplyWithStream computes a foreground mask using the current BackgroundSubtractorMOG2
@@ -50,9 +49,8 @@ func (b *BackgroundSubtractorMOG2) Apply(src GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/df/d23/classcv_1_1cuda_1_1BackgroundSubtractorMOG2.html#a92408f07bf1268c1b778cb186b3113b0
-func (b *BackgroundSubtractorMOG2) ApplyWithStream(src GpuMat, dst *GpuMat, s Stream) {
-	C.CudaBackgroundSubtractorMOG2_Apply((C.CudaBackgroundSubtractorMOG2)(b.p), src.p, dst.p, s.p)
-	return
+func (b *BackgroundSubtractorMOG2) ApplyWithStream(src GpuMat, dst *GpuMat, s Stream) error {
+	return OpenCVResult(C.CudaBackgroundSubtractorMOG2_Apply((C.CudaBackgroundSubtractorMOG2)(b.p), src.p, dst.p, s.p))
 }
 
 // NewBackgroundSubtractorMOG returns a new BackgroundSubtractor algorithm
@@ -76,9 +74,8 @@ func (b *BackgroundSubtractorMOG) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d1/dfe/classcv_1_1cuda_1_1BackgroundSubtractorMOG.html#a8f52d2f7abd1c77c84243efc53972cbf
-func (b *BackgroundSubtractorMOG) Apply(src GpuMat, dst *GpuMat) {
-	C.CudaBackgroundSubtractorMOG_Apply((C.CudaBackgroundSubtractorMOG)(b.p), src.p, dst.p, nil)
-	return
+func (b *BackgroundSubtractorMOG) Apply(src GpuMat, dst *GpuMat) error {
+	return OpenCVResult(C.CudaBackgroundSubtractorMOG_Apply((C.CudaBackgroundSubtractorMOG)(b.p), src.p, dst.p, nil))
 }
 
 // ApplyWithStream computes a foreground mask using the current BackgroundSubtractorMOG
@@ -86,7 +83,6 @@ func (b *BackgroundSubtractorMOG) Apply(src GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d1/dfe/classcv_1_1cuda_1_1BackgroundSubtractorMOG.html#a8f52d2f7abd1c77c84243efc53972cbf
-func (b *BackgroundSubtractorMOG) ApplyWithStream(src GpuMat, dst *GpuMat, s Stream) {
-	C.CudaBackgroundSubtractorMOG_Apply((C.CudaBackgroundSubtractorMOG)(b.p), src.p, dst.p, s.p)
-	return
+func (b *BackgroundSubtractorMOG) ApplyWithStream(src GpuMat, dst *GpuMat, s Stream) error {
+	return OpenCVResult(C.CudaBackgroundSubtractorMOG_Apply((C.CudaBackgroundSubtractorMOG)(b.p), src.p, dst.p, s.p))
 }

@@ -283,7 +283,7 @@ bool ArucoDetectorParameters_GetDetectInvertedMarker(ArucoDetectorParameters ap)
     return ap->detectInvertedMarker;
 }
 
-void ArucoDrawDetectedMarkers(Mat image, Points2fVector markerCorners, IntVector markerIds, Scalar borderColor)
+OpenCVResult ArucoDrawDetectedMarkers(Mat image, Points2fVector markerCorners, IntVector markerIds, Scalar borderColor)
 {
     try {
         std::vector<int> _markerIds;
@@ -293,18 +293,20 @@ void ArucoDrawDetectedMarkers(Mat image, Points2fVector markerCorners, IntVector
         }
         cv::Scalar _borderColor = cv::Scalar(borderColor.val1, borderColor.val2, borderColor.val3);
         cv::aruco::drawDetectedMarkers(*image, *markerCorners, _markerIds, _borderColor);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void ArucoGenerateImageMarker(int dictionaryId, int id, int sidePixels, Mat img, int borderBits)
+OpenCVResult ArucoGenerateImageMarker(int dictionaryId, int id, int sidePixels, Mat img, int borderBits)
 {
     try {
         cv::aruco::Dictionary dict = cv::aruco::getPredefinedDictionary(dictionaryId);
         cv::aruco::generateImageMarker(dict, id, sidePixels, *img, borderBits);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 

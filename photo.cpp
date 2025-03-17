@@ -1,60 +1,66 @@
 #include "photo.h"
 
-void ColorChange(Mat src, Mat mask, Mat dst, float red_mul, float green_mul, float blue_mul) {
+OpenCVResult ColorChange(Mat src, Mat mask, Mat dst, float red_mul, float green_mul, float blue_mul) {
     try {
         cv::colorChange(*src, *mask, *dst, red_mul, green_mul, blue_mul);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void IlluminationChange(Mat src, Mat mask, Mat dst, float alpha, float beta) {
+OpenCVResult IlluminationChange(Mat src, Mat mask, Mat dst, float alpha, float beta) {
     try {
         cv::illuminationChange(*src, *mask, *dst, alpha, beta);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void SeamlessClone(Mat src, Mat dst, Mat mask, Point p, Mat blend, int flags) {
+OpenCVResult SeamlessClone(Mat src, Mat dst, Mat mask, Point p, Mat blend, int flags) {
     try {
         cv::Point pt(p.x, p.y);
         cv::seamlessClone(*src, *dst, *mask, pt, *blend, flags);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void TextureFlattening(Mat src, Mat mask, Mat dst, float low_threshold, float high_threshold, int kernel_size) {
+OpenCVResult TextureFlattening(Mat src, Mat mask, Mat dst, float low_threshold, float high_threshold, int kernel_size) {
     try {
         cv::textureFlattening(*src, *mask, *dst, low_threshold, high_threshold, kernel_size);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
 
-void FastNlMeansDenoisingColoredMulti(	struct Mats src, Mat dst, int imgToDenoiseIndex, int 	temporalWindowSize){
+OpenCVResult FastNlMeansDenoisingColoredMulti(	struct Mats src, Mat dst, int imgToDenoiseIndex, int 	temporalWindowSize){
     try {
         std::vector<cv::Mat> images;
         for (int i = 0; i < src.length; ++i) {
             images.push_back(*src.mats[i]);
         }
         cv::fastNlMeansDenoisingColoredMulti( images, *dst, imgToDenoiseIndex, 	temporalWindowSize );
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void FastNlMeansDenoisingColoredMultiWithParams( struct Mats src, Mat dst, int imgToDenoiseIndex, int 	temporalWindowSize, float 	h, float 	hColor, int 	templateWindowSize, int 	searchWindowSize ){
+OpenCVResult FastNlMeansDenoisingColoredMultiWithParams( struct Mats src, Mat dst, int imgToDenoiseIndex, int 	temporalWindowSize, float 	h, float 	hColor, int 	templateWindowSize, int 	searchWindowSize ){
     try {
         std::vector<cv::Mat> images;
         for (int i = 0; i < src.length; ++i) {
             images.push_back(*src.mats[i]);
         }
         cv::fastNlMeansDenoisingColoredMulti( images, *dst, imgToDenoiseIndex, 	temporalWindowSize, h, hColor, templateWindowSize, searchWindowSize );
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -82,15 +88,16 @@ void MergeMertens_Close(MergeMertens b) {
     delete b;
 }
 
-void MergeMertens_Process(MergeMertens b, struct Mats src, Mat dst) {
+OpenCVResult MergeMertens_Process(MergeMertens b, struct Mats src, Mat dst) {
     try {
         std::vector<cv::Mat> images;
         for (int i = 0; i < src.length; ++i) {
             images.push_back(*src.mats[i]);
         }
         (*b)->process(images, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -114,7 +121,7 @@ AlignMTB AlignMTB_CreateWithParams(int max_bits, int exclude_range, bool cut) {
 
 void AlignMTB_Close(AlignMTB b) { delete b; }
 
-void AlignMTB_Process(AlignMTB b, struct Mats src, struct Mats *dst) {
+OpenCVResult AlignMTB_Process(AlignMTB b, struct Mats src, struct Mats *dst) {
     try {
         std::vector<cv::Mat> srcMats;
         for (int i = 0; i < src.length; ++i) {
@@ -129,79 +136,89 @@ void AlignMTB_Process(AlignMTB b, struct Mats src, struct Mats *dst) {
             dst->mats[i] = new cv::Mat( dstMats[i] );
         }
         dst->length = (int)dstMats.size();
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void FastNlMeansDenoising(Mat src, Mat dst) {
+OpenCVResult FastNlMeansDenoising(Mat src, Mat dst) {
     try {
         cv::fastNlMeansDenoising(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void FastNlMeansDenoisingWithParams(Mat src, Mat dst, float h, int templateWindowSize, int searchWindowSize) {
+OpenCVResult FastNlMeansDenoisingWithParams(Mat src, Mat dst, float h, int templateWindowSize, int searchWindowSize) {
     try {
         cv::fastNlMeansDenoising(*src, *dst, h, templateWindowSize, searchWindowSize);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void FastNlMeansDenoisingColored(Mat src, Mat dst) {
+OpenCVResult FastNlMeansDenoisingColored(Mat src, Mat dst) {
     try {
         cv::fastNlMeansDenoisingColored(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void FastNlMeansDenoisingColoredWithParams(Mat src, Mat dst, float h, float hColor, int templateWindowSize, int searchWindowSize) {
+OpenCVResult FastNlMeansDenoisingColoredWithParams(Mat src, Mat dst, float h, float hColor, int templateWindowSize, int searchWindowSize) {
     try {
         cv::fastNlMeansDenoisingColored(*src, *dst, h, hColor, templateWindowSize, searchWindowSize);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void EdgePreservingFilter(Mat src, Mat dst, int filter, float sigma_s, float sigma_r) {
+OpenCVResult EdgePreservingFilter(Mat src, Mat dst, int filter, float sigma_s, float sigma_r) {
     try {
         cv::edgePreservingFilter(*src, *dst, filter, sigma_s, sigma_r);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void DetailEnhance(Mat src, Mat dst, float sigma_s, float sigma_r) {
+OpenCVResult DetailEnhance(Mat src, Mat dst, float sigma_s, float sigma_r) {
     try {
         cv::detailEnhance(*src, *dst, sigma_s, sigma_r);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void PencilSketch(Mat src, Mat dst1, Mat dst2, float sigma_s, float sigma_r, float shade_factor) {
+OpenCVResult PencilSketch(Mat src, Mat dst1, Mat dst2, float sigma_s, float sigma_r, float shade_factor) {
     try {
         cv::pencilSketch(*src, *dst1, *dst2, sigma_s, sigma_r, shade_factor);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Stylization(Mat src, Mat dst, float sigma_s, float sigma_r) {
+OpenCVResult Stylization(Mat src, Mat dst, float sigma_s, float sigma_r) {
     try {
         cv::stylization(*src, *dst, sigma_s, sigma_r);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void PhotoInpaint(Mat src, Mat mask, Mat dst, float inpaint_radius, int algorithm_type) {
+OpenCVResult PhotoInpaint(Mat src, Mat mask, Mat dst, float inpaint_radius, int algorithm_type) {
     try {
         cv::inpaint(*src, *mask, *dst, inpaint_radius, algorithm_type);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }

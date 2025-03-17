@@ -28,18 +28,18 @@ typedef void* KalmanFilter;
 BackgroundSubtractorMOG2 BackgroundSubtractorMOG2_Create();
 BackgroundSubtractorMOG2 BackgroundSubtractorMOG2_CreateWithParams(int history, double varThreshold, bool detectShadows);
 void BackgroundSubtractorMOG2_Close(BackgroundSubtractorMOG2 b);
-void BackgroundSubtractorMOG2_Apply(BackgroundSubtractorMOG2 b, Mat src, Mat dst);
-void BackgroundSubtractorMOG2_ApplyWithParams(BackgroundSubtractorMOG2 b, Mat src, Mat dst, double learningRate);
+OpenCVResult BackgroundSubtractorMOG2_Apply(BackgroundSubtractorMOG2 b, Mat src, Mat dst);
+OpenCVResult BackgroundSubtractorMOG2_ApplyWithParams(BackgroundSubtractorMOG2 b, Mat src, Mat dst, double learningRate);
 
 BackgroundSubtractorKNN BackgroundSubtractorKNN_Create();
 BackgroundSubtractorKNN BackgroundSubtractorKNN_CreateWithParams(int history, double dist2Threshold, bool detectShadows);
 
 void BackgroundSubtractorKNN_Close(BackgroundSubtractorKNN b);
-void BackgroundSubtractorKNN_Apply(BackgroundSubtractorKNN b, Mat src, Mat dst);
+OpenCVResult BackgroundSubtractorKNN_Apply(BackgroundSubtractorKNN b, Mat src, Mat dst);
 
-void CalcOpticalFlowPyrLK(Mat prevImg, Mat nextImg, Mat prevPts, Mat nextPts, Mat status, Mat err);
-void CalcOpticalFlowPyrLKWithParams(Mat prevImg, Mat nextImg, Mat prevPts, Mat nextPts, Mat status, Mat err, Size winSize, int maxLevel, TermCriteria criteria, int flags, double minEigThreshold);
-void CalcOpticalFlowFarneback(Mat prevImg, Mat nextImg, Mat flow, double pyrScale, int levels,
+OpenCVResult CalcOpticalFlowPyrLK(Mat prevImg, Mat nextImg, Mat prevPts, Mat nextPts, Mat status, Mat err);
+OpenCVResult CalcOpticalFlowPyrLKWithParams(Mat prevImg, Mat nextImg, Mat prevPts, Mat nextPts, Mat status, Mat err, Size winSize, int maxLevel, TermCriteria criteria, int flags, double minEigThreshold);
+OpenCVResult CalcOpticalFlowFarneback(Mat prevImg, Mat nextImg, Mat flow, double pyrScale, int levels,
                               int winsize, int iterations, int polyN, double polySigma, int flags);
 
 double FindTransformECC(Mat templateImage, Mat inputImage, Mat warpMatrix, int motionType, TermCriteria criteria, Mat inputMask, int gaussFiltSize);
@@ -58,8 +58,8 @@ KalmanFilter KalmanFilter_New(int dynamParams, int measureParams);
 KalmanFilter KalmanFilter_NewWithParams(int dynamParams, int measureParams, int controlParams, int type);
 void KalmanFilter_Close(KalmanFilter kf);
 
-void KalmanFilter_Init(KalmanFilter kf, int dynamParams, int measureParams);
-void KalmanFilter_InitWithParams(KalmanFilter kf, int dynamParams, int measureParams, int controlParams, int type);
+OpenCVResult KalmanFilter_Init(KalmanFilter kf, int dynamParams, int measureParams);
+OpenCVResult KalmanFilter_InitWithParams(KalmanFilter kf, int dynamParams, int measureParams, int controlParams, int type);
 Mat KalmanFilter_Predict(KalmanFilter kf);
 Mat KalmanFilter_PredictWithParams(KalmanFilter kf, Mat control);
 Mat KalmanFilter_Correct(KalmanFilter kf, Mat measurement);

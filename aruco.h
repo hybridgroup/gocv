@@ -86,8 +86,8 @@ ArucoDetector ArucoDetector_NewWithParams(ArucoDictionary dictionary, ArucoDetec
 void ArucoDetector_Close(ArucoDetector ad);
 void ArucoDetector_DetectMarkers(ArucoDetector ad, Mat inputArr, Points2fVector markerCorners, IntVector *markerIds, Points2fVector rejectedCandidates);
 
-void ArucoDrawDetectedMarkers(Mat image, Points2fVector markerCorners, IntVector markerIds, Scalar borderColor);
-void ArucoGenerateImageMarker(int dictionaryId, int id, int sidePixels, Mat img, int borderBits);
+OpenCVResult ArucoDrawDetectedMarkers(Mat image, Points2fVector markerCorners, IntVector markerIds, Scalar borderColor);
+OpenCVResult ArucoGenerateImageMarker(int dictionaryId, int id, int sidePixels, Mat img, int borderBits);
 
 #ifdef __cplusplus
 }

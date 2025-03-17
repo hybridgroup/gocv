@@ -40,58 +40,76 @@ void BackgroundSubtractorMOG2_Close(BackgroundSubtractorMOG2 b) {
     delete b;
 }
 
-void BackgroundSubtractorMOG2_Apply(BackgroundSubtractorMOG2 b, Mat src, Mat dst) {
-    try {
+OpenCVResult BackgroundSubtractorMOG2_Apply(BackgroundSubtractorMOG2 b, Mat src, Mat dst) {
+  	try {
 		(*b)->apply(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+      	OpenCVResult result = {0, NULL};
+      	return result;
+  	} catch(const cv::Exception& e) {
+      	OpenCVResult result = {e.code, e.what()};
+      	return result;
     }
 }
 
-void BackgroundSubtractorMOG2_ApplyWithParams(BackgroundSubtractorMOG2 b, Mat src, Mat dst, double learningRate) {
+OpenCVResult BackgroundSubtractorMOG2_ApplyWithParams(BackgroundSubtractorMOG2 b, Mat src, Mat dst, double learningRate) {
     try {
 		(*b)->apply(*src, *dst, learningRate);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-    }
+		OpenCVResult result = {0, NULL};
+		return result;
+	} catch(const cv::Exception& e) {
+		OpenCVResult result = {e.code, e.what()};
+		return result;
+  	}
 }
 
 void BackgroundSubtractorKNN_Close(BackgroundSubtractorKNN k) {
     delete k;
 }
 
-void BackgroundSubtractorKNN_Apply(BackgroundSubtractorKNN k, Mat src, Mat dst) {
+OpenCVResult BackgroundSubtractorKNN_Apply(BackgroundSubtractorKNN k, Mat src, Mat dst) {
     try {
 		(*k)->apply(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-    }
+		OpenCVResult result = {0, NULL};
+		return result;
+	} catch(const cv::Exception& e) {
+		OpenCVResult result = {e.code, e.what()};
+		return result;
+  	}
 }
 
-void CalcOpticalFlowFarneback(Mat prevImg, Mat nextImg, Mat flow, double scale, int levels,
+OpenCVResult CalcOpticalFlowFarneback(Mat prevImg, Mat nextImg, Mat flow, double scale, int levels,
                               int winsize, int iterations, int polyN, double polySigma, int flags) {
 	try {
 		cv::calcOpticalFlowFarneback(*prevImg, *nextImg, *flow, scale, levels, winsize, iterations, polyN, polySigma, flags);
-	} catch(const cv::Exception& e){
-		setExceptionInfo(e.code, e.what());
+		OpenCVResult result = {0, NULL};
+		return result;
+	} catch(const cv::Exception& e) {
+		OpenCVResult result = {e.code, e.what()};
+		return result;
+  	}
+}
+
+OpenCVResult CalcOpticalFlowPyrLK(Mat prevImg, Mat nextImg, Mat prevPts, Mat nextPts, Mat status, Mat err) {
+    try {
+		cv::calcOpticalFlowPyrLK(*prevImg, *nextImg, *prevPts, *nextPts, *status, *err);
+		OpenCVResult result = {0, NULL};
+		return result;
+	} catch(const cv::Exception& e) {
+		OpenCVResult result = {e.code, e.what()};
+		return result;
 	}
 }
 
-void CalcOpticalFlowPyrLK(Mat prevImg, Mat nextImg, Mat prevPts, Mat nextPts, Mat status, Mat err) {
-    try {
-		cv::calcOpticalFlowPyrLK(*prevImg, *nextImg, *prevPts, *nextPts, *status, *err);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-    }
-}
-
-void CalcOpticalFlowPyrLKWithParams(Mat prevImg, Mat nextImg, Mat prevPts, Mat nextPts, Mat status, Mat err, Size winSize, int maxLevel, TermCriteria criteria, int flags, double minEigThreshold){
+OpenCVResult CalcOpticalFlowPyrLKWithParams(Mat prevImg, Mat nextImg, Mat prevPts, Mat nextPts, Mat status, Mat err, Size winSize, int maxLevel, TermCriteria criteria, int flags, double minEigThreshold){
     try {
 		cv::Size sz(winSize.width, winSize.height);
 		cv::calcOpticalFlowPyrLK(*prevImg, *nextImg, *prevPts, *nextPts, *status, *err, sz, maxLevel, *criteria, flags, minEigThreshold);
-	} catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-    }
+		OpenCVResult result = {0, NULL};
+		return result;
+	} catch(const cv::Exception& e) {
+		OpenCVResult result = {e.code, e.what()};
+		return result;
+  	}
 }
 
 double FindTransformECC(Mat templateImage, Mat inputImage, Mat warpMatrix, int motionType, TermCriteria criteria, Mat inputMask, int gaussFiltSize){
@@ -188,20 +206,26 @@ KalmanFilter KalmanFilter_NewWithParams(int dynamParams, int measureParams, int 
     }
 }
 
-void KalmanFilter_Init(KalmanFilter kf, int dynamParams, int measureParams) {
+OpenCVResult KalmanFilter_Init(KalmanFilter kf, int dynamParams, int measureParams) {
     try {
 		kf->init(dynamParams, measureParams, 0, CV_32F);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-    }
+		OpenCVResult result = {0, NULL};
+		return result;
+	} catch(const cv::Exception& e) {
+		OpenCVResult result = {e.code, e.what()};
+		return result;
+  	}
 }
 
-void KalmanFilter_InitWithParams(KalmanFilter kf, int dynamParams, int measureParams, int controlParams, int type) {
+OpenCVResult KalmanFilter_InitWithParams(KalmanFilter kf, int dynamParams, int measureParams, int controlParams, int type) {
     try {
 		kf->init(dynamParams, measureParams, controlParams, type);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-    }
+		OpenCVResult result = {0, NULL};
+		return result;
+	} catch(const cv::Exception& e) {
+		OpenCVResult result = {e.code, e.what()};
+		return result;
+  	}
 }
 
 void KalmanFilter_Close(KalmanFilter kf) {

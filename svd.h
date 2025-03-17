@@ -9,7 +9,7 @@ extern "C" {
 
 #include "core.h"
 
-void SVD_Compute(Mat src, Mat w, Mat u, Mat vt);
+OpenCVResult SVD_Compute(Mat src, Mat w, Mat u, Mat vt);
 
 #ifdef __cplusplus
 }

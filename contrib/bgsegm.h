@@ -17,7 +17,7 @@ typedef void* BackgroundSubtractorCNT;
 
 BackgroundSubtractorCNT BackgroundSubtractorCNT_Create();
 void BackgroundSubtractorCNT_Close(BackgroundSubtractorCNT b);
-void BackgroundSubtractorCNT_Apply(BackgroundSubtractorCNT b, Mat src, Mat dst);
+OpenCVResult BackgroundSubtractorCNT_Apply(BackgroundSubtractorCNT b, Mat src, Mat dst);
 
 #ifdef __cplusplus
 }

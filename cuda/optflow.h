@@ -19,7 +19,7 @@ typedef void* CudaSparsePyrLKOpticalFlow;
 #endif
 
 CudaSparsePyrLKOpticalFlow CudaSparsePyrLKOpticalFlow_Create();
-void CudaSparsePyrLKOpticalFlow_Calc(CudaSparsePyrLKOpticalFlow p, GpuMat prevImg, GpuMat nextImg, GpuMat prevPts, GpuMat nextPts, GpuMat status);
+OpenCVResult CudaSparsePyrLKOpticalFlow_Calc(CudaSparsePyrLKOpticalFlow p, GpuMat prevImg, GpuMat nextImg, GpuMat prevPts, GpuMat nextPts, GpuMat status);
 
 #ifdef __cplusplus
 }

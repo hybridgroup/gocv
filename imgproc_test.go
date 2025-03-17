@@ -128,11 +128,12 @@ func TestCvtColorException(t *testing.T) {
 	dest := NewMat()
 	defer dest.Close()
 
-	CvtColor(img, &dest, ColorBGRAToGray)
-	defer ClearLastException()
-
-	if GetLastException() == 0 || GetLastExceptionMessage() == "" {
+	err := CvtColor(img, &dest, ColorBGRAToGray)
+	if err == nil {
 		t.Error("Expected exception in test")
+	}
+	if len(err.Error()) == 0 {
+		t.Error("Expected exception message in test")
 	}
 }
 

@@ -79,14 +79,12 @@ func (b *BackgroundSubtractorMOG2) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df6/classcv_1_1BackgroundSubtractor.html#aa735e76f7069b3fa9c3f32395f9ccd21
-func (b *BackgroundSubtractorMOG2) Apply(src Mat, dst *Mat) {
-	C.BackgroundSubtractorMOG2_Apply((C.BackgroundSubtractorMOG2)(b.p), src.p, dst.p)
-	return
+func (b *BackgroundSubtractorMOG2) Apply(src Mat, dst *Mat) error {
+	return OpenCVResult(C.BackgroundSubtractorMOG2_Apply((C.BackgroundSubtractorMOG2)(b.p), src.p, dst.p))
 }
 
-func (b *BackgroundSubtractorMOG2) ApplyWithLearningRate(src Mat, dst *Mat, learningRate float64) {
-	C.BackgroundSubtractorMOG2_ApplyWithParams((C.BackgroundSubtractorMOG2)(b.p), src.p, dst.p, C.double(learningRate))
-	return
+func (b *BackgroundSubtractorMOG2) ApplyWithLearningRate(src Mat, dst *Mat, learningRate float64) error {
+	return OpenCVResult(C.BackgroundSubtractorMOG2_ApplyWithParams((C.BackgroundSubtractorMOG2)(b.p), src.p, dst.p, C.double(learningRate)))
 }
 
 // BackgroundSubtractorKNN is a wrapper around the cv::BackgroundSubtractorKNN.
@@ -128,9 +126,8 @@ func (k *BackgroundSubtractorKNN) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/df6/classcv_1_1BackgroundSubtractor.html#aa735e76f7069b3fa9c3f32395f9ccd21
-func (k *BackgroundSubtractorKNN) Apply(src Mat, dst *Mat) {
-	C.BackgroundSubtractorKNN_Apply((C.BackgroundSubtractorKNN)(k.p), src.p, dst.p)
-	return
+func (k *BackgroundSubtractorKNN) Apply(src Mat, dst *Mat) error {
+	return OpenCVResult(C.BackgroundSubtractorKNN_Apply((C.BackgroundSubtractorKNN)(k.p), src.p, dst.p))
 }
 
 // CalcOpticalFlowFarneback computes a dense optical flow using
@@ -139,10 +136,9 @@ func (k *BackgroundSubtractorKNN) Apply(src Mat, dst *Mat) {
 // For further details, please see:
 // https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga5d10ebbd59fe09c5f650289ec0ece5af
 func CalcOpticalFlowFarneback(prevImg Mat, nextImg Mat, flow *Mat, pyrScale float64, levels int, winsize int,
-	iterations int, polyN int, polySigma float64, flags int) {
-	C.CalcOpticalFlowFarneback(prevImg.p, nextImg.p, flow.p, C.double(pyrScale), C.int(levels), C.int(winsize),
-		C.int(iterations), C.int(polyN), C.double(polySigma), C.int(flags))
-	return
+	iterations int, polyN int, polySigma float64, flags int) error {
+	return OpenCVResult(C.CalcOpticalFlowFarneback(prevImg.p, nextImg.p, flow.p, C.double(pyrScale), C.int(levels), C.int(winsize),
+		C.int(iterations), C.int(polyN), C.double(polySigma), C.int(flags)))
 }
 
 // CalcOpticalFlowPyrLK calculates an optical flow for a sparse feature set using
@@ -150,9 +146,8 @@ func CalcOpticalFlowFarneback(prevImg Mat, nextImg Mat, flow *Mat, pyrScale floa
 //
 // For further details, please see:
 // https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga473e4b886d0bcc6b65831eb88ed93323
-func CalcOpticalFlowPyrLK(prevImg Mat, nextImg Mat, prevPts Mat, nextPts Mat, status *Mat, err *Mat) {
-	C.CalcOpticalFlowPyrLK(prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p, err.p)
-	return
+func CalcOpticalFlowPyrLK(prevImg Mat, nextImg Mat, prevPts Mat, nextPts Mat, status *Mat, err *Mat) error {
+	return OpenCVResult(C.CalcOpticalFlowPyrLK(prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p, err.p))
 }
 
 // CalcOpticalFlowPyrLKWithParams calculates an optical flow for a sparse feature set using
@@ -161,13 +156,12 @@ func CalcOpticalFlowPyrLK(prevImg Mat, nextImg Mat, prevPts Mat, nextPts Mat, st
 // For further details, please see:
 // https://docs.opencv.org/master/dc/d6b/group__video__track.html#ga473e4b886d0bcc6b65831eb88ed93323
 func CalcOpticalFlowPyrLKWithParams(prevImg Mat, nextImg Mat, prevPts Mat, nextPts Mat, status *Mat, err *Mat,
-	winSize image.Point, maxLevel int, criteria TermCriteria, flags int, minEigThreshold float64) {
+	winSize image.Point, maxLevel int, criteria TermCriteria, flags int, minEigThreshold float64) error {
 	winSz := C.struct_Size{
 		width:  C.int(winSize.X),
 		height: C.int(winSize.Y),
 	}
-	C.CalcOpticalFlowPyrLKWithParams(prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p, err.p, winSz, C.int(maxLevel), criteria.p, C.int(flags), C.double(minEigThreshold))
-	return
+	return OpenCVResult(C.CalcOpticalFlowPyrLKWithParams(prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p, err.p, winSz, C.int(maxLevel), criteria.p, C.int(flags), C.double(minEigThreshold)))
 }
 
 // FindTransformECC finds the geometric transform (warp) between two images in terms of the ECC criterion.
@@ -335,8 +329,8 @@ func NewKalmanFilterWithParams(dynamParams int, measureParams int, controlParams
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/dd/d6a/classcv_1_1KalmanFilter.html#a4f136c39c016d3530c7c5801dd1ddb3b
-func (kf *KalmanFilter) Init(dynamParams int, measureParams int) {
-	C.KalmanFilter_Init(kf.p, C.int(dynamParams), C.int(measureParams))
+func (kf *KalmanFilter) Init(dynamParams int, measureParams int) error {
+	return OpenCVResult(C.KalmanFilter_Init(kf.p, C.int(dynamParams), C.int(measureParams)))
 }
 
 // Predict computes a predicted state.

@@ -65,7 +65,7 @@ func (a *ArucoDetector) DetectMarkers(input Mat) (
 	return pvsCorners.ToPoints(), markerIds, pvsRejected.ToPoints()
 }
 
-func ArucoDrawDetectedMarkers(img Mat, markerCorners [][]Point2f, markerIds []int, borderColor Scalar) {
+func ArucoDrawDetectedMarkers(img Mat, markerCorners [][]Point2f, markerIds []int, borderColor Scalar) error {
 	cMarkerIds := make([]C.int, len(markerIds))
 	for i, s := range markerIds {
 		cMarkerIds[i] = C.int(s)
@@ -83,16 +83,16 @@ func ArucoDrawDetectedMarkers(img Mat, markerCorners [][]Point2f, markerIds []in
 		val4: C.double(borderColor.Val4),
 	}
 
-	C.ArucoDrawDetectedMarkers(
+	return OpenCVResult(C.ArucoDrawDetectedMarkers(
 		C.Mat(img.Ptr()),
 		C.Points2fVector(_markerCorners.P()),
 		markerIdsIntVec,
 		cBorderColor,
-	)
+	))
 }
 
-func ArucoGenerateImageMarker(dictionaryId ArucoDictionaryCode, id int, sidePixels int, img Mat, borderBits int) {
-	C.ArucoGenerateImageMarker(C.int(dictionaryId), C.int(id), C.int(sidePixels), C.Mat(img.Ptr()), C.int(borderBits))
+func ArucoGenerateImageMarker(dictionaryId ArucoDictionaryCode, id int, sidePixels int, img Mat, borderBits int) error {
+	return OpenCVResult(C.ArucoGenerateImageMarker(C.int(dictionaryId), C.int(id), C.int(sidePixels), C.Mat(img.Ptr()), C.int(borderBits)))
 }
 
 type ArucoDetectorParameters struct {

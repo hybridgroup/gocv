@@ -30,18 +30,18 @@ struct PredictResponse {
 };
 
 bool FaceRecognizer_Empty(FaceRecognizer fr);
-void FaceRecognizer_Train(FaceRecognizer fr, Mats images, IntVector labels);
-void FaceRecognizer_Update(FaceRecognizer fr, Mats images, IntVector labels);
+OpenCVResult FaceRecognizer_Train(FaceRecognizer fr, Mats images, IntVector labels);
+OpenCVResult FaceRecognizer_Update(FaceRecognizer fr, Mats images, IntVector labels);
 int FaceRecognizer_Predict(FaceRecognizer fr, Mat sample);
 struct PredictResponse FaceRecognizer_PredictExtended(FaceRecognizer fr, Mat sample);
 double FaceRecognizer_GetThreshold(FaceRecognizer fr);
 void FaceRecognizer_SetThreshold(FaceRecognizer fr, double threshold);
-void FaceRecognizer_SaveFile(FaceRecognizer fr, const char*  filename);
-void FaceRecognizer_LoadFile(FaceRecognizer fr, const char*  filename);
+OpenCVResult FaceRecognizer_SaveFile(FaceRecognizer fr, const char*  filename);
+OpenCVResult FaceRecognizer_LoadFile(FaceRecognizer fr, const char*  filename);
 
 
-void BasicFaceRecognizer_Train(BasicFaceRecognizer fr, Mats images, IntVector labels);
-void BasicFaceRecognizer_Update(BasicFaceRecognizer fr, Mats images, IntVector labels);
+OpenCVResult BasicFaceRecognizer_Train(BasicFaceRecognizer fr, Mats images, IntVector labels);
+OpenCVResult BasicFaceRecognizer_Update(BasicFaceRecognizer fr, Mats images, IntVector labels);
 Mat BasicFaceRecognizer_getEigenValues(BasicFaceRecognizer fr);
 Mat BasicFaceRecognizer_getEigenVectors(BasicFaceRecognizer fr);
 Mat BasicFaceRecognizer_getLabels(BasicFaceRecognizer fr);
@@ -49,8 +49,8 @@ Mat BasicFaceRecognizer_getMean(BasicFaceRecognizer fr);
 int BasicFaceRecognizer_getNumComponents(BasicFaceRecognizer fr);
 Mats BasicFaceRecognizer_getProjections(BasicFaceRecognizer fr);
 void BasicFaceRecognizer_setNumComponents(BasicFaceRecognizer fr, int val);	
-void BasicFaceRecognizer_SaveFile(BasicFaceRecognizer fr, const char*  filename);
-void BasicFaceRecognizer_LoadFile(BasicFaceRecognizer fr, const char*  filename);
+OpenCVResult BasicFaceRecognizer_SaveFile(BasicFaceRecognizer fr, const char*  filename);
+OpenCVResult BasicFaceRecognizer_LoadFile(BasicFaceRecognizer fr, const char*  filename);
 
 LBPHFaceRecognizer CreateLBPHFaceRecognizer(void);
 void LBPHFaceRecognizer_SetRadius(LBPHFaceRecognizer fr, int radius);

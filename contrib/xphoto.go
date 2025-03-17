@@ -6,8 +6,9 @@ package contrib
 */
 import "C"
 import (
-	"gocv.io/x/gocv"
 	"unsafe"
+
+	"gocv.io/x/gocv"
 )
 
 // GrayworldWB is a wrapper around the cv::xphoto::GrayworldWB.
@@ -61,15 +62,13 @@ const (
 // ----------------------- Bm3dDenoising -------------------------
 // ----------------------- ---------------------------------------
 
-func ApplyChannelGains(src gocv.Mat, dst *gocv.Mat, gainB float32, gainG float32, gainR float32) {
-	C.Xphoto_ApplyChannelGains(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.float(gainB), C.float(gainG), C.float(gainR))
-	return
+func ApplyChannelGains(src gocv.Mat, dst *gocv.Mat, gainB float32, gainG float32, gainR float32) error {
+	return OpenCVResult(C.Xphoto_ApplyChannelGains(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.float(gainB), C.float(gainG), C.float(gainR)))
 }
 
 // src = Input 8-bit or 16-bit 1-channel image.
-func Bm3dDenoisingStep(src gocv.Mat, dststep1 *gocv.Mat, dststep2 *gocv.Mat) {
-	C.Xphoto_Bm3dDenoising_Step(C.Mat(src.Ptr()), C.Mat(dststep1.Ptr()), C.Mat(dststep2.Ptr()))
-	return
+func Bm3dDenoisingStep(src gocv.Mat, dststep1 *gocv.Mat, dststep2 *gocv.Mat) error {
+	return OpenCVResult(C.Xphoto_Bm3dDenoising_Step(C.Mat(src.Ptr()), C.Mat(dststep1.Ptr()), C.Mat(dststep2.Ptr())))
 }
 
 // src = Input 8-bit or 16-bit 1-channel image.
@@ -79,20 +78,19 @@ func Bm3dDenoisingStepWithParams(src gocv.Mat, dststep1 *gocv.Mat, dststep2 *goc
 	blockMatchingStep2 int, groupSize int,
 	slidingStep int, beta float32,
 	normType gocv.NormType, step Bm3dSteps,
-	transformType TransformTypes) {
-	C.Xphoto_Bm3dDenoising_Step_WithParams(C.Mat(src.Ptr()), C.Mat(dststep1.Ptr()), C.Mat(dststep2.Ptr()),
+	transformType TransformTypes) error {
+	return OpenCVResult(C.Xphoto_Bm3dDenoising_Step_WithParams(C.Mat(src.Ptr()), C.Mat(dststep1.Ptr()), C.Mat(dststep2.Ptr()),
 		C.float(h), C.int(templateWindowSize),
 		C.int(searchWindowSize), C.int(blockMatchingStep1),
 		C.int(blockMatchingStep2), C.int(groupSize),
 		C.int(slidingStep), C.float(beta),
 		C.int(normType), C.int(step),
-		C.int(transformType))
-	return
+		C.int(transformType)))
 }
 
 // src = Input 8-bit or 16-bit 1-channel image.
-func Bm3dDenoising(src gocv.Mat, dst *gocv.Mat) {
-	C.Xphoto_Bm3dDenoising(C.Mat(src.Ptr()), C.Mat(dst.Ptr()))
+func Bm3dDenoising(src gocv.Mat, dst *gocv.Mat) error {
+	return OpenCVResult(C.Xphoto_Bm3dDenoising(C.Mat(src.Ptr()), C.Mat(dst.Ptr())))
 }
 
 // src = Input 8-bit or 16-bit 1-channel image.
@@ -102,16 +100,15 @@ func Bm3dDenoisingWithParams(src gocv.Mat, dst *gocv.Mat,
 	blockMatchingStep2 int, groupSize int,
 	slidingStep int, beta float32,
 	normType gocv.NormType, step Bm3dSteps,
-	transformType TransformTypes) {
+	transformType TransformTypes) error {
 
-	C.Xphoto_Bm3dDenoising_WithParams(C.Mat(src.Ptr()), C.Mat(dst.Ptr()),
+	return OpenCVResult(C.Xphoto_Bm3dDenoising_WithParams(C.Mat(src.Ptr()), C.Mat(dst.Ptr()),
 		C.float(h), C.int(templateWindowSize),
 		C.int(searchWindowSize), C.int(blockMatchingStep1),
 		C.int(blockMatchingStep2), C.int(groupSize),
 		C.int(slidingStep), C.float(beta),
 		C.int(normType), C.int(step),
-		C.int(transformType))
-	return
+		C.int(transformType)))
 }
 
 // ----------------------- ---------------------------------------
@@ -162,9 +159,8 @@ func (b *GrayworldWB) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/d71/classcv_1_1xphoto_1_1GrayworldWB.html#details
-func (b *GrayworldWB) BalanceWhite(src gocv.Mat, dst *gocv.Mat) {
-	C.GrayworldWB_BalanceWhite((C.GrayworldWB)(b.p), C.Mat(src.Ptr()), C.Mat(dst.Ptr()))
-	return
+func (b *GrayworldWB) BalanceWhite(src gocv.Mat, dst *gocv.Mat) error {
+	return OpenCVResult(C.GrayworldWB_BalanceWhite((C.GrayworldWB)(b.p), C.Mat(src.Ptr()), C.Mat(dst.Ptr())))
 }
 
 // ----------------------- ---------------------------------------
@@ -208,9 +204,8 @@ func (b *LearningBasedWB) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d3b/classcv_1_1xphoto_1_1LearningBasedWB.html#aeeaca052262a01d0feed6312ccb9a76e
-func (b *LearningBasedWB) ExtractSimpleFeatures(src gocv.Mat, dst *gocv.Mat) {
-	C.LearningBasedWB_ExtractSimpleFeatures((C.LearningBasedWB)(b.p), C.Mat(src.Ptr()), C.Mat(dst.Ptr()))
-	return
+func (b *LearningBasedWB) ExtractSimpleFeatures(src gocv.Mat, dst *gocv.Mat) error {
+	return OpenCVResult(C.LearningBasedWB_ExtractSimpleFeatures((C.LearningBasedWB)(b.p), C.Mat(src.Ptr()), C.Mat(dst.Ptr())))
 }
 
 // GetHistBinNum
@@ -274,9 +269,8 @@ func (b *LearningBasedWB) SetSaturationThreshold(val float32) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d9/d7a/classcv_1_1xphoto_1_1WhiteBalancer.html#ae23838a1a54f101b255bca1a97418aa3
-func (b *LearningBasedWB) BalanceWhite(src gocv.Mat, dst *gocv.Mat) {
-	C.LearningBasedWB_BalanceWhite((C.LearningBasedWB)(b.p), C.Mat(src.Ptr()), C.Mat(dst.Ptr()))
-	return
+func (b *LearningBasedWB) BalanceWhite(src gocv.Mat, dst *gocv.Mat) error {
+	return OpenCVResult(C.LearningBasedWB_BalanceWhite((C.LearningBasedWB)(b.p), C.Mat(src.Ptr()), C.Mat(dst.Ptr())))
 }
 
 // ----------------------- ---------------------------------------
@@ -401,9 +395,8 @@ func (b *SimpleWB) SetP(val float32) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d9/d7a/classcv_1_1xphoto_1_1WhiteBalancer.html#ae23838a1a54f101b255bca1a97418aa3
-func (b *SimpleWB) BalanceWhite(src gocv.Mat, dst *gocv.Mat) {
-	C.SimpleWB_BalanceWhite((C.SimpleWB)(b.p), C.Mat(src.Ptr()), C.Mat(dst.Ptr()))
-	return
+func (b *SimpleWB) BalanceWhite(src gocv.Mat, dst *gocv.Mat) error {
+	return OpenCVResult(C.SimpleWB_BalanceWhite((C.SimpleWB)(b.p), C.Mat(src.Ptr()), C.Mat(dst.Ptr())))
 }
 
 // ----------------------- ---------------------------------------
@@ -532,9 +525,8 @@ func (b *TonemapDurand) SetGamma(val float32) {
 // Tonemaps image with gocv.MatTypeCV32FC3 type image
 // For further details, please see:
 // https://docs.opencv.org/master/d8/d5e/classcv_1_1Tonemap.html#aa705c3b7226f7028a5c117dffab60fe4
-func (b *TonemapDurand) Process(src gocv.Mat, dst *gocv.Mat) {
-	C.TonemapDurand_Process((C.TonemapDurand)(b.p), C.Mat(src.Ptr()), C.Mat(dst.Ptr()))
-	return
+func (b *TonemapDurand) Process(src gocv.Mat, dst *gocv.Mat) error {
+	return OpenCVResult(C.TonemapDurand_Process((C.TonemapDurand)(b.p), C.Mat(src.Ptr()), C.Mat(dst.Ptr())))
 }
 
 // ----------------------- ---------------------------------------
@@ -545,8 +537,8 @@ func (b *TonemapDurand) Process(src gocv.Mat, dst *gocv.Mat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/de/daa/group__xphoto.html#gab4febba6be53e5fddc480b8cedf51eee
-func Inpaint(src *gocv.Mat, mask *gocv.Mat, dst *gocv.Mat, algorithmType InpaintTypes) {
-	C.Inpaint(C.Mat(src.Ptr()), C.Mat(mask.Ptr()), C.Mat(dst.Ptr()), C.int(algorithmType))
+func Inpaint(src *gocv.Mat, mask *gocv.Mat, dst *gocv.Mat, algorithmType InpaintTypes) error {
+	return OpenCVResult(C.Inpaint(C.Mat(src.Ptr()), C.Mat(mask.Ptr()), C.Mat(dst.Ptr()), C.int(algorithmType)))
 }
 
 // oilPainting, See the book for details :
@@ -554,8 +546,8 @@ func Inpaint(src *gocv.Mat, mask *gocv.Mat, dst *gocv.Mat, algorithmType Inpaint
 //
 // For further details, please see:
 // https://docs.opencv.org/master/de/daa/group__xphoto.html#gac050a6e876298cb9713cd2c09db9a027
-func OilPaintingWithParams(src gocv.Mat, dst gocv.Mat, size int, dynRatio int, code gocv.ColorConversionCode) {
-	C.OilPaintingWithParams(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.int(size), C.int(dynRatio), C.int(code))
+func OilPaintingWithParams(src gocv.Mat, dst gocv.Mat, size int, dynRatio int, code gocv.ColorConversionCode) error {
+	return OpenCVResult(C.OilPaintingWithParams(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.int(size), C.int(dynRatio), C.int(code)))
 }
 
 // oilPainting, See the book for details :
@@ -563,6 +555,6 @@ func OilPaintingWithParams(src gocv.Mat, dst gocv.Mat, size int, dynRatio int, c
 //
 // For further details, please see:
 // https://docs.opencv.org/master/de/daa/group__xphoto.html#gac18ef93a7b1e65f703f7dc3b1e8e5235
-func OilPainting(src gocv.Mat, dst *gocv.Mat, size int, dynRatio int) {
-	C.OilPainting(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.int(size), C.int(dynRatio))
+func OilPainting(src gocv.Mat, dst *gocv.Mat, size int, dynRatio int) error {
+	return OpenCVResult(C.OilPainting(C.Mat(src.Ptr()), C.Mat(dst.Ptr()), C.int(size), C.int(dynRatio)))
 }

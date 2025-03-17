@@ -21,31 +21,34 @@ PointVector ApproxPolyDP(PointVector curve, double epsilon, bool closed) {
     }
 }
 
-void CvtColor(Mat src, Mat dst, int code) {
+OpenCVResult CvtColor(Mat src, Mat dst, int code) {
     try {
         cv::cvtColor(*src, *dst, code);
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
-void Demosaicing(Mat src, Mat dst, int code) {
+OpenCVResult Demosaicing(Mat src, Mat dst, int code) {
     try {
         cv::demosaicing(*src, *dst, code);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void EqualizeHist(Mat src, Mat dst) {
+OpenCVResult EqualizeHist(Mat src, Mat dst) {
     try {
         cv::equalizeHist(*src, *dst);
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
-void CalcHist(struct Mats mats, IntVector chans, Mat mask, Mat hist, IntVector sz, FloatVector rng, bool acc) {
+OpenCVResult CalcHist(struct Mats mats, IntVector chans, Mat mask, Mat hist, IntVector sz, FloatVector rng, bool acc) {
     std::vector<cv::Mat> images;
 
     for (int i = 0; i < mats.length; ++i) {
@@ -74,12 +77,13 @@ void CalcHist(struct Mats mats, IntVector chans, Mat mask, Mat hist, IntVector s
 
     try {
         cv::calcHist(images, channels, *mask, *hist, histSize, ranges, acc);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void CalcBackProject(struct Mats mats, IntVector chans, Mat hist, Mat backProject, FloatVector rng, bool uniform){
+OpenCVResult CalcBackProject(struct Mats mats, IntVector chans, Mat hist, Mat backProject, FloatVector rng, bool uniform){
     std::vector<cv::Mat> images;
 
     for (int i = 0; i < mats.length; ++i) {
@@ -101,8 +105,9 @@ void CalcBackProject(struct Mats mats, IntVector chans, Mat hist, Mat backProjec
 
     try {
         cv::calcBackProject(images, channels, *hist, *backProject, ranges, uniform);
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -154,118 +159,131 @@ struct RotatedRect FitEllipse(PointVector pts)
     return rotRect;
 }
 
-void ConvexHull(PointVector points, Mat hull, bool clockwise, bool returnPoints) {
+OpenCVResult ConvexHull(PointVector points, Mat hull, bool clockwise, bool returnPoints) {
     try {
         cv::convexHull(*points, *hull, clockwise, returnPoints);
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
-void ConvexityDefects(PointVector points, Mat hull, Mat result) {
+OpenCVResult ConvexityDefects(PointVector points, Mat hull, Mat result) {
     try {
         cv::convexityDefects(*points, *hull, *result);
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
-void BilateralFilter(Mat src, Mat dst, int d, double sc, double ss) {
+OpenCVResult BilateralFilter(Mat src, Mat dst, int d, double sc, double ss) {
     try {
         cv::bilateralFilter(*src, *dst, d, sc, ss);
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
-void Blur(Mat src, Mat dst, Size ps) {
+OpenCVResult Blur(Mat src, Mat dst, Size ps) {
     try {
         cv::Size sz(ps.width, ps.height);
         cv::blur(*src, *dst, sz);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void BoxFilter(Mat src, Mat dst, int ddepth, Size ps) {
+OpenCVResult BoxFilter(Mat src, Mat dst, int ddepth, Size ps) {
     try {
         cv::Size sz(ps.width, ps.height);
         cv::boxFilter(*src, *dst, ddepth, sz);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void SqBoxFilter(Mat src, Mat dst, int ddepth, Size ps) {
+OpenCVResult SqBoxFilter(Mat src, Mat dst, int ddepth, Size ps) {
     try {
         cv::Size sz(ps.width, ps.height);
         cv::sqrBoxFilter(*src, *dst, ddepth, sz);
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
-void Dilate(Mat src, Mat dst, Mat kernel) {
+OpenCVResult Dilate(Mat src, Mat dst, Mat kernel) {
     try {
         cv::dilate(*src, *dst, *kernel);
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
-void DilateWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType, Scalar borderValue) {
+OpenCVResult DilateWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType, Scalar borderValue) {
     try {
         cv::Point pt1(anchor.x, anchor.y);
         cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
 
         cv::dilate(*src, *dst, *kernel, pt1, iterations, borderType, c);
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
-void DistanceTransform(Mat src, Mat dst, Mat labels, int distanceType, int maskSize, int labelType) {
+OpenCVResult DistanceTransform(Mat src, Mat dst, Mat labels, int distanceType, int maskSize, int labelType) {
     try {
         cv::distanceTransform(*src, *dst, *labels, distanceType, maskSize, labelType);
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
-void Erode(Mat src, Mat dst, Mat kernel) {
+OpenCVResult Erode(Mat src, Mat dst, Mat kernel) {
     try {
         cv::erode(*src, *dst, *kernel);
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
-void ErodeWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType) {
+OpenCVResult ErodeWithParams(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType) {
     try {
         cv::Point pt1(anchor.x, anchor.y);
 
         cv::erode(*src, *dst, *kernel, pt1, iterations, borderType, cv::morphologyDefaultBorderValue());
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
-void ErodeWithParamsAndBorderValue(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType, Scalar borderValue) {
+OpenCVResult ErodeWithParamsAndBorderValue(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType, Scalar borderValue) {
     try {
         cv::Point pt1(anchor.x, anchor.y);
         cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
 
         cv::erode(*src, *dst, *kernel, pt1, iterations, borderType, c);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask) {
+OpenCVResult MatchTemplate(Mat image, Mat templ, Mat result, int method, Mat mask) {
     try {
         cv::matchTemplate(*image, *templ, *result, method, *mask);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -284,21 +302,23 @@ struct Moment Moments(Mat src, bool binaryImage) {
     }
 }
 
-void PyrDown(Mat src, Mat dst, Size size, int borderType) {
+OpenCVResult PyrDown(Mat src, Mat dst, Size size, int borderType) {
     try {
         cv::Size cvSize(size.width, size.height);
         cv::pyrDown(*src, *dst, cvSize, borderType);
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
-void PyrUp(Mat src, Mat dst, Size size, int borderType) {
+OpenCVResult PyrUp(Mat src, Mat dst, Size size, int borderType) {
     try {
         cv::Size cvSize(size.width, size.height);
         cv::pyrUp(*src, *dst, cvSize, borderType);
+        return successResult();
     } catch(const cv::Exception& e) {
-        setExceptionInfo(e.code, e.what());
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -315,25 +335,27 @@ struct Rect BoundingRect(PointVector pts) {
     }
 }
 
-void BoxPoints(RotatedRect rect, Mat boxPts){
+OpenCVResult BoxPoints(RotatedRect rect, Mat boxPts){
     try {
         cv::Point2f centerPt(rect.center.x , rect.center.y);
         cv::Size2f rSize(rect.size.width, rect.size.height);
         cv::RotatedRect rotatedRectangle(centerPt, rSize, rect.angle);
         cv::boxPoints(rotatedRectangle, *boxPts);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void BoxPoints2f(RotatedRect2f rect, Mat boxPts){
+OpenCVResult BoxPoints2f(RotatedRect2f rect, Mat boxPts){
     try {
         cv::Point2f centerPt(rect.center.x , rect.center.y);
         cv::Size2f rSize(rect.size.width, rect.size.height);
         cv::RotatedRect rotatedRectangle(centerPt, rSize, rect.angle);
         cv::boxPoints(rotatedRectangle, *boxPts);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -404,14 +426,15 @@ struct RotatedRect2f MinAreaRect2f(PointVector pts){
     }
 }
 
-void MinEnclosingCircle(PointVector pts, Point2f* center, float* radius){
+OpenCVResult MinEnclosingCircle(PointVector pts, Point2f* center, float* radius){
     try {
         cv::Point2f center2f;
         cv::minEnclosingCircle(*pts, center2f, *radius);
         center->x = center2f.x;
         center->y = center2f.y;
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -479,29 +502,32 @@ Scalar MorphologyDefaultBorderValue(){
     }
 }
 
-void MorphologyEx(Mat src, Mat dst, int op, Mat kernel) {
+OpenCVResult MorphologyEx(Mat src, Mat dst, int op, Mat kernel) {
     try {
         cv::morphologyEx(*src, *dst, op, *kernel);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void MorphologyExWithParams(Mat src, Mat dst, int op, Mat kernel, Point pt, int iterations, int borderType) {
+OpenCVResult MorphologyExWithParams(Mat src, Mat dst, int op, Mat kernel, Point pt, int iterations, int borderType) {
     try {
         cv::Point pt1(pt.x, pt.y);
         cv::morphologyEx(*src, *dst, op, *kernel, pt1, iterations, borderType);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt) {
+OpenCVResult GaussianBlur(Mat src, Mat dst, Size ps, double sX, double sY, int bt) {
     try {
         cv::Size sz(ps.width, ps.height);
         cv::GaussianBlur(*src, *dst, sz, sX, sY, bt);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -514,122 +540,135 @@ Mat GetGaussianKernel(int ksize, double sigma, int ktype){
     }
 }
 
-void Laplacian(Mat src, Mat dst, int dDepth, int kSize, double scale, double delta, int borderType) {
+OpenCVResult Laplacian(Mat src, Mat dst, int dDepth, int kSize, double scale, double delta, int borderType) {
     try {
         cv::Laplacian(*src, *dst, dDepth, kSize, scale, delta, borderType);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Scharr(Mat src, Mat dst, int dDepth, int dx, int dy, double scale, double delta, int borderType) {
+OpenCVResult Scharr(Mat src, Mat dst, int dDepth, int dx, int dy, double scale, double delta, int borderType) {
     try {
         cv::Scharr(*src, *dst, dDepth, dx, dy, scale, delta, borderType);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void MedianBlur(Mat src, Mat dst, int ksize) {
+OpenCVResult MedianBlur(Mat src, Mat dst, int ksize) {
     try {
         cv::medianBlur(*src, *dst, ksize);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Canny(Mat src, Mat edges, double t1, double t2) {
+OpenCVResult Canny(Mat src, Mat edges, double t1, double t2) {
     try {
         cv::Canny(*src, *edges, t1, t2);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void CornerSubPix(Mat img, Mat corners, Size winSize, Size zeroZone, TermCriteria criteria) {
+OpenCVResult CornerSubPix(Mat img, Mat corners, Size winSize, Size zeroZone, TermCriteria criteria) {
     try {
         cv::Size wsz(winSize.width, winSize.height);
         cv::Size zsz(zeroZone.width, zeroZone.height);
         cv::cornerSubPix(*img, *corners, wsz, zsz, *criteria);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void GoodFeaturesToTrack(Mat img, Mat corners, int maxCorners, double quality, double minDist) {
+OpenCVResult GoodFeaturesToTrack(Mat img, Mat corners, int maxCorners, double quality, double minDist) {
     try {
         cv::goodFeaturesToTrack(*img, *corners, maxCorners, quality, minDist);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void GrabCut(Mat img, Mat mask, Rect r, Mat bgdModel, Mat fgdModel, int iterCount, int mode) {
+OpenCVResult GrabCut(Mat img, Mat mask, Rect r, Mat bgdModel, Mat fgdModel, int iterCount, int mode) {
     try {
         cv::Rect cvRect = cv::Rect(r.x, r.y, r.width, r.height);
         cv::grabCut(*img, *mask, cvRect, *bgdModel, *fgdModel, iterCount, mode);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void HoughCircles(Mat src, Mat circles, int method, double dp, double minDist) {
+OpenCVResult HoughCircles(Mat src, Mat circles, int method, double dp, double minDist) {
     try {
         cv::HoughCircles(*src, *circles, method, dp, minDist);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void HoughCirclesWithParams(Mat src, Mat circles, int method, double dp, double minDist,
+OpenCVResult HoughCirclesWithParams(Mat src, Mat circles, int method, double dp, double minDist,
                             double param1, double param2, int minRadius, int maxRadius) {
     try {
         cv::HoughCircles(*src, *circles, method, dp, minDist, param1, param2, minRadius, maxRadius);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void HoughLines(Mat src, Mat lines, double rho, double theta, int threshold) {
+OpenCVResult HoughLines(Mat src, Mat lines, double rho, double theta, int threshold) {
     try {
         cv::HoughLines(*src, *lines, rho, theta, threshold);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold) {
+OpenCVResult HoughLinesP(Mat src, Mat lines, double rho, double theta, int threshold) {
     try {
         cv::HoughLinesP(*src, *lines, rho, theta, threshold);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void HoughLinesPWithParams(Mat src, Mat lines, double rho, double theta, int threshold, double minLineLength, double maxLineGap) {
+OpenCVResult HoughLinesPWithParams(Mat src, Mat lines, double rho, double theta, int threshold, double minLineLength, double maxLineGap) {
     try {
         cv::HoughLinesP(*src, *lines, rho, theta, threshold, minLineLength, maxLineGap);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void HoughLinesPointSet(Mat points, Mat lines, int linesMax, int threshold,
+OpenCVResult HoughLinesPointSet(Mat points, Mat lines, int linesMax, int threshold,
                         double minRho, double  maxRho, double rhoStep,
                         double minTheta, double maxTheta, double thetaStep) {
     try {
-        cv::HoughLinesPointSet(*points, *lines, linesMax, threshold,
-            minRho, maxRho, rhoStep, minTheta, maxTheta, thetaStep );
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        cv::HoughLinesPointSet(*points, *lines, linesMax, threshold, minRho, maxRho, rhoStep, minTheta, maxTheta, thetaStep );
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Integral(Mat src, Mat sum, Mat sqsum, Mat tilted) {
+OpenCVResult Integral(Mat src, Mat sum, Mat sqsum, Mat tilted) {
     try {
         cv::integral(*src, *sum, *sqsum, *tilted);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -642,23 +681,25 @@ double Threshold(Mat src, Mat dst, double thresh, double maxvalue, int typ) {
     }
 }
 
-void AdaptiveThreshold(Mat src, Mat dst, double maxValue, int adaptiveMethod, int thresholdType, int blockSize, double c) {
+OpenCVResult AdaptiveThreshold(Mat src, Mat dst, double maxValue, int adaptiveMethod, int thresholdType, int blockSize, double c) {
     try {
         cv::adaptiveThreshold(*src, *dst, maxValue, adaptiveMethod, thresholdType, blockSize, c);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
+OpenCVResult ArrowedLine(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
     try {
         cv::Point p1(pt1.x, pt1.y);
         cv::Point p2(pt2.x, pt2.y);
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
 
         cv::arrowedLine(*img, p1, p2, c, thickness);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -675,65 +716,70 @@ bool ClipLine(Size imgSize, Point pt1, Point pt2) {
     }
 }
 
-void Circle(Mat img, Point center, int radius, Scalar color, int thickness) {
+OpenCVResult Circle(Mat img, Point center, int radius, Scalar color, int thickness) {
     try {
         cv::Point p1(center.x, center.y);
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
 
         cv::circle(*img, p1, radius, c, thickness);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void CircleWithParams(Mat img, Point center, int radius, Scalar color, int thickness, int lineType, int shift) {
+OpenCVResult CircleWithParams(Mat img, Point center, int radius, Scalar color, int thickness, int lineType, int shift) {
     try {
         cv::Point p1(center.x, center.y);
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
 
         cv::circle(*img, p1, radius, c, thickness, lineType, shift);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Ellipse(Mat img, Point center, Point axes, double angle, double startAngle, double endAngle, Scalar color, int thickness) {
+OpenCVResult Ellipse(Mat img, Point center, Point axes, double angle, double startAngle, double endAngle, Scalar color, int thickness) {
     try {
         cv::Point p1(center.x, center.y);
         cv::Point p2(axes.x, axes.y);
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
 
         cv::ellipse(*img, p1, p2, angle, startAngle, endAngle, c, thickness);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void EllipseWithParams(Mat img, Point center, Point axes, double angle, double startAngle, double endAngle, Scalar color, int thickness, int lineType, int shift) {
+OpenCVResult EllipseWithParams(Mat img, Point center, Point axes, double angle, double startAngle, double endAngle, Scalar color, int thickness, int lineType, int shift) {
     try {
         cv::Point p1(center.x, center.y);
         cv::Point p2(axes.x, axes.y);
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
 
         cv::ellipse(*img, p1, p2, angle, startAngle, endAngle, c, thickness, lineType, shift);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Line(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
+OpenCVResult Line(Mat img, Point pt1, Point pt2, Scalar color, int thickness) {
     try {
         cv::Point p1(pt1.x, pt1.y);
         cv::Point p2(pt2.x, pt2.y);
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
 
         cv::line(*img, p1, p2, c, thickness);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Rectangle(Mat img, Rect r, Scalar color, int thickness) {
+OpenCVResult Rectangle(Mat img, Rect r, Scalar color, int thickness) {
     try {
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
         cv::rectangle(
@@ -744,12 +790,13 @@ void Rectangle(Mat img, Rect r, Scalar color, int thickness) {
             thickness,
             cv::LINE_AA
         );
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void RectangleWithParams(Mat img, Rect r, Scalar color, int thickness, int lineType, int shift) {
+OpenCVResult RectangleWithParams(Mat img, Rect r, Scalar color, int thickness, int lineType, int shift) {
     try {
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
         cv::rectangle(
@@ -761,38 +808,42 @@ void RectangleWithParams(Mat img, Rect r, Scalar color, int thickness, int lineT
             lineType,
             shift
         );
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void FillPoly(Mat img, PointsVector pts, Scalar color) {
+OpenCVResult FillPoly(Mat img, PointsVector pts, Scalar color) {
     try {
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
 
         cv::fillPoly(*img, *pts, c);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void FillPolyWithParams(Mat img, PointsVector pts, Scalar color, int lineType, int shift, Point offset) {
+OpenCVResult FillPolyWithParams(Mat img, PointsVector pts, Scalar color, int lineType, int shift, Point offset) {
     try {
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
 
         cv::fillPoly(*img, *pts, c, lineType, shift, cv::Point(offset.x, offset.y));
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Polylines(Mat img, PointsVector pts, bool isClosed, Scalar color,int thickness) {
+OpenCVResult Polylines(Mat img, PointsVector pts, bool isClosed, Scalar color,int thickness) {
     try {
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
 
         cv::polylines(*img, *pts, isClosed, c, thickness);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -818,43 +869,47 @@ struct Size GetTextSizeWithBaseline(const char* text, int fontFace, double fontS
     }
 }
 
-void PutText(Mat img, const char* text, Point org, int fontFace, double fontScale, Scalar color, int thickness) {
+OpenCVResult PutText(Mat img, const char* text, Point org, int fontFace, double fontScale, Scalar color, int thickness) {
     try {
         cv::Point pt(org.x, org.y);
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
         cv::putText(*img, text, pt, fontFace, fontScale, c, thickness);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void PutTextWithParams(Mat img, const char* text, Point org, int fontFace, double fontScale,
+OpenCVResult PutTextWithParams(Mat img, const char* text, Point org, int fontFace, double fontScale,
                        Scalar color, int thickness, int lineType, bool bottomLeftOrigin) {
     try {
         cv::Point pt(org.x, org.y);
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
         cv::putText(*img, text, pt, fontFace, fontScale, c, thickness, lineType, bottomLeftOrigin);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Resize(Mat src, Mat dst, Size dsize, double fx, double fy, int interp) {
+OpenCVResult Resize(Mat src, Mat dst, Size dsize, double fx, double fy, int interp) {
     try {
         cv::Size sz(dsize.width, dsize.height);
         cv::resize(*src, *dst, sz, fx, fy, interp);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void GetRectSubPix(Mat src, Size patchSize, Point center, Mat dst) {
+OpenCVResult GetRectSubPix(Mat src, Size patchSize, Point center, Mat dst) {
     try {
         cv::Size sz(patchSize.width, patchSize.height);
         cv::Point pt(center.x, center.y);
         cv::getRectSubPix(*src, sz, pt, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -868,67 +923,72 @@ Mat GetRotationMatrix2D(Point center, double angle, double scale) {
     }
 }
 
-void WarpAffine(Mat src, Mat dst, Mat m, Size dsize) {
+OpenCVResult WarpAffine(Mat src, Mat dst, Mat m, Size dsize) {
     try {
         cv::Size sz(dsize.width, dsize.height);
         cv::warpAffine(*src, *dst, *m, sz);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode,
-                          Scalar borderValue) {
+OpenCVResult WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode, Scalar borderValue) {
     try {
         cv::Size sz(dsize.width, dsize.height);
         cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         cv::warpAffine(*src, *dst, *rot_mat, sz, flags, borderMode, c);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void WarpPerspective(Mat src, Mat dst, Mat m, Size dsize) {
+OpenCVResult WarpPerspective(Mat src, Mat dst, Mat m, Size dsize) {
     try {
         cv::Size sz(dsize.width, dsize.height);
         cv::warpPerspective(*src, *dst, *m, sz);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void WarpPerspectiveWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode,
-                               Scalar borderValue) {
+OpenCVResult WarpPerspectiveWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode, Scalar borderValue) {
     try {
         cv::Size sz(dsize.width, dsize.height);
         cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         cv::warpPerspective(*src, *dst, *rot_mat, sz, flags, borderMode, c);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Watershed(Mat image, Mat markers) {
+OpenCVResult Watershed(Mat image, Mat markers) {
     try {
         cv::watershed(*image, *markers);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void ApplyColorMap(Mat src, Mat dst, int colormap) {
+OpenCVResult ApplyColorMap(Mat src, Mat dst, int colormap) {
     try {
         cv::applyColorMap(*src, *dst, colormap);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void ApplyCustomColorMap(Mat src, Mat dst, Mat colormap) {
+OpenCVResult ApplyCustomColorMap(Mat src, Mat dst, Mat colormap) {
     try {
         cv::applyColorMap(*src, *dst, *colormap);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -989,16 +1049,17 @@ Mat FindHomography(Mat src, Mat dst, int method, double ransacReprojThreshold, M
     }
 }
 
-void DrawContours(Mat src, PointsVector contours, int contourIdx, Scalar color, int thickness) {
+OpenCVResult DrawContours(Mat src, PointsVector contours, int contourIdx, Scalar color, int thickness) {
     try {
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
         cv::drawContours(*src, *contours, contourIdx, c, thickness);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void DrawContoursWithParams(Mat src, PointsVector contours, int contourIdx, Scalar color, int thickness, int lineType, Mat hierarchy, int maxLevel, Point offset) {
+OpenCVResult DrawContoursWithParams(Mat src, PointsVector contours, int contourIdx, Scalar color, int thickness, int lineType, Mat hierarchy, int maxLevel, Point offset) {
     try {
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
         cv::Point offsetPt(offset.x, offset.y);
@@ -1010,78 +1071,86 @@ void DrawContoursWithParams(Mat src, PointsVector contours, int contourIdx, Scal
             }
         }
         cv::drawContours(*src, *contours, contourIdx, c, thickness, lineType, vecHierarchy, maxLevel, offsetPt);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Sobel(Mat src, Mat dst, int ddepth, int dx, int dy, int ksize, double scale, double delta, int borderType) {
+OpenCVResult Sobel(Mat src, Mat dst, int ddepth, int dx, int dy, int ksize, double scale, double delta, int borderType) {
     try {
         cv::Sobel(*src, *dst, ddepth, dx, dy, ksize, scale, delta, borderType);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void SpatialGradient(Mat src, Mat dx, Mat dy, int ksize, int borderType) {
+OpenCVResult SpatialGradient(Mat src, Mat dx, Mat dy, int ksize, int borderType) {
     try {
         cv::spatialGradient(*src, *dx, *dy, ksize, borderType);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-
-void Remap(Mat src, Mat dst, Mat map1, Mat map2, int interpolation, int borderMode, Scalar borderValue) {
+OpenCVResult Remap(Mat src, Mat dst, Mat map1, Mat map2, int interpolation, int borderMode, Scalar borderValue) {
     try {
         cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         cv::remap(*src, *dst, *map1, *map2, interpolation, borderMode, c);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Filter2D(Mat src, Mat dst, int ddepth, Mat kernel, Point anchor, double delta, int borderType) {
+OpenCVResult Filter2D(Mat src, Mat dst, int ddepth, Mat kernel, Point anchor, double delta, int borderType) {
     try {
         cv::Point anchorPt(anchor.x, anchor.y);
         cv::filter2D(*src, *dst, ddepth, *kernel, anchorPt, delta, borderType);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void SepFilter2D(Mat src, Mat dst, int ddepth, Mat kernelX, Mat kernelY, Point anchor, double delta, int borderType) {
+OpenCVResult SepFilter2D(Mat src, Mat dst, int ddepth, Mat kernelX, Mat kernelY, Point anchor, double delta, int borderType) {
     try {
         cv::Point anchorPt(anchor.x, anchor.y);
         cv::sepFilter2D(*src, *dst, ddepth, *kernelX, *kernelY, anchorPt, delta, borderType);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void LogPolar(Mat src, Mat dst, Point center, double m, int flags) {
+OpenCVResult LogPolar(Mat src, Mat dst, Point center, double m, int flags) {
     try {
         cv::Point2f centerPt(center.x, center.y);
         cv::logPolar(*src, *dst, centerPt, m, flags);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void FitLine(PointVector pts, Mat line, int distType, double param, double reps, double aeps) {
+OpenCVResult FitLine(PointVector pts, Mat line, int distType, double param, double reps, double aeps) {
     try {
         cv::fitLine(*pts, *line, distType, param, reps, aeps);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void LinearPolar(Mat src, Mat dst, Point center, double maxRadius, int flags) {
+OpenCVResult LinearPolar(Mat src, Mat dst, Point center, double maxRadius, int flags) {
     try {
         cv::Point2f centerPt(center.x, center.y);
         cv::linearPolar(*src, *dst, centerPt, maxRadius, flags);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -1117,19 +1186,21 @@ void CLAHE_Close(CLAHE c) {
     delete c;
 }
 
-void CLAHE_Apply(CLAHE c, Mat src, Mat dst) {
+OpenCVResult CLAHE_Apply(CLAHE c, Mat src, Mat dst) {
     try {
         (*c)->apply(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void InvertAffineTransform(Mat src, Mat dst) {
+OpenCVResult InvertAffineTransform(Mat src, Mat dst) {
     try {
         cv::invertAffineTransform(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -1152,74 +1223,84 @@ Point2f PhaseCorrelate(Mat src1, Mat src2, Mat window, double* response) {
     }
 }
 
-void CreateHanningWindow(Mat dst, Size size, int typ) {
+OpenCVResult CreateHanningWindow(Mat dst, Size size, int typ) {
     try {
         cv::Size sz(size.width, size.height);
         cv::createHanningWindow(*dst, sz, typ);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Accumulate(Mat src, Mat dst) {
+OpenCVResult Mat_Accumulate(Mat src, Mat dst) {
     try {
         cv::accumulate(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
-void Mat_AccumulateWithMask(Mat src, Mat dst, Mat mask) {
+
+OpenCVResult Mat_AccumulateWithMask(Mat src, Mat dst, Mat mask) {
     try {
         cv::accumulate(*src, *dst, *mask);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_AccumulateSquare(Mat src, Mat dst) {
+OpenCVResult Mat_AccumulateSquare(Mat src, Mat dst) {
     try {
         cv::accumulateSquare(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_AccumulateSquareWithMask(Mat src, Mat dst, Mat mask) {
+OpenCVResult Mat_AccumulateSquareWithMask(Mat src, Mat dst, Mat mask) {
     try {
         cv::accumulateSquare(*src, *dst, *mask);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_AccumulateProduct(Mat src1, Mat src2, Mat dst) {
+OpenCVResult Mat_AccumulateProduct(Mat src1, Mat src2, Mat dst) {
     try {
         cv::accumulateProduct(*src1, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_AccumulateProductWithMask(Mat src1, Mat src2, Mat dst, Mat mask) {
+OpenCVResult Mat_AccumulateProductWithMask(Mat src1, Mat src2, Mat dst, Mat mask) {
     try {
         cv::accumulateProduct(*src1, *src2, *dst, *mask);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_AccumulatedWeighted(Mat src, Mat dst, double alpha) {
+OpenCVResult Mat_AccumulatedWeighted(Mat src, Mat dst, double alpha) {
     try {
         cv::accumulateWeighted(*src, *dst, alpha);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_AccumulatedWeightedWithMask(Mat src, Mat dst, double alpha, Mat mask) {
+OpenCVResult Mat_AccumulatedWeightedWithMask(Mat src, Mat dst, double alpha, Mat mask) {
     try {
         cv::accumulateWeighted(*src, *dst, alpha, *mask);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }

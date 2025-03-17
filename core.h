@@ -260,6 +260,17 @@ typedef struct Moment {
     double nu03;
 } Moment;
 
+// OpenCVResult is a struct that contains the result of an OpenCV operation.
+// It contains a code and a message. The code of 0 mean success, while a non-zero
+// code means an error occurred.
+// This is needed to wrap the result of an OpenCV operation, since Go does not
+// have exceptions.
+typedef struct OpenCVResult {
+    int Code;
+    const char* Message;
+    int Length;
+} OpenCVResult;
+
 int GetOpenCVException();
 const char* GetOpenCVExceptionMessage();
 void ClearOpenCVException();
@@ -289,6 +300,8 @@ typedef void* RotatedRectT;
 #endif
 
 void setExceptionInfo(int code, const char* message);
+OpenCVResult successResult();
+OpenCVResult errorResult(int code, const char* message);
 
 // Wrapper for the vector of Mat aka std::vector<Mat>
 typedef struct Mats {
@@ -331,17 +344,17 @@ void Mat_Inv(Mat m);
 Mat Mat_Col(Mat m, int c);
 Mat Mat_Row(Mat m, int r);
 Mat Mat_Clone(Mat m);
-void Mat_CopyTo(Mat m, Mat dst);
+OpenCVResult Mat_CopyTo(Mat m, Mat dst);
 int Mat_Total(Mat m);
 void Mat_Size(Mat m, IntVector* res);
-void Mat_CopyToWithMask(Mat m, Mat dst, Mat mask);
-void Mat_ConvertTo(Mat m, Mat dst, int type);
-void Mat_ConvertToWithParams(Mat m, Mat dst, int type, float alpha, float beta);
+OpenCVResult Mat_CopyToWithMask(Mat m, Mat dst, Mat mask);
+OpenCVResult Mat_ConvertTo(Mat m, Mat dst, int type);
+OpenCVResult Mat_ConvertToWithParams(Mat m, Mat dst, int type, float alpha, float beta);
 struct ByteArray Mat_ToBytes(Mat m);
 struct ByteArray Mat_DataPtr(Mat m);
 Mat Mat_Region(Mat m, Rect r);
 Mat Mat_Reshape(Mat m, int cn, int rows);
-void Mat_PatchNaNs(Mat m);
+OpenCVResult Mat_PatchNaNs(Mat m);
 Mat Mat_ConvertFp16(Mat m);
 Scalar Mat_Mean(Mat m);
 Scalar Mat_MeanWithMask(Mat m, Mat mask);
@@ -395,100 +408,100 @@ Mat Mat_MultiplyMatrix(Mat x, Mat y);
 
 Mat Mat_T(Mat x);
 
-void LUT(Mat src, Mat lut, Mat dst);
+OpenCVResult LUT(Mat src, Mat lut, Mat dst);
 
-void Mat_AbsDiff(Mat src1, Mat src2, Mat dst);
-void Mat_Add(Mat src1, Mat src2, Mat dst);
-void Mat_AddWeighted(Mat src1, double alpha, Mat src2, double beta, double gamma, Mat dst);
-void Mat_BitwiseAnd(Mat src1, Mat src2, Mat dst);
-void Mat_BitwiseAndWithMask(Mat src1, Mat src2, Mat dst, Mat mask);
-void Mat_BitwiseNot(Mat src1, Mat dst);
-void Mat_BitwiseNotWithMask(Mat src1, Mat dst, Mat mask);
-void Mat_BitwiseOr(Mat src1, Mat src2, Mat dst);
-void Mat_BitwiseOrWithMask(Mat src1, Mat src2, Mat dst, Mat mask);
-void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst);
-void Mat_BitwiseXorWithMask(Mat src1, Mat src2, Mat dst, Mat mask);
-void Mat_Compare(Mat src1, Mat src2, Mat dst, int ct);
-void Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int normType, int K,
+OpenCVResult Mat_AbsDiff(Mat src1, Mat src2, Mat dst);
+OpenCVResult Mat_Add(Mat src1, Mat src2, Mat dst);
+OpenCVResult Mat_AddWeighted(Mat src1, double alpha, Mat src2, double beta, double gamma, Mat dst);
+OpenCVResult Mat_BitwiseAnd(Mat src1, Mat src2, Mat dst);
+OpenCVResult Mat_BitwiseAndWithMask(Mat src1, Mat src2, Mat dst, Mat mask);
+OpenCVResult Mat_BitwiseNot(Mat src1, Mat dst);
+OpenCVResult Mat_BitwiseNotWithMask(Mat src1, Mat dst, Mat mask);
+OpenCVResult Mat_BitwiseOr(Mat src1, Mat src2, Mat dst);
+OpenCVResult Mat_BitwiseOrWithMask(Mat src1, Mat src2, Mat dst, Mat mask);
+OpenCVResult Mat_BitwiseXor(Mat src1, Mat src2, Mat dst);
+OpenCVResult Mat_BitwiseXorWithMask(Mat src1, Mat src2, Mat dst, Mat mask);
+OpenCVResult Mat_Compare(Mat src1, Mat src2, Mat dst, int ct);
+OpenCVResult Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int normType, int K,
                        Mat mask, int update, bool crosscheck);
 int Mat_BorderInterpolate(int p, int len, int borderType);
-void Mat_CalcCovarMatrix(Mat samples, Mat covar, Mat mean, int flags, int ctype);
-void Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees);
+OpenCVResult Mat_CalcCovarMatrix(Mat samples, Mat covar, Mat mean, int flags, int ctype);
+OpenCVResult Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees);
 bool Mat_CheckRange(Mat m);
-void Mat_CompleteSymm(Mat m, bool lowerToUpper);
-void Mat_ConvertScaleAbs(Mat src, Mat dst, double alpha, double beta);
-void Mat_CopyMakeBorder(Mat src, Mat dst, int top, int bottom, int left, int right, int borderType,
+OpenCVResult Mat_CompleteSymm(Mat m, bool lowerToUpper);
+OpenCVResult Mat_ConvertScaleAbs(Mat src, Mat dst, double alpha, double beta);
+OpenCVResult Mat_CopyMakeBorder(Mat src, Mat dst, int top, int bottom, int left, int right, int borderType,
                         Scalar value);
 int Mat_CountNonZero(Mat src);
-void Mat_DCT(Mat src, Mat dst, int flags);
+OpenCVResult Mat_DCT(Mat src, Mat dst, int flags);
 double Mat_Determinant(Mat m);
-void Mat_DFT(Mat m, Mat dst, int flags);
-void Mat_Divide(Mat src1, Mat src2, Mat dst);
+OpenCVResult Mat_DFT(Mat m, Mat dst, int flags);
+OpenCVResult Mat_Divide(Mat src1, Mat src2, Mat dst);
 bool Mat_Eigen(Mat src, Mat eigenvalues, Mat eigenvectors);
-void Mat_EigenNonSymmetric(Mat src, Mat eigenvalues, Mat eigenvectors);
-void Mat_PCABackProject(Mat data, Mat mean, Mat eigenvectors, Mat result);
-void Mat_PCACompute(Mat src, Mat mean, Mat eigenvectors, Mat eigenvalues, int maxComponents);
-void Mat_PCAProject(Mat data, Mat mean, Mat eigenvectors, Mat result);
+OpenCVResult Mat_EigenNonSymmetric(Mat src, Mat eigenvalues, Mat eigenvectors);
+OpenCVResult Mat_PCABackProject(Mat data, Mat mean, Mat eigenvectors, Mat result);
+OpenCVResult Mat_PCACompute(Mat src, Mat mean, Mat eigenvectors, Mat eigenvalues, int maxComponents);
+OpenCVResult Mat_PCAProject(Mat data, Mat mean, Mat eigenvectors, Mat result);
 double PSNR(Mat src1, Mat src2);
-void SVBackSubst(Mat w, Mat u, Mat vt, Mat rhs, Mat dst);
-void SVDecomp(Mat src, Mat w, Mat u, Mat vt);
-void Mat_Exp(Mat src, Mat dst);
-void Mat_ExtractChannel(Mat src, Mat dst, int coi);
-void Mat_FindNonZero(Mat src, Mat idx);
-void Mat_Flip(Mat src, Mat dst, int flipCode);
-void Mat_Gemm(Mat src1, Mat src2, double alpha, Mat src3, double beta, Mat dst, int flags);
+OpenCVResult SVBackSubst(Mat w, Mat u, Mat vt, Mat rhs, Mat dst);
+OpenCVResult SVDecomp(Mat src, Mat w, Mat u, Mat vt);
+OpenCVResult Mat_Exp(Mat src, Mat dst);
+OpenCVResult Mat_ExtractChannel(Mat src, Mat dst, int coi);
+OpenCVResult Mat_FindNonZero(Mat src, Mat idx);
+OpenCVResult Mat_Flip(Mat src, Mat dst, int flipCode);
+OpenCVResult Mat_Gemm(Mat src1, Mat src2, double alpha, Mat src3, double beta, Mat dst, int flags);
 int Mat_GetOptimalDFTSize(int vecsize);
-void Mat_Hconcat(Mat src1, Mat src2, Mat dst);
-void Mat_Vconcat(Mat src1, Mat src2, Mat dst);
-void Rotate(Mat src, Mat dst, int rotationCode);
-void Mat_Idct(Mat src, Mat dst, int flags);
-void Mat_Idft(Mat src, Mat dst, int flags, int nonzeroRows);
-void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst);
-void Mat_InRangeWithScalar(Mat src, const Scalar lowerb, const Scalar upperb, Mat dst);
-void Mat_InsertChannel(Mat src, Mat dst, int coi);
+OpenCVResult Mat_Hconcat(Mat src1, Mat src2, Mat dst);
+OpenCVResult Mat_Vconcat(Mat src1, Mat src2, Mat dst);
+OpenCVResult Rotate(Mat src, Mat dst, int rotationCode);
+OpenCVResult Mat_Idct(Mat src, Mat dst, int flags);
+OpenCVResult Mat_Idft(Mat src, Mat dst, int flags, int nonzeroRows);
+OpenCVResult Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst);
+OpenCVResult Mat_InRangeWithScalar(Mat src, const Scalar lowerb, const Scalar upperb, Mat dst);
+OpenCVResult Mat_InsertChannel(Mat src, Mat dst, int coi);
 double Mat_Invert(Mat src, Mat dst, int flags);
 double KMeans(Mat data, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers);
 double KMeansPoints(PointVector pts, int k, Mat bestLabels, TermCriteria criteria, int attempts, int flags, Mat centers);
-void Mat_Log(Mat src, Mat dst);
-void Mat_Magnitude(Mat x, Mat y, Mat magnitude);
+OpenCVResult Mat_Log(Mat src, Mat dst);
+OpenCVResult Mat_Magnitude(Mat x, Mat y, Mat magnitude);
 double Mat_Mahalanobis(Mat v1, Mat v2, Mat icovar);
-void MulTransposed(Mat src, Mat dest, bool ata);
-void Mat_Max(Mat src1, Mat src2, Mat dst);
-void Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev);
-void Mat_Merge(struct Mats mats, Mat dst);
-void Mat_Min(Mat src1, Mat src2, Mat dst);
-void Mat_MinMaxIdx(Mat m, double* minVal, double* maxVal, int* minIdx, int* maxIdx);
-void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc);
-void Mat_MinMaxLocWithMask(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc, Mat mask);
-void Mat_MixChannels(struct Mats src, struct Mats dst, struct IntVector fromTo);
-void Mat_MulSpectrums(Mat a, Mat b, Mat c, int flags);
-void Mat_Multiply(Mat src1, Mat src2, Mat dst);
-void Mat_MultiplyWithParams(Mat src1, Mat src2, Mat dst, double scale, int dtype);
-void Mat_Subtract(Mat src1, Mat src2, Mat dst);
-void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ);
+OpenCVResult MulTransposed(Mat src, Mat dest, bool ata);
+OpenCVResult Mat_Max(Mat src1, Mat src2, Mat dst);
+OpenCVResult Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev);
+OpenCVResult Mat_Merge(struct Mats mats, Mat dst);
+OpenCVResult Mat_Min(Mat src1, Mat src2, Mat dst);
+OpenCVResult Mat_MinMaxIdx(Mat m, double* minVal, double* maxVal, int* minIdx, int* maxIdx);
+OpenCVResult Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc);
+OpenCVResult Mat_MinMaxLocWithMask(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc, Mat mask);
+OpenCVResult Mat_MixChannels(struct Mats src, struct Mats dst, struct IntVector fromTo);
+OpenCVResult Mat_MulSpectrums(Mat a, Mat b, Mat c, int flags);
+OpenCVResult Mat_Multiply(Mat src1, Mat src2, Mat dst);
+OpenCVResult Mat_MultiplyWithParams(Mat src1, Mat src2, Mat dst, double scale, int dtype);
+OpenCVResult Mat_Subtract(Mat src1, Mat src2, Mat dst);
+OpenCVResult Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ);
 double Norm(Mat src1, int normType);
 double NormWithMats(Mat src1, Mat src2, int normType);
-void Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm);
+OpenCVResult Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm);
 bool Mat_Solve(Mat src1, Mat src2, Mat dst, int flags);
 int Mat_SolveCubic(Mat coeffs, Mat roots);
 double Mat_SolvePoly(Mat coeffs, Mat roots, int maxIters);
-void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType);
-void Mat_ReduceArgMax(Mat src, Mat dst, int axis, bool lastIndex);
-void Mat_ReduceArgMin(Mat src, Mat dst, int axis, bool lastIndex);
-void Mat_Repeat(Mat src, int nY, int nX, Mat dst);
-void Mat_ScaleAdd(Mat src1, double alpha, Mat src2, Mat dst);
-void Mat_SetIdentity(Mat src, double scalar);
-void Mat_Sort(Mat src, Mat dst, int flags);
-void Mat_SortIdx(Mat src, Mat dst, int flags);
-void Mat_Split(Mat src, struct Mats* mats);
-void Mat_Subtract(Mat src1, Mat src2, Mat dst);
+OpenCVResult Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType);
+OpenCVResult Mat_ReduceArgMax(Mat src, Mat dst, int axis, bool lastIndex);
+OpenCVResult Mat_ReduceArgMin(Mat src, Mat dst, int axis, bool lastIndex);
+OpenCVResult Mat_Repeat(Mat src, int nY, int nX, Mat dst);
+OpenCVResult Mat_ScaleAdd(Mat src1, double alpha, Mat src2, Mat dst);
+OpenCVResult Mat_SetIdentity(Mat src, double scalar);
+OpenCVResult Mat_Sort(Mat src, Mat dst, int flags);
+OpenCVResult Mat_SortIdx(Mat src, Mat dst, int flags);
+OpenCVResult Mat_Split(Mat src, struct Mats* mats);
+OpenCVResult Mat_Subtract(Mat src1, Mat src2, Mat dst);
 Scalar Mat_Trace(Mat src);
-void Mat_Transform(Mat src, Mat dst, Mat tm);
-void Mat_Transpose(Mat src, Mat dst);
-void Mat_TransposeND(Mat src, struct IntVector order, Mat dst);
-void Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees);
-void Mat_Pow(Mat src, double power, Mat dst);
-void Mat_Phase(Mat x, Mat y, Mat angle, bool angleInDegrees);
+OpenCVResult Mat_Transform(Mat src, Mat dst, Mat tm);
+OpenCVResult Mat_Transpose(Mat src, Mat dst);
+OpenCVResult Mat_TransposeND(Mat src, struct IntVector order, Mat dst);
+OpenCVResult Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees);
+OpenCVResult Mat_Pow(Mat src, double power, Mat dst);
+OpenCVResult Mat_Phase(Mat x, Mat y, Mat angle, bool angleInDegrees);
 Scalar Mat_Sum(Mat src1);
 
 TermCriteria TermCriteria_New(int typ, int maxCount, double epsilon);

@@ -13,14 +13,14 @@ import (
 
 type FaceRecognizer interface {
 	Empty() bool
-	Train(images []gocv.Mat, labels []int)
-	Update(newImages []gocv.Mat, newLabels []int)
+	Train(images []gocv.Mat, labels []int) error
+	Update(newImages []gocv.Mat, newLabels []int) error
 	Predict(sample gocv.Mat) int
 	PredictExtendedResponse(sample gocv.Mat) PredictResponse
 	GetThreshold() float32
 	SetThreshold(threshold float32)
-	SaveFile(fname string)
-	LoadFile(fname string)
+	SaveFile(fname string) error
+	LoadFile(fname string) error
 	Close() error
 }
 
@@ -32,8 +32,8 @@ type BasicFaceRecognizer interface {
 	GetNumComponents() int
 	SetNumComponents(val int)
 	GetProjections() []gocv.Mat
-	SaveFile(fname string)
-	LoadFile(fname string)
+	SaveFile(fname string) error
+	LoadFile(fname string) error
 }
 
 func faceRecognizer_Empty(fr C.FaceRecognizer) bool {
@@ -41,7 +41,7 @@ func faceRecognizer_Empty(fr C.FaceRecognizer) bool {
 	return bool(b)
 }
 
-func faceRecognizer_Train(fr C.FaceRecognizer, images []gocv.Mat, labels []int) {
+func faceRecognizer_Train(fr C.FaceRecognizer, images []gocv.Mat, labels []int) error {
 	cparams := []C.int{}
 	for _, v := range labels {
 		cparams = append(cparams, C.int(v))
@@ -59,10 +59,10 @@ func faceRecognizer_Train(fr C.FaceRecognizer, images []gocv.Mat, labels []int) 
 		length: C.int(len(images)),
 	}
 
-	C.FaceRecognizer_Train(fr, matsVector, labelsVector)
+	return OpenCVResult(C.FaceRecognizer_Train(fr, matsVector, labelsVector))
 }
 
-func faceRecognizer_Update(fr C.FaceRecognizer, newImages []gocv.Mat, newLabels []int) {
+func faceRecognizer_Update(fr C.FaceRecognizer, newImages []gocv.Mat, newLabels []int) error {
 	cparams := []C.int{}
 	for _, v := range newLabels {
 		cparams = append(cparams, C.int(v))
@@ -80,7 +80,7 @@ func faceRecognizer_Update(fr C.FaceRecognizer, newImages []gocv.Mat, newLabels 
 		length: C.int(len(newImages)),
 	}
 
-	C.FaceRecognizer_Update(fr, matsVector, labelsVector)
+	return OpenCVResult(C.FaceRecognizer_Update(fr, matsVector, labelsVector))
 }
 
 func faceRecognizer_Predict(fr C.FaceRecognizer, sample gocv.Mat) int {
@@ -108,19 +108,19 @@ func faceRecognizer_SetThreshold(fr C.FaceRecognizer, threshold float32) {
 	C.FaceRecognizer_SetThreshold(fr, (C.double)(threshold))
 }
 
-func faceRecognizer_SaveFile(fr C.FaceRecognizer, fname string) {
+func faceRecognizer_SaveFile(fr C.FaceRecognizer, fname string) error {
 	cName := C.CString(fname)
 	defer C.free(unsafe.Pointer(cName))
-	C.FaceRecognizer_SaveFile(fr, cName)
+	return OpenCVResult(C.FaceRecognizer_SaveFile(fr, cName))
 }
 
-func faceRecognizer_LoadFile(fr C.FaceRecognizer, fname string) {
+func faceRecognizer_LoadFile(fr C.FaceRecognizer, fname string) error {
 	cName := C.CString(fname)
 	defer C.free(unsafe.Pointer(cName))
-	C.FaceRecognizer_LoadFile(fr, cName)
+	return OpenCVResult(C.FaceRecognizer_LoadFile(fr, cName))
 }
 
-func basicFaceRecognizer_Train(fr C.BasicFaceRecognizer, images []gocv.Mat, labels []int) {
+func basicFaceRecognizer_Train(fr C.BasicFaceRecognizer, images []gocv.Mat, labels []int) error {
 	cparams := []C.int{}
 	for _, v := range labels {
 		cparams = append(cparams, C.int(v))
@@ -138,10 +138,10 @@ func basicFaceRecognizer_Train(fr C.BasicFaceRecognizer, images []gocv.Mat, labe
 		length: C.int(len(images)),
 	}
 
-	C.BasicFaceRecognizer_Train(fr, matsVector, labelsVector)
+	return OpenCVResult(C.BasicFaceRecognizer_Train(fr, matsVector, labelsVector))
 }
 
-func basicFaceRecognizer_Update(fr C.BasicFaceRecognizer, newImages []gocv.Mat, newLabels []int) {
+func basicFaceRecognizer_Update(fr C.BasicFaceRecognizer, newImages []gocv.Mat, newLabels []int) error {
 	cparams := []C.int{}
 	for _, v := range newLabels {
 		cparams = append(cparams, C.int(v))
@@ -159,7 +159,7 @@ func basicFaceRecognizer_Update(fr C.BasicFaceRecognizer, newImages []gocv.Mat, 
 		length: C.int(len(newImages)),
 	}
 
-	C.BasicFaceRecognizer_Update(fr, matsVector, labelsVector)
+	return OpenCVResult(C.BasicFaceRecognizer_Update(fr, matsVector, labelsVector))
 }
 
 func basicFaceRecognizer_GetEigenValues(fr C.BasicFaceRecognizer) gocv.Mat {
@@ -207,14 +207,14 @@ func basicFaceRecognizer_GetProjections(fr C.BasicFaceRecognizer) []gocv.Mat {
 	return mats
 }
 
-func basicFaceRecognizer_SaveFile(fr C.BasicFaceRecognizer, fname string) {
+func basicFaceRecognizer_SaveFile(fr C.BasicFaceRecognizer, fname string) error {
 	cName := C.CString(fname)
 	defer C.free(unsafe.Pointer(cName))
-	C.BasicFaceRecognizer_SaveFile(fr, cName)
+	return OpenCVResult(C.BasicFaceRecognizer_SaveFile(fr, cName))
 }
 
-func basicFaceRecognizer_LoadFile(fr C.BasicFaceRecognizer, fname string) {
+func basicFaceRecognizer_LoadFile(fr C.BasicFaceRecognizer, fname string) error {
 	cName := C.CString(fname)
 	defer C.free(unsafe.Pointer(cName))
-	C.BasicFaceRecognizer_LoadFile(fr, cName)
+	return OpenCVResult(C.BasicFaceRecognizer_LoadFile(fr, cName))
 }

@@ -26,6 +26,6 @@ func NewSparsePyrLKOpticalFlow() SparsePyrLKOpticalFlow {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d5/dcf/classcv_1_1cuda_1_1SparseOpticalFlow.html#a80d5efbb7788e3dc4c49e6226ba34347
-func (s SparsePyrLKOpticalFlow) Calc(prevImg, nextImg, prevPts, nextPts, status GpuMat) {
-	C.CudaSparsePyrLKOpticalFlow_Calc(C.CudaSparsePyrLKOpticalFlow(s.p), prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p)
+func (s SparsePyrLKOpticalFlow) Calc(prevImg, nextImg, prevPts, nextPts, status GpuMat) error {
+	return OpenCVResult(C.CudaSparsePyrLKOpticalFlow_Calc(C.CudaSparsePyrLKOpticalFlow(s.p), prevImg.p, nextImg.p, prevPts.p, nextPts.p, status.p))
 }

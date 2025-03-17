@@ -1,120 +1,129 @@
 #include "warping.h"
 
-void CudaResize(GpuMat src, GpuMat dst, Size dsize, double fx, double fy, int interp, Stream s) {
+OpenCVResult CudaResize(GpuMat src, GpuMat dst, Size dsize, double fx, double fy, int interp, Stream s) {
     try {
         cv::Size sz(dsize.width, dsize.height);
 
         if (s == NULL) {
             cv::cuda::resize(*src, *dst, sz, fx, fy, interp);
-            return;
+        } else {
+            cv::cuda::resize(*src, *dst, sz, fx, fy, interp, *s);
         }
-        cv::cuda::resize(*src, *dst, sz, fx, fy, interp, *s);    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void CudaPyrDown(GpuMat src, GpuMat dst, Stream s) {
+OpenCVResult CudaPyrDown(GpuMat src, GpuMat dst, Stream s) {
     try {
         if (s == NULL) {
             cv::cuda::pyrDown(*src, *dst);
-            return;
+        } else {
+            cv::cuda::pyrDown(*src, *dst, *s);
         }
-        cv::cuda::pyrDown(*src, *dst, *s);    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void CudaPyrUp(GpuMat src, GpuMat dst, Stream s) {
+OpenCVResult CudaPyrUp(GpuMat src, GpuMat dst, Stream s) {
     try {
         if (s == NULL) {
             cv::cuda::pyrUp(*src, *dst);
-            return;
+        } else {
+            cv::cuda::pyrUp(*src, *dst, *s);
         }
-        cv::cuda::pyrUp(*src, *dst, *s);    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void CudaBuildWarpAffineMaps(GpuMat M, bool inverse, Size dsize, GpuMat xmap, GpuMat ymap, Stream s) {
+OpenCVResult CudaBuildWarpAffineMaps(GpuMat M, bool inverse, Size dsize, GpuMat xmap, GpuMat ymap, Stream s) {
     try {
         cv::Size sz(dsize.width, dsize.height);
         if (s == NULL) {
             cv::cuda::buildWarpAffineMaps(*M, inverse, sz, *xmap, *ymap);
-            return;
+        } else {
+            cv::cuda::buildWarpAffineMaps(*M, inverse, sz, *xmap, *ymap, *s);
         }
-        cv::cuda::buildWarpAffineMaps(*M, inverse, sz, *xmap, *ymap, *s);    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void CudaBuildWarpPerspectiveMaps(GpuMat M, bool inverse, Size dsize, GpuMat xmap, GpuMat ymap, Stream s) {
+OpenCVResult CudaBuildWarpPerspectiveMaps(GpuMat M, bool inverse, Size dsize, GpuMat xmap, GpuMat ymap, Stream s) {
     try {
         cv::Size sz(dsize.width, dsize.height);
         if (s == NULL) {
             cv::cuda::buildWarpPerspectiveMaps(*M, inverse, sz, *xmap, *ymap);
-            return;
+        } else {
+            cv::cuda::buildWarpPerspectiveMaps(*M, inverse, sz, *xmap, *ymap, *s);
         }
-        cv::cuda::buildWarpPerspectiveMaps(*M, inverse, sz, *xmap, *ymap, *s);    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void CudaRemap(GpuMat src, GpuMat dst, GpuMat xmap, GpuMat ymap, int interp, int borderMode, Scalar borderValue, Stream s) {
+OpenCVResult CudaRemap(GpuMat src, GpuMat dst, GpuMat xmap, GpuMat ymap, int interp, int borderMode, Scalar borderValue, Stream s) {
     try {
         cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         if (s == NULL) {
             cv::cuda::remap(*src, *dst, *xmap, *ymap, interp, borderMode, c);
-            return;
+        } else {
+            cv::cuda::remap(*src, *dst, *xmap, *ymap, interp, borderMode, c, *s);
         }
-        cv::cuda::remap(*src, *dst, *xmap, *ymap, interp, borderMode, c, *s);    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void CudaRotate(GpuMat src, GpuMat dst, Size dsize, double angle, double xShift, double yShift, int interp, Stream s) {
+OpenCVResult CudaRotate(GpuMat src, GpuMat dst, Size dsize, double angle, double xShift, double yShift, int interp, Stream s) {
     try {
         cv::Size sz(dsize.width, dsize.height);
         if (s == NULL) {
             cv::cuda::rotate(*src, *dst, sz, angle, xShift, yShift, interp);
-            return;
+        } else {
+            cv::cuda::rotate(*src, *dst, sz, angle, xShift, yShift, interp, *s);
         }
-        cv::cuda::rotate(*src, *dst, sz, angle, xShift, yShift, interp, *s);    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void CudaWarpAffine(GpuMat src, GpuMat dst, GpuMat M, Size dsize, int flags, int borderMode, Scalar borderValue, Stream s) {
+OpenCVResult CudaWarpAffine(GpuMat src, GpuMat dst, GpuMat M, Size dsize, int flags, int borderMode, Scalar borderValue, Stream s) {
     try {
         cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         cv::Size sz(dsize.width, dsize.height);
     
         if (s == NULL) {
             cv::cuda::warpAffine(*src, *dst, *M, sz, flags, borderMode, c);
-            return;
+        } else {
+            cv::cuda::warpAffine(*src, *dst, *M, sz, flags, borderMode, c, *s);
         }
-        cv::cuda::warpAffine(*src, *dst, *M, sz, flags, borderMode, c, *s);    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void CudaWarpPerspective(GpuMat src, GpuMat dst, GpuMat M, Size dsize, int flags, int borderMode, Scalar borderValue, Stream s) {
+OpenCVResult CudaWarpPerspective(GpuMat src, GpuMat dst, GpuMat M, Size dsize, int flags, int borderMode, Scalar borderValue, Stream s) {
     try {
         cv::Scalar c = cv::Scalar(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         cv::Size sz(dsize.width, dsize.height);
         if (s == NULL) {
             cv::cuda::warpPerspective(*src, *dst, *M, sz, flags, borderMode, c);
-            return;
+        } else {
+            cv::cuda::warpPerspective(*src, *dst, *M, sz, flags, borderMode, c, *s);
         }
-        cv::cuda::warpPerspective(*src, *dst, *M, sz, flags, borderMode, c, *s);    
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }

@@ -139,25 +139,25 @@ func (w *Window) GetWindowProperty(flag WindowPropertyFlag) float64 {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/dfc/group__highgui.html#ga66e4a6db4d4e06148bcdfe0d70a5df27
-func (w *Window) SetWindowProperty(flag WindowPropertyFlag, value WindowFlag) {
+func (w *Window) SetWindowProperty(flag WindowPropertyFlag, value WindowFlag) error {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
-	C.Window_SetProperty(cName, C.int(flag), C.double(value))
+	return OpenCVResult(C.Window_SetProperty(cName, C.int(flag), C.double(value)))
 }
 
 // SetWindowTitle updates window title.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/dfc/group__highgui.html#ga56f8849295fd10d0c319724ddb773d96
-func (w *Window) SetWindowTitle(title string) {
+func (w *Window) SetWindowTitle(title string) error {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
 	cTitle := C.CString(title)
 	defer C.free(unsafe.Pointer(cTitle))
 
-	C.Window_SetTitle(cName, cTitle)
+	return OpenCVResult(C.Window_SetTitle(cName, cTitle))
 }
 
 // IMShow displays an image Mat in the specified window.
@@ -166,11 +166,11 @@ func (w *Window) SetWindowTitle(title string) {
 //
 // For further details, please see:
 // http://docs.opencv.org/master/d7/dfc/group__highgui.html#ga453d42fe4cb60e5723281a89973ee563
-func (w *Window) IMShow(img Mat) {
+func (w *Window) IMShow(img Mat) error {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
-	C.Window_IMShow(cName, img.p)
+	return OpenCVResult(C.Window_IMShow(cName, img.p))
 }
 
 // WaitKey waits for a pressed key.
@@ -217,22 +217,22 @@ func (w *Window) PollKey() int {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/dfc/group__highgui.html#ga8d86b207f7211250dbe6e28f76307ffb
-func (w *Window) MoveWindow(x, y int) {
+func (w *Window) MoveWindow(x, y int) error {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
-	C.Window_Move(cName, C.int(x), C.int(y))
+	return OpenCVResult(C.Window_Move(cName, C.int(x), C.int(y)))
 }
 
 // ResizeWindow resizes window to the specified size.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d7/dfc/group__highgui.html#ga9e80e080f7ef33f897e415358aee7f7e
-func (w *Window) ResizeWindow(width, height int) {
+func (w *Window) ResizeWindow(width, height int) error {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
-	C.Window_Resize(cName, C.int(width), C.int(height))
+	return OpenCVResult(C.Window_Resize(cName, C.int(width), C.int(height)))
 }
 
 // SelectROI selects a Region Of Interest (ROI) on the given image.

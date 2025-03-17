@@ -16,11 +16,12 @@ void FreeType2_Close(FreeType2 f) {
     delete f;
 }
 
-void FreeType2_LoadFontData(FreeType2 f, const char *fontFileName, int id) {
+OpenCVResult FreeType2_LoadFontData(FreeType2 f, const char *fontFileName, int id) {
     try {
         (*f)->loadFontData(fontFileName, id);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -32,15 +33,16 @@ void FreeType2_SetSplitNumber(FreeType2 f, int num) {
     }
 }
 
-void FreeType2_PutText(FreeType2 f, Mat img, const char *text, Point org,
+OpenCVResult FreeType2_PutText(FreeType2 f, Mat img, const char *text, Point org,
                        int fontHeight, Scalar color,
                        int thickness, int line_type, bool bottomLeftOrigin) {
     try {
         cv::Point pt(org.x, org.y);
         cv::Scalar c = cv::Scalar(color.val1, color.val2, color.val3, color.val4);
         (*f)->putText(*img, text, pt, fontHeight, c, thickness, line_type, bottomLeftOrigin);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }                    
 }
 

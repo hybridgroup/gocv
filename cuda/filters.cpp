@@ -26,15 +26,16 @@ void GaussianFilter_Close(GaussianFilter gf) {
     delete gf;
 }
 
-void GaussianFilter_Apply(GaussianFilter gf, GpuMat img, GpuMat dst, Stream s) {
+OpenCVResult GaussianFilter_Apply(GaussianFilter gf, GpuMat img, GpuMat dst, Stream s) {
     try {
         if (s == NULL) {
             (*gf)->apply(*img, *dst);
-            return;
+        } else {
+            (*gf)->apply(*img, *dst, *s);
         }
-        (*gf)->apply(*img, *dst, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -60,14 +61,15 @@ void SobelFilter_Close(SobelFilter sf) {
     delete sf;
 }
 
-void SobelFilter_Apply(SobelFilter sf, GpuMat img, GpuMat dst, Stream s) {
+OpenCVResult SobelFilter_Apply(SobelFilter sf, GpuMat img, GpuMat dst, Stream s) {
     try {
         if (s == NULL) {
             (*sf)->apply(*img, *dst);
-            return;
+        } else {
+            (*sf)->apply(*img, *dst, *s);
         }
-        (*sf)->apply(*img, *dst, *s);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }

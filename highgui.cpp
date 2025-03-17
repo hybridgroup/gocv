@@ -25,11 +25,12 @@ void Window_Close(const char* winname) {
     }
 }
 
-void Window_IMShow(const char* winname, Mat mat) {
+OpenCVResult Window_IMShow(const char* winname, Mat mat) {
     try {
         cv::imshow(winname, *mat);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -42,19 +43,21 @@ double Window_GetProperty(const char* winname, int flag) {
     }
 }
 
-void Window_SetProperty(const char* winname, int flag, double value) {
+OpenCVResult Window_SetProperty(const char* winname, int flag, double value) {
     try {
         cv::setWindowProperty(winname, flag, value);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Window_SetTitle(const char* winname, const char* title) {
+OpenCVResult Window_SetTitle(const char* winname, const char* title) {
     try {
         cv::setWindowTitle(winname, title);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -85,19 +88,21 @@ int Window_PollKey(void) {
     }
 }
 
-void Window_Move(const char* winname, int x, int y) {
+OpenCVResult Window_Move(const char* winname, int x, int y) {
     try {
         cv::moveWindow(winname, x, y);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Window_Resize(const char* winname, int width, int height) {
+OpenCVResult Window_Resize(const char* winname, int width, int height) {
     try {
         cv::resizeWindow(winname, width, height);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 

@@ -82,11 +82,14 @@ bool VideoCapture_OpenDeviceWithAPIParams(VideoCapture v, int device, int apiPre
 }
 
 
-void VideoCapture_Set(VideoCapture v, int prop, double param) {
+OpenCVResult VideoCapture_Set(VideoCapture v, int prop, double param) {
     try {
         v->set(prop, param);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+		OpenCVResult result = {0, NULL};
+		return result;
+	} catch(const cv::Exception& e) {
+		OpenCVResult result = {e.code, e.what()};
+		return result;
     }
 }
 
@@ -117,13 +120,16 @@ int VideoCapture_Read(VideoCapture v, Mat buf) {
     }
 }
 
-void VideoCapture_Grab(VideoCapture v, int skip) {
+OpenCVResult VideoCapture_Grab(VideoCapture v, int skip) {
     try {
         for (int i = 0; i < skip; i++) {
             v->grab();
         }
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+		OpenCVResult result = {0, NULL};
+		return result;
+	} catch(const cv::Exception& e) {
+		OpenCVResult result = {e.code, e.what()};
+		return result;
     }
 }
 
@@ -150,25 +156,31 @@ void VideoWriter_Close(VideoWriter vw) {
     delete vw;
 }
 
-void VideoWriter_Open(VideoWriter vw, const char* name, const char* codec, double fps, int width, int height, bool isColor) {
+OpenCVResult VideoWriter_Open(VideoWriter vw, const char* name, const char* codec, double fps, int width, int height, bool isColor) {
     try {
         int codecCode = cv::VideoWriter::fourcc(codec[0], codec[1], codec[2], codec[3]);
         vw->open(name, codecCode, fps, cv::Size(width, height), isColor);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+		OpenCVResult result = {0, NULL};
+		return result;
+	} catch(const cv::Exception& e) {
+		OpenCVResult result = {e.code, e.what()};
+		return result;
     }
 }
 
-void VideoWriter_OpenWithAPI(VideoWriter vw, const char* name, int apiPreference, const char* codec, double fps, int width, int height, bool isColor) {
+OpenCVResult VideoWriter_OpenWithAPI(VideoWriter vw, const char* name, int apiPreference, const char* codec, double fps, int width, int height, bool isColor) {
     try {
         int codecCode = cv::VideoWriter::fourcc(codec[0], codec[1], codec[2], codec[3]);
         vw->open(name, apiPreference, codecCode, fps, cv::Size(width, height), isColor);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+		OpenCVResult result = {0, NULL};
+		return result;
+	} catch(const cv::Exception& e) {
+		OpenCVResult result = {e.code, e.what()};
+		return result;
     }
 }
 
-void VideoWriter_OpenWithAPIParams(VideoWriter vw, const char* name, int apiPreference, const char* codec, double fps, int width, int height, IntVector params) {
+OpenCVResult VideoWriter_OpenWithAPIParams(VideoWriter vw, const char* name, int apiPreference, const char* codec, double fps, int width, int height, IntVector params) {
     try {
         std::vector<int> cpp_params;
 
@@ -178,8 +190,11 @@ void VideoWriter_OpenWithAPIParams(VideoWriter vw, const char* name, int apiPref
     
         int codecCode = cv::VideoWriter::fourcc(codec[0], codec[1], codec[2], codec[3]);
         vw->open(name, apiPreference, codecCode, fps, cv::Size(width, height), cpp_params);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+		OpenCVResult result = {0, NULL};
+		return result;
+	} catch(const cv::Exception& e) {
+		OpenCVResult result = {e.code, e.what()};
+		return result;
     }
 }
 
@@ -192,8 +207,15 @@ int VideoWriter_IsOpened(VideoWriter vw) {
     }
 }
 
-void VideoWriter_Write(VideoWriter vw, Mat img) {
-    *vw << *img;
+OpenCVResult VideoWriter_Write(VideoWriter vw, Mat img) {
+    try {
+        *vw << *img;
+		OpenCVResult result = {0, NULL};
+		return result;
+	} catch(const cv::Exception& e) {
+		OpenCVResult result = {e.code, e.what()};
+		return result;
+    }
 }
 
 const char* Videoio_Registry_GetBackendName(int api) {

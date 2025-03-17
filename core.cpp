@@ -22,6 +22,23 @@ void setExceptionInfo(int code, const char* message) {
     strncpy(lastExceptionMessage, message, 1024);
 }
 
+OpenCVResult successResult() {
+    OpenCVResult ri = {0, "", 0};
+    return ri;
+}
+
+OpenCVResult errorResult(int code, const char* message) {
+    OpenCVResult ri;
+    ri.Code = code;
+
+    auto res = (char*)malloc(strlen(message)+1);
+    memset(res, 0, strlen(message)+1);
+    memcpy(res, message, strlen(message));
+    ri.Message = res;
+    ri.Length = strlen(message);
+    return ri;
+}
+
 // Mat_New creates a new empty Mat
 Mat Mat_New() {
     return new cv::Mat();
@@ -157,36 +174,40 @@ Mat Mat_Clone(Mat m) {
 }
 
 // Mat_CopyTo copies this Mat to another Mat.
-void Mat_CopyTo(Mat m, Mat dst) {
+OpenCVResult Mat_CopyTo(Mat m, Mat dst) {
     try {
         m->copyTo(*dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
 // Mat_CopyToWithMask copies this Mat to another Mat while applying the mask
-void Mat_CopyToWithMask(Mat m, Mat dst, Mat mask) {
+OpenCVResult Mat_CopyToWithMask(Mat m, Mat dst, Mat mask) {
     try {
         m->copyTo(*dst, *mask);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_ConvertTo(Mat m, Mat dst, int type) {
+OpenCVResult Mat_ConvertTo(Mat m, Mat dst, int type) {
     try {
         m->convertTo(*dst, type);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_ConvertToWithParams(Mat m, Mat dst, int type, float alpha, float beta) {
+OpenCVResult Mat_ConvertToWithParams(Mat m, Mat dst, int type, float alpha, float beta) {
     try {
         m->convertTo(*dst, type, alpha, beta);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -213,11 +234,12 @@ Mat Mat_Reshape(Mat m, int cn, int rows) {
     }
 }
 
-void Mat_PatchNaNs(Mat m) {
+OpenCVResult Mat_PatchNaNs(Mat m) {
     try {
         cv::patchNaNs(*m);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -268,11 +290,12 @@ Scalar Mat_MeanWithMask(Mat m, Mat mask){
     return scal;
 }
 
-void LUT(Mat src, Mat lut, Mat dst) {
+OpenCVResult LUT(Mat src, Mat lut, Mat dst) {
     try {
         cv::LUT(*src, *lut, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -492,100 +515,112 @@ Mat Mat_T(Mat x) {
     }
 }
 
-void Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
+OpenCVResult Mat_AbsDiff(Mat src1, Mat src2, Mat dst) {
     try {
         cv::absdiff(*src1, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Add(Mat src1, Mat src2, Mat dst) {
+OpenCVResult Mat_Add(Mat src1, Mat src2, Mat dst) {
     try {
         cv::add(*src1, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_AddWeighted(Mat src1, double alpha, Mat src2, double beta, double gamma, Mat dst) {
+OpenCVResult Mat_AddWeighted(Mat src1, double alpha, Mat src2, double beta, double gamma, Mat dst) {
     try {
         cv::addWeighted(*src1, alpha, *src2, beta, gamma, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_BitwiseAnd(Mat src1, Mat src2, Mat dst) {
+OpenCVResult Mat_BitwiseAnd(Mat src1, Mat src2, Mat dst) {
     try {
         cv::bitwise_and(*src1, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_BitwiseAndWithMask(Mat src1, Mat src2, Mat dst, Mat mask){
+OpenCVResult Mat_BitwiseAndWithMask(Mat src1, Mat src2, Mat dst, Mat mask){
     try {
         cv::bitwise_and(*src1, *src2, *dst, *mask);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_BitwiseNot(Mat src1, Mat dst) {
+OpenCVResult Mat_BitwiseNot(Mat src1, Mat dst) {
     try {
         cv::bitwise_not(*src1, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_BitwiseNotWithMask(Mat src1, Mat dst, Mat mask) {
+OpenCVResult Mat_BitwiseNotWithMask(Mat src1, Mat dst, Mat mask) {
     try {
         cv::bitwise_not(*src1, *dst, *mask);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_BitwiseOr(Mat src1, Mat src2, Mat dst) {
+OpenCVResult Mat_BitwiseOr(Mat src1, Mat src2, Mat dst) {
     try {
         cv::bitwise_or(*src1, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_BitwiseOrWithMask(Mat src1, Mat src2, Mat dst, Mat mask) {
+OpenCVResult Mat_BitwiseOrWithMask(Mat src1, Mat src2, Mat dst, Mat mask) {
     try {
         cv::bitwise_or(*src1, *src2, *dst, *mask);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_BitwiseXor(Mat src1, Mat src2, Mat dst) {
+OpenCVResult Mat_BitwiseXor(Mat src1, Mat src2, Mat dst) {
     try {
         cv::bitwise_xor(*src1, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_BitwiseXorWithMask(Mat src1, Mat src2, Mat dst, Mat mask) {
+OpenCVResult Mat_BitwiseXorWithMask(Mat src1, Mat src2, Mat dst, Mat mask) {
     try {
         cv::bitwise_xor(*src1, *src2, *dst, *mask);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int normType, int K,
+OpenCVResult Mat_BatchDistance(Mat src1, Mat src2, Mat dist, int dtype, Mat nidx, int normType, int K,
                        Mat mask, int update, bool crosscheck) {
     try {
         cv::batchDistance(*src1, *src2, *dist, dtype, *nidx, normType, K, *mask, update, crosscheck);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -598,19 +633,21 @@ int Mat_BorderInterpolate(int p, int len, int borderType) {
     }
 }
 
-void Mat_CalcCovarMatrix(Mat samples, Mat covar, Mat mean, int flags, int ctype) {
+OpenCVResult Mat_CalcCovarMatrix(Mat samples, Mat covar, Mat mean, int flags, int ctype) {
     try {
         cv::calcCovarMatrix(*samples, *covar, *mean, flags, ctype);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees) {
+OpenCVResult Mat_CartToPolar(Mat x, Mat y, Mat magnitude, Mat angle, bool angleInDegrees) {
     try {
         cv::cartToPolar(*x, *y, *magnitude, *angle, angleInDegrees);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -623,11 +660,12 @@ bool Mat_CheckRange(Mat m) {
     }
 }
 
-void Mat_Compare(Mat src1, Mat src2, Mat dst, int ct) {
+OpenCVResult Mat_Compare(Mat src1, Mat src2, Mat dst, int ct) {
     try {
         cv::compare(*src1, *src2, *dst, ct);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -640,37 +678,41 @@ int Mat_CountNonZero(Mat src) {
     }
 }
 
-void Mat_CompleteSymm(Mat m, bool lowerToUpper) {
+OpenCVResult Mat_CompleteSymm(Mat m, bool lowerToUpper) {
     try {
         cv::completeSymm(*m, lowerToUpper);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_ConvertScaleAbs(Mat src, Mat dst, double alpha, double beta) {
+OpenCVResult Mat_ConvertScaleAbs(Mat src, Mat dst, double alpha, double beta) {
     try {
         cv::convertScaleAbs(*src, *dst, alpha, beta);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_CopyMakeBorder(Mat src, Mat dst, int top, int bottom, int left, int right, int borderType,
+OpenCVResult Mat_CopyMakeBorder(Mat src, Mat dst, int top, int bottom, int left, int right, int borderType,
                         Scalar value) {
     try {
         cv::Scalar c_value(value.val1, value.val2, value.val3, value.val4);
         cv::copyMakeBorder(*src, *dst, top, bottom, left, right, borderType, c_value);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_DCT(Mat src, Mat dst, int flags) {
+OpenCVResult Mat_DCT(Mat src, Mat dst, int flags) {
     try {
         cv::dct(*src, *dst, flags);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -683,19 +725,21 @@ double Mat_Determinant(Mat m) {
     }
 }
 
-void Mat_DFT(Mat m, Mat dst, int flags) {
+OpenCVResult Mat_DFT(Mat m, Mat dst, int flags) {
     try {
         cv::dft(*m, *dst, flags);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Divide(Mat src1, Mat src2, Mat dst) {
+OpenCVResult Mat_Divide(Mat src1, Mat src2, Mat dst) {
     try {
         cv::divide(*src1, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -708,35 +752,39 @@ bool Mat_Eigen(Mat src, Mat eigenvalues, Mat eigenvectors) {
     }
 }
 
-void Mat_EigenNonSymmetric(Mat src, Mat eigenvalues, Mat eigenvectors) {
+OpenCVResult Mat_EigenNonSymmetric(Mat src, Mat eigenvalues, Mat eigenvectors) {
     try {
         cv::eigenNonSymmetric(*src, *eigenvalues, *eigenvectors);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_PCABackProject(Mat data, Mat mean, Mat eigenvectors, Mat result) {
+OpenCVResult Mat_PCABackProject(Mat data, Mat mean, Mat eigenvectors, Mat result) {
     try {
         cv::PCABackProject(*data, *mean, *eigenvectors, *result);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_PCACompute(Mat src, Mat mean, Mat eigenvectors, Mat eigenvalues, int maxComponents) {
+OpenCVResult Mat_PCACompute(Mat src, Mat mean, Mat eigenvectors, Mat eigenvalues, int maxComponents) {
     try {
         cv::PCACompute(*src, *mean, *eigenvectors, *eigenvalues, maxComponents);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_PCAProject(Mat data, Mat mean, Mat eigenvectors, Mat result) {
+OpenCVResult Mat_PCAProject(Mat data, Mat mean, Mat eigenvectors, Mat result) {
     try {
         cv::PCAProject(*data, *mean, *eigenvectors, *result);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -749,59 +797,66 @@ double PSNR(Mat src1, Mat src2) {
     }
 }
 
-void SVBackSubst(Mat w, Mat u, Mat vt, Mat rhs, Mat dst) {
+OpenCVResult SVBackSubst(Mat w, Mat u, Mat vt, Mat rhs, Mat dst) {
     try {
         cv::SVBackSubst(*w, *u, *vt, *rhs, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void SVDecomp(Mat src, Mat w, Mat u, Mat vt) {
+OpenCVResult SVDecomp(Mat src, Mat w, Mat u, Mat vt) {
     try {
         cv::SVDecomp(*src, *w, *u, *vt);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Exp(Mat src, Mat dst) {
+OpenCVResult Mat_Exp(Mat src, Mat dst) {
     try {
         cv::exp(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_ExtractChannel(Mat src, Mat dst, int coi) {
+OpenCVResult Mat_ExtractChannel(Mat src, Mat dst, int coi) {
     try {
         cv::extractChannel(*src, *dst, coi);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_FindNonZero(Mat src, Mat idx) {
+OpenCVResult Mat_FindNonZero(Mat src, Mat idx) {
     try {
         cv::findNonZero(*src, *idx);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Flip(Mat src, Mat dst, int flipCode) {
+OpenCVResult Mat_Flip(Mat src, Mat dst, int flipCode) {
     try {
         cv::flip(*src, *dst, flipCode);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Gemm(Mat src1, Mat src2, double alpha, Mat src3, double beta, Mat dst, int flags) {
+OpenCVResult Mat_Gemm(Mat src1, Mat src2, double alpha, Mat src3, double beta, Mat dst, int flags) {
     try {
         cv::gemm(*src1, *src2, alpha, *src3, beta, *dst, flags);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -814,69 +869,77 @@ int Mat_GetOptimalDFTSize(int vecsize) {
     }
 }
 
-void Mat_Hconcat(Mat src1, Mat src2, Mat dst) {
+OpenCVResult Mat_Hconcat(Mat src1, Mat src2, Mat dst) {
     try {
         cv::hconcat(*src1, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Vconcat(Mat src1, Mat src2, Mat dst) {
+OpenCVResult Mat_Vconcat(Mat src1, Mat src2, Mat dst) {
     try {
         cv::vconcat(*src1, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Rotate(Mat src, Mat dst, int rotateCode) {
+OpenCVResult Rotate(Mat src, Mat dst, int rotateCode) {
     try {
         cv::rotate(*src, *dst, rotateCode);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Idct(Mat src, Mat dst, int flags) {
+OpenCVResult Mat_Idct(Mat src, Mat dst, int flags) {
     try {
         cv::idct(*src, *dst, flags);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Idft(Mat src, Mat dst, int flags, int nonzeroRows) {
+OpenCVResult Mat_Idft(Mat src, Mat dst, int flags, int nonzeroRows) {
     try {
         cv::idft(*src, *dst, flags, nonzeroRows);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst) {
+OpenCVResult Mat_InRange(Mat src, Mat lowerb, Mat upperb, Mat dst) {
     try {
         cv::inRange(*src, *lowerb, *upperb, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_InRangeWithScalar(Mat src, Scalar lowerb, Scalar upperb, Mat dst) {
+OpenCVResult Mat_InRangeWithScalar(Mat src, Scalar lowerb, Scalar upperb, Mat dst) {
     try {
         cv::Scalar lb = cv::Scalar(lowerb.val1, lowerb.val2, lowerb.val3, lowerb.val4);
         cv::Scalar ub = cv::Scalar(upperb.val1, upperb.val2, upperb.val3, upperb.val4);
         cv::inRange(*src, lb, ub, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_InsertChannel(Mat src, Mat dst, int coi) {
+OpenCVResult Mat_InsertChannel(Mat src, Mat dst, int coi) {
     try {
         cv::insertChannel(*src, *dst, coi);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -909,19 +972,21 @@ double KMeansPoints(PointVector points, int k, Mat bestLabels, TermCriteria crit
     }
 }
 
-void Mat_Log(Mat src, Mat dst) {
+OpenCVResult Mat_Log(Mat src, Mat dst) {
     try {
         cv::log(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Magnitude(Mat x, Mat y, Mat magnitude) {
+OpenCVResult Mat_Magnitude(Mat x, Mat y, Mat magnitude) {
     try {
         cv::magnitude(*x, *y, *magnitude);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -934,31 +999,34 @@ double Mat_Mahalanobis(Mat v1, Mat v2, Mat icovar) {
     }
 }
 
-void MulTransposed(Mat src, Mat dest, bool ata) {
+OpenCVResult MulTransposed(Mat src, Mat dest, bool ata) {
     try {
         cv::mulTransposed(*src, *dest, ata);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Max(Mat src1, Mat src2, Mat dst) {
+OpenCVResult Mat_Max(Mat src1, Mat src2, Mat dst) {
     try {
         cv::max(*src1, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev) {
+OpenCVResult Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev) {
     try {
         cv::meanStdDev(*src, *dstMean, *dstStdDev);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Merge(struct Mats mats, Mat dst) {
+OpenCVResult Mat_Merge(struct Mats mats, Mat dst) {
     try {
         std::vector<cv::Mat> images;
 
@@ -967,28 +1035,31 @@ void Mat_Merge(struct Mats mats, Mat dst) {
         }
 
         cv::merge(images, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Min(Mat src1, Mat src2, Mat dst) {
+OpenCVResult Mat_Min(Mat src1, Mat src2, Mat dst) {
     try {
         cv::min(*src1, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_MinMaxIdx(Mat m, double* minVal, double* maxVal, int* minIdx, int* maxIdx) {
+OpenCVResult Mat_MinMaxIdx(Mat m, double* minVal, double* maxVal, int* minIdx, int* maxIdx) {
     try {
         cv::minMaxIdx(*m, minVal, maxVal, minIdx, maxIdx);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc) {
+OpenCVResult Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc) {
     try {
         cv::Point cMinLoc;
         cv::Point cMaxLoc;
@@ -998,12 +1069,13 @@ void Mat_MinMaxLoc(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* 
         minLoc->y = cMinLoc.y;
         maxLoc->x = cMaxLoc.x;
         maxLoc->y = cMaxLoc.y;
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_MinMaxLocWithMask(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc, Mat mask) {
+OpenCVResult Mat_MinMaxLocWithMask(Mat m, double* minVal, double* maxVal, Point* minLoc, Point* maxLoc, Mat mask) {
     try {
         cv::Point cMinLoc;
         cv::Point cMaxLoc;
@@ -1013,12 +1085,13 @@ void Mat_MinMaxLocWithMask(Mat m, double* minVal, double* maxVal, Point* minLoc,
         minLoc->y = cMinLoc.y;
         maxLoc->x = cMaxLoc.x;
         maxLoc->y = cMaxLoc.y;
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_MixChannels(struct Mats src, struct Mats dst, struct IntVector fromTo) {
+OpenCVResult Mat_MixChannels(struct Mats src, struct Mats dst, struct IntVector fromTo) {
     try {
         std::vector<cv::Mat> srcMats;
 
@@ -1039,40 +1112,45 @@ void Mat_MixChannels(struct Mats src, struct Mats dst, struct IntVector fromTo) 
         }
 
         cv::mixChannels(srcMats, dstMats, fromTos);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_MulSpectrums(Mat a, Mat b, Mat c, int flags) {
+OpenCVResult Mat_MulSpectrums(Mat a, Mat b, Mat c, int flags) {
     try {
         cv::mulSpectrums(*a, *b, *c, flags);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Multiply(Mat src1, Mat src2, Mat dst) {
+OpenCVResult Mat_Multiply(Mat src1, Mat src2, Mat dst) {
     try {
         cv::multiply(*src1, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_MultiplyWithParams(Mat src1, Mat src2, Mat dst, double scale, int dtype) {
+OpenCVResult Mat_MultiplyWithParams(Mat src1, Mat src2, Mat dst, double scale, int dtype) {
     try {
         cv::multiply(*src1, *src2, *dst, scale, dtype);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
+OpenCVResult Mat_Normalize(Mat src, Mat dst, double alpha, double beta, int typ) {
     try {
         cv::normalize(*src, *dst, alpha, beta, typ);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -1094,11 +1172,12 @@ double NormWithMats(Mat src1, Mat src2, int normType) {
     }
 }
 
-void Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm) {
+OpenCVResult Mat_PerspectiveTransform(Mat src, Mat dst, Mat tm) {
     try {
         cv::perspectiveTransform(*src, *dst, *tm);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -1129,71 +1208,79 @@ double Mat_SolvePoly(Mat coeffs, Mat roots, int maxIters) {
     }
 }
 
-void Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType) {
+OpenCVResult Mat_Reduce(Mat src, Mat dst, int dim, int rType, int dType) {
     try {
         cv::reduce(*src, *dst, dim, rType, dType);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_ReduceArgMax(Mat src, Mat dst, int axis, bool lastIndex) {
+OpenCVResult Mat_ReduceArgMax(Mat src, Mat dst, int axis, bool lastIndex) {
     try {
         cv::reduceArgMax(*src, *dst, axis, lastIndex);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_ReduceArgMin(Mat src, Mat dst, int axis, bool lastIndex) {
+OpenCVResult Mat_ReduceArgMin(Mat src, Mat dst, int axis, bool lastIndex) {
     try {
         cv::reduceArgMin(*src, *dst, axis, lastIndex);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Repeat(Mat src, int nY, int nX, Mat dst) {
+OpenCVResult Mat_Repeat(Mat src, int nY, int nX, Mat dst) {
     try {
         cv::repeat(*src, nY, nX, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_ScaleAdd(Mat src1, double alpha, Mat src2, Mat dst) {
+OpenCVResult Mat_ScaleAdd(Mat src1, double alpha, Mat src2, Mat dst) {
     try {
         cv::scaleAdd(*src1, alpha, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_SetIdentity(Mat src, double scalar) {
+OpenCVResult Mat_SetIdentity(Mat src, double scalar) {
     try {
         cv::setIdentity(*src, scalar);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Sort(Mat src, Mat dst, int flags) {
+OpenCVResult Mat_Sort(Mat src, Mat dst, int flags) {
     try {
         cv::sort(*src, *dst, flags);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_SortIdx(Mat src, Mat dst, int flags) {
+OpenCVResult Mat_SortIdx(Mat src, Mat dst, int flags) {
     try {
         cv::sortIdx(*src, *dst, flags);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Split(Mat src, struct Mats* mats) {
+OpenCVResult Mat_Split(Mat src, struct Mats* mats) {
     try {
         std::vector<cv::Mat> channels;
         cv::split(*src, channels);
@@ -1204,16 +1291,18 @@ void Mat_Split(Mat src, struct Mats* mats) {
         }
 
         mats->length = (int)channels.size();
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Subtract(Mat src1, Mat src2, Mat dst) {
+OpenCVResult Mat_Subtract(Mat src1, Mat src2, Mat dst) {
     try {
         cv::subtract(*src1, *src2, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
@@ -1232,23 +1321,25 @@ Scalar Mat_Trace(Mat src) {
     }
 }
 
-void Mat_Transform(Mat src, Mat dst, Mat tm) {
+OpenCVResult Mat_Transform(Mat src, Mat dst, Mat tm) {
     try {
         cv::transform(*src, *dst, *tm);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Transpose(Mat src, Mat dst) {
+OpenCVResult Mat_Transpose(Mat src, Mat dst) {
     try {
         cv::transpose(*src, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_TransposeND(Mat src, struct IntVector order, Mat dst) {
+OpenCVResult Mat_TransposeND(Mat src, struct IntVector order, Mat dst) {
     try {
         std::vector<int> _order;
         for (int i = 0, *v = order.val; i < order.length; ++v, ++i) {
@@ -1256,32 +1347,36 @@ void Mat_TransposeND(Mat src, struct IntVector order, Mat dst) {
         }
 
         cv::transposeND(*src, _order, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees) {
+OpenCVResult Mat_PolarToCart(Mat magnitude, Mat degree, Mat x, Mat y, bool angleInDegrees) {
     try {
         cv::polarToCart(*magnitude, *degree, *x, *y, angleInDegrees);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Pow(Mat src, double power, Mat dst) {
+OpenCVResult Mat_Pow(Mat src, double power, Mat dst) {
     try {
         cv::pow(*src, power, *dst);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 
-void Mat_Phase(Mat x, Mat y, Mat angle, bool angleInDegrees) {
+OpenCVResult Mat_Phase(Mat x, Mat y, Mat angle, bool angleInDegrees) {
     try {
         cv::phase(*x, *y, *angle, angleInDegrees);
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
     }
 }
 

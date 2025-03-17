@@ -42,9 +42,8 @@ func (h *CannyEdgeDetector) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d43/classcv_1_1cuda_1_1CannyEdgeDetector.html#a6438cf8453f2dfd6703ceb50056de309
-func (h *CannyEdgeDetector) Detect(img GpuMat, dst *GpuMat) {
-	C.CannyEdgeDetector_Detect(C.CannyEdgeDetector(h.p), img.p, dst.p, nil)
-	return
+func (h *CannyEdgeDetector) Detect(img GpuMat, dst *GpuMat) error {
+	return OpenCVResult(C.CannyEdgeDetector_Detect(C.CannyEdgeDetector(h.p), img.p, dst.p, nil))
 }
 
 // DetectWithStream finds edges in an image using the Canny algorithm
@@ -52,9 +51,8 @@ func (h *CannyEdgeDetector) Detect(img GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d0/d43/classcv_1_1cuda_1_1CannyEdgeDetector.html#a6438cf8453f2dfd6703ceb50056de309
-func (h *CannyEdgeDetector) DetectWithStream(img GpuMat, dst *GpuMat, s Stream) {
-	C.CannyEdgeDetector_Detect(C.CannyEdgeDetector(h.p), img.p, dst.p, s.p)
-	return
+func (h *CannyEdgeDetector) DetectWithStream(img GpuMat, dst *GpuMat, s Stream) error {
+	return OpenCVResult(C.CannyEdgeDetector_Detect(C.CannyEdgeDetector(h.p), img.p, dst.p, s.p))
 }
 
 // GetAppertureSize
@@ -127,8 +125,8 @@ func (h *CannyEdgeDetector) SetLowThreshold(lowThresh float64) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga48d0f208181d5ca370d8ff6b62cbe826
-func CvtColor(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode) {
-	C.GpuCvtColor(src.p, dst.p, C.int(code), nil)
+func CvtColor(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode) error {
+	return OpenCVResult(C.GpuCvtColor(src.p, dst.p, C.int(code), nil))
 }
 
 // CvtColorWithStream converts an image from one color space to another
@@ -138,8 +136,8 @@ func CvtColor(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga48d0f208181d5ca370d8ff6b62cbe826
-func CvtColorWithStream(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode, s Stream) {
-	C.GpuCvtColor(src.p, dst.p, C.int(code), s.p)
+func CvtColorWithStream(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode, s Stream) error {
+	return OpenCVResult(C.GpuCvtColor(src.p, dst.p, C.int(code), s.p))
 }
 
 // Demosaicing converts an image from Bayer pattern to RGB or grayscale.
@@ -148,8 +146,8 @@ func CvtColorWithStream(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode, 
 //
 // For further details, please see:
 // https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga7fb153572b573ebd2d7610fcbe64166e
-func Demosaicing(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode) {
-	C.GpuDemosaicing(src.p, dst.p, C.int(code), nil)
+func Demosaicing(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode) error {
+	return OpenCVResult(C.GpuDemosaicing(src.p, dst.p, C.int(code), nil))
 }
 
 // DemosaicingWithStream converts an image from Bayer pattern to RGB or grayscale
@@ -159,8 +157,8 @@ func Demosaicing(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/db/d8c/group__cudaimgproc__color.html#ga7fb153572b573ebd2d7610fcbe64166e
-func DemosaicingWithStream(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode, s Stream) {
-	C.GpuDemosaicing(src.p, dst.p, C.int(code), s.p)
+func DemosaicingWithStream(src GpuMat, dst *GpuMat, code gocv.ColorConversionCode, s Stream) error {
+	return OpenCVResult(C.GpuDemosaicing(src.p, dst.p, C.int(code), s.p))
 }
 
 // HoughLinesDetector
@@ -192,9 +190,8 @@ func (h *HoughLinesDetector) Close() error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/dcd/classcv_1_1cuda_1_1HoughLinesDetector.html#a18ff6d0886833ac6215054e191ae2520
-func (h *HoughLinesDetector) Detect(img GpuMat, dst *GpuMat) {
-	C.HoughLinesDetector_Detect(C.HoughLinesDetector(h.p), img.p, dst.p, nil)
-	return
+func (h *HoughLinesDetector) Detect(img GpuMat, dst *GpuMat) error {
+	return OpenCVResult(C.HoughLinesDetector_Detect(C.HoughLinesDetector(h.p), img.p, dst.p, nil))
 }
 
 // DetectWithStream finds lines in a binary image using the classical Hough transform
@@ -202,9 +199,8 @@ func (h *HoughLinesDetector) Detect(img GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d2/dcd/classcv_1_1cuda_1_1HoughLinesDetector.html#a18ff6d0886833ac6215054e191ae2520
-func (h *HoughLinesDetector) DetectWithStream(img GpuMat, dst *GpuMat, s Stream) {
-	C.HoughLinesDetector_Detect(C.HoughLinesDetector(h.p), img.p, dst.p, s.p)
-	return
+func (h *HoughLinesDetector) DetectWithStream(img GpuMat, dst *GpuMat, s Stream) error {
+	return OpenCVResult(C.HoughLinesDetector_Detect(C.HoughLinesDetector(h.p), img.p, dst.p, s.p))
 }
 
 // HoughSegmentDetector
@@ -230,9 +226,8 @@ func (h *HoughSegmentDetector) Close() error {
 // Detect finds lines in a binary image using the Hough probabilistic transform.
 // For further details, please see:
 // https://docs.opencv.org/master/d6/df9/classcv_1_1cuda_1_1HoughSegmentDetector.html#a739bf84825ca455966d69dd75ca0ea6e
-func (h *HoughSegmentDetector) Detect(img GpuMat, dst *GpuMat) {
-	C.HoughSegmentDetector_Detect(C.HoughSegmentDetector(h.p), img.p, dst.p, nil)
-	return
+func (h *HoughSegmentDetector) Detect(img GpuMat, dst *GpuMat) error {
+	return OpenCVResult(C.HoughSegmentDetector_Detect(C.HoughSegmentDetector(h.p), img.p, dst.p, nil))
 }
 
 // DetectWithStream finds lines in a binary image using the Hough probabilistic transform
@@ -240,9 +235,8 @@ func (h *HoughSegmentDetector) Detect(img GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d6/df9/classcv_1_1cuda_1_1HoughSegmentDetector.html#a739bf84825ca455966d69dd75ca0ea6e
-func (h *HoughSegmentDetector) DetectWithStream(img GpuMat, dst *GpuMat, s Stream) {
-	C.HoughSegmentDetector_Detect(C.HoughSegmentDetector(h.p), img.p, dst.p, s.p)
-	return
+func (h *HoughSegmentDetector) DetectWithStream(img GpuMat, dst *GpuMat, s Stream) error {
+	return OpenCVResult(C.HoughSegmentDetector_Detect(C.HoughSegmentDetector(h.p), img.p, dst.p, s.p))
 }
 
 // TemplateMatching
@@ -268,9 +262,8 @@ func (tm *TemplateMatching) Close() error {
 // Match computes a proximity map for a raster template and an image where the template is searched for.
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/d2/d58/classcv_1_1cuda_1_1TemplateMatching.html#a05a565a53461c916b3b10737cbe43a01
-func (tm *TemplateMatching) Match(img GpuMat, tmpl GpuMat, dst *GpuMat) {
-	C.TemplateMatching_Match(C.TemplateMatching(tm.p), img.p, tmpl.p, dst.p, nil)
-	return
+func (tm *TemplateMatching) Match(img GpuMat, tmpl GpuMat, dst *GpuMat) error {
+	return OpenCVResult(C.TemplateMatching_Match(C.TemplateMatching(tm.p), img.p, tmpl.p, dst.p, nil))
 }
 
 // MatchWithStream computes a proximity map for a raster template and an image where the template is searched for
@@ -278,9 +271,8 @@ func (tm *TemplateMatching) Match(img GpuMat, tmpl GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.6.0/d2/d58/classcv_1_1cuda_1_1TemplateMatching.html#a05a565a53461c916b3b10737cbe43a01
-func (tm *TemplateMatching) MatchWithStream(img GpuMat, tmpl GpuMat, dst *GpuMat, s Stream) {
-	C.TemplateMatching_Match(C.TemplateMatching(tm.p), img.p, tmpl.p, dst.p, s.p)
-	return
+func (tm *TemplateMatching) MatchWithStream(img GpuMat, tmpl GpuMat, dst *GpuMat, s Stream) error {
+	return OpenCVResult(C.TemplateMatching_Match(C.TemplateMatching(tm.p), img.p, tmpl.p, dst.p, s.p))
 }
 
 // AlphaComp Composites two images using alpha opacity values contained in each image.
@@ -295,8 +287,8 @@ func (tm *TemplateMatching) MatchWithStream(img GpuMat, tmpl GpuMat, dst *GpuMat
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/db/d8c/group__cudaimgproc__color.html#ga08a698700458d9311390997b57fbf8dc
-func AlphaComp(img1 GpuMat, img2 GpuMat, dst *GpuMat, alphaOp AlphaCompTypes) {
-	C.AlphaComp(img1.p, img2.p, dst.p, C.int(alphaOp), nil)
+func AlphaComp(img1 GpuMat, img2 GpuMat, dst *GpuMat, alphaOp AlphaCompTypes) error {
+	return OpenCVResult(C.AlphaComp(img1.p, img2.p, dst.p, C.int(alphaOp), nil))
 }
 
 // AlphaCompWithStream Composites two images using alpha opacity values contained in each image.
@@ -313,8 +305,8 @@ func AlphaComp(img1 GpuMat, img2 GpuMat, dst *GpuMat, alphaOp AlphaCompTypes) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/db/d8c/group__cudaimgproc__color.html#ga08a698700458d9311390997b57fbf8dc
-func AlphaCompWithStream(img1 GpuMat, img2 GpuMat, dst *GpuMat, alphaOp AlphaCompTypes, s Stream) {
-	C.AlphaComp(img1.p, img2.p, dst.p, C.int(alphaOp), s.p)
+func AlphaCompWithStream(img1 GpuMat, img2 GpuMat, dst *GpuMat, alphaOp AlphaCompTypes, s Stream) error {
+	return OpenCVResult(C.AlphaComp(img1.p, img2.p, dst.p, C.int(alphaOp), s.p))
 }
 
 // GammaCorrection Routines for correcting image color gamma.
@@ -327,8 +319,8 @@ func AlphaCompWithStream(img1 GpuMat, img2 GpuMat, dst *GpuMat, alphaOp AlphaCom
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/db/d8c/group__cudaimgproc__color.html#gaf4195a8409c3b8fbfa37295c2b2c4729
-func GammaCorrection(src GpuMat, dst *GpuMat, forward bool) {
-	C.GammaCorrection(src.p, dst.p, C.bool(forward), nil)
+func GammaCorrection(src GpuMat, dst *GpuMat, forward bool) error {
+	return OpenCVResult(C.GammaCorrection(src.p, dst.p, C.bool(forward), nil))
 }
 
 // GammaCorrectionWithStream Routines for correcting image color gamma.
@@ -343,8 +335,8 @@ func GammaCorrection(src GpuMat, dst *GpuMat, forward bool) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/db/d8c/group__cudaimgproc__color.html#gaf4195a8409c3b8fbfa37295c2b2c4729
-func GammaCorrectionWithStream(src GpuMat, dst *GpuMat, forward bool, s Stream) {
-	C.GammaCorrection(src.p, dst.p, C.bool(forward), s.p)
+func GammaCorrectionWithStream(src GpuMat, dst *GpuMat, forward bool, s Stream) error {
+	return OpenCVResult(C.GammaCorrection(src.p, dst.p, C.bool(forward), s.p))
 }
 
 // SwapChannels Exchanges the color channels of an image in-place.
@@ -359,8 +351,8 @@ func GammaCorrectionWithStream(src GpuMat, dst *GpuMat, forward bool, s Stream) 
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/db/d8c/group__cudaimgproc__color.html#ga75a29cc4a97cde0d43ea066b01de927e
-func SwapChannels(image *GpuMat, dstOrder []int) {
-	C.SwapChannels(image.p, (*C.int)(unsafe.Pointer(&dstOrder[0])), nil)
+func SwapChannels(image *GpuMat, dstOrder []int) error {
+	return OpenCVResult(C.SwapChannels(image.p, (*C.int)(unsafe.Pointer(&dstOrder[0])), nil))
 }
 
 // SwapChannelsWithStream Exchanges the color channels of an image in-place.
@@ -377,8 +369,8 @@ func SwapChannels(image *GpuMat, dstOrder []int) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/db/d8c/group__cudaimgproc__color.html#ga75a29cc4a97cde0d43ea066b01de927e
-func SwapChannelsWithStream(image *GpuMat, dstOrder []int, s Stream) {
-	C.SwapChannels(image.p, (*C.int)(unsafe.Pointer(&dstOrder[0])), s.p)
+func SwapChannelsWithStream(image *GpuMat, dstOrder []int, s Stream) error {
+	return OpenCVResult(C.SwapChannels(image.p, (*C.int)(unsafe.Pointer(&dstOrder[0])), s.p))
 }
 
 // CalcHist Calculates histogram for one channel 8-bit image.
@@ -389,8 +381,8 @@ func SwapChannelsWithStream(image *GpuMat, dstOrder []int, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#gaaf3944106890947020bb4522a7619c26
-func CalcHist(src GpuMat, dst *GpuMat) {
-	C.Cuda_CalcHist(src.p, dst.p, nil)
+func CalcHist(src GpuMat, dst *GpuMat) error {
+	return OpenCVResult(C.Cuda_CalcHist(src.p, dst.p, nil))
 }
 
 // CalcHistWithStream Calculates histogram for one channel 8-bit image.
@@ -403,8 +395,8 @@ func CalcHist(src GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#gaaf3944106890947020bb4522a7619c26
-func CalcHistWithStream(src GpuMat, dst *GpuMat, s Stream) {
-	C.Cuda_CalcHist(src.p, dst.p, s.p)
+func CalcHistWithStream(src GpuMat, dst *GpuMat, s Stream) error {
+	return OpenCVResult(C.Cuda_CalcHist(src.p, dst.p, s.p))
 }
 
 // CalcHistWithParams Calculates histogram for one channel 8-bit image confined in given mask.
@@ -419,8 +411,8 @@ func CalcHistWithStream(src GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#ga2d55b444ce776c8bbd3087cc90c47f32
-func CalcHistWithParams(src GpuMat, mask GpuMat, dst *GpuMat, s Stream) {
-	C.Cuda_CalcHist_WithParams(src.p, mask.p, dst.p, s.p)
+func CalcHistWithParams(src GpuMat, mask GpuMat, dst *GpuMat, s Stream) error {
+	return OpenCVResult(C.Cuda_CalcHist_WithParams(src.p, mask.p, dst.p, s.p))
 }
 
 // EqualizeHist Equalizes the histogram of a grayscale image.
@@ -431,8 +423,8 @@ func CalcHistWithParams(src GpuMat, mask GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#ga2384be74bd2feba7e6c46815513f0060
-func EqualizeHist(src GpuMat, dst *GpuMat) {
-	C.Cuda_EqualizeHist(src.p, dst.p, nil)
+func EqualizeHist(src GpuMat, dst *GpuMat) error {
+	return OpenCVResult(C.Cuda_EqualizeHist(src.p, dst.p, nil))
 }
 
 // EqualizeHistWithStream Equalizes the histogram of a grayscale image.
@@ -445,8 +437,8 @@ func EqualizeHist(src GpuMat, dst *GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#ga2384be74bd2feba7e6c46815513f0060
-func EqualizeHistWithStream(src GpuMat, dst *GpuMat, s Stream) {
-	C.Cuda_EqualizeHist(src.p, dst.p, s.p)
+func EqualizeHistWithStream(src GpuMat, dst *GpuMat, s Stream) error {
+	return OpenCVResult(C.Cuda_EqualizeHist(src.p, dst.p, s.p))
 }
 
 // EvenLevels Computes levels with even distribution.
@@ -461,8 +453,8 @@ func EqualizeHistWithStream(src GpuMat, dst *GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#ga2f2cbd21dc6d7367a7c4ee1a826f389dFor further details, please see:
-func EvenLevels(levels *GpuMat, nLevels int, lowerLevel int, upperLevel int) {
-	C.Cuda_EvenLevels(levels.p, C.int(nLevels), C.int(lowerLevel), C.int(upperLevel), nil)
+func EvenLevels(levels *GpuMat, nLevels int, lowerLevel int, upperLevel int) error {
+	return OpenCVResult(C.Cuda_EvenLevels(levels.p, C.int(nLevels), C.int(lowerLevel), C.int(upperLevel), nil))
 }
 
 // EvenLevelsWithStream Computes levels with even distribution.
@@ -479,8 +471,8 @@ func EvenLevels(levels *GpuMat, nLevels int, lowerLevel int, upperLevel int) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#ga2f2cbd21dc6d7367a7c4ee1a826f389dFor further details, please see:
-func EvenLevelsWithStream(levels *GpuMat, nLevels int, lowerLevel int, upperLevel int, s Stream) {
-	C.Cuda_EvenLevels(levels.p, C.int(nLevels), C.int(lowerLevel), C.int(upperLevel), s.p)
+func EvenLevelsWithStream(levels *GpuMat, nLevels int, lowerLevel int, upperLevel int, s Stream) error {
+	return OpenCVResult(C.Cuda_EvenLevels(levels.p, C.int(nLevels), C.int(lowerLevel), C.int(upperLevel), s.p))
 }
 
 // HistEven Calculates a histogram with evenly distributed bins.
@@ -498,8 +490,8 @@ func EvenLevelsWithStream(levels *GpuMat, nLevels int, lowerLevel int, upperLeve
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#gacd3b14279fb77a57a510cb8c89a1856f
-func HistEven(src GpuMat, hist *GpuMat, histSize int, lowerLevel int, upperLevel int) {
-	C.Cuda_HistEven(src.p, hist.p, C.int(histSize), C.int(lowerLevel), C.int(upperLevel), nil)
+func HistEven(src GpuMat, hist *GpuMat, histSize int, lowerLevel int, upperLevel int) error {
+	return OpenCVResult(C.Cuda_HistEven(src.p, hist.p, C.int(histSize), C.int(lowerLevel), C.int(upperLevel), nil))
 }
 
 // HistEvenWithStream Calculates a histogram with evenly distributed bins.
@@ -519,8 +511,8 @@ func HistEven(src GpuMat, hist *GpuMat, histSize int, lowerLevel int, upperLevel
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#gacd3b14279fb77a57a510cb8c89a1856f
-func HistEvenWithStream(src GpuMat, hist *GpuMat, histSize int, lowerLevel int, upperLevel int, s Stream) {
-	C.Cuda_HistEven(src.p, hist.p, C.int(histSize), C.int(lowerLevel), C.int(upperLevel), s.p)
+func HistEvenWithStream(src GpuMat, hist *GpuMat, histSize int, lowerLevel int, upperLevel int, s Stream) error {
+	return OpenCVResult(C.Cuda_HistEven(src.p, hist.p, C.int(histSize), C.int(lowerLevel), C.int(upperLevel), s.p))
 }
 
 // HistRange Calculates a histogram with bins determined by the levels array.
@@ -534,8 +526,8 @@ func HistEvenWithStream(src GpuMat, hist *GpuMat, histSize int, lowerLevel int, 
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#ga87819085c1059186d9cdeacd92cea783
-func HistRange(src GpuMat, hist *GpuMat, levels GpuMat) {
-	C.Cuda_HistRange(src.p, hist.p, levels.p, nil)
+func HistRange(src GpuMat, hist *GpuMat, levels GpuMat) error {
+	return OpenCVResult(C.Cuda_HistRange(src.p, hist.p, levels.p, nil))
 }
 
 // HistRangeWithStream Calculates a histogram with bins determined by the levels array.
@@ -551,8 +543,8 @@ func HistRange(src GpuMat, hist *GpuMat, levels GpuMat) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d8/d0e/group__cudaimgproc__hist.html#ga87819085c1059186d9cdeacd92cea783
-func HistRangeWithStream(src GpuMat, hist *GpuMat, levels GpuMat, s Stream) {
-	C.Cuda_HistRange(src.p, hist.p, levels.p, s.p)
+func HistRangeWithStream(src GpuMat, hist *GpuMat, levels GpuMat, s Stream) error {
+	return OpenCVResult(C.Cuda_HistRange(src.p, hist.p, levels.p, s.p))
 }
 
 // BilateralFilter Performs bilateral filtering of passed image.
@@ -572,8 +564,8 @@ func HistRangeWithStream(src GpuMat, hist *GpuMat, levels GpuMat, s Stream) {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga6abeaecdd4e7edc0bd1393a04f4f20bd
-func BilateralFilter(src GpuMat, dst *GpuMat, kernelSize int, sigmaColor float32, sigmaSpatial float32, borderMode BorderType) {
-	C.Cuda_BilateralFilter(src.p, dst.p, C.int(kernelSize), C.float(sigmaColor), C.float(sigmaSpatial), C.int(borderMode), nil)
+func BilateralFilter(src GpuMat, dst *GpuMat, kernelSize int, sigmaColor float32, sigmaSpatial float32, borderMode BorderType) error {
+	return OpenCVResult(C.Cuda_BilateralFilter(src.p, dst.p, C.int(kernelSize), C.float(sigmaColor), C.float(sigmaSpatial), C.int(borderMode), nil))
 }
 
 // BilateralFilterWithStream Performs bilateral filtering of passed image.
@@ -595,8 +587,8 @@ func BilateralFilter(src GpuMat, dst *GpuMat, kernelSize int, sigmaColor float32
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga6abeaecdd4e7edc0bd1393a04f4f20bd
-func BilateralFilterWithStream(src GpuMat, dst *GpuMat, kernelSize int, sigmaColor float32, sigmaSpatial float32, borderMode BorderType, s Stream) {
-	C.Cuda_BilateralFilter(src.p, dst.p, C.int(kernelSize), C.float(sigmaColor), C.float(sigmaSpatial), C.int(borderMode), s.p)
+func BilateralFilterWithStream(src GpuMat, dst *GpuMat, kernelSize int, sigmaColor float32, sigmaSpatial float32, borderMode BorderType, s Stream) error {
+	return OpenCVResult(C.Cuda_BilateralFilter(src.p, dst.p, C.int(kernelSize), C.float(sigmaColor), C.float(sigmaSpatial), C.int(borderMode), s.p))
 }
 
 // BlendLinear Performs linear blending of two images.
@@ -613,8 +605,8 @@ func BilateralFilterWithStream(src GpuMat, dst *GpuMat, kernelSize int, sigmaCol
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga4793607e5729bcc15b27ea33d9fe335e
-func BlendLinear(img1 GpuMat, img2 GpuMat, weights1 GpuMat, weights2 GpuMat, result *GpuMat) {
-	C.Cuda_BlendLinear(img1.p, img2.p, weights1.p, weights2.p, result.p, nil)
+func BlendLinear(img1 GpuMat, img2 GpuMat, weights1 GpuMat, weights2 GpuMat, result *GpuMat) error {
+	return OpenCVResult(C.Cuda_BlendLinear(img1.p, img2.p, weights1.p, weights2.p, result.p, nil))
 }
 
 // BlendLinearWithStream Performs linear blending of two images.
@@ -633,8 +625,8 @@ func BlendLinear(img1 GpuMat, img2 GpuMat, weights1 GpuMat, weights2 GpuMat, res
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga4793607e5729bcc15b27ea33d9fe335e
-func BlendLinearWithStream(img1 GpuMat, img2 GpuMat, weights1 GpuMat, weights2 GpuMat, result *GpuMat, s Stream) {
-	C.Cuda_BlendLinear(img1.p, img2.p, weights1.p, weights2.p, result.p, s.p)
+func BlendLinearWithStream(img1 GpuMat, img2 GpuMat, weights1 GpuMat, weights2 GpuMat, result *GpuMat, s Stream) error {
+	return OpenCVResult(C.Cuda_BlendLinear(img1.p, img2.p, weights1.p, weights2.p, result.p, s.p))
 }
 
 // MeanShiftFiltering Performs mean-shift filtering for each point of the source image.
@@ -653,8 +645,8 @@ func BlendLinearWithStream(img1 GpuMat, img2 GpuMat, weights1 GpuMat, weights2 G
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#gae13b3035bc6df0e512d876dbb8c00555
-func MeanShiftFiltering(src GpuMat, dst *GpuMat, sp int, sr int, criteria gocv.TermCriteria) {
-	C.Cuda_MeanShiftFiltering(src.p, dst.p, C.int(sp), C.int(sr), C.TermCriteria(criteria.Ptr()), nil)
+func MeanShiftFiltering(src GpuMat, dst *GpuMat, sp int, sr int, criteria gocv.TermCriteria) error {
+	return OpenCVResult(C.Cuda_MeanShiftFiltering(src.p, dst.p, C.int(sp), C.int(sr), C.TermCriteria(criteria.Ptr()), nil))
 }
 
 // MeanShiftFilteringWithStream Performs mean-shift filtering for each point of the source image.
@@ -675,8 +667,8 @@ func MeanShiftFiltering(src GpuMat, dst *GpuMat, sp int, sr int, criteria gocv.T
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#gae13b3035bc6df0e512d876dbb8c00555
-func MeanShiftFilteringWithStream(src GpuMat, dst *GpuMat, sp int, sr int, criteria gocv.TermCriteria, s Stream) {
-	C.Cuda_MeanShiftFiltering(src.p, dst.p, C.int(sp), C.int(sr), C.TermCriteria(criteria.Ptr()), s.p)
+func MeanShiftFilteringWithStream(src GpuMat, dst *GpuMat, sp int, sr int, criteria gocv.TermCriteria, s Stream) error {
+	return OpenCVResult(C.Cuda_MeanShiftFiltering(src.p, dst.p, C.int(sp), C.int(sr), C.TermCriteria(criteria.Ptr()), s.p))
 }
 
 // MeanShiftProc Performs a mean-shift procedure and stores information
@@ -696,8 +688,8 @@ func MeanShiftFilteringWithStream(src GpuMat, dst *GpuMat, sp int, sr int, crite
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga6039dc8ecbe2f912bc83fcc9b3bcca39
-func MeanShiftProc(src GpuMat, dstr *GpuMat, dstsp *GpuMat, sp int, sr int, criteria gocv.TermCriteria) {
-	C.Cuda_MeanShiftProc(src.p, dstr.p, dstsp.p, C.int(sp), C.int(sr), C.TermCriteria(criteria.Ptr()), nil)
+func MeanShiftProc(src GpuMat, dstr *GpuMat, dstsp *GpuMat, sp int, sr int, criteria gocv.TermCriteria) error {
+	return OpenCVResult(C.Cuda_MeanShiftProc(src.p, dstr.p, dstsp.p, C.int(sp), C.int(sr), C.TermCriteria(criteria.Ptr()), nil))
 }
 
 // MeanShiftProcWithStream Performs a mean-shift procedure and stores information
@@ -719,8 +711,8 @@ func MeanShiftProc(src GpuMat, dstr *GpuMat, dstsp *GpuMat, sp int, sr int, crit
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga6039dc8ecbe2f912bc83fcc9b3bcca39
-func MeanShiftProcWithStream(src GpuMat, dstr *GpuMat, dstsp *GpuMat, sp int, sr int, criteria gocv.TermCriteria, s Stream) {
-	C.Cuda_MeanShiftProc(src.p, dstr.p, dstsp.p, C.int(sp), C.int(sr), C.TermCriteria(criteria.Ptr()), s.p)
+func MeanShiftProcWithStream(src GpuMat, dstr *GpuMat, dstsp *GpuMat, sp int, sr int, criteria gocv.TermCriteria, s Stream) error {
+	return OpenCVResult(C.Cuda_MeanShiftProc(src.p, dstr.p, dstsp.p, C.int(sp), C.int(sr), C.TermCriteria(criteria.Ptr()), s.p))
 }
 
 // MeanShiftSegmentation Performs a mean-shift segmentation of the source image and eliminates small segments.
@@ -739,8 +731,8 @@ func MeanShiftProcWithStream(src GpuMat, dstr *GpuMat, dstsp *GpuMat, sp int, sr
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga70ed80533a448829dc48cf22b1845c16
-func MeanShiftSegmentation(src GpuMat, dst *GpuMat, sp int, sr int, minSize int, criteria gocv.TermCriteria) {
-	C.Cuda_MeanShiftSegmentation(src.p, dst.p, C.int(sp), C.int(sr), C.int(minSize), C.TermCriteria(criteria.Ptr()), nil)
+func MeanShiftSegmentation(src GpuMat, dst *GpuMat, sp int, sr int, minSize int, criteria gocv.TermCriteria) error {
+	return OpenCVResult(C.Cuda_MeanShiftSegmentation(src.p, dst.p, C.int(sp), C.int(sr), C.int(minSize), C.TermCriteria(criteria.Ptr()), nil))
 }
 
 // MeanShiftSegmentationWithStream Performs a mean-shift segmentation of the source image and eliminates small segments.
@@ -761,6 +753,6 @@ func MeanShiftSegmentation(src GpuMat, dst *GpuMat, sp int, sr int, minSize int,
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d0/d05/group__cudaimgproc.html#ga70ed80533a448829dc48cf22b1845c16
-func MeanShiftSegmentationWithStream(src GpuMat, dst *GpuMat, sp int, sr int, minSize int, criteria gocv.TermCriteria, s Stream) {
-	C.Cuda_MeanShiftSegmentation(src.p, dst.p, C.int(sp), C.int(sr), C.int(minSize), C.TermCriteria(criteria.Ptr()), s.p)
+func MeanShiftSegmentationWithStream(src GpuMat, dst *GpuMat, sp int, sr int, minSize int, criteria gocv.TermCriteria, s Stream) error {
+	return OpenCVResult(C.Cuda_MeanShiftSegmentation(src.p, dst.p, C.int(sp), C.int(sr), C.int(minSize), C.TermCriteria(criteria.Ptr()), s.p))
 }
