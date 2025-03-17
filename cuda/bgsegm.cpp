@@ -1,7 +1,12 @@
 #include "bgsegm.h"
 
 CudaBackgroundSubtractorMOG2 CudaBackgroundSubtractorMOG2_Create() {
-    return new cv::Ptr<cv::cuda::BackgroundSubtractorMOG2>(cv::cuda::createBackgroundSubtractorMOG2());
+    try {
+        return new cv::Ptr<cv::cuda::BackgroundSubtractorMOG2>(cv::cuda::createBackgroundSubtractorMOG2());
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 void CudaBackgroundSubtractorMOG2_Close(CudaBackgroundSubtractorMOG2 b) {
@@ -9,15 +14,24 @@ void CudaBackgroundSubtractorMOG2_Close(CudaBackgroundSubtractorMOG2 b) {
 }
 
 void CudaBackgroundSubtractorMOG2_Apply(CudaBackgroundSubtractorMOG2 b, GpuMat src, GpuMat dst, Stream s) {
-    if (s == NULL) {
-        (*b)->apply(*src, *dst);
-        return;
+    try {
+        if (s == NULL) {
+            (*b)->apply(*src, *dst);
+            return;
+        }
+        (*b)->apply(*src, *dst, -1.0, *s);    
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
     }
-    (*b)->apply(*src, *dst, -1.0, *s);
 }
 
 CudaBackgroundSubtractorMOG CudaBackgroundSubtractorMOG_Create() {
-    return new cv::Ptr<cv::cuda::BackgroundSubtractorMOG>(cv::cuda::createBackgroundSubtractorMOG());
+    try {
+        return new cv::Ptr<cv::cuda::BackgroundSubtractorMOG>(cv::cuda::createBackgroundSubtractorMOG());
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 void CudaBackgroundSubtractorMOG_Close(CudaBackgroundSubtractorMOG b) {
@@ -25,9 +39,13 @@ void CudaBackgroundSubtractorMOG_Close(CudaBackgroundSubtractorMOG b) {
 }
 
 void CudaBackgroundSubtractorMOG_Apply(CudaBackgroundSubtractorMOG b, GpuMat src, GpuMat dst, Stream s) {
-    if (s == NULL) {
-        (*b)->apply(*src, *dst);
-        return;
+    try {
+        if (s == NULL) {
+            (*b)->apply(*src, *dst);
+            return;
+        }
+        (*b)->apply(*src, *dst, -1.0, *s);    
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
     }
-    (*b)->apply(*src, *dst, -1.0, *s);
 }

@@ -3,13 +3,23 @@
 #include <string.h>
 
 GaussianFilter CreateGaussianFilter(int srcType, int dstType, Size ksize, double sigma1) {
-    cv::Size sz(ksize.width, ksize.height);
-    return new cv::Ptr<cv::cuda::Filter>(cv::cuda::createGaussianFilter(srcType, dstType, sz, sigma1));
+    try {
+        cv::Size sz(ksize.width, ksize.height);
+        return new cv::Ptr<cv::cuda::Filter>(cv::cuda::createGaussianFilter(srcType, dstType, sz, sigma1));    
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 GaussianFilter CreateGaussianFilterWithParams(int srcType, int dstType, Size ksize, double sigma1, double sigma2, int rowBorderMode, int columnBorderMode) {
-    cv::Size sz(ksize.width, ksize.height);
-    return new cv::Ptr<cv::cuda::Filter>(cv::cuda::createGaussianFilter(srcType, dstType, sz, sigma1, sigma2, rowBorderMode, columnBorderMode));
+    try {
+        cv::Size sz(ksize.width, ksize.height);
+        return new cv::Ptr<cv::cuda::Filter>(cv::cuda::createGaussianFilter(srcType, dstType, sz, sigma1, sigma2, rowBorderMode, columnBorderMode));    
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 void GaussianFilter_Close(GaussianFilter gf) {
@@ -17,20 +27,33 @@ void GaussianFilter_Close(GaussianFilter gf) {
 }
 
 void GaussianFilter_Apply(GaussianFilter gf, GpuMat img, GpuMat dst, Stream s) {
-    if (s == NULL) {
-        (*gf)->apply(*img, *dst);
-    } else {
+    try {
+        if (s == NULL) {
+            (*gf)->apply(*img, *dst);
+            return;
+        }
         (*gf)->apply(*img, *dst, *s);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
     }
-    return;
 }
 
 SobelFilter CreateSobelFilter(int srcType, int dstType, int dx, int dy) {
-    return new cv::Ptr<cv::cuda::Filter>(cv::cuda::createSobelFilter(srcType, dstType, dx, dy));
+    try {
+        return new cv::Ptr<cv::cuda::Filter>(cv::cuda::createSobelFilter(srcType, dstType, dx, dy));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 SobelFilter CreateSobelFilterWithParams(int srcType, int dstType, int dx, int dy, int ksize, double scale, int rowBorderMode, int columnBorderMode) {
-    return new cv::Ptr<cv::cuda::Filter>(cv::cuda::createSobelFilter(srcType, dstType, dx, dy, ksize, rowBorderMode, columnBorderMode));
+    try {
+        return new cv::Ptr<cv::cuda::Filter>(cv::cuda::createSobelFilter(srcType, dstType, dx, dy, ksize, rowBorderMode, columnBorderMode));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 void SobelFilter_Close(SobelFilter sf) {
@@ -38,11 +61,13 @@ void SobelFilter_Close(SobelFilter sf) {
 }
 
 void SobelFilter_Apply(SobelFilter sf, GpuMat img, GpuMat dst, Stream s) {
-    if (s == NULL) {
-        (*sf)->apply(*img, *dst);
-    } else {
+    try {
+        if (s == NULL) {
+            (*sf)->apply(*img, *dst);
+            return;
+        }
         (*sf)->apply(*img, *dst, *s);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
     }
-
-    return;
 }

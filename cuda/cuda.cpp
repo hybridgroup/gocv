@@ -1,35 +1,63 @@
 #include "cuda.h"
 
 GpuMat GpuMat_New() {
-    return new cv::cuda::GpuMat();
+    try {
+        return new cv::cuda::GpuMat();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 GpuMat GpuMat_NewFromMat(Mat mat) {
-    return new cv::cuda::GpuMat(*mat);
+    try {
+        return new cv::cuda::GpuMat(*mat);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 GpuMat GpuMat_NewWithSize(int rows, int cols, int type) {
-    return new cv::cuda::GpuMat(rows, cols, type);
+    try {
+        return new cv::cuda::GpuMat(rows, cols, type);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 void GpuMat_Upload(GpuMat m, Mat data, Stream s){
-    if (s == NULL) {
-        m->upload(*data);
-        return;
+    try {
+        if (s == NULL) {
+            m->upload(*data);
+            return;
+        }
+        m->upload(*data, *s);    
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
     }
-    m->upload(*data, *s);
 }
 
 void GpuMat_Download(GpuMat m, Mat dst, Stream s){
-    if (s == NULL) {
-        m->download(*dst);
-        return;
+    try {
+        if (s == NULL) {
+            m->download(*dst);
+            return;
+        }
+        m->download(*dst, *s);    
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
     }
-    m->download(*dst, *s);
 }
 
 int GpuMat_Empty(GpuMat m){
-    return m->empty();
+    try {
+        return m->empty();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return true;
+    }
 }
 
 void GpuMat_Close(GpuMat m){
@@ -37,55 +65,103 @@ void GpuMat_Close(GpuMat m){
 }
 
 void PrintCudaDeviceInfo(int device){
-    cv::cuda::printCudaDeviceInfo(device);
+    try {
+        cv::cuda::printCudaDeviceInfo(device);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void PrintShortCudaDeviceInfo(int device){
-    cv::cuda::printShortCudaDeviceInfo(device);
+    try {
+        cv::cuda::printShortCudaDeviceInfo(device);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 int GetCudaEnabledDeviceCount(){
-    return cv::cuda::getCudaEnabledDeviceCount();
+    try {
+        return cv::cuda::getCudaEnabledDeviceCount();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0;
+    }
 }
 
 int GetCudaDevice() {
-    return cv::cuda::getDevice();
+    try {
+        return cv::cuda::getDevice();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return -1;
+    }
 }
 
 void SetCudaDevice(int device) {
-    cv::cuda::setDevice(device);
+    try {
+        cv::cuda::setDevice(device);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void ResetCudaDevice(){
-    cv::cuda::resetDevice();
+    try {
+        cv::cuda::resetDevice();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 bool CudaDeviceSupports(int features) {
-    return cv::cuda::deviceSupports(cv::cuda::FeatureSet(features));
+    try {
+        return cv::cuda::deviceSupports(cv::cuda::FeatureSet(features));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return false;
+    }
 }
 
 void GpuMat_ConvertTo(GpuMat m, GpuMat dst, int type, Stream s) {
-    if (s == NULL) {
-        m->convertTo(*dst, type);
-        return;
+    try {
+        if (s == NULL) {
+            m->convertTo(*dst, type);
+            return;
+        }
+        m->convertTo(*dst, type, *s);    
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
     }
-    m->convertTo(*dst, type, *s);
 }
 
 void GpuMat_ConvertFp16(GpuMat m, GpuMat dst) {
-    cv::cuda::convertFp16(*m, *dst);
+    try {
+        cv::cuda::convertFp16(*m, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void GpuMat_CopyTo(GpuMat m, GpuMat dst, Stream s) {
-    if (s == NULL) {
-        m->copyTo(*dst);
-        return;
+    try {
+        if (s == NULL) {
+            m->copyTo(*dst);
+            return;
+        }
+        m->copyTo(*dst, *s);    
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
     }
-    m->copyTo(*dst, *s);
 }
 
 GpuMat GpuMat_Reshape(GpuMat m, int cn, int rows) {
-    return new cv::cuda::GpuMat(m->reshape(cn, rows));
+    try {
+        return new cv::cuda::GpuMat(m->reshape(cn, rows));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 int GpuMat_Cols(GpuMat m) {
@@ -105,7 +181,12 @@ int GpuMat_Type(GpuMat m) {
 }
 
 Stream Stream_New() {
-    return new cv::cuda::Stream();
+    try {
+        return new cv::cuda::Stream();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 void Stream_Close(Stream s){
@@ -113,9 +194,18 @@ void Stream_Close(Stream s){
 }
 
 bool Stream_QueryIfComplete(Stream s) {
-    return s->queryIfComplete();
+    try {
+        return s->queryIfComplete();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return false;
+    }
 }
 
 void Stream_WaitForCompletion(Stream s) {
-    s->waitForCompletion();
+    try {
+        s->waitForCompletion();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
