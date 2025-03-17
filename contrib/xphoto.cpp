@@ -1,20 +1,27 @@
 #include "xphoto.h"
 
 void Xphoto_ApplyChannelGains(Mat src, Mat dst, float gainB, float gainG, float gainR) {
-    cv::xphoto::applyChannelGains(*src, *dst, gainB, gainG, gainR);
+    try {
+        cv::xphoto::applyChannelGains(*src, *dst, gainB, gainG, gainR);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Xphoto_Bm3dDenoising_Step(Mat src, Mat dststep1, Mat dststep2) {
-
-    cv::xphoto::bm3dDenoising(
-        *src, *dststep1, *dststep2,
-        1, 4,
-        16, 2500,
-        400, 8,
-        1, 2.0f,
-        cv::NORM_L2, cv::xphoto::BM3D_STEPALL,
-        cv::xphoto::HAAR
-    );
+    try {
+        cv::xphoto::bm3dDenoising(
+            *src, *dststep1, *dststep2,
+            1, 4,
+            16, 2500,
+            400, 8,
+            1, 2.0f,
+            cv::NORM_L2, cv::xphoto::BM3D_STEPALL,
+            cv::xphoto::HAAR
+        );
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 
@@ -27,29 +34,34 @@ void Xphoto_Bm3dDenoising_Step_WithParams(
     int normType, int step,
     int transformType
 ) {
-
-    cv::xphoto::bm3dDenoising(
-        *src, *dststep1, *dststep2,
-        h, templateWindowSize,
-        searchWindowSize, blockMatchingStep1,
-        blockMatchingStep2, groupSize,
-        slidingStep, beta,
-        normType, step,
-        transformType
-    );
+    try {
+        cv::xphoto::bm3dDenoising(
+            *src, *dststep1, *dststep2,
+            h, templateWindowSize,
+            searchWindowSize, blockMatchingStep1,
+            blockMatchingStep2, groupSize,
+            slidingStep, beta,
+            normType, step,
+            transformType
+        );    
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Xphoto_Bm3dDenoising(Mat src, Mat dst) {
-
-    cv::xphoto::bm3dDenoising(*src, *dst,
-                              1, 4,
-                              16, 2500,
-                              400, 8,
-                              1, 2.0f,
-                              cv::NORM_L2, cv::xphoto::BM3D_STEPALL,
-                              cv::xphoto::HAAR
-                             );
-
+    try {
+        cv::xphoto::bm3dDenoising(*src, *dst,
+            1, 4,
+            16, 2500,
+            400, 8,
+            1, 2.0f,
+            cv::NORM_L2, cv::xphoto::BM3D_STEPALL,
+            cv::xphoto::HAAR
+           );
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void Xphoto_Bm3dDenoising_WithParams(
@@ -60,24 +72,28 @@ void Xphoto_Bm3dDenoising_WithParams(
     int normType, int step,
     int transformType
 ) {
-
-    cv::xphoto::bm3dDenoising(*src, *dst, h, templateWindowSize,
-                              searchWindowSize, blockMatchingStep1,
-                              blockMatchingStep2, groupSize,
-                              slidingStep, beta,
-                              normType, step,
-                              transformType
-                             );
-
+    try {
+        cv::xphoto::bm3dDenoising(*src, *dst, h, templateWindowSize,
+            searchWindowSize, blockMatchingStep1,
+            blockMatchingStep2, groupSize,
+            slidingStep, beta,
+            normType, step,
+            transformType
+           );
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
-
-
-
 
 // ----------------------- GrayworldWB -----------------------
 
 GrayworldWB GrayworldWB_Create() {
-    return new cv::Ptr<cv::xphoto::GrayworldWB>(cv::xphoto::createGrayworldWB());
+    try {
+        return new cv::Ptr<cv::xphoto::GrayworldWB>(cv::xphoto::createGrayworldWB());
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 void GrayworldWB_Close(GrayworldWB b) {
@@ -85,26 +101,49 @@ void GrayworldWB_Close(GrayworldWB b) {
 }
 
 void GrayworldWB_SetSaturationThreshold(GrayworldWB b, float saturationThreshold) {
-    (*b)->setSaturationThreshold(saturationThreshold);
+    try {
+        (*b)->setSaturationThreshold(saturationThreshold);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 float GrayworldWB_GetSaturationThreshold(GrayworldWB b) {
-    return (*b)->getSaturationThreshold();
+    try {
+        return (*b)->getSaturationThreshold();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 void GrayworldWB_BalanceWhite(GrayworldWB b, Mat src, Mat dst) {
-    (*b)->balanceWhite(*src, *dst);
+    try {
+        (*b)->balanceWhite(*src, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 // ----------------------- LearningBasedWB -----------------------
 
 LearningBasedWB LearningBasedWB_Create() {
-    return new cv::Ptr<cv::xphoto::LearningBasedWB>(cv::xphoto::createLearningBasedWB());
+    try {
+        return new cv::Ptr<cv::xphoto::LearningBasedWB>(cv::xphoto::createLearningBasedWB());
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 LearningBasedWB LearningBasedWB_CreateWithParams(const char* pathmodel) {
-    cv::String path(pathmodel);
-    return new cv::Ptr<cv::xphoto::LearningBasedWB>(cv::xphoto::createLearningBasedWB(path));
+    try {
+        cv::String path(pathmodel);
+        return new cv::Ptr<cv::xphoto::LearningBasedWB>(cv::xphoto::createLearningBasedWB(path));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 void LearningBasedWB_Close(LearningBasedWB b) {
@@ -112,42 +151,82 @@ void LearningBasedWB_Close(LearningBasedWB b) {
 }
 
 void LearningBasedWB_ExtractSimpleFeatures(LearningBasedWB b, Mat src, Mat dst) {
-    (*b)->extractSimpleFeatures(*src, *dst);
+    try {
+        (*b)->extractSimpleFeatures(*src, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 int LearningBasedWB_GetHistBinNum(LearningBasedWB b)  {
-    return (*b)->getHistBinNum();
+    try {
+        return (*b)->getHistBinNum();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0;
+    }
 }
 
 int LearningBasedWB_GetRangeMaxVal(LearningBasedWB b)  {
-    return (*b)->getRangeMaxVal();
+    try {
+        return (*b)->getRangeMaxVal();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0;
+    }
 }
 
 float LearningBasedWB_GetSaturationThreshold(LearningBasedWB b)  {
-    return (*b)->getSaturationThreshold();
+    try {
+        return (*b)->getSaturationThreshold();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 void LearningBasedWB_SetHistBinNum(LearningBasedWB b, int val)  {
-    (*b)->setHistBinNum(val);
+    try {
+        (*b)->setHistBinNum(val);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void LearningBasedWB_SetRangeMaxVal(LearningBasedWB b, int val) {
-    (*b)->setRangeMaxVal(val);
+    try {
+        (*b)->setRangeMaxVal(val);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void LearningBasedWB_SetSaturationThreshold(LearningBasedWB b, float val) {
-    (*b)->setSaturationThreshold(val);
+    try {
+        (*b)->setSaturationThreshold(val);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void LearningBasedWB_BalanceWhite(LearningBasedWB b, Mat src, Mat dst) {
-    (*b)->balanceWhite(*src, *dst);
+    try {
+        (*b)->balanceWhite(*src, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 // ----------------------- SimpleWB -----------------------
 
 
 SimpleWB SimpleWB_Create() {
-    return new cv::Ptr<cv::xphoto::SimpleWB>(cv::xphoto::createSimpleWB());
+    try {
+        return new cv::Ptr<cv::xphoto::SimpleWB>(cv::xphoto::createSimpleWB());
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 void SimpleWB_Close(SimpleWB b) {
@@ -156,71 +235,129 @@ void SimpleWB_Close(SimpleWB b) {
 
 //  Input image range maximum value.
 float SimpleWB_GetInputMax(SimpleWB b) {
-    return (*b)->getInputMax();
+    try {
+        return (*b)->getInputMax();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 //  Input image range minimum value.
 float SimpleWB_GetInputMin(SimpleWB b) {
-    return (*b)->getInputMin();
+    try {
+        return (*b)->getInputMin();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 //  Output image range maximum value.
 float SimpleWB_GetOutputMax(SimpleWB b) {
-    return (*b)->getOutputMax();
+    try {
+        return (*b)->getOutputMax();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 //  Output image range minimum value.
 float SimpleWB_GetOutputMin(SimpleWB b) {
-    return (*b)->getOutputMin();
+    try {
+        return (*b)->getOutputMin();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 //  Percent of top/bottom values to ignore.
 float SimpleWB_GetP(SimpleWB b) {
-    return (*b)->getP();
+    try {
+        return (*b)->getP();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 //  Input image range maximum value.
 void SimpleWB_SetInputMax(SimpleWB b, float val) {
-    return (*b)->setInputMax(val);
+    try {
+        (*b)->setInputMax(val);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 //  Input image range minimum value.
 void SimpleWB_SetInputMin(SimpleWB b, float val) {
-    return (*b)->setInputMin(val);
+    try {
+        (*b)->setInputMin(val);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 //  Output image range maximum value.
 void SimpleWB_SetOutputMax(SimpleWB b, float val) {
-    return (*b)->setOutputMax(val);
+    try {
+        (*b)->setOutputMax(val);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 //  Output image range minimum value.
 void SimpleWB_SetOutputMin(SimpleWB b, float val) {
-    return (*b)->setOutputMin(val);
+    try {
+        (*b)->setOutputMin(val);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 //  Percent of top/bottom values to ignore.
 void SimpleWB_SetP(SimpleWB b, float val) {
-    return (*b)->setP(val);
+    try {
+        (*b)->setP(val);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void SimpleWB_BalanceWhite(SimpleWB b, Mat src, Mat dst) {
-    (*b)->balanceWhite(*src, *dst);
+    try {
+        (*b)->balanceWhite(*src, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
-
 
 // -------------------- TonemapDurand --------------------
 
 // Creates TonemapDurand object. More...
 TonemapDurand TonemapDurand_Create() {
-    return new cv::Ptr<cv::xphoto::TonemapDurand>(cv::xphoto::createTonemapDurand(1.0f, 4.0f, 1.0f,
-            2.0f, 2.0f));
+    try {
+        return new cv::Ptr<cv::xphoto::TonemapDurand>(cv::xphoto::createTonemapDurand(1.0f, 4.0f, 1.0f, 2.0f, 2.0f));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 TonemapDurand TonemapDurand_CreateWithParams(float gamma, float contrast, float saturation,
         float sigma_color, float sigma_space) {
-    return new cv::Ptr<cv::xphoto::TonemapDurand>(cv::xphoto::createTonemapDurand(gamma, contrast,
+
+    try {
+        return new cv::Ptr<cv::xphoto::TonemapDurand>(cv::xphoto::createTonemapDurand(gamma, contrast,
             saturation, sigma_color, sigma_space));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
 }
 
 void TonemapDurand_Close(TonemapDurand b) {
@@ -228,53 +365,120 @@ void TonemapDurand_Close(TonemapDurand b) {
 }
 
 float TonemapDurand_GetContrast(TonemapDurand b) {
-    return (*b)->getContrast();
+    try {
+        return (*b)->getContrast();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
+
 float TonemapDurand_GetSaturation(TonemapDurand b) {
-    return (*b)->getSaturation();
+    try {
+        return (*b)->getSaturation();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
+
 float TonemapDurand_GetSigmaColor(TonemapDurand b) {
-    return (*b)->getSigmaColor();
+    try {
+        return (*b)->getSigmaColor();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
+
 float TonemapDurand_GetSigmaSpace(TonemapDurand b) {
-    return (*b)->getSigmaSpace();
+    try {
+        return (*b)->getSigmaSpace();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 void TonemapDurand_SetContrast(TonemapDurand b, float contrast) {
-    return (*b)->setContrast(contrast);
+    try {
+        (*b)->setContrast(contrast);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
+
 void TonemapDurand_SetSaturation(TonemapDurand b, float saturation) {
-    return (*b)->setSaturation(saturation);
+    try {
+        (*b)->setSaturation(saturation);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
+
 void TonemapDurand_SetSigmaColor(TonemapDurand b, float sigma_color) {
-    return (*b)->setSigmaColor(sigma_color);
+    try {
+        (*b)->setSigmaColor(sigma_color);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
+
 void TonemapDurand_SetSigmaSpace(TonemapDurand b, float sigma_space) {
-    return (*b)->setSigmaSpace(sigma_space);
+    try {
+        (*b)->setSigmaSpace(sigma_space);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 float TonemapDurand_GetGamma(TonemapDurand b) {
-    return (*b)->getGamma();
+    try {
+        return (*b)->getGamma();
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
 }
 
 void TonemapDurand_SetGamma(TonemapDurand b, float gamma) {
-    (*b)->setGamma(gamma);
+    try {
+        (*b)->setGamma(gamma);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void TonemapDurand_Process(TonemapDurand b, Mat src, Mat dst) {
-    (*b)->process(*src, *dst);
+    try {
+        (*b)->process(*src, *dst);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 // -------------------- cv::xphoto::Inpaint --------------------
 
 void Inpaint(Mat src, Mat mask, Mat dst, int algorithmType) {
-    cv::xphoto::inpaint(*src, *mask, *dst, algorithmType);
+    try {
+        cv::xphoto::inpaint(*src, *mask, *dst, algorithmType);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void OilPaintingWithParams(Mat src, Mat dst, int size, int dynRatio, int code) {
-    cv::xphoto::oilPainting(*src, *dst, size, dynRatio, code);
+    try {
+        cv::xphoto::oilPainting(*src, *dst, size, dynRatio, code);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
 
 void OilPainting(Mat src, Mat dst, int size, int dynRatio) {
-    cv::xphoto::oilPainting(*src, *dst, size, dynRatio);
+    try {
+        cv::xphoto::oilPainting(*src, *dst, size, dynRatio);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+    }
 }
