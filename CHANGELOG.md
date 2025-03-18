@@ -1,3 +1,36 @@
+0.41.0
+---
+* **all**
+    - opencv: patch for gstreamer cmake to handle static linking
+- **bugfix**
+    - correct ifndef for wrappers to avoid include conflcts
+    - temporary fix for https://github.com/docker/setup-qemu-action/issues/198
+- **core**
+    - add exception handling functions and try/catch blocks
+    - return error from calls to OpenCV functions that cause exceptions. The error shows the OpenCV exception description from the exception caught.
+- **features2d**
+    - Add BRISK with params support (#1280)
+    - Params for features2d (#1283)
+- **photo**
+    - add Decolor() function
+- **video**
+    - ApplyWithParams for MOG2 bg subtractor (#1284)
+- **build**
+    - add manually launched workflows to build ffmpeg, gstreamer, and opencv docker images
+    - add `Dockerfile.opencv-ubuntu-24.04` for Ubuntu 24.04 support
+    - add `opencv-ubuntu-24-04` step for build img workflow
+- **docker**
+    - add static image with opencv and ffmpeg without gstreamer
+    - gstreamer with a specific set of plugins
+    - use OpenCV patch to build fully static GStreamer with plugins included
+- **docs**
+    - update ROADMAP for some functions that were completed already
+    - Update wrong links in Readme for face detection from URL and find chessboard
+- **make**
+    - add install task for Ubuntu Manic Minotaur using @chewxy PR #1157
+    - update make tasks for jetson based on latest available info
+    - Update Makefile (#1276)
+
 0.40.0
 ---
 * **all**
