@@ -260,3 +260,29 @@ func TestInpaint(t *testing.T) {
 		t.Error("Invalid inpaint test")
 	}
 }
+
+func TestDecolor(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	if img.Empty() {
+		t.Error("Invalid read of Mat in Decolor test")
+	}
+	defer img.Close()
+
+	grey := NewMat()
+	defer grey.Close()
+
+	boost := NewMat()
+	defer boost.Close()
+
+	if err := Decolor(img, &grey, &boost); err != nil {
+		t.Error("Error in Decolor test", err)
+	}
+
+	if grey.Empty() || img.Rows() != grey.Rows() || img.Cols() != grey.Cols() {
+		t.Error("Error in Decolor test")
+	}
+
+	if boost.Empty() || img.Rows() != boost.Rows() || img.Cols() != boost.Cols() {
+		t.Error("Error in Decolor test")
+	}
+}

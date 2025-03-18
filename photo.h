@@ -50,6 +50,7 @@ OpenCVResult PencilSketch(Mat src, Mat dst1, Mat dst2, float sigma_s, float sigm
 OpenCVResult Stylization(Mat src, Mat dst, float sigma_s, float sigma_r);
 
 OpenCVResult PhotoInpaint(Mat src, Mat mask, Mat dst, float inpaint_radius, int algorithm_type);
+OpenCVResult Decolor(Mat src, Mat grey, Mat boost);
 
 #ifdef __cplusplus
 }

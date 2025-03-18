@@ -222,3 +222,12 @@ OpenCVResult PhotoInpaint(Mat src, Mat mask, Mat dst, float inpaint_radius, int 
         return errorResult(e.code, e.what());
     }
 }
+
+OpenCVResult Decolor(Mat src, Mat grey, Mat boost) {
+    try {
+        cv::decolor(*src, *grey, *boost);
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}

@@ -197,7 +197,7 @@ Your pull requests will be greatly appreciated!
     - [ ] [createTonemapDrago](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga72bf92bb6b8653ee4be650ac01cf50b6)
     - [ ] [createTonemapMantiuk](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#ga3b3f3bf083b7515802f039a6a70f2d21)
     - [ ] [createTonemapReinhard](https://docs.opencv.org/master/d6/df5/group__photo__hdr.html#gadabe7f6bf1fa96ad0fd644df9182c2fb)
-    - [ ] [decolor](https://docs.opencv.org/master/d4/d32/group__photo__decolor.html#ga4864d4c007bda5dacdc5e9d4ed7e222c)
+    - [X] [decolor](https://docs.opencv.org/master/d4/d32/group__photo__decolor.html#ga4864d4c007bda5dacdc5e9d4ed7e222c)
 
 - [ ] stitching. Images stitching
     - [ ] [Stitcher](https://docs.opencv.org/4.x/d2/d8d/classcv_1_1Stitcher.html)

@@ -317,3 +317,13 @@ const (
 func Inpaint(src Mat, mask Mat, dst *Mat, inpaintRadius float32, algorithmType InpaintMethods) error {
 	return OpenCVResult(C.PhotoInpaint(C.Mat(src.Ptr()), C.Mat(mask.Ptr()), C.Mat(dst.Ptr()), C.float(inpaintRadius), C.int(algorithmType)))
 }
+
+// Decolor Transforms a color image to a grayscale image.
+// It is a basic tool in digital printing, stylized black-and-white photograph rendering,
+// and in many single channel image processing applications
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d4/d32/group__photo__decolor.html#ga4864d4c007bda5dacdc5e9d4ed7e222c
+func Decolor(src Mat, grey *Mat, boost *Mat) error {
+	return OpenCVResult(C.Decolor(src.p, grey.p, boost.p))
+}
