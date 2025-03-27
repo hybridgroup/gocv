@@ -1,6 +1,6 @@
 //go:build !customenv && opencvstatic && linux
 
-package gocv
+package contrib
 
 // Changes here should be mirrored in contrib/cgo_static.go and cuda/cgo_static.go.
 

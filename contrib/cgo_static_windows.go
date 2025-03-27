@@ -1,6 +1,6 @@
 //go:build !customenv && opencvstatic && windows
 
-package gocv
+package contrib
 
 // Changes here should be mirrored in contrib/cgo_static_windows.go and cuda/cgo_static_windows.go.
 

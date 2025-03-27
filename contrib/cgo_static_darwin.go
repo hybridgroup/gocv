@@ -1,6 +1,6 @@
 //go:build !customenv && opencvstatic && darwin
 
-package gocv
+package contrib
 
 // Changes here should be mirrored in contrib/cgo_static_darwin.go and cuda/cgo_static_darwin.go.
 
