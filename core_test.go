@@ -791,6 +791,21 @@ func TestMatReshape(t *testing.T) {
 	}
 }
 
+func TestMatReshapeWithSize(t *testing.T) {
+	mat := NewMatWithSize(512, 512, MatTypeCV32FC3)
+	defer mat.Close()
+
+	r := mat.ReshapeWithSize(0, []int{512, 512})
+	defer r.Close()
+	if r.Rows() != 512 {
+		t.Errorf("Mat reshape with size incorrect row count: %v\n", r.Rows())
+	}
+
+	if r.Cols() != 512 {
+		t.Errorf("Mat reshape with size incorrect col count: %v\n", r.Cols())
+	}
+}
+
 func TestMatPatchNaNs(t *testing.T) {
 	mat := NewMatWithSize(100, 100, MatTypeCV32F)
 	defer mat.Close()

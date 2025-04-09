@@ -234,6 +234,19 @@ Mat Mat_Reshape(Mat m, int cn, int rows) {
     }
 }
 
+Mat Mat_ReshapeWithSize(Mat m, int cn, struct IntVector dims) {
+    try {
+        std::vector<int> _dims;
+        for (int i = 0, *v = dims.val; i < dims.length; ++v, ++i) {
+            _dims.push_back(*v);
+        }
+        return new cv::Mat(m->reshape(cn, _dims));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
+}
+
 OpenCVResult Mat_PatchNaNs(Mat m) {
     try {
         cv::patchNaNs(*m);

@@ -659,6 +659,24 @@ func (m *Mat) Reshape(cn int, rows int) Mat {
 	return newMat(C.Mat_Reshape(m.p, C.int(cn), C.int(rows)))
 }
 
+// ReshapeWithSize changes the shape and/or the number of channels of a 2D matrix without copying the data.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/d63/classcv_1_1Mat.html#a4eb96e3251417fa88b78e2abd6cfd7d8
+func (m *Mat) ReshapeWithSize(cn int, dims []int) Mat {
+	cDimsArray := make([]C.int, len(dims))
+	for i, ft := range dims {
+		cDimsArray[i] = C.int(ft)
+	}
+
+	cDimsVector := C.IntVector{
+		val:    (*C.int)(&cDimsArray[0]),
+		length: C.int(len(dims)),
+	}
+
+	return newMat(C.Mat_ReshapeWithSize(m.p, C.int(cn), cDimsVector))
+}
+
 // ConvertFp16 converts a Mat to half-precision floating point.
 //
 // For further details, please see:

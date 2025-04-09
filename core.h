@@ -354,6 +354,7 @@ struct ByteArray Mat_ToBytes(Mat m);
 struct ByteArray Mat_DataPtr(Mat m);
 Mat Mat_Region(Mat m, Rect r);
 Mat Mat_Reshape(Mat m, int cn, int rows);
+Mat Mat_ReshapeWithSize(Mat m, int cn, struct IntVector dims);
 OpenCVResult Mat_PatchNaNs(Mat m);
 Mat Mat_ConvertFp16(Mat m);
 Scalar Mat_Mean(Mat m);
