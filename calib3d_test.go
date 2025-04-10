@@ -922,3 +922,96 @@ func TestSolvePnP(t *testing.T) {
 		return
 	}
 }
+
+func TestStereoRectify(t *testing.T) {
+	cameraMatrix1 := NewMatWithSize(3, 3, MatTypeCV64F)
+	defer cameraMatrix1.Close()
+	cameraMatrix1.SetDoubleAt(0, 0, 1679.861998224759)
+	cameraMatrix1.SetDoubleAt(0, 1, 0)
+	cameraMatrix1.SetDoubleAt(0, 2, 1231.158426771668)
+	cameraMatrix1.SetDoubleAt(1, 0, 0)
+	cameraMatrix1.SetDoubleAt(1, 1, 1679.6751024982132)
+	cameraMatrix1.SetDoubleAt(1, 2, 998.4768157307255)
+	cameraMatrix1.SetDoubleAt(2, 0, 0)
+	cameraMatrix1.SetDoubleAt(2, 1, 0)
+	cameraMatrix1.SetDoubleAt(2, 2, 1)
+
+	distCoeffs1 := NewMatWithSize(1, 5, MatTypeCV64F)
+	defer distCoeffs1.Close()
+	distCoeffs1.SetDoubleAt(0, 0, -0.13657891044008158)
+	distCoeffs1.SetDoubleAt(0, 1, 0.08861314898314139)
+	distCoeffs1.SetDoubleAt(0, 2, -0.0006100429198910993)
+	distCoeffs1.SetDoubleAt(0, 3, -0.000146035714553745)
+	distCoeffs1.SetDoubleAt(0, 4, -0.0223854079208295)
+
+	cameraMatrix2 := NewMatWithSize(3, 3, MatTypeCV64F)
+	defer cameraMatrix2.Close()
+	cameraMatrix2.SetDoubleAt(0, 0, 1678.7797594660801)
+	cameraMatrix2.SetDoubleAt(0, 1, 0)
+	cameraMatrix2.SetDoubleAt(0, 2, 1233.9647439048256)
+	cameraMatrix2.SetDoubleAt(1, 0, 0)
+	cameraMatrix2.SetDoubleAt(1, 1, 1679.0176277206788)
+	cameraMatrix2.SetDoubleAt(1, 2, 964.4565768594671)
+	cameraMatrix2.SetDoubleAt(2, 0, 0)
+	cameraMatrix2.SetDoubleAt(2, 1, 0)
+	cameraMatrix2.SetDoubleAt(2, 2, 1)
+
+	distCoeffs2 := NewMatWithSize(1, 5, MatTypeCV64F)
+	defer distCoeffs2.Close()
+	distCoeffs2.SetDoubleAt(0, 0, -0.13690489442431938)
+	distCoeffs2.SetDoubleAt(0, 1, 0.08705821688253863)
+	distCoeffs2.SetDoubleAt(0, 2, 0.001288895752441417)
+	distCoeffs2.SetDoubleAt(0, 3, -5.508164903909865e-05)
+	distCoeffs2.SetDoubleAt(0, 4, -0.02092107478701842)
+
+	R := NewMatWithSize(3, 3, MatTypeCV64F)
+	defer R.Close()
+	R.SetDoubleAt(0, 0, 0.9978384271270464)
+	R.SetDoubleAt(0, 1, 0.06567174227009016)
+	R.SetDoubleAt(0, 2, -0.0023865489378896566)
+	R.SetDoubleAt(1, 0, -0.06567842187628788)
+	R.SetDoubleAt(1, 1, 0.9978368073955511)
+	R.SetDoubleAt(1, 2, -0.002837376692327134)
+	R.SetDoubleAt(2, 0, 0.0021950509020153912)
+	R.SetDoubleAt(2, 1, 0.0029879882638097722)
+	R.SetDoubleAt(2, 2, 0.9999931268152161)
+
+	T := NewMatWithSize(3, 1, MatTypeCV64F)
+	defer T.Close()
+	T.SetDoubleAt(0, 0, -0.1600062730246643)
+	T.SetDoubleAt(1, 0, 0.007804854680409705)
+	T.SetDoubleAt(2, 0, 9.242933249524358e-05)
+
+	R1 := NewMat()
+	defer R1.Close()
+	R2 := NewMat()
+	defer R2.Close()
+	P1 := NewMat()
+	defer P1.Close()
+	P2 := NewMat()
+	defer P2.Close()
+	Q := NewMat()
+	defer Q.Close()
+
+	imageSize := image.Point{X: 2448, Y: 2048}
+	err := StereoRectify(cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, imageSize, R, T, &R1, &R2, &P1, &P2, &Q, CalibFlagPinholeZeroDisparity)
+	if err != nil {
+		t.Errorf("StereoRectify failed: %v", err)
+	}
+
+	if R1.Empty() {
+		t.Error("R1 result is empty")
+	}
+	if R2.Empty() {
+		t.Error("R2 result is empty")
+	}
+	if P1.Empty() {
+		t.Error("P1 result is empty")
+	}
+	if P2.Empty() {
+		t.Error("P2 result is empty")
+	}
+	if Q.Empty() {
+		t.Error("Q result is empty")
+	}
+}

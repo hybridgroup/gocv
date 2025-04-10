@@ -138,7 +138,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [solvePnPRefineLM](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [solvePnPRefineVVS](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [stereoCalibrate](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-        - [ ] [stereoRectify](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+        - [X] [stereoRectify](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [stereoRectifyUncalibrated](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
         - [ ] [validateDisparity](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
 

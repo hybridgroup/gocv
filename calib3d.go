@@ -55,6 +55,39 @@ const (
 	CalibFixPrincipalPoint
 )
 
+// CalibFlagPinhole defines the enumeration values for calibration flags when using the so-called pinhole camera model.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#enum-members
+type CalibFlagPinhole int
+
+const (
+	CalibFlagPinholeNIntrinsic        CalibFlagPinhole = 18
+	CalibFlagPinholeUseIntrinsicGuess CalibFlagPinhole = 0x00001
+	CalibFlagPinholeFixAspectRatio    CalibFlagPinhole = 0x00002
+	CalibFlagPinholeFixPrincipalPoint CalibFlagPinhole = 0x00004
+	CalibFlagPinholeZeroTangentDist   CalibFlagPinhole = 0x00008
+	CalibFlagPinholeFixFocalLength    CalibFlagPinhole = 0x00010
+	CalibFlagPinholeFixK1             CalibFlagPinhole = 0x00020
+	CalibFlagPinholeFixK2             CalibFlagPinhole = 0x00040
+	CalibFlagPinholeFixK3             CalibFlagPinhole = 0x00080
+	CalibFlagPinholeFixK4             CalibFlagPinhole = 0x00800
+	CalibFlagPinholeFixK5             CalibFlagPinhole = 0x01000
+	CalibFlagPinholeFixK6             CalibFlagPinhole = 0x02000
+	CalibFlagPinholeRationalModel     CalibFlagPinhole = 0x04000
+	CalibFlagPinholeThinPrismModel    CalibFlagPinhole = 0x08000
+	CalibFlagPinholeFixS1S2S3S4       CalibFlagPinhole = 0x10000
+	CalibFlagPinholeTiltedModel       CalibFlagPinhole = 0x40000
+	CalibFlagPinholeFixTauxTauy       CalibFlagPinhole = 0x80000
+	CalibFlagPinholeUseQR             CalibFlagPinhole = 0x100000
+	CalibFlagPinholeFixTangentDist    CalibFlagPinhole = 0x200000
+	CalibFlagPinholeFixIntrinsic      CalibFlagPinhole = 0x00100
+	CalibFlagPinholeSameFocalLength   CalibFlagPinhole = 0x00200
+	CalibFlagPinholeZeroDisparity     CalibFlagPinhole = 0x00400
+	CalibFlagPinholeUseLU             CalibFlagPinhole = (1 << 17)
+	CalibFlagPinholeUseExtrinsicGuess CalibFlagPinhole = (1 << 22)
+)
+
 // FisheyeCalibrate performs camera calibration.
 //
 // For further details, please see:
@@ -326,4 +359,16 @@ func Rodrigues(src Mat, dst *Mat) error {
 // https://docs.opencv.org/4.0.0/d9/d0c/group__calib3d.html#ga549c2075fac14829ff4a58bc931c033d
 func SolvePnP(objectPoints Point3fVector, imagePoints Point2fVector, cameraMatrix, distCoeffs Mat, rvec, tvec *Mat, useExtrinsicGuess bool, flags int) bool {
 	return bool(C.SolvePnP(objectPoints.p, imagePoints.p, cameraMatrix.p, distCoeffs.p, rvec.p, tvec.p, C.bool(useExtrinsicGuess), C.int(flags)))
+}
+
+// StereoRectify computes rectification transforms for each head of a calibrated stereo camera.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga617b1685d4059c6040827800e72ad2b6
+func StereoRectify(cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2 Mat, imageSize image.Point, r Mat, t Mat, R1, R2, P1, P2, Q *Mat, flags CalibFlagPinhole) error {
+	sz := C.struct_Size{
+		width:  C.int(imageSize.X),
+		height: C.int(imageSize.Y),
+	}
+	return OpenCVResult(C.StereoRectify(cameraMatrix1.Ptr(), distCoeffs1.Ptr(), cameraMatrix2.Ptr(), distCoeffs2.Ptr(), sz, r.Ptr(), t.Ptr(), R1.Ptr(), R2.Ptr(), P1.Ptr(), P2.Ptr(), Q.Ptr(), C.int(flags)))
 }
