@@ -337,7 +337,7 @@ Your pull requests will be greatly appreciated!
 - [ ] saliency. Saliency API
 - [ ] sfm. Structure From Motion
 - [ ] shape. Shape Distance and Matching
-- [ ] signal. Signal Processing
+- [X] signal. Signal Processing
 - [ ] stereo. Stereo Correspondance Algorithms
 - [ ] structured_light. Structured Light API
 - [ ] superres. Super Resolution
