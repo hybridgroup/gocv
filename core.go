@@ -1570,6 +1570,14 @@ func MeanStdDev(src Mat, dst *Mat, dstStdDev *Mat) error {
 	return OpenCVResult(C.Mat_MeanStdDev(src.p, dst.p, dstStdDev.p))
 }
 
+// MeanStdDevWithMask calculates a mean and standard deviation of array elements while applying the mask.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d2/de8/group__core__array.html#ga846c858f4004d59493d7c6a4354b301d
+func MeanStdDevWithMask(src Mat, dstMean *Mat, dstStdDev *Mat, mask Mat) error {
+	return OpenCVResult(C.Mat_MeanStdDevWithMask(src.p, dstMean.p, dstStdDev.p, mask.p))
+}
+
 // Merge creates one multi-channel array out of several single-channel ones.
 //
 // For further details, please see:

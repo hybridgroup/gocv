@@ -1333,6 +1333,39 @@ func TestMeanStdDev(t *testing.T) {
 	}
 }
 
+func TestMeanStdDevWithMask(t *testing.T) {
+	src := NewMatWithSize(2, 2, MatTypeCV8U)
+	defer src.Close()
+	src.SetUCharAt(0, 0, 0)
+	src.SetUCharAt(0, 1, 0)
+	src.SetUCharAt(1, 0, 60)
+	src.SetUCharAt(1, 1, 60)
+	mask := NewMatWithSize(2, 2, MatTypeCV8U)
+	mask.SetUCharAt(0, 0, 1)
+	mask.SetUCharAt(0, 1, 1)
+	mask.SetUCharAt(1, 0, 1)
+	mask.SetUCharAt(1, 1, 1)
+	defer mask.Close()
+	dstMean := NewMat()
+	defer dstMean.Close()
+	dstStdDev := NewMat()
+	defer dstStdDev.Close()
+
+	MeanStdDevWithMask(src, &dstMean, &dstStdDev, mask)
+	if dstMean.Empty() {
+		t.Error("TestMeanStdDevWithMask dstMean should not be empty.")
+	}
+	if dstStdDev.Empty() {
+		t.Error("TestMeanStdDevWithMask dstStdDev should not be empty.")
+	}
+	if gotMean := dstMean.GetDoubleAt(0, 0); gotMean != 30.0 {
+		t.Errorf("TestMeanStdDevWithMask dstMean got %f, want %f", gotMean, 30.0)
+	}
+	if gotStdDev := dstStdDev.GetDoubleAt(0, 0); gotStdDev != 30.0 {
+		t.Errorf("TestMeanStdDevWithMask dstStdDev got %f, want %f", gotStdDev, 30.0)
+	}
+}
+
 func TestMatMerge(t *testing.T) {
 	src := NewMatWithSize(101, 102, MatTypeCV8U)
 	defer src.Close()

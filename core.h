@@ -469,6 +469,7 @@ double Mat_Mahalanobis(Mat v1, Mat v2, Mat icovar);
 OpenCVResult MulTransposed(Mat src, Mat dest, bool ata);
 OpenCVResult Mat_Max(Mat src1, Mat src2, Mat dst);
 OpenCVResult Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev);
+OpenCVResult Mat_MeanStdDevWithMask(Mat src, Mat dstMean, Mat dstStdDev, Mat mask);
 OpenCVResult Mat_Merge(struct Mats mats, Mat dst);
 OpenCVResult Mat_Min(Mat src1, Mat src2, Mat dst);
 OpenCVResult Mat_MinMaxIdx(Mat m, double* minVal, double* maxVal, int* minIdx, int* maxIdx);

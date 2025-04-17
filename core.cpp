@@ -1039,6 +1039,15 @@ OpenCVResult Mat_MeanStdDev(Mat src, Mat dstMean, Mat dstStdDev) {
     }
 }
 
+OpenCVResult Mat_MeanStdDevWithMask(Mat src, Mat dstMean, Mat dstStdDev, Mat mask) {
+    try {
+        cv::meanStdDev(*src, *dstMean, *dstStdDev, *mask);
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}
+
 OpenCVResult Mat_Merge(struct Mats mats, Mat dst) {
     try {
         std::vector<cv::Mat> images;
