@@ -56,6 +56,52 @@ func (gf *GaussianFilter) ApplyWithStream(img GpuMat, dst *GpuMat, s Stream) err
 	return OpenCVResult(C.GaussianFilter_Apply(C.GaussianFilter(gf.p), img.p, dst.p, s.p))
 }
 
+// MorphologyFilter
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/dc/d66/group__cudafilters.html#gae58694e07be6bdbae126f36c75c08ee6
+type MorphologyFilter struct {
+	p unsafe.Pointer
+}
+
+// NewMorphologyFilter returns a new MorphologyFilter.
+func NewMorphologyFilter(op gocv.MorphType, srcType gocv.MatType, kernel gocv.Mat) MorphologyFilter {
+	return MorphologyFilter{p: unsafe.Pointer(C.CreateMorphologyFilter(C.int(op), C.int(srcType), kernel.Ptr()))}
+}
+
+// NewMorphologyFilterWithParams returns a new MorphologyFilter.
+func NewMorphologyFilterWithParams(op gocv.MorphType, srcType gocv.MatType, kernel gocv.Mat, anchor image.Point, iterations int) MorphologyFilter {
+	pt := C.struct_Point{
+		x: C.int(anchor.X),
+		y: C.int(anchor.Y),
+	}
+	return MorphologyFilter{p: unsafe.Pointer(C.CreateMorphologyFilterWithParams(C.int(op), C.int(srcType), kernel.Ptr(), pt, iterations))}
+}
+
+// Close MorphologyFilter
+func (mf *MorphologyFilter) Close() error {
+	C.MorphologyFilter_Close((C.MorphologyFilter)(mf.p))
+	mf.p = nil
+	return nil
+}
+
+// Apply applies the Morphology filter.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/dc/d2b/classcv_1_1cuda_1_1Filter.html#a20b58d13871027473b4c39cc698cf80f
+func (mf *MorphologyFilter) Apply(img GpuMat, dst *GpuMat) error {
+	return OpenCVResult(C.MorphologyFilter_Apply(C.MorphologyFilter(mf.p), img.p, dst.p, nil))
+}
+
+// ApplyWithStream applies the Morphology filter
+// using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/dc/d2b/classcv_1_1cuda_1_1Filter.html#a20b58d13871027473b4c39cc698cf80f
+func (mf *MorphologyFilter) ApplyWithStream(img GpuMat, dst *GpuMat, s Stream) error {
+	return OpenCVResult(C.MorphologyFilter_Apply(C.MorphologyFilter(mf.p), img.p, dst.p, s.p))
+}
+
 // SobelFilter
 //
 // For further details, please see:

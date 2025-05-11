@@ -25,6 +25,12 @@ GaussianFilter CreateGaussianFilterWithParams(int srcType, int dstType, Size ksi
 void GaussianFilter_Close(GaussianFilter gf);
 OpenCVResult GaussianFilter_Apply(GaussianFilter gf, GpuMat img, GpuMat dst, Stream s);
 
+// MorphologyFilter
+MorphologyFilter CreateMorphologyFilter(int op, int srcType, int dstType, Mat kernel);
+MorphologyFilter CreateMorphologyFilterWithParams(int op, int srcType, Mat kernel, Point anchor, int iterations);
+void MorphologyFilter_Close(MorphologyFilter mf);
+OpenCVResult MorphologyFilter_Apply(MorphologyFilter mf, GpuMat img, GpuMat dst, Stream s);
+
 // SobelFilter
 SobelFilter CreateSobelFilter(int srcType, int dstType, int dx, int dy);
 SobelFilter CreateSobelFilterWithParams(int srcType, int dstType, int dx, int dy, int ksize, double scale, int rowBorderMode, int columnBorderMode);

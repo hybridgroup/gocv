@@ -39,6 +39,43 @@ OpenCVResult GaussianFilter_Apply(GaussianFilter gf, GpuMat img, GpuMat dst, Str
     }
 }
 
+MorphologyFilter CreateMorphologyFilter(int op, int srcType, Mat kernel) {
+    try {
+        return new cv::Ptr<cv::cuda::Filter>(cv::cuda::createMorphologyFilter(op, srcType, kernel));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
+}
+
+MorphologyFilter CreateMorphologyFilterWithParams(int op, int srcType, Mat kernel, Point anchor, int iterations) {
+    try {
+        cv::Point pt(anchor.x, anchor.y);
+        return new cv::Ptr<cv::cuda::Filter>(cv::cuda::createMorphologyFilter(op, srcType, pt, iterations));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return NULL;
+    }
+}
+
+void MorphologyFilter_Close(MorphologyFilter mf) {
+    delete mf;
+}
+
+OpenCVResult MorphologyFilter_Apply(MorphologyFilter mf, GpuMat img, GpuMat dst, Stream s) {
+    try {
+        if (s == NULL) {
+            (*mf)->apply(*img, *dst);
+        } else {
+            (*mf->apply(*img, *dst, *s);
+        }
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}
+
+
 SobelFilter CreateSobelFilter(int srcType, int dstType, int dx, int dy) {
     try {
         return new cv::Ptr<cv::cuda::Filter>(cv::cuda::createSobelFilter(srcType, dstType, dx, dy));
