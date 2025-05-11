@@ -13,9 +13,11 @@ extern "C" {
 
 #ifdef __cplusplus
 typedef cv::Ptr<cv::cuda::Filter>* GaussianFilter;
+typedef cv::Ptr<cv::cuda::Filter>* MorphologyFilter;
 typedef cv::Ptr<cv::cuda::Filter>* SobelFilter;
 #else
 typedef void* GaussianFilter;
+typedef void* MorphologyFilter;
 typedef void* SobelFilter;
 #endif
 
