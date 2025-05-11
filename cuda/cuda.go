@@ -225,6 +225,11 @@ func (m *GpuMat) Type() gocv.MatType {
 	return gocv.MatType(C.GpuMat_Type(m.p))
 }
 
+// Ptr returns the GpuMat's underlying object pointer.
+func (m *GpuMat) Ptr() C.GpuMat {
+	return m.p
+}
+
 // Reshape creates a new GpuMat with the same data
 // but with a different number of channels and/or different number of rows.
 //
