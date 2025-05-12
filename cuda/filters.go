@@ -66,7 +66,7 @@ type MorphologyFilter struct {
 
 // NewMorphologyFilter returns a new MorphologyFilter.
 func NewMorphologyFilter(op gocv.MorphType, srcType gocv.MatType, kernel gocv.Mat) MorphologyFilter {
-	return MorphologyFilter{p: unsafe.Pointer(C.CreateMorphologyFilter(C.int(op), C.int(srcType), kernel.Ptr()))}
+	return MorphologyFilter{p: unsafe.Pointer(C.CreateMorphologyFilter(C.int(op), C.int(srcType), C.Mat(kernel.Ptr())))}
 }
 
 // NewMorphologyFilterWithParams returns a new MorphologyFilter.
@@ -75,7 +75,7 @@ func NewMorphologyFilterWithParams(op gocv.MorphType, srcType gocv.MatType, kern
 		x: C.int(anchor.X),
 		y: C.int(anchor.Y),
 	}
-	return MorphologyFilter{p: unsafe.Pointer(C.CreateMorphologyFilterWithParams(C.int(op), C.int(srcType), kernel.Ptr(), pt, iterations))}
+	return MorphologyFilter{p: unsafe.Pointer(C.CreateMorphologyFilterWithParams(C.int(op), C.int(srcType), C.Mat(kernel.Ptr()), pt, C.int(iterations)))}
 }
 
 // Close MorphologyFilter
