@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_dnn)
+
 #include "dnn.h"
 
 Net Net_ReadNet(const char* model, const char* config) {

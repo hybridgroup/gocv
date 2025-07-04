@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_videoio)
+
 #include <stdexcept>
 #include "videoio.h"
 

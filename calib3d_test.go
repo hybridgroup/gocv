@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_calib3d)
+
 package gocv
 
 import (
@@ -1013,5 +1015,58 @@ func TestStereoRectify(t *testing.T) {
 	}
 	if Q.Empty() {
 		t.Error("Q result is empty")
+	}
+}
+
+func TestFindHomography(t *testing.T) {
+	src := NewMatWithSize(4, 1, MatTypeCV64FC2)
+	defer src.Close()
+	target := NewMatWithSize(4, 1, MatTypeCV64FC2)
+	defer target.Close()
+
+	srcPoints := []Point2f{
+		{193, 932},
+		{191, 378},
+		{1497, 183},
+		{1889, 681},
+	}
+	targetPoints := []Point2f{
+		{51.51206544281359, -0.10425475260813055},
+		{51.51211051314331, -0.10437947532732306},
+		{51.512222354139325, -0.10437679311830816},
+		{51.51214828037607, -0.1042212249954444},
+	}
+
+	for i, point := range srcPoints {
+		src.SetDoubleAt(i, 0, float64(point.X))
+		src.SetDoubleAt(i, 1, float64(point.Y))
+	}
+
+	for i, point := range targetPoints {
+		target.SetDoubleAt(i, 0, float64(point.X))
+		target.SetDoubleAt(i, 1, float64(point.Y))
+	}
+
+	mask := NewMat()
+	defer mask.Close()
+
+	m := FindHomography(src, target, HomographyMethodAllPoints, 3, &mask, 2000, 0.995)
+	defer m.Close()
+
+	pvsrc := NewPoint2fVectorFromPoints(srcPoints)
+	defer pvsrc.Close()
+
+	pvdst := NewPoint2fVectorFromPoints(targetPoints)
+	defer pvdst.Close()
+
+	m2 := GetPerspectiveTransform2f(pvsrc, pvdst)
+	defer m2.Close()
+
+	for row := 0; row < 3; row++ {
+		for col := 0; col < 3; col++ {
+			if math.Abs(m.GetDoubleAt(row, col)-m2.GetDoubleAt(row, col)) > 0.002 {
+				t.Errorf("expected little difference between GetPerspectiveTransform2f and FindHomography results, got %f for row %d col %d", math.Abs(m.GetDoubleAt(row, col)-m2.GetDoubleAt(row, col)), row, col)
+			}
+		}
 	}
 }

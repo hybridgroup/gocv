@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_video)
+
 #include "video.h"
 
 BackgroundSubtractorMOG2 BackgroundSubtractorMOG2_Create() {

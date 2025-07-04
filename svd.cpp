@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_svd)
+
 #include "svd.h"
 
 OpenCVResult SVD_Compute(Mat src, Mat w, Mat u, Mat vt) {

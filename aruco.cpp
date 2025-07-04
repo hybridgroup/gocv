@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_aruco)
+
 #include "aruco.h"
 
 ArucoDetector ArucoDetector_New() {

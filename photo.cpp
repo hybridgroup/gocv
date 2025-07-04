@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_photo)
+
 #include "photo.h"
 
 OpenCVResult ColorChange(Mat src, Mat mask, Mat dst, float red_mul, float green_mul, float blue_mul) {

@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_calib3d)
+
 package gocv
 
 func (c CalibFlag) String() string {

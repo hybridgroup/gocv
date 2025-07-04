@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_photo)
+
 package gocv
 
 func (c SeamlessCloneFlags) String() string {

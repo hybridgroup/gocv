@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_videoio)
+
 package gocv
 
 func (c VideoCaptureAPI) String() string {

@@ -117,7 +117,6 @@ Mat GetPerspectiveTransform(PointVector src, PointVector dst);
 Mat GetPerspectiveTransform2f(Point2fVector src, Point2fVector dst);
 Mat GetAffineTransform(PointVector src, PointVector dst);
 Mat GetAffineTransform2f(Point2fVector src, Point2fVector dst);
-Mat FindHomography(Mat src, Mat dst, int method, double ransacReprojThreshold, Mat mask, const int maxIters, const double confidence) ;
 OpenCVResult DrawContours(Mat src, PointsVector contours, int contourIdx, Scalar color, int thickness);
 OpenCVResult DrawContoursWithParams(Mat src, PointsVector contours, int contourIdx, Scalar color, int thickness, int lineType, Mat hierarchy, int maxLevel, Point offset);
 OpenCVResult Sobel(Mat src, Mat dst, int ddepth, int dx, int dy, int ksize, double scale, double delta, int borderType);

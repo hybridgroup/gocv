@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_calib3d)
+
 #include "calib3d.h"
 
 double Fisheye_Calibrate(Points3fVector objectPoints, Points2fVector imagePoints, Size size, Mat k, Mat d, Mat rvecs, Mat tvecs, int flags) {
@@ -240,5 +242,14 @@ OpenCVResult StereoRectify(Mat cameraMatrix1, Mat distCoeffs1, Mat cameraMatrix2
         return successResult();
     } catch(const cv::Exception& e){
         return errorResult(e.code, e.what());
+    }
+}
+
+Mat FindHomography(Mat src, Mat dst, int method, double ransacReprojThreshold, Mat mask, const int maxIters, const double confidence) {
+    try {
+        return new cv::Mat(cv::findHomography(*src, *dst, method, ransacReprojThreshold, *mask, maxIters, confidence));
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
     }
 }

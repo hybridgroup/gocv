@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_calib3d)
+
 package gocv
 
 /*
@@ -371,4 +373,21 @@ func StereoRectify(cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2 Mat, i
 		height: C.int(imageSize.Y),
 	}
 	return OpenCVResult(C.StereoRectify(cameraMatrix1.Ptr(), distCoeffs1.Ptr(), cameraMatrix2.Ptr(), distCoeffs2.Ptr(), sz, r.Ptr(), t.Ptr(), R1.Ptr(), R2.Ptr(), P1.Ptr(), P2.Ptr(), Q.Ptr(), C.int(flags)))
+}
+
+type HomographyMethod int
+
+const (
+	HomographyMethodAllPoints HomographyMethod = 0
+	HomographyMethodLMEDS     HomographyMethod = 4
+	HomographyMethodRANSAC    HomographyMethod = 8
+	HomographyMethodRHO       HomographyMethod = 16
+)
+
+// FindHomography finds an optimal homography matrix using 4 or more point pairs (as opposed to GetPerspectiveTransform, which uses exactly 4)
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d9/d0c/group__calib3d.html#ga4abc2ece9fab9398f2e560d53c8c9780
+func FindHomography(srcPoints Mat, targetPoints Mat, method HomographyMethod, ransacReprojThreshold float64, mask *Mat, maxIters int, confidence float64) Mat {
+	return newMat(C.FindHomography(srcPoints.Ptr(), targetPoints.Ptr(), C.int(method), C.double(ransacReprojThreshold), mask.Ptr(), C.int(maxIters), C.double(confidence)))
 }

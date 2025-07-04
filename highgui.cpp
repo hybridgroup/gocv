@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_highgui)
+
 #include "highgui_gocv.h"
 
 void Window_SetMouseCallback(char* winname, mouse_callback on_mouse) {
