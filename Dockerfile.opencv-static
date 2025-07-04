@@ -1,17 +1,17 @@
 # OpenCV 4 prebuilt multiarchitecture image
 #
 # To build release:
-#   docker buildx build -f Dockerfile.opencv-static -t ghcr.io/hybridgroup/opencv:4.11.0-static --platform=linux/arm64,linux/amd64 --push .
+#   docker buildx build -f Dockerfile.opencv-static -t ghcr.io/hybridgroup/opencv:4.12.0-static --platform=linux/arm64,linux/amd64 --push .
 #
 # To build prerelease:
-#   docker buildx build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv-static -t ghcr.io/hybridgroup/opencv:4.11.0-static-dev --platform=linux/arm64,linux/amd64 --push .
+#   docker buildx build --build-arg OPENCV_VERSION="4.x" --build-arg OPENCV_FILE="https://github.com/opencv/opencv/archive/refs/heads/4.x.zip" --build-arg OPENCV_CONTRIB_FILE="https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip" -f Dockerfile.opencv-static -t ghcr.io/hybridgroup/opencv:4.12.0-static-dev --platform=linux/arm64,linux/amd64 --push .
 
 
 ###################
 # amd64 build stage
 ###################
 
-FROM --platform=linux/amd64 golang:1.22-bullseye AS opencv-base-amd64
+FROM --platform=linux/amd64 golang:1.24-bullseye AS opencv-base-amd64
 LABEL maintainer="hybridgroup"
 RUN apt-get update && apt-get -y install \
       autoconf automake libass-dev libgnutls28-dev \
@@ -26,10 +26,10 @@ RUN apt-get update && apt-get -y install \
       nasm && \
       rm -rf /var/lib/apt/lists/*
 
-RUN wget -O ffmpeg-5.0.tar.bz2 "https://www.ffmpeg.org/releases/ffmpeg-5.0.3.tar.bz2" && \
+RUN wget -O ffmpeg-5.0.tar.bz2 "https://www.ffmpeg.org/releases/ffmpeg-5.1.6.tar.bz2" && \
       tar -xf ffmpeg-5.0.tar.bz2
 
-RUN cd ffmpeg-5.0.3 && \
+RUN cd ffmpeg-5.1.6 && \
       ./configure --pkg-config-flags="--static" \
       --enable-static --disable-shared --enable-gpl --enable-libx264 --enable-libvpx --enable-zlib \
       --disable-sdl2 --disable-vaapi --disable-vdpau --disable-v4l2-m2m --disable-doc && \
@@ -37,7 +37,7 @@ RUN cd ffmpeg-5.0.3 && \
 
 FROM --platform=linux/amd64 opencv-base-amd64 AS opencv-build-amd64
 
-ARG OPENCV_VERSION="4.11.0"
+ARG OPENCV_VERSION="4.12.0"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 ARG OPENCV_FILE="https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip"
@@ -92,7 +92,7 @@ RUN cd opencv-${OPENCV_VERSION} && \
       -D BUILD_opencv_python2=NO \
       -D BUILD_opencv_python3=NO \
       -D OPENCV_GENERATE_PKGCONFIG=ON .. && \
-      make -j $(nproc --all) && \
+      make -j $(( $(nproc) - 1 )) && \
       make preinstall && make install && ldconfig && \
       cd / && rm -rf opencv*
 
@@ -100,7 +100,7 @@ RUN cd opencv-${OPENCV_VERSION} && \
 # arm64 build stage
 ###################
 
-FROM --platform=linux/arm64 golang:1.22-bullseye AS opencv-base-arm64
+FROM --platform=linux/arm64 golang:1.24-bullseye AS opencv-base-arm64
 LABEL maintainer="hybridgroup"
 RUN apt-get update && apt-get -y install \
       autoconf automake libass-dev libgnutls28-dev \
@@ -115,10 +115,10 @@ RUN apt-get update && apt-get -y install \
       nasm && \
       rm -rf /var/lib/apt/lists/*
 
-RUN wget -O ffmpeg-5.0.tar.bz2 "https://www.ffmpeg.org/releases/ffmpeg-5.0.3.tar.bz2" && \
+RUN wget -O ffmpeg-5.0.tar.bz2 "https://www.ffmpeg.org/releases/ffmpeg-5.1.6.tar.bz2" && \
       tar -xf ffmpeg-5.0.tar.bz2
 
-RUN cd ffmpeg-5.0.3 && \
+RUN cd ffmpeg-5.1.6 && \
       ./configure --pkg-config-flags="--static" \
       --enable-static --disable-shared --enable-gpl --enable-libx264 --enable-libvpx --enable-zlib \
       --disable-sdl2 --disable-vaapi --disable-vdpau --disable-v4l2-m2m --disable-doc && \
@@ -126,7 +126,7 @@ RUN cd ffmpeg-5.0.3 && \
 
 FROM --platform=linux/arm64 opencv-base-arm64 AS opencv-build-arm64
 
-ARG OPENCV_VERSION="4.11.0"
+ARG OPENCV_VERSION="4.12.0"
 ENV OPENCV_VERSION $OPENCV_VERSION
 
 ARG OPENCV_FILE="https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip"
@@ -180,7 +180,7 @@ RUN cd opencv-${OPENCV_VERSION} && \
       -D BUILD_opencv_python2=NO \
       -D BUILD_opencv_python3=NO \
       -D OPENCV_GENERATE_PKGCONFIG=ON .. && \
-      make -j $(nproc --all) && \
+      make -j $(( $(nproc) - 1 )) && \
       make preinstall && make install && ldconfig && \
       cd / && rm -rf opencv*
 

@@ -11,7 +11,7 @@ FROM --platform=linux/amd64 ghcr.io/hybridgroup/gstreamer:1.24-alpine AS gstream
 FROM --platform=linux/amd64 ghcr.io/hybridgroup/ffmpeg:5.16-alpine AS builder-amd64
 
 # Set OpenCV version
-ARG OPENCV_VERSION=4.11.0
+ARG OPENCV_VERSION=4.12.0
 
 # Download OpenCV source code
 WORKDIR /opencv
@@ -109,7 +109,7 @@ FROM --platform=linux/arm64 ghcr.io/hybridgroup/gstreamer:1.24-alpine AS gstream
 FROM --platform=linux/arm64 ghcr.io/hybridgroup/ffmpeg:5.16-alpine AS builder-arm64
 
 # Set OpenCV version
-ARG OPENCV_VERSION=4.11.0
+ARG OPENCV_VERSION=4.12.0
 
 # Download OpenCV source code
 WORKDIR /opencv
