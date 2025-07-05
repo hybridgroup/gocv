@@ -29,8 +29,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/opencv:4.11.0-alpine-ffmpeg-gstreamer
-            ghcr.io/${{ github.repository_owner }}/opencv:4.11.0-alpine-ffmpeg-gstreamer
+            gocv/opencv:4.12.0-alpine-ffmpeg-gstreamer
+            ghcr.io/${{ github.repository_owner }}/opencv:4.12.0-alpine-ffmpeg-gstreamer
           tags: |
             type=sha,format=long
             type=raw,value=latest
@@ -53,8 +53,8 @@ jobs:
           context: .
           push: true
           tags: |
-            gocv/opencv:4.11.0-alpine-ffmpeg-gstreamer
-            ghcr.io/${{ github.repository_owner }}/opencv:4.11.0-alpine-ffmpeg-gstreamer
+            gocv/opencv:4.12.0-alpine-ffmpeg-gstreamer
+            ghcr.io/${{ github.repository_owner }}/opencv:4.12.0-alpine-ffmpeg-gstreamer
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
