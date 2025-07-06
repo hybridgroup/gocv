@@ -190,6 +190,31 @@ void TrackerGOTURN_Close(TrackerGOTURN tr) {
     delete tr;
 }
 
+TrackerVit TrackerVit_Create() {
+    try {
+		return new cv::Ptr<cv::TrackerVit>(cv::TrackerVit::create());
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+		return NULL;
+    }
+}
+
+TrackerVit TrackerVit_CreateWithParams(const char* model){
+    try {
+		cv::TrackerVit::Params params;
+		params.net = model;
+	  
+		return new cv::Ptr<cv::TrackerVit>(cv::TrackerVit::create(params));
+	} catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+		return NULL;
+    }
+}
+
+void TrackerVit_Close(TrackerVit self) {
+    delete self;
+}
+
 KalmanFilter KalmanFilter_New(int dynamParams, int measureParams) {
     try {
 		return new cv::KalmanFilter(dynamParams, measureParams, 0, CV_32F);

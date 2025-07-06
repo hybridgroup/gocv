@@ -362,6 +362,7 @@ download_onnx_testdata: create_testdata_dir
 	curl -sL https://github.com/onnx/models/raw/main/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx > ./testdata/googlenet-9.onnx
 	curl -sL https://github.com/opencv/opencv_zoo/raw/refs/heads/main/models/face_recognition_sface/face_recognition_sface_2021dec.onnx > ./testdata/face_recognition_sface_2021dec.onnx
 	curl -sL https://github.com/opencv/opencv_zoo/raw/refs/heads/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx > ./testdata/face_detection_yunet_2023mar.onnx
+	curl -sL https://github.com/opencv/opencv_zoo/raw/refs/heads/main/models/object_tracking_vittrack/object_tracking_vittrack_2023sep.onnx > ./testdata/object_tracking_vittrack_2023sep.onnx
 
 download_goturn_testdata: create_testdata_dir
 	curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.prototxt > ./testdata/goturn.prototxt

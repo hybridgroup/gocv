@@ -15,6 +15,7 @@ typedef cv::Ptr<cv::BackgroundSubtractorKNN>* BackgroundSubtractorKNN;
 typedef cv::Ptr<cv::Tracker>* Tracker;
 typedef cv::Ptr<cv::TrackerMIL>* TrackerMIL;
 typedef cv::Ptr<cv::TrackerGOTURN>* TrackerGOTURN;
+typedef cv::Ptr<cv::TrackerVit>* TrackerVit;
 typedef cv::KalmanFilter* KalmanFilter;
 #else
 typedef void* BackgroundSubtractorMOG2;
@@ -22,6 +23,7 @@ typedef void* BackgroundSubtractorKNN;
 typedef void* Tracker;
 typedef void* TrackerMIL;
 typedef void* TrackerGOTURN;
+typedef void* TrackerVit;
 typedef void* KalmanFilter;
 #endif
 
@@ -53,6 +55,10 @@ void TrackerMIL_Close(TrackerMIL self);
 TrackerGOTURN TrackerGOTURN_Create(void);
 TrackerGOTURN TrackerGOTURN_CreateWithParams(const char* modelBin, const char* modelTxt);
 void TrackerGOTURN_Close(TrackerGOTURN tr);
+
+TrackerVit TrackerVit_Create();
+TrackerVit TrackerVit_CreateWithParams(const char* model);
+void TrackerVit_Close(TrackerVit self);
 
 KalmanFilter KalmanFilter_New(int dynamParams, int measureParams);
 KalmanFilter KalmanFilter_NewWithParams(int dynamParams, int measureParams, int controlParams, int type);
