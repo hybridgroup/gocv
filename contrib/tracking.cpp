@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_contrib_tracking)
+
 #include "tracking.h"
 #include <opencv2/opencv.hpp>
 

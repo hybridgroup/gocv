@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_contrib_img_hash)
+
 #include "img_hash.h"
 
 void pHashCompute(Mat inputArr, Mat outputArr) {

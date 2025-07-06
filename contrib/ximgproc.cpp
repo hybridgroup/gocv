@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_contrib_ximgproc)
+
 #include "ximgproc.h"
 
 OpenCVResult anisotropicDiffusion(Mat src, Mat dst, float alpha, float K, int niters) {

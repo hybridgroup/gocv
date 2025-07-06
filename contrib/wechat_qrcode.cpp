@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_contrib_wechat_qrcode)
+
 #include "wechat_qrcode.h"
 
 WeChatQRCode NewWeChatQRCode(const char *detector_prototxt_path,

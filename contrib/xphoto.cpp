@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_contrib_xphoto)
+
 #include "xphoto.h"
 
 OpenCVResult Xphoto_ApplyChannelGains(Mat src, Mat dst, float gainB, float gainG, float gainR) {

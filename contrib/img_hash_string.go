@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_contrib_img_hash)
+
 package contrib
 
 func (c BlockMeanHashMode) String() string {

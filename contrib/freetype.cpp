@@ -1,3 +1,4 @@
+//go:build linux && (!gocv_specific_modules || (gocv_specific_modules && gocv_contrib_freetype))
 
 #ifndef _WIN32  // Exclude compiling on Windows platforms
 

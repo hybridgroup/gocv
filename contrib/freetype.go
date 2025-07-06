@@ -1,4 +1,4 @@
-//go:build linux
+//go:build linux && (!gocv_specific_modules || (gocv_specific_modules && gocv_contrib_freetype))
 
 package contrib
 
