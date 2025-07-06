@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_cuda_warping)
+
 #include "warping.h"
 
 OpenCVResult CudaResize(GpuMat src, GpuMat dst, Size dsize, double fx, double fy, int interp, Stream s) {

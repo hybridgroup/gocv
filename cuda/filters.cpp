@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_cuda_filters)
+
 #include "../core.h"
 #include "filters.h"
 #include <string.h>

@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_cuda_arithm)
+
 #include "../core.h"
 #include "arithm.h"
 #include <string.h>

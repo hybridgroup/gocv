@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_cuda_bgsegm)
+
 #include "bgsegm.h"
 
 CudaBackgroundSubtractorMOG2 CudaBackgroundSubtractorMOG2_Create() {

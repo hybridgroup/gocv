@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_cuda_optflow)
+
 #include "optflow.h"
 
 CudaSparsePyrLKOpticalFlow CudaSparsePyrLKOpticalFlow_Create() {

@@ -1,3 +1,5 @@
+//go:build !gocv_specific_modules || (gocv_specific_modules && gocv_cuda_objdetect)
+
 // Package cuda is the GoCV wrapper around OpenCV cuda.
 //
 // For further details, please see:
