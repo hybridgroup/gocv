@@ -833,3 +833,144 @@ func TestSplitWithStream(t *testing.T) {
 	SplitWithStream(m, mats, s)
 	s.WaitForCompletion()
 }
+
+func TestCalcNorm(t *testing.T) {
+	src := gocv.IMRead("../images/chessboard_4x6_distort_correct.png", gocv.IMReadGrayScale)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in CalcNorm test")
+	}
+	defer src.Close()
+
+	var cimg, dimg = NewGpuMat(), NewGpuMat()
+	defer cimg.Close()
+	defer dimg.Close()
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	cimg.Upload(src)
+	CalcNorm(cimg, dimg, gocv.NormL2)
+	dimg.Download(&dest)
+
+	if dest.Empty() {
+		t.Error("Invalid CalcNorm test")
+	}
+}
+
+func TestCalcNormWithStream(t *testing.T) {
+	src := gocv.IMRead("../images/chessboard_4x6_distort_correct.png", gocv.IMReadGrayScale)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in CalcNorm test")
+	}
+	defer src.Close()
+
+	var cimg, dimg, s = NewGpuMat(), NewGpuMat(), NewStream()
+	defer cimg.Close()
+	defer dimg.Close()
+	defer s.Close()
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	cimg.UploadWithStream(src, s)
+	CalcNormWithStream(cimg, dimg, gocv.NormL2, s)
+	dimg.DownloadWithStream(&dest, s)
+
+	s.WaitForCompletion()
+
+	if dest.Empty() {
+		t.Error("Invalid CalcNormWithStream test")
+	}
+}
+
+func TestCalcNormDiff(t *testing.T) {
+	src1 := gocv.IMRead("../images/chessboard_4x6_distort_correct.png", gocv.IMReadGrayScale)
+	if src1.Empty() {
+		t.Error("Invalid read of Mat in CalcNormDiff test")
+	}
+	defer src1.Close()
+
+	src2 := gocv.IMRead("../images/chessboard_4x6_distort.png", gocv.IMReadGrayScale)
+	if src2.Empty() {
+		t.Error("Invalid read of Mat in CalcNormDiff test")
+	}
+	defer src2.Close()
+
+	var cimg1, cimg2, dimg = NewGpuMat(), NewGpuMat(), NewGpuMat()
+	defer cimg1.Close()
+	defer cimg2.Close()
+	defer dimg.Close()
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	cimg1.Upload(src1)
+	cimg2.Upload(src2)
+	CalcNormDiff(cimg1, cimg2, dimg, gocv.NormL2)
+	dimg.Download(&dest)
+
+	if dest.Empty() {
+		t.Error("Invalid CalcNormDiff test")
+	}
+}
+
+func TestCalcNormDiffWithStream(t *testing.T) {
+	src1 := gocv.IMRead("../images/chessboard_4x6_distort_correct.png", gocv.IMReadGrayScale)
+	if src1.Empty() {
+		t.Error("Invalid read of Mat in CalcNormDiff test")
+	}
+	defer src1.Close()
+
+	src2 := gocv.IMRead("../images/chessboard_4x6_distort.png", gocv.IMReadGrayScale)
+	if src2.Empty() {
+		t.Error("Invalid read of Mat in CalcNormDiff test")
+	}
+	defer src2.Close()
+
+	var cimg1, cimg2, dimg, s = NewGpuMat(), NewGpuMat(), NewGpuMat(), NewStream()
+	defer cimg1.Close()
+	defer cimg2.Close()
+	defer dimg.Close()
+	defer s.Close()
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	cimg1.UploadWithStream(src1, s)
+	cimg2.UploadWithStream(src2, s)
+	CalcNormDiffWithStream(cimg1, cimg2, dimg, gocv.NormL2, s)
+	dimg.DownloadWithStream(&dest, s)
+
+	s.WaitForCompletion()
+
+	if dest.Empty() {
+		t.Error("Invalid CalcNormWithStream test")
+	}
+}
+
+func TestNorm(t *testing.T) {
+	src1 := gocv.IMRead("../images/chessboard_4x6_distort_correct.png", gocv.IMReadGrayScale)
+	if src1.Empty() {
+		t.Error("Invalid read of Mat in Norm test")
+	}
+	defer src1.Close()
+
+	src2 := gocv.IMRead("../images/chessboard_4x6_distort.png", gocv.IMReadGrayScale)
+	if src2.Empty() {
+		t.Error("Invalid read of Mat in Norm test")
+	}
+	defer src2.Close()
+
+	var cimg1, cimg2 = NewGpuMat(), NewGpuMat()
+	defer cimg1.Close()
+	defer cimg2.Close()
+
+	cimg1.Upload(src1)
+	cimg2.Upload(src2)
+
+	result := Norm(cimg1, cimg2, gocv.NormL2)
+
+	if result == 0 {
+		t.Error("Invalid Norm test")
+	}
+}

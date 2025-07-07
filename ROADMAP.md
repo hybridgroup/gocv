@@ -97,7 +97,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [SparsePyrLKOpticalFlow](https://docs.opencv.org/4.x/d7/d08/classcv_1_1SparsePyrLKOpticalFlow.html)
         - [ ] [TrackerDaSiamRPN](https://docs.opencv.org/4.x/de/d93/classcv_1_1TrackerDaSiamRPN.html)
         - [ ] [TrackerNano](https://docs.opencv.org/4.x/d8/d69/classcv_1_1TrackerNano.html)
-        - [ ] [TrackerVit](https://docs.opencv.org/4.x/d9/d26/classcv_1_1TrackerVit.html)
+        - [X] [TrackerVit](https://docs.opencv.org/4.x/d9/d26/classcv_1_1TrackerVit.html)
 
 - [ ] **calib3d. Camera Calibration and 3D Reconstruction - WORK STARTED**. The following functions still need implementation:
     - [ ] **Camera Calibration - WORK STARTED** The following functions still need implementation:
@@ -226,8 +226,8 @@ Your pull requests will be greatly appreciated!
     - [ ] **matrix reductions - WORK STARTED** The following functions still need implementation:
         - [ ] [cv::cuda::absSum](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga690fa79ba4426c53f7d2bebf3d37a32a)
         - [ ] [cv::cuda::calcAbsSum](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga15c403b76ab2c4d7ed0f5edc09891b7e)
-        - [ ] [cv::cuda::calcNorm](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga39d2826990d29b7e4b69dbe02bdae2e1)
-        - [ ] [cv::cuda::calcNormDiff](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga9be3d9a7b6c5760955f37d1039d01265)
+        - [X] [cv::cuda::calcNorm](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga39d2826990d29b7e4b69dbe02bdae2e1)
+        - [X] [cv::cuda::calcNormDiff](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga9be3d9a7b6c5760955f37d1039d01265)
         - [ ] [cv::cuda::calcSqrSum](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#gac998c83597f6c206c78cee16aa87946f)
         - [ ] [cv::cuda::calcSum](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga98a09144047f09f5cb1d6b6ea8e0856f)
         - [ ] [cv::cuda::countNonZero](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga98a09144047f09f5cb1d6b6ea8e0856f)
@@ -237,7 +237,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [cv::cuda::meanStdDev](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga990a4db4c6d7e8f0f3a6685ba48fbddc)
         - [ ] [cv::cuda::minMax](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga8d7de68c10717cf25e787e3c20d2dfee)
         - [ ] [cv::cuda::minMaxLoc](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga5cacbc2a2323c4eaa81e7390c5d9f530)
-        - [ ] [cv::cuda::norm](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga6c01988a58d92126a7c60a4ab76d8324)
+        - [X] [cv::cuda::norm](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga6c01988a58d92126a7c60a4ab76d8324)
         - [ ] [cv::cuda::normalize](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga4da4738b9956a5baaa2f5f8c2fba438a)
         - [ ] [cv::cuda::rectStdDev](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#gac311484a4e57cab2ce2cfdc195fda7ee)
         - [ ] [cv::cuda::reduce](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga21d57f661db7be093caf2c4378be2007)

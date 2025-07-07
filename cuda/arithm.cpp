@@ -353,3 +353,38 @@ OpenCVResult Cuda_Split(GpuMat src, GpuMats dst, Stream s) {
         return errorResult(e.code, e.what());
     }
 }
+
+OpenCVResult GpuCalcNorm(GpuMat src, GpuMat dst, int typ, Stream s) {
+    try {
+        if (s == NULL) {
+            cv::cuda::calcNorm(*src, *dst, typ);
+        } else {
+            cv::cuda::calcNorm(*src, *dst, typ, cv::noArray(), *s);
+        }
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}
+
+OpenCVResult GpuCalcNormDiff(GpuMat src1, GpuMat src2, GpuMat dst, int typ, Stream s) {
+    try {
+        if (s == NULL) {
+            cv::cuda::calcNormDiff(*src1, *src2, *dst, typ);
+        } else {
+            cv::cuda::calcNormDiff(*src1, *src2, *dst, typ, *s);
+        }
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}
+
+double GpuNorm(GpuMat src1, GpuMat src2, int typ) {
+    try {
+        return cv::cuda::norm(*src1, *src2, typ);
+    } catch(const cv::Exception& e) {
+        setExceptionInfo(e.code, e.what());
+        return 0.0;
+    }
+}

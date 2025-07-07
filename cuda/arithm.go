@@ -529,3 +529,43 @@ func SplitWithStream(src GpuMat, dst []GpuMat, s Stream) error {
 
 	return OpenCVResult(C.Cuda_Split(src.p, c_dstv, s.p))
 }
+
+// CalcNorm calculates the norm of a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga39d2826990d29b7e4b69dbe02bdae2e1
+func CalcNorm(src, dst GpuMat, normType gocv.NormType) error {
+	return OpenCVResult(C.GpuCalcNorm(src.p, dst.p, C.int(normType), nil))
+}
+
+// CalcNormWithStream calculates the norm of a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga39d2826990d29b7e4b69dbe02bdae2e1
+func CalcNormWithStream(src, dst GpuMat, normType gocv.NormType, s Stream) error {
+	return OpenCVResult(C.GpuCalcNorm(src.p, dst.p, C.int(normType), s.p))
+}
+
+// CalcNormDiff calculates the norm of a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga9be3d9a7b6c5760955f37d1039d01265
+func CalcNormDiff(src1, src2, dst GpuMat, normType gocv.NormType) error {
+	return OpenCVResult(C.GpuCalcNormDiff(src1.p, src2.p, dst.p, C.int(normType), nil))
+}
+
+// CalcNormDiffWithStream calculates the norm of a matrix.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga9be3d9a7b6c5760955f37d1039d01265
+func CalcNormDiffWithStream(src1, src2, dst GpuMat, normType gocv.NormType, s Stream) error {
+	return OpenCVResult(C.GpuCalcNormDiff(src1.p, src2.p, dst.p, C.int(normType), s.p))
+}
+
+// Norm returns the difference of two matrices.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga48b6298589b80a6915d076e2dcdbd11b
+func Norm(src1, src2 GpuMat, normType gocv.NormType) float64 {
+	return float64(C.GpuNorm(src1.p, src2.p, C.int(normType)))
+}

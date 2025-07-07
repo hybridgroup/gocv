@@ -39,6 +39,9 @@ OpenCVResult GpuMerge(struct GpuMats mats, GpuMat dst, Stream s);
 OpenCVResult GpuTranspose(GpuMat src, GpuMat dst, Stream s);
 OpenCVResult GpuAddWeighted(GpuMat src1, double alpha, GpuMat src2, double beta, double gamma, GpuMat dst, int dType, Stream s);
 OpenCVResult GpuCopyMakeBorder(GpuMat src, GpuMat dst, int top, int bottom, int left, int right, int borderType, Scalar value, Stream s);
+OpenCVResult GpuCalcNorm(GpuMat src, GpuMat dst, int typ, Stream s);
+OpenCVResult GpuCalcNormDiff(GpuMat src1, GpuMat src2, GpuMat dst, int typ, Stream s);
+double GpuNorm(GpuMat src1, GpuMat src2, int typ);
 
 //LookUpTable
 LookUpTable Cuda_Create_LookUpTable(GpuMat lut);
