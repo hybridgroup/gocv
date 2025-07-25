@@ -30,7 +30,6 @@ Your pull requests will be greatly appreciated!
         - [ ] [buildPyramid](https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html#gacfdda2bc1ac55e96de7e9f0bce7238c0)
         - [ ] [getDerivKernels](https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html#ga6d6c23f7bd3f5836c31cfae994fc4aea)
         - [ ] [getGaborKernel](https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html#gae84c92d248183bd92fa713ce51cc3599)
-        - [X] [morphologyExWithParams](https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html#ga67493776e3ad1a3df63883829375201f)
         - [ ] [pyrMeanShiftFiltering](https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html#ga9fabdce9543bd602445f5db3827e4cc0)
 
     - [ ] **Geometric Image Transformations - WORK STARTED** The following functions still need implementation:
@@ -43,7 +42,6 @@ Your pull requests will be greatly appreciated!
     - [ ] **Miscellaneous Image Transformations - WORK STARTED** The following functions still need implementation:
         - [ ] [blendLinear](https://docs.opencv.org/4.x/d7/d1b/group__imgproc__misc.html#ga5e76540a679333d7c6cd0617c452c23d)
         - [ ] [cvtColorTwoPlane](https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html#ga8d4cb64f7c6f03cc2b1f2356734b909d)
-        - [X] [demosaicing](https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html#ga57261f12fccf872a2b2d66daf29d5bd0)
         - [ ] [floodFill](https://docs.opencv.org/4.x/d7/d1b/group__imgproc__misc.html#ga366aae45a6c1289b341d140839f18717)
 
     - [ ] **Drawing Functions - WORK STARTED** The following functions still need implementation:
@@ -53,14 +51,12 @@ Your pull requests will be greatly appreciated!
         - [ ] [getFontScaleFromHeight](https://docs.opencv.org/4.x/d6/d6e/group__imgproc__draw.html#ga442ff925c1a957794a1309e0ed3ba2c3)
 
     - [X] **ColorMaps in OpenCV**
-        - [X] [applyColorMap](https://docs.opencv.org/4.10.0/d3/d50/group__imgproc__colormap.html#gacb22288ddccc55f9bd9e6d492b409cae)
 
     - [ ] Planar Subdivision
         - [ ] [Subdiv2D](https://docs.opencv.org/4.10.0/df/dbf/classcv_1_1Subdiv2D.html)
 
     - [X] **Histograms**
     - [ ] **Structural Analysis and Shape Descriptors - WORK STARTED** The following functions still need implementation:
-        - [X] [fitEllipse](https://docs.opencv.org/4.x/d3/dc0/group__imgproc__shape.html#gaf259efaad93098103d6c27b9e4900ffa)
         - [ ] [fitEllipseAMS](https://docs.opencv.org/4.x/d3/dc0/group__imgproc__shape.html#ga69e90cda55c4e192a8caa0b99c3e4550)
         - [ ] [fitEllipseDirect](https://docs.opencv.org/4.x/d3/dc0/group__imgproc__shape.html#ga6421884fd411923a74891998bbe9e813)
         - [ ] [HuMoments](https://docs.opencv.org/4.x/d3/dc0/group__imgproc__shape.html#gab001db45c1f1af6cbdbe64df04c4e944)
@@ -80,9 +76,7 @@ Your pull requests will be greatly appreciated!
     - [X] **Object Detection**
 
 - [X] **imgcodecs. Image file reading and writing.**
-- [X] **videoio. Video I/O - WORK STARTED**
-    - [X] VideoWriterWithGStreamer
-
+- [X] **videoio. Video I/O**
 - [X] **highgui. High-level GUI**
 - [ ] **video. Video Analysis - WORK STARTED**
     - [X] **Motion Analysis**
@@ -97,7 +91,6 @@ Your pull requests will be greatly appreciated!
         - [ ] [SparsePyrLKOpticalFlow](https://docs.opencv.org/4.x/d7/d08/classcv_1_1SparsePyrLKOpticalFlow.html)
         - [ ] [TrackerDaSiamRPN](https://docs.opencv.org/4.x/de/d93/classcv_1_1TrackerDaSiamRPN.html)
         - [ ] [TrackerNano](https://docs.opencv.org/4.x/d8/d69/classcv_1_1TrackerNano.html)
-        - [X] [TrackerVit](https://docs.opencv.org/4.x/d9/d26/classcv_1_1TrackerVit.html)
 
 - [ ] **calib3d. Camera Calibration and 3D Reconstruction - WORK STARTED**. The following functions still need implementation:
     - [ ] **Camera Calibration - WORK STARTED** The following functions still need implementation:
@@ -141,7 +134,6 @@ Your pull requests will be greatly appreciated!
         - [ ] [solvePnPRefineLM](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html)
         - [ ] [solvePnPRefineVVS](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html)
         - [ ] [stereoCalibrate](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html)
-        - [X] [stereoRectify](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html)
         - [ ] [stereoRectifyUncalibrated](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html)
         - [ ] [validateDisparity](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html)
 
@@ -190,7 +182,6 @@ Your pull requests will be greatly appreciated!
     - [ ] [hierarchicalClustering](https://docs.opencv.org/4.x/dc/de5/group__flann.html#gaf89c8914eb439855c9a24c3de01bfd82)
 
 - [ ] **photo. Computational Photography - WORK STARTED** The following functions still need implementation:
-    - [X] [inpaint](https://docs.opencv.org/4.x/d7/d8b/group__photo__inpaint.html#gaedd30dfa0214fec4c88138b51d678085)
     - [ ] [denoise_TVL1](https://docs.opencv.org/4.x/d1/d79/group__photo__denoise.html#ga7602ed5ae17b7de40152b922227c4e4f)
     - [ ] [createCalibrateDebevec](https://docs.opencv.org/4.x/d6/df5/group__photo__hdr.html#ga7fed9707ad5f2cc0e633888867109f90)
     - [ ] [createCalibrateRobertson](https://docs.opencv.org/4.x/d6/df5/group__photo__hdr.html#gae77813a21cd351a596619e5ff013be5d)
@@ -200,7 +191,6 @@ Your pull requests will be greatly appreciated!
     - [ ] [createTonemapDrago](https://docs.opencv.org/4.x/d6/df5/group__photo__hdr.html#ga72bf92bb6b8653ee4be650ac01cf50b6)
     - [ ] [createTonemapMantiuk](https://docs.opencv.org/4.x/d6/df5/group__photo__hdr.html#ga3b3f3bf083b7515802f039a6a70f2d21)
     - [ ] [createTonemapReinhard](https://docs.opencv.org/4.x/d6/df5/group__photo__hdr.html#gadabe7f6bf1fa96ad0fd644df9182c2fb)
-    - [X] [decolor](https://docs.opencv.org/4.x/d4/d32/group__photo__decolor.html#ga4864d4c007bda5dacdc5e9d4ed7e222c)
 
 - [ ] stitching. Images stitching
     - [ ] [Stitcher](https://docs.opencv.org/4.x/d2/d8d/classcv_1_1Stitcher.html)
@@ -213,21 +203,16 @@ Your pull requests will be greatly appreciated!
     - [X] **core**
     - [ ] **per-element operations - WORK STARTED** The following functions still need implementation:
         - [ ] [cv::cuda::cartToPolar](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga82210c7d1c1d42e616e554bf75a53480)
-        - [X] [cv::cuda::compare](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga4d41cd679f4a83862a3de71a6057db54)
         - [ ] [cv::cuda::inRange](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#gaf611ab6b1d85e951feb6f485b1ed9672)
-        - [X] [cv::cuda::lshift](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#gafd072accecb14c9adccdad45e3bf2300)
         - [ ] [cv::cuda::magnitude](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga3d17f4fcd79d7c01fadd217969009463)
         - [ ] [cv::cuda::magnitudeSqr](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga7613e382d257e150033d0ce4d6098f6a)
         - [ ] [cv::cuda::phase](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga5b75ec01be06dcd6e27ada09a0d4656a)
         - [ ] [cv::cuda::polarToCart](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga01516a286a329c303c2db746513dd9df)
         - [ ] [cv::cuda::pow](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga82d04ef4bcc4dfa9bfbe76488007c6c4)
-        - [X] [cv::cuda::rshift](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga87af0b66358cc302676f35c1fd56c2ed)
 
     - [ ] **matrix reductions - WORK STARTED** The following functions still need implementation:
         - [ ] [cv::cuda::absSum](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga690fa79ba4426c53f7d2bebf3d37a32a)
         - [ ] [cv::cuda::calcAbsSum](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga15c403b76ab2c4d7ed0f5edc09891b7e)
-        - [X] [cv::cuda::calcNorm](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga39d2826990d29b7e4b69dbe02bdae2e1)
-        - [X] [cv::cuda::calcNormDiff](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga9be3d9a7b6c5760955f37d1039d01265)
         - [ ] [cv::cuda::calcSqrSum](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#gac998c83597f6c206c78cee16aa87946f)
         - [ ] [cv::cuda::calcSum](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga98a09144047f09f5cb1d6b6ea8e0856f)
         - [ ] [cv::cuda::countNonZero](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga98a09144047f09f5cb1d6b6ea8e0856f)
@@ -237,7 +222,6 @@ Your pull requests will be greatly appreciated!
         - [ ] [cv::cuda::meanStdDev](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga990a4db4c6d7e8f0f3a6685ba48fbddc)
         - [ ] [cv::cuda::minMax](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga8d7de68c10717cf25e787e3c20d2dfee)
         - [ ] [cv::cuda::minMaxLoc](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga5cacbc2a2323c4eaa81e7390c5d9f530)
-        - [X] [cv::cuda::norm](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga6c01988a58d92126a7c60a4ab76d8324)
         - [ ] [cv::cuda::normalize](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga4da4738b9956a5baaa2f5f8c2fba438a)
         - [ ] [cv::cuda::rectStdDev](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#gac311484a4e57cab2ce2cfdc195fda7ee)
         - [ ] [cv::cuda::reduce](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga21d57f661db7be093caf2c4378be2007)
