@@ -974,3 +974,34 @@ func TestNorm(t *testing.T) {
 		t.Error("Invalid Norm test")
 	}
 }
+
+func TestCompareDiff(t *testing.T) {
+	src1 := gocv.IMRead("../images/chessboard_4x6_distort_correct.png", gocv.IMReadGrayScale)
+	if src1.Empty() {
+		t.Error("Invalid read of Mat in Compare test")
+	}
+	defer src1.Close()
+
+	src2 := gocv.IMRead("../images/chessboard_4x6_distort.png", gocv.IMReadGrayScale)
+	if src2.Empty() {
+		t.Error("Invalid read of Mat in Compare test")
+	}
+	defer src2.Close()
+
+	var cimg1, cimg2, dimg = NewGpuMat(), NewGpuMat(), NewGpuMat()
+	defer cimg1.Close()
+	defer cimg2.Close()
+	defer dimg.Close()
+
+	dest := gocv.NewMat()
+	defer dest.Close()
+
+	cimg1.Upload(src1)
+	cimg2.Upload(src2)
+	Compare(cimg1, cimg2, dimg, gocv.CompareNE)
+	dimg.Download(&dest)
+
+	if dest.Empty() {
+		t.Error("Invalid CalcNormDiff test")
+	}
+}

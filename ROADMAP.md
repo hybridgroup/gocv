@@ -213,7 +213,7 @@ Your pull requests will be greatly appreciated!
     - [X] **core**
     - [ ] **per-element operations - WORK STARTED** The following functions still need implementation:
         - [ ] [cv::cuda::cartToPolar](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga82210c7d1c1d42e616e554bf75a53480)
-        - [ ] [cv::cuda::compare](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga4d41cd679f4a83862a3de71a6057db54)
+        - [X] [cv::cuda::compare](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga4d41cd679f4a83862a3de71a6057db54)
         - [ ] [cv::cuda::inRange](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#gaf611ab6b1d85e951feb6f485b1ed9672)
         - [ ] [cv::cuda::lshift](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#gafd072accecb14c9adccdad45e3bf2300)
         - [ ] [cv::cuda::magnitude](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga3d17f4fcd79d7c01fadd217969009463)

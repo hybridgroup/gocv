@@ -388,3 +388,17 @@ double GpuNorm(GpuMat src1, GpuMat src2, int typ) {
         return 0.0;
     }
 }
+
+OpenCVResult GpuCompare(GpuMat src1, GpuMat src2, GpuMat dst, int typ, Stream s) {
+    try {
+        if (s == NULL) {
+            cv::cuda::compare(*src1, *src2, *dst, typ);
+        } else {
+            cv::cuda::compare(*src1, *src2, *dst, typ, *s);
+        }
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}
+

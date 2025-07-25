@@ -569,3 +569,19 @@ func CalcNormDiffWithStream(src1, src2, dst GpuMat, normType gocv.NormType, s St
 func Norm(src1, src2 GpuMat, normType gocv.NormType) float64 {
 	return float64(C.GpuNorm(src1.p, src2.p, C.int(normType)))
 }
+
+// Compare compares elements of two matrices (or of a matrix and scalar).
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga4d41cd679f4a83862a3de71a6057db54
+func Compare(src1, src2, dst GpuMat, compareType gocv.CompareType) error {
+	return OpenCVResult(C.GpuCompare(src1.p, src2.p, dst.p, C.int(compareType), nil))
+}
+
+// CompareWithStream compares elements of two matrices (or of a matrix and scalar)
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga4d41cd679f4a83862a3de71a6057db54
+func CompareWithStream(src1, src2, dst GpuMat, compareType gocv.CompareType, s Stream) error {
+	return OpenCVResult(C.GpuCompare(src1.p, src2.p, dst.p, C.int(compareType), s.p))
+}
