@@ -215,13 +215,13 @@ Your pull requests will be greatly appreciated!
         - [ ] [cv::cuda::cartToPolar](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga82210c7d1c1d42e616e554bf75a53480)
         - [X] [cv::cuda::compare](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga4d41cd679f4a83862a3de71a6057db54)
         - [ ] [cv::cuda::inRange](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#gaf611ab6b1d85e951feb6f485b1ed9672)
-        - [ ] [cv::cuda::lshift](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#gafd072accecb14c9adccdad45e3bf2300)
+        - [X] [cv::cuda::lshift](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#gafd072accecb14c9adccdad45e3bf2300)
         - [ ] [cv::cuda::magnitude](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga3d17f4fcd79d7c01fadd217969009463)
         - [ ] [cv::cuda::magnitudeSqr](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga7613e382d257e150033d0ce4d6098f6a)
         - [ ] [cv::cuda::phase](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga5b75ec01be06dcd6e27ada09a0d4656a)
         - [ ] [cv::cuda::polarToCart](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga01516a286a329c303c2db746513dd9df)
         - [ ] [cv::cuda::pow](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga82d04ef4bcc4dfa9bfbe76488007c6c4)
-        - [ ] [cv::cuda::rshift](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga87af0b66358cc302676f35c1fd56c2ed)
+        - [X] [cv::cuda::rshift](https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga87af0b66358cc302676f35c1fd56c2ed)
 
     - [ ] **matrix reductions - WORK STARTED** The following functions still need implementation:
         - [ ] [cv::cuda::absSum](https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga690fa79ba4426c53f7d2bebf3d37a32a)

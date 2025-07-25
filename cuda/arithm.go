@@ -585,3 +585,59 @@ func Compare(src1, src2, dst GpuMat, compareType gocv.CompareType) error {
 func CompareWithStream(src1, src2, dst GpuMat, compareType gocv.CompareType, s Stream) error {
 	return OpenCVResult(C.GpuCompare(src1.p, src2.p, dst.p, C.int(compareType), s.p))
 }
+
+// LShift performs a per-element left bit-shift of a matrix by a constant amount.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga79fd71721b04444eb87c6c4844c22a6e
+func LShift(src GpuMat, shift gocv.Scalar, dst *GpuMat) error {
+	cShift := C.struct_Scalar{
+		val1: C.double(shift.Val1),
+		val2: C.double(shift.Val2),
+		val3: C.double(shift.Val3),
+		val4: C.double(shift.Val4),
+	}
+	return OpenCVResult(C.GpuLShift(src.p, cShift, dst.p, nil))
+}
+
+// LShiftWithStream performs a per-element left bit-shift of a matrix by a constant amount using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga79fd71721b04444eb87c6c4844c22a6e
+func LShiftWithStream(src GpuMat, shift gocv.Scalar, dst *GpuMat, s Stream) error {
+	cShift := C.struct_Scalar{
+		val1: C.double(shift.Val1),
+		val2: C.double(shift.Val2),
+		val3: C.double(shift.Val3),
+		val4: C.double(shift.Val4),
+	}
+	return OpenCVResult(C.GpuLShift(src.p, cShift, dst.p, s.p))
+}
+
+// RShift performs a per-element right bit-shift of a matrix by a constant amount.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga513719d25e508160a245724369d68346
+func RShift(src GpuMat, shift gocv.Scalar, dst *GpuMat) error {
+	cShift := C.struct_Scalar{
+		val1: C.double(shift.Val1),
+		val2: C.double(shift.Val2),
+		val3: C.double(shift.Val3),
+		val4: C.double(shift.Val4),
+	}
+	return OpenCVResult(C.GpuRShift(src.p, cShift, dst.p, nil))
+}
+
+// RShiftWithStream performs a per-element right bit-shift of a matrix by a constant amount using a Stream for concurrency.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/d34/group__cudaarithm__elem.html#ga513719d25e508160a245724369d68346
+func RShiftWithStream(src GpuMat, shift gocv.Scalar, dst *GpuMat, s Stream) error {
+	cShift := C.struct_Scalar{
+		val1: C.double(shift.Val1),
+		val2: C.double(shift.Val2),
+		val3: C.double(shift.Val3),
+		val4: C.double(shift.Val4),
+	}
+	return OpenCVResult(C.GpuRShift(src.p, cShift, dst.p, s.p))
+}

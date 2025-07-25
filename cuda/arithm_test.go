@@ -1005,3 +1005,103 @@ func TestCompareDiff(t *testing.T) {
 		t.Error("Invalid CalcNormDiff test")
 	}
 }
+
+func TestLShift(t *testing.T) {
+	src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in LShift test")
+	}
+	defer src.Close()
+
+	cimg := NewGpuMat()
+	defer cimg.Close()
+	cimg.Upload(src)
+
+	dst := NewGpuMat()
+	defer dst.Close()
+
+	err := LShift(cimg, gocv.NewScalar(128, 128, 128, 128), &dst)
+	if err != nil {
+		t.Errorf("LShift error: %v", err)
+	}
+	if dst.Empty() {
+		t.Error("LShift result should not be empty")
+	}
+}
+
+func TestLShiftWithStream(t *testing.T) {
+	src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in LShiftWithStream test")
+	}
+	defer src.Close()
+
+	cimg := NewGpuMat()
+	defer cimg.Close()
+	cimg.Upload(src)
+
+	dst := NewGpuMat()
+	defer dst.Close()
+
+	s := NewStream()
+	defer s.Close()
+
+	err := LShiftWithStream(cimg, gocv.NewScalar(128, 128, 128, 128), &dst, s)
+	if err != nil {
+		t.Errorf("LShiftWithStream error: %v", err)
+	}
+	s.WaitForCompletion()
+	if dst.Empty() {
+		t.Error("LShiftWithStream result should not be empty")
+	}
+}
+
+func TestRShift(t *testing.T) {
+	src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in RShift test")
+	}
+	defer src.Close()
+
+	cimg := NewGpuMat()
+	defer cimg.Close()
+	cimg.Upload(src)
+
+	dst := NewGpuMat()
+	defer dst.Close()
+
+	err := RShift(cimg, gocv.NewScalar(2, 2, 2, 2), &dst)
+	if err != nil {
+		t.Errorf("RShift error: %v", err)
+	}
+	if dst.Empty() {
+		t.Error("RShift result should not be empty")
+	}
+}
+
+func TestRShiftWithStream(t *testing.T) {
+	src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+	if src.Empty() {
+		t.Error("Invalid read of Mat in RShiftWithStream test")
+	}
+	defer src.Close()
+
+	cimg := NewGpuMat()
+	defer cimg.Close()
+	cimg.Upload(src)
+
+	dst := NewGpuMat()
+	defer dst.Close()
+
+	s := NewStream()
+	defer s.Close()
+
+	err := RShiftWithStream(cimg, gocv.NewScalar(2, 2, 2, 2), &dst, s)
+	if err != nil {
+		t.Errorf("RShiftWithStream error: %v", err)
+	}
+	s.WaitForCompletion()
+	if dst.Empty() {
+		t.Error("RShiftWithStream result should not be empty")
+	}
+}

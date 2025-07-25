@@ -402,3 +402,32 @@ OpenCVResult GpuCompare(GpuMat src1, GpuMat src2, GpuMat dst, int typ, Stream s)
     }
 }
 
+OpenCVResult GpuLShift(GpuMat src, Scalar shift, GpuMat dst, Stream s) {
+    try {
+        cv::Scalar cValue = cv::Scalar(shift.val1, shift.val2, shift.val3, shift.val4);
+
+        if (s == NULL) {
+            cv::cuda::lshift(*src, cValue, *dst);
+        } else {
+            cv::cuda::lshift(*src, cValue, *dst, *s);
+        }
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}
+
+OpenCVResult GpuRShift(GpuMat src, Scalar shift, GpuMat dst, Stream s) {
+    try {
+        cv::Scalar cValue = cv::Scalar(shift.val1, shift.val2, shift.val3, shift.val4);
+
+        if (s == NULL) {
+            cv::cuda::rshift(*src, cValue, *dst);
+        } else {
+            cv::cuda::rshift(*src, cValue, *dst, *s);
+        }
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}

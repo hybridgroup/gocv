@@ -43,6 +43,8 @@ OpenCVResult GpuCalcNorm(GpuMat src, GpuMat dst, int typ, Stream s);
 OpenCVResult GpuCalcNormDiff(GpuMat src1, GpuMat src2, GpuMat dst, int typ, Stream s);
 double GpuNorm(GpuMat src1, GpuMat src2, int typ);
 OpenCVResult GpuCompare(GpuMat src1, GpuMat src2, GpuMat dst, int typ, Stream s);
+OpenCVResult GpuLShift(GpuMat src, Scalar shift, GpuMat dst, Stream s);
+OpenCVResult GpuRShift(GpuMat src, Scalar shift, GpuMat dst, Stream s);
 
 //LookUpTable
 LookUpTable Cuda_Create_LookUpTable(GpuMat lut);
