@@ -279,7 +279,7 @@ func Dilate(src Mat, dst *Mat, kernel Mat) error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga4ff0f3318642c4f469d0e11f242f3b6c
-func DilateWithParams(src Mat, dst *Mat, kernel Mat, anchor image.Point, iterations, borderType BorderType, borderValue color.RGBA) error {
+func DilateWithParams(src Mat, dst *Mat, kernel Mat, anchor image.Point, iterations int, borderType BorderType, borderValue color.RGBA) error {
 	cAnchor := C.struct_Point{
 		x: C.int(anchor.X),
 		y: C.int(anchor.Y),
@@ -341,7 +341,7 @@ func Erode(src Mat, dst *Mat, kernel Mat) error {
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaeb1e0c1033e3f6b891a25d0511362aeb
-func ErodeWithParams(src Mat, dst *Mat, kernel Mat, anchor image.Point, iterations, borderType int) error {
+func ErodeWithParams(src Mat, dst *Mat, kernel Mat, anchor image.Point, iterations int, borderType BorderType) error {
 	cAnchor := C.struct_Point{
 		x: C.int(anchor.X),
 		y: C.int(anchor.Y),
@@ -356,7 +356,7 @@ func ErodeWithParams(src Mat, dst *Mat, kernel Mat, anchor image.Point, iteratio
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#gaeb1e0c1033e3f6b891a25d0511362aeb
-func ErodeWithParamsAndBorderValue(src Mat, dst *Mat, kernel Mat, anchor image.Point, iterations, borderType int, borderValue Scalar) error {
+func ErodeWithParamsAndBorderValue(src Mat, dst *Mat, kernel Mat, anchor image.Point, iterations int, borderType BorderType, borderValue Scalar) error {
 	cAnchor := C.struct_Point{
 		x: C.int(anchor.X),
 		y: C.int(anchor.Y),
