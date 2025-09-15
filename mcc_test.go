@@ -117,6 +117,7 @@ func TestProcess(t *testing.T) {
 	imgCopy := NewMat()
 	img := IMRead(path, IMReadColor)
 	img.CopyTo(&imgCopy)
+	defer imgCopy.Close()
 
 	if img.Empty() {
 		t.Fatal("Invalid input: image is empty or could not be loaded. Check that ./images/macbeth.jpg exists and is a valid image.")
