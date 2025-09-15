@@ -10,21 +10,17 @@ jobs:
   build:
     strategy:
         matrix:
-          os: [macos-13, macos-14]
+          os: [macos-14, macos-15]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Install OpenCV
         run: |
-          rm /usr/local/bin/2to3*
-          rm /usr/local/bin/idle3*
-          rm /usr/local/bin/pydoc*
-          rm /usr/local/bin/python3*
           brew update
           brew install opencv
       - name: Install Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
-          go-version: '1.24'
+          go-version: '1.25.1'
           cache: true
       - name: Checkout
         uses: actions/checkout@v4
