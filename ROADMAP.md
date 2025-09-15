@@ -161,7 +161,7 @@ Your pull requests will be greatly appreciated!
         - [ ] [CharucoDetector](https://docs.opencv.org/4.x/d9/df5/classcv_1_1aruco_1_1CharucoDetector.html#ad7647d1c3d0e2db97bedc31f743e796b)
         - [ ] [detectBoard](https://docs.opencv.org/4.x/d9/df5/classcv_1_1aruco_1_1CharucoDetector.html#aacbea601612a3a0feaa45ebb7fb255fd)
         - [ ] [detectDiamonds](https://docs.opencv.org/4.x/d9/df5/classcv_1_1aruco_1_1CharucoDetector.html#a50342803f68deb1e6b0b79f61d4b1a73)
-        
+
 - [X] **dnn. Deep Neural Network module**
 - [ ] ml. Machine Learning
     - [ ] [ANN_MLP](https://docs.opencv.org/4.x/d0/dce/classcv_1_1ml_1_1ANN__MLP.html)
@@ -312,7 +312,7 @@ Your pull requests will be greatly appreciated!
 - [X] **img_hash. The module brings implementations of different image hashing algorithms.**
 - [ ] intensity_transform. The module brings implementations of intensity transformation algorithms to adjust image contrast.
 - [ ] line_descriptor. Binary descriptors for lines extracted from an image
-- [ ] mcc. Macbeth Chart module
+- [x] mcc. Macbeth Chart module
 - [ ] optflow. Optical Flow Algorithms
 - [ ] ovis. OGRE 3D Visualiser
 - [ ] phase_unwrapping. Phase Unwrapping API

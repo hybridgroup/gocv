@@ -1,14 +1,16 @@
 //go:build !gocv_specific_modules || (gocv_specific_modules && gocv_mcc)
 
-package gocv
+package contrib
 
 import (
 	"math"
 	"testing"
+
+	"gocv.io/x/gocv"
 )
 
 const (
-	macbethImage = "./images/macbeth.png"
+	macbethImage = "../images/macbeth.png"
 )
 
 func TestMccDetectorParams(t *testing.T) {
@@ -114,8 +116,8 @@ func TestMccDetectorParams(t *testing.T) {
 
 func TestProcess(t *testing.T) {
 	path := macbethImage
-	imgCopy := NewMat()
-	img := IMRead(path, IMReadColor)
+	imgCopy := gocv.NewMat()
+	img := gocv.IMRead(path, gocv.IMReadColor)
 	img.CopyTo(&imgCopy)
 	defer imgCopy.Close()
 
@@ -138,11 +140,11 @@ func TestProcess(t *testing.T) {
 
 	for _, checker := range checkers {
 		whitePatch := checker.GetColorCharts()[18*4 : 18*4+4]
-		expected := make([]Point2f, 4)
-		expected[0] = Point2f{438.60522, 465.06586}
-		expected[1] = Point2f{480.70596, 461.58606}
-		expected[2] = Point2f{484.52277, 502.17834}
-		expected[3] = Point2f{442.45264, 505.96082}
+		expected := make([]gocv.Point2f, 4)
+		expected[0] = gocv.Point2f{X: 438.60522, Y: 465.06586}
+		expected[1] = gocv.Point2f{X: 480.70596, Y: 461.58606}
+		expected[2] = gocv.Point2f{X: 484.52277, Y: 502.17834}
+		expected[3] = gocv.Point2f{X: 442.45264, Y: 505.96082}
 
 		for idx, _ := range expected {
 
@@ -152,12 +154,12 @@ func TestProcess(t *testing.T) {
 		}
 
 		// Outputting for visual inspection
-		cdraw := NewMccCCheckerDraw(checker, NewScalar(0, 250, 0, 255), 2)
+		cdraw := NewMccCCheckerDraw(checker, gocv.NewScalar(0, 250, 0, 255), 2)
 		cdraw.Draw(img)
 	}
-	IMWrite("./images/macbeth-correct.png", img)
+	gocv.IMWrite("../images/macbeth-correct.png", img)
 }
 
-func distPoint2f(a, b Point2f) float64 {
+func distPoint2f(a, b gocv.Point2f) float64 {
 	return math.Sqrt(math.Pow(float64(a.X-b.X), 2) + math.Pow(float64(a.Y-b.Y), 2))
 }

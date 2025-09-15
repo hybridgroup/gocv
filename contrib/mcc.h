@@ -8,7 +8,7 @@
 extern "C" {
     #endif
 
-#include "core.h"
+#include "../core.h"
 
 #ifdef __cplusplus
 typedef cv::mcc::CChecker* MccCChecker;

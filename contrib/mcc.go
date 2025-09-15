@@ -1,16 +1,18 @@
 //go:build !gocv_specific_modules || (gocv_specific_modules && gocv_mcc)
 
-package gocv
+package contrib
 
 /*
 #include <stdlib.h>
 #include "mcc.h"
-#include "core.h"
+#include "../core.h"
 */
 import "C"
 import (
 	"image"
 	"unsafe"
+
+	"gocv.io/x/gocv"
 )
 
 type TYPECHART int
@@ -69,7 +71,7 @@ func (md *MccCCheckerDetector) GetListColorChecker() []MccCChecker {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d9/d53/classcv_1_1mcc_1_1CCheckerDetector.html#aa07092a6bc9f0a2b75738bc76f9b2d8b
-func (md *MccCCheckerDetector) Process(input Mat, chartType TYPECHART) bool {
+func (md *MccCCheckerDetector) Process(input gocv.Mat, chartType TYPECHART) bool {
 	res := C.MccCCheckerDetector_Process(md.p, C.Mat(input.Ptr()), C.int(chartType), C.int(1), C.bool(false))
 	return bool(res)
 }
@@ -78,7 +80,7 @@ func (md *MccCCheckerDetector) Process(input Mat, chartType TYPECHART) bool {
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d9/d53/classcv_1_1mcc_1_1CCheckerDetector.html#aa07092a6bc9f0a2b75738bc76f9b2d8b
-func (md *MccCCheckerDetector) ProcessWithRegionsOfInterest(input Mat, chartType TYPECHART, regionsOfInterest []image.Rectangle) bool {
+func (md *MccCCheckerDetector) ProcessWithRegionsOfInterest(input gocv.Mat, chartType TYPECHART, regionsOfInterest []image.Rectangle) bool {
 	vec := NewMccRectVector(regionsOfInterest)
 	defer vec.Close()
 	res := C.MccCCheckerDetector_ProcessWithRegionsOfInterest(md.p, C.Mat(input.Ptr()), C.int(chartType), vec.p, C.int(1), C.bool(false))
@@ -89,7 +91,7 @@ func (md *MccCCheckerDetector) ProcessWithRegionsOfInterest(input Mat, chartType
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d9/d53/classcv_1_1mcc_1_1CCheckerDetector.html#aa07092a6bc9f0a2b75738bc76f9b2d8b
-func (md *MccCCheckerDetector) ProcessWithParams(input Mat, chartType TYPECHART, nc int, useNet bool) bool {
+func (md *MccCCheckerDetector) ProcessWithParams(input gocv.Mat, chartType TYPECHART, nc int, useNet bool) bool {
 	res := C.MccCCheckerDetector_Process(md.p, C.Mat(input.Ptr()), C.int(chartType), C.int(nc), C.bool(useNet))
 	return bool(res)
 }
@@ -98,7 +100,7 @@ func (md *MccCCheckerDetector) ProcessWithParams(input Mat, chartType TYPECHART,
 //
 // For further details, please see:
 // https://docs.opencv.org/4.x/d9/d53/classcv_1_1mcc_1_1CCheckerDetector.html#aa07092a6bc9f0a2b75738bc76f9b2d8b
-func (md *MccCCheckerDetector) ProcessWithRegionsOfInterestWithParams(input Mat, chartType TYPECHART, regionsOfInterest []image.Rectangle, nc int, useNet bool) bool {
+func (md *MccCCheckerDetector) ProcessWithRegionsOfInterestWithParams(input gocv.Mat, chartType TYPECHART, regionsOfInterest []image.Rectangle, nc int, useNet bool) bool {
 	vec := NewMccRectVector(regionsOfInterest)
 	defer vec.Close()
 	res := C.MccCCheckerDetector_ProcessWithRegionsOfInterest(md.p, C.Mat(input.Ptr()), C.int(chartType), vec.p, C.int(nc), C.bool(useNet))
@@ -126,7 +128,7 @@ func (mc *MccCChecker) GetTarget() TYPECHART {
 	return TYPECHART(C.MccCChecker_GetTarget(mc.p))
 }
 
-func (mc *MccCChecker) SetBox(box []Point2f) {
+func (mc *MccCChecker) SetBox(box []gocv.Point2f) {
 	n := len(box)
 	if n == 0 {
 		return
@@ -138,7 +140,7 @@ func (mc *MccCChecker) SetBox(box []Point2f) {
 	C.MccCChecker_SetBox(mc.p, (*C.Point2f)(unsafe.Pointer(&cBox[0])), C.int(n))
 }
 
-func (mc *MccCChecker) GetBox() []Point2f {
+func (mc *MccCChecker) GetBox() []gocv.Point2f {
 	res := C.MccCChecker_GetBox(mc.p)
 	defer C.Points2f_Close(res)
 	n := int(res.length)
@@ -146,31 +148,31 @@ func (mc *MccCChecker) GetBox() []Point2f {
 		return nil
 	}
 	pts := (*[1 << 28]C.Point2f)(unsafe.Pointer(res.points))[:n:n]
-	out := make([]Point2f, n)
+	out := make([]gocv.Point2f, n)
 	for i := 0; i < n; i++ {
-		out[i] = Point2f{X: float32(pts[i].x), Y: float32(pts[i].y)}
+		out[i] = gocv.Point2f{X: float32(pts[i].x), Y: float32(pts[i].y)}
 	}
 	return out
 }
 
-func (mc *MccCChecker) SetChartsRGB(mat Mat) {
+func (mc *MccCChecker) SetChartsRGB(mat gocv.Mat) {
 	C.MccCChecker_SetChartsRGB(mc.p, C.Mat(mat.Ptr()))
 }
 
-func (mc *MccCChecker) GetChartsRGB() Mat {
+func (mc *MccCChecker) GetChartsRGB() gocv.Mat {
 	cmat := C.MccCChecker_GetChartsRGB(mc.p)
 	defer C.Mat_Close(cmat)
-	return NewMatFromCMat(unsafe.Pointer(cmat))
+	return gocv.NewMatFromCMat(unsafe.Pointer(cmat))
 }
 
-func (mc *MccCChecker) SetChartsYCbCr(mat Mat) {
+func (mc *MccCChecker) SetChartsYCbCr(mat gocv.Mat) {
 	C.MccCChecker_SetChartsYCbCr(mc.p, C.Mat(mat.Ptr()))
 }
 
-func (mc *MccCChecker) GetChartsYCbCr() Mat {
+func (mc *MccCChecker) GetChartsYCbCr() gocv.Mat {
 	cmat := C.MccCChecker_GetChartsYCbCr(mc.p)
 	defer C.Mat_Close(cmat)
-	return NewMatFromCMat(unsafe.Pointer(cmat))
+	return gocv.NewMatFromCMat(unsafe.Pointer(cmat))
 }
 
 func (mc *MccCChecker) SetCost(cost float32) {
@@ -181,13 +183,13 @@ func (mc *MccCChecker) GetCost() float32 {
 	return float32(C.MccCChecker_GetCost(mc.p))
 }
 
-func (mc *MccCChecker) SetCenter(center Point2f) {
+func (mc *MccCChecker) SetCenter(center gocv.Point2f) {
 	C.MccCChecker_SetCenter(mc.p, C.Point2f{x: C.float(center.X), y: C.float(center.Y)})
 }
 
-func (mc *MccCChecker) GetCenter() Point2f {
+func (mc *MccCChecker) GetCenter() gocv.Point2f {
 	res := C.MccCChecker_GetCenter(mc.p)
-	return Point2f{X: float32(res.x), Y: float32(res.y)}
+	return gocv.Point2f{X: float32(res.x), Y: float32(res.y)}
 }
 
 // Computes and returns the coordinates of the central parts of the charts modules.
@@ -195,16 +197,16 @@ func (mc *MccCChecker) GetCenter() Point2f {
 // This method computes transformation matrix from the checkers's coordinates (cv::mcc::CChecker::getBox()) and
 // find by this the coordinates of the central parts of the charts modules. It is used in cv::mcc::CCheckerDraw::draw()
 // and in ChartsRGB calculation.
-func (mc *MccCChecker) GetColorCharts() []Point2f {
+func (mc *MccCChecker) GetColorCharts() []gocv.Point2f {
 	res := C.MccCChecker_GetColorCharts(mc.p)
 	n := int(res.length)
 	if n == 0 || res.points == nil {
 		return nil
 	}
 	pts := (*[1 << 28]C.Point2f)(unsafe.Pointer(res.points))[:n:n]
-	out := make([]Point2f, n)
+	out := make([]gocv.Point2f, n)
 	for i := 0; i < n; i++ {
-		out[i] = Point2f{X: float32(pts[i].x), Y: float32(pts[i].y)}
+		out[i] = gocv.Point2f{X: float32(pts[i].x), Y: float32(pts[i].y)}
 	}
 
 	return out
@@ -348,13 +350,13 @@ type MccCCheckerDraw struct {
 }
 
 // NewMccCCheckerDraw creates a new CCheckerDraw with the given color and thickness.
-func NewMccCCheckerDraw(cc MccCChecker, color Scalar, thickness int) MccCCheckerDraw {
+func NewMccCCheckerDraw(cc MccCChecker, color gocv.Scalar, thickness int) MccCCheckerDraw {
 	p := C.MccCCheckerDraw_Create(cc.p, C.double(color.Val1), C.double(color.Val2), C.double(color.Val3), C.double(color.Val4), C.int(thickness))
 	return MccCCheckerDraw{p: p}
 }
 
 // Draw draws the checker on the given image.
-func (md *MccCCheckerDraw) Draw(img Mat) {
+func (md *MccCCheckerDraw) Draw(img gocv.Mat) {
 	C.MccCCheckerDraw_Draw(md.p, C.Mat(img.Ptr()))
 }
 
