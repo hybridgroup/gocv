@@ -474,9 +474,17 @@ func (v *VideoCapture) Grab(skip int) error {
 // Retrieve decodes and returns the grabbed video frame. Should be used after Grab
 //
 // For further details, please see:
-// http://docs.opencv.org/master/d8/dfe/classcv_1_1VideoCapture.html#a9ac7f4b1cdfe624663478568486e6712
+// https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html#a9ac7f4b1cdfe624663478568486e6712
 func (v *VideoCapture) Retrieve(m *Mat) bool {
 	return C.VideoCapture_Retrieve(v.p, m.p) != 0
+}
+
+// Retrieve decodes and returns the grabbed frame for a specific channel. Should be used after Grab
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html#a9ac7f4b1cdfe624663478568486e6712
+func (v *VideoCapture) RetrieveChannel(m *Mat, channel int) bool {
+	return C.VideoCapture_RetrieveChannel(v.p, m.p, C.int(channel)) != 0
 }
 
 // CodecString returns a string representation of FourCC bytes, i.e. the name of a codec

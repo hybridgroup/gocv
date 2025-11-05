@@ -32,6 +32,7 @@ int VideoCapture_IsOpened(VideoCapture v);
 int VideoCapture_Read(VideoCapture v, Mat buf);
 OpenCVResult VideoCapture_Grab(VideoCapture v, int skip);
 int VideoCapture_Retrieve(VideoCapture v, Mat buf);
+int VideoCapture_RetrieveChannel(VideoCapture v, Mat buf, int channel);
 
 // VideoWriter
 VideoWriter VideoWriter_New();

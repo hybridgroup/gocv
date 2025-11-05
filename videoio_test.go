@@ -296,6 +296,40 @@ func TestVideoCaptureFile_GrabRetrieve(t *testing.T) {
 	}
 }
 
+func TestVideoCaptureFile_GrabRetrieveChannel(t *testing.T) {
+	vc, err := VideoCaptureFile("images/small.mp4")
+	defer vc.Close()
+
+	if err != nil {
+		t.Errorf("%s", err)
+	}
+
+	if !vc.IsOpened() {
+		t.Error("Unable to open VideoCaptureFile")
+	}
+
+	if fw := vc.Get(VideoCaptureFrameWidth); int(fw) != 560 {
+		t.Errorf("Expected frame width property of 560.0 got %f", fw)
+	}
+	if fh := vc.Get(VideoCaptureFrameHeight); int(fh) != 320 {
+		t.Errorf("Expected frame height property of 320.0 got %f", fh)
+	}
+
+	vc.Set(VideoCaptureBrightness, 100.0)
+
+	vc.Grab(10)
+
+	img := NewMat()
+	defer img.Close()
+
+	if ok := vc.RetrieveChannel(&img, 0); !ok {
+		t.Error("Unable to read VideoCaptureFile")
+	}
+	if img.Empty() {
+		t.Error("Unable to read VideoCaptureFile")
+	}
+}
+
 func TestVideoRegistry(t *testing.T) {
 
 	name := VideoRegistry.GetBackendName(VideoCaptureFFmpeg)

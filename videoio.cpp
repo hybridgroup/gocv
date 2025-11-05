@@ -144,6 +144,15 @@ int VideoCapture_Retrieve(VideoCapture v, Mat buf) {
     }
 }
 
+int VideoCapture_RetrieveChannel(VideoCapture v, Mat buf, int channel) {
+    try {
+        return v->retrieve(*buf, channel);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return 0;
+    }
+}
+
 // VideoWriter
 VideoWriter VideoWriter_New() {
     try {
