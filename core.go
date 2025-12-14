@@ -437,6 +437,17 @@ func (m *Mat) Row(row int) Mat {
 	return newMat(C.Mat_Row(m.p, C.int(row)))
 }
 
+// Copy returns a shallow copy of the Mat. No data is copied.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d3/d63/classcv_1_1Mat.html#a294eaf8a95d2f9c7be19ff594d06278e
+func (m *Mat) Copy() Mat {
+	return Mat{
+		p: C.Mat_Copy(m.p),
+		d: m.d,
+	}
+}
+
 // Clone returns a cloned full copy of the Mat.
 func (m *Mat) Clone() Mat {
 	return newMat(C.Mat_Clone(m.p))

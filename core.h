@@ -343,6 +343,7 @@ bool Mat_IsContinuous(Mat m);
 void Mat_Inv(Mat m);
 Mat Mat_Col(Mat m, int c);
 Mat Mat_Row(Mat m, int r);
+Mat Mat_Copy(Mat m);
 Mat Mat_Clone(Mat m);
 OpenCVResult Mat_CopyTo(Mat m, Mat dst);
 int Mat_Total(Mat m);

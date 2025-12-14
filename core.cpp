@@ -168,6 +168,10 @@ Mat Mat_Row(Mat m, int r) {
     return new cv::Mat(m->row(r));
 }
 
+Mat Mat_Copy(Mat m) {
+    return new Cv::Mat(*m);
+}
+
 // Mat_Clone returns a clone of this Mat
 Mat Mat_Clone(Mat m) {
     return new cv::Mat(m->clone());
