@@ -1942,6 +1942,15 @@ func TestApplyColorMap(t *testing.T) {
 		{name: "COLORMAP_PINK", args: args{colormapType: ColormapPink, want: 136043.97287274434}},
 		{name: "COLORMAP_HOT", args: args{colormapType: ColormapHot, want: 124941.02475968412}},
 		{name: "COLORMAP_PARULA", args: args{colormapType: ColormapParula, want: 111483.33555738274}},
+		{name: "COLORMAP_MAGMA", args: args{colormapType: ColormapMagma, want: 113197.48853662788}},
+		{name: "COLORMAP_INFERNO", args: args{colormapType: ColormapInferno, want: 108186.83126425323}},
+		{name: "COLORMAP_PLASMA", args: args{colormapType: ColormapPlasma, want: 108665.39830599251}},
+		{name: "COLORMAP_VIRIDIS", args: args{colormapType: ColormapViridis, want: 95101.87774697196}},
+		{name: "COLORMAP_CIVIDIS", args: args{colormapType: ColormapCividis, want: 102175.91244515509}},
+		{name: "COLORMAP_TWILIGHT", args: args{colormapType: ColormapTwilight, want: 98676.48484821498}},
+		{name: "COLORMAP_TWILIGHT_SHIFTED", args: args{colormapType: ColormapTwilightShifted, want: 74717.33848311247}},
+		{name: "COLORMAP_TURBO", args: args{colormapType: ColormapTurbo, want: 96848.08501978756}},
+		{name: "COLORMAP_DEEPGREEN", args: args{colormapType: ColormapDeepGreen, want: 106444.16919681415}},
 	}
 	src := IMRead("images/gocvlogo.jpg", IMReadGrayScale)
 	defer src.Close()

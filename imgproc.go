@@ -1756,19 +1756,28 @@ type ColormapTypes int
 // For further details, please see:
 // https://docs.opencv.org/master/d3/d50/group__imgproc__colormap.html#ga9a805d8262bcbe273f16be9ea2055a65
 const (
-	ColormapAutumn  ColormapTypes = 0
-	ColormapBone    ColormapTypes = 1
-	ColormapJet     ColormapTypes = 2
-	ColormapWinter  ColormapTypes = 3
-	ColormapRainbow ColormapTypes = 4
-	ColormapOcean   ColormapTypes = 5
-	ColormapSummer  ColormapTypes = 6
-	ColormapSpring  ColormapTypes = 7
-	ColormapCool    ColormapTypes = 8
-	ColormapHsv     ColormapTypes = 9
-	ColormapPink    ColormapTypes = 10
-	ColormapHot     ColormapTypes = 11
-	ColormapParula  ColormapTypes = 12
+	ColormapAutumn          ColormapTypes = 0
+	ColormapBone            ColormapTypes = 1
+	ColormapJet             ColormapTypes = 2
+	ColormapWinter          ColormapTypes = 3
+	ColormapRainbow         ColormapTypes = 4
+	ColormapOcean           ColormapTypes = 5
+	ColormapSummer          ColormapTypes = 6
+	ColormapSpring          ColormapTypes = 7
+	ColormapCool            ColormapTypes = 8
+	ColormapHsv             ColormapTypes = 9
+	ColormapPink            ColormapTypes = 10
+	ColormapHot             ColormapTypes = 11
+	ColormapParula          ColormapTypes = 12
+	ColormapMagma           ColormapTypes = 13
+	ColormapInferno         ColormapTypes = 14
+	ColormapPlasma          ColormapTypes = 15
+	ColormapViridis         ColormapTypes = 16
+	ColormapCividis         ColormapTypes = 17
+	ColormapTwilight        ColormapTypes = 18
+	ColormapTwilightShifted ColormapTypes = 19
+	ColormapTurbo           ColormapTypes = 20
+	ColormapDeepGreen       ColormapTypes = 21
 )
 
 // ApplyColorMap applies a GNU Octave/MATLAB equivalent colormap on a given image.

@@ -308,6 +308,24 @@ func (c ColormapTypes) String() string {
 		return "colormap-pink"
 	case ColormapParula:
 		return "colormap-parula"
+	case ColormapMagma:
+		return "colormap-magma"
+	case ColormapInferno:
+		return "colormap-inferno"
+	case ColormapPlasma:
+		return "colormap-plasma"
+	case ColormapViridis:
+		return "colormap-viridis"
+	case ColormapCividis:
+		return "colormap-cividis"
+	case ColormapTwilight:
+		return "colormap-twilight"
+	case ColormapTwilightShifted:
+		return "colormap-twilight-shifted"
+	case ColormapTurbo:
+		return "colormap-turbo"
+	case ColormapDeepGreen:
+		return "colormap-deep-green"
 	}
 	return ""
 }
