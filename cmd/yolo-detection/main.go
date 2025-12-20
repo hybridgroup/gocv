@@ -212,7 +212,8 @@ func performDetection(outs []gocv.Mat) ([]image.Rectangle, []float32, []int) {
 func drawRects(img *gocv.Mat, boxes []image.Rectangle, classes []string, classIds []int, indices []int) []string {
 	var detectClass []string
 	for _, idx := range indices {
-		if idx == 0 {
+		// Don't skip idx==0; it's a valid index from NMSBoxes
+		if idx < 0 || idx >= len(boxes) || idx >= len(classIds) {
 			continue
 		}
 		gocv.Rectangle(img, image.Rect(boxes[idx].Min.X, boxes[idx].Min.Y, boxes[idx].Max.X, boxes[idx].Max.Y), color.RGBA{0, 255, 0, 0}, 2)
