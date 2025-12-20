@@ -157,10 +157,23 @@ func performDetection(outs []gocv.Mat) ([]image.Rectangle, []float32, []int) {
 	var confidences []float32
 	var boxes []image.Rectangle
 
-	// needed for yolov8
-	gocv.TransposeND(outs[0], []int{0, 2, 1}, &outs[0])
+	if len(outs) == 0 || outs[0].Empty() {
+		return boxes, confidences, classIds
+	}
+
+	// transpose outs[0] safely, don't overwrite it in-place without closing the old one to avoid memory leak
+	tmp := gocv.NewMat()
+	// needed for yolov8: transpose (1, 84, N) -> (1, N, 84)
+	gocv.TransposeND(outs[0], []int{0, 2, 1}, &tmp)
+
+	outs[0].Close() // free the old underlying cv::Mat
+	outs[0] = tmp   // take ownership of the new transposed Mat
 
 	for _, out := range outs {
+		if out.Empty() {
+			continue
+		}
+
 		out = out.Reshape(1, out.Size()[1])
 
 		for i := 0; i < out.Rows(); i++ {
