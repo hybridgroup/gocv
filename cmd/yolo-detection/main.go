@@ -96,7 +96,12 @@ func main() {
 		detect(&net, &img, outputNames)
 
 		window.IMShow(img)
+
 		if window.WaitKey(1) >= 0 {
+			break
+		}
+		// break if user clicked the window close button
+		if window.GetWindowProperty(gocv.WindowPropertyVisible) < 1 {
 			break
 		}
 	}
