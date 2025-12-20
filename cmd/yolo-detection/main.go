@@ -187,10 +187,11 @@ func performDetection(outs []gocv.Mat) ([]image.Rectangle, []float32, []int) {
 			scoresCol.Close()
 
 			if confidence > 0.5 {
-				centerX := out.GetFloatAt(i, cols)
-				centerY := out.GetFloatAt(i, cols+1)
-				width := out.GetFloatAt(i, cols+2)
-				height := out.GetFloatAt(i, cols+3)
+				// get cx,cy,w,h at columns 0..3
+				centerX := out.GetFloatAt(i, 0)
+				centerY := out.GetFloatAt(i, 1)
+				width := out.GetFloatAt(i, 2)
+				height := out.GetFloatAt(i, 3)
 
 				left := centerX - width/2
 				top := centerY - height/2
