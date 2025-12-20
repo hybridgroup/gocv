@@ -183,6 +183,9 @@ func performDetection(outs []gocv.Mat) ([]image.Rectangle, []float32, []int) {
 			scores := scoresCol.ColRange(4, cols)
 			_, confidence, _, classIDPoint := gocv.MinMaxLoc(scores)
 
+			scores.Close()
+			scoresCol.Close()
+
 			if confidence > 0.5 {
 				centerX := out.GetFloatAt(i, cols)
 				centerY := out.GetFloatAt(i, cols+1)
@@ -199,6 +202,8 @@ func performDetection(outs []gocv.Mat) ([]image.Rectangle, []float32, []int) {
 				boxes = append(boxes, image.Rect(int(left), int(top), int(right), int(bottom)))
 			}
 		}
+
+		out.Close()
 	}
 
 	return boxes, confidences, classIds
