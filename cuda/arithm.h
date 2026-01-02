@@ -45,6 +45,14 @@ double GpuNorm(GpuMat src1, GpuMat src2, int typ);
 OpenCVResult GpuCompare(GpuMat src1, GpuMat src2, GpuMat dst, int typ, Stream s);
 OpenCVResult GpuLShift(GpuMat src, Scalar shift, GpuMat dst, Stream s);
 OpenCVResult GpuRShift(GpuMat src, Scalar shift, GpuMat dst, Stream s);
+OpenCVResult GpuAbsSum(GpuMat src, GpuMat mask, struct Scalar* result);
+OpenCVResult GpuAbsSumWithMask(GpuMat src, GpuMat mask, struct Scalar* result);
+OpenCVResult GpuCalcAbsSum(GpuMat src, GpuMat dst, GpuMat mask, Stream s);
+OpenCVResult GpuMinMax(GpuMat src, GpuMat mask, double* minVal, double* maxVal);
+OpenCVResult GpuMinMaxLoc(GpuMat src, GpuMat mask, double* minVal, double* maxVal, int* minLocX, int* minLocY, int* maxLocX, int* maxLocY);
+OpenCVResult GpuNormalize(GpuMat src, GpuMat dst, double alpha, double beta, int normType, int dtype, GpuMat mask, Stream s);
+OpenCVResult GpuFindMinMaxLoc(GpuMat src, GpuMat minMaxVals, GpuMat loc, GpuMat mask, Stream s);
+OpenCVResult GpuFindMinMax(GpuMat src, GpuMat dst, GpuMat mask, Stream s);
 
 //LookUpTable
 LookUpTable Cuda_Create_LookUpTable(GpuMat lut);

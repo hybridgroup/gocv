@@ -11,6 +11,7 @@ package cuda
 import "C"
 
 import (
+	"image"
 	"unsafe"
 
 	"gocv.io/x/gocv"
@@ -640,4 +641,148 @@ func RShiftWithStream(src GpuMat, shift gocv.Scalar, dst *GpuMat, s Stream) erro
 		val4: C.double(shift.Val4),
 	}
 	return OpenCVResult(C.GpuRShift(src.p, cShift, dst.p, s.p))
+}
+
+// AbsSum computes the sum of absolute values of array elements.
+// For further details, see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga690fa79ba4426c53f7d2bebf3d37a32a
+func AbsSum(src GpuMat) (gocv.Scalar, error) {
+    var cResult C.struct_Scalar
+    err := OpenCVResult(C.GpuAbsSum(src.p, nil, &cResult))
+    return gocv.Scalar{
+        Val1: float64(cResult.val1),
+        Val2: float64(cResult.val2),
+        Val3: float64(cResult.val3),
+        Val4: float64(cResult.val4),
+    }, err
+}
+
+// AbsSumWithMask computes the sum of absolute values of array elements using a mask.
+// For further details, see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga690fa79ba4426c53f7d2bebf3d37a32a
+func AbsSumWithMask(src, mask GpuMat) (gocv.Scalar, error) {
+    var cResult C.struct_Scalar
+    err := OpenCVResult(C.GpuAbsSum(src.p, mask.p, &cResult))
+    return gocv.Scalar{
+        Val1: float64(cResult.val1),
+        Val2: float64(cResult.val2),
+        Val3: float64(cResult.val3),
+        Val4: float64(cResult.val4),
+    }, err
+}
+
+// CalcAbsSum computes the sum of absolute values of array elements and stores the result in dst.
+// For further details, see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga15c403b76ab2c4d7ed0f5edc09891b7e
+func CalcAbsSum(src GpuMat, dst *GpuMat) error {
+    return OpenCVResult(C.GpuCalcAbsSum(src.p, dst.p, nil, nil))
+}
+
+// CalcAbsSumWithMask computes the sum of absolute values of array elements using a mask and stores the result in dst.
+// For further details, see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga15c403b76ab2c4d7ed0f5edc09891b7e
+func CalcAbsSumWithMask(src GpuMat, dst *GpuMat, mask GpuMat) error {
+    return OpenCVResult(C.GpuCalcAbsSum(src.p, dst.p, mask.p, nil))
+}
+
+// CalcAbsSumWithStream computes the sum of absolute values of array elements and stores the result in dst using a Stream.
+// For further details, see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga15c403b76ab2c4d7ed0f5edc09891b7e
+func CalcAbsSumWithStream(src GpuMat, dst *GpuMat, mask GpuMat, s Stream) error {
+    return OpenCVResult(C.GpuCalcAbsSum(src.p, dst.p, mask.p, s.p))
+}
+
+// MinMax computes the global minimum and maximum in a GpuMat.
+// For further details, see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga8d7de68c10717cf25e787e3c20d2dfee
+func MinMax(src GpuMat) (minVal, maxVal float64, err error) {
+    var cMin, cMax C.double
+    e := OpenCVResult(C.GpuMinMax(src.p, nil, &cMin, &cMax))
+    return float64(cMin), float64(cMax), e
+}
+
+// MinMaxWithMask computes the global minimum and maximum in a GpuMat using a mask.
+// For further details, see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga8d7de68c10717cf25e787e3c20d2dfee
+func MinMaxWithMask(src, mask GpuMat) (minVal, maxVal float64, err error) {
+    var cMin, cMax C.double
+    e := OpenCVResult(C.GpuMinMax(src.p, mask.p, &cMin, &cMax))
+    return float64(cMin), float64(cMax), e
+}
+
+// MinMaxLoc finds the global minimum and maximum in a GpuMat as well as their locations.
+// For further details, see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga5cacbc2a2323c4eaa81e7390c5d9f530
+func MinMaxLoc(src GpuMat) (minVal, maxVal float64, minLoc, maxLoc image.Point, err error) {
+    var cMin, cMax C.double
+    var minLocX, minLocY, maxLocX, maxLocY C.int
+    e := OpenCVResult(C.GpuMinMaxLoc(src.p, nil, &cMin, &cMax, &minLocX, &minLocY, &maxLocX, &maxLocY))
+    return float64(cMin), float64(cMax),
+        image.Pt(int(minLocX), int(minLocY)),
+        image.Pt(int(maxLocX), int(maxLocY)),
+        e
+}
+
+// MinMaxLocWithMask finds the global minimum and maximum in a GpuMat as well as their locations, using a mask.
+// For further details, see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga5cacbc2a2323c4eaa81e7390c5d9f530
+func MinMaxLocWithMask(src, mask GpuMat) (minVal, maxVal float64, minLoc, maxLoc image.Point, err error) {
+    var cMin, cMax C.double
+    var minLocX, minLocY, maxLocX, maxLocY C.int
+    e := OpenCVResult(C.GpuMinMaxLoc(src.p, mask.p, &cMin, &cMax, &minLocX, &minLocY, &maxLocX, &maxLocY))
+    return float64(cMin), float64(cMax),
+        image.Pt(int(minLocX), int(minLocY)),
+        image.Pt(int(maxLocX), int(maxLocY)),
+        e
+}
+
+// Normalize scales and shifts array elements so that they cover a certain range.
+// For further details, see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga4da4738b9956a5baaa2f5f8c2fba438a
+func Normalize(src GpuMat, dst *GpuMat, alpha, beta float64, normType gocv.NormType, dtype int) error {
+    return OpenCVResult(C.GpuNormalize(src.p, dst.p, C.double(alpha), C.double(beta), C.int(normType), C.int(dtype), nil, nil))
+}
+
+// NormalizeWithMask scales and shifts array elements so that they cover a certain range, using a mask.
+func NormalizeWithMask(src GpuMat, dst *GpuMat, alpha, beta float64, normType gocv.NormType, dtype int, mask GpuMat) error {
+    return OpenCVResult(C.GpuNormalize(src.p, dst.p, C.double(alpha), C.double(beta), C.int(normType), C.int(dtype), mask.p, nil))
+}
+
+// NormalizeWithStream scales and shifts array elements so that they cover a certain range, using a mask and Stream.
+func NormalizeWithStream(src GpuMat, dst *GpuMat, alpha, beta float64, normType gocv.NormType, dtype int, mask GpuMat, s Stream) error {
+    return OpenCVResult(C.GpuNormalize(src.p, dst.p, C.double(alpha), C.double(beta), C.int(normType), C.int(dtype), mask.p, s.p))
+}
+
+// FindMinMaxLoc finds the minimum and maximum values and their locations in a GpuMat.
+// For further details, see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#ga93916bc473a62d215d1130fab84d090a
+func FindMinMaxLoc(src GpuMat, minMaxVals, loc *GpuMat) error {
+    return OpenCVResult(C.GpuFindMinMaxLoc(src.p, minMaxVals.p, loc.p, nil, nil))
+}
+
+// FindMinMaxLocWithMask finds the minimum and maximum values and their locations in a GpuMat using a mask.
+func FindMinMaxLocWithMask(src GpuMat, minMaxVals, loc *GpuMat, mask GpuMat) error {
+    return OpenCVResult(C.GpuFindMinMaxLoc(src.p, minMaxVals.p, loc.p, mask.p, nil))
+}
+
+// FindMinMaxLocWithStream finds the minimum and maximum values and their locations in a GpuMat using a mask and Stream.
+func FindMinMaxLocWithStream(src GpuMat, minMaxVals, loc *GpuMat, mask GpuMat, s Stream) error {
+    return OpenCVResult(C.GpuFindMinMaxLoc(src.p, minMaxVals.p, loc.p, mask.p, s.p))
+}
+
+// FindMinMax finds the minimum and maximum values in a GpuMat and stores them in dst.
+// For further details, see:
+// https://docs.opencv.org/4.x/d5/de6/group__cudaarithm__reduce.html#gae7f5f2aa9f65314470a76fccdff887f2
+func FindMinMax(src GpuMat, dst *GpuMat) error {
+    return OpenCVResult(C.GpuFindMinMax(src.p, dst.p, nil, nil))
+}
+
+// FindMinMaxWithMask finds the minimum and maximum values in a GpuMat using a mask and stores them in dst.
+func FindMinMaxWithMask(src GpuMat, dst *GpuMat, mask GpuMat) error {
+    return OpenCVResult(C.GpuFindMinMax(src.p, dst.p, mask.p, nil))
+}
+
+// FindMinMaxWithStream finds the minimum and maximum values in a GpuMat using a mask and Stream, and stores them in dst.
+func FindMinMaxWithStream(src GpuMat, dst *GpuMat, mask GpuMat, s Stream) error {
+    return OpenCVResult(C.GpuFindMinMax(src.p, dst.p, mask.p, s.p))
 }

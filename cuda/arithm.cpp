@@ -431,3 +431,100 @@ OpenCVResult GpuRShift(GpuMat src, Scalar shift, GpuMat dst, Stream s) {
         return errorResult(e.code, e.what());
     }
 }
+
+OpenCVResult GpuAbsSum(GpuMat src, GpuMat mask, struct Scalar* result) {
+    try {
+        cv::Scalar s = cv::cuda::absSum(*src, mask == NULL ? cv::noArray() : *mask);
+        result->val1 = s[0];
+        result->val2 = s[1];
+        result->val3 = s[2];
+        result->val4 = s[3];
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}
+
+OpenCVResult GpuCalcAbsSum(GpuMat src, GpuMat dst, GpuMat mask, Stream s) {
+    try {
+        if (s == NULL) {
+            cv::cuda::calcAbsSum(*src, *dst, mask == NULL ? cv::noArray() : *mask);
+        } else {
+            cv::cuda::calcAbsSum(*src, *dst, mask == NULL ? cv::noArray() : *mask, *s);
+        }
+
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}
+
+OpenCVResult GpuMinMax(GpuMat src, GpuMat mask, double* minVal, double* maxVal) {
+    try {
+        if (mask == NULL) {
+            cv::cuda::minMax(*src, minVal, maxVal, cv::noArray());
+        } else {
+            cv::cuda::minMax(*src, minVal, maxVal, *mask);
+        }
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}
+
+OpenCVResult GpuMinMaxLoc(GpuMat src, GpuMat mask, double* minVal, double* maxVal, int* minLocX, int* minLocY, int* maxLocX, int* maxLocY) {
+    try {
+        cv::Point minLoc, maxLoc;
+        if (mask == NULL) {
+            cv::cuda::minMaxLoc(*src, minVal, maxVal, &minLoc, &maxLoc, cv::noArray());
+        } else {
+            cv::cuda::minMaxLoc(*src, minVal, maxVal, &minLoc, &maxLoc, *mask);
+        }
+        *minLocX = minLoc.x;
+        *minLocY = minLoc.y;
+        *maxLocX = maxLoc.x;
+        *maxLocY = maxLoc.y;
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}
+
+OpenCVResult GpuNormalize(GpuMat src, GpuMat dst, double alpha, double beta, int normType, int dtype, GpuMat mask, Stream s) {
+    try {
+        if (s == NULL) {
+            cv::cuda::normalize(*src, *dst, alpha, beta, normType, dtype, mask == NULL ? cv::noArray() : *mask);
+        } else {
+            cv::cuda::normalize(*src, *dst, alpha, beta, normType, dtype, mask == NULL ? cv::noArray() : *mask, *s);
+        }
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}
+
+OpenCVResult GpuFindMinMaxLoc(GpuMat src, GpuMat minMaxVals, GpuMat loc, GpuMat mask, Stream s) {
+    try {
+        if (s == NULL) {
+            cv::cuda::findMinMaxLoc(*src, *minMaxVals, *loc, mask == NULL ? cv::noArray() : *mask);
+        } else {
+            cv::cuda::findMinMaxLoc(*src, *minMaxVals, *loc, mask == NULL ? cv::noArray() : *mask, *s);
+        }
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}
+
+OpenCVResult GpuFindMinMax(GpuMat src, GpuMat dst, GpuMat mask, Stream s) {
+    try {
+        if (s == NULL) {
+            cv::cuda::findMinMax(*src, *dst, mask == NULL ? cv::noArray() : *mask);
+        } else {
+            cv::cuda::findMinMax(*src, *dst, mask == NULL ? cv::noArray() : *mask, *s);
+        }
+        return successResult();
+    } catch(const cv::Exception& e) {
+        return errorResult(e.code, e.what());
+    }
+}

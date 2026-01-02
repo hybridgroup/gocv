@@ -1105,3 +1105,161 @@ func TestRShiftWithStream(t *testing.T) {
 		t.Error("RShiftWithStream result should not be empty")
 	}
 }
+
+func TestAbsSum(t *testing.T) {
+    src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadColor)
+    if src.Empty() {
+        t.Error("Invalid read of Mat in AbsSum test")
+    }
+    defer src.Close()
+
+    cimg := NewGpuMat()
+    defer cimg.Close()
+    cimg.Upload(src)
+
+    sum, err := AbsSum(cimg)
+    if err != nil {
+        t.Errorf("AbsSum error: %v", err)
+    }
+    if sum.Val1 == 0 && sum.Val2 == 0 && sum.Val3 == 0 && sum.Val4 == 0 {
+        t.Error("AbsSum result should not be all zeros")
+    }
+}
+
+func TestCalcAbsSum(t *testing.T) {
+    src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadColor)
+    if src.Empty() {
+        t.Error("Invalid read of Mat in CalcAbsSum test")
+    }
+    defer src.Close()
+
+    cimg := NewGpuMat()
+    defer cimg.Close()
+    cimg.Upload(src)
+
+    dst := NewGpuMat()
+    defer dst.Close()
+
+    err := CalcAbsSum(cimg, &dst)
+    if err != nil {
+        t.Errorf("CalcAbsSum error: %v", err)
+    }
+    if dst.Empty() {
+        t.Error("CalcAbsSum result should not be empty")
+    }
+}
+
+func TestMinMax(t *testing.T) {
+    src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+    if src.Empty() {
+        t.Error("Invalid read of Mat in MinMax test")
+    }
+    defer src.Close()
+
+    cimg := NewGpuMat()
+    defer cimg.Close()
+    cimg.Upload(src)
+
+    minVal, maxVal, err := MinMax(cimg)
+    if err != nil {
+        t.Errorf("MinMax error: %v", err)
+    }
+    if minVal >= maxVal {
+        t.Errorf("MinMax result invalid: min=%v max=%v", minVal, maxVal)
+    }
+}
+
+func TestMinMaxLoc(t *testing.T) {
+    src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+    if src.Empty() {
+        t.Error("Invalid read of Mat in MinMaxLoc test")
+    }
+    defer src.Close()
+
+    cimg := NewGpuMat()
+    defer cimg.Close()
+    cimg.Upload(src)
+
+    minVal, maxVal, minLoc, maxLoc, err := MinMaxLoc(cimg)
+    if err != nil {
+        t.Errorf("MinMaxLoc error: %v", err)
+    }
+    if minVal >= maxVal {
+        t.Errorf("MinMaxLoc result invalid: min=%v max=%v", minVal, maxVal)
+    }
+    if minLoc == maxLoc {
+        t.Errorf("MinMaxLoc locations should not be equal: minLoc=%v maxLoc=%v", minLoc, maxLoc)
+    }
+}
+
+func TestNormalize(t *testing.T) {
+    src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+    if src.Empty() {
+        t.Error("Invalid read of Mat in Normalize test")
+    }
+    defer src.Close()
+
+    cimg := NewGpuMat()
+    defer cimg.Close()
+    cimg.Upload(src)
+
+    dst := NewGpuMat()
+    defer dst.Close()
+
+    err := Normalize(cimg, &dst, 0, 255, gocv.NormMinMax, -1)
+    if err != nil {
+        t.Errorf("Normalize error: %v", err)
+    }
+    if dst.Empty() {
+        t.Error("Normalize result should not be empty")
+    }
+}
+
+func TestFindMinMaxLoc(t *testing.T) {
+    src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+    if src.Empty() {
+        t.Error("Invalid read of Mat in FindMinMaxLoc test")
+    }
+    defer src.Close()
+
+    cimg := NewGpuMat()
+    defer cimg.Close()
+    cimg.Upload(src)
+
+    minMaxVals := NewGpuMat()
+    defer minMaxVals.Close()
+    loc := NewGpuMat()
+    defer loc.Close()
+
+    err := FindMinMaxLoc(cimg, &minMaxVals, &loc)
+    if err != nil {
+        t.Errorf("FindMinMaxLoc error: %v", err)
+    }
+    if minMaxVals.Empty() || loc.Empty() {
+        t.Error("FindMinMaxLoc result should not be empty")
+    }
+}
+
+func TestFindMinMax(t *testing.T) {
+    src := gocv.IMRead("../images/gocvlogo.jpg", gocv.IMReadGrayScale)
+    if src.Empty() {
+        t.Error("Invalid read of Mat in FindMinMax test")
+    }
+    defer src.Close()
+
+    cimg := NewGpuMat()
+    defer cimg.Close()
+    cimg.Upload(src)
+
+    dst := NewGpuMat()
+    defer dst.Close()
+
+    err := FindMinMax(cimg, &dst)
+    if err != nil {
+        t.Errorf("FindMinMax error: %v", err)
+    }
+    if dst.Empty() {
+        t.Error("FindMinMax result should not be empty")
+    }
+}
+
