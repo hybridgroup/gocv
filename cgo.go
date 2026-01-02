@@ -8,6 +8,6 @@ package gocv
 #cgo !windows pkg-config: opencv4
 #cgo CXXFLAGS:   --std=c++11 -DNDEBUG
 #cgo windows  CPPFLAGS:   -IC:/opencv/build/install/include
-#cgo windows  LDFLAGS:    -LC:/opencv/build/install/x64/mingw/lib -lopencv_core4120 -lopencv_face4120 -lopencv_videoio4120 -lopencv_imgproc4120 -lopencv_highgui4120 -lopencv_imgcodecs4120 -lopencv_objdetect4120 -lopencv_features2d4120 -lopencv_video4120 -lopencv_dnn4120 -lopencv_xfeatures2d4120 -lopencv_plot4120 -lopencv_tracking4120 -lopencv_img_hash4120 -lopencv_calib3d4120 -lopencv_bgsegm4120 -lopencv_photo4120 -lopencv_aruco4120 -lopencv_wechat_qrcode4120 -lopencv_ximgproc4120 -lopencv_mcc4120
+#cgo windows  LDFLAGS:    -LC:/opencv/build/install/x64/mingw/lib -lopencv_core4130 -lopencv_face4130 -lopencv_videoio4130 -lopencv_imgproc4130 -lopencv_highgui4130 -lopencv_imgcodecs4130 -lopencv_objdetect4130 -lopencv_features2d4130 -lopencv_video4130 -lopencv_dnn4130 -lopencv_xfeatures2d4130 -lopencv_plot4130 -lopencv_tracking4130 -lopencv_img_hash4130 -lopencv_calib3d4130 -lopencv_bgsegm4130 -lopencv_photo4130 -lopencv_aruco4130 -lopencv_wechat_qrcode4130 -lopencv_ximgproc4130 -lopencv_mcc4130
 */
 import "C"
