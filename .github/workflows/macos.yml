@@ -49,10 +49,10 @@ jobs:
       - name: Install ONNX test model
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/testdata
-          curl -sL https://github.com/onnx/models/raw/main/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx > ${GITHUB_WORKSPACE}/testdata/googlenet-9.onnx
-          curl -sL https://github.com/opencv/opencv_zoo/raw/refs/heads/main/models/face_recognition_sface/face_recognition_sface_2021dec.onnx > ${GITHUB_WORKSPACE}/testdata/face_recognition_sface_2021dec.onnx
-          curl -sL https://github.com/opencv/opencv_zoo/raw/refs/heads/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx > ${GITHUB_WORKSPACE}/testdata/face_detection_yunet_2023mar.onnx
-          curl -sL https://github.com/opencv/opencv_zoo/raw/refs/heads/main/models/object_tracking_vittrack/object_tracking_vittrack_2023sep.onnx > ${GITHUB_WORKSPACE}/testdata/object_tracking_vittrack_2023sep.onnx
+          curl -sL https://huggingface.co/onnxmodelzoo/legacy_models/resolve/main/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx > ${GITHUB_WORKSPACE}/testdata/googlenet-9.onnx
+          curl -sL https://huggingface.co/opencv/face_recognition_sface/resolve/main/face_recognition_sface_2021dec.onnx > ${GITHUB_WORKSPACE}/testdata/face_recognition_sface_2021dec.onnx
+          curl -sL https://huggingface.co/opencv/face_detection_yunet/resolve/main/face_detection_yunet_2023mar.onnx > ${GITHUB_WORKSPACE}/testdata/face_detection_yunet_2023mar.onnx
+          curl -sL https://huggingface.co/opencv/object_tracking_vittrack/resolve/main/object_tracking_vittrack_2023sep.onnx > ${GITHUB_WORKSPACE}/testdata/object_tracking_vittrack_2023sep.onnx
       - name: Run main tests
         run: go test -v -tags matprofile .
         env:

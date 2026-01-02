@@ -525,8 +525,8 @@ func TestMinAreaRect(t *testing.T) {
 	if m.Center.Y != 2 {
 		t.Errorf("TestMinAreaRect(): unexpected center.Y = %v, want = %v", m.Center.Y, 2)
 	}
-	if m.Angle != 45.0 {
-		t.Errorf("TestMinAreaRect(): unexpected angle = %v, want = %v", m.Angle, 45.0)
+	if m.Angle != -45.0 {
+		t.Errorf("TestMinAreaRect(): unexpected angle = %v, want = %v", m.Angle, -45.0)
 	}
 }
 
@@ -590,14 +590,14 @@ func TestMinAreaRect2f(t *testing.T) {
 	if m.Center.Y != 3.5 {
 		t.Errorf("TestMinAreaRect2f(): unexpected center.Y = %v, want = %v", m.Center.Y, 3.5)
 	}
-	if m.Width != 7.071067810058594 {
-		t.Errorf("TestMinAreaRect2f(): unexpected width = %v, want = %v", m.Width, 7.071067810058594)
+	if m.Height != 7.071067810058594 {
+		t.Errorf("TestMinAreaRect2f(): unexpected height = %v, want = %v", m.Height, 7.071067810058594)
 	}
-	if m.Height != 5.656853675842285 {
-		t.Errorf("TestMinAreaRect2f(): unexpected height = %v, want = %v", m.Height, 5.656853675842285)
+	if m.Width != 5.656853675842285 {
+		t.Errorf("TestMinAreaRect2f(): unexpected width = %v, want = %v", m.Width, 5.656853675842285)
 	}
-	if m.Angle != 45.0 {
-		t.Errorf("TestMinAreaRect2f(): unexpected angle = %v, want = %v", m.Angle, 45.0)
+	if m.Angle != -45.0 {
+		t.Errorf("TestMinAreaRect2f(): unexpected angle = %v, want = %v", m.Angle, -45.0)
 	}
 }
 

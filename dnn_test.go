@@ -64,7 +64,24 @@ func TestReadNetDiskFromONNX(t *testing.T) {
 	}
 	defer net.Close()
 
-	checkONNXNet(t, net)
+	m := map[int]string{
+		0:   "onnx_node_output_0!conv1/7x7_s2_1",
+		10:  "onnx_node_output_0!inception_3a/1x1_1",
+		20:  "onnx_node_output_0!inception_3a/pool_1",
+		30:  "onnx_node_output_0!inception_3b/5x5_reduce_1",
+		40:  "onnx_node_output_0!inception_4a/1x1_2",
+		50:  "onnx_node_output_0!inception_4a/pool_proj_1",
+		60:  "onnx_node_output_0!inception_4b/5x5_reduce_2",
+		70:  "onnx_node_output_0!inception_4c/3x3_reduce_2",
+		80:  "onnx_node_output_0!inception_4c/output_1",
+		90:  "onnx_node_output_0!inception_4d/5x5_2",
+		100: "onnx_node_output_0!inception_4e/3x3_2",
+		110: "onnx_node_output_0!inception_5a/1x1_1",
+		120: "onnx_node_output_0!inception_5a/pool_1",
+		130: "onnx_node_output_0!inception_5b/5x5_reduce_1",
+		140: "onnx_node_output_0!OC2_DUMMY_0"}
+
+	checkONNXNet(t, net, m, 144)
 }
 
 func TestReadNetMemoryFromONNX(t *testing.T) {
@@ -91,7 +108,25 @@ func TestReadNetMemoryFromONNX(t *testing.T) {
 		t.Errorf("Unable to load Caffe model using ReadNetBytes")
 	}
 	defer net.Close()
-	checkONNXNet(t, net)
+
+	m := map[int]string{
+		0:   "onnx_node_output_0!conv1/7x7_s2_1",
+		10:  "onnx_node_output_0!inception_3a/1x1_1",
+		20:  "onnx_node_output_0!inception_3a/pool_1",
+		30:  "onnx_node_output_0!inception_3b/5x5_reduce_1",
+		40:  "onnx_node_output_0!inception_4a/1x1_2",
+		50:  "onnx_node_output_0!inception_4a/pool_proj_1",
+		60:  "onnx_node_output_0!inception_4b/5x5_reduce_2",
+		70:  "onnx_node_output_0!inception_4c/3x3_reduce_2",
+		80:  "onnx_node_output_0!inception_4c/output_1",
+		90:  "onnx_node_output_0!inception_4d/5x5_2",
+		100: "onnx_node_output_0!inception_4e/3x3_2",
+		110: "onnx_node_output_0!inception_5a/1x1_1",
+		120: "onnx_node_output_0!inception_5a/pool_1",
+		130: "onnx_node_output_0!inception_5b/5x5_reduce_1",
+		140: "onnx_node_output_0!OC2_DUMMY_0"}
+
+	checkONNXNet(t, net, m, 144)
 }
 
 func checkTensorflowNet(t *testing.T, net Net) {
@@ -188,7 +223,24 @@ func TestOnnxMemory(t *testing.T) {
 	}
 	defer net.Close()
 
-	checkONNXNet(t, net)
+	m := map[int]string{
+		0:   "onnx_node_output_0!conv1/7x7_s2_1",
+		10:  "onnx_node_output_0!inception_3a/1x1_1",
+		20:  "onnx_node_output_0!inception_3a/pool_1",
+		30:  "onnx_node_output_0!inception_3b/5x5_reduce_1",
+		40:  "onnx_node_output_0!inception_4a/1x1_2",
+		50:  "onnx_node_output_0!inception_4a/pool_proj_1",
+		60:  "onnx_node_output_0!inception_4b/5x5_reduce_2",
+		70:  "onnx_node_output_0!inception_4c/3x3_reduce_2",
+		80:  "onnx_node_output_0!inception_4c/output_1",
+		90:  "onnx_node_output_0!inception_4d/5x5_2",
+		100: "onnx_node_output_0!inception_4e/3x3_2",
+		110: "onnx_node_output_0!inception_5a/1x1_1",
+		120: "onnx_node_output_0!inception_5a/pool_1",
+		130: "onnx_node_output_0!inception_5b/5x5_reduce_1",
+		140: "onnx_node_output_0!OC2_DUMMY_0"}
+
+	checkONNXNet(t, net, m, 144)
 }
 
 func TestOnnxDisk(t *testing.T) {
@@ -203,10 +255,27 @@ func TestOnnxDisk(t *testing.T) {
 	}
 	defer net.Close()
 
-	checkONNXNet(t, net)
+	m := map[int]string{
+		0:   "onnx_node_output_0!conv1/7x7_s2_1",
+		10:  "onnx_node_output_0!inception_3a/1x1_1",
+		20:  "onnx_node_output_0!inception_3a/pool_1",
+		30:  "onnx_node_output_0!inception_3b/5x5_reduce_1",
+		40:  "onnx_node_output_0!inception_4a/1x1_2",
+		50:  "onnx_node_output_0!inception_4a/pool_proj_1",
+		60:  "onnx_node_output_0!inception_4b/5x5_reduce_2",
+		70:  "onnx_node_output_0!inception_4c/3x3_reduce_2",
+		80:  "onnx_node_output_0!inception_4c/output_1",
+		90:  "onnx_node_output_0!inception_4d/5x5_2",
+		100: "onnx_node_output_0!inception_4e/3x3_2",
+		110: "onnx_node_output_0!inception_5a/1x1_1",
+		120: "onnx_node_output_0!inception_5a/pool_1",
+		130: "onnx_node_output_0!inception_5b/5x5_reduce_1",
+		140: "onnx_node_output_0!OC2_DUMMY_0"}
+
+	checkONNXNet(t, net, m, 144)
 }
 
-func checkONNXNet(t *testing.T, net Net) {
+func checkONNXNet(t *testing.T, net Net, expectedLayers map[int]string, expectedLayerCount int) {
 	img := IMRead("images/space_shuttle.jpg", IMReadColor)
 	if img.Empty() {
 		t.Error("Invalid Mat in ONNX test")
@@ -218,6 +287,18 @@ func checkONNXNet(t *testing.T, net Net) {
 		t.Error("Invalid blob in ONNX test")
 	}
 	defer blob.Close()
+
+	lnames := net.GetLayerNames()
+	if len(lnames) != expectedLayerCount {
+		t.Errorf("Invalid len layer names in test: %d\n", len(lnames))
+	}
+	
+	m := expectedLayers
+	for k, v := range m {
+		if lnames[k] != v {
+			t.Errorf("Invalid layer name in test: \"%s\" (expected=\"%s\")\n", lnames[k], v)
+		}
+	}
 
 	net.SetInput(blob, "data_0")
 	prob := net.Forward("prob_1")
