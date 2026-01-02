@@ -1,6 +1,6 @@
-# This is the Github action to build and push the GStreamer Docker images used for static builds.
+# This is the Github action to build and push the OpenCV Docker images used for static builds.
 #
-name: GStreamer
+name: OpenCV
 on:
   workflow_dispatch:
 
@@ -9,8 +9,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  gstreamer:
-    name: gstreamer
+  opencv:
+    name: opencv
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -27,8 +27,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/gstreamer:1.24-alpine
-            ghcr.io/${{ github.repository_owner }}/gstreamer:1.24-alpine
+            gocv/opencv:4.11.0-gpu-cuda-12-static
+            ghcr.io/${{ github.repository_owner }}/opencv:4.11.0-gpu-cuda-12-static
           tags: |
             type=sha,format=long
             type=raw,value=latest
@@ -46,14 +46,13 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          file: Dockerfile.gstreamer-static-alpine
-          platforms: linux/amd64,linux/arm64
+          file: Dockerfile.opencv-gpu-cuda-12-static
+          platforms: linux/amd64
           context: .
           push: true
           tags: |
-            gocv/gstreamer:1.24-alpine
-            ghcr.io/${{ github.repository_owner }}/gstreamer:1.24-alpine
+            gocv/opencv:4.11.0-gpu-cuda-12-static
+            ghcr.io/${{ github.repository_owner }}/opencv:4.11.0-gpu-cuda-12-static
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-

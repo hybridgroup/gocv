@@ -4,6 +4,7 @@ name: Docker
 on:
   push:
     branches: [build-opencv-alpine, alpine-static-improved]
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -22,7 +23,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Check out the repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -70,7 +71,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Check out the repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -119,14 +120,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Check out the repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/opencv:4.10.0-alpine
-            ghcr.io/${{ github.repository_owner }}/opencv:4.10.0-alpine
+            gocv/opencv:4.13.0-alpine
+            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-alpine
           tags: |
             type=sha,format=long
             type=raw,value=latest
@@ -149,8 +150,8 @@ jobs:
           context: .
           push: true
           tags: |
-            gocv/opencv:4.10.0-alpine
-            ghcr.io/${{ github.repository_owner }}/opencv:4.10.0-alpine
+            gocv/opencv:4.13.0-alpine
+            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-alpine
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -168,14 +169,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Check out the repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/opencv:4.10.0-alpine-ffmpeg
-            ghcr.io/${{ github.repository_owner }}/opencv:4.10.0-alpine-ffmpeg
+            gocv/opencv:4.13.0-alpine-ffmpeg
+            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-alpine-ffmpeg
           tags: |
             type=sha,format=long
             type=raw,value=latest
@@ -198,8 +199,8 @@ jobs:
           context: .
           push: true
           tags: |
-            gocv/opencv:4.10.0-alpine-ffmpeg
-            ghcr.io/${{ github.repository_owner }}/opencv:4.10.0-alpine-ffmpeg
+            gocv/opencv:4.13.0-alpine-ffmpeg
+            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-alpine-ffmpeg
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

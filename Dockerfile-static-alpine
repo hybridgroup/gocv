@@ -1,0 +1,51 @@
+# syntax=docker/dockerfile:1.3
+
+# To build release:
+#   docker buildx build -f Dockerfile.static-alpine -t gocv-static-alpine --platform=linux/arm64,linux/amd64 --load .
+
+FROM --platform=$BUILDPLATFORM ghcr.io/hybridgroup/opencv:4.11-alpine AS builder-amd64
+
+RUN apk update && apk add --no-cache \
+    build-base \
+    cmake \
+    git \
+    wget \
+    unzip \
+    pkgconfig
+
+# Install Go
+ARG GO_VERSION=1.22.8
+RUN wget https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz && \
+    rm go${GO_VERSION}.linux-amd64.tar.gz
+
+ENV PATH="/usr/local/go/bin:${PATH}"
+ENV GOPATH /go
+
+# Copy the GoCV source code
+
+COPY . /go/src/gocv.io/x/gocv/
+
+WORKDIR /go/src/gocv.io/x/gocv
+
+ENV CGO_CXXFLAGS="--std=c++11"
+ENV CGO_CPPFLAGS="-I/usr/local/include/opencv4" 
+ENV CGO_LDFLAGS="-static -L/usr/local/lib -lopencv_gapi -lopencv_stitching -lopencv_alphamat -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dnn_objdetect -lopencv_dnn_superres -lopencv_dpm -lopencv_face -lopencv_fuzzy -lopencv_hfs -lopencv_img_hash -lopencv_intensity_transform -lopencv_line_descriptor -lopencv_mcc -lopencv_quality -lopencv_rapid -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_signal -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_superres -lopencv_optflow -lopencv_surface_matching -lopencv_tracking -lopencv_highgui -lopencv_datasets -lopencv_text -lopencv_plot -lopencv_videostab -lopencv_videoio -lopencv_wechat_qrcode -lopencv_xfeatures2d -lopencv_shape -lopencv_ml -lopencv_ximgproc -lopencv_video -lopencv_xobjdetect -lopencv_objdetect -lopencv_calib3d -lopencv_imgcodecs -lopencv_features2d -lopencv_dnn -lopencv_flann -lopencv_xphoto -lopencv_photo -lopencv_imgproc -lopencv_core -L/usr/local/lib/opencv4/3rdparty -llibprotobuf -lade -littnotify -llibwebp -llibtiff -llibopenjp2 -lippiw -lippicv -llibjpeg-turbo -llibpng -L/lib -lzlib -lIlmImf -ldl -lm -lpthread -lrt -lavdevice -lm -latomic -lavfilter -pthread -lm -latomic -lswscale -lm -latomic -lpostproc -lm -latomic -lavformat -lm -latomic -lavcodec -lvpx -lx264 -lswresample -lm -latomic -lavutil -lbz2_static -llzma"
+
+# Build the GoCV version command
+RUN --mount=target=. \
+    --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    go build -tags customenv -o /build/gocv_version ./cmd/version/
+
+# Stage 3: Final image
+
+FROM alpine:3.20 AS final
+
+# Copy the GoCV version command
+
+COPY --from=builder /build/gocv_version /run/gocv_version
+
+# Run the GoCV version command
+
+CMD ["/run/gocv_version"]
