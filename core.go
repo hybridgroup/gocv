@@ -2180,15 +2180,9 @@ func NewPointVectorFromPoints(pts []image.Point) PointVector {
 	p := (*C.struct_Point)(C.malloc(C.size_t(C.sizeof_struct_Point * len(pts))))
 	defer C.free(unsafe.Pointer(p))
 
-	h := &reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(p)),
-		Len:  len(pts),
-		Cap:  len(pts),
-	}
-	pa := *(*[]C.Point)(unsafe.Pointer(h))
-
+	h := unsafe.Slice(p, len(pts))
 	for j, point := range pts {
-		pa[j] = C.struct_Point{
+		h[j] = C.struct_Point{
 			x: C.int(point.X),
 			y: C.int(point.Y),
 		}
