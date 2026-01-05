@@ -47,7 +47,7 @@ jobs:
         uses: actions/cache/restore@v4
         id: cache-opencv-build
         with:
-          key: opencv-build-4130-windows-v3
+          key: opencv-build-4130-windows-v4
           path: |
             ./opencv/build
       - name: Build OpenCV
