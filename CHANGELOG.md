@@ -1,3 +1,25 @@
+0.43.0
+---
+* **all**
+    - update to OpenCV 4.13
+* **core**
+    - add Copy method to Mat (#1346)
+    - improve implementation for NewPointVectorFromPoints
+* **cuda**
+    - add implmentations for more arith functions
+* **imgproc**
+    - added in missing colormaps
+    - paramters types in improc dilate and erode functions
+    - use same test values as OpenCV tests for TestMinAreaRect and TestMinAreaRect2f
+* **videoio**
+    - add RetrieveChannel function to make it possible to capture both video and audio
+* **examples**
+    - Fix bugs and memory leaks in yolov8 example (#1349)
+* **contrib**
+    - add support for Macbeth Chart module (MCC) (#1336)
+* **install**
+    - windows: split download and build scripts for easier usage/integration
+
 0.42.0
 ---
 * **all**
