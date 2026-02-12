@@ -925,6 +925,60 @@ func TestSolvePnP(t *testing.T) {
 	}
 }
 
+func TestProjectPoints(t *testing.T) {
+	// Create some 3D points
+	objectPoints := NewPoint3fVector()
+	defer objectPoints.Close()
+
+	objectPoints.Append(Point3f{X: 0, Y: 0, Z: 0})
+	objectPoints.Append(Point3f{X: 10, Y: 0, Z: 0})
+	objectPoints.Append(Point3f{X: 0, Y: 10, Z: 0})
+	objectPoints.Append(Point3f{X: 0, Y: 0, Z: 10})
+
+	// Camera matrix (identity for simplicity)
+	cameraMatrix := Eye(3, 3, MatTypeCV64F)
+	defer cameraMatrix.Close()
+
+	// Distortion coefficients (zero)
+	distCoeffs := NewMatWithSize(1, 4, MatTypeCV64F)
+	defer distCoeffs.Close()
+	distCoeffs.SetDoubleAt(0, 0, 0)
+	distCoeffs.SetDoubleAt(0, 1, 0)
+	distCoeffs.SetDoubleAt(0, 2, 0)
+	distCoeffs.SetDoubleAt(0, 3, 0)
+
+	// Rotation vector (zero)
+	rvec := NewMatWithSize(3, 1, MatTypeCV64F)
+	defer rvec.Close()
+	rvec.SetDoubleAt(0, 0, 0)
+	rvec.SetDoubleAt(1, 0, 0)
+	rvec.SetDoubleAt(2, 0, 0)
+
+	// Translation vector (move camera back along Z)
+	tvec := NewMatWithSize(3, 1, MatTypeCV64F)
+	defer tvec.Close()
+	tvec.SetDoubleAt(0, 0, 0)
+	tvec.SetDoubleAt(1, 0, 0)
+	tvec.SetDoubleAt(2, 0, 100) // Z translation
+
+	imagePoints, err := ProjectPoints(objectPoints, rvec, tvec, cameraMatrix, distCoeffs)
+	if err != nil {
+		t.Error(err)
+	}
+	defer imagePoints.Close()
+
+	if imagePoints.Size() != 4 {
+		t.Errorf("ProjectPoints returned %d points, expected 4", imagePoints.Size())
+	}
+
+	// Check the first point. (0,0,0) projected with Tz=100.
+	// x' = x/z = 0/100 = 0. u = fx*x' + cx = 1*0 + 0 = 0
+	p1 := imagePoints.At(0)
+	if p1.X != 0 || p1.Y != 0 {
+		t.Errorf("Point 1 projected incorrectly: got %v usually expected (0,0)", p1)
+	}
+}
+
 func TestStereoRectify(t *testing.T) {
 	cameraMatrix1 := NewMatWithSize(3, 3, MatTypeCV64F)
 	defer cameraMatrix1.Close()

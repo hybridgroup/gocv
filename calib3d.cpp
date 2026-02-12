@@ -236,6 +236,15 @@ bool SolvePnP(Point3fVector objectPoints, Point2fVector imagePoints, Mat cameraM
     }
 }
 
+OpenCVResult ProjectPoints(Point3fVector objectPoints, Mat rvec, Mat tvec, Mat cameraMatrix, Mat distCoeffs, Point2fVector imagePoints) {
+    try {
+        cv::projectPoints(*objectPoints, *rvec, *tvec, *cameraMatrix, *distCoeffs, *imagePoints);
+        return successResult();
+    } catch(const cv::Exception& e){
+        return errorResult(e.code, e.what());
+    }
+}
+
 OpenCVResult StereoRectify(Mat cameraMatrix1, Mat distCoeffs1, Mat cameraMatrix2, Mat distCoeffs2, Size imageSize, Mat r, Mat t, Mat R1, Mat R2, Mat P1, Mat P2, Mat Q, int flags) {
     try {
         cv::stereoRectify(*cameraMatrix1, *distCoeffs1, *cameraMatrix2, *distCoeffs2, cv::Size(imageSize.width, imageSize.height), *r, *t, *R1, *R2, *P1, *P2, *Q, flags);

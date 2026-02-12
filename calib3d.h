@@ -37,6 +37,7 @@ OpenCVResult TriangulatePoints(Mat projMatr1, Mat projMatr2, Point2fVector projP
 OpenCVResult ConvertPointsFromHomogeneous(Mat src, Mat dst);
 OpenCVResult Rodrigues(Mat src, Mat dst);
 bool SolvePnP(Point3fVector objectPoints, Point2fVector imagePoints, Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec, bool useExtrinsicGuess, int flags);
+OpenCVResult ProjectPoints(Point3fVector objectPoints, Mat rvec, Mat tvec, Mat cameraMatrix, Mat distCoeffs, Point2fVector imagePoints);
 OpenCVResult StereoRectify(Mat cameraMatrix1, Mat distCoeffs1, Mat cameraMatrix2, Mat distCoeffs2, Size imageSize, Mat r, Mat t, Mat R1, Mat R2, Mat P1, Mat P2, Mat Q, int flags);
 Mat FindHomography(Mat src, Mat dst, int method, double ransacReprojThreshold, Mat mask, const int maxIters, const double confidence);
 #ifdef __cplusplus
