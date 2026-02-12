@@ -363,6 +363,16 @@ func SolvePnP(objectPoints Point3fVector, imagePoints Point2fVector, cameraMatri
 	return bool(C.SolvePnP(objectPoints.p, imagePoints.p, cameraMatrix.p, distCoeffs.p, rvec.p, tvec.p, C.bool(useExtrinsicGuess), C.int(flags)))
 }
 
+// ProjectPoints projects 3D points to an image plane.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga1019495a2c8d1743ed5cc23fa0daff8c
+func ProjectPoints(objectPoints Point3fVector, rvec, tvec, cameraMatrix, distCoeffs Mat) (Point2fVector, error) {
+	imagePoints := NewPoint2fVector()
+	res := C.ProjectPoints(objectPoints.p, rvec.p, tvec.p, cameraMatrix.p, distCoeffs.p, imagePoints.p)
+	return imagePoints, OpenCVResult(res)
+}
+
 // StereoRectify computes rectification transforms for each head of a calibrated stereo camera.
 //
 // For further details, please see:
