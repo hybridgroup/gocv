@@ -3,7 +3,6 @@ package gocv
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -22,7 +21,7 @@ func TestIMRead(t *testing.T) {
 }
 
 func TestIMWrite(t *testing.T) {
-	dir, _ := ioutil.TempDir("", "gocvtests")
+	dir := t.TempDir()
 	tmpfn := filepath.Join(dir, "test.jpg")
 
 	img := IMRead("images/face-detect.jpg", IMReadColor)
@@ -38,7 +37,7 @@ func TestIMWrite(t *testing.T) {
 }
 
 func TestIMWriteWithParams(t *testing.T) {
-	dir, _ := ioutil.TempDir("", "gocvtests")
+	dir := t.TempDir()
 	tmpfn := filepath.Join(dir, "test.jpg")
 
 	img := IMRead("images/face-detect.jpg", IMReadColor)
@@ -114,6 +113,7 @@ func TestIMEncodeWithParams(t *testing.T) {
 	if buf.Len() < 18000 {
 		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", buf.Len())
 	}
+	t.Logf("Buffer size for 75 quality: %v", buf.Len())
 
 	buf2, err := IMEncodeWithParams(JPEGFileExt, img, []int{IMWriteJpegQuality, 100})
 	if err != nil {
@@ -123,14 +123,48 @@ func TestIMEncodeWithParams(t *testing.T) {
 	if buf2.Len() < 18000 {
 		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", buf2.Len())
 	}
+	t.Logf("Buffer size for 100 quality: %v", buf2.Len())
 
 	if buf.Len() >= buf2.Len() {
 		t.Errorf("Jpeg quality parameter does not work correctly\n")
 	}
 }
 
+func TestIMEncodeWithBufParams(t *testing.T) {
+	img := IMRead("images/face-detect.jpg", IMReadColor)
+	defer img.Close()
+	if img.Empty() {
+		t.Error("Invalid Mat in IMEncode test")
+	}
+
+	buf := NewNativeByteBuffer()
+	defer buf.Close()
+
+	if err := IMEncodeWithBufParams(JPEGFileExt, img, buf, []int{IMWriteJpegQuality, 75}); err != nil {
+		t.Error(err)
+	}
+	bufLen1 := buf.Len()
+	if bufLen1 < 18000 {
+		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", bufLen1)
+	}
+	t.Logf("Buffer size for 75 quality: %v", bufLen1)
+
+	if err := IMEncodeWithBufParams(JPEGFileExt, img, buf, []int{IMWriteJpegQuality, 100}); err != nil {
+		t.Error(err)
+	}
+	bufLen2 := buf.Len()
+	if bufLen2 < 18000 {
+		t.Errorf("Wrong buffer size in IMEncode test. Should have been %v\n", bufLen2)
+	}
+	t.Logf("Buffer size for 100 quality: %v", bufLen2)
+
+	if bufLen1 >= bufLen2 {
+		t.Errorf("Jpeg quality parameter does not work correctly\n")
+	}
+}
+
 func TestIMDecode(t *testing.T) {
-	content, err := ioutil.ReadFile("images/face-detect.jpg")
+	content, err := os.ReadFile("images/face-detect.jpg")
 	if err != nil {
 		t.Error("Invalid ReadFile in IMDecode")
 	}
@@ -153,7 +187,7 @@ func TestIMDecode(t *testing.T) {
 func TestIMDecodeIntoMat(t *testing.T) {
 	mat := NewMat()
 	defer mat.Close()
-	content, err := ioutil.ReadFile("images/face-detect.jpg")
+	content, err := os.ReadFile("images/face-detect.jpg")
 	if err != nil {
 		t.Error("Invalid ReadFile in IMDecode")
 	}
@@ -165,11 +199,10 @@ func TestIMDecodeIntoMat(t *testing.T) {
 	if mat.Empty() {
 		t.Error("Invalid Mat in IMDecode")
 	}
-
 }
 
 func TestIMDecodeWebp(t *testing.T) {
-	content, err := ioutil.ReadFile("images/sample.webp")
+	content, err := os.ReadFile("images/sample.webp")
 	if err != nil {
 		t.Error("Invalid ReadFile in IMDecodeWebp")
 	}
@@ -182,13 +215,10 @@ func TestIMDecodeWebp(t *testing.T) {
 		t.Error("Invalid Mat in IMDecodeWebp")
 	}
 	dec.Close()
-
 }
 
 func TestIMReadMulti(t *testing.T) {
-
 	mats := IMReadMulti("images/multipage.tif", IMReadAnyColor)
-
 	for i, page := range mats {
 		if page.Empty() {
 			t.Errorf("page %d empty", i)
@@ -198,13 +228,10 @@ func TestIMReadMulti(t *testing.T) {
 }
 
 func TestIMReadMulti_WithParams(t *testing.T) {
-
 	mats := IMReadMulti_WithParams("images/multipage.tif", 2, 3, IMReadAnyColor)
-
 	for i, page := range mats {
 		if page.Empty() {
 			t.Errorf("page %d empty", i)
 		}
 	}
-
 }

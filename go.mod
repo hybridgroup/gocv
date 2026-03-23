@@ -1,6 +1,6 @@
 module gocv.io/x/gocv
 
-go 1.21
+go 1.24.0
 
 require (
 	github.com/hybridgroup/mjpeg v0.0.0-20140228234708-4680f319790e

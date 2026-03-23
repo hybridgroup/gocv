@@ -168,7 +168,7 @@ func IMReadMulti(name string, flags IMReadFlag) []Mat {
 	return mats
 }
 
-// IMReadMulti reads multi-page image from a file into a []Mat.
+// IMReadMulti_WithParams reads multi-page image from a file into a []Mat.
 // The flags param is one of the IMReadFlag flags.
 // If the image cannot be read (because of missing file, improper permissions,
 // unsupported or invalid format), the function returns an empty []Mat.
@@ -239,6 +239,20 @@ const (
 	GIFFileExt FileExt = ".gif"
 )
 
+// cFileExt returns C-string for FileExt and true if it was allocated on the heap and needs to be freed.
+func cFileExt(fileExt FileExt) (*C.char, bool) {
+	switch fileExt {
+	case PNGFileExt:
+		return (*C.char)(unsafe.Pointer(unsafe.StringData(".png\x00"))), false
+	case JPEGFileExt:
+		return (*C.char)(unsafe.Pointer(unsafe.StringData(".jpg\x00"))), false
+	case GIFFileExt:
+		return (*C.char)(unsafe.Pointer(unsafe.StringData(".gif\x00"))), false
+	default:
+		return C.CString(string(fileExt)), true
+	}
+}
+
 // IMEncode encodes an image Mat into a memory buffer.
 // This function compresses the image and stores it in the returned memory buffer,
 // using the image format passed in in the form of a file extension string.
@@ -246,12 +260,16 @@ const (
 // For further details, please see:
 // http://docs.opencv.org/master/d4/da8/group__imgcodecs.html#ga461f9ac09887e47797a54567df3b8b63
 func IMEncode(fileExt FileExt, img Mat) (buf *NativeByteBuffer, err error) {
-	cfileExt := C.CString(string(fileExt))
-	defer C.free(unsafe.Pointer(cfileExt))
-
-	buffer := newNativeByteBuffer()
-	res := C.Image_IMEncode(cfileExt, img.Ptr(), buffer.nativePointer())
-	return buffer, OpenCVResult(res)
+	cfileExt, allocated := cFileExt(fileExt)
+	if allocated {
+		defer C.free(unsafe.Pointer(cfileExt))
+	}
+	b := NewNativeByteBuffer()
+	if err := OpenCVResult(C.Image_IMEncode(cfileExt, img.Ptr(), b.nativePointer())); err != nil {
+		b.Close()
+		return nil, err
+	}
+	return b, nil
 }
 
 // IMEncodeWithParams encodes an image Mat into a memory buffer.
@@ -265,22 +283,42 @@ func IMEncode(fileExt FileExt, img Mat) (buf *NativeByteBuffer, err error) {
 // For further details, please see:
 // http://docs.opencv.org/master/d4/da8/group__imgcodecs.html#ga461f9ac09887e47797a54567df3b8b63
 func IMEncodeWithParams(fileExt FileExt, img Mat, params []int) (buf *NativeByteBuffer, err error) {
-	cfileExt := C.CString(string(fileExt))
-	defer C.free(unsafe.Pointer(cfileExt))
+	b := NewNativeByteBuffer()
+	if err := IMEncodeWithBufParams(fileExt, img, b, params); err != nil {
+		b.Close()
+		return nil, err
+	}
+	return b, nil
+}
 
-	cparams := []C.int{}
+// IMEncodeWithBufParams encodes an image Mat into the provided memory buffer.
+// This function compresses the image and stores it in the provided memory buffer,
+// using the image format passed in in the form of a file extension string.
+//
+// Usage example:
+//
+//	buffer := gocv.NewNativeByteBuffer()
+//	err := gocv.IMEncodeWithBufParams(gocv.JPEGFileExt, img, buffer, []int{gocv.IMWriteJpegQuality, quality})
+//
+// For further details, please see:
+// http://docs.opencv.org/master/d4/da8/group__imgcodecs.html#ga461f9ac09887e47797a54567df3b8b63
+func IMEncodeWithBufParams(fileExt FileExt, img Mat, b *NativeByteBuffer, params []int) error {
+	cfileExt, allocated := cFileExt(fileExt)
+	if allocated {
+		defer C.free(unsafe.Pointer(cfileExt))
+	}
 
-	for _, v := range params {
-		cparams = append(cparams, C.int(v))
+	cparams := make([]C.int, len(params))
+	for i, v := range params {
+		cparams[i] = C.int(v)
 	}
 
 	paramsVector := C.struct_IntVector{}
 	paramsVector.val = (*C.int)(&cparams[0])
 	paramsVector.length = (C.int)(len(cparams))
 
-	b := newNativeByteBuffer()
 	res := C.Image_IMEncode_WithParams(cfileExt, img.Ptr(), paramsVector, b.nativePointer())
-	return b, OpenCVResult(res)
+	return OpenCVResult(res)
 }
 
 // IMDecode reads an image from a buffer in memory.

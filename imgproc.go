@@ -9,7 +9,6 @@ import (
 	"errors"
 	"image"
 	"image/color"
-	"reflect"
 	"unsafe"
 )
 
@@ -535,12 +534,7 @@ func toPoints(points C.Contour) []image.Point {
 	pArray := points.points
 	pLength := int(points.length)
 
-	pHdr := reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(pArray)),
-		Len:  pLength,
-		Cap:  pLength,
-	}
-	sPoints := *(*[]C.Point)(unsafe.Pointer(&pHdr))
+	sPoints := unsafe.Slice(pArray, pLength)
 
 	points4 := make([]image.Point, pLength)
 	for j, pt := range sPoints {
@@ -554,12 +548,7 @@ func toPoints2f(points C.Contour2f) []Point2f {
 	pArray := points.points
 	pLength := int(points.length)
 
-	pHdr := reflect.SliceHeader{
-		Data: uintptr(unsafe.Pointer(pArray)),
-		Len:  pLength,
-		Cap:  pLength,
-	}
-	sPoints := *(*[]C.Point)(unsafe.Pointer(&pHdr))
+	sPoints := unsafe.Slice(pArray, pLength)
 
 	points4 := make([]Point2f, pLength)
 	for j, pt := range sPoints {
@@ -586,7 +575,7 @@ func MinAreaRect(points PointVector) RotatedRect {
 	}
 }
 
-// MinAreaRect finds a rotated rectangle of the minimum area enclosing the input 2D point set.
+// MinAreaRect2f finds a rotated rectangle of the minimum area enclosing the input 2D point set.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga3d476a3417130ae5154aea421ca7ead9
@@ -651,7 +640,18 @@ func FindContours(src Mat, mode RetrievalMode, method ContourApproximationMode) 
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga17ed9f5d79ae97bd4c7cf18403e1689a
 func FindContoursWithParams(src Mat, hierarchy *Mat, mode RetrievalMode, method ContourApproximationMode) PointsVector {
-	return PointsVector{p: C.FindContours(src.p, hierarchy.p, C.int(mode), C.int(method))}
+	contours := NewPointsVector()
+	FindContoursWithVecParams(src, &contours, hierarchy, mode, method)
+	return contours
+}
+
+// FindContoursWithVecParams finds contours in a binary image
+// and stores them in the provided PointsVector.
+//
+// For further details, please see:
+// https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#ga17ed9f5d79ae97bd4c7cf18403e1689a
+func FindContoursWithVecParams(src Mat, contours *PointsVector, hierarchy *Mat, mode RetrievalMode, method ContourApproximationMode) {
+	C.FindContours(src.p, contours.p, hierarchy.p, C.int(mode), C.int(method))
 }
 
 // PointPolygonTest performs a point-in-contour test.
@@ -688,7 +688,7 @@ func ConnectedComponents(src Mat, labels *Mat) int {
 	return int(C.ConnectedComponents(src.p, labels.p, C.int(8), C.int(MatTypeCV32S), C.int(CCL_DEFAULT)))
 }
 
-// ConnectedComponents computes the connected components labeled image of boolean image.
+// ConnectedComponentsWithParams computes the connected components labeled image of boolean image.
 //
 // For further details, please see:
 // https://docs.opencv.org/master/d3/dc0/group__imgproc__shape.html#gaedef8c7340499ca391d459122e51bef5

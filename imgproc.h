@@ -49,7 +49,7 @@ struct RotatedRect MinAreaRect(PointVector pts);
 struct RotatedRect2f MinAreaRect2f(PointVector pts);
 struct RotatedRect FitEllipse(PointVector pts);
 OpenCVResult MinEnclosingCircle(PointVector pts, Point2f* center, float* radius);
-PointsVector FindContours(Mat src, Mat hierarchy, int mode, int method);
+OpenCVResult FindContours(Mat src, PointsVector contours, Mat hierarchy, int mode, int method);
 double PointPolygonTest(PointVector pts, Point pt, bool measureDist);
 int ConnectedComponents(Mat src, Mat dst, int connectivity, int ltype, int ccltype);
 int ConnectedComponentsWithStats(Mat src, Mat labels, Mat stats, Mat centroids, int connectivity, int ltype, int ccltype);
