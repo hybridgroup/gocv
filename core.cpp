@@ -382,6 +382,16 @@ int8_t Mat_GetSChar3(Mat m, int x, int y, int z) {
     return m->at<schar>(x, y, z);
 }
 
+// Mat_GetUShort returns a specific row/col value from this Mat expecting
+// each element to contain a ushort aka CV_16U.
+uint16_t Mat_GetUShort(Mat m, int row, int col) {
+    return m->at<ushort>(row, col);
+}
+
+uint16_t Mat_GetUShort3(Mat m, int x, int y, int z) {
+    return m->at<ushort>(x, y, z);
+}
+
 // Mat_GetShort returns a specific row/col value from this Mat expecting
 // each element to contain a short aka CV_16S.
 int16_t Mat_GetShort(Mat m, int row, int col) {

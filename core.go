@@ -802,6 +802,18 @@ func (m *Mat) GetSCharAt3(x, y, z int) int8 {
 	return int8(C.Mat_GetSChar3(m.p, C.int(x), C.int(y), C.int(z)))
 }
 
+// GetUShortAt returns a value from a specific row/col
+// in this Mat expecting it to be of type ushort aka CV_16U.
+func (m *Mat) GetUShortAt(row int, col int) uint16 {
+	return uint16(C.Mat_GetUShort(m.p, C.int(row), C.int(col)))
+}
+
+// GetUShortAt3 returns a value from a specific x, y, z coordinate location
+// in this Mat expecting it to be of type ushort aka CV_16U.
+func (m *Mat) GetUShortAt3(x, y, z int) uint16 {
+	return uint16(C.Mat_GetUShort3(m.p, C.int(x), C.int(y), C.int(z)))
+}
+
 // GetShortAt returns a value from a specific row/col
 // in this Mat expecting it to be of type short aka CV_16S.
 func (m *Mat) GetShortAt(row int, col int) int16 {
