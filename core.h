@@ -375,6 +375,8 @@ uint8_t Mat_GetUChar(Mat m, int row, int col);
 uint8_t Mat_GetUChar3(Mat m, int x, int y, int z);
 int8_t Mat_GetSChar(Mat m, int row, int col);
 int8_t Mat_GetSChar3(Mat m, int x, int y, int z);
+uint16_t Mat_GetUShort(Mat m, int row, int col);
+uint16_t Mat_GetUShort3(Mat m, int x, int y, int z);
 int16_t Mat_GetShort(Mat m, int row, int col);
 int16_t Mat_GetShort3(Mat m, int x, int y, int z);
 int32_t Mat_GetInt(Mat m, int row, int col);

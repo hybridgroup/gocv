@@ -929,6 +929,15 @@ func TestMatAccessors(t *testing.T) {
 	}
 	mat.Close()
 
+	mat = NewMatWithSize(101, 102, MatTypeCV16U)
+	if mat.GetUShortAt(50, 50) != 0 {
+		t.Errorf("GetUShortAt incorrect value: %v\n", mat.GetUShortAt(50, 50))
+	}
+	if mat.GetUShortAt3(50, 50, 0) != 0 {
+		t.Errorf("GetUShortAt3 incorrect value: %v\n", mat.GetUShortAt3(50, 50, 0))
+	}
+	mat.Close()
+
 	mat = NewMatWithSize(101, 102, MatTypeCV32S)
 	if mat.GetIntAt(50, 50) != 0 {
 		t.Errorf("GetIntAt incorrect value: %v\n", mat.GetIntAt(50, 50))
