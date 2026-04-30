@@ -1650,14 +1650,14 @@ func Resize(src Mat, dst *Mat, sz image.Point, fx, fy float64, interp Interpolat
 //
 // For further details, please see:
 // https://docs.opencv.org/master/da/d54/group__imgproc__transform.html#ga77576d06075c1a4b6ba1a608850cd614
-func GetRectSubPix(src Mat, patchSize image.Point, center image.Point, dst *Mat) error {
+func GetRectSubPix(src Mat, patchSize image.Point, center Point2f, dst *Mat) error {
 	sz := C.struct_Size{
 		width:  C.int(patchSize.X),
 		height: C.int(patchSize.Y),
 	}
-	pt := C.struct_Point{
-		x: C.int(center.X),
-		y: C.int(center.Y),
+	pt := C.struct_Point2f{
+		x: C.float(center.X),
+		y: C.float(center.Y),
 	}
 	return OpenCVResult(C.GetRectSubPix(src.p, sz, pt, dst.p))
 }
