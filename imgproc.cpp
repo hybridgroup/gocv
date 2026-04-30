@@ -902,10 +902,10 @@ OpenCVResult Resize(Mat src, Mat dst, Size dsize, double fx, double fy, int inte
     }
 }
 
-OpenCVResult GetRectSubPix(Mat src, Size patchSize, Point center, Mat dst) {
+OpenCVResult GetRectSubPix(Mat src, Size patchSize, Point2f center, Mat dst) {
     try {
         cv::Size sz(patchSize.width, patchSize.height);
-        cv::Point pt(center.x, center.y);
+        cv::Point2f pt(center.x, center.y);
         cv::getRectSubPix(*src, sz, pt, *dst);
         return successResult();
     } catch(const cv::Exception& e) {

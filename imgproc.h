@@ -103,7 +103,7 @@ OpenCVResult PutText(Mat img, const char* text, Point org, int fontFace, double 
 OpenCVResult PutTextWithParams(Mat img, const char* text, Point org, int fontFace, double fontScale,
             Scalar color, int thickness, int lineType, bool bottomLeftOrigin);
 OpenCVResult Resize(Mat src, Mat dst, Size sz, double fx, double fy, int interp);
-OpenCVResult GetRectSubPix(Mat src, Size patchSize, Point center, Mat dst);
+OpenCVResult GetRectSubPix(Mat src, Size patchSize, Point2f center, Mat dst);
 Mat GetRotationMatrix2D(Point center, double angle, double scale);
 OpenCVResult WarpAffine(Mat src, Mat dst, Mat rot_mat, Size dsize);
 OpenCVResult WarpAffineWithParams(Mat src, Mat dst, Mat rot_mat, Size dsize, int flags, int borderMode, Scalar borderValue);

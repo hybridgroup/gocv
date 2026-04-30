@@ -1766,7 +1766,11 @@ func TestGetRectSubPix(t *testing.T) {
 	dst := NewMat()
 	defer dst.Close()
 
-	GetRectSubPix(src, image.Point{20, 30}, image.Point{200, 172}, &dst)
+	err := GetRectSubPix(src, image.Point{20, 30}, Point2f{X: 200.5, Y: 172.5}, &dst)
+	if err != nil {
+		t.Errorf("GetRectSubPix returned error: %v", err)
+	}
+
 	if dst.Cols() != 20 || dst.Rows() != 30 {
 		t.Errorf("Expected dst size of 20x30 got %dx%d", dst.Cols(), dst.Rows())
 	}
