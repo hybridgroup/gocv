@@ -438,15 +438,12 @@ OpenCVResult MinEnclosingCircle(PointVector pts, Point2f* center, float* radius)
     }
 }
 
-PointsVector FindContours(Mat src, Mat hierarchy, int mode, int method) {
+OpenCVResult FindContours(Mat src, PointsVector contours, Mat hierarchy, int mode, int method) {
     try {
-        PointsVector contours = new std::vector<std::vector<cv::Point> >;
         cv::findContours(*src, *contours, *hierarchy, mode, method);
-
-        return contours;
+        return successResult();
     } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-        return NULL;
+        return errorResult(e.code, e.what());
     }
 }
 

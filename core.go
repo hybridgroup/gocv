@@ -2703,7 +2703,8 @@ type NativeByteBuffer struct {
 	stdVectorOpaq [3]uintptr
 }
 
-func newNativeByteBuffer() *NativeByteBuffer {
+// NewNativeByteBuffer returns a new empty NativeByteBuffer.
+func NewNativeByteBuffer() *NativeByteBuffer {
 	buffer := &NativeByteBuffer{}
 	C.StdByteVectorInitialize(buffer.nativePointer())
 	return buffer

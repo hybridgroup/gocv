@@ -3,7 +3,6 @@
 package gocv
 
 import (
-	"io/ioutil"
 	"math"
 	"os"
 	"path/filepath"
@@ -193,7 +192,7 @@ func TestVideoCaptureFile(t *testing.T) {
 }
 
 func TestVideoWriterFile(t *testing.T) {
-	dir, _ := ioutil.TempDir("", "gocvtests")
+	dir := t.TempDir()
 	tmpfn := filepath.Join(dir, "test.avi")
 
 	img := IMRead("images/face-detect.jpg", IMReadColor)

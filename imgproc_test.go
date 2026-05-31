@@ -10,6 +10,7 @@ import (
 	"os"
 	"reflect"
 	"runtime"
+	"slices"
 	"testing"
 )
 
@@ -686,8 +687,45 @@ func TestFindContoursWithParams(t *testing.T) {
 		{-1, -1, -1, 2},
 	} {
 		got := hierarchy.GetVeciAt(0, i)
-		if !reflect.DeepEqual(want, got) {
+		if !slices.Equal(want, got) {
 			t.Errorf("wrong hierarchy at position %d, want %v got %v", i, want, got)
+		}
+	}
+}
+
+func TestFindContoursWithVecParams(t *testing.T) {
+	img := IMRead("images/contours.png", IMReadGrayScale)
+	if img.Empty() {
+		t.Fatal("Invalid read of Mat in FindContours test")
+	}
+	defer img.Close()
+
+	pts := NewPointsVector()
+	defer pts.Close()
+
+	hierarchy := NewMat()
+	defer hierarchy.Close()
+
+	for range 3 {
+		FindContoursWithVecParams(img, &pts, &hierarchy, RetrievalTree, ChainApproxNone)
+		if want := 4; want != pts.Size() {
+			t.Fatalf("Expected %d contours but got %d", want, pts.Size())
+		}
+		if pts.Size() != hierarchy.Cols() {
+			t.Fatalf("Expected %d hierarchy of contours, got %d", pts.Size(), hierarchy.Cols())
+		}
+		// Assert hierarchy values, the pattern is [Next, Previous, First_Child, Parent]
+		// More info at https://docs.opencv.org/master/d9/d8b/tutorial_py_contours_hierarchy.html
+		for i, want := range []Veci{
+			{1, -1, -1, -1},
+			{-1, 0, 2, -1},
+			{-1, -1, 3, 1},
+			{-1, -1, -1, 2},
+		} {
+			got := hierarchy.GetVeciAt(0, i)
+			if !slices.Equal(want, got) {
+				t.Errorf("wrong hierarchy at position %d, want %v got %v", i, want, got)
+			}
 		}
 	}
 }
@@ -2934,7 +2972,7 @@ func TestImageGrayToMatGray(t *testing.T) {
 		log.Fatal(err)
 	}
 	img0 := image.NewGray(imgSrc.Bounds())
-	draw.Draw(img0, imgSrc.Bounds(), imgSrc, image.ZP, draw.Src)
+	draw.Draw(img0, imgSrc.Bounds(), imgSrc, image.Point{}, draw.Src)
 
 	mat, err := ImageGrayToMatGray(img0)
 	if err != nil {

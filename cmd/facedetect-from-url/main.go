@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -54,7 +54,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	resByte, err := ioutil.ReadAll(res.Body)
+	resByte, err := io.ReadAll(res.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
