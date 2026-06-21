@@ -292,7 +292,7 @@ func checkONNXNet(t *testing.T, net Net, expectedLayers map[int]string, expected
 	if len(lnames) != expectedLayerCount {
 		t.Errorf("Invalid len layer names in test: %d\n", len(lnames))
 	}
-	
+
 	m := expectedLayers
 	for k, v := range m {
 		if lnames[k] != v {
@@ -437,7 +437,7 @@ func TestImagesFromBlob(t *testing.T) {
 }
 
 func TestGetBlobChannel(t *testing.T) {
-	img := NewMatWithSize(100, 100, 5+16)
+	img := NewMatWithSize(100, 100, MatTypeCV32FC3)
 	defer img.Close()
 
 	blob := BlobFromImage(img, 1.0, image.Pt(0, 0), NewScalar(0, 0, 0, 0), true, false)
@@ -455,7 +455,7 @@ func TestGetBlobChannel(t *testing.T) {
 }
 
 func TestGetBlobSize(t *testing.T) {
-	img := NewMatWithSize(100, 100, 5+16)
+	img := NewMatWithSize(100, 100, MatTypeCV32FC3)
 	defer img.Close()
 
 	blob := BlobFromImage(img, 1.0, image.Pt(0, 0), NewScalar(0, 0, 0, 0), true, false)
@@ -534,7 +534,7 @@ func TestParseNetTarget(t *testing.T) {
 }
 
 func TestFP16BlobFromImage(t *testing.T) {
-	img := NewMatWithSize(100, 100, 5+16)
+	img := NewMatWithSize(100, 100, MatTypeCV32FC3)
 	defer img.Close()
 
 	data := FP16BlobFromImage(img, 1.0, image.Pt(100, 100), 0, false, false)
@@ -543,7 +543,7 @@ func TestFP16BlobFromImage(t *testing.T) {
 		t.Errorf("FP16BlobFromImage incorrect length: %v\n", len(data))
 	}
 
-	img2 := NewMatWithSize(100, 50, 5+16)
+	img2 := NewMatWithSize(100, 50, MatTypeCV32FC3)
 	defer img2.Close()
 
 	data = FP16BlobFromImage(img2, 2.0, image.Pt(50, 100), -0.1, true, false)
