@@ -5,6 +5,7 @@
 
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
+#include <opencv2/xobjdetect.hpp>
 extern "C" {
 #endif
 
