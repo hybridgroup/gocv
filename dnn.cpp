@@ -235,7 +235,7 @@ struct Rect Net_BlobRectToImageRect(struct Rect rect, Size originalSize, double 
         cv::Scalar sf(scalefactor);
         cv::Size sz(size.width, size.height);
         cv::Scalar cm(mean.val1, mean.val2, mean.val3, mean.val4);
-        cv::dnn::DataLayout dl = static_cast<cv::dnn::DataLayout>(dataLayout);
+        cv::DataLayout dl = static_cast<cv::DataLayout>(dataLayout);
         cv::dnn::ImagePaddingMode pm = static_cast<cv::dnn::ImagePaddingMode>(paddingMode);
         cv::Scalar bv(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         cv::dnn::Image2BlobParams params = cv::dnn::Image2BlobParams(sf, sz, cm, swapRB, ddepth, dl, pm, bv);
@@ -266,7 +266,7 @@ struct Rects Net_BlobRectsToImageRects(struct Rects rects, Size originalSize, do
         cv::Scalar sf(scalefactor);
         cv::Size sz(size.width, size.height);
         cv::Scalar cm(mean.val1, mean.val2, mean.val3, mean.val4);
-        cv::dnn::DataLayout dl = static_cast<cv::dnn::DataLayout>(dataLayout);
+        cv::DataLayout dl = static_cast<cv::DataLayout>(dataLayout);
         cv::dnn::ImagePaddingMode pm = static_cast<cv::dnn::ImagePaddingMode>(paddingMode);
         cv::Scalar bv(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         cv::dnn::Image2BlobParams params = cv::dnn::Image2BlobParams(sf, sz, cm, swapRB, ddepth, dl, pm, bv);
@@ -308,7 +308,7 @@ Mat Net_BlobFromImageWithParams(Mat image, double scalefactor, Size size, Scalar
         cv::Scalar sf(scalefactor);
         cv::Size sz(size.width, size.height);
         cv::Scalar cm(mean.val1, mean.val2, mean.val3, mean.val4);
-        cv::dnn::DataLayout dl = static_cast<cv::dnn::DataLayout>(dataLayout);
+        cv::DataLayout dl = static_cast<cv::DataLayout>(dataLayout);
         cv::dnn::ImagePaddingMode pm = static_cast<cv::dnn::ImagePaddingMode>(paddingMode);
         cv::Scalar bv(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         cv::dnn::Image2BlobParams params = cv::dnn::Image2BlobParams(sf, sz, cm, swapRB, ddepth, dl, pm, bv);
@@ -351,7 +351,7 @@ void Net_BlobFromImagesWithParams(struct Mats images, Mat blob, double scalefact
         cv::Scalar sf(scalefactor);
         cv::Size sz(size.width, size.height);
         cv::Scalar cm(mean.val1, mean.val2, mean.val3, mean.val4);
-        cv::dnn::DataLayout dl = static_cast<cv::dnn::DataLayout>(dataLayout);
+        cv::DataLayout dl = static_cast<cv::DataLayout>(dataLayout);
         cv::dnn::ImagePaddingMode pm = static_cast<cv::dnn::ImagePaddingMode>(paddingMode);
         cv::Scalar bv(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         cv::dnn::Image2BlobParams params = cv::dnn::Image2BlobParams(sf, sz, cm, swapRB, ddepth, dl, pm, bv);
