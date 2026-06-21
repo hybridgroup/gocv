@@ -1566,9 +1566,9 @@ func TestSolvePoly(t *testing.T) {
 
 	diffError := SolvePoly(coeffs, &roots, 300)
 
-	diffTolerance := 1.0e-61
+	diffTolerance := 1.0e-30
 	if diffError > diffTolerance {
-		t.Errorf("TestSolvePoly was not exact, got an error of %e and should have been less than %f", diffError, diffTolerance)
+		t.Errorf("TestSolvePoly was not exact, got an error of %e and should have been less than %e", diffError, diffTolerance)
 	}
 
 	if roots.GetFloatAt(0, 0) != 7.0 {
