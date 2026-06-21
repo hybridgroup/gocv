@@ -76,21 +76,14 @@ Mat Mat_NewFromBytes(int rows, int cols, int type, struct ByteArray buf) {
 }
 
 // Mat_NewWithSizesFromScalar creates multidimensional Mat from a scalar
-Mat Mat_NewWithSizesFromScalar(IntVector sizes, int type, Scalar ar) {
-    try {
-        std::vector<int> _sizes;
-        for (int i = 0, *v = sizes.val; i < sizes.length; ++v, ++i) {
-            _sizes.push_back(*v);
-        }
-
-        cv::Scalar c = cv::Scalar(ar.val1, ar.val2, ar.val3, ar.val4);
-        cv::Mat* mat = new cv::Mat(_sizes, type);
-        mat->setTo(c);
-        return mat;
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-        return new cv::Mat();
+ Mat Mat_NewWithSizesFromScalar(IntVector sizes, int type, Scalar ar) {
+    std::vector<int> _sizes;
+    for (int i = 0, *v = sizes.val; i < sizes.length; ++v, ++i) {
+        _sizes.push_back(*v);
     }
+
+    cv::Scalar c = cv::Scalar(ar.val1, ar.val2, ar.val3, ar.val4);
+    return new cv::Mat(_sizes, type, c);
 }
 
 // Mat_NewWithSizesFromBytes creates multidimensional Mat from a bytes
