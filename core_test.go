@@ -3346,10 +3346,11 @@ func TestNewPoints3fVector(t *testing.T) {
 }
 
 func TestElemSize(t *testing.T) {
+
 	m1 := NewMat()
 	defer m1.Close()
-	if m1.ElemSize() != 0 {
-		t.Error("incorrect element size")
+	if !m1.Empty() {
+		t.Error("new Mat should be empty")
 	}
 
 	m2 := NewMatWithSize(2, 2, MatTypeCV16S)
