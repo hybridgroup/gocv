@@ -15,7 +15,7 @@ AKAZE AKAZE_CreateWithParams(int descriptor_type, int descriptor_size, int descr
     try {
         cv::xfeatures2d::AKAZE::DescriptorType type = static_cast<cv::xfeatures2d::AKAZE::DescriptorType>(descriptor_type);
 
-        return new cv::Ptr<cv::xfeatures2d::AKAZE>(cv::xfeatures2d::AKAZE::create(type, descriptor_size, descriptor_channels,threshold, nOctaves, nOctaveLayers, static_cast<cv::KAZE::DiffusivityType>(diffusivity)));
+        return new cv::Ptr<cv::xfeatures2d::AKAZE>(cv::xfeatures2d::AKAZE::create(type, descriptor_size, descriptor_channels,threshold, nOctaves, nOctaveLayers, static_cast<cv::xfeatures2d::KAZE::DiffusivityType>(diffusivity)));
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
         return NULL;
