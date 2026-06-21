@@ -25,24 +25,15 @@ Net Net_ReadNetBytes(const char* framework, struct ByteArray model, struct ByteA
 }
 
 Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel) {
-    try {
-        Net n = new cv::dnn::Net(cv::dnn::readNetFromCaffe(prototxt, caffeModel));
-        return n;
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-        return NULL;
-    }
+    // TODO CV5: remove these functions, but for now temporarily disable
+    setExceptionInfo(-1,"OpenCV 5 removed Caffe support");
+    return NULL;
 }
 
 Net Net_ReadNetFromCaffeBytes(struct ByteArray prototxt, struct ByteArray caffeModel) {
-    try {
-        Net n = new cv::dnn::Net(cv::dnn::readNetFromCaffe(prototxt.data, prototxt.length,
-            caffeModel.data, caffeModel.length));
-        return n;
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-        return NULL;
-    }
+    // TODO CV5: remove these functions, but for now temporarily disable
+    setExceptionInfo(-1,"OpenCV 5 removed Caffe support");
+    return NULL;
 }
 
 Net Net_ReadNetFromTensorflow(const char* model) {
@@ -66,13 +57,9 @@ Net Net_ReadNetFromTensorflowBytes(struct ByteArray model) {
 }
 
 Net Net_ReadNetFromTorch(const char* model) {
-    try {
-        Net n = new cv::dnn::Net(cv::dnn::readNetFromTorch(model));
-        return n;
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-        return NULL;
-    }
+    // TODO CV5: remove these functions, but for now temporarily disable
+    setExceptionInfo(-1,"OpenCV 5 removed Torch support");
+    return NULL;
 }
 
 Net Net_ReadNetFromONNX(const char* model) {
