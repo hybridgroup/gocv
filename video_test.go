@@ -329,10 +329,6 @@ func BaseTestTracker(t *testing.T, tracker Tracker, name string) {
 }
 
 func TestSingleTrackers(t *testing.T) {
-	goturnPath := os.Getenv("GOCV_TRACKER_GOTURN_TEST_FILES")
-	if goturnPath == "" {
-		goturnPath = "./testdata"
-	}
 
 	vitPath := os.Getenv("GOCV_ONNX_TEST_FILES")
 	if vitPath == "" {
@@ -344,7 +340,6 @@ func TestSingleTrackers(t *testing.T) {
 		tracker Tracker
 	}{
 		{"MIL", NewTrackerMIL()},
-		{"GOTURN", NewTrackerGOTURNWithParams(goturnPath+"/goturn.caffemodel", goturnPath+"/goturn.prototxt")},
 		{"Vit", NewTrackerVitWithParams(vitPath + "/object_tracking_vittrack_2023sep.onnx")},
 	}
 

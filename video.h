@@ -14,7 +14,7 @@ typedef cv::Ptr<cv::BackgroundSubtractorMOG2>* BackgroundSubtractorMOG2;
 typedef cv::Ptr<cv::BackgroundSubtractorKNN>* BackgroundSubtractorKNN;
 typedef cv::Ptr<cv::Tracker>* Tracker;
 typedef cv::Ptr<cv::TrackerMIL>* TrackerMIL;
-typedef cv::Ptr<cv::TrackerGOTURN>* TrackerGOTURN;
+typedef void* TrackerGOTURN;
 typedef cv::Ptr<cv::TrackerVit>* TrackerVit;
 typedef cv::KalmanFilter* KalmanFilter;
 #else
