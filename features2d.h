@@ -3,18 +3,19 @@
 
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
+#include <opencv2/xfeatures2d.hpp>
 extern "C" {
 #endif
 
 #include "core.h"
 
 #ifdef __cplusplus
-typedef cv::Ptr<cv::AKAZE>* AKAZE;
-typedef cv::Ptr<cv::AgastFeatureDetector>* AgastFeatureDetector;
-typedef cv::Ptr<cv::BRISK>* BRISK;
+typedef cv::Ptr<cv::xfeatures2d::AKAZE>* AKAZE;
+typedef cv::Ptr<cv::xfeatures2d::AgastFeatureDetector>* AgastFeatureDetector;
+typedef cv::Ptr<cv::xfeatures2d::BRISK>* BRISK;
 typedef cv::Ptr<cv::FastFeatureDetector>* FastFeatureDetector;
 typedef cv::Ptr<cv::GFTTDetector>* GFTTDetector;
-typedef cv::Ptr<cv::KAZE>* KAZE;
+typedef cv::Ptr<cv::xfeatures2d::KAZE>* KAZE;
 typedef cv::Ptr<cv::MSER>* MSER;
 typedef cv::Ptr<cv::ORB>* ORB;
 typedef cv::Ptr<cv::SimpleBlobDetector>* SimpleBlobDetector;
