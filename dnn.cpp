@@ -87,7 +87,7 @@ Net Net_ReadNetFromONNX(const char* model) {
 
 Net Net_ReadNetFromONNXBytes(struct ByteArray model) {
     try {
-        Net n = new cv::dnn::Net(cv::dnn::readNetFromONNX(model.data, model.length));
+        Net n = new cv::dnn::Net(cv::dnn::readNetFromONNX((const char*)model.data, (size_t)model.length));
         return n;
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
