@@ -365,9 +365,20 @@ void Net_ImagesFromBlob(Mat blob_, struct Mats* images_) {
 }
 
 Mat Net_GetBlobChannel(Mat blob, int imgidx, int chnidx) {
-    size_t w = blob->size[3];
-    size_t h = blob->size[2];
-    return new cv::Mat(h, w, CV_32F, blob->ptr<float>(imgidx, chnidx));
+    try {
+        if (blob->dims < 4) {
+            setExceptionInfo(-1, "blob must have at least 4 dimensions");
+            return new cv::Mat();
+        }
+
+        size_t w = blob->size[3];
+        size_t h = blob->size[2];
+
+        return new cv::Mat(h, w, CV_32F, blob->ptr<float>(imgidx, chnidx));
+    } catch(const cv::Exception& e) {
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
 }
 
 Scalar Net_GetBlobSize(Mat blob) {
