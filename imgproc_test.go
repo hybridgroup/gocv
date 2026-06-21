@@ -1567,8 +1567,17 @@ func TestCalcHist(t *testing.T) {
 	defer mask.Close()
 
 	CalcHist([]Mat{img}, []int{0}, mask, &hist, []int{256}, []float64{0.0, 256.0}, false)
-	if hist.Empty() || hist.Rows() != 256 || hist.Cols() != 1 {
-		t.Error("Invalid CalcHist test")
+
+	if hist.Empty() {
+		t.Error("Invalid CalcHist test: empty histogram")
+	}
+
+	if hist.Total() != 256 {
+		t.Errorf("Invalid CalcHist test total: got %d want 256", hist.Total())
+	}
+
+	if hist.Channels() != 1 {
+		t.Errorf("Invalid CalcHist test channels: got %d want 1", hist.Channels())
 	}
 }
 
