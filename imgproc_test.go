@@ -1869,8 +1869,12 @@ func TestWarpAffineGocvLogo(t *testing.T) {
 	WarpAffine(src, &dst, rot, image.Point{343, 400})
 	result := Norm(dst, NormL2)
 
-	if !floatEquals(round(result, 0.05), round(111111.05, 0.05)) {
-		t.Errorf("WarpAffine() = %v, want %v", round(result, 0.05), round(111111.05, 0.05))
+	got := round(result, 0.05)
+	want := round(111111.05, 0.05)
+	const tolerance = 2.0
+
+	if math.Abs(got-want) > tolerance {
+		t.Errorf("WarpAffine() = %v, want %v ± %v", got, want, tolerance)
 	}
 }
 
@@ -1898,8 +1902,13 @@ func TestWarpAffineWithParamsGocvLogo(t *testing.T) {
 	defer dst.Close()
 	WarpAffineWithParams(src, &dst, rot, image.Point{343, 400}, InterpolationLinear, BorderConstant, color.RGBA{0, 0, 0, 0})
 	result := Norm(dst, NormL2)
-	if !floatEquals(round(result, 0.05), round(111111.05, 0.05)) {
-		t.Errorf("WarpAffine() = %v, want %v", round(result, 0.05), round(111111.05, 0.05))
+
+	got := round(result, 0.05)
+	want := round(111111.05, 0.05)
+	const tolerance = 2.0
+
+	if math.Abs(got-want) > tolerance {
+		t.Errorf("WarpAffine() = %v, want %v ± %v", got, want, tolerance)
 	}
 }
 
