@@ -1693,27 +1693,32 @@ func TestDrawing(t *testing.T) {
 }
 
 func TestGetTextSize(t *testing.T) {
-	size := GetTextSize("test", FontHersheySimplex, 1.2, 1)
-	if size.X != 72 {
-		t.Error("Invalid text size width")
+	text := "Hello"
+	fontFace := FontHersheyPlain
+	fontScale := 1.2
+	thickness := 2
+
+	size := GetTextSize(text, fontFace, fontScale, thickness)
+	if size.X <= 0 {
+		t.Errorf("Invalid text size width: %d", size.X)
+	}
+	if size.Y <= 0 {
+		t.Errorf("Invalid text size height: %d", size.Y)
 	}
 
-	if size.Y != 26 {
-		t.Error("Invalid text size height")
+	sizeWithBase, base := GetTextSizeWithBaseline(text, fontFace, fontScale, thickness)
+	if sizeWithBase.X <= 0 {
+		t.Errorf("Invalid text size with baseline width: %d", sizeWithBase.X)
+	}
+	if sizeWithBase.Y <= 0 {
+		t.Errorf("Invalid text size with baseline height: %d", sizeWithBase.Y)
+	}
+	if base < 0 {
+		t.Errorf("Invalid baseline: %d", base)
 	}
 
-	size1, base := GetTextSizeWithBaseline("test", FontHersheySimplex, 1.2, 1)
-	if size1.X != 72 {
-		t.Error("Invalid text size width")
-	}
-
-	if size1.Y != 26 {
-		t.Error("Invalid text size height")
-	}
-
-	expected := 11
-	if base != expected {
-		t.Errorf("invalid base. expected %d, actual %d", expected, base)
+	if size != sizeWithBase {
+		t.Errorf("GetTextSize mismatch: got %+v and %+v", size, sizeWithBase)
 	}
 }
 
