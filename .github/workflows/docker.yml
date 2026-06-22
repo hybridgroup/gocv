@@ -41,6 +41,7 @@ jobs:
   opencv:
     name: opencv
     runs-on: ubuntu-24.04
+    timeout-minutes: 720
     permissions:
       packages: write
       contents: read
@@ -134,6 +135,7 @@ jobs:
   opencv-static:
     name: opencv-static
     runs-on: ubuntu-24.04
+    timeout-minutes: 720
     permissions:
       packages: write
       contents: read
