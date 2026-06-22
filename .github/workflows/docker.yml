@@ -1,10 +1,37 @@
-# This is the Github action to build and push the gocv/opencv Docker images.
+# This is the Github action to build and push OpenCV Docker images.
 #
 name: Docker
 on:
   push:
     branches: [build-opencv-images]
   workflow_dispatch:
+
+env:
+  # Set OpenCV version here to be used by all image tags.
+  OPENCV_VERSION: 5.0.0
+
+  # Docker Hub publishing policy.
+  #
+  # Upstream repository:
+  #   hybridgroup/gocv always publishes Docker Hub images using the existing
+  #   gocv/opencv:<tag> namespace and its configured Docker Hub secrets.
+  #
+  # Forks:
+  #   Docker Hub publishing is disabled by default, so forks can build and push
+  #   GHCR images without needing Docker Hub credentials. A fork can still opt in
+  #   by adding both repository secrets:
+  #     DOCKER_HUB_USERNAME
+  #     DOCKER_HUB_ACCESS_TOKEN
+  #
+  #   When a fork opts in, Docker Hub images are published using the Docker Hub
+  #   username from DOCKER_HUB_USERNAME, for example:
+  #     <DOCKER_HUB_USERNAME>/opencv:<tag>
+  #
+  # GHCR images are always published using github.repository_owner:
+  #   ghcr.io/<owner>/opencv:<tag>
+  IS_UPSTREAM_REPOSITORY: ${{ github.repository_owner == 'hybridgroup' }}
+  HAS_DOCKERHUB: ${{ github.repository_owner == 'hybridgroup' || (secrets.DOCKER_HUB_USERNAME != '' && secrets.DOCKER_HUB_ACCESS_TOKEN != '') }}
+  DOCKERHUB_NAMESPACE: ${{ github.repository_owner == 'hybridgroup' && 'gocv' || secrets.DOCKER_HUB_USERNAME }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -63,12 +90,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/opencv:5.0.0
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -79,6 +106,19 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:latest"
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:latest"
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -86,11 +126,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           context: .
           push: true
-          tags: |
-            gocv/opencv:latest
-            gocv/opencv:5.0.0
-            ghcr.io/${{ github.repository_owner }}/opencv:latest
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -147,12 +183,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/opencv:5.0.0-static
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-static
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-static
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -163,6 +199,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-static"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-static"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -170,9 +217,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           context: .
           push: true
-          tags: |
-            gocv/opencv:5.0.0-static
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-static
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -225,12 +270,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/opencv:5.0.0-gpu-cuda-11
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-gpu-cuda-11
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-gpu-cuda-11
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -241,6 +286,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-gpu-cuda-11"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-gpu-cuda-11"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -248,9 +304,7 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: |
-            gocv/opencv:5.0.0-gpu-cuda-11
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-gpu-cuda-11
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -303,12 +357,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/opencv:5.0.0-gpu-cuda-11.2.2
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-gpu-cuda-11.2.2
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-gpu-cuda-11.2.2
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -319,6 +373,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-gpu-cuda-11.2.2"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-gpu-cuda-11.2.2"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -326,9 +391,7 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: |
-            gocv/opencv:5.0.0-gpu-cuda-11.2.2
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-gpu-cuda-11.2.2
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -381,12 +444,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/opencv:5.0.0-gpu-cuda-12
-            ghcr.io/${{ github.repository_owner }}/opemcv:5.0.0-gpu-cuda-12
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-gpu-cuda-12
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -397,6 +460,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-gpu-cuda-12"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-gpu-cuda-12"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -404,9 +478,7 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: |
-            gocv/opencv:5.0.0-gpu-cuda-12
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-gpu-cuda-12
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -459,12 +531,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/opencv:5.0.0-gpu-cuda-13
-            ghcr.io/${{ github.repository_owner }}/opemcv:5.0.0-gpu-cuda-13
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-gpu-cuda-13
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -475,6 +547,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-gpu-cuda-13"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-gpu-cuda-13"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -482,9 +565,7 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: |
-            gocv/opencv:5.0.0-gpu-cuda-13
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-gpu-cuda-13
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -505,12 +586,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/opencv:5.0.0-ubuntu-18.04
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-ubuntu-18.04
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-ubuntu-18.04
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -521,6 +602,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-ubuntu-18.04"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-ubuntu-18.04"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -528,9 +620,7 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: |
-            gocv/opencv:5.0.0-ubuntu-18.04
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-ubuntu-18.04
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -551,12 +641,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/opencv:5.0.0-ubuntu-20.04
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-ubuntu-20.04
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-ubuntu-20.04
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -565,8 +655,19 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-ubuntu-20.04"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-ubuntu-20.04"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -574,9 +675,7 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: |
-            gocv/opencv:5.0.0-ubuntu-20.04
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-ubuntu-20.04
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -597,12 +696,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/opencv:5.0.0-ubuntu-22.04
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-ubuntu-22.04
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-ubuntu-22.04
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -611,8 +710,19 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-ubuntu-22.04"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-ubuntu-22.04"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -620,9 +730,7 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: |
-            gocv/opencv:5.0.0-ubuntu-22.04
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-ubuntu-22.04
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -643,12 +751,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            gocv/opencv:5.0.0-ubuntu-24.04
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-ubuntu-24.04
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-ubuntu-24.04
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -657,8 +765,19 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-ubuntu-24.04"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-ubuntu-24.04"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -666,9 +785,7 @@ jobs:
           platforms: linux/amd64
           context: .
           push: true
-          tags: |
-            gocv/opencv:5.0.0-ubuntu-24.04
-            ghcr.io/${{ github.repository_owner }}/opencv:5.0.0-ubuntu-24.04
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
