@@ -2,15 +2,13 @@
 
 #include "wechat_qrcode.h"
 
-WeChatQRCode NewWeChatQRCode(const char *detector_prototxt_path,
-                             const char *detector_caffe_model_path,
-                             const char *super_resolution_prototxt_path,
-                             const char *super_resolution_caffe_model_path) {
+WeChatQRCode NewWeChatQRCode(const char *detector_model_path,
+                             const char *super_resolution_model_path) {
     try {
         return new cv::Ptr<cv::wechat_qrcode::WeChatQRCode>(
-            cv::makePtr<cv::wechat_qrcode::WeChatQRCode>(detector_prototxt_path, detector_caffe_model_path,
-                                                         super_resolution_prototxt_path,
-                                                         super_resolution_caffe_model_path));
+            cv::makePtr<cv::wechat_qrcode::WeChatQRCode>(
+                std::string(detector_model_path),
+                std::string(super_resolution_model_path)));
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
         return NULL;

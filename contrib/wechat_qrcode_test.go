@@ -3,10 +3,11 @@
 package contrib
 
 import (
-	"gocv.io/x/gocv"
 	"os"
 	"reflect"
 	"testing"
+
+	"gocv.io/x/gocv"
 )
 
 func TestNewWeChatQRCode(t *testing.T) {
@@ -25,8 +26,7 @@ func TestNewWeChatQRCode(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
-			if got := NewWeChatQRCode(path+"/detect.prototxt", path+"/detect.caffemodel",
-				path+"/sr.prototxt", path+"/sr.caffemodel"); reflect.DeepEqual(got, tt.notWant) {
+			if got := NewWeChatQRCode(path+"/detect.caffemodel", path+"/sr.caffemodel"); reflect.DeepEqual(got, tt.notWant) {
 				t.Errorf("NewWeChatQRCode() = %v, want %v", got, tt.notWant)
 			}
 		})
@@ -58,8 +58,7 @@ func TestWeChatQRCode_DetectAndDecode(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			wq := NewWeChatQRCode(path+"/detect.prototxt", path+"/detect.caffemodel",
-				path+"/sr.prototxt", path+"/sr.caffemodel")
+			wq := NewWeChatQRCode(path+"/detect.caffemodel", path+"/sr.caffemodel")
 			if got := wq.DetectAndDecode(tt.args.img, tt.args.point); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("DetectAndDecode() = %v, want %v", got, tt.want)
 			}

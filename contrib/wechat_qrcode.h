@@ -19,8 +19,8 @@ typedef void* WeChatQRCode;
 typedef void* StringsVector;
 #endif
 
-WeChatQRCode NewWeChatQRCode(const char *detector_prototxt_path, const char *detector_caffe_model_path,
-                             const char *super_resolution_prototxt_path, const char *super_resolution_caffe_model_path);
+WeChatQRCode NewWeChatQRCode(const char *detector_model_path,
+                             const char *super_resolution_model_path);
 CStrings WeChatQRCode_DetectAndDecode(WeChatQRCode wq, Mat img, struct Mats *points, StringsVector codes);
 StringsVector NewStringsVector();
 void WeChatQRCode_CStrings_Close(struct CStrings cstrs);
