@@ -53,6 +53,12 @@ jobs:
         run: |
           cd "${env:GITHUB_WORKSPACE}\opencv\opencv-5.0.0"
           
+          Write-Host "Patch file verification:"
+          Get-FileHash "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch"
+          
+          Get-Content "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch" |
+          Select-String -Pattern "ThreadedBufHolder|MlasThreadedBufAlloc|_MSC_VER|_WIN32|platform.cpp|mlasi.h" -Context 2,2
+          
           git apply --check "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch"
           git apply "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch"
           
