@@ -36,7 +36,7 @@ jobs:
         uses: actions/cache/restore@v4
         id: cache-opencv-source
         with:
-          key: opencv-source-5000-windows-v4
+          key: opencv-source-${{ runner.os }}-5000-${{ hashFiles('win_download_opencv.cmd', 'patches/*.patch') }}
           path: |
             ./opencv/opencv-5.0.0
             ./opencv/opencv_contrib-5.0.0
@@ -86,7 +86,7 @@ jobs:
         uses: actions/cache/restore@v4
         id: cache-opencv-build
         with:
-          key: opencv-build-5000-windows-v4
+          key: opencv-build-${{ runner.os }}-5000-${{ hashFiles('win_build_opencv.cmd', 'win_download_opencv.cmd', 'patches/*.patch') }}
           path: |
             ./opencv/build
       - name: Build OpenCV
