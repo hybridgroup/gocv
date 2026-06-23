@@ -39,12 +39,21 @@ concurrency:
 
 jobs:
   opencv:
-    name: opencv
-    runs-on: ubuntu-24.04
-    timeout-minutes: 720
+    name: opencv (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
     permissions:
       packages: write
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            platform: linux/amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
     steps:
       - name: Check disk space
         run: df . -h
@@ -78,10 +87,6 @@ jobs:
           echo "extra packages purged"
       - name: Check disk space
         run: df . -h
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v4
-        with:
-          image: tonistiigi/binfmt:latest
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
       - name: Check out the repo
@@ -91,7 +96,7 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: |
-            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}
+            ghcr.io/${{ github.repository_owner }}/opencv
           tags: |
             type=sha,format=long
             type=raw,value=latest
@@ -113,32 +118,79 @@ jobs:
           {
             echo "tags<<EOF"
             if [ "$HAS_DOCKERHUB" = "true" ]; then
-              echo "${DOCKERHUB_NAMESPACE}/opencv:latest"
-              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}"
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-${{ matrix.arch }}"
+              echo "${DOCKERHUB_NAMESPACE}/opencv:sha-${GITHUB_SHA}-${{ matrix.arch }}"
             fi
-            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:latest"
-            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}"
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-${{ matrix.arch }}"
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:sha-${GITHUB_SHA}-${{ matrix.arch }}"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
-      - name: Build and push
+      - name: Build and push arch image
         uses: docker/build-push-action@v7
         with:
           file: Dockerfile.opencv
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.platform }}
           context: .
           push: true
           tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=opencv-${{ matrix.arch }}-${{ env.OPENCV_VERSION }}
+          cache-to: type=gha,mode=max,scope=opencv-${{ matrix.arch }}-${{ env.OPENCV_VERSION }}
 
-  opencv-static:
-    name: opencv-static
+  opencv-manifest:
+    name: opencv manifest
     runs-on: ubuntu-24.04
-    timeout-minutes: 720
+    needs: opencv
     permissions:
       packages: write
       contents: read
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Log in to Github Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GHCR multi-arch manifest
+        run: |
+          docker buildx imagetools create \
+            -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION} \
+            -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:latest \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-amd64 \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-arm64
+      - name: Create Docker Hub multi-arch manifest
+        if: env.HAS_DOCKERHUB == 'true'
+        run: |
+          docker buildx imagetools create \
+            -t ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION} \
+            -t ${DOCKERHUB_NAMESPACE}/opencv:latest \
+            ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-amd64 \
+            ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-arm64
+
+  opencv-static:
+    name: opencv-static (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      packages: write
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            platform: linux/amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
     steps:
       - name: Check disk space
         run: df . -h
@@ -172,10 +224,6 @@ jobs:
           echo "extra packages purged"
       - name: Check disk space
         run: df . -h
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v4
-        with:
-          image: tonistiigi/binfmt:latest
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
       - name: Check out the repo
@@ -185,7 +233,7 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: |
-            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-static
+            ghcr.io/${{ github.repository_owner }}/opencv
           tags: |
             type=sha,format=long
             type=raw,value=latest
@@ -207,22 +255,60 @@ jobs:
           {
             echo "tags<<EOF"
             if [ "$HAS_DOCKERHUB" = "true" ]; then
-              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-static"
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-static-${{ matrix.arch }}"
+              echo "${DOCKERHUB_NAMESPACE}/opencv:sha-${GITHUB_SHA}-static-${{ matrix.arch }}"
             fi
-            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-static"
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-static-${{ matrix.arch }}"
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:sha-${GITHUB_SHA}-static-${{ matrix.arch }}"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
-      - name: Build and push
+      - name: Build and push arch image
         uses: docker/build-push-action@v7
         with:
           file: Dockerfile.opencv-static
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.platform }}
           context: .
           push: true
           tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=opencv-static-${{ matrix.arch }}-${{ env.OPENCV_VERSION }}
+          cache-to: type=gha,mode=max,scope=opencv-static-${{ matrix.arch }}-${{ env.OPENCV_VERSION }}
+
+  opencv-static-manifest:
+    name: opencv-static manifest
+    runs-on: ubuntu-24.04
+    needs: opencv-static
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Log in to Github Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GHCR multi-arch manifest
+        run: |
+          docker buildx imagetools create \
+            -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-static \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-static-amd64 \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-static-arm64
+      - name: Create Docker Hub multi-arch manifest
+        if: env.HAS_DOCKERHUB == 'true'
+        run: |
+          docker buildx imagetools create \
+            -t ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-static \
+            ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-static-amd64 \
+            ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-static-arm64
 
   opencv-gpu-cuda-11:
     name: opencv-gpu-cuda-11
