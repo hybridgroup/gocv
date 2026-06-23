@@ -7,16 +7,10 @@ on:
       - release
   workflow_dispatch:
 
-env:
-  # Must match the OpenCV Docker image version published by docker.yml.
-  # In forks this resolves to ghcr.io/<fork-owner>/opencv:<version>.
-  # In upstream this resolves to ghcr.io/hybridgroup/opencv:<version>.
-  OPENCV_VERSION: 5.0.0
-
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}
+    container: ghcr.io/${{ github.repository_owner }}/opencv:5.0.0
 
     steps:
       - name: Checkout
