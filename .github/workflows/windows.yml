@@ -52,18 +52,25 @@ jobs:
         shell: pwsh
         run: |
           cd "${env:GITHUB_WORKSPACE}\opencv\opencv-5.0.0"
-      
+          
           git apply --check "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch"
           git apply "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch"
-      
+          
+          Write-Host "Dumping patched MLAS allocation block..."
+          $mlas = "3rdparty\mlas\lib\mlasi.h"
+          $lines = Get-Content $mlas
+          for ($i = 3008; $i -le 3060; $i++) {
+            "{0,5}: {1}" -f ($i + 1), $lines[$i]
+          }
+          
           Write-Host "Checking patched MLAS allocation code..."
-          Select-String -Path "3rdparty\mlas\lib\mlasi.h" -Pattern "aligned_alloc|posix_memalign|__APPLE__|ThreadedBufAlignment" -Context 3,3
-      
+          Select-String -Path $mlas -Pattern "aligned_alloc|posix_memalign|_aligned_malloc|_WIN32|_MSC_VER|__MINGW|__APPLE__|ThreadedBufAlignment" -Context 3,3
+          
           $patched = Select-String `
-            -Path "3rdparty\mlas\lib\mlasi.h" `
-            -Pattern "#elif \(__STDC_VERSION__ >= 201112L\) && !defined\(__APPLE__\)" `
+            -Path $mlas `
+            -Pattern "_WIN32|__MINGW32__|__MINGW64__" `
             -Quiet
-      
+          
           if (!$patched) {
             throw "MLAS MinGW patch was not applied"
           }
