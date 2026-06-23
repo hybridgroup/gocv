@@ -27,8 +27,8 @@ jobs:
           brew update
           brew install cmake pkg-config \
             abseil ceres-solver eigen ffmpeg freetype gflags glog harfbuzz \
-            jpeg-turbo jsoncpp libpng openblas openexr openjpeg \
-            tbb tesseract webp glew imath libarchive
+            jsoncpp openblas openexr \
+            tbb tesseract glew imath libarchive
 
       - name: Build OpenCV ${{ env.OPENCV_VERSION }}
         run: |
@@ -46,14 +46,15 @@ jobs:
             -D CMAKE_CXX_STANDARD=17 \
             -D CMAKE_OSX_DEPLOYMENT_TARGET= \
             -D BUILD_JASPER=OFF \
-            -D BUILD_JPEG=OFF \
+            -D BUILD_JPEG=ON \
             -D BUILD_OPENEXR=OFF \
-            -D BUILD_OPENJPEG=OFF \
+            -D BUILD_OPENJPEG=ON \
             -D BUILD_PERF_TESTS=OFF \
-            -D BUILD_PNG=OFF \
+            -D BUILD_TIFF=ON \
+            -D BUILD_PNG=ON \
             -D BUILD_TBB=OFF \
             -D BUILD_TESTS=OFF \
-            -D BUILD_WEBP=OFF \
+            -D BUILD_WEBP=ON \
             -D BUILD_ZLIB=OFF \
             -D BUILD_opencv_hdf=OFF \
             -D BUILD_opencv_java=OFF \
@@ -65,8 +66,7 @@ jobs:
             -D OPENCV_GENERATE_PKGCONFIG=ON \
             -D BUILD_PROTOBUF=ON \
             -D WITH_PROTOBUF=ON \
-            -D PROTOBUF_UPDATE_FILES=OFF \
-            -D BUILD_TIFF=ON \
+            -D PROTOBUF_UPDATE_FILES=OFF \            
             -D WITH_TIFF=ON \
             -D WITH_1394=OFF \
             -D WITH_CUDA=OFF \
