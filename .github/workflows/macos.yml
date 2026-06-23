@@ -27,13 +27,12 @@ jobs:
           brew update
           brew install cmake pkg-config \
             abseil ceres-solver eigen ffmpeg freetype gflags glog harfbuzz \
-            jpeg-turbo jsoncpp libpng libtiff openblas openexr openjpeg \
+            jpeg-turbo jsoncpp libpng openblas openexr openjpeg \
             tbb tesseract webp glew imath libarchive
 
       - name: Build OpenCV ${{ env.OPENCV_VERSION }}
         run: |
           BREW_PREFIX="$(brew --prefix)"
-          TIFF_PREFIX="$(brew --prefix libtiff)"
 
           curl -sL "https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip" -o /tmp/opencv.zip
           curl -sL "https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip" -o /tmp/opencv_contrib.zip
@@ -67,11 +66,8 @@ jobs:
             -D BUILD_PROTOBUF=ON \
             -D WITH_PROTOBUF=ON \
             -D PROTOBUF_UPDATE_FILES=OFF \
-            -D BUILD_TIFF=OFF \
-            -D CMAKE_IGNORE_PREFIX_PATH="/Library/Frameworks/Mono.framework" \
-            -D TIFF_INCLUDE_DIR:PATH="${TIFF_PREFIX}/include" \
-            -D TIFF_LIBRARY:FILEPATH="${TIFF_PREFIX}/lib/libtiff.dylib" \
-            -D TIFF_LIBRARY_RELEASE:FILEPATH="${TIFF_PREFIX}/lib/libtiff.dylib" \
+            -D BUILD_TIFF=ON \
+            -D WITH_TIFF=ON \
             -D WITH_1394=OFF \
             -D WITH_CUDA=OFF \
             -D WITH_EIGEN=ON \
