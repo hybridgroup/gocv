@@ -10,6 +10,10 @@ on:
 
 env:
   OPENCV_VERSION: 5.0.0
+  # Disable OpenCV AVFoundation camera permission prompts during CI.
+  # GitHub runners have no GUI, so camera authorization requests cannot
+  # be displayed and only generate warnings during video capture tests.
+  OPENCV_AVFOUNDATION_SKIP_AUTH: 1
 
 jobs:
   build:
@@ -21,7 +25,10 @@ jobs:
       - name: Install OpenCV build dependencies
         run: |
           brew update
-          brew install cmake pkg-config jpeg-turbo libpng libtiff openexr eigen tbb
+          brew install cmake pkg-config \
+            abseil ceres-solver eigen ffmpeg freetype gflags glog harfbuzz \
+            jpeg-turbo jsoncpp libpng libtiff openblas openexr openjpeg \
+            protobuf tbb tesseract webp glew imath libarchive
 
       - name: Build OpenCV ${{ env.OPENCV_VERSION }}
         run: |
@@ -36,23 +43,42 @@ jobs:
           cmake -S "/tmp/opencv-${OPENCV_VERSION}" -B "/tmp/opencv-${OPENCV_VERSION}/build" \
             -D CMAKE_BUILD_TYPE=Release \
             -D CMAKE_INSTALL_PREFIX="${BREW_PREFIX}" \
-            -D OPENCV_EXTRA_MODULES_PATH="/tmp/opencv_contrib-${OPENCV_VERSION}/modules" \
-            -D OPENCV_ENABLE_NONFREE=ON \
-            -D OPENCV_GENERATE_PKGCONFIG=ON \
-            -D WITH_IPP=OFF \
-            -D WITH_OPENGL=OFF \
-            -D WITH_QT=OFF \
-            -D WITH_FREETYPE=ON \
-            -D WITH_JASPER=OFF \
-            -D WITH_TBB=ON \
-            -D BUILD_DOCS=OFF \
-            -D BUILD_EXAMPLES=OFF \
-            -D BUILD_TESTS=OFF \
+            -D CMAKE_CXX_STANDARD=17 \
+            -D CMAKE_OSX_DEPLOYMENT_TARGET= \
+            -D BUILD_JASPER=OFF \
+            -D BUILD_JPEG=OFF \
+            -D BUILD_OPENEXR=OFF \
+            -D BUILD_OPENJPEG=OFF \
             -D BUILD_PERF_TESTS=OFF \
-            -D BUILD_opencv_java=NO \
-            -D BUILD_opencv_python=NO \
-            -D BUILD_opencv_python2=NO \
-            -D BUILD_opencv_python3=NO
+            -D BUILD_PNG=OFF \
+            -D BUILD_PROTOBUF=OFF \
+            -D BUILD_TBB=OFF \
+            -D BUILD_TESTS=OFF \
+            -D BUILD_TIFF=OFF \
+            -D BUILD_WEBP=OFF \
+            -D BUILD_ZLIB=OFF \
+            -D BUILD_opencv_hdf=OFF \
+            -D BUILD_opencv_java=OFF \
+            -D BUILD_opencv_python2=OFF \
+            -D BUILD_opencv_python3=OFF \
+            -D BUILD_opencv_text=ON \
+            -D OPENCV_ENABLE_NONFREE=ON \
+            -D OPENCV_EXTRA_MODULES_PATH="/tmp/opencv_contrib-${OPENCV_VERSION}/modules" \
+            -D OPENCV_GENERATE_PKGCONFIG=ON \
+            -D PROTOBUF_UPDATE_FILES=ON \
+            -D WITH_1394=OFF \
+            -D WITH_CUDA=OFF \
+            -D WITH_EIGEN=ON \
+            -D WITH_FFMPEG=ON \
+            -D WITH_GPHOTO2=OFF \
+            -D WITH_GSTREAMER=OFF \
+            -D WITH_JASPER=OFF \
+            -D WITH_OBSENSOR=OFF \
+            -D WITH_OPENEXR=ON \
+            -D WITH_OPENGL=OFF \
+            -D WITH_OPENVINO=OFF \
+            -D WITH_QT=OFF \
+            -D WITH_TBB=ON
 
           cmake --build "/tmp/opencv-${OPENCV_VERSION}/build" --parallel 3
           cmake --install "/tmp/opencv-${OPENCV_VERSION}/build"
