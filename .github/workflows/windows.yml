@@ -1,11 +1,18 @@
 name: Windows
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
       - dev
       - release
+
+env:
+  OPENCV_VERSION: 5.0.0
+  # OpenCV Windows library suffix for 5.0.0, e.g. opencv_core500.
+  # If the Windows build emits a different suffix, update this value.
+  OPENCV_LIB_SUFFIX: 500
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -26,10 +33,10 @@ jobs:
         uses: actions/cache/restore@v4
         id: cache-opencv-source
         with:
-          key: opencv-source-4130-windows-v3
+          key: opencv-source-5000-windows-v1
           path: |
-            ./opencv/opencv-4.13.0
-            ./opencv/opencv_contrib-4.13.0
+            ./opencv/opencv-5.0.0
+            ./opencv/opencv_contrib-5.0.0
       - name: Download OpenCV source
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
         shell: cmd
@@ -41,13 +48,13 @@ jobs:
         with:
           key: ${{ steps.cache-opencv-source.outputs.cache-primary-key }}
           path: |
-            ./opencv/opencv-4.13.0
-            ./opencv/opencv_contrib-4.13.0
+            ./opencv/opencv-5.0.0
+            ./opencv/opencv_contrib-5.0.0
       - name: Restore cached OpenCV build
         uses: actions/cache/restore@v4
         id: cache-opencv-build
         with:
-          key: opencv-build-4130-windows-v4
+          key: opencv-build-5000-windows-v1
           path: |
             ./opencv/build
       - name: Build OpenCV
@@ -62,12 +69,17 @@ jobs:
           key: ${{ steps.cache-opencv-build.outputs.cache-primary-key }}
           path: |
             ./opencv/build
+      - name: Inspect OpenCV libraries
+        shell: pwsh
+        run: |
+            Get-ChildItem "${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib" -Filter "opencv_core*.dll.a" | Select-Object -ExpandProperty Name
+            Get-ChildItem "${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib" -Filter "opencv_*.dll.a" | Select-Object -First 50 -ExpandProperty Name
       - name: Set GoCV env
         run: |
             go env
-            echo "CGO_CXXFLAGS=--std=c++11 -DNDEBUG" >> $env:GITHUB_ENV
+            echo "CGO_CXXFLAGS=--std=c++17 -DNDEBUG" >> $env:GITHUB_ENV
             echo "CGO_CPPFLAGS=-I${env:GITHUB_WORKSPACE}\opencv\build\install\include" >> $env:GITHUB_ENV
-            echo "CGO_LDFLAGS=-L${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib -lopencv_core4130 -lopencv_face4130 -lopencv_videoio4130 -lopencv_imgproc4130 -lopencv_highgui4130 -lopencv_imgcodecs4130 -lopencv_objdetect4130 -lopencv_features2d4130 -lopencv_video4130 -lopencv_dnn4130 -lopencv_xfeatures2d4130 -lopencv_plot4130 -lopencv_tracking4130 -lopencv_img_hash4130 -lopencv_calib3d4130 -lopencv_bgsegm4130 -lopencv_photo4130 -lopencv_aruco4130 -lopencv_wechat_qrcode4130 -lopencv_ximgproc4130 -lopencv_xphoto4130 -lopencv_xobjdetect4130 -lopencv_mcc4130" >> $env:GITHUB_ENV
+            echo "CGO_LDFLAGS=-L${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib -lopencv_core${env:OPENCV_LIB_SUFFIX} -lopencv_face${env:OPENCV_LIB_SUFFIX} -lopencv_videoio${env:OPENCV_LIB_SUFFIX} -lopencv_imgproc${env:OPENCV_LIB_SUFFIX} -lopencv_highgui${env:OPENCV_LIB_SUFFIX} -lopencv_imgcodecs${env:OPENCV_LIB_SUFFIX} -lopencv_objdetect${env:OPENCV_LIB_SUFFIX} -lopencv_features2d${env:OPENCV_LIB_SUFFIX} -lopencv_video${env:OPENCV_LIB_SUFFIX} -lopencv_dnn${env:OPENCV_LIB_SUFFIX} -lopencv_xfeatures2d${env:OPENCV_LIB_SUFFIX} -lopencv_plot${env:OPENCV_LIB_SUFFIX} -lopencv_tracking${env:OPENCV_LIB_SUFFIX} -lopencv_img_hash${env:OPENCV_LIB_SUFFIX} -lopencv_calib3d${env:OPENCV_LIB_SUFFIX} -lopencv_bgsegm${env:OPENCV_LIB_SUFFIX} -lopencv_photo${env:OPENCV_LIB_SUFFIX} -lopencv_aruco${env:OPENCV_LIB_SUFFIX} -lopencv_wechat_qrcode${env:OPENCV_LIB_SUFFIX} -lopencv_ximgproc${env:OPENCV_LIB_SUFFIX} -lopencv_xphoto${env:OPENCV_LIB_SUFFIX} -lopencv_xobjdetect${env:OPENCV_LIB_SUFFIX}" >> $env:GITHUB_ENV
             echo "${env:GITHUB_WORKSPACE}/opencv/build/install/x64/mingw/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: Install Tensorflow test model
         run: |
@@ -80,22 +92,11 @@ jobs:
           curl -sL https://huggingface.co/opencv/face_recognition_sface/resolve/main/face_recognition_sface_2021dec.onnx > ./testdata/face_recognition_sface_2021dec.onnx
           curl -sL https://huggingface.co/opencv/face_detection_yunet/resolve/main/face_detection_yunet_2023mar.onnx > ./testdata/face_detection_yunet_2023mar.onnx
           curl -sL https://huggingface.co/opencv/object_tracking_vittrack/resolve/main/object_tracking_vittrack_2023sep.onnx > ./testdata/object_tracking_vittrack_2023sep.onnx
-      - name: Install GOTURN test model
-        shell: bash
-        run: |
-          curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.prototxt > ./testdata/goturn.prototxt
-          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.001 > ./testdata/goturn.caffemodel.zip.001
-          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.002 > ./testdata/goturn.caffemodel.zip.002
-          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.003 > ./testdata/goturn.caffemodel.zip.003
-          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.004 > ./testdata/goturn.caffemodel.zip.004
-          cat ./testdata/goturn.caffemodel.zip.00*  > ./testdata/goturn.caffemodel.zip
-          unzip -o ./testdata/goturn.caffemodel.zip goturn.caffemodel -d ./testdata/
       - name: Set GoCV model env
         run: |
             go env
             echo "GOCV_TENSORFLOW_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
             echo "GOCV_ONNX_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
-            echo "GOCV_TRACKER_GOTURN_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
       - name: Test GoCV
         run: |
             go test -v -tags="matprofile,customenv" .
