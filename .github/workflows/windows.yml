@@ -36,7 +36,7 @@ jobs:
         uses: actions/cache/restore@v4
         id: cache-opencv-source
         with:
-          key: opencv-source-${{ runner.os }}-5000-${{ hashFiles('win_download_opencv.cmd', 'patches/*.patch') }}
+          key: opencv-source-${{ runner.os }}-5000-${{ hashFiles('win_download_opencv.cmd', 'patches/*.diff') }}
           path: |
             ./opencv/opencv-5.0.0
             ./opencv/opencv_contrib-5.0.0
@@ -53,33 +53,32 @@ jobs:
         run: |
           cd "${env:GITHUB_WORKSPACE}\opencv\opencv-5.0.0"
           
+          $patch = "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.diff"
+          $mlas = "3rdparty\mlas\lib\mlasi.h"
+          
           Write-Host "Patch file verification:"
-          Get-FileHash "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch"
+          Get-FileHash $patch
+          Get-Content $patch |
+            Select-String -Pattern "ThreadedBufHolder|MlasThreadedBufAlloc|_MSC_VER|_WIN32|platform.cpp|mlasi.h" -Context 2,2
           
-          Get-Content "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch" |
-          Select-String -Pattern "ThreadedBufHolder|MlasThreadedBufAlloc|_MSC_VER|_WIN32|platform.cpp|mlasi.h" -Context 2,2
-          
-          git apply --check "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch"
-          git apply "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch"
+          git apply --check $patch
+          git apply $patch
           
           Write-Host "Dumping patched MLAS allocation block..."
-          $mlas = "3rdparty\mlas\lib\mlasi.h"
           $lines = Get-Content $mlas
           for ($i = 3008; $i -le 3060; $i++) {
             "{0,5}: {1}" -f ($i + 1), $lines[$i]
           }
           
-          Write-Host "Checking patched MLAS allocation code..."
-          Select-String -Path $mlas -Pattern "aligned_alloc|posix_memalign|_aligned_malloc|_WIN32|_MSC_VER|__MINGW|__APPLE__|ThreadedBufAlignment" -Context 3,3
-          
-          $patched = Select-String `
-            -Path $mlas `
-            -Pattern "_WIN32|__MINGW32__|__MINGW64__" `
-            -Quiet
-          
-          if (!$patched) {
-            throw "MLAS MinGW patch was not applied"
+          if ($lines[3016] -notmatch "_WIN32") {
+            throw "mlasi.h line 3017 was not patched"
           }
+          
+          if ($lines[3036] -notmatch "_WIN32") {
+            throw "mlasi.h line 3037 was not patched"
+          }
+          
+          Write-Host "MLAS MinGW patch applied successfully."
       - name: Save cached OpenCV source
         uses: actions/cache/save@v4
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
@@ -92,7 +91,7 @@ jobs:
         uses: actions/cache/restore@v4
         id: cache-opencv-build
         with:
-          key: opencv-build-${{ runner.os }}-5000-${{ hashFiles('win_build_opencv.cmd', 'win_download_opencv.cmd', 'patches/*.patch') }}
+          key: opencv-build-${{ runner.os }}-5000-${{ hashFiles('win_build_opencv.cmd', 'win_download_opencv.cmd', 'patches/*.diff') }}
           path: |
             ./opencv/build
       - name: Build OpenCV
