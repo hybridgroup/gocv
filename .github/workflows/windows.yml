@@ -61,8 +61,20 @@ jobs:
           Get-Content $patch |
             Select-String -Pattern "ThreadedBufHolder|MlasThreadedBufAlloc|_MSC_VER|_WIN32|platform.cpp|mlasi.h" -Context 2,2
           
-          git apply --check $patch
-          git apply $patch
+          Write-Host "Checking patch..."
+          git apply --check --verbose $patch
+          if ($LASTEXITCODE -ne 0) {
+            throw "git apply --check failed"
+          }
+          
+          Write-Host "Applying patch..."
+          git apply --verbose $patch
+          if ($LASTEXITCODE -ne 0) {
+            throw "git apply failed"
+          }
+          
+          Write-Host "Git diff after patch:"
+          git diff -- 3rdparty/mlas/lib/mlasi.h 3rdparty/mlas/lib/platform.cpp
           
           Write-Host "Dumping patched MLAS allocation block..."
           $lines = Get-Content $mlas
