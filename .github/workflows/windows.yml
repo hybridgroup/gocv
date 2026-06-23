@@ -36,7 +36,7 @@ jobs:
         uses: actions/cache/restore@v4
         id: cache-opencv-source
         with:
-          key: opencv-source-5000-windows-v2
+          key: opencv-source-5000-windows-v3
           path: |
             ./opencv/opencv-5.0.0
             ./opencv/opencv_contrib-5.0.0
@@ -51,12 +51,17 @@ jobs:
       - name: Patch OpenCV MLAS MinGW build
         shell: pwsh
         run: |
-            cd "${env:GITHUB_WORKSPACE}\opencv\opencv-5.0.0"
-            if (!(Test-Path ".gocv-mlas-mingw-patched")) {
-              git apply --check "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch"
-              git apply "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch"
-              New-Item ".gocv-mlas-mingw-patched" -ItemType File
-            }
+          cd "${env:GITHUB_WORKSPACE}\opencv\opencv-5.0.0"
+        
+          git apply --check "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch"
+          git apply "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.patch"
+        
+          Write-Host "Checking patched MLAS allocation code..."
+          Select-String -Path "3rdparty\mlas\lib\mlasi.h" -Pattern "posix_memalign|_aligned_malloc|ThreadedBufAlignment" -Context 3,3
+        
+          if (Select-String -Path "3rdparty\mlas\lib\mlasi.h" -Pattern "posix_memalign" -Quiet) {
+            throw "MLAS patch did not remove posix_memalign"
+          }
       - name: Save cached OpenCV source
         uses: actions/cache/save@v4
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
@@ -69,7 +74,7 @@ jobs:
         uses: actions/cache/restore@v4
         id: cache-opencv-build
         with:
-          key: opencv-build-5000-windows-v2
+          key: opencv-build-5000-windows-v3
           path: |
             ./opencv/build
       - name: Build OpenCV
