@@ -8,8 +8,11 @@ on:
       - dev
       - release
 
+# Note:  See files win_download_opencv.cmd and  win_build_opencv.cmd
+# in the project root directory for configuring the opencv version
+# and build parameters
+
 env:
-  OPENCV_VERSION: 5.0.0
   # OpenCV Windows library suffix for 5.0.0, e.g. opencv_core500.
   # If the Windows build emits a different suffix, update this value.
   OPENCV_LIB_SUFFIX: 500
