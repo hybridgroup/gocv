@@ -63,7 +63,7 @@ jobs:
             -D BUILD_opencv_text=ON \
             -D OPENCV_ENABLE_NONFREE=ON \
             -D OPENCV_EXTRA_MODULES_PATH="/tmp/opencv_contrib-${OPENCV_VERSION}/modules" \
-            -D OPENCV_GENERATE_PKGCONFIG=ON \          
+            -D OPENCV_GENERATE_PKGCONFIG=ON \
             -D BUILD_PROTOBUF=ON \
             -D WITH_PROTOBUF=ON \
             -D PROTOBUF_UPDATE_FILES=OFF \
