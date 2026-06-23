@@ -65,7 +65,7 @@ jobs:
             -D OPENCV_ENABLE_NONFREE=ON \
             -D OPENCV_EXTRA_MODULES_PATH="/tmp/opencv_contrib-${OPENCV_VERSION}/modules" \
             -D OPENCV_GENERATE_PKGCONFIG=ON \
-            -D PROTOBUF_UPDATE_FILES=ON \
+            -D PROTOBUF_UPDATE_FILES=OFF \
             -D WITH_1394=OFF \
             -D WITH_CUDA=OFF \
             -D WITH_EIGEN=ON \
