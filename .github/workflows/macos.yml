@@ -57,14 +57,22 @@ jobs:
 
           cmake --build "/tmp/opencv-${OPENCV_VERSION}/build" --parallel 3
           cmake --install "/tmp/opencv-${OPENCV_VERSION}/build"
-
+          
           echo "PKG_CONFIG_PATH=${BREW_PREFIX}/lib/pkgconfig:${PKG_CONFIG_PATH}" >> "${GITHUB_ENV}"
+          echo "DYLD_LIBRARY_PATH=$BREW_PREFIX/lib:$DYLD_LIBRARY_PATH" >> $GITHUB_ENV
 
       - name: Check OpenCV pkg-config
         run: |
           pkg-config --modversion opencv5
           pkg-config --cflags opencv5
           pkg-config --libs opencv5
+
+      - name: Check OpenCV dylibs
+        run: |
+          BREW_PREFIX="$(brew --prefix)"      
+          DYLIB=$(find "$BREW_PREFIX/lib" -name 'libopencv_core*.dylib' | head -n1)      
+          echo "Found: $DYLIB"      
+          otool -L "$DYLIB"
 
       - name: Install Go
         uses: actions/setup-go@v6
