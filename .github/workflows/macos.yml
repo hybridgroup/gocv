@@ -28,7 +28,7 @@ jobs:
           brew install cmake pkg-config \
             abseil ceres-solver eigen ffmpeg freetype gflags glog harfbuzz \
             jpeg-turbo jsoncpp libpng libtiff openblas openexr openjpeg \
-            protobuf tbb tesseract webp glew imath libarchive
+            tbb tesseract webp glew imath libarchive
 
       - name: Build OpenCV ${{ env.OPENCV_VERSION }}
         run: |
@@ -51,7 +51,6 @@ jobs:
             -D BUILD_OPENJPEG=OFF \
             -D BUILD_PERF_TESTS=OFF \
             -D BUILD_PNG=OFF \
-            -D BUILD_PROTOBUF=OFF \
             -D BUILD_TBB=OFF \
             -D BUILD_TESTS=OFF \
             -D BUILD_TIFF=OFF \
@@ -64,7 +63,9 @@ jobs:
             -D BUILD_opencv_text=ON \
             -D OPENCV_ENABLE_NONFREE=ON \
             -D OPENCV_EXTRA_MODULES_PATH="/tmp/opencv_contrib-${OPENCV_VERSION}/modules" \
-            -D OPENCV_GENERATE_PKGCONFIG=ON \
+            -D OPENCV_GENERATE_PKGCONFIG=ON \          
+            -D BUILD_PROTOBUF=ON \
+            -D WITH_PROTOBUF=ON \
             -D PROTOBUF_UPDATE_FILES=OFF \
             -D WITH_1394=OFF \
             -D WITH_CUDA=OFF \
