@@ -54,7 +54,6 @@ jobs:
             -D BUILD_PNG=OFF \
             -D BUILD_TBB=OFF \
             -D BUILD_TESTS=OFF \
-            -D BUILD_TIFF=OFF \
             -D BUILD_WEBP=OFF \
             -D BUILD_ZLIB=OFF \
             -D BUILD_opencv_hdf=OFF \
