@@ -47,7 +47,7 @@ jobs:
           call .\win_download_opencv.cmd "%GITHUB_WORKSPACE%\opencv"
       # NOTE: apply patch to openCV 5.0.0 to fix build issues reported here
       # https://github.com/opencv/opencv/pull/29352/
-      # This patch should be removed for Opencv 5.1.x
+      # This patch should be removed for Opencv 5.1.x when available
       - name: Patch OpenCV MLAS MinGW build
         shell: pwsh
         run: |
@@ -82,6 +82,36 @@ jobs:
           }
           
           Write-Host "MLAS MinGW patch is present."
+      # NOTE: disable MLAS completely on Windows as
+      # C++ and Assembly for MLAS on windows can't be built separately hence disabling complete MLAS.
+      # https://github.com/opencv/opencv/pull/29343
+      # This patch should be removed for Opencv 5.1.x when available
+      - name: Patch OpenCV disable MLAS on Windows
+        shell: pwsh
+        run: |
+          cd "${env:GITHUB_WORKSPACE}\opencv\opencv-5.0.0"
+          
+          $patch = "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-disable-mlas-windows.diff"
+          $cmake = "modules\dnn\CMakeLists.txt"
+          
+          $content = Get-Content $cmake -Raw
+          
+          if ($content -match "WIN32" -and $content -match "MLAS") {
+            Write-Host "Disable-MLAS Windows patch appears already applied; skipping patch step."
+          } else {
+            Write-Host "Applying disable-MLAS Windows patch..."
+            patch -p1 --forward --verbose --input="$patch"
+            if ($LASTEXITCODE -ne 0) {
+              throw "disable-MLAS Windows patch failed"
+            }
+          }
+          
+          $content = Get-Content $cmake -Raw
+          if ($content -notmatch "WIN32" -or $content -notmatch "MLAS") {
+            throw "disable-MLAS Windows patch is not present"
+          }
+          
+          Write-Host "Disable-MLAS Windows patch is present."
       - name: Save cached OpenCV source
         uses: actions/cache/save@v4
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
