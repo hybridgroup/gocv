@@ -76,7 +76,7 @@ Mat Mat_NewFromBytes(int rows, int cols, int type, struct ByteArray buf) {
 }
 
 // Mat_NewWithSizesFromScalar creates multidimensional Mat from a scalar
-Mat Mat_NewWithSizesFromScalar(IntVector sizes, int type, Scalar ar) {
+ Mat Mat_NewWithSizesFromScalar(IntVector sizes, int type, Scalar ar) {
     std::vector<int> _sizes;
     for (int i = 0, *v = sizes.val; i < sizes.length; ++v, ++i) {
         _sizes.push_back(*v);
@@ -263,7 +263,7 @@ OpenCVResult Mat_PatchNaNs(Mat m) {
 Mat Mat_ConvertFp16(Mat m) {
     try {
         Mat dst = new cv::Mat();
-        cv::convertFp16(*m, *dst);
+        m->convertTo(*dst, CV_16F);
         return dst;
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
@@ -350,16 +350,15 @@ int Mat_ElemSize(Mat m){
 }
 
 void Mat_Size(Mat m, IntVector* res) {
-    cv::MatSize ms(m->size);
-    int* ids = new int[ms.dims()];
+    int dims = m->dims;
+    int* ids = new int[dims];
 
-    for (size_t i = 0; i < ms.dims(); ++i) {
-        ids[i] = ms[i];
+    for (int i = 0; i < dims; ++i) {
+        ids[i] = m->size[i];
     }
 
-    res->length = ms.dims();
+    res->length = dims;
     res->val = ids;
-    return;
 }
 
 // Mat_GetUChar returns a specific row/col value from this Mat expecting

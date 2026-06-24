@@ -1,3 +1,44 @@
+0.44.0
+---
+* **all**
+    - update to OpenCV 5.0.0
+    - update build, test and Docker workflows for OpenCV 5
+    - modernize CI workflows and Docker image publishing
+* **core**
+    - update bindings and tests for OpenCV 5 API changes
+    - remove deprecated convertFp16 APIs removed by OpenCV 5
+    - update Mat size handling for OpenCV 5
+* **calib3d**
+    - migrate bindings to OpenCV 5 calib module
+    - update calibration and fisheye tests for OpenCV 5
+* **dnn**
+    - update bindings for OpenCV 5 DNN APIs
+    - update DataLayout support
+    - remove support for deprecated Caffe and Torch model loading APIs removed by OpenCV 5
+* **features2d**
+    - update bindings for OpenCV 5 API changes
+    - migrate AKAZE support to OpenCV 5 module layout
+* **imgproc**
+    - update bindings and tests for OpenCV 5 API changes
+    - update contour and geometry related tests
+* **objdetect**
+    - update ArUco support for OpenCV 5
+    - update tests for OpenCV 5 marker detection changes
+* **tracking**
+    - remove TrackerGOTURN support following removal from OpenCV 5
+* **wechat_qrcode**
+    - update bindings for OpenCV 5 constructor changes
+* **xphoto**
+    - update TonemapDurand support for OpenCV 5
+* **contrib**
+    - migrate MCC support to its new OpenCV 5 module location
+    - update WeChat QRCode support for OpenCV 5
+* **install**
+    - Linux, macOS and Windows build scripts updated for OpenCV 5
+    - update pkg-config integration to use opencv5
+    - update Docker images and workflows to OpenCV 5.0.0
+    - improve Windows MinGW support and CI coverage
+
 0.43.0
 ---
 * **all**

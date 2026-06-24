@@ -1,11 +1,21 @@
 name: Windows
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
       - dev
       - release
+
+# Note:  See files win_download_opencv.cmd and  win_build_opencv.cmd
+# in the project root directory for configuring the opencv version
+# and build parameters
+
+env:
+  # OpenCV Windows library suffix for 5.0.0, e.g. opencv_core500.
+  # If the Windows build emits a different suffix, update this value.
+  OPENCV_LIB_SUFFIX: 500
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -26,28 +36,95 @@ jobs:
         uses: actions/cache/restore@v4
         id: cache-opencv-source
         with:
-          key: opencv-source-4130-windows-v3
+          key: opencv-source-${{ runner.os }}-5000-${{ hashFiles('win_download_opencv.cmd', 'patches/*.diff') }}
           path: |
-            ./opencv/opencv-4.13.0
-            ./opencv/opencv_contrib-4.13.0
+            ./opencv/opencv-5.0.0
+            ./opencv/opencv_contrib-5.0.0
       - name: Download OpenCV source
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
         shell: cmd
         run: |
           call .\win_download_opencv.cmd "%GITHUB_WORKSPACE%\opencv"
+      # NOTE: apply patch to openCV 5.0.0 to fix build issues reported here
+      # https://github.com/opencv/opencv/pull/29352/
+      # This patch should be removed for Opencv 5.1.x when available
+      - name: Patch OpenCV MLAS MinGW build
+        shell: pwsh
+        run: |
+          cd "${env:GITHUB_WORKSPACE}\opencv\opencv-5.0.0"
+          
+          $patch = "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.diff"
+          $mlas = "3rdparty\mlas\lib\mlasi.h"
+          
+          $lines = Get-Content $mlas
+          $block = ($lines[3008..3060] -join "`n")
+          
+          if ($block -match "#ifdef _WIN32") {
+            Write-Host "MLAS MinGW patch already applied; skipping patch step."
+          } else {
+            Write-Host "Applying MLAS MinGW patch..."
+            patch -p1 --forward --verbose --input="$patch"
+            if ($LASTEXITCODE -ne 0) {
+              throw "patch failed"
+            }
+          }
+          
+          Write-Host "Verifying patched MLAS allocation block..."
+          $lines = Get-Content $mlas
+          $block = ($lines[3008..3060] -join "`n")
+          
+          if ($block -notmatch "#ifdef _WIN32") {
+            throw "mlasi.h allocation block was not patched"
+          }
+          
+          if ($block -notmatch "_aligned_malloc") {
+            throw "mlasi.h allocation block missing _aligned_malloc path"
+          }
+          
+          Write-Host "MLAS MinGW patch is present."
+      # NOTE: disable MLAS completely on Windows as
+      # C++ and Assembly for MLAS on windows can't be built separately hence disabling complete MLAS.
+      # https://github.com/opencv/opencv/pull/29343
+      # This patch should be removed for Opencv 5.1.x when available
+      - name: Patch OpenCV disable MLAS on Windows
+        shell: pwsh
+        run: |
+          cd "${env:GITHUB_WORKSPACE}\opencv\opencv-5.0.0"
+          
+          $patch = "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-disable-mlas-windows.diff"
+          $cmake = "modules\dnn\CMakeLists.txt"
+          
+          $content = Get-Content $cmake -Raw
+          
+          if ($content -match "if\s*\(\s*WIN32\s*\)\s*[\r\n]+\s*return\s*\(\s*\)") {
+            Write-Host "Disable-MLAS Windows patch appears already applied; skipping patch step."
+          } else {
+            Write-Host "Applying disable-MLAS Windows patch..."
+            patch -p1 --forward --verbose --input="$patch"
+            if ($LASTEXITCODE -ne 0) {
+              throw "disable-MLAS Windows patch failed"
+            }
+          }
+          
+          $content = Get-Content $cmake -Raw
+          if ($content -notmatch "WIN32" -or $content -notmatch "MLAS") {
+            throw "disable-MLAS Windows patch is not present"
+          }
+          
+          Write-Host "Disable-MLAS Windows patch is present."
       - name: Save cached OpenCV source
         uses: actions/cache/save@v4
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
         with:
           key: ${{ steps.cache-opencv-source.outputs.cache-primary-key }}
           path: |
-            ./opencv/opencv-4.13.0
-            ./opencv/opencv_contrib-4.13.0
+            ./opencv/opencv-5.0.0
+            ./opencv/opencv_contrib-5.0.0
       - name: Restore cached OpenCV build
         uses: actions/cache/restore@v4
         id: cache-opencv-build
         with:
-          key: opencv-build-4130-windows-v4
+          key: opencv-build-${{ runner.os }}-5000-${{ hashFiles('win_build_opencv.cmd', 'win_download_opencv.cmd', 'patches/*.diff') }}
           path: |
             ./opencv/build
       - name: Build OpenCV
@@ -62,13 +139,23 @@ jobs:
           key: ${{ steps.cache-opencv-build.outputs.cache-primary-key }}
           path: |
             ./opencv/build
+      - name: Inspect OpenCV libraries
+        shell: pwsh
+        run: |
+            Get-ChildItem "${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib" -Filter "opencv_core*.dll.a" | Select-Object -ExpandProperty Name
+            Get-ChildItem "${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib" -Filter "opencv_*.dll.a" | Select-Object -First 50 -ExpandProperty Name
       - name: Set GoCV env
         run: |
-            go env
-            echo "CGO_CXXFLAGS=--std=c++11 -DNDEBUG" >> $env:GITHUB_ENV
-            echo "CGO_CPPFLAGS=-I${env:GITHUB_WORKSPACE}\opencv\build\install\include" >> $env:GITHUB_ENV
-            echo "CGO_LDFLAGS=-L${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib -lopencv_core4130 -lopencv_face4130 -lopencv_videoio4130 -lopencv_imgproc4130 -lopencv_highgui4130 -lopencv_imgcodecs4130 -lopencv_objdetect4130 -lopencv_features2d4130 -lopencv_video4130 -lopencv_dnn4130 -lopencv_xfeatures2d4130 -lopencv_plot4130 -lopencv_tracking4130 -lopencv_img_hash4130 -lopencv_calib3d4130 -lopencv_bgsegm4130 -lopencv_photo4130 -lopencv_aruco4130 -lopencv_wechat_qrcode4130 -lopencv_ximgproc4130 -lopencv_xphoto4130 -lopencv_xobjdetect4130 -lopencv_mcc4130" >> $env:GITHUB_ENV
-            echo "${env:GITHUB_WORKSPACE}/opencv/build/install/x64/mingw/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          go env
+          echo "CGO_CXXFLAGS=--std=c++17 -DNDEBUG" >> $env:GITHUB_ENV
+          echo "CGO_CPPFLAGS=-I${env:GITHUB_WORKSPACE}\opencv\build\install\include" >> $env:GITHUB_ENV
+    
+          $env:PKG_CONFIG_PATH="${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib\pkgconfig"    
+          $libs = pkg-config --libs opencv5
+          echo "pkg-config libs: $libs"    
+          echo "CGO_LDFLAGS=$libs" >> $env:GITHUB_ENV
+          
+          echo "${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\bin" >> $env:GITHUB_PATH
       - name: Install Tensorflow test model
         run: |
             mkdir -p ./testdata
@@ -80,25 +167,14 @@ jobs:
           curl -sL https://huggingface.co/opencv/face_recognition_sface/resolve/main/face_recognition_sface_2021dec.onnx > ./testdata/face_recognition_sface_2021dec.onnx
           curl -sL https://huggingface.co/opencv/face_detection_yunet/resolve/main/face_detection_yunet_2023mar.onnx > ./testdata/face_detection_yunet_2023mar.onnx
           curl -sL https://huggingface.co/opencv/object_tracking_vittrack/resolve/main/object_tracking_vittrack_2023sep.onnx > ./testdata/object_tracking_vittrack_2023sep.onnx
-      - name: Install GOTURN test model
-        shell: bash
-        run: |
-          curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.prototxt > ./testdata/goturn.prototxt
-          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.001 > ./testdata/goturn.caffemodel.zip.001
-          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.002 > ./testdata/goturn.caffemodel.zip.002
-          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.003 > ./testdata/goturn.caffemodel.zip.003
-          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.004 > ./testdata/goturn.caffemodel.zip.004
-          cat ./testdata/goturn.caffemodel.zip.00*  > ./testdata/goturn.caffemodel.zip
-          unzip -o ./testdata/goturn.caffemodel.zip goturn.caffemodel -d ./testdata/
       - name: Set GoCV model env
         run: |
             go env
             echo "GOCV_TENSORFLOW_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
             echo "GOCV_ONNX_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
-            echo "GOCV_TRACKER_GOTURN_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
       - name: Test GoCV
-        run: |
-            go test -v -tags="matprofile,customenv" .
+        run: |         
+          go test -v -tags="matprofile,customenv" .
       - name: Test GoCV Contrib
         run: |
             go test -v -tags="matprofile,customenv" ./contrib

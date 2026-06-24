@@ -4,56 +4,136 @@ name: GStreamer
 on:
   workflow_dispatch:
 
+env:
+  GSTREAMER_VERSION: "1.24"
+
+  # Docker Hub publishing policy.
+  #
+  # Upstream repository:
+  #   hybridgroup/gocv always publishes Docker Hub images using the existing
+  #   gocv/<image>:<tag> namespace and its configured Docker Hub secrets.
+  #
+  # Forks:
+  #   Docker Hub publishing is disabled by default, so forks can build and push
+  #   GHCR images without needing Docker Hub credentials. A fork can still opt in
+  #   by adding both repository secrets:
+  #     DOCKER_HUB_USERNAME
+  #     DOCKER_HUB_ACCESS_TOKEN
+  #
+  #   When a fork opts in, Docker Hub images are published using the Docker Hub
+  #   username from DOCKER_HUB_USERNAME, for example:
+  #     <DOCKER_HUB_USERNAME>/gstreamer:<tag>
+  #
+  # GHCR images are always published using github.repository_owner:
+  #   ghcr.io/<owner>/<image>:<tag>
+  IS_UPSTREAM_REPOSITORY: ${{ github.repository_owner == 'hybridgroup' }}
+  HAS_DOCKERHUB: ${{ github.repository_owner == 'hybridgroup' || (secrets.DOCKER_HUB_USERNAME != '' && secrets.DOCKER_HUB_ACCESS_TOKEN != '') }}
+  DOCKERHUB_NAMESPACE: ${{ github.repository_owner == 'hybridgroup' && 'gocv' || secrets.DOCKER_HUB_USERNAME }}
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   gstreamer:
-    name: gstreamer
-    runs-on: ubuntu-latest
+    name: gstreamer (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
     permissions:
       packages: write
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            platform: linux/amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
     steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Check out the repo
         uses: actions/checkout@v6
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
-            gocv/gstreamer:1.24-alpine
-            ghcr.io/${{ github.repository_owner }}/gstreamer:1.24-alpine
+            ghcr.io/${{ github.repository_owner }}/gstreamer
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v6
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/gstreamer:${GSTREAMER_VERSION}-alpine-${{ matrix.arch }}"
+              echo "${DOCKERHUB_NAMESPACE}/gstreamer:sha-${GITHUB_SHA}-alpine-${{ matrix.arch }}"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/gstreamer:${GSTREAMER_VERSION}-alpine-${{ matrix.arch }}"
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/gstreamer:sha-${GITHUB_SHA}-alpine-${{ matrix.arch }}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+      - name: Build and push arch image
+        uses: docker/build-push-action@v7
         with:
           file: Dockerfile.gstreamer-static-alpine
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.platform }}
           context: .
           push: true
-          tags: |
-            gocv/gstreamer:1.24-alpine
-            ghcr.io/${{ github.repository_owner }}/gstreamer:1.24-alpine
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=gstreamer-${{ matrix.arch }}-${{ env.GSTREAMER_VERSION }}-alpine
+          cache-to: type=gha,mode=max,scope=gstreamer-${{ matrix.arch }}-${{ env.GSTREAMER_VERSION }}-alpine
 
+  gstreamer-manifest:
+    name: gstreamer manifest
+    runs-on: ubuntu-24.04
+    needs: gstreamer
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Log in to Github Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GHCR multi-arch manifest
+        run: |
+          docker buildx imagetools create \
+            -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/gstreamer:${GSTREAMER_VERSION}-alpine \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/gstreamer:${GSTREAMER_VERSION}-alpine-amd64 \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/gstreamer:${GSTREAMER_VERSION}-alpine-arm64
+      - name: Create Docker Hub multi-arch manifest
+        if: env.HAS_DOCKERHUB == 'true'
+        run: |
+          docker buildx imagetools create \
+            -t ${DOCKERHUB_NAMESPACE}/gstreamer:${GSTREAMER_VERSION}-alpine \
+            ${DOCKERHUB_NAMESPACE}/gstreamer:${GSTREAMER_VERSION}-alpine-amd64 \
+            ${DOCKERHUB_NAMESPACE}/gstreamer:${GSTREAMER_VERSION}-alpine-arm64

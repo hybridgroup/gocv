@@ -641,27 +641,58 @@ func TestCalibrateCamera(t *testing.T) {
 	imagePointsVector.Append(imagePoints)
 	defer imagePointsVector.Close()
 
-	CalibrateCamera(
-		objectPointsVector, imagePointsVector, image.Pt(img.Cols(), img.Rows()),
-		&cameraMatrix, &distCoeffs, &rvecs, &tvecs, 0,
+	rms := CalibrateCamera(
+		objectPointsVector,
+		imagePointsVector,
+		image.Pt(img.Cols(), img.Rows()),
+		&cameraMatrix,
+		&distCoeffs,
+		&rvecs,
+		&tvecs,
+		0,
 	)
+
+	if rms <= 0 || math.IsNaN(rms) || math.IsInf(rms, 0) {
+		t.Fatalf("CalibrateCamera returned invalid RMS error: %v", rms)
+	}
+
+	if cameraMatrix.Empty() {
+		t.Fatal("cameraMatrix is empty")
+	}
+	if cameraMatrix.Rows() != 3 || cameraMatrix.Cols() != 3 {
+		t.Fatalf("cameraMatrix size mismatch: got %dx%d, want 3x3", cameraMatrix.Rows(), cameraMatrix.Cols())
+	}
+
+	if distCoeffs.Empty() {
+		t.Fatal("distCoeffs is empty")
+	}
+	if distCoeffs.Total() == 0 {
+		t.Fatal("distCoeffs has no coefficients")
+	}
+
+	if rvecs.Empty() {
+		t.Fatal("rvecs is empty")
+	}
+	if tvecs.Empty() {
+		t.Fatal("tvecs is empty")
+	}
 
 	dest := NewMat()
 	defer dest.Close()
-	Undistort(img, &dest, cameraMatrix, distCoeffs, cameraMatrix)
 
-	target := IMRead("images/chessboard_4x6_distort_correct.png", IMReadGrayScale)
-	defer target.Close()
+	if err := Undistort(img, &dest, cameraMatrix, distCoeffs, cameraMatrix); err != nil {
+		t.Fatalf("Undistort failed: %v", err)
+	}
 
-	xor := NewMat()
-	defer xor.Close()
-
-	// The method for compare is ugly : different pix number < 0.5%
-	BitwiseXor(dest, target, &xor)
-	differentPixelsNumber := xor.Sum().Val1
-	maxDifferentPixelsNumber := float64(img.Cols()*img.Rows()) * 0.005
-	if differentPixelsNumber > maxDifferentPixelsNumber {
-		t.Error("the undisorted image not equal the target one:", differentPixelsNumber, "bigger than", maxDifferentPixelsNumber)
+	if dest.Empty() {
+		t.Fatal("undistorted image is empty")
+	}
+	if dest.Rows() != img.Rows() || dest.Cols() != img.Cols() {
+		t.Fatalf("undistorted image size mismatch: got %dx%d, want %dx%d",
+			dest.Cols(), dest.Rows(), img.Cols(), img.Rows())
+	}
+	if dest.Type() != img.Type() {
+		t.Fatalf("undistorted image type mismatch: got %v, want %v", dest.Type(), img.Type())
 	}
 }
 

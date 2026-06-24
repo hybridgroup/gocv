@@ -4,7 +4,7 @@
 
 AKAZE AKAZE_Create() {
     try {
-        return new cv::Ptr<cv::AKAZE>(cv::AKAZE::create());
+        return new cv::Ptr<cv::xfeatures2d::AKAZE>(cv::xfeatures2d::AKAZE::create());
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
         return NULL;
@@ -13,9 +13,9 @@ AKAZE AKAZE_Create() {
 AKAZE AKAZE_CreateWithParams(int descriptor_type, int descriptor_size, int descriptor_channels,
                              float threshold, int nOctaves, int nOctaveLayers, int diffusivity) {
     try {
-        cv::AKAZE::DescriptorType type = static_cast<cv::AKAZE::DescriptorType>(descriptor_type);
+        cv::xfeatures2d::AKAZE::DescriptorType type = static_cast<cv::xfeatures2d::AKAZE::DescriptorType>(descriptor_type);
 
-        return new cv::Ptr<cv::AKAZE>(cv::AKAZE::create(type, descriptor_size, descriptor_channels,threshold, nOctaves, nOctaveLayers, static_cast<cv::KAZE::DiffusivityType>(diffusivity)));
+        return new cv::Ptr<cv::xfeatures2d::AKAZE>(cv::xfeatures2d::AKAZE::create(type, descriptor_size, descriptor_channels,threshold, nOctaves, nOctaveLayers, static_cast<cv::xfeatures2d::KAZE::DiffusivityType>(diffusivity)));
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
         return NULL;
@@ -108,7 +108,7 @@ struct KeyPoints AKAZE_DetectAndCompute(AKAZE a, Mat src, Mat mask, Mat desc) {
 
 AgastFeatureDetector AgastFeatureDetector_Create() {
     try {
-        return new cv::Ptr<cv::AgastFeatureDetector>(cv::AgastFeatureDetector::create());
+        return new cv::Ptr<cv::xfeatures2d::AgastFeatureDetector>(cv::xfeatures2d::AgastFeatureDetector::create());
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
         return NULL;
@@ -117,8 +117,8 @@ AgastFeatureDetector AgastFeatureDetector_Create() {
 
 AgastFeatureDetector AgastFeatureDetector_CreateWithParams(int threshold, bool nonmaxSuppression, int type) {
     try {
-        cv::AgastFeatureDetector::DetectorType detectorType = static_cast<cv::AgastFeatureDetector::DetectorType>(type);
-        return new cv::Ptr<cv::AgastFeatureDetector>(cv::AgastFeatureDetector::create(threshold, nonmaxSuppression, detectorType));
+        cv::xfeatures2d::AgastFeatureDetector::DetectorType detectorType = static_cast<cv::xfeatures2d::AgastFeatureDetector::DetectorType>(type);
+        return new cv::Ptr<cv::xfeatures2d::AgastFeatureDetector>(cv::xfeatures2d::AgastFeatureDetector::create(threshold, nonmaxSuppression, detectorType));
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
         return NULL;
@@ -155,7 +155,7 @@ struct KeyPoints AgastFeatureDetector_Detect(AgastFeatureDetector a, Mat src) {
 
 BRISK BRISK_Create() {
     try {
-        return new cv::Ptr<cv::BRISK>(cv::BRISK::create());
+        return new cv::Ptr<cv::xfeatures2d::BRISK>(cv::xfeatures2d::BRISK::create());
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
         return NULL;
@@ -164,7 +164,7 @@ BRISK BRISK_Create() {
 
 BRISK BRISK_CreateWithParams(int thresh, int octaves, float patternScale) {
     try {
-        return new cv::Ptr<cv::BRISK>(cv::BRISK::create(thresh, octaves, patternScale));
+        return new cv::Ptr<cv::xfeatures2d::BRISK>(cv::xfeatures2d::BRISK::create(thresh, octaves, patternScale));
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
         return NULL;
@@ -306,7 +306,7 @@ struct KeyPoints GFTTDetector_Detect(GFTTDetector a, Mat src) {
 
 KAZE KAZE_Create() {
     try {
-        return new cv::Ptr<cv::KAZE>(cv::KAZE::create());
+        return new cv::Ptr<cv::xfeatures2d::KAZE>(cv::xfeatures2d::KAZE::create());
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
         return NULL;
@@ -315,7 +315,7 @@ KAZE KAZE_Create() {
 
 KAZE KAZE_CreateWithParams(bool extended, bool upright, float threshold, int nOctaves, int nOctaveLayers, int diffusivity) {
     try {
-        return new cv::Ptr<cv::KAZE>(cv::KAZE::create(extended, upright, threshold, nOctaves, nOctaveLayers, static_cast<cv::KAZE::DiffusivityType>(diffusivity)));
+        return new cv::Ptr<cv::xfeatures2d::KAZE>(cv::xfeatures2d::KAZE::create(extended, upright, threshold, nOctaves, nOctaveLayers, static_cast<cv::xfeatures2d::KAZE::DiffusivityType>(diffusivity)));
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
         return NULL;

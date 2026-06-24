@@ -25,24 +25,15 @@ Net Net_ReadNetBytes(const char* framework, struct ByteArray model, struct ByteA
 }
 
 Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel) {
-    try {
-        Net n = new cv::dnn::Net(cv::dnn::readNetFromCaffe(prototxt, caffeModel));
-        return n;
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-        return NULL;
-    }
+    // TODO CV5: remove these functions, but for now temporarily disable
+    setExceptionInfo(-1,"OpenCV 5 removed Caffe support");
+    return NULL;
 }
 
 Net Net_ReadNetFromCaffeBytes(struct ByteArray prototxt, struct ByteArray caffeModel) {
-    try {
-        Net n = new cv::dnn::Net(cv::dnn::readNetFromCaffe(prototxt.data, prototxt.length,
-            caffeModel.data, caffeModel.length));
-        return n;
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-        return NULL;
-    }
+    // TODO CV5: remove these functions, but for now temporarily disable
+    setExceptionInfo(-1,"OpenCV 5 removed Caffe support");
+    return NULL;
 }
 
 Net Net_ReadNetFromTensorflow(const char* model) {
@@ -66,13 +57,9 @@ Net Net_ReadNetFromTensorflowBytes(struct ByteArray model) {
 }
 
 Net Net_ReadNetFromTorch(const char* model) {
-    try {
-        Net n = new cv::dnn::Net(cv::dnn::readNetFromTorch(model));
-        return n;
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-        return NULL;
-    }
+    // TODO CV5: remove these functions, but for now temporarily disable
+    setExceptionInfo(-1,"OpenCV 5 removed Torch support");
+    return NULL;
 }
 
 Net Net_ReadNetFromONNX(const char* model) {
@@ -87,7 +74,7 @@ Net Net_ReadNetFromONNX(const char* model) {
 
 Net Net_ReadNetFromONNXBytes(struct ByteArray model) {
     try {
-        Net n = new cv::dnn::Net(cv::dnn::readNetFromONNX(model.data, model.length));
+        Net n = new cv::dnn::Net(cv::dnn::readNetFromONNX((const char*)model.data, (size_t)model.length));
         return n;
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
@@ -235,7 +222,7 @@ struct Rect Net_BlobRectToImageRect(struct Rect rect, Size originalSize, double 
         cv::Scalar sf(scalefactor);
         cv::Size sz(size.width, size.height);
         cv::Scalar cm(mean.val1, mean.val2, mean.val3, mean.val4);
-        cv::dnn::DataLayout dl = static_cast<cv::dnn::DataLayout>(dataLayout);
+        cv::DataLayout dl = static_cast<cv::DataLayout>(dataLayout);
         cv::dnn::ImagePaddingMode pm = static_cast<cv::dnn::ImagePaddingMode>(paddingMode);
         cv::Scalar bv(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         cv::dnn::Image2BlobParams params = cv::dnn::Image2BlobParams(sf, sz, cm, swapRB, ddepth, dl, pm, bv);
@@ -266,7 +253,7 @@ struct Rects Net_BlobRectsToImageRects(struct Rects rects, Size originalSize, do
         cv::Scalar sf(scalefactor);
         cv::Size sz(size.width, size.height);
         cv::Scalar cm(mean.val1, mean.val2, mean.val3, mean.val4);
-        cv::dnn::DataLayout dl = static_cast<cv::dnn::DataLayout>(dataLayout);
+        cv::DataLayout dl = static_cast<cv::DataLayout>(dataLayout);
         cv::dnn::ImagePaddingMode pm = static_cast<cv::dnn::ImagePaddingMode>(paddingMode);
         cv::Scalar bv(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         cv::dnn::Image2BlobParams params = cv::dnn::Image2BlobParams(sf, sz, cm, swapRB, ddepth, dl, pm, bv);
@@ -308,7 +295,7 @@ Mat Net_BlobFromImageWithParams(Mat image, double scalefactor, Size size, Scalar
         cv::Scalar sf(scalefactor);
         cv::Size sz(size.width, size.height);
         cv::Scalar cm(mean.val1, mean.val2, mean.val3, mean.val4);
-        cv::dnn::DataLayout dl = static_cast<cv::dnn::DataLayout>(dataLayout);
+        cv::DataLayout dl = static_cast<cv::DataLayout>(dataLayout);
         cv::dnn::ImagePaddingMode pm = static_cast<cv::dnn::ImagePaddingMode>(paddingMode);
         cv::Scalar bv(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         cv::dnn::Image2BlobParams params = cv::dnn::Image2BlobParams(sf, sz, cm, swapRB, ddepth, dl, pm, bv);
@@ -351,7 +338,7 @@ void Net_BlobFromImagesWithParams(struct Mats images, Mat blob, double scalefact
         cv::Scalar sf(scalefactor);
         cv::Size sz(size.width, size.height);
         cv::Scalar cm(mean.val1, mean.val2, mean.val3, mean.val4);
-        cv::dnn::DataLayout dl = static_cast<cv::dnn::DataLayout>(dataLayout);
+        cv::DataLayout dl = static_cast<cv::DataLayout>(dataLayout);
         cv::dnn::ImagePaddingMode pm = static_cast<cv::dnn::ImagePaddingMode>(paddingMode);
         cv::Scalar bv(borderValue.val1, borderValue.val2, borderValue.val3, borderValue.val4);
         cv::dnn::Image2BlobParams params = cv::dnn::Image2BlobParams(sf, sz, cm, swapRB, ddepth, dl, pm, bv);
@@ -378,9 +365,20 @@ void Net_ImagesFromBlob(Mat blob_, struct Mats* images_) {
 }
 
 Mat Net_GetBlobChannel(Mat blob, int imgidx, int chnidx) {
-    size_t w = blob->size[3];
-    size_t h = blob->size[2];
-    return new cv::Mat(h, w, CV_32F, blob->ptr<float>(imgidx, chnidx));
+    try {
+        if (blob->dims < 4) {
+            setExceptionInfo(-1, "blob must have at least 4 dimensions");
+            return new cv::Mat();
+        }
+
+        size_t w = blob->size[3];
+        size_t h = blob->size[2];
+
+        return new cv::Mat(h, w, CV_32F, blob->ptr<float>(imgidx, chnidx));
+    } catch(const cv::Exception& e) {
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
 }
 
 Scalar Net_GetBlobSize(Mat blob) {

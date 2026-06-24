@@ -1,4 +1,4 @@
-# This is the Github action to build and push the gocv/opencv Docker images.
+# This is the Github action to build and push OpenCV Docker images.
 #
 name: Docker
 on:
@@ -6,17 +6,54 @@ on:
     branches: [build-opencv-images]
   workflow_dispatch:
 
+env:
+  # Set OpenCV version here to be used by all image tags.
+  OPENCV_VERSION: 5.0.0
+
+  # Docker Hub publishing policy.
+  #
+  # Upstream repository:
+  #   hybridgroup/gocv always publishes Docker Hub images using the existing
+  #   gocv/opencv:<tag> namespace and its configured Docker Hub secrets.
+  #
+  # Forks:
+  #   Docker Hub publishing is disabled by default, so forks can build and push
+  #   GHCR images without needing Docker Hub credentials. A fork can still opt in
+  #   by adding both repository secrets:
+  #     DOCKER_HUB_USERNAME
+  #     DOCKER_HUB_ACCESS_TOKEN
+  #
+  #   When a fork opts in, Docker Hub images are published using the Docker Hub
+  #   username from DOCKER_HUB_USERNAME, for example:
+  #     <DOCKER_HUB_USERNAME>/opencv:<tag>
+  #
+  # GHCR images are always published using github.repository_owner:
+  #   ghcr.io/<owner>/opencv:<tag>
+  IS_UPSTREAM_REPOSITORY: ${{ github.repository_owner == 'hybridgroup' }}
+  HAS_DOCKERHUB: ${{ github.repository_owner == 'hybridgroup' || (secrets.DOCKER_HUB_USERNAME != '' && secrets.DOCKER_HUB_ACCESS_TOKEN != '') }}
+  DOCKERHUB_NAMESPACE: ${{ github.repository_owner == 'hybridgroup' && 'gocv' || secrets.DOCKER_HUB_USERNAME }}
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   opencv:
-    name: opencv
-    runs-on: ubuntu-24.04
+    name: opencv (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
     permissions:
       packages: write
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            platform: linux/amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
     steps:
       - name: Check disk space
         run: df . -h
@@ -50,57 +87,110 @@ jobs:
           echo "extra packages purged"
       - name: Check disk space
         run: df . -h
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          image: tonistiigi/binfmt:latest
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Check out the repo
         uses: actions/checkout@v6
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
-            gocv/opencv:4.13.0
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0
+            ghcr.io/${{ github.repository_owner }}/opencv
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v6
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-${{ matrix.arch }}"
+              echo "${DOCKERHUB_NAMESPACE}/opencv:sha-${GITHUB_SHA}-${{ matrix.arch }}"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-${{ matrix.arch }}"
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:sha-${GITHUB_SHA}-${{ matrix.arch }}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+      - name: Build and push arch image
+        uses: docker/build-push-action@v7
         with:
           file: Dockerfile.opencv
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.platform }}
           context: .
           push: true
-          tags: |
-            gocv/opencv:latest
-            gocv/opencv:4.13.0
-            ghcr.io/${{ github.repository_owner }}/opencv:latest
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=opencv-${{ matrix.arch }}-${{ env.OPENCV_VERSION }}
+          cache-to: type=gha,mode=max,scope=opencv-${{ matrix.arch }}-${{ env.OPENCV_VERSION }}
 
-  opencv-static:
-    name: opencv-static
+  opencv-manifest:
+    name: opencv manifest
     runs-on: ubuntu-24.04
+    needs: opencv
     permissions:
       packages: write
       contents: read
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Log in to Github Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GHCR multi-arch manifest
+        run: |
+          docker buildx imagetools create \
+            -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION} \
+            -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:latest \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-amd64 \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-arm64
+      - name: Create Docker Hub multi-arch manifest
+        if: env.HAS_DOCKERHUB == 'true'
+        run: |
+          docker buildx imagetools create \
+            -t ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION} \
+            -t ${DOCKERHUB_NAMESPACE}/opencv:latest \
+            ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-amd64 \
+            ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-arm64
+
+  opencv-static:
+    name: opencv-static (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      packages: write
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            platform: linux/amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
     steps:
       - name: Check disk space
         run: df . -h
@@ -134,48 +224,91 @@ jobs:
           echo "extra packages purged"
       - name: Check disk space
         run: df . -h
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          image: tonistiigi/binfmt:latest
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Check out the repo
         uses: actions/checkout@v6
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
-            gocv/opencv:4.13.0-static
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-static
+            ghcr.io/${{ github.repository_owner }}/opencv
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v6
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-static-${{ matrix.arch }}"
+              echo "${DOCKERHUB_NAMESPACE}/opencv:sha-${GITHUB_SHA}-static-${{ matrix.arch }}"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-static-${{ matrix.arch }}"
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:sha-${GITHUB_SHA}-static-${{ matrix.arch }}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+      - name: Build and push arch image
+        uses: docker/build-push-action@v7
         with:
           file: Dockerfile.opencv-static
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.platform }}
           context: .
           push: true
-          tags: |
-            gocv/opencv:4.13.0-static
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-static
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=opencv-static-${{ matrix.arch }}-${{ env.OPENCV_VERSION }}
+          cache-to: type=gha,mode=max,scope=opencv-static-${{ matrix.arch }}-${{ env.OPENCV_VERSION }}
+
+  opencv-static-manifest:
+    name: opencv-static manifest
+    runs-on: ubuntu-24.04
+    needs: opencv-static
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Log in to Github Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GHCR multi-arch manifest
+        run: |
+          docker buildx imagetools create \
+            -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-static \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-static-amd64 \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-static-arm64
+      - name: Create Docker Hub multi-arch manifest
+        if: env.HAS_DOCKERHUB == 'true'
+        run: |
+          docker buildx imagetools create \
+            -t ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-static \
+            ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-static-amd64 \
+            ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-static-arm64
 
   opencv-gpu-cuda-11:
     name: opencv-gpu-cuda-11
@@ -217,121 +350,53 @@ jobs:
       - name: Check disk space
         run: df . -h
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Check out the repo
         uses: actions/checkout@v6
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
-            gocv/opencv:4.13.0-gpu-cuda-11
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-gpu-cuda-11
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-gpu-cuda-11
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-gpu-cuda-11"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-gpu-cuda-11"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           file: Dockerfile.opencv-gpu-cuda-11
           platforms: linux/amd64
           context: .
           push: true
-          tags: |
-            gocv/opencv:4.13.0-gpu-cuda-11
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-gpu-cuda-11
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  opencv-gpu-cuda-11-2-2:
-    name: opencv-gpu-cuda-11-2-2
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-    steps:
-      - name: Check disk space
-        run: df . -h
-      - name: Free disk space
-        run: |
-          sudo docker rmi $(docker image ls -aq) >/dev/null 2>&1 || true
-          sudo rm -rf \
-            /usr/share/dotnet /usr/local/lib/android /opt/ghc \
-            /usr/local/share/powershell /usr/share/swift /usr/local/.ghcup \
-            /usr/lib/jvm || true
-          echo "extra directories deleted"
-          sudo apt install aptitude -y >/dev/null 2>&1
-          sudo aptitude purge aria2 ansible azure-cli shellcheck rpm xorriso zsync \
-            esl-erlang firefox gfortran-8 gfortran-9 google-chrome-stable \
-            google-cloud-sdk imagemagick \
-            libmagickcore-dev libmagickwand-dev libmagic-dev ant ant-optional kubectl \
-            mercurial apt-transport-https mono-complete libmysqlclient \
-            unixodbc-dev yarn chrpath libssl-dev libxft-dev \
-            libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev \
-            snmp pollinate libpq-dev postgresql-client powershell ruby-full \
-            sphinxsearch subversion mongodb-org azure-cli microsoft-edge-stable \
-            -y -f >/dev/null 2>&1
-          sudo aptitude purge google-cloud-sdk -f -y >/dev/null 2>&1
-          sudo aptitude purge microsoft-edge-stable -f -y >/dev/null 2>&1 || true
-          sudo apt purge microsoft-edge-stable -f -y >/dev/null 2>&1 || true
-          sudo aptitude purge '~n ^mysql' -f -y >/dev/null 2>&1
-          sudo aptitude purge '~n ^php' -f -y >/dev/null 2>&1
-          sudo aptitude purge '~n ^dotnet' -f -y >/dev/null 2>&1
-          sudo apt-get autoremove -y >/dev/null 2>&1
-          sudo apt-get autoclean -y >/dev/null 2>&1
-          echo "extra packages purged"
-      - name: Check disk space
-        run: df . -h
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Check out the repo
-        uses: actions/checkout@v6
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            gocv/opencv:4.13.0-gpu-cuda-11.2.2
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-gpu-cuda-11.2.2
-          tags: |
-            type=sha,format=long
-            type=raw,value=latest
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          file: Dockerfile.opencv-gpu-cuda-11.2.2
-          platforms: linux/amd64
-          context: .
-          push: true
-          tags: |
-            gocv/opencv:4.13.0-gpu-cuda-11.2.2
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-gpu-cuda-11.2.2
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   opencv-gpu-cuda-12:
     name: opencv-gpu-cuda-12
@@ -373,40 +438,49 @@ jobs:
       - name: Check disk space
         run: df . -h
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Check out the repo
         uses: actions/checkout@v6
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
-            gocv/opencv:4.13.0-gpu-cuda-12
-            ghcr.io/${{ github.repository_owner }}/opemcv:4.13.0-gpu-cuda-12
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-gpu-cuda-12
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-gpu-cuda-12"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-gpu-cuda-12"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           file: Dockerfile.opencv-gpu-cuda-12
           platforms: linux/amd64
           context: .
           push: true
-          tags: |
-            gocv/opencv:4.13.0-gpu-cuda-12
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-gpu-cuda-12
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -451,86 +525,49 @@ jobs:
       - name: Check disk space
         run: df . -h
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Check out the repo
         uses: actions/checkout@v6
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
-            gocv/opencv:4.13.0-gpu-cuda-13
-            ghcr.io/${{ github.repository_owner }}/opemcv:4.13.0-gpu-cuda-13
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-gpu-cuda-13
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-gpu-cuda-13"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-gpu-cuda-13"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           file: Dockerfile.opencv-gpu-cuda-13
           platforms: linux/amd64
           context: .
           push: true
-          tags: |
-            gocv/opencv:4.13.0-gpu-cuda-13
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-gpu-cuda-13
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  opencv-ubuntu-18-04:
-    name: opencv-ubuntu-18-04
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-    steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Check out the repo
-        uses: actions/checkout@v6
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            gocv/opencv:4.13.0-ubuntu-18.04
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-ubuntu-18.04
-          tags: |
-            type=sha,format=long
-            type=raw,value=latest
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          file: Dockerfile.opencv-ubuntu-18.04
-          platforms: linux/amd64
-          context: .
-          push: true
-          tags: |
-            gocv/opencv:4.13.0-ubuntu-18.04
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-ubuntu-18.04
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -543,40 +580,49 @@ jobs:
       contents: read
     steps:
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Check out the repo
         uses: actions/checkout@v6
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
-            gocv/opencv:4.13.0-ubuntu-20.04
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-ubuntu-20.04
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-ubuntu-20.04
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-ubuntu-20.04"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-ubuntu-20.04"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           file: Dockerfile.opencv-ubuntu-20.04
           platforms: linux/amd64
           context: .
           push: true
-          tags: |
-            gocv/opencv:4.13.0-ubuntu-20.04
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-ubuntu-20.04
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -589,40 +635,49 @@ jobs:
       contents: read
     steps:
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Check out the repo
         uses: actions/checkout@v6
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
-            gocv/opencv:4.13.0-ubuntu-22.04
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-ubuntu-22.04
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-ubuntu-22.04
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-ubuntu-22.04"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-ubuntu-22.04"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           file: Dockerfile.opencv-ubuntu-22.04
           platforms: linux/amd64
           context: .
           push: true
-          tags: |
-            gocv/opencv:4.13.0-ubuntu-22.04
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-ubuntu-22.04
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -635,40 +690,104 @@ jobs:
       contents: read
     steps:
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Check out the repo
         uses: actions/checkout@v6
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
-            gocv/opencv:4.13.0-ubuntu-24.04
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-ubuntu-24.04
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-ubuntu-24.04
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-ubuntu-24.04"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-ubuntu-24.04"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           file: Dockerfile.opencv-ubuntu-24.04
           platforms: linux/amd64
           context: .
           push: true
+          tags: ${{ steps.image-tags.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  opencv-ubuntu-26-04:
+    name: opencv-ubuntu-26-04
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Check out the repo
+        uses: actions/checkout@v6
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: |
+            ghcr.io/${{ github.repository_owner }}/opencv:${{ env.OPENCV_VERSION }}-ubuntu-24.04
           tags: |
-            gocv/opencv:4.13.0-ubuntu-24.04
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-ubuntu-24.04
+            type=sha,format=long
+            type=raw,value=latest
+      - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Log in to Github Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-ubuntu-26.04"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-ubuntu-26.04"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+      - name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          file: Dockerfile.opencv-ubuntu-26.04
+          platforms: linux/amd64
+          context: .
+          push: true
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

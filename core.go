@@ -55,13 +55,13 @@ const (
 	MatChannels1 = 0
 
 	// MatChannels2 is 2 channel Mat.
-	MatChannels2 = 8
+	MatChannels2 = 32
 
 	// MatChannels3 is 3 channel Mat.
-	MatChannels3 = 16
+	MatChannels3 = 64
 
 	// MatChannels4 is 4 channel Mat.
-	MatChannels4 = 24
+	MatChannels4 = 96
 )
 
 // MatType is the type for the various different kinds of Mat you can create.

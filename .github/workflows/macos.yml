@@ -1,51 +1,172 @@
 name: macOS
+
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
       - dev
       - release
 
+env:
+  OPENCV_VERSION: 5.0.0
+  # Disable OpenCV AVFoundation camera permission prompts during CI.
+  # GitHub runners have no GUI, so camera authorization requests cannot
+  # be displayed and only generate warnings during video capture tests.
+  OPENCV_AVFOUNDATION_SKIP_AUTH: 1
+
 jobs:
   build:
     strategy:
-        matrix:
-          os: [macos-14, macos-15]
+      matrix:
+        os: [macos-14, macos-15]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Install OpenCV
-        run: |
-          brew update
-          brew install opencv
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Install Go
         uses: actions/setup-go@v6
         with:
           go-version: '1.25.5'
           cache: true
-      - name: Checkout
-        uses: actions/checkout@v6
+
+      - name: Install OpenCV build dependencies
+        run: |
+          brew update
+          brew install cmake pkg-config \
+            abseil ceres-solver eigen ffmpeg freetype gflags glog harfbuzz \
+            jsoncpp openblas openexr \
+            tbb tesseract glew imath libarchive
+
+      - name: Restore cached OpenCV source
+        uses: actions/cache/restore@v4
+        id: cache-opencv-source
+        with:
+          key: opencv-source-${{ runner.os }}-${{ matrix.os }}-${{ env.OPENCV_VERSION }}
+          path: |
+            ./opencv/opencv-${{ env.OPENCV_VERSION }}
+            ./opencv/opencv_contrib-${{ env.OPENCV_VERSION }}
+
+      - name: Download OpenCV source
+        if: steps.cache-opencv-source.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ./opencv
+
+          curl -sL "https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip" -o /tmp/opencv.zip
+          curl -sL "https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip" -o /tmp/opencv_contrib.zip
+
+          unzip -q /tmp/opencv.zip -d ./opencv
+          unzip -q /tmp/opencv_contrib.zip -d ./opencv
+
+      - name: Save cached OpenCV source
+        uses: actions/cache/save@v4
+        if: steps.cache-opencv-source.outputs.cache-hit != 'true'
+        with:
+          key: ${{ steps.cache-opencv-source.outputs.cache-primary-key }}
+          path: |
+            ./opencv/opencv-${{ env.OPENCV_VERSION }}
+            ./opencv/opencv_contrib-${{ env.OPENCV_VERSION }}
+
+      - name: Restore cached OpenCV build
+        uses: actions/cache/restore@v4
+        id: cache-opencv-build
+        with:
+          key: opencv-build-${{ runner.os }}-${{ matrix.os }}-${{ env.OPENCV_VERSION }}-${{ hashFiles('.github/workflows/macos.yml') }}
+          path: |
+            ./opencv/opencv-${{ env.OPENCV_VERSION }}/build
+
+      - name: Build OpenCV ${{ env.OPENCV_VERSION }}
+        if: steps.cache-opencv-build.outputs.cache-hit != 'true'
+        run: |
+          BREW_PREFIX="$(brew --prefix)"
+
+          cmake -S "./opencv/opencv-${OPENCV_VERSION}" -B "./opencv/opencv-${OPENCV_VERSION}/build" \
+            -D CMAKE_BUILD_TYPE=Release \
+            -D CMAKE_INSTALL_PREFIX="${BREW_PREFIX}" \
+            -D CMAKE_CXX_STANDARD=17 \
+            -D CMAKE_OSX_DEPLOYMENT_TARGET= \
+            -D BUILD_JASPER=OFF \
+            -D BUILD_JPEG=ON \
+            -D BUILD_OPENEXR=OFF \
+            -D BUILD_OPENJPEG=ON \
+            -D BUILD_PERF_TESTS=OFF \
+            -D BUILD_TIFF=ON \
+            -D BUILD_PNG=ON \
+            -D BUILD_TBB=OFF \
+            -D BUILD_TESTS=OFF \
+            -D BUILD_WEBP=ON \
+            -D BUILD_ZLIB=OFF \
+            -D BUILD_opencv_hdf=OFF \
+            -D BUILD_opencv_java=OFF \
+            -D BUILD_opencv_python2=OFF \
+            -D BUILD_opencv_python3=OFF \
+            -D BUILD_opencv_text=ON \
+            -D OPENCV_ENABLE_NONFREE=ON \
+            -D OPENCV_EXTRA_MODULES_PATH="./opencv/opencv_contrib-${OPENCV_VERSION}/modules" \
+            -D OPENCV_GENERATE_PKGCONFIG=ON \
+            -D BUILD_PROTOBUF=ON \
+            -D WITH_PROTOBUF=ON \
+            -D PROTOBUF_UPDATE_FILES=OFF \
+            -D WITH_TIFF=ON \
+            -D WITH_1394=OFF \
+            -D WITH_CUDA=OFF \
+            -D WITH_EIGEN=ON \
+            -D WITH_FFMPEG=ON \
+            -D WITH_GPHOTO2=OFF \
+            -D WITH_GSTREAMER=OFF \
+            -D WITH_JASPER=OFF \
+            -D WITH_OBSENSOR=OFF \
+            -D WITH_OPENEXR=ON \
+            -D WITH_OPENGL=OFF \
+            -D WITH_OPENVINO=OFF \
+            -D WITH_QT=OFF \
+            -D WITH_TBB=ON
+
+          cmake --build "./opencv/opencv-${OPENCV_VERSION}/build" --parallel 3
+
+      - name: Save cached OpenCV build
+        uses: actions/cache/save@v4
+        if: steps.cache-opencv-build.outputs.cache-hit != 'true'
+        with:
+          key: ${{ steps.cache-opencv-build.outputs.cache-primary-key }}
+          path: |
+            ./opencv/opencv-${{ env.OPENCV_VERSION }}/build
+
+      - name: Install OpenCV ${{ env.OPENCV_VERSION }}
+        run: |
+          BREW_PREFIX="$(brew --prefix)"
+
+          cmake --install "./opencv/opencv-${OPENCV_VERSION}/build"
+
+          echo "PKG_CONFIG_PATH=${BREW_PREFIX}/lib/pkgconfig:${PKG_CONFIG_PATH}" >> "${GITHUB_ENV}"
+          echo "DYLD_LIBRARY_PATH=$BREW_PREFIX/lib:$DYLD_LIBRARY_PATH" >> "$GITHUB_ENV"
+
+      - name: Check OpenCV pkg-config
+        run: |
+          pkg-config --modversion opencv5
+          pkg-config --cflags opencv5
+          pkg-config --libs opencv5
+
+      - name: Check OpenCV dylibs
+        run: |
+          BREW_PREFIX="$(brew --prefix)"
+          DYLIB=$(find "$BREW_PREFIX/lib" -name 'libopencv_core*.dylib' | head -n1)
+          echo "Found: $DYLIB"
+          otool -L "$DYLIB"
+
       - name: Install WeChat test model
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/testdata
           curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.caffemodel > ${GITHUB_WORKSPACE}/testdata/detect.caffemodel
-          curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.prototxt > ${GITHUB_WORKSPACE}/testdata/detect.prototxt
           curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.caffemodel > ${GITHUB_WORKSPACE}/testdata/sr.caffemodel
-          curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.prototxt > ${GITHUB_WORKSPACE}/testdata/sr.prototxt
-      - name: Install GOTURN test model
-        run: |
-          mkdir -p ${GITHUB_WORKSPACE}/testdata
-          curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.prototxt > ${GITHUB_WORKSPACE}/testdata/goturn.prototxt
-          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.001 > ${GITHUB_WORKSPACE}/testdata/goturn.caffemodel.zip.001
-          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.002 > ${GITHUB_WORKSPACE}/testdata/goturn.caffemodel.zip.002
-          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.003 > ${GITHUB_WORKSPACE}/testdata/goturn.caffemodel.zip.003
-          curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.004 > ${GITHUB_WORKSPACE}/testdata/goturn.caffemodel.zip.004
-          cat ${GITHUB_WORKSPACE}/testdata/goturn.caffemodel.zip.001 ${GITHUB_WORKSPACE}/testdata/goturn.caffemodel.zip.002 ${GITHUB_WORKSPACE}/testdata/goturn.caffemodel.zip.003 ${GITHUB_WORKSPACE}/testdata/goturn.caffemodel.zip.004 > ${GITHUB_WORKSPACE}/testdata/goturn.caffemodel.zip
-          unzip -o ${GITHUB_WORKSPACE}/testdata/goturn.caffemodel.zip goturn.caffemodel -d ${GITHUB_WORKSPACE}/testdata
+
       - name: Install Tensorflow test model
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/testdata
           curl -sL https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip > ${GITHUB_WORKSPACE}/testdata/inception5h.zip
           unzip -o ${GITHUB_WORKSPACE}/testdata/inception5h.zip tensorflow_inception_graph.pb -d ${GITHUB_WORKSPACE}/testdata
+
       - name: Install ONNX test model
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/testdata
@@ -53,11 +174,12 @@ jobs:
           curl -sL https://huggingface.co/opencv/face_recognition_sface/resolve/main/face_recognition_sface_2021dec.onnx > ${GITHUB_WORKSPACE}/testdata/face_recognition_sface_2021dec.onnx
           curl -sL https://huggingface.co/opencv/face_detection_yunet/resolve/main/face_detection_yunet_2023mar.onnx > ${GITHUB_WORKSPACE}/testdata/face_detection_yunet_2023mar.onnx
           curl -sL https://huggingface.co/opencv/object_tracking_vittrack/resolve/main/object_tracking_vittrack_2023sep.onnx > ${GITHUB_WORKSPACE}/testdata/object_tracking_vittrack_2023sep.onnx
+
       - name: Run main tests
         run: go test -v -tags matprofile .
         env:
           GOCV_TENSORFLOW_TEST_FILES: ${{ github.workspace }}/testdata
           GOCV_ONNX_TEST_FILES: ${{ github.workspace }}/testdata
-          GOCV_TRACKER_GOTURN_TEST_FILES: ${{ github.workspace }}/testdata
+
       - name: Run contrib tests
         run: go test -v -tags matprofile ./contrib

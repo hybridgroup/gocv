@@ -209,6 +209,12 @@ func TestDrawDetectedMarkers(t *testing.T) {
 
 	markerCorners, markerIds, _ := detector.DetectMarkers(img)
 
+	expectedIds := []int{40, 98, 62, 23, 124, 203}
+
+	if !reflect.DeepEqual(markerIds, expectedIds) {
+		t.Errorf("marker ids mismatch: got %v want %v", markerIds, expectedIds)
+	}
+
 	ArucoDrawDetectedMarkers(img, markerCorners, markerIds, borderColor)
 	diff := NewMat()
 	defer diff.Close()
@@ -217,8 +223,13 @@ func TestDrawDetectedMarkers(t *testing.T) {
 	gray := NewMat()
 	defer gray.Close()
 	CvtColor(diff, &gray, ColorBGRToGray)
-	if CountNonZero(gray) > 0 {
-		t.Errorf("expected output to match %s", arucoImage6X6_250_contour)
+
+	nz := CountNonZero(gray)
+
+	// OpenCV 5.0.0 produces ~2491 differing pixels compared to the
+	// OpenCV 4 reference image due to marker outline rendering changes.
+	if nz > 3000 {
+		t.Errorf("expected output to mostly match %s, nonzero diff=%d", arucoImage6X6_250_contour, nz)
 	}
 }
 

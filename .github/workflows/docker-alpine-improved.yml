@@ -1,10 +1,39 @@
-# This is the Github action to build and push the gocv/opencv Docker images.
+# This is the Github action to build and push the gocv/opencv Alpine Docker images.
 #
-name: Docker
+name: Docker Alpine
 on:
   push:
     branches: [build-opencv-alpine, alpine-static-improved]
   workflow_dispatch:
+
+env:
+  # Set versions here to be used by all image tags.
+  OPENCV_VERSION: 5.0.0
+  GSTREAMER_VERSION: "1.24"
+  FFMPEG_VERSION: "5.16"
+
+  # Docker Hub publishing policy.
+  #
+  # Upstream repository:
+  #   hybridgroup/gocv always publishes Docker Hub images using the existing
+  #   gocv/<image>:<tag> namespace and its configured Docker Hub secrets.
+  #
+  # Forks:
+  #   Docker Hub publishing is disabled by default, so forks can build and push
+  #   GHCR images without needing Docker Hub credentials. A fork can still opt in
+  #   by adding both repository secrets:
+  #     DOCKER_HUB_USERNAME
+  #     DOCKER_HUB_ACCESS_TOKEN
+  #
+  #   When a fork opts in, Docker Hub images are published using the Docker Hub
+  #   username from DOCKER_HUB_USERNAME, for example:
+  #     <DOCKER_HUB_USERNAME>/opencv:<tag>
+  #
+  # GHCR images are always published using github.repository_owner:
+  #   ghcr.io/<owner>/<image>:<tag>
+  IS_UPSTREAM_REPOSITORY: ${{ github.repository_owner == 'hybridgroup' }}
+  HAS_DOCKERHUB: ${{ github.repository_owner == 'hybridgroup' || (secrets.DOCKER_HUB_USERNAME != '' && secrets.DOCKER_HUB_ACCESS_TOKEN != '') }}
+  DOCKERHUB_NAMESPACE: ${{ github.repository_owner == 'hybridgroup' && 'gocv' || secrets.DOCKER_HUB_USERNAME }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -12,195 +41,479 @@ concurrency:
 
 jobs:
   gstreamer:
-    name: gstreamer
-    runs-on: ubuntu-latest
+    name: gstreamer (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
     permissions:
       packages: write
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            platform: linux/amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
     steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Check out the repo
         uses: actions/checkout@v6
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
-            gocv/gstreamer:1.24-alpine
-            ghcr.io/${{ github.repository_owner }}/gstreamer:1.24-alpine
+            ghcr.io/${{ github.repository_owner }}/gstreamer
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v6
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/gstreamer:${GSTREAMER_VERSION}-alpine-${{ matrix.arch }}"
+              echo "${DOCKERHUB_NAMESPACE}/gstreamer:sha-${GITHUB_SHA}-alpine-${{ matrix.arch }}"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/gstreamer:${GSTREAMER_VERSION}-alpine-${{ matrix.arch }}"
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/gstreamer:sha-${GITHUB_SHA}-alpine-${{ matrix.arch }}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+      - name: Build and push arch image
+        uses: docker/build-push-action@v7
         with:
           file: Dockerfile.gstreamer-static-alpine
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.platform }}
           context: .
           push: true
-          tags: |
-            gocv/gstreamer:1.24-alpine
-            ghcr.io/${{ github.repository_owner }}/gstreamer:1.24-alpine
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=gstreamer-${{ matrix.arch }}-${{ env.GSTREAMER_VERSION }}-alpine
+          cache-to: type=gha,mode=max,scope=gstreamer-${{ matrix.arch }}-${{ env.GSTREAMER_VERSION }}-alpine
+
+  gstreamer-manifest:
+    name: gstreamer manifest
+    runs-on: ubuntu-24.04
+    needs: gstreamer
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Log in to Github Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GHCR multi-arch manifest
+        run: |
+          docker buildx imagetools create \
+            -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/gstreamer:${GSTREAMER_VERSION}-alpine \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/gstreamer:${GSTREAMER_VERSION}-alpine-amd64 \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/gstreamer:${GSTREAMER_VERSION}-alpine-arm64
+      - name: Create Docker Hub multi-arch manifest
+        if: env.HAS_DOCKERHUB == 'true'
+        run: |
+          docker buildx imagetools create \
+            -t ${DOCKERHUB_NAMESPACE}/gstreamer:${GSTREAMER_VERSION}-alpine \
+            ${DOCKERHUB_NAMESPACE}/gstreamer:${GSTREAMER_VERSION}-alpine-amd64 \
+            ${DOCKERHUB_NAMESPACE}/gstreamer:${GSTREAMER_VERSION}-alpine-arm64
 
   ffmpeg:
-    name: ffmpeg
-    runs-on: ubuntu-latest
+    name: ffmpeg (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
     permissions:
       packages: write
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            platform: linux/amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
     steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Check out the repo
         uses: actions/checkout@v6
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
-            gocv/ffmpeg:5.16-alpine
-            ghcr.io/${{ github.repository_owner }}/ffmpeg:5.16-alpine
+            ghcr.io/${{ github.repository_owner }}/ffmpeg
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v6
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/ffmpeg:${FFMPEG_VERSION}-alpine-${{ matrix.arch }}"
+              echo "${DOCKERHUB_NAMESPACE}/ffmpeg:sha-${GITHUB_SHA}-alpine-${{ matrix.arch }}"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/ffmpeg:${FFMPEG_VERSION}-alpine-${{ matrix.arch }}"
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/ffmpeg:sha-${GITHUB_SHA}-alpine-${{ matrix.arch }}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+      - name: Build and push arch image
+        uses: docker/build-push-action@v7
         with:
           file: Dockerfile.ffmpeg-static-alpine
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.platform }}
           context: .
           push: true
-          tags: |
-            gocv/ffmpeg:5.16-alpine
-            ghcr.io/${{ github.repository_owner }}/ffmpeg:5.16-alpine
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=ffmpeg-${{ matrix.arch }}-${{ env.FFMPEG_VERSION }}-alpine
+          cache-to: type=gha,mode=max,scope=ffmpeg-${{ matrix.arch }}-${{ env.FFMPEG_VERSION }}-alpine
+
+  ffmpeg-manifest:
+    name: ffmpeg manifest
+    runs-on: ubuntu-24.04
+    needs: ffmpeg
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Log in to Github Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GHCR multi-arch manifest
+        run: |
+          docker buildx imagetools create \
+            -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/ffmpeg:${FFMPEG_VERSION}-alpine \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/ffmpeg:${FFMPEG_VERSION}-alpine-amd64 \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/ffmpeg:${FFMPEG_VERSION}-alpine-arm64
+      - name: Create Docker Hub multi-arch manifest
+        if: env.HAS_DOCKERHUB == 'true'
+        run: |
+          docker buildx imagetools create \
+            -t ${DOCKERHUB_NAMESPACE}/ffmpeg:${FFMPEG_VERSION}-alpine \
+            ${DOCKERHUB_NAMESPACE}/ffmpeg:${FFMPEG_VERSION}-alpine-amd64 \
+            ${DOCKERHUB_NAMESPACE}/ffmpeg:${FFMPEG_VERSION}-alpine-arm64
 
   opencv:
-    name: opencv
-    runs-on: ubuntu-latest
-    needs: [gstreamer, ffmpeg]
+    name: opencv (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    needs: [gstreamer-manifest, ffmpeg-manifest]
     permissions:
       packages: write
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            platform: linux/amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
     steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      - name: Check disk space
+        run: df . -h
+      - name: Free disk space
+        run: |
+          sudo docker rmi $(docker image ls -aq) >/dev/null 2>&1 || true
+          sudo rm -rf \
+            /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+            /usr/local/share/powershell /usr/share/swift /usr/local/.ghcup \
+            /usr/lib/jvm || true
+          echo "extra directories deleted"
+          sudo apt install aptitude -y >/dev/null 2>&1
+          sudo aptitude purge aria2 ansible azure-cli shellcheck rpm xorriso zsync \
+            esl-erlang firefox gfortran-8 gfortran-9 google-chrome-stable \
+            google-cloud-sdk imagemagick \
+            libmagickcore-dev libmagickwand-dev libmagic-dev ant ant-optional kubectl \
+            mercurial apt-transport-https mono-complete libmysqlclient \
+            unixodbc-dev yarn chrpath libssl-dev libxft-dev \
+            libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev \
+            snmp pollinate libpq-dev postgresql-client powershell ruby-full \
+            sphinxsearch subversion mongodb-org azure-cli microsoft-edge-stable \
+            -y -f >/dev/null 2>&1
+          sudo aptitude purge google-cloud-sdk -f -y >/dev/null 2>&1
+          sudo aptitude purge microsoft-edge-stable -f -y >/dev/null 2>&1 || true
+          sudo apt purge microsoft-edge-stable -f -y >/dev/null 2>&1 || true
+          sudo aptitude purge '~n ^mysql' -f -y >/dev/null 2>&1
+          sudo aptitude purge '~n ^php' -f -y >/dev/null 2>&1
+          sudo aptitude purge '~n ^dotnet' -f -y >/dev/null 2>&1
+          sudo apt-get autoremove -y >/dev/null 2>&1
+          sudo apt-get autoclean -y >/dev/null 2>&1
+          echo "extra packages purged"
+      - name: Check disk space
+        run: df . -h
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Check out the repo
         uses: actions/checkout@v6
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
-            gocv/opencv:4.13.0-alpine
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-alpine
+            ghcr.io/${{ github.repository_owner }}/opencv
           tags: |
             type=sha,format=long
             type=raw,value=latest
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v6
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-alpine-${{ matrix.arch }}"
+              echo "${DOCKERHUB_NAMESPACE}/opencv:sha-${GITHUB_SHA}-alpine-${{ matrix.arch }}"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-alpine-${{ matrix.arch }}"
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:sha-${GITHUB_SHA}-alpine-${{ matrix.arch }}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+      - name: Build and push arch image
+        uses: docker/build-push-action@v7
         with:
           file: Dockerfile.opencv-static-alpine
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.platform }}
           context: .
           push: true
-          tags: |
-            gocv/opencv:4.13.0-alpine
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-alpine
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=opencv-${{ matrix.arch }}-${{ env.OPENCV_VERSION }}-alpine
+          cache-to: type=gha,mode=max,scope=opencv-${{ matrix.arch }}-${{ env.OPENCV_VERSION }}-alpine
 
-  opencv-ffmpeg:
-    name: opencv
-    runs-on: ubuntu-latest
-    needs: [gstreamer, ffmpeg]
+  opencv-manifest:
+    name: opencv manifest
+    runs-on: ubuntu-24.04
+    needs: opencv
     permissions:
       packages: write
       contents: read
     steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Check out the repo
-        uses: actions/checkout@v6
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            gocv/opencv:4.13.0-alpine-ffmpeg
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-alpine-ffmpeg
-          tags: |
-            type=sha,format=long
-            type=raw,value=latest
+        uses: docker/setup-buildx-action@v4
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Log in to Github Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v6
+      - name: Create GHCR multi-arch manifest
+        run: |
+          docker buildx imagetools create \
+            -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-alpine \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-alpine-amd64 \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-alpine-arm64
+      - name: Create Docker Hub multi-arch manifest
+        if: env.HAS_DOCKERHUB == 'true'
+        run: |
+          docker buildx imagetools create \
+            -t ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-alpine \
+            ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-alpine-amd64 \
+            ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-alpine-arm64
+
+  opencv-ffmpeg:
+    name: opencv-ffmpeg (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    needs: [gstreamer-manifest, ffmpeg-manifest]
+    permissions:
+      packages: write
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            platform: linux/amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
+    steps:
+      - name: Check disk space
+        run: df . -h
+      - name: Free disk space
+        run: |
+          sudo docker rmi $(docker image ls -aq) >/dev/null 2>&1 || true
+          sudo rm -rf \
+            /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+            /usr/local/share/powershell /usr/share/swift /usr/local/.ghcup \
+            /usr/lib/jvm || true
+          echo "extra directories deleted"
+          sudo apt install aptitude -y >/dev/null 2>&1
+          sudo aptitude purge aria2 ansible azure-cli shellcheck rpm xorriso zsync \
+            esl-erlang firefox gfortran-8 gfortran-9 google-chrome-stable \
+            google-cloud-sdk imagemagick \
+            libmagickcore-dev libmagickwand-dev libmagic-dev ant ant-optional kubectl \
+            mercurial apt-transport-https mono-complete libmysqlclient \
+            unixodbc-dev yarn chrpath libssl-dev libxft-dev \
+            libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev \
+            snmp pollinate libpq-dev postgresql-client powershell ruby-full \
+            sphinxsearch subversion mongodb-org azure-cli microsoft-edge-stable \
+            -y -f >/dev/null 2>&1
+          sudo aptitude purge google-cloud-sdk -f -y >/dev/null 2>&1
+          sudo aptitude purge microsoft-edge-stable -f -y >/dev/null 2>&1 || true
+          sudo apt purge microsoft-edge-stable -f -y >/dev/null 2>&1 || true
+          sudo aptitude purge '~n ^mysql' -f -y >/dev/null 2>&1
+          sudo aptitude purge '~n ^php' -f -y >/dev/null 2>&1
+          sudo aptitude purge '~n ^dotnet' -f -y >/dev/null 2>&1
+          sudo apt-get autoremove -y >/dev/null 2>&1
+          sudo apt-get autoclean -y >/dev/null 2>&1
+          echo "extra packages purged"
+      - name: Check disk space
+        run: df . -h
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Check out the repo
+        uses: actions/checkout@v6
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: |
+            ghcr.io/${{ github.repository_owner }}/opencv
+          tags: |
+            type=sha,format=long
+            type=raw,value=latest
+      - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Log in to Github Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare image tags
+        id: image-tags
+        run: |
+          {
+            echo "tags<<EOF"
+            if [ "$HAS_DOCKERHUB" = "true" ]; then
+              echo "${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-alpine-ffmpeg-${{ matrix.arch }}"
+              echo "${DOCKERHUB_NAMESPACE}/opencv:sha-${GITHUB_SHA}-alpine-ffmpeg-${{ matrix.arch }}"
+            fi
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-alpine-ffmpeg-${{ matrix.arch }}"
+            echo "ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:sha-${GITHUB_SHA}-alpine-ffmpeg-${{ matrix.arch }}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+      - name: Build and push arch image
+        uses: docker/build-push-action@v7
         with:
           file: Dockerfile.opencv-static-alpine-ffmpeg
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.platform }}
           context: .
           push: true
-          tags: |
-            gocv/opencv:4.13.0-alpine-ffmpeg
-            ghcr.io/${{ github.repository_owner }}/opencv:4.13.0-alpine-ffmpeg
+          tags: ${{ steps.image-tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=opencv-ffmpeg-${{ matrix.arch }}-${{ env.OPENCV_VERSION }}-alpine
+          cache-to: type=gha,mode=max,scope=opencv-ffmpeg-${{ matrix.arch }}-${{ env.OPENCV_VERSION }}-alpine
+
+  opencv-ffmpeg-manifest:
+    name: opencv-ffmpeg manifest
+    runs-on: ubuntu-24.04
+    needs: opencv-ffmpeg
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Log in to Docker Hub
+        if: env.HAS_DOCKERHUB == 'true'
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Log in to Github Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GHCR multi-arch manifest
+        run: |
+          docker buildx imagetools create \
+            -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-alpine-ffmpeg \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-alpine-ffmpeg-amd64 \
+            ghcr.io/${GITHUB_REPOSITORY_OWNER}/opencv:${OPENCV_VERSION}-alpine-ffmpeg-arm64
+      - name: Create Docker Hub multi-arch manifest
+        if: env.HAS_DOCKERHUB == 'true'
+        run: |
+          docker buildx imagetools create \
+            -t ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-alpine-ffmpeg \
+            ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-alpine-ffmpeg-amd64 \
+            ${DOCKERHUB_NAMESPACE}/opencv:${OPENCV_VERSION}-alpine-ffmpeg-arm64

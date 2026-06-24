@@ -1,0 +1,54 @@
+FROM golang:1.25-bookworm
+
+# dev branch = 5.x
+ARG OPENCV_VERSION=5.0.0
+
+RUN apt-get update && apt-get install -y \
+    git build-essential cmake pkg-config unzip curl ca-certificates \
+    libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-dev \
+    libjpeg62-turbo-dev libpng-dev libtiff-dev libdc1394-dev \
+    libtbb-dev libharfbuzz-dev libfreetype6-dev xvfb \
+    libeigen3-dev libprotobuf-dev protobuf-compiler nasm \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /tmp
+
+RUN git clone --depth=1 --branch ${OPENCV_VERSION} https://github.com/opencv/opencv.git && \
+    git clone --depth=1 --branch ${OPENCV_VERSION} https://github.com/opencv/opencv_contrib.git
+
+RUN mkdir -p /tmp/opencv/build && cd /tmp/opencv/build && \
+    cmake \
+      -D CMAKE_BUILD_TYPE=RELEASE \
+      -D CMAKE_INSTALL_PREFIX=/usr/local \
+      -D OPENCV_EXTRA_MODULES_PATH=/tmp/opencv_contrib/modules \
+      -D OPENCV_ENABLE_NONFREE=ON \
+      -D OPENCV_GENERATE_PKGCONFIG=ON \
+      -D WITH_IPP=OFF \
+      -D WITH_OPENGL=OFF \
+      -D WITH_QT=OFF \
+      -D WITH_FREETYPE=ON \
+      -D WITH_JASPER=OFF \
+      -D WITH_TBB=ON \
+      -D BUILD_JPEG=ON \
+      -D WITH_SIMD=ON \
+      -D ENABLE_LIBJPEG_TURBO_SIMD=ON \
+      -D BUILD_DOCS=OFF \
+      -D BUILD_EXAMPLES=OFF \
+      -D BUILD_TESTS=OFF \
+      -D BUILD_PERF_TESTS=ON \
+      -D BUILD_opencv_java=NO \
+      -D BUILD_opencv_python=NO \
+      -D BUILD_opencv_python2=NO \
+      -D BUILD_opencv_python3=NO \
+      -D CMAKE_CXX_STANDARD=17 \
+      .. && \
+    make -j"$(nproc)" && \
+    make install && \
+    ldconfig
+
+ENV CGO_CPPFLAGS="-I/usr/local/include/opencv5"
+ENV CGO_LDFLAGS="-L/usr/local/lib"
+ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"
+ENV LD_LIBRARY_PATH="/usr/local/lib"
+ENV CGO_ENABLED=1
+

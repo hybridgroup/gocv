@@ -4,7 +4,7 @@
 # To run tests:
 #   docker run -it --rm --gpus all gocv-test-gpu-cuda-13
 #
-FROM ghcr.io/hybridgroup/opencv:4.13.0-gpu-cuda-13 AS gocv-gpu-test-cuda-13
+FROM ghcr.io/hybridgroup/opencv:5.0.0-gpu-cuda-13 AS gocv-gpu-test-cuda-13
 
 ENV GOPATH /go
 ENV PATH="${PATH}:/go/bin"

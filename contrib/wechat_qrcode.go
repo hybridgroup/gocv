@@ -8,25 +8,23 @@ package contrib
 */
 import "C"
 import (
-	"gocv.io/x/gocv"
 	"unsafe"
+
+	"gocv.io/x/gocv"
 )
 
 type WeChatQRCode struct {
 	p C.WeChatQRCode
 }
 
-func NewWeChatQRCode(detectProtoTxt, detectCaffe, superProtoTxt, superCaffe string) *WeChatQRCode {
-	dp := C.CString(detectProtoTxt)
-	dc := C.CString(detectCaffe)
-	sp := C.CString(superProtoTxt)
-	sc := C.CString(superCaffe)
+func NewWeChatQRCode(detectorModel, superResolutionModel string) *WeChatQRCode {
+	dm := C.CString(detectorModel)
+	sm := C.CString(superResolutionModel)
 
-	defer C.free(unsafe.Pointer(dp))
-	defer C.free(unsafe.Pointer(dc))
-	defer C.free(unsafe.Pointer(sp))
-	defer C.free(unsafe.Pointer(sc))
-	return &WeChatQRCode{p: C.NewWeChatQRCode(dp, dc, sp, sc)}
+	defer C.free(unsafe.Pointer(dm))
+	defer C.free(unsafe.Pointer(sm))
+
+	return &WeChatQRCode{p: C.NewWeChatQRCode(dm, sm)}
 }
 
 func (wq *WeChatQRCode) DetectAndDecode(img gocv.Mat, point *[]gocv.Mat) []string {
