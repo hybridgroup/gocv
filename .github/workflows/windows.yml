@@ -150,12 +150,12 @@ jobs:
           echo "CGO_CXXFLAGS=--std=c++17 -DNDEBUG" >> $env:GITHUB_ENV
           echo "CGO_CPPFLAGS=-I${env:GITHUB_WORKSPACE}\opencv\build\install\include" >> $env:GITHUB_ENV
     
-          $env:PKG_CONFIG_PATH="${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib\pkgconfig"
-    
+          $env:PKG_CONFIG_PATH="${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib\pkgconfig"    
           $libs = pkg-config --libs opencv5
-          echo "pkg-config libs: $libs"
-    
+          echo "pkg-config libs: $libs"    
           echo "CGO_LDFLAGS=$libs" >> $env:GITHUB_ENV
+          
+          echo "${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\bin" >> $env:GITHUB_PATH
       - name: Install Tensorflow test model
         run: |
             mkdir -p ./testdata
@@ -192,8 +192,7 @@ jobs:
           dir "${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\bin\*.dll"
           echo $env:PATH
       - name: Test GoCV
-        run: |
-          $env:PATH="${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\bin;$env:PATH"          
+        run: |         
           go test -v -tags="matprofile,customenv" .
       - name: Test GoCV Contrib
         run: |
