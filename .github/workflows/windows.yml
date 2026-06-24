@@ -96,7 +96,7 @@ jobs:
           
           $content = Get-Content $cmake -Raw
           
-          if ($content -match "WIN32" -and $content -match "MLAS") {
+          if ($content -match "if\s*\(\s*WIN32\s*\)\s*[\r\n]+\s*return\s*\(\s*\)") {
             Write-Host "Disable-MLAS Windows patch appears already applied; skipping patch step."
           } else {
             Write-Host "Applying disable-MLAS Windows patch..."
