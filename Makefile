@@ -2,10 +2,10 @@
 .PHONY: test deps download build clean astyle cmds docker
 
 # GoCV version to use.
-GOCV_VERSION?="v0.43.0"
+GOCV_VERSION?="v0.44.0"
 
 # OpenCV version to use.
-OPENCV_VERSION?=4.13.0
+OPENCV_VERSION?=5.0.0
 
 # Go version to use when building Docker image
 GOVERSION?=1.25.5
@@ -263,19 +263,19 @@ clean:
 # Cleanup old library files.
 sudo_pre_install_clean:
 ifneq (,$(wildcard /usr/local/lib/libopencv*))
-	sudo rm -rf /usr/local/lib/cmake/opencv4/
+	sudo rm -rf /usr/local/lib/cmake/opencv5/
 	sudo rm -rf /usr/local/lib/libopencv*
 	sudo rm -rf /usr/local/lib/pkgconfig/opencv*
 	sudo rm -rf /usr/local/include/opencv*
 else
 ifneq (,$(wildcard /usr/local/lib64/libopencv*))
-	sudo rm -rf /usr/local/lib64/cmake/opencv4/
+	sudo rm -rf /usr/local/lib64/cmake/opencv5/
 	sudo rm -rf /usr/local/lib64/libopencv*
 	sudo rm -rf /usr/local/lib64/pkgconfig/opencv*
 	sudo rm -rf /usr/local/include/opencv*
 else
 ifneq (,$(wildcard /usr/local/lib/aarch64-linux-gnu/libopencv*))
-	sudo rm -rf /usr/local/lib/aarch64-linux-gnu/cmake/opencv4/
+	sudo rm -rf /usr/local/lib/aarch64-linux-gnu/cmake/opencv5/
 	sudo rm -rf /usr/local/lib/aarch64-linux-gnu/libopencv*
 	sudo rm -rf /usr/local/lib/aarch64-linux-gnu/pkgconfig/opencv*
 	sudo rm -rf /usr/local/include/opencv*
@@ -348,15 +348,13 @@ verify_openvino:
 	go run -tags openvino ./cmd/version/main.go
 
 # testdata.
-.PHONY: create_testdata_dir download_wechat_testdata download_onnx_testdata download_goturn_testdata testdata
+.PHONY: create_testdata_dir download_wechat_testdata download_onnx_testdata testdata
 create_testdata_dir:
 	mkdir -p ./testdata
 
 download_wechat_testdata: create_testdata_dir
 	curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.caffemodel > ./testdata/detect.caffemodel
-	curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/detect.prototxt > ./testdata/detect.prototxt
 	curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.caffemodel > ./testdata/sr.caffemodel
-	curl -sL https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/wechat_qrcode/sr.prototxt > ./testdata/sr.prototxt
 
 download_onnx_testdata: create_testdata_dir
 	curl -sL https://github.com/onnx/models/raw/main/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx > ./testdata/googlenet-9.onnx
@@ -364,16 +362,7 @@ download_onnx_testdata: create_testdata_dir
 	curl -sL https://github.com/opencv/opencv_zoo/raw/refs/heads/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx > ./testdata/face_detection_yunet_2023mar.onnx
 	curl -sL https://github.com/opencv/opencv_zoo/raw/refs/heads/main/models/object_tracking_vittrack/object_tracking_vittrack_2023sep.onnx > ./testdata/object_tracking_vittrack_2023sep.onnx
 
-download_goturn_testdata: create_testdata_dir
-	curl -sL https://raw.githubusercontent.com/opencv/opencv_extra/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.prototxt > ./testdata/goturn.prototxt
-	curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.001 > ./testdata/goturn.caffemodel.zip.001
-	curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.002 > ./testdata/goturn.caffemodel.zip.002
-	curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.003 > ./testdata/goturn.caffemodel.zip.003
-	curl -sL https://github.com/opencv/opencv_extra/raw/c4219d5eb3105ed8e634278fad312a1a8d2c182d/testdata/tracking/goturn.caffemodel.zip.004 > ./testdata/goturn.caffemodel.zip.004
-	cat ./testdata/goturn.caffemodel.zip.001 ./testdata/goturn.caffemodel.zip.002 ./testdata/goturn.caffemodel.zip.003 ./testdata/goturn.caffemodel.zip.004 > ./testdata/goturn.caffemodel.zip
-	unzip -o ./testdata/goturn.caffemodel.zip goturn.caffemodel -d ./testdata
-
-testdata: create_testdata_dir download_wechat_testdata download_onnx_testdata download_goturn_testdata
+testdata: create_testdata_dir download_wechat_testdata download_onnx_testdata
 
 # Runs tests.
 test:
