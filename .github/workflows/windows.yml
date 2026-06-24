@@ -56,22 +56,21 @@ jobs:
           $patch = "${env:GITHUB_WORKSPACE}\patches\opencv-5.0.0-mlas-mingw.diff"
           $mlas = "3rdparty\mlas\lib\mlasi.h"
           
-          Write-Host "Patch file verification:"
-          Get-FileHash $patch
-          Get-Content $patch | Select-String -Pattern "_MSC_VER|_WIN32|platform.cpp|mlasi.h" -Context 2,2
-          
-          Write-Host "Applying patch with patch.exe..."
-          patch -p1 --forward --verbose --input="$patch"
-          if ($LASTEXITCODE -ne 0) {
-            throw "patch failed"
-          }
-          
-          Write-Host "Dumping patched MLAS allocation block..."
           $lines = Get-Content $mlas
-          for ($i = 3008; $i -le 3060; $i++) {
-            "{0,5}: {1}" -f ($i + 1), $lines[$i]
+          $block = ($lines[3008..3060] -join "`n")
+          
+          if ($block -match "#ifdef _WIN32") {
+            Write-Host "MLAS MinGW patch already applied; skipping patch step."
+          } else {
+            Write-Host "Applying MLAS MinGW patch..."
+            patch -p1 --forward --verbose --input="$patch"
+            if ($LASTEXITCODE -ne 0) {
+              throw "patch failed"
+            }
           }
           
+          Write-Host "Verifying patched MLAS allocation block..."
+          $lines = Get-Content $mlas
           $block = ($lines[3008..3060] -join "`n")
           
           if ($block -notmatch "#ifdef _WIN32") {
@@ -82,7 +81,7 @@ jobs:
             throw "mlasi.h allocation block missing _aligned_malloc path"
           }
           
-          Write-Host "MLAS MinGW patch applied successfully."
+          Write-Host "MLAS MinGW patch is present."
       - name: Save cached OpenCV source
         uses: actions/cache/save@v4
         if: steps.cache-opencv-source.outputs.cache-hit != 'true'
