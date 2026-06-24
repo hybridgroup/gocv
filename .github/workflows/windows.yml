@@ -72,12 +72,14 @@ jobs:
             "{0,5}: {1}" -f ($i + 1), $lines[$i]
           }
           
-          if ($lines[3016] -notmatch "_WIN32") {
-            throw "mlasi.h line 3017 was not patched"
+          $block = ($lines[3008..3060] -join "`n")
+          
+          if ($block -notmatch "#ifdef _WIN32") {
+            throw "mlasi.h allocation block was not patched"
           }
           
-          if ($lines[3036] -notmatch "_WIN32") {
-            throw "mlasi.h line 3037 was not patched"
+          if ($block -notmatch "_aligned_malloc") {
+            throw "mlasi.h allocation block missing _aligned_malloc path"
           }
           
           Write-Host "MLAS MinGW patch applied successfully."
