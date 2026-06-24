@@ -6,6 +6,6 @@ package contrib
 
 /*
 #cgo CXXFLAGS: --std=c++17 -DNDEBUG
-#cgo pkg-config: --static opencv4
+#cgo pkg-config: --static opencv5
 */
 import "C"
