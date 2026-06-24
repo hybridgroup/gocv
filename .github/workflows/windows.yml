@@ -144,6 +144,11 @@ jobs:
         run: |
             Get-ChildItem "${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib" -Filter "opencv_core*.dll.a" | Select-Object -ExpandProperty Name
             Get-ChildItem "${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib" -Filter "opencv_*.dll.a" | Select-Object -First 50 -ExpandProperty Name
+      - name: Show pkg-config order
+        shell: pwsh
+        run: |
+          $pc="${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\lib\pkgconfig\opencv5.pc"
+          Get-Content $pc | Select-String "^Libs:"
       - name: Set GoCV env
         run: |
             go env
