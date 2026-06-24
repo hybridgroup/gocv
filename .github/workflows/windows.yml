@@ -187,9 +187,14 @@ jobs:
           echo ==== CGO ENV ====
           go env CGO_CFLAGS
           go env CGO_LDFLAGS
+      - name: Debug DLLs
+        run: |
+          dir "${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\bin\*.dll"
+          echo $env:PATH
       - name: Test GoCV
         run: |
-            go test -v -tags="matprofile,customenv" .
+          $env:PATH="${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\bin;$env:PATH"          
+          go test -v -tags="matprofile,customenv" .
       - name: Test GoCV Contrib
         run: |
             go test -v -tags="matprofile,customenv" ./contrib
