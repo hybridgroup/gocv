@@ -22,6 +22,15 @@ jobs:
         os: [macos-14, macos-15]
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.25.5'
+          cache: true
+
       - name: Install OpenCV build dependencies
         run: |
           brew update
@@ -30,17 +39,49 @@ jobs:
             jsoncpp openblas openexr \
             tbb tesseract glew imath libarchive
 
-      - name: Build OpenCV ${{ env.OPENCV_VERSION }}
+      - name: Restore cached OpenCV source
+        uses: actions/cache/restore@v4
+        id: cache-opencv-source
+        with:
+          key: opencv-source-${{ runner.os }}-${{ matrix.os }}-${{ env.OPENCV_VERSION }}
+          path: |
+            ./opencv/opencv-${{ env.OPENCV_VERSION }}
+            ./opencv/opencv_contrib-${{ env.OPENCV_VERSION }}
+
+      - name: Download OpenCV source
+        if: steps.cache-opencv-source.outputs.cache-hit != 'true'
         run: |
-          BREW_PREFIX="$(brew --prefix)"
+          mkdir -p ./opencv
 
           curl -sL "https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip" -o /tmp/opencv.zip
           curl -sL "https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip" -o /tmp/opencv_contrib.zip
 
-          unzip -q /tmp/opencv.zip -d /tmp
-          unzip -q /tmp/opencv_contrib.zip -d /tmp
+          unzip -q /tmp/opencv.zip -d ./opencv
+          unzip -q /tmp/opencv_contrib.zip -d ./opencv
 
-          cmake -S "/tmp/opencv-${OPENCV_VERSION}" -B "/tmp/opencv-${OPENCV_VERSION}/build" \
+      - name: Save cached OpenCV source
+        uses: actions/cache/save@v4
+        if: steps.cache-opencv-source.outputs.cache-hit != 'true'
+        with:
+          key: ${{ steps.cache-opencv-source.outputs.cache-primary-key }}
+          path: |
+            ./opencv/opencv-${{ env.OPENCV_VERSION }}
+            ./opencv/opencv_contrib-${{ env.OPENCV_VERSION }}
+
+      - name: Restore cached OpenCV build
+        uses: actions/cache/restore@v4
+        id: cache-opencv-build
+        with:
+          key: opencv-build-${{ runner.os }}-${{ matrix.os }}-${{ env.OPENCV_VERSION }}-${{ hashFiles('.github/workflows/macos.yml') }}
+          path: |
+            ./opencv/opencv-${{ env.OPENCV_VERSION }}/build
+
+      - name: Build OpenCV ${{ env.OPENCV_VERSION }}
+        if: steps.cache-opencv-build.outputs.cache-hit != 'true'
+        run: |
+          BREW_PREFIX="$(brew --prefix)"
+
+          cmake -S "./opencv/opencv-${OPENCV_VERSION}" -B "./opencv/opencv-${OPENCV_VERSION}/build" \
             -D CMAKE_BUILD_TYPE=Release \
             -D CMAKE_INSTALL_PREFIX="${BREW_PREFIX}" \
             -D CMAKE_CXX_STANDARD=17 \
@@ -62,7 +103,7 @@ jobs:
             -D BUILD_opencv_python3=OFF \
             -D BUILD_opencv_text=ON \
             -D OPENCV_ENABLE_NONFREE=ON \
-            -D OPENCV_EXTRA_MODULES_PATH="/tmp/opencv_contrib-${OPENCV_VERSION}/modules" \
+            -D OPENCV_EXTRA_MODULES_PATH="./opencv/opencv_contrib-${OPENCV_VERSION}/modules" \
             -D OPENCV_GENERATE_PKGCONFIG=ON \
             -D BUILD_PROTOBUF=ON \
             -D WITH_PROTOBUF=ON \
@@ -82,11 +123,24 @@ jobs:
             -D WITH_QT=OFF \
             -D WITH_TBB=ON
 
-          cmake --build "/tmp/opencv-${OPENCV_VERSION}/build" --parallel 3
-          cmake --install "/tmp/opencv-${OPENCV_VERSION}/build"
-          
+          cmake --build "./opencv/opencv-${OPENCV_VERSION}/build" --parallel 3
+
+      - name: Save cached OpenCV build
+        uses: actions/cache/save@v4
+        if: steps.cache-opencv-build.outputs.cache-hit != 'true'
+        with:
+          key: ${{ steps.cache-opencv-build.outputs.cache-primary-key }}
+          path: |
+            ./opencv/opencv-${{ env.OPENCV_VERSION }}/build
+
+      - name: Install OpenCV ${{ env.OPENCV_VERSION }}
+        run: |
+          BREW_PREFIX="$(brew --prefix)"
+
+          cmake --install "./opencv/opencv-${OPENCV_VERSION}/build"
+
           echo "PKG_CONFIG_PATH=${BREW_PREFIX}/lib/pkgconfig:${PKG_CONFIG_PATH}" >> "${GITHUB_ENV}"
-          echo "DYLD_LIBRARY_PATH=$BREW_PREFIX/lib:$DYLD_LIBRARY_PATH" >> $GITHUB_ENV
+          echo "DYLD_LIBRARY_PATH=$BREW_PREFIX/lib:$DYLD_LIBRARY_PATH" >> "$GITHUB_ENV"
 
       - name: Check OpenCV pkg-config
         run: |
@@ -96,19 +150,10 @@ jobs:
 
       - name: Check OpenCV dylibs
         run: |
-          BREW_PREFIX="$(brew --prefix)"      
-          DYLIB=$(find "$BREW_PREFIX/lib" -name 'libopencv_core*.dylib' | head -n1)      
-          echo "Found: $DYLIB"      
+          BREW_PREFIX="$(brew --prefix)"
+          DYLIB=$(find "$BREW_PREFIX/lib" -name 'libopencv_core*.dylib' | head -n1)
+          echo "Found: $DYLIB"
           otool -L "$DYLIB"
-
-      - name: Install Go
-        uses: actions/setup-go@v6
-        with:
-          go-version: '1.25.5'
-          cache: true
-
-      - name: Checkout
-        uses: actions/checkout@v6
 
       - name: Install WeChat test model
         run: |
