@@ -58,23 +58,13 @@ jobs:
           
           Write-Host "Patch file verification:"
           Get-FileHash $patch
-          Get-Content $patch |
-            Select-String -Pattern "ThreadedBufHolder|MlasThreadedBufAlloc|_MSC_VER|_WIN32|platform.cpp|mlasi.h" -Context 2,2
+          Get-Content $patch | Select-String -Pattern "_MSC_VER|_WIN32|platform.cpp|mlasi.h" -Context 2,2
           
-          Write-Host "Checking patch..."
-          git apply --check --verbose $patch
+          Write-Host "Applying patch with patch.exe..."
+          patch -p1 --forward --verbose --input="$patch"
           if ($LASTEXITCODE -ne 0) {
-            throw "git apply --check failed"
+            throw "patch failed"
           }
-          
-          Write-Host "Applying patch..."
-          git apply --verbose $patch
-          if ($LASTEXITCODE -ne 0) {
-            throw "git apply failed"
-          }
-          
-          Write-Host "Git diff after patch:"
-          git diff -- 3rdparty/mlas/lib/mlasi.h 3rdparty/mlas/lib/platform.cpp
           
           Write-Host "Dumping patched MLAS allocation block..."
           $lines = Get-Content $mlas
