@@ -1,6 +1,6 @@
 # CUDA
 
-In order to use the GoCV `cuda` package, the CUDA toolkit from nvidia needs to be installed on the host system. 
+In order to use the GoCV `cuda` package, the CUDA toolkit from nvidia needs to be installed on the host system.
 
 The CUDA backend for DNN module requires CC (Compute Capability) 5.3 or higher. Check your GPU https://developer.nvidia.com/cuda-gpus
 
@@ -105,11 +105,11 @@ If you need static opencv libraries
 
 	make install_cuda BUILD_SHARED_LIBS=OFF
 
-Then finally verify that it is all working 
+Then finally verify that it is all working
 
     cd $GOPATH/src/gocv.io/x/gocv
 	go run ./cmd/cuda/main.go
-	
+
 You should see something along the lines of:
 
     gocv version: 0.25.0

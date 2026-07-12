@@ -394,7 +394,7 @@
     * Update Makefile for missing version changes
 * **core**
     * correct how memory is being allocated for Eye(), Zeros(), and Ones() to address issue #930
-* **calib3d** 
+* **calib3d**
     * Adding support for estimateAffine2DWithParams (#924)
 * **imgproc**
     * Add DrawContoursWithParams function
@@ -568,7 +568,7 @@
 ---
 * **all**
     * update to opencv release 4.5.0
-* **build** 
+* **build**
     * add file dependencies needed for DNN tests
     * add verbose output for tests on CircleCI
     * also run unit tests on non-free algorithms. YMMV.
@@ -584,7 +584,7 @@
     * Added ability to load Torch file. Tested features for extracting 128d vectors
     * fix using wrong type for unconnectedlayertype
     * use default ddepth for conversions to blob from image as recommended by @berak
-* **docker** 
+* **docker**
     * use separate dockerfile for opencv to avoid massive rebuild
 * **docs**
     * add recent contributions to ROADMAP and also add cuda functions still in need of implementation
@@ -598,7 +598,7 @@
     * refactored ROI methods
 * **imgproc**
     * Add option to return baseline with GetTextSizeWithBaseline
-* **objdetect** 
+* **objdetect**
     * Add QRCode DetectAndDecodeMulti
 * **videoio**
     * Add video capture properties and set preferred api backend (#739)
@@ -836,11 +836,11 @@ imgcodecs: optimize copy of data used for IMDecode method
 
 0.17.0
 ---
-* **build** 
+* **build**
     * Update Makefile
     * update version of OpenCV used to 3.4.3
     * use link to OpenCV 3.4.3 for Windows builds
-* **core** 
+* **core**
     * add mulSpectrums wrapper
     * add PolarToCart() method to Mat
     * add Reduce() method to Mat
@@ -853,7 +853,7 @@ imgcodecs: optimize copy of data used for IMDecode method
     * add Trace() method to Mat
     * Added new MatType
     * Added Phase function
-* **dnn** 
+* **dnn**
     * update test to match OpenCV 3.4.3 behavior
 * **docs**
     * Add example of how to run individual test
@@ -1035,20 +1035,20 @@ imgcodecs: optimize copy of data used for IMDecode method
     * Fix example command.
     * Fix executable name in help text.
     * update ROADMAP from recent contributions
-* **imgproc** 
+* **imgproc**
     * add BoxFilter and SqBoxFilter functions
     * Fix the hack to convert C arrays to Go slices.
-* **videoio** 
+* **videoio**
     * Add isColor to VideoWriterFile
     * Check numerical parameters for gocv.VideoWriterFile
     * CodecString()
-* **features2d** 
+* **features2d**
     * add BFMatcher
-* **img_hash** 
+* **img_hash**
     * Add contrib/img_hash module
     * add GoDocs for new img_hash module
     * Add img-similarity as an example for img_hash
-* **openvino** 
+* **openvino**
     * adds support for Intel OpenVINO toolkit PVL
     * starting experimental work on OpenVINO IE
     * update README files for Intel OpenVINO toolkit support
@@ -1103,12 +1103,12 @@ imgcodecs: optimize copy of data used for IMDecode method
 
 0.10.0
 ---
-* **build** 
+* **build**
     * install unzip before build
     * overwrite when unzipping file to install Tensorflow test model
     * use -DCPU_DISPATCH= flag for build to avoid problem with disabled AVX on Windows
     * update unzipped file when installing Tensorflow test model
-* **core** 
+* **core**
     * add Compare() and CountNonZero() functions
     * add getter/setter using optional params for multi-dimensional Mat using row/col/channel
     * Add mat subtract function
@@ -1125,26 +1125,26 @@ imgcodecs: optimize copy of data used for IMDecode method
     * resolve merge conflict with duplicate Subtract() function
     * run gofmt on core tests
     * Updated type for Mat.GetUCharAt() and Mat.SetUCharAt() to reflect uint8 instead of int8
-* **docs** 
+* **docs**
     * update ROADMAP of completed functions in core from recent contributions
-* **env** 
+* **env**
     * check loading resources
     * Add distribution detection to deps rule
     * Add needed environment variables for Linux
-* **highgui** 
+* **highgui**
     * add some missing test coverage on WaitKey()
-* **imgproc** 
+* **imgproc**
     * Add adaptive threshold function
     * Add pyrDown and pyrUp functions
     * Expose DrawContours()
     * Expose WarpPerspective and GetPerspectiveTransform
     * implement ConvexHull() and ConvexityDefects() functions
-* **opencv** 
+* **opencv**
     * update to OpenCV version 3.4.1
 
 0.9.0
 ---
-* **bugfix** 
+* **bugfix**
     * correct several errors in size parameter ordering
 * **build**
     * add missing opencv_face lib reference to env.sh
@@ -1154,11 +1154,11 @@ imgcodecs: optimize copy of data used for IMDecode method
     * add ConvertTo() and NewMatFromBytes() functions
     * add Type() method to Mat
     * implement ConvertFp16() function
-* **dnn** 
+* **dnn**
     * use correct size for blob used for Caffe/Tensorflow tests
-* **docs** 
+* **docs**
     * Update copyright date and Apache 2.0 license to include full text
-* **examples** 
+* **examples**
     * cleanup mjpeg streamer code
     * cleanup motion detector comments
     * correct use of defer in loop
@@ -1259,9 +1259,9 @@ imgcodecs: optimize copy of data used for IMDecode method
 ---
 * **core**
     * Add cv::LUT binding
-* **examples** 
+* **examples**
     * do not try to go fullscreen, since does not work on OSX
-* **features2d** 
+* **features2d**
     * add AKAZE algorithm
     * add BRISK algorithm
     * add FastFeatureDetector algorithm
@@ -1270,16 +1270,16 @@ imgcodecs: optimize copy of data used for IMDecode method
     * implement SimpleBlobDetector algorithm
 * **osx**
     * Fix to get the OpenCV path with "brew info".
-* **highgui** 
+* **highgui**
     * use new Window with thread lock, and deprecate WaitKey() in favor of Window.WaitKey()
     * use Window.WaitKey() in tests
-* **imgproc** 
+* **imgproc**
     * add tests for HoughCircles
 * **pvl**
     * use correct Ptr referencing
-* **video** 
+* **video**
     * use smart Ptr for Algorithms thanks to @alalek
-    * use unsafe.Pointer for Algorithm    
+    * use unsafe.Pointer for Algorithm
     * move tests to single file now that they all pass
 
 0.5.0
@@ -1340,7 +1340,7 @@ imgcodecs: optimize copy of data used for IMDecode method
 
 0.3.0
 ---
-* **docs** 
+* **docs**
     * Correct Windows build location from same @jpfarias fix to gocv-site
 * **core**
     * Add Resize
@@ -1361,7 +1361,7 @@ imgcodecs: optimize copy of data used for IMDecode method
     * Add Trackbar support
 * **objdetect**
     * Add HOGDescriptor
-* **build** 
+* **build**
     * Remove race from test on Travis, since it causes CGo segfault in MOG2
 
 0.2.0
