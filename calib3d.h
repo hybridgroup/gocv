@@ -43,6 +43,9 @@ Mat FindHomography(Mat src, Mat dst, int method, double ransacReprojThreshold, M
 Mat FindEssentialMat_FocalLength(Mat points1, Mat points2, double focalLen, Point ppPt, int method, double prob, double threshold, int maxIters, Mat mask);
 Mat FindEssentialMat_CameraMat(Mat points1, Mat points2, Mat cameraMatrix, int method, double prob, double threshold, int maxIters, Mat mask);
 Mat FindEssentialMat_DifferentCameras(Mat points1, Mat points2, Mat cameraMatrix1, Mat cameraMatrix2, Mat dist_coeff1, Mat dist_coeff2, int method, double prob, double threshold, Mat mask);
+int RecoverPose_FocalLength(Mat E, Mat points1, Mat points2, Mat R, Mat t, double focal, Point pt, Mat mask);
+int RecoverPose_CameraMat(Mat E, Mat points1, Mat points2, Mat cameraMatrix, Mat R, Mat t, Mat mask);
+int RecoverPose_DifferentCameras(Mat points1, Mat points2, Mat cameraMatrix1, Mat distCoeffs1, Mat cameraMatrix2, Mat distCoeffs2, Mat E, Mat R, Mat t, int method, double prob, double threshold, Mat mask);
 #ifdef __cplusplus
 }
 #endif

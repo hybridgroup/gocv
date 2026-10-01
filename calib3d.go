@@ -560,3 +560,159 @@ func FindEssentialMatDifferentCamerasWithParams(
 		mask.Ptr(),
 	))
 }
+
+// RecoverPose recovers the relative camera rotation and the translation from an estimated essential matrix and the corresponding points in two images.
+// RecoverPose for same source images with a camera matrix: RecoverPoseCameraMat
+// RecoverPose for different sources images: RecoverPoseDifferentCameras
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#ga40919d0c7eaf77b0df67dd76d5d24fa1
+func RecoverPoseFocalLength(
+	essentialMatrix, points1, points2 Mat,
+	outRotationMatrix, outTranslationMatrix Mat,
+) int {
+	empty := NewMat()
+	defer empty.Close()
+
+	return RecoverPoseFocalLengthWithParams(
+		essentialMatrix,
+		points1,
+		points2,
+		outRotationMatrix,
+		outTranslationMatrix,
+		1.0,
+		image.Point {0, 0},
+		empty,
+	)
+}
+
+// RecoverPose recovers the relative camera rotation and the translation from an estimated essential matrix and the corresponding points in two images.
+// RecoverPose for same source images with a camera matrix: RecoverPoseCameraMat
+// RecoverPose for different sources images: RecoverPoseDifferentCameras
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#ga40919d0c7eaf77b0df67dd76d5d24fa1
+func RecoverPoseFocalLengthWithParams(
+	essentialMatrix, points1, points2 Mat,
+	outRotationMatrix, outTranslationMatrix Mat,
+	focalLength float64,
+	principalPoint image.Point,
+	mask Mat,
+) int {
+	pp := C.struct_Point{
+		x: C.int(principalPoint.X),
+		y: C.int(principalPoint.Y),
+	}
+
+	return int(C.RecoverPose_FocalLength(
+		essentialMatrix.Ptr(),
+		points1.Ptr(),
+		points2.Ptr(),
+		outRotationMatrix.Ptr(),
+		outTranslationMatrix.Ptr(),
+		C.double(focalLength),
+		pp,
+		mask.Ptr(),
+	))
+}
+
+// RecoverPose recovers the relative camera rotation and the translation from an estimated essential matrix and the corresponding points in two images.
+// RecoverPose for same source images with a focal length and optical centre: RecoverPoseFocalLength
+// RecoverPose for different sources images: RecoverPoseDifferentCameras
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gadb7d2dfcc184c1d2f496d8639f4371c0
+func RecoverPoseCameraMat(
+	essentialMatrix, points1, points2, cameraMatrix Mat,
+	outRotationMatrix, outTranslationMatrix Mat,
+) int {
+	empty := NewMat()
+	defer empty.Close()
+
+	return RecoverPoseCameraMatWithParams(
+		essentialMatrix,
+		points1,
+		points2,
+		cameraMatrix,
+		outRotationMatrix,
+		outTranslationMatrix,
+		empty,
+	)
+}
+
+// RecoverPose recovers the relative camera rotation and the translation from an estimated essential matrix and the corresponding points in two images.
+// RecoverPose for same source images with a focal length and optical centre: RecoverPoseFocalLength
+// RecoverPose for different sources images: RecoverPoseDifferentCameras
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gadb7d2dfcc184c1d2f496d8639f4371c0
+func RecoverPoseCameraMatWithParams(
+	essentialMatrix, points1, points2, cameraMatrix Mat,
+	outRotationMatrix, outTranslationMatrix Mat,
+	mask Mat,
+) int {
+	return int(C.RecoverPose_CameraMat(
+		essentialMatrix.Ptr(),
+		points1.Ptr(),
+		points2.Ptr(),
+		cameraMatrix.Ptr(),
+		outRotationMatrix.Ptr(),
+		outTranslationMatrix.Ptr(),
+		mask.Ptr(),
+	))
+}
+
+// RecoverPose recovers the relative camera rotation and the translation from corresponding points in two images from two different cameras.
+// RecoverPose for same source images with a focal length and optical centre: RecoverPoseFocalLength
+// RecoverPose for same source images with a camera matrix: RecoverPoseCameraMat
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#ga1b2f149ee4b033c4dfe539f87338e243
+func RecoverPoseDifferentCameras(
+	points1, points2 Mat,
+	cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2 Mat,
+	essentialMatrix, outRotationMatrix, outTranslationMatrix Mat,
+) int {
+	empty := NewMat()
+	defer empty.Close()
+
+	return RecoverPoseDifferentCamerasWithParams(
+		points1, points2,
+		cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2,
+		essentialMatrix, outRotationMatrix, outTranslationMatrix,
+		MatrixComputationRANSAC,
+		0.999, 1.0,
+		empty,
+	)
+}
+
+// RecoverPose recovers the relative camera rotation and the translation from corresponding points in two images from two different cameras.
+// RecoverPose for same source images with a focal length and optical centre: RecoverPoseFocalLength
+// RecoverPose for same source images with a camera matrix: RecoverPoseCameraMat
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#ga1b2f149ee4b033c4dfe539f87338e243
+func RecoverPoseDifferentCamerasWithParams(
+	points1, points2 Mat,
+	cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2 Mat,
+	essentialMatrix, outRotationMatrix, outTranslationMatrix Mat,
+	method MatrixComputationMethod,
+	prob, threshold float64,
+	mask Mat,
+) int {
+	return int(C.RecoverPose_DifferentCameras(
+		points1.Ptr(),
+		points2.Ptr(),
+		cameraMatrix1.Ptr(),
+		distCoeffs1.Ptr(),
+		cameraMatrix2.Ptr(),
+		distCoeffs2.Ptr(),
+		essentialMatrix.Ptr(),
+		outRotationMatrix.Ptr(),
+		outTranslationMatrix.Ptr(),
+		C.int(method),
+		C.double(prob),
+		C.double(threshold),
+		mask.Ptr(),
+	))
+}
