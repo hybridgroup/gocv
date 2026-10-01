@@ -1125,8 +1125,8 @@ func TestFindHomography(t *testing.T) {
 	}
 }
 
-// Used to create a test points matrix for TestFindEssentialMatrix* tests.
-func testFindEssentialMatrixNewDummyPoints(t *testing.T) (Mat, Mat) {
+// Used to create a test points matrix for TestFindEssentialMat* tests.
+func testFindEssentialMatNewDummyPoints(t *testing.T) (Mat, Mat) {
 	t.Helper()
 
 	pts1 := NewMatWithSize(5, 2, MatTypeCV64FC1)
@@ -1149,8 +1149,8 @@ func testFindEssentialMatrixNewDummyPoints(t *testing.T) (Mat, Mat) {
 	return pts1, pts2
 }
 
-// Used to create a test camera matrix for TestFindEssentialMatrix* tests.
-func testFindEssentialMatrixNewDummyCameraMatrix(t *testing.T) Mat {
+// Used to create a test camera matrix for TestFindEssentialMat* tests.
+func testFindEssentialMatNewDummyCameraMatrix(t *testing.T) Mat {
 	t.Helper()
 
 	camMat := NewMatWithSize(3, 3, MatTypeCV64FC1)
@@ -1176,16 +1176,16 @@ func isMatrixExpected(t *testing.T, eMat Mat, mask *Mat) {
 	eMat.Close()
 }
 
-func TestFindEssentialMatrixFocalLength(t *testing.T) {
-	pts1, pts2 := testFindEssentialMatrixNewDummyPoints(t)
+func TestFindEssentialMatFocalLength(t *testing.T) {
+	pts1, pts2 := testFindEssentialMatNewDummyPoints(t)
 	defer pts1.Close()
 	defer pts2.Close()
 
-	isMatrixExpected(t, FindEssentialMatrixFocalLength(pts1, pts2), nil)
+	isMatrixExpected(t, FindEssentialMatFocalLength(pts1, pts2), nil)
 	
 	mask := NewMat()
 	defer mask.Close()
-	isMatrixExpected(t, FindEssentialMatrixFocalLengthWithParams(
+	isMatrixExpected(t, FindEssentialMatFocalLengthWithParams(
 		pts1,
 		pts2,
 		800.0,
@@ -1198,18 +1198,18 @@ func TestFindEssentialMatrixFocalLength(t *testing.T) {
 	), &mask)
 }
 
-func TestFindEssentialMatrixCameraMat(t *testing.T) {
-	pts1, pts2 := testFindEssentialMatrixNewDummyPoints(t)
+func TestFindEssentialMatCameraMat(t *testing.T) {
+	pts1, pts2 := testFindEssentialMatNewDummyPoints(t)
 	defer pts1.Close()
 	defer pts2.Close()
-	camMat := testFindEssentialMatrixNewDummyCameraMatrix(t)
+	camMat := testFindEssentialMatNewDummyCameraMatrix(t)
 	defer camMat.Close()
 
-	isMatrixExpected(t, FindEssentialMatrixCameraMat(pts1, pts2, camMat), nil)
+	isMatrixExpected(t, FindEssentialMatCameraMat(pts1, pts2, camMat), nil)
 
 	mask := NewMat()
 	defer mask.Close()
-	isMatrixExpected(t, FindEssentialMatrixCameraMatWithParams(
+	isMatrixExpected(t, FindEssentialMatCameraMatWithParams(
 		pts1,
 		pts2,
 		camMat,
@@ -1221,26 +1221,26 @@ func TestFindEssentialMatrixCameraMat(t *testing.T) {
 	), &mask)
 }
 
-func TestFindEssentialMatrixDifferentCameras(t *testing.T) {
-	pts1, pts2 := testFindEssentialMatrixNewDummyPoints(t)
+func TestFindEssentialMatDifferentCameras(t *testing.T) {
+	pts1, pts2 := testFindEssentialMatNewDummyPoints(t)
 	defer pts1.Close()
 	defer pts2.Close()
-	camMat1 := testFindEssentialMatrixNewDummyCameraMatrix(t)
+	camMat1 := testFindEssentialMatNewDummyCameraMatrix(t)
 	defer camMat1.Close()
-	camMat2 := testFindEssentialMatrixNewDummyCameraMatrix(t)
+	camMat2 := testFindEssentialMatNewDummyCameraMatrix(t)
 	defer camMat2.Close()
 	distCoeff1 := NewMat()
 	defer distCoeff1.Close()
 	distCoeff2 := NewMat()
 	defer distCoeff2.Close()
 
-	isMatrixExpected(t, FindEssentialMatrixDifferentCameras(
+	isMatrixExpected(t, FindEssentialMatDifferentCameras(
 		pts1, pts2, camMat1, camMat2, distCoeff1, distCoeff2,
 	), nil)
 
 	mask := NewMat()
 	defer mask.Close()
-	isMatrixExpected(t, FindEssentialMatrixDifferentCamerasWithParams(
+	isMatrixExpected(t, FindEssentialMatDifferentCamerasWithParams(
 		pts1,
 		pts2,
 		camMat1,

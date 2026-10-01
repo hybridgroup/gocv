@@ -263,7 +263,7 @@ Mat FindHomography(Mat src, Mat dst, int method, double ransacReprojThreshold, M
     }
 }
 
-Mat FindEssentialMatrix_FocalLength(Mat points1, Mat points2, double focalLen, Point ppPt, int method, double prob, double threshold, int maxIters, Mat mask) {
+Mat FindEssentialMat_FocalLength(Mat points1, Mat points2, double focalLen, Point ppPt, int method, double prob, double threshold, int maxIters, Mat mask) {
     cv::Point2d pp(ppPt.x, ppPt.y);
     try {
         return new cv::Mat(cv::findEssentialMat(*points1, *points2, focalLen, pp, method, prob, threshold, maxIters, *mask));
@@ -273,7 +273,7 @@ Mat FindEssentialMatrix_FocalLength(Mat points1, Mat points2, double focalLen, P
     }
 }
 
-Mat FindEssentialMatrix_CameraMat(Mat points1, Mat points2, Mat cameraMatrix, int method, double prob, double threshold, int maxIters, Mat mask) {
+Mat FindEssentialMat_CameraMat(Mat points1, Mat points2, Mat cameraMatrix, int method, double prob, double threshold, int maxIters, Mat mask) {
     try {
         return new cv::Mat(cv::findEssentialMat(*points1, *points2, *cameraMatrix, method, prob, threshold, maxIters, *mask));
     } catch (const cv::Exception& e) {
@@ -282,7 +282,7 @@ Mat FindEssentialMatrix_CameraMat(Mat points1, Mat points2, Mat cameraMatrix, in
     }
 }
 
-Mat FindEssentialMatrix_DifferentCameras(Mat points1, Mat points2, Mat cameraMatrix1, Mat cameraMatrix2, Mat dist_coeff1, Mat dist_coeff2, int method, double prob, double threshold, Mat mask) {
+Mat FindEssentialMat_DifferentCameras(Mat points1, Mat points2, Mat cameraMatrix1, Mat cameraMatrix2, Mat dist_coeff1, Mat dist_coeff2, int method, double prob, double threshold, Mat mask) {
     try {
         return new cv::Mat(cv::findEssentialMat(*points1, *points2, *cameraMatrix1, *dist_coeff1, *cameraMatrix2, *dist_coeff2, method, prob, threshold, *mask));
     } catch (const cv::Exception& e) {

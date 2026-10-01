@@ -409,17 +409,17 @@ const (
 	MatrixComputationRANSAC MatrixComputationMethod = 8
 )
 
-// FindEssentialMatrix calculates an essential matrix from the corresponding points in two images.
-// FindEssentialMatrix with a camera matrix: FindEssentialMatrixCameraMat.
-// FindEssentialMatrix with images from different cameras: FindEssentialMatrixDifferentCameras.
+// FindEssentialMat calculates an essential matrix from the corresponding points in two images.
+// FindEssentialMat with a camera matrix: FindEssentialMatCameraMat.
+// FindEssentialMat with images from different cameras: FindEssentialMatDifferentCameras.
 //
 // For further details, please see:
-// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gad245d60e64d0c1270dbfd0520847bb87
-func FindEssentialMatrixFocalLength(points1, points2 Mat) Mat {
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gab39a252d16802e86d7d712b1065a1a51
+func FindEssentialMatFocalLength(points1, points2 Mat) Mat {
 	empty := NewMat()
 	defer empty.Close()
 
-	return FindEssentialMatrixFocalLengthWithParams(
+	return FindEssentialMatFocalLengthWithParams(
 		points1,
 		points2,
 		1.0,
@@ -432,13 +432,13 @@ func FindEssentialMatrixFocalLength(points1, points2 Mat) Mat {
 	)
 }
 
-// FindEssentialMatrix calculates an essential matrix from the corresponding points in two images.
-// FindEssentialMatrix with a camera matrix: FindEssentialMatrixCameraMat.
-// FindEssentialMatrix with images from different cameras: FindEssentialMatrixDifferentCameras.
+// FindEssentialMat calculates an essential matrix from the corresponding points in two images.
+// FindEssentialMat with a camera matrix: FindEssentialMatCameraMat.
+// FindEssentialMat with images from different cameras: FindEssentialMatDifferentCameras.
 //
 // For further details, please see:
-// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gad245d60e64d0c1270dbfd0520847bb87
-func FindEssentialMatrixFocalLengthWithParams(
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gab39a252d16802e86d7d712b1065a1a51
+func FindEssentialMatFocalLengthWithParams(
 	points1, points2 Mat,
 	focalLen float64,
 	principalPoint image.Point,
@@ -452,7 +452,7 @@ func FindEssentialMatrixFocalLengthWithParams(
 		y: C.int(principalPoint.Y),
 	}
 
-	return newMat(C.FindEssentialMatrix_FocalLength(
+	return newMat(C.FindEssentialMat_FocalLength(
 		points1.Ptr(), points2.Ptr(),
 		C.double(focalLen),
 		pp,
@@ -464,17 +464,17 @@ func FindEssentialMatrixFocalLengthWithParams(
 	))
 }
 
-// FindEssentialMatrix calculates an essential matrix from the corresponding points in two images.
-// To use FindEssentialMatrix with a focal length and optical centre: FindEssentialMatrixFocalLength.
-// FindEssentialMatrix with images from different cameras: FindEssentialMatrixDifferentCameras.
+// FindEssentialMat calculates an essential matrix from the corresponding points in two images.
+// To use FindEssentialMat with a focal length and optical centre: FindEssentialMatFocalLength.
+// FindEssentialMat with images from different cameras: FindEssentialMatDifferentCameras.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gad245d60e64d0c1270dbfd0520847bb87
-func FindEssentialMatrixCameraMat(points1, points2, cameraMatrix Mat) Mat {
+func FindEssentialMatCameraMat(points1, points2, cameraMatrix Mat) Mat {
 	empty := NewMat()
 	defer empty.Close()
 	
-	return FindEssentialMatrixCameraMatWithParams(
+	return FindEssentialMatCameraMatWithParams(
 		points1,
 		points2,
 		cameraMatrix,
@@ -486,20 +486,20 @@ func FindEssentialMatrixCameraMat(points1, points2, cameraMatrix Mat) Mat {
 	)
 }
 
-// FindEssentialMatrix calculates an essential matrix from the corresponding points in two images.
-// FindEssentialMatrix with a focal length and optical centre: FindEssentialMatrixFocalLength.
-// FindEssentialMatrix with images from different cameras: FindEssentialMatrixDifferentCameras.
+// FindEssentialMat calculates an essential matrix from the corresponding points in two images.
+// FindEssentialMat with a focal length and optical centre: FindEssentialMatFocalLength.
+// FindEssentialMat with images from different cameras: FindEssentialMatDifferentCameras.
 //
 // For further details, please see:
 // https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gad245d60e64d0c1270dbfd0520847bb87
-func FindEssentialMatrixCameraMatWithParams(
+func FindEssentialMatCameraMatWithParams(
 	points1, points2, cameraMatrix Mat,
 	method MatrixComputationMethod,
 	prob, threshold float64,
 	maxIters int,
 	mask Mat,
 ) Mat {
-	return newMat(C.FindEssentialMatrix_CameraMat(
+	return newMat(C.FindEssentialMat_CameraMat(
 		points1.Ptr(), points2.Ptr(),
 		cameraMatrix.Ptr(),
 		C.int(method),
@@ -510,20 +510,20 @@ func FindEssentialMatrixCameraMatWithParams(
 	))
 }
 
-// FindEssentialMatrix calculates an essential matrix from the corresponding points in two images from different cameras.
-// FindEssentialMatrix for different source image with USAC is not implemented.
-// FindEssentialMatrix for same source images with a camera matrix: FindEssentialMatrixCameraMat.
-// FindEssentialMatrix for same source images with a focal length and optical centre: FindEssentialMatrixFocalLength.
+// FindEssentialMat calculates an essential matrix from the corresponding points in two images from different cameras.
+// FindEssentialMat for different source image with USAC is not implemented.
+// FindEssentialMat for same source images with a camera matrix: FindEssentialMatCameraMat.
+// FindEssentialMat for same source images with a focal length and optical centre: FindEssentialMatFocalLength.
 //
 // For further details, please see:
-// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gad245d60e64d0c1270dbfd0520847bb87
-func FindEssentialMatrixDifferentCameras(
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gafafd52c0372b12dd582597bfb1330430
+func FindEssentialMatDifferentCameras(
 	points1, points2, cameraMatrix1, cameraMatrix2, distCoeff1, distCoeff2 Mat,
 ) Mat {
 	empty := NewMat()
 	defer empty.Close()
 	
-	return FindEssentialMatrixDifferentCamerasWithParams(
+	return FindEssentialMatDifferentCamerasWithParams(
 		points1,
 		points2,
 		cameraMatrix1,
@@ -537,20 +537,20 @@ func FindEssentialMatrixDifferentCameras(
 	)
 }
 
-// FindEssentialMatrix calculates an essential matrix from the corresponding points in two images from different cameras.
-// FindEssentialMatrix for different source image with USAC is not implemented.
-// FindEssentialMatrix for same source images with a camera matrix: FindEssentialMatrixCameraMat.
-// FindEssentialMatrix for same source images with a focal length and optical centre: FindEssentialMatrixFocalLength.
+// FindEssentialMat calculates an essential matrix from the corresponding points in two images from different cameras.
+// FindEssentialMat for different source image with USAC is not implemented.
+// FindEssentialMat for same source images with a camera matrix: FindEssentialMatCameraMat.
+// FindEssentialMat for same source images with a focal length and optical centre: FindEssentialMatFocalLength.
 //
 // For further details, please see:
-// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gad245d60e64d0c1270dbfd0520847bb87
-func FindEssentialMatrixDifferentCamerasWithParams(
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gafafd52c0372b12dd582597bfb1330430
+func FindEssentialMatDifferentCamerasWithParams(
 	points1, points2, cameraMatrix1, cameraMatrix2, distCoeff1, distCoeff2 Mat,
 	method MatrixComputationMethod,
 	prob, threshold float64,
 	mask Mat,
 ) Mat {
-	return newMat(C.FindEssentialMatrix_DifferentCameras(
+	return newMat(C.FindEssentialMat_DifferentCameras(
 		points1.Ptr(), points2.Ptr(),
 		cameraMatrix1.Ptr(), cameraMatrix2.Ptr(),
 		distCoeff1.Ptr(), distCoeff2.Ptr(),
