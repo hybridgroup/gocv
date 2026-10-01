@@ -1,6 +1,7 @@
 //go:build !gocv_specific_modules || (gocv_specific_modules && gocv_calib3d)
 
 #include "calib3d.h"
+#include "core.h"
 
 double Fisheye_Calibrate(Points3fVector objectPoints, Points2fVector imagePoints, Size size, Mat k, Mat d, Mat rvecs, Mat tvecs, int flags) {
     try {
@@ -260,5 +261,61 @@ Mat FindHomography(Mat src, Mat dst, int method, double ransacReprojThreshold, M
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
         return new cv::Mat();
+    }
+}
+
+Mat FindEssentialMat_FocalLength(Mat points1, Mat points2, double focalLen, Point ppPt, int method, double prob, double threshold, int maxIters, Mat mask) {
+    cv::Point2d pp(ppPt.x, ppPt.y);
+    try {
+        return new cv::Mat(cv::findEssentialMat(*points1, *points2, focalLen, pp, method, prob, threshold, maxIters, *mask));
+    } catch (const cv::Exception& e) {
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
+}
+
+Mat FindEssentialMat_CameraMat(Mat points1, Mat points2, Mat cameraMatrix, int method, double prob, double threshold, int maxIters, Mat mask) {
+    try {
+        return new cv::Mat(cv::findEssentialMat(*points1, *points2, *cameraMatrix, method, prob, threshold, maxIters, *mask));
+    } catch (const cv::Exception& e) {
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
+}
+
+Mat FindEssentialMat_DifferentCameras(Mat points1, Mat points2, Mat cameraMatrix1, Mat cameraMatrix2, Mat dist_coeff1, Mat dist_coeff2, int method, double prob, double threshold, Mat mask) {
+    try {
+        return new cv::Mat(cv::findEssentialMat(*points1, *points2, *cameraMatrix1, *dist_coeff1, *cameraMatrix2, *dist_coeff2, method, prob, threshold, *mask));
+    } catch (const cv::Exception& e) {
+        setExceptionInfo(e.code, e.what());
+        return new cv::Mat();
+    }
+}
+
+int RecoverPose_FocalLength(Mat E, Mat points1, Mat points2, Mat R, Mat t, double focal, Point pt, Mat mask) {
+    cv::Point2d pp(pt.x, pt.y);
+    try {
+        return cv::recoverPose(*E, *points1, *points2, *R, *t, focal, pp, *mask);
+    } catch (const cv::Exception& e) {
+        setExceptionInfo(e.code, e.what());
+        return 0;
+    }
+}
+
+int RecoverPose_CameraMat(Mat E, Mat points1, Mat points2, Mat cameraMatrix, Mat R, Mat t, Mat mask) {
+    try {
+        return cv::recoverPose(*E, *points1, *points2, *cameraMatrix, *R, *t, *mask);
+    } catch (const cv::Exception& e) {
+        setExceptionInfo(e.code, e.what());
+        return 0;
+    }
+}
+
+int RecoverPose_DifferentCameras(Mat points1, Mat points2, Mat cameraMatrix1, Mat distCoeffs1, Mat cameraMatrix2, Mat distCoeffs2, Mat E, Mat R, Mat t, int method, double prob, double threshold, Mat mask) {
+    try {
+        return cv::recoverPose(*points1, *points2, *cameraMatrix1, *distCoeffs1, *cameraMatrix2, *distCoeffs2, *E, *R, *t, method, prob, threshold, *mask);
+    } catch (const cv::Exception& e) {
+        setExceptionInfo(e.code, e.what());
+        return 0;
     }
 }

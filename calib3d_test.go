@@ -1124,3 +1124,313 @@ func TestFindHomography(t *testing.T) {
 		}
 	}
 }
+
+// Used to create a test points matrix for TestFindEssentialMat* tests.
+func testFindEssentialMatNewDummyPoints(t *testing.T) (Mat, Mat) {
+	t.Helper()
+
+	pts1 := NewMatWithSize(5, 2, MatTypeCV64FC1)
+	pts2 := NewMatWithSize(5, 2, MatTypeCV64FC1)
+
+	coords1 := [5][2]float64{
+		{100, 120}, {200, 150}, {150, 280}, {310, 110}, {250, 220},
+	}
+	coords2 := [5][2]float64{
+		{95, 118}, {198, 149}, {147, 276}, {305, 112}, {245, 218},
+	}
+
+	for i := 0; i < 5; i++ {
+		pts1.SetDoubleAt(i, 0, coords1[i][0])
+		pts1.SetDoubleAt(i, 1, coords1[i][1])
+		pts2.SetDoubleAt(i, 0, coords2[i][0])
+		pts2.SetDoubleAt(i, 1, coords2[i][1])
+	}
+
+	return pts1, pts2
+}
+
+// Used to create a test camera matrix for TestFindEssentialMat* tests.
+func testFindEssentialMatNewDummyCameraMatrix(t *testing.T) Mat {
+	t.Helper()
+
+	camMat := NewMatWithSize(3, 3, MatTypeCV64FC1)
+	camMat.SetDoubleAt(0, 0, 800)
+	camMat.SetDoubleAt(0, 2, 320)
+	camMat.SetDoubleAt(1, 1, 800)
+	camMat.SetDoubleAt(1, 2, 240)
+	camMat.SetDoubleAt(2, 2, 1.0)
+	return camMat
+}
+
+// Used to verify output matrix consistency relative to expectations/
+func isMatrixExpected(t *testing.T, eMat Mat, mask *Mat) {
+	if eMat.Empty() {
+		t.Fatal("expected non-empty Essential Matrix, got empty")
+	}
+	if eMat.Cols() != 3 || eMat.Rows() < 3 || eMat.Rows()%3 != 0 {
+    	t.Errorf("expected 3k x3 matrix, got %dx%d", eMat.Rows(), eMat.Cols())
+	}
+	if mask != nil && mask.Empty() {
+		t.Errorf("expected non-empty mask output from RANSAC, got empty")
+	}
+	eMat.Close()
+}
+
+func TestFindEssentialMatFocalLength(t *testing.T) {
+	pts1, pts2 := testFindEssentialMatNewDummyPoints(t)
+	defer pts1.Close()
+	defer pts2.Close()
+
+	isMatrixExpected(t, FindEssentialMatFocalLength(pts1, pts2), nil)
+	
+	mask := NewMat()
+	defer mask.Close()
+	isMatrixExpected(t, FindEssentialMatFocalLengthWithParams(
+		pts1,
+		pts2,
+		800.0,
+		image.Pt(320, 240),
+		MatrixComputationRANSAC,
+		0.99,
+		1.0,
+		1000,
+		mask,
+	), &mask)
+}
+
+func TestFindEssentialMatCameraMat(t *testing.T) {
+	pts1, pts2 := testFindEssentialMatNewDummyPoints(t)
+	defer pts1.Close()
+	defer pts2.Close()
+	camMat := testFindEssentialMatNewDummyCameraMatrix(t)
+	defer camMat.Close()
+
+	isMatrixExpected(t, FindEssentialMatCameraMat(pts1, pts2, camMat), nil)
+
+	mask := NewMat()
+	defer mask.Close()
+	isMatrixExpected(t, FindEssentialMatCameraMatWithParams(
+		pts1,
+		pts2,
+		camMat,
+		MatrixComputationRANSAC,
+		0.99,
+		1.0,
+		1000,
+		mask,
+	), &mask)
+}
+
+func TestFindEssentialMatDifferentCameras(t *testing.T) {
+	pts1, pts2 := testFindEssentialMatNewDummyPoints(t)
+	defer pts1.Close()
+	defer pts2.Close()
+	camMat1 := testFindEssentialMatNewDummyCameraMatrix(t)
+	defer camMat1.Close()
+	camMat2 := testFindEssentialMatNewDummyCameraMatrix(t)
+	defer camMat2.Close()
+	distCoeff1 := NewMat()
+	defer distCoeff1.Close()
+	distCoeff2 := NewMat()
+	defer distCoeff2.Close()
+
+	isMatrixExpected(t, FindEssentialMatDifferentCameras(
+		pts1, pts2, camMat1, camMat2, distCoeff1, distCoeff2,
+	), nil)
+
+	mask := NewMat()
+	defer mask.Close()
+	isMatrixExpected(t, FindEssentialMatDifferentCamerasWithParams(
+		pts1,
+		pts2,
+		camMat1,
+		camMat2,
+		distCoeff1,
+		distCoeff2,
+		MatrixComputationRANSAC,
+		0.99,
+		1.0,
+		mask,
+	), &mask)
+}
+
+func TestRecoverPoseFocalLength(t *testing.T) {
+	pts1, pts2 := testFindEssentialMatNewDummyPoints(t)
+	defer pts1.Close()
+	defer pts2.Close()
+
+	rawEMat := FindEssentialMatFocalLength(pts1, pts2)
+	defer rawEMat.Close()
+	if rawEMat.Empty() {
+		t.Fatal("expected non-empty Essential Matrix, got empty")
+	}
+
+	eMat := rawEMat.Region(image.Rect(0, 0, 3, 3))
+	defer eMat.Close()
+
+	r := NewMat()
+	defer r.Close()
+	tr := NewMat()
+	defer tr.Close()
+
+	inliers := RecoverPoseFocalLength(eMat, pts1, pts2, r, tr)
+	if inliers < 0 {
+		t.Errorf("expected non-negative inlier count, got %d", inliers)
+	}
+	if r.Empty() || r.Rows() != 3 || r.Cols() != 3 {
+		t.Errorf("expected 3x3 rotation matrix, got %dx%d (empty=%v)", r.Rows(), r.Cols(), r.Empty())
+	}
+	if tr.Empty() || tr.Rows() != 3 || tr.Cols() != 1 {
+		t.Errorf("expected 3x1 translation matrix, got %dx%d (empty=%v)", tr.Rows(), tr.Cols(), tr.Empty())
+	}
+
+	rParams := NewMat()
+	defer rParams.Close()
+	trParams := NewMat()
+	defer trParams.Close()
+	mask := NewMat()
+	defer mask.Close()
+
+	inliersParams := RecoverPoseFocalLengthWithParams(
+		eMat,
+		pts1,
+		pts2,
+		rParams,
+		trParams,
+		800.0,
+		image.Pt(320, 240),
+		mask,
+	)
+	if inliersParams < 0 {
+		t.Errorf("expected non-negative inlier count with params, got %d", inliersParams)
+	}
+	if rParams.Empty() || rParams.Rows() != 3 || rParams.Cols() != 3 {
+		t.Errorf("expected 3x3 rotation matrix, got %dx%d (empty=%v)", rParams.Rows(), rParams.Cols(), rParams.Empty())
+	}
+	if trParams.Empty() || trParams.Rows() != 3 || trParams.Cols() != 1 {
+		t.Errorf("expected 3x1 translation matrix, got %dx%d (empty=%v)", trParams.Rows(), trParams.Cols(), trParams.Empty())
+	}
+}
+
+func TestRecoverPoseCameraMat(t *testing.T) {
+	pts1, pts2 := testFindEssentialMatNewDummyPoints(t)
+	defer pts1.Close()
+	defer pts2.Close()
+	camMat := testFindEssentialMatNewDummyCameraMatrix(t)
+	defer camMat.Close()
+	rawEMat := FindEssentialMatCameraMat(pts1, pts2, camMat)
+	defer rawEMat.Close()
+
+	if rawEMat.Empty() {
+		t.Fatal("expected non-empty Essential Matrix, got empty")
+	}
+
+	eMat := rawEMat.Region(image.Rect(0, 0, 3, 3))
+	defer eMat.Close()
+	r := NewMat()
+	defer r.Close()
+	tr := NewMat()
+	defer tr.Close()
+
+	inliers := RecoverPoseCameraMat(eMat, pts1, pts2, camMat, r, tr)
+	if inliers < 0 {
+		t.Errorf("expected non-negative inlier count, got %d", inliers)
+	}
+	if r.Empty() || r.Rows() != 3 || r.Cols() != 3 {
+		t.Errorf("expected 3x3 rotation matrix, got %dx%d (empty=%v)", r.Rows(), r.Cols(), r.Empty())
+	}
+	if tr.Empty() || tr.Rows() != 3 || tr.Cols() != 1 {
+		t.Errorf("expected 3x1 translation matrix, got %dx%d (empty=%v)", tr.Rows(), tr.Cols(), tr.Empty())
+	}
+
+	rParams := NewMat()
+	defer rParams.Close()
+	trParams := NewMat()
+	defer trParams.Close()
+	mask := NewMat()
+	defer mask.Close()
+
+	inliersParams := RecoverPoseCameraMatWithParams(eMat, pts1, pts2, camMat, rParams, trParams, mask)
+	if inliersParams < 0 {
+		t.Errorf("expected non-negative inlier count with params, got %d", inliersParams)
+	}
+	if rParams.Empty() || rParams.Rows() != 3 || rParams.Cols() != 3 {
+		t.Errorf("expected 3x3 rotation matrix, got %dx%d (empty=%v)", rParams.Rows(), rParams.Cols(), rParams.Empty())
+	}
+	if trParams.Empty() || trParams.Rows() != 3 || trParams.Cols() != 1 {
+		t.Errorf("expected 3x1 translation matrix, got %dx%d (empty=%v)", trParams.Rows(), trParams.Cols(), trParams.Empty())
+	}
+}
+
+func TestRecoverPoseDifferentCameras(t *testing.T) {
+	pts3D := [][3]float64{
+		{0.1, 0.2, 2.0},
+		{0.5, -0.3, 2.5},
+		{-0.4, 0.6, 1.8},
+		{-0.2, -0.5, 3.0},
+		{0.3, 0.3, 2.2},
+		{0.7, -0.1, 1.9},
+		{-0.6, -0.2, 2.4},
+		{0.2, 0.8, 2.8},
+	}
+
+	camMat1 := testFindEssentialMatNewDummyCameraMatrix(t)
+	defer camMat1.Close()
+	camMat2 := testFindEssentialMatNewDummyCameraMatrix(t)
+	defer camMat2.Close()
+
+	pts1 := NewMatWithSize(len(pts3D), 2, MatTypeCV64FC1)
+	defer pts1.Close()
+	pts2 := NewMatWithSize(len(pts3D), 2, MatTypeCV64FC1)
+	defer pts2.Close()
+
+	const (
+		focal = 800.0
+		cx    = 320.0
+		cy    = 240.0
+		tx    = 0.5
+	)
+
+	for i, pt := range pts3D {
+		u1 := focal*(pt[0]/pt[2]) + cx
+		v1 := focal*(pt[1]/pt[2]) + cy
+		u2 := focal*((pt[0]-tx)/pt[2]) + cx
+		v2 := focal*(pt[1]/pt[2]) + cy
+
+		pts1.SetDoubleAt(i, 0, u1)
+		pts1.SetDoubleAt(i, 1, v1)
+		pts2.SetDoubleAt(i, 0, u2)
+		pts2.SetDoubleAt(i, 1, v2)
+	}
+
+	distCoeff1 := NewMatWithSize(1, 5, MatTypeCV64FC1)
+	defer distCoeff1.Close()
+	distCoeff2 := NewMatWithSize(1, 5, MatTypeCV64FC1)
+	defer distCoeff2.Close()
+
+	eMat := NewMat()
+	defer eMat.Close()
+	r := NewMat()
+	defer r.Close()
+	tr := NewMat()
+	defer tr.Close()
+
+	inliers := RecoverPoseDifferentCameras(
+		pts1, pts2,
+		camMat1, distCoeff1, camMat2, distCoeff2,
+		eMat, r, tr,
+	)
+
+	if inliers <= 0 {
+		t.Errorf("expected > 0 inliers, got %d", inliers)
+	}
+	if eMat.Empty() || eMat.Cols() != 3 {
+		t.Errorf("expected essential matrix with 3 cols, got %dx%d", eMat.Rows(), eMat.Cols())
+	}
+	if r.Empty() || r.Rows() != 3 || r.Cols() != 3 {
+		t.Errorf("expected 3x3 rotation matrix, got %dx%d", r.Rows(), r.Cols())
+	}
+	if tr.Empty() || tr.Rows() != 3 || tr.Cols() != 1 {
+		t.Errorf("expected 3x1 translation matrix, got %dx%d", tr.Rows(), tr.Cols())
+	}
+}

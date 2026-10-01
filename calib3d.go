@@ -401,3 +401,318 @@ const (
 func FindHomography(srcPoints Mat, targetPoints Mat, method HomographyMethod, ransacReprojThreshold float64, mask *Mat, maxIters int, confidence float64) Mat {
 	return newMat(C.FindHomography(srcPoints.Ptr(), targetPoints.Ptr(), C.int(method), C.double(ransacReprojThreshold), mask.Ptr(), C.int(maxIters), C.double(confidence)))
 }
+
+type MatrixComputationMethod int
+
+const (
+	MatrixComputationLMEDS MatrixComputationMethod = 4
+	MatrixComputationRANSAC MatrixComputationMethod = 8
+)
+
+// FindEssentialMat calculates an essential matrix from the corresponding points in two images.
+// FindEssentialMat with a camera matrix: FindEssentialMatCameraMat.
+// FindEssentialMat with images from different cameras: FindEssentialMatDifferentCameras.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gab39a252d16802e86d7d712b1065a1a51
+func FindEssentialMatFocalLength(points1, points2 Mat) Mat {
+	empty := NewMat()
+	defer empty.Close()
+
+	return FindEssentialMatFocalLengthWithParams(
+		points1,
+		points2,
+		1.0,
+		image.Point {0, 0},
+		MatrixComputationRANSAC,
+		0.999,
+		1.0,
+		1000,
+		empty,
+	)
+}
+
+// FindEssentialMat calculates an essential matrix from the corresponding points in two images.
+// FindEssentialMat with a camera matrix: FindEssentialMatCameraMat.
+// FindEssentialMat with images from different cameras: FindEssentialMatDifferentCameras.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gab39a252d16802e86d7d712b1065a1a51
+func FindEssentialMatFocalLengthWithParams(
+	points1, points2 Mat,
+	focalLen float64,
+	principalPoint image.Point,
+	method MatrixComputationMethod,
+	prob, threshold float64,
+	maxIters int,
+	mask Mat,
+) Mat {
+	pp := C.struct_Point{
+		x: C.int(principalPoint.X),
+		y: C.int(principalPoint.Y),
+	}
+
+	return newMat(C.FindEssentialMat_FocalLength(
+		points1.Ptr(), points2.Ptr(),
+		C.double(focalLen),
+		pp,
+		C.int(method),
+		C.double(prob),
+		C.double(threshold),
+		C.int(maxIters),
+		mask.Ptr(),
+	))
+}
+
+// FindEssentialMat calculates an essential matrix from the corresponding points in two images.
+// To use FindEssentialMat with a focal length and optical centre: FindEssentialMatFocalLength.
+// FindEssentialMat with images from different cameras: FindEssentialMatDifferentCameras.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gad245d60e64d0c1270dbfd0520847bb87
+func FindEssentialMatCameraMat(points1, points2, cameraMatrix Mat) Mat {
+	empty := NewMat()
+	defer empty.Close()
+	
+	return FindEssentialMatCameraMatWithParams(
+		points1,
+		points2,
+		cameraMatrix,
+		MatrixComputationRANSAC,
+		0.999,
+		1.0,
+		1000,
+		empty,
+	)
+}
+
+// FindEssentialMat calculates an essential matrix from the corresponding points in two images.
+// FindEssentialMat with a focal length and optical centre: FindEssentialMatFocalLength.
+// FindEssentialMat with images from different cameras: FindEssentialMatDifferentCameras.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gad245d60e64d0c1270dbfd0520847bb87
+func FindEssentialMatCameraMatWithParams(
+	points1, points2, cameraMatrix Mat,
+	method MatrixComputationMethod,
+	prob, threshold float64,
+	maxIters int,
+	mask Mat,
+) Mat {
+	return newMat(C.FindEssentialMat_CameraMat(
+		points1.Ptr(), points2.Ptr(),
+		cameraMatrix.Ptr(),
+		C.int(method),
+		C.double(prob),
+		C.double(threshold),
+		C.int(maxIters),
+		mask.Ptr(),
+	))
+}
+
+// FindEssentialMat calculates an essential matrix from the corresponding points in two images from different cameras.
+// FindEssentialMat for different source image with USAC is not implemented.
+// FindEssentialMat for same source images with a camera matrix: FindEssentialMatCameraMat.
+// FindEssentialMat for same source images with a focal length and optical centre: FindEssentialMatFocalLength.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gafafd52c0372b12dd582597bfb1330430
+func FindEssentialMatDifferentCameras(
+	points1, points2, cameraMatrix1, cameraMatrix2, distCoeff1, distCoeff2 Mat,
+) Mat {
+	empty := NewMat()
+	defer empty.Close()
+	
+	return FindEssentialMatDifferentCamerasWithParams(
+		points1,
+		points2,
+		cameraMatrix1,
+		cameraMatrix2,
+		distCoeff1,
+		distCoeff2,
+		MatrixComputationRANSAC,
+		0.999,
+		1.0,
+		empty,
+	)
+}
+
+// FindEssentialMat calculates an essential matrix from the corresponding points in two images from different cameras.
+// FindEssentialMat for different source image with USAC is not implemented.
+// FindEssentialMat for same source images with a camera matrix: FindEssentialMatCameraMat.
+// FindEssentialMat for same source images with a focal length and optical centre: FindEssentialMatFocalLength.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gafafd52c0372b12dd582597bfb1330430
+func FindEssentialMatDifferentCamerasWithParams(
+	points1, points2, cameraMatrix1, cameraMatrix2, distCoeff1, distCoeff2 Mat,
+	method MatrixComputationMethod,
+	prob, threshold float64,
+	mask Mat,
+) Mat {
+	return newMat(C.FindEssentialMat_DifferentCameras(
+		points1.Ptr(), points2.Ptr(),
+		cameraMatrix1.Ptr(), cameraMatrix2.Ptr(),
+		distCoeff1.Ptr(), distCoeff2.Ptr(),
+		C.int(method),
+		C.double(prob),
+		C.double(threshold),
+		mask.Ptr(),
+	))
+}
+
+// RecoverPose recovers the relative camera rotation and the translation from an estimated essential matrix and the corresponding points in two images.
+// RecoverPose for same source images with a camera matrix: RecoverPoseCameraMat
+// RecoverPose for different sources images: RecoverPoseDifferentCameras
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#ga40919d0c7eaf77b0df67dd76d5d24fa1
+func RecoverPoseFocalLength(
+	essentialMatrix, points1, points2 Mat,
+	outRotationMatrix, outTranslationMatrix Mat,
+) int {
+	empty := NewMat()
+	defer empty.Close()
+
+	return RecoverPoseFocalLengthWithParams(
+		essentialMatrix,
+		points1,
+		points2,
+		outRotationMatrix,
+		outTranslationMatrix,
+		1.0,
+		image.Point {0, 0},
+		empty,
+	)
+}
+
+// RecoverPose recovers the relative camera rotation and the translation from an estimated essential matrix and the corresponding points in two images.
+// RecoverPose for same source images with a camera matrix: RecoverPoseCameraMat
+// RecoverPose for different sources images: RecoverPoseDifferentCameras
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#ga40919d0c7eaf77b0df67dd76d5d24fa1
+func RecoverPoseFocalLengthWithParams(
+	essentialMatrix, points1, points2 Mat,
+	outRotationMatrix, outTranslationMatrix Mat,
+	focalLength float64,
+	principalPoint image.Point,
+	mask Mat,
+) int {
+	pp := C.struct_Point{
+		x: C.int(principalPoint.X),
+		y: C.int(principalPoint.Y),
+	}
+
+	return int(C.RecoverPose_FocalLength(
+		essentialMatrix.Ptr(),
+		points1.Ptr(),
+		points2.Ptr(),
+		outRotationMatrix.Ptr(),
+		outTranslationMatrix.Ptr(),
+		C.double(focalLength),
+		pp,
+		mask.Ptr(),
+	))
+}
+
+// RecoverPose recovers the relative camera rotation and the translation from an estimated essential matrix and the corresponding points in two images.
+// RecoverPose for same source images with a focal length and optical centre: RecoverPoseFocalLength
+// RecoverPose for different sources images: RecoverPoseDifferentCameras
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gadb7d2dfcc184c1d2f496d8639f4371c0
+func RecoverPoseCameraMat(
+	essentialMatrix, points1, points2, cameraMatrix Mat,
+	outRotationMatrix, outTranslationMatrix Mat,
+) int {
+	empty := NewMat()
+	defer empty.Close()
+
+	return RecoverPoseCameraMatWithParams(
+		essentialMatrix,
+		points1,
+		points2,
+		cameraMatrix,
+		outRotationMatrix,
+		outTranslationMatrix,
+		empty,
+	)
+}
+
+// RecoverPose recovers the relative camera rotation and the translation from an estimated essential matrix and the corresponding points in two images.
+// RecoverPose for same source images with a focal length and optical centre: RecoverPoseFocalLength
+// RecoverPose for different sources images: RecoverPoseDifferentCameras
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#gadb7d2dfcc184c1d2f496d8639f4371c0
+func RecoverPoseCameraMatWithParams(
+	essentialMatrix, points1, points2, cameraMatrix Mat,
+	outRotationMatrix, outTranslationMatrix Mat,
+	mask Mat,
+) int {
+	return int(C.RecoverPose_CameraMat(
+		essentialMatrix.Ptr(),
+		points1.Ptr(),
+		points2.Ptr(),
+		cameraMatrix.Ptr(),
+		outRotationMatrix.Ptr(),
+		outTranslationMatrix.Ptr(),
+		mask.Ptr(),
+	))
+}
+
+// RecoverPose recovers the relative camera rotation and the translation from corresponding points in two images from two different cameras.
+// RecoverPose for same source images with a focal length and optical centre: RecoverPoseFocalLength
+// RecoverPose for same source images with a camera matrix: RecoverPoseCameraMat
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#ga1b2f149ee4b033c4dfe539f87338e243
+func RecoverPoseDifferentCameras(
+	points1, points2 Mat,
+	cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2 Mat,
+	essentialMatrix, outRotationMatrix, outTranslationMatrix Mat,
+) int {
+	empty := NewMat()
+	defer empty.Close()
+
+	return RecoverPoseDifferentCamerasWithParams(
+		points1, points2,
+		cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2,
+		essentialMatrix, outRotationMatrix, outTranslationMatrix,
+		MatrixComputationRANSAC,
+		0.999, 1.0,
+		empty,
+	)
+}
+
+// RecoverPose recovers the relative camera rotation and the translation from corresponding points in two images from two different cameras.
+// RecoverPose for same source images with a focal length and optical centre: RecoverPoseFocalLength
+// RecoverPose for same source images with a camera matrix: RecoverPoseCameraMat
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#ga1b2f149ee4b033c4dfe539f87338e243
+func RecoverPoseDifferentCamerasWithParams(
+	points1, points2 Mat,
+	cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2 Mat,
+	essentialMatrix, outRotationMatrix, outTranslationMatrix Mat,
+	method MatrixComputationMethod,
+	prob, threshold float64,
+	mask Mat,
+) int {
+	return int(C.RecoverPose_DifferentCameras(
+		points1.Ptr(),
+		points2.Ptr(),
+		cameraMatrix1.Ptr(),
+		distCoeffs1.Ptr(),
+		cameraMatrix2.Ptr(),
+		distCoeffs2.Ptr(),
+		essentialMatrix.Ptr(),
+		outRotationMatrix.Ptr(),
+		outTranslationMatrix.Ptr(),
+		C.int(method),
+		C.double(prob),
+		C.double(threshold),
+		mask.Ptr(),
+	))
+}
