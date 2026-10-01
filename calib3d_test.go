@@ -1124,3 +1124,132 @@ func TestFindHomography(t *testing.T) {
 		}
 	}
 }
+
+// Used to create a test points matrix for TestFindEssentialMatrix* tests.
+func testFindEssentialMatrixNewDummyPoints(t *testing.T) (Mat, Mat) {
+	t.Helper()
+
+	pts1 := NewMatWithSize(5, 2, MatTypeCV64FC1)
+	pts2 := NewMatWithSize(5, 2, MatTypeCV64FC1)
+
+	coords1 := [5][2]float64{
+		{100, 120}, {200, 150}, {150, 280}, {310, 110}, {250, 220},
+	}
+	coords2 := [5][2]float64{
+		{95, 118}, {198, 149}, {147, 276}, {305, 112}, {245, 218},
+	}
+
+	for i := 0; i < 5; i++ {
+		pts1.SetDoubleAt(i, 0, coords1[i][0])
+		pts1.SetDoubleAt(i, 1, coords1[i][1])
+		pts2.SetDoubleAt(i, 0, coords2[i][0])
+		pts2.SetDoubleAt(i, 1, coords2[i][1])
+	}
+
+	return pts1, pts2
+}
+
+// Used to create a test camera matrix for TestFindEssentialMatrix* tests.
+func testFindEssentialMatrixNewDummyCameraMatrix(t *testing.T) Mat {
+	t.Helper()
+
+	camMat := NewMatWithSize(3, 3, MatTypeCV64FC1)
+	camMat.SetDoubleAt(0, 0, 800)
+	camMat.SetDoubleAt(0, 2, 320)
+	camMat.SetDoubleAt(1, 1, 800)
+	camMat.SetDoubleAt(1, 2, 240)
+	camMat.SetDoubleAt(2, 2, 1.0)
+	return camMat
+}
+
+// Used to verify output matrix consistency relative to expectations/
+func isMatrixExpected(t *testing.T, eMat Mat, mask *Mat) {
+	if eMat.Empty() {
+		t.Fatal("expected non-empty Essential Matrix, got empty")
+	}
+	if eMat.Cols() != 3 || eMat.Rows() < 3 || eMat.Rows()%3 != 0 {
+    	t.Errorf("expected 3k x3 matrix, got %dx%d", eMat.Rows(), eMat.Cols())
+	}
+	if mask != nil && mask.Empty() {
+		t.Errorf("expected non-empty mask output from RANSAC, got empty")
+	}
+	eMat.Close()
+}
+
+func TestFindEssentialMatrixFocalLength(t *testing.T) {
+	pts1, pts2 := testFindEssentialMatrixNewDummyPoints(t)
+	defer pts1.Close()
+	defer pts2.Close()
+
+	isMatrixExpected(t, FindEssentialMatrixFocalLength(pts1, pts2), nil)
+	
+	mask := NewMat()
+	defer mask.Close()
+	isMatrixExpected(t, FindEssentialMatrixFocalLengthWithParams(
+		pts1,
+		pts2,
+		800.0,
+		image.Pt(320, 240),
+		MatrixComputationRANSAC,
+		0.99,
+		1.0,
+		1000,
+		mask,
+	), &mask)
+}
+
+func TestFindEssentialMatrixCameraMat(t *testing.T) {
+	pts1, pts2 := testFindEssentialMatrixNewDummyPoints(t)
+	defer pts1.Close()
+	defer pts2.Close()
+	camMat := testFindEssentialMatrixNewDummyCameraMatrix(t)
+	defer camMat.Close()
+
+	isMatrixExpected(t, FindEssentialMatrixCameraMat(pts1, pts2, camMat), nil)
+
+	mask := NewMat()
+	defer mask.Close()
+	isMatrixExpected(t, FindEssentialMatrixCameraMatWithParams(
+		pts1,
+		pts2,
+		camMat,
+		MatrixComputationRANSAC,
+		0.99,
+		1.0,
+		1000,
+		mask,
+	), &mask)
+}
+
+func TestFindEssentialMatrixDifferentCameras(t *testing.T) {
+	pts1, pts2 := testFindEssentialMatrixNewDummyPoints(t)
+	defer pts1.Close()
+	defer pts2.Close()
+	camMat1 := testFindEssentialMatrixNewDummyCameraMatrix(t)
+	defer camMat1.Close()
+	camMat2 := testFindEssentialMatrixNewDummyCameraMatrix(t)
+	defer camMat2.Close()
+	distCoeff1 := NewMat()
+	defer distCoeff1.Close()
+	distCoeff2 := NewMat()
+	defer distCoeff2.Close()
+
+	isMatrixExpected(t, FindEssentialMatrixDifferentCameras(
+		pts1, pts2, camMat1, camMat2, distCoeff1, distCoeff2,
+	), nil)
+
+	mask := NewMat()
+	defer mask.Close()
+	isMatrixExpected(t, FindEssentialMatrixDifferentCamerasWithParams(
+		pts1,
+		pts2,
+		camMat1,
+		camMat2,
+		distCoeff1,
+		distCoeff2,
+		MatrixComputationRANSAC,
+		0.99,
+		1.0,
+		mask,
+	), &mask)
+}
