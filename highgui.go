@@ -63,6 +63,10 @@ func (w *Window) Close() error {
 	cName := C.CString(w.name)
 	defer C.free(unsafe.Pointer(cName))
 
+	// destroy the window first, so that OpenCV no longer holds the mouse
+	// callback userdata when it is freed below.
+	C.Window_Close(cName)
+
 	mcbInfo, exists := onMouseHandlers[w.name]
 	if exists {
 		mcbInfo.fn = nil
@@ -71,7 +75,6 @@ func (w *Window) Close() error {
 		delete(onMouseHandlers, w.name)
 	}
 
-	C.Window_Close(cName)
 	w.open = false
 
 	runtime.UnlockOSThread()
@@ -409,6 +412,8 @@ func go_onmouse_dispatcher(event C.int, x C.int, y C.int, flags C.int, userdata 
 func (w *Window) SetMouseHandler(onMOuse MouseHandlerFunc, userdata interface{}) {
 	c_winname := C.CString(w.name)
 
+	old, exists := onMouseHandlers[w.name]
+
 	onMouseHandlers[w.name] = mouseHandlerInfo{
 		c_name_ptr: c_winname,
 		fn:         onMOuse,
@@ -416,4 +421,10 @@ func (w *Window) SetMouseHandler(onMOuse MouseHandlerFunc, userdata interface{})
 	}
 
 	C.Window_SetMouseCallback(c_winname, C.mouse_callback(C.go_onmouse_dispatcher))
+
+	// free the name from a previous handler only after OpenCV has been given
+	// the new one as the callback userdata.
+	if exists {
+		C.free(unsafe.Pointer(old.c_name_ptr))
+	}
 }
