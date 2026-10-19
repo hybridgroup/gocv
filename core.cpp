@@ -19,7 +19,8 @@ void ClearOpenCVException() {
 
 void setExceptionInfo(int code, const char* message) {
     lastException = code;
-    strncpy(lastExceptionMessage, message, 1024);
+    strncpy(lastExceptionMessage, message, sizeof(lastExceptionMessage) - 1);
+    lastExceptionMessage[sizeof(lastExceptionMessage) - 1] = '\0';
 }
 
 OpenCVResult successResult() {
