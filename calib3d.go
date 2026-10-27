@@ -363,6 +363,56 @@ func SolvePnP(objectPoints Point3fVector, imagePoints Point2fVector, cameraMatri
 	return bool(C.SolvePnP(objectPoints.p, imagePoints.p, cameraMatrix.p, distCoeffs.p, rvec.p, tvec.p, C.bool(useExtrinsicGuess), C.int(flags)))
 }
 
+// SolvePnPRansac finds an object pose  from 3D-2D point correspondences using
+// the RANSAC scheme to deal with bad matches.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#ga50620f0e26e02caa2e9adc07b5fbf24e
+func SolvePnPRansac(
+	objectPoints Point3fVector,
+	imagePoints Point2fVector,
+	cameraMatrix, distCoeffs Mat,
+	rvec, tvec *Mat,
+) bool {
+	empty := NewMat()
+	defer empty.Close()
+
+	return SolvePnPRansacWithParams(
+		objectPoints, imagePoints, cameraMatrix, distCoeffs,
+		rvec, tvec, false, 100, 8.0, 0.99, empty, 0,
+	)
+}
+
+// SolvePnPRansacWithParams finds an object pose  from 3D-2D point
+// correspondences using the RANSAC scheme to deal with bad matches.
+//
+// For further details, please see:
+// https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html#ga50620f0e26e02caa2e9adc07b5fbf24e
+func SolvePnPRansacWithParams(
+	objectPoints Point3fVector,
+	imagePoints Point2fVector,
+	cameraMatrix, distCoeffs Mat,
+	rvec, tvec *Mat,
+	useExtrinsicGuess bool,
+	iterationsCount int,
+	reprojectionError float32,
+	confidence float64,
+	inliers Mat,
+	flags int,
+) bool {
+	return bool(C.SolvePnPRansac(
+		objectPoints.p, imagePoints.p,
+		cameraMatrix.Ptr(), distCoeffs.Ptr(),
+		rvec.Ptr(), tvec.Ptr(),
+		C.bool(useExtrinsicGuess),
+		C.int(iterationsCount),
+		C.float(reprojectionError),
+		C.double(confidence),
+		inliers.Ptr(),
+		C.int(flags),
+	))
+}
+
 // ProjectPoints projects 3D points to an image plane.
 //
 // For further details, please see:

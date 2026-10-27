@@ -236,6 +236,25 @@ bool SolvePnP(Point3fVector objectPoints, Point2fVector imagePoints, Mat cameraM
     }
 }
 
+bool SolvePnPRansac(
+    Point3fVector objectPoints,
+    Point2fVector imagePoints,
+    Mat cameraMatrix, Mat distCoeffs, Mat rvec, Mat tvec,
+    bool useExtrinsicGuess,
+    int iterationCount,
+    float reprojectionError,
+    double confidence,
+    Mat inliers,
+    int flags
+) {
+    try {
+        return cv::solvePnPRansac(*objectPoints, *imagePoints, *cameraMatrix, *distCoeffs, *rvec, *tvec, useExtrinsicGuess, iterationCount, reprojectionError, confidence, *inliers, flags);
+    } catch(const cv::Exception& e){
+        setExceptionInfo(e.code, e.what());
+        return false;
+    }
+}
+
 OpenCVResult ProjectPoints(Point3fVector objectPoints, Mat rvec, Mat tvec, Mat cameraMatrix, Mat distCoeffs, Point2fVector imagePoints) {
     try {
         cv::projectPoints(*objectPoints, *rvec, *tvec, *cameraMatrix, *distCoeffs, *imagePoints);

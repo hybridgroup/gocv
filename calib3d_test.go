@@ -925,6 +925,53 @@ func TestSolvePnP(t *testing.T) {
 	}
 }
 
+func TestSolvePnPRansac(t *testing.T) {
+	pts := []Point3f{
+		{10.0, 10.0, 0.1},
+		{10.0, 20.0, 1.0},
+		{20.5, 21.5, 2.0},
+		{10.0, 20.0, 1.0},
+	}
+
+	objectPointsVector := NewPoint3fVectorFromPoints(pts)
+	defer objectPointsVector.Close()
+
+	pts2 := []Point2f{
+		{10.0, 10.0},
+		{10.0, 20.0},
+		{20.5, 21.5},
+		{25.5, 30.5},
+	}
+
+	imagePointsVector := NewPoint2fVectorFromPoints(pts2)
+	defer imagePointsVector.Close()
+
+	cameraMatrix := Eye(3, 3, MatTypeCV64F)
+	defer cameraMatrix.Close()
+	distCoeffs := NewMat()
+	defer distCoeffs.Close()
+	rvecs := NewMat()
+	defer rvecs.Close()
+	tvecs := NewMat()
+	defer tvecs.Close()
+
+	SolvePnPRansac(
+		objectPointsVector, imagePointsVector,
+		cameraMatrix, distCoeffs,
+		&rvecs, &tvecs,
+	)
+
+	if rvecs.Empty() {
+		t.Error("rvecs result is empty")
+		return
+	}
+
+	if tvecs.Empty() {
+		t.Error("tvecs result is empty")
+		return
+	}
+}
+
 func TestProjectPoints(t *testing.T) {
 	// Create some 3D points
 	objectPoints := NewPoint3fVector()
