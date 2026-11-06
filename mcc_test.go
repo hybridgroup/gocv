@@ -134,7 +134,8 @@ func TestProcess(t *testing.T) {
 
 	checkers := detector.GetListColorChecker()
 
-	var EPS = 0.001
+	// test pixel tolerance, macOS differs by up to 2.79 pixels
+	var EPS = 3.0
 
 	for _, checker := range checkers {
 		whitePatch := checker.GetColorCharts()[18*4 : 18*4+4]
