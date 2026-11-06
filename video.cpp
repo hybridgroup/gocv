@@ -164,31 +164,19 @@ void TrackerMIL_Close(TrackerMIL self) {
 }
 
 TrackerGOTURN TrackerGOTURN_Create(void){
-    try {
-		return new cv::Ptr<cv::TrackerGOTURN>(cv::TrackerGOTURN::create());
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-		return NULL;
-    }
+    // TODO CV5: goturn removed, temporarily disable
+    setExceptionInfo(-1, "OpenCV 5 removed TrackerGOTURN");
+    return NULL;
 }
 
 TrackerGOTURN TrackerGOTURN_CreateWithParams(const char* modelBin, const char* modelTxt){
-    try {
-		cv::TrackerGOTURN::Params params;
-		params.modelBin = modelBin;
-		params.modelTxt = modelTxt;
-	  
-		return new cv::Ptr<cv::TrackerGOTURN>(cv::TrackerGOTURN::create(params));
-	} catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-		return NULL;
-    }
+    // TODO CV5: goturn removed, temporarily disable
+    setExceptionInfo(-1, "OpenCV 5 removed TrackerGOTURN");
+    return NULL;
 }
 
 
-void TrackerGOTURN_Close(TrackerGOTURN tr) {
-    delete tr;
-}
+void TrackerGOTURN_Close(TrackerGOTURN) {}
 
 TrackerVit TrackerVit_Create() {
     try {

@@ -137,7 +137,8 @@ void GpuMat_ConvertTo(GpuMat m, GpuMat dst, int type, Stream s) {
 
 void GpuMat_ConvertFp16(GpuMat m, GpuMat dst) {
     try {
-        cv::cuda::convertFp16(*m, *dst);
+        int rtype = CV_MAKETYPE(CV_16S, m->channels());
+        m->convertTo(*dst, rtype);
     } catch(const cv::Exception& e){
         setExceptionInfo(e.code, e.what());
     }

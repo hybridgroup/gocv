@@ -3,27 +3,24 @@
 
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
-#include <opencv2/mcc.hpp>
-#include <opencv2/dnn.hpp>
+#include <opencv2/objdetect/mcc_checker_detector.hpp>
+#include <opencv2/photo/ccm.hpp>
 extern "C" {
     #endif
 
-#include "../core.h"
+#include "core.h"
 
 #ifdef __cplusplus
 typedef cv::mcc::CChecker* MccCChecker;
 typedef cv::Ptr<cv::mcc::CCheckerDetector>* MccCCheckerDetector;
-typedef cv::Ptr<cv::mcc::CCheckerDraw>* MccCCheckerDraw;
-typedef cv::mcc::DetectorParameters* MccDetectorParameters;
-typedef cv::dnn::Net* MccDnnNet;
+typedef cv::Scalar* MccScalar;
+typedef cv::mcc::DetectorParametersMCC* MccDetectorParameters;
 typedef std::vector<cv::Rect>* MccRectVector;
 typedef std::vector<cv::Ptr<cv::mcc::CChecker>>* MccCCheckerVector;
 #else
 typedef void *MccCChecker;
 typedef void *MccCCheckerDetector;
-typedef void *MccCCheckerDraw;
 typedef void *MccDetectorParameters;
-typedef void *MccDnnNet;
 typedef void *MccRectVector;
 typedef void *MccCCheckerVector;
 #endif
@@ -83,10 +80,12 @@ void MccCChecker_SetCenter(MccCChecker mc, Point2f pt);
 Point2f MccCChecker_GetCenter(MccCChecker mc);
 Points2f MccCChecker_GetColorCharts(MccCChecker mc);
 
-
-MccCCheckerDraw MccCCheckerDraw_Create(MccCChecker mc, double b, double g, double r, double a, int thickness);
-void MccCCheckerDraw_Draw(MccCCheckerDraw md, Mat img);
-void MccCCheckerDraw_Close(MccCCheckerDraw md);
+void MccCCheckerDetector_Draw(
+    MccCCheckerDetector md,
+    MccCCheckerVector checkers,
+    Mat img,
+    double b, double g, double r, double a,
+    int thickness);
 
 MccCCheckerDetector MccCCheckerDetector_New();
 void MccCCheckerDetector_Close(MccCCheckerDetector md);
@@ -94,7 +93,6 @@ MccCCheckerVector MccCCheckerDetector_GetListColorChecker(MccCCheckerDetector md
 MccCChecker MccCCheckerDetector_GetBestColorChecker(MccCCheckerDetector md);
 bool MccCCheckerDetector_Process(MccCCheckerDetector md, Mat inputArr, int chartType, int nc, bool useNet);
 bool MccCCheckerDetector_ProcessWithRegionsOfInterest(MccCCheckerDetector md, Mat inputArr, int chartType, const MccRectVector regionsOfInterest, int nc, bool useNet);
-bool MccCCheckerDetector_SetNet(MccCCheckerDetector md, MccDnnNet net);
 
 int MccCCheckerVector_Size(MccCCheckerVector mv);
 MccCChecker MccCCheckerVector_At(MccCCheckerVector mv, int idx);

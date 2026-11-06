@@ -23,8 +23,6 @@ Net Net_ReadNet(const char* model, const char* config);
 Net Net_ReadNetBytes(const char* framework, struct ByteArray model, struct ByteArray config);
 Net Net_ReadNetFromCaffe(const char* prototxt, const char* caffeModel);
 Net Net_ReadNetFromCaffeBytes(struct ByteArray prototxt, struct ByteArray caffeModel);
-Net Net_ReadNetFromTensorflow(const char* model);
-Net Net_ReadNetFromTensorflowBytes(struct ByteArray model);
 Net Net_ReadNetFromTorch(const char* model);
 Net Net_ReadNetFromONNX(const char* model);
 Net Net_ReadNetFromONNXBytes(struct ByteArray model);

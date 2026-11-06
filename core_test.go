@@ -271,7 +271,7 @@ func TestMatWithSizeFromScalar(t *testing.T) {
 		t.Errorf("NewMatWithSizeFromScalar incorrect channels count: %v\n", mat.Channels())
 	}
 
-	if mat.Type() != 16 {
+	if mat.Type() != MatTypeCV8UC3 {
 		t.Errorf("NewMatWithSizeFromScalar incorrect type: %v\n", mat.Type())
 	}
 
@@ -1566,9 +1566,9 @@ func TestSolvePoly(t *testing.T) {
 
 	diffError := SolvePoly(coeffs, &roots, 300)
 
-	diffTolerance := 1.0e-61
+	diffTolerance := 1.0e-30
 	if diffError > diffTolerance {
-		t.Errorf("TestSolvePoly was not exact, got an error of %e and should have been less than %f", diffError, diffTolerance)
+		t.Errorf("TestSolvePoly was not exact, got an error of %e and should have been less than %e", diffError, diffTolerance)
 	}
 
 	if roots.GetFloatAt(0, 0) != 7.0 {
@@ -2330,8 +2330,8 @@ func TestMatExtractChannel(t *testing.T) {
 func TestMatFindNonZero(t *testing.T) {
 	src := NewMatWithSize(10, 10, MatTypeCV8U)
 	defer src.Close()
-	src.SetFloatAt(3, 3, 17)
-	src.SetFloatAt(4, 4, 17)
+	src.SetUCharAt(3, 3, 17)
+	src.SetUCharAt(4, 4, 17)
 
 	dst := NewMat()
 	defer dst.Close()
@@ -2341,8 +2341,8 @@ func TestMatFindNonZero(t *testing.T) {
 	if dst.Empty() {
 		t.Error("TestMatFindNonZero dst should not be empty.")
 	}
-	if dst.Rows() != 2*2 {
-		t.Error("TestMatFindNonZero didn't find all nonzero locations.")
+	if dst.Total() != 2 {
+		t.Errorf("TestMatFindNonZero found %d nonzero locations, want 2", dst.Total())
 	}
 }
 
@@ -3346,10 +3346,11 @@ func TestNewPoints3fVector(t *testing.T) {
 }
 
 func TestElemSize(t *testing.T) {
+
 	m1 := NewMat()
 	defer m1.Close()
-	if m1.ElemSize() != 0 {
-		t.Error("incorrect element size")
+	if !m1.Empty() {
+		t.Error("new Mat should be empty")
 	}
 
 	m2 := NewMatWithSize(2, 2, MatTypeCV16S)

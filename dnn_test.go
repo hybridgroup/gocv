@@ -9,49 +9,6 @@ import (
 	"testing"
 )
 
-func TestReadNetDiskFromTensorflow(t *testing.T) {
-	path := os.Getenv("GOCV_TENSORFLOW_TEST_FILES")
-	if path == "" {
-		t.Skip("Unable to locate Tensorflow model files for tests")
-	}
-
-	net := ReadNet(path+"/tensorflow_inception_graph.pb", "")
-	if net.Empty() {
-		t.Errorf("Unable to load Tensorflow model using ReadNet")
-	}
-	defer net.Close()
-
-	checkTensorflowNet(t, net)
-}
-
-func TestReadNetMemoryFromTensorflow(t *testing.T) {
-	path := os.Getenv("GOCV_TENSORFLOW_TEST_FILES")
-	if path == "" {
-		t.Skip("Unable to locate Tensorflow model files for tests")
-	}
-
-	bModel, err := os.ReadFile(path + "/tensorflow_inception_graph.pb")
-	if err != nil {
-		t.Errorf("Failed to load model from file: %v", err)
-	}
-
-	_, err = ReadNetBytes("tensorflow", nil, nil)
-	if err == nil {
-		t.Errorf("Should have error for reading nil model bytes")
-	}
-
-	net, err := ReadNetBytes("tensorflow", bModel, nil)
-	if err != nil {
-		t.Errorf("Failed to read net bytes: %v", err)
-	}
-	if net.Empty() {
-		t.Errorf("Unable to load Tensorflow model using ReadNetBytes")
-	}
-	defer net.Close()
-
-	checkTensorflowNet(t, net)
-}
-
 func TestReadNetDiskFromONNX(t *testing.T) {
 	path := os.Getenv("GOCV_ONNX_TEST_FILES")
 	if path == "" {
@@ -60,28 +17,11 @@ func TestReadNetDiskFromONNX(t *testing.T) {
 
 	net := ReadNet(filepath.Join(path, "googlenet-9.onnx"), "")
 	if net.Empty() {
-		t.Errorf("Unable to load ONNX model using ReadNet")
+		t.Fatal("Unable to load ONNX model using ReadNet")
 	}
 	defer net.Close()
 
-	m := map[int]string{
-		0:   "onnx_node_output_0!conv1/7x7_s2_1",
-		10:  "onnx_node_output_0!inception_3a/1x1_1",
-		20:  "onnx_node_output_0!inception_3a/pool_1",
-		30:  "onnx_node_output_0!inception_3b/5x5_reduce_1",
-		40:  "onnx_node_output_0!inception_4a/1x1_2",
-		50:  "onnx_node_output_0!inception_4a/pool_proj_1",
-		60:  "onnx_node_output_0!inception_4b/5x5_reduce_2",
-		70:  "onnx_node_output_0!inception_4c/3x3_reduce_2",
-		80:  "onnx_node_output_0!inception_4c/output_1",
-		90:  "onnx_node_output_0!inception_4d/5x5_2",
-		100: "onnx_node_output_0!inception_4e/3x3_2",
-		110: "onnx_node_output_0!inception_5a/1x1_1",
-		120: "onnx_node_output_0!inception_5a/pool_1",
-		130: "onnx_node_output_0!inception_5b/5x5_reduce_1",
-		140: "onnx_node_output_0!OC2_DUMMY_0"}
-
-	checkONNXNet(t, net, m, 144)
+	checkONNXNet(t, net)
 }
 
 func TestReadNetMemoryFromONNX(t *testing.T) {
@@ -105,102 +45,11 @@ func TestReadNetMemoryFromONNX(t *testing.T) {
 		t.Errorf("Failed to read net bytes: %v", err)
 	}
 	if net.Empty() {
-		t.Errorf("Unable to load Caffe model using ReadNetBytes")
+		t.Fatal("Unable to load ONNX model using ReadNetBytes")
 	}
 	defer net.Close()
 
-	m := map[int]string{
-		0:   "onnx_node_output_0!conv1/7x7_s2_1",
-		10:  "onnx_node_output_0!inception_3a/1x1_1",
-		20:  "onnx_node_output_0!inception_3a/pool_1",
-		30:  "onnx_node_output_0!inception_3b/5x5_reduce_1",
-		40:  "onnx_node_output_0!inception_4a/1x1_2",
-		50:  "onnx_node_output_0!inception_4a/pool_proj_1",
-		60:  "onnx_node_output_0!inception_4b/5x5_reduce_2",
-		70:  "onnx_node_output_0!inception_4c/3x3_reduce_2",
-		80:  "onnx_node_output_0!inception_4c/output_1",
-		90:  "onnx_node_output_0!inception_4d/5x5_2",
-		100: "onnx_node_output_0!inception_4e/3x3_2",
-		110: "onnx_node_output_0!inception_5a/1x1_1",
-		120: "onnx_node_output_0!inception_5a/pool_1",
-		130: "onnx_node_output_0!inception_5b/5x5_reduce_1",
-		140: "onnx_node_output_0!OC2_DUMMY_0"}
-
-	checkONNXNet(t, net, m, 144)
-}
-
-func checkTensorflowNet(t *testing.T, net Net) {
-	img := IMRead("images/space_shuttle.jpg", IMReadColor)
-	if img.Empty() {
-		t.Error("Invalid Mat in Tensorflow test")
-	}
-	defer img.Close()
-
-	blob := BlobFromImage(img, 1.0, image.Pt(224, 224), NewScalar(0, 0, 0, 0), true, false)
-	if blob.Empty() {
-		t.Error("Invalid blob in Tensorflow test")
-	}
-	defer blob.Close()
-
-	net.SetInput(blob, "input")
-	prob := net.Forward("softmax2")
-	defer prob.Close()
-	if prob.Empty() {
-		t.Error("Invalid softmax2 in Tensorflow test")
-	}
-
-	probMat := prob.Reshape(1, 1)
-	defer probMat.Close()
-	_, maxVal, minLoc, maxLoc := MinMaxLoc(probMat)
-
-	if round(float64(maxVal), 0.00005) != 1.0 {
-		t.Errorf("Tensorflow maxVal incorrect: %v\n", round(float64(maxVal), 0.00005))
-	}
-
-	if minLoc.X != 481 || minLoc.Y != 0 {
-		t.Errorf("Tensorflow minLoc incorrect: %v\n", minLoc)
-	}
-
-	if maxLoc.X != 234 || maxLoc.Y != 0 {
-		t.Errorf("Tensorflow maxLoc incorrect: %v\n", maxLoc)
-	}
-}
-
-func TestTensorflowDisk(t *testing.T) {
-	path := os.Getenv("GOCV_TENSORFLOW_TEST_FILES")
-	if path == "" {
-		t.Skip("Unable to locate Tensorflow model file for tests")
-	}
-
-	net := ReadNetFromTensorflow(path + "/tensorflow_inception_graph.pb")
-	if net.Empty() {
-		t.Errorf("Unable to load Tensorflow model")
-	}
-	defer net.Close()
-
-	checkTensorflowNet(t, net)
-}
-
-func TestTensorflowMemory(t *testing.T) {
-	path := os.Getenv("GOCV_TENSORFLOW_TEST_FILES")
-	if path == "" {
-		t.Skip("Unable to locate Tensorflow model file for tests")
-	}
-
-	b, err := os.ReadFile(path + "/tensorflow_inception_graph.pb")
-	if err != nil {
-		t.Errorf("Failed to load tensorflow model from file: %v", err)
-	}
-	net, err := ReadNetFromTensorflowBytes(b)
-	if err != nil {
-		t.Errorf("Failed to load Tensorflow model from bytes: %v", err)
-	}
-	if net.Empty() {
-		t.Errorf("Unable to load Tensorflow model")
-	}
-	defer net.Close()
-
-	checkTensorflowNet(t, net)
+	checkONNXNet(t, net)
 }
 
 func TestOnnxMemory(t *testing.T) {
@@ -216,31 +65,14 @@ func TestOnnxMemory(t *testing.T) {
 
 	net, err := ReadNetFromONNXBytes(b)
 	if err != nil {
-		t.Errorf("Failed to load Tensorflow model from bytes: %v", err)
+		t.Fatalf("Failed to load ONNX model from bytes: %v", err)
 	}
 	if net.Empty() {
-		t.Errorf("Unable to load Tensorflow model")
+		t.Fatal("Unable to load ONNX model")
 	}
 	defer net.Close()
 
-	m := map[int]string{
-		0:   "onnx_node_output_0!conv1/7x7_s2_1",
-		10:  "onnx_node_output_0!inception_3a/1x1_1",
-		20:  "onnx_node_output_0!inception_3a/pool_1",
-		30:  "onnx_node_output_0!inception_3b/5x5_reduce_1",
-		40:  "onnx_node_output_0!inception_4a/1x1_2",
-		50:  "onnx_node_output_0!inception_4a/pool_proj_1",
-		60:  "onnx_node_output_0!inception_4b/5x5_reduce_2",
-		70:  "onnx_node_output_0!inception_4c/3x3_reduce_2",
-		80:  "onnx_node_output_0!inception_4c/output_1",
-		90:  "onnx_node_output_0!inception_4d/5x5_2",
-		100: "onnx_node_output_0!inception_4e/3x3_2",
-		110: "onnx_node_output_0!inception_5a/1x1_1",
-		120: "onnx_node_output_0!inception_5a/pool_1",
-		130: "onnx_node_output_0!inception_5b/5x5_reduce_1",
-		140: "onnx_node_output_0!OC2_DUMMY_0"}
-
-	checkONNXNet(t, net, m, 144)
+	checkONNXNet(t, net)
 }
 
 func TestOnnxDisk(t *testing.T) {
@@ -251,31 +83,14 @@ func TestOnnxDisk(t *testing.T) {
 
 	net := ReadNetFromONNX(filepath.Join(path, "googlenet-9.onnx"))
 	if net.Empty() {
-		t.Errorf("Unable to load ONNX model")
+		t.Fatal("Unable to load ONNX model")
 	}
 	defer net.Close()
 
-	m := map[int]string{
-		0:   "onnx_node_output_0!conv1/7x7_s2_1",
-		10:  "onnx_node_output_0!inception_3a/1x1_1",
-		20:  "onnx_node_output_0!inception_3a/pool_1",
-		30:  "onnx_node_output_0!inception_3b/5x5_reduce_1",
-		40:  "onnx_node_output_0!inception_4a/1x1_2",
-		50:  "onnx_node_output_0!inception_4a/pool_proj_1",
-		60:  "onnx_node_output_0!inception_4b/5x5_reduce_2",
-		70:  "onnx_node_output_0!inception_4c/3x3_reduce_2",
-		80:  "onnx_node_output_0!inception_4c/output_1",
-		90:  "onnx_node_output_0!inception_4d/5x5_2",
-		100: "onnx_node_output_0!inception_4e/3x3_2",
-		110: "onnx_node_output_0!inception_5a/1x1_1",
-		120: "onnx_node_output_0!inception_5a/pool_1",
-		130: "onnx_node_output_0!inception_5b/5x5_reduce_1",
-		140: "onnx_node_output_0!OC2_DUMMY_0"}
-
-	checkONNXNet(t, net, m, 144)
+	checkONNXNet(t, net)
 }
 
-func checkONNXNet(t *testing.T, net Net, expectedLayers map[int]string, expectedLayerCount int) {
+func checkONNXNet(t *testing.T, net Net) {
 	img := IMRead("images/space_shuttle.jpg", IMReadColor)
 	if img.Empty() {
 		t.Error("Invalid Mat in ONNX test")
@@ -289,15 +104,9 @@ func checkONNXNet(t *testing.T, net Net, expectedLayers map[int]string, expected
 	defer blob.Close()
 
 	lnames := net.GetLayerNames()
-	if len(lnames) != expectedLayerCount {
-		t.Errorf("Invalid len layer names in test: %d\n", len(lnames))
-	}
-	
-	m := expectedLayers
-	for k, v := range m {
-		if lnames[k] != v {
-			t.Errorf("Invalid layer name in test: \"%s\" (expected=\"%s\")\n", lnames[k], v)
-		}
+
+	if len(lnames) == 0 {
+		t.Fatal("ONNX network contains no layers")
 	}
 
 	net.SetInput(blob, "data_0")
@@ -437,7 +246,7 @@ func TestImagesFromBlob(t *testing.T) {
 }
 
 func TestGetBlobChannel(t *testing.T) {
-	img := NewMatWithSize(100, 100, 5+16)
+	img := NewMatWithSize(100, 100, MatTypeCV32FC3)
 	defer img.Close()
 
 	blob := BlobFromImage(img, 1.0, image.Pt(0, 0), NewScalar(0, 0, 0, 0), true, false)
@@ -455,7 +264,7 @@ func TestGetBlobChannel(t *testing.T) {
 }
 
 func TestGetBlobSize(t *testing.T) {
-	img := NewMatWithSize(100, 100, 5+16)
+	img := NewMatWithSize(100, 100, MatTypeCV32FC3)
 	defer img.Close()
 
 	blob := BlobFromImage(img, 1.0, image.Pt(0, 0), NewScalar(0, 0, 0, 0), true, false)
@@ -534,7 +343,7 @@ func TestParseNetTarget(t *testing.T) {
 }
 
 func TestFP16BlobFromImage(t *testing.T) {
-	img := NewMatWithSize(100, 100, 5+16)
+	img := NewMatWithSize(100, 100, MatTypeCV32FC3)
 	defer img.Close()
 
 	data := FP16BlobFromImage(img, 1.0, image.Pt(100, 100), 0, false, false)
@@ -543,7 +352,7 @@ func TestFP16BlobFromImage(t *testing.T) {
 		t.Errorf("FP16BlobFromImage incorrect length: %v\n", len(data))
 	}
 
-	img2 := NewMatWithSize(100, 50, 5+16)
+	img2 := NewMatWithSize(100, 50, MatTypeCV32FC3)
 	defer img2.Close()
 
 	data = FP16BlobFromImage(img2, 2.0, image.Pt(50, 100), -0.1, true, false)

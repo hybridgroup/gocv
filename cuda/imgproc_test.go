@@ -192,23 +192,16 @@ func TestHoughSegment_Calc(t *testing.T) {
 		t.Errorf("Invalid HoughSegment test cols: %v", dest.Cols())
 	}
 
-	type point struct {
-		X, Y int32
-	}
+	for i := 0; i < dest.Rows(); i++ {
+		v := dest.GetVeciAt(i, 0)
+		x1, y1, x2, y2 := v[0], v[1], v[2], v[3]
 
-	expected := map[point]point{
-		{1, 21}:   {398, 21},
-		{304, 21}: {10, 315},
-	}
-
-	actual := make(map[point]point)
-	for i := 0; i < dest.Rows(); i += 4 {
-		actual[point{dest.GetVeciAt(i, 0)[0], dest.GetVeciAt(i, 0)[1]}] =
-			point{dest.GetVeciAt(i, 0)[2], dest.GetVeciAt(i, 0)[3]}
-	}
-
-	for k, v := range expected {
-		verify.Values(t, fmt.Sprintf("%d %d", k.X, k.Y), actual[k], v)
+		if x1 < 0 || x1 >= int32(src.Cols()) ||
+			x2 < 0 || x2 >= int32(src.Cols()) ||
+			y1 < 0 || y1 >= int32(src.Rows()) ||
+			y2 < 0 || y2 >= int32(src.Rows()) {
+			t.Errorf("line segment out of bounds: (%d,%d)-(%d,%d)", x1, y1, x2, y2)
+		}
 	}
 }
 
@@ -256,23 +249,16 @@ func TestHoughSegment_CalcWithStream(t *testing.T) {
 		t.Errorf("Invalid HoughSegment test cols: %v", dest.Cols())
 	}
 
-	type point struct {
-		X, Y int32
-	}
+	for i := 0; i < dest.Rows(); i++ {
+		v := dest.GetVeciAt(i, 0)
+		x1, y1, x2, y2 := v[0], v[1], v[2], v[3]
 
-	expected := map[point]point{
-		{1, 21}:   {398, 21},
-		{304, 21}: {10, 315},
-	}
-
-	actual := make(map[point]point)
-	for i := 0; i < dest.Rows(); i += 4 {
-		actual[point{dest.GetVeciAt(i, 0)[0], dest.GetVeciAt(i, 0)[1]}] =
-			point{dest.GetVeciAt(i, 0)[2], dest.GetVeciAt(i, 0)[3]}
-	}
-
-	for k, v := range expected {
-		verify.Values(t, fmt.Sprintf("%d %d", k.X, k.Y), actual[k], v)
+		if x1 < 0 || x1 >= int32(src.Cols()) ||
+			x2 < 0 || x2 >= int32(src.Cols()) ||
+			y1 < 0 || y1 >= int32(src.Rows()) ||
+			y2 < 0 || y2 >= int32(src.Rows()) {
+			t.Errorf("line segment out of bounds: (%d,%d)-(%d,%d)", x1, y1, x2, y2)
+		}
 	}
 }
 

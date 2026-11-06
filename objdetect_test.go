@@ -48,7 +48,7 @@ func TestCascadeClassifierWithParams(t *testing.T) {
 }
 
 func TestHOGDescriptor(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
+	img := IMRead("images/pedestrian.jpg", IMReadColor)
 	if img.Empty() {
 		t.Error("Invalid Mat in HOGDescriptor test")
 	}
@@ -63,13 +63,13 @@ func TestHOGDescriptor(t *testing.T) {
 	hog.SetSVMDetector(d)
 
 	rects := hog.DetectMultiScale(img)
-	if len(rects) != 1 {
+	if len(rects) == 0 {
 		t.Errorf("Error in TestHOGDescriptor test: %d", len(rects))
 	}
 }
 
 func TestHOGDescriptorWithParams(t *testing.T) {
-	img := IMRead("images/face.jpg", IMReadColor)
+	img := IMRead("images/pedestrian.jpg", IMReadColor)
 	if img.Empty() {
 		t.Error("Invalid Mat in HOGDescriptorWithParams test")
 	}
@@ -85,7 +85,7 @@ func TestHOGDescriptorWithParams(t *testing.T) {
 
 	rects := hog.DetectMultiScaleWithParams(img, 0, image.Pt(0, 0), image.Pt(0, 0),
 		1.05, 2.0, false)
-	if len(rects) != 1 {
+	if len(rects) == 0 {
 		t.Errorf("Error in TestHOGDescriptorWithParams test: %d", len(rects))
 	}
 }

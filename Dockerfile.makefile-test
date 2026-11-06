@@ -1,0 +1,21 @@
+# Docker image used to test building from Makefile
+#
+# To run a test build using makefile
+# $ docker build --progress=plain -f Dockerfile.makefile-test --build-arg MAKE_TARGET=install -t gocv-makefile-test .
+#
+FROM golang:1.25-bookworm
+
+ARG MAKE_TARGET=install
+
+RUN apt-get update && apt-get install -y \
+    sudo git build-essential cmake pkg-config unzip curl ca-certificates \
+    libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-dev \
+    libjpeg62-turbo-dev libpng-dev libtiff-dev libdc1394-dev \
+    libtbb-dev libharfbuzz-dev libfreetype6-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /go/src/gocv.io/x/gocv
+
+COPY . .
+
+RUN make ${MAKE_TARGET}

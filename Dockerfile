@@ -1,6 +1,6 @@
 # to build this docker image:
 #   docker build .
-FROM ghcr.io/hybridgroup/opencv:4.13.0
+FROM ghcr.io/hybridgroup/opencv:5.1.0
 
 ENV GOPATH /go
 

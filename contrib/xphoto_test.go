@@ -5,8 +5,9 @@ package contrib
 //:testing
 
 import (
-	"gocv.io/x/gocv"
 	"testing"
+
+	"gocv.io/x/gocv"
 )
 
 func TestBm3dDenoisingStepWithParams(t *testing.T) {
@@ -116,6 +117,9 @@ func TestNewSimpleWB(t *testing.T) {
 func TestNewTonemapDurand(t *testing.T) {
 
 	tonemapdurand := NewTonemapDurand()
+	if tonemapdurand.p == nil {
+		t.Fatalf("NewTonemapDurand returned nil: %v", gocv.GetLastExceptionMessage())
+	}
 	defer tonemapdurand.Close()
 
 	var valueset float32 = 2.05
@@ -154,6 +158,9 @@ func TestNewTonemapDurand(t *testing.T) {
 
 func TestTonemapDurandProcess(t *testing.T) {
 	tonemapdurand := NewTonemapDurand()
+	if tonemapdurand.p == nil {
+		t.Fatalf("NewTonemapDurand returned nil: %v", gocv.GetLastExceptionMessage())
+	}
 	defer tonemapdurand.Close()
 
 	src := gocv.NewMatWithSize(200, 200, gocv.MatTypeCV32FC3)

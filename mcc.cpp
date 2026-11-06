@@ -70,7 +70,8 @@ bool MccCCheckerDetector_Process(MccCCheckerDetector md, Mat inputArr, int chart
 {
     try
     {
-        return (*md)->process(*inputArr, cv::mcc::TYPECHART(chartType), nc);
+        (*md)->setColorChartType(cv::mcc::ColorChart(chartType));
+        return (*md)->process(*inputArr, nc);
     }
     catch (const cv::Exception &e)
     {
@@ -83,20 +84,8 @@ bool MccCCheckerDetector_ProcessWithRegionsOfInterest(MccCCheckerDetector md, Ma
 {
     try
     {
-        return (*md)->process(*inputArr, cv::mcc::TYPECHART(chartType), *regionsOfInterest, nc, useNet);
-    }
-    catch (const cv::Exception &e)
-    {
-        setExceptionInfo(e.code, e.what());
-        return false;
-    }
-}
-
-bool MccCCheckerDetector_SetNet(MccCCheckerDetector md, MccDnnNet net)
-{
-    try
-    {
-        return (*md)->setNet(*static_cast<cv::dnn::Net *>(net));
+        (*md)->setColorChartType(cv::mcc::ColorChart(chartType));
+        return (*md)->process(*inputArr, *regionsOfInterest, nc);
     }
     catch (const cv::Exception &e)
     {
@@ -149,7 +138,7 @@ Point2f MccCChecker_GetCenter(MccCChecker mc)
 
 void MccCChecker_SetTarget(MccCChecker mc, int target)
 {
-    mc->setTarget(cv::mcc::TYPECHART(target));
+    mc->setTarget(cv::mcc::ColorChart(target));
 }
 void MccCChecker_SetBox(MccCChecker mc, Point2f *pts, int length)
 {
@@ -221,25 +210,16 @@ float MccCChecker_GetCost(MccCChecker mc)
     return mc->getCost();
 }
 
-MccCCheckerDraw MccCCheckerDraw_Create(MccCChecker mc, double b, double g, double r, double a, int thickness)
+void MccCCheckerDetector_Draw(
+    MccCCheckerDetector md,
+    MccCCheckerVector checkers,
+    Mat img,
+    double b, double g, double r, double a,
+    int thickness)
 {
     try
     {
-        cv::Scalar color(b, g, r, a);
-        return new cv::Ptr<cv::mcc::CCheckerDraw>(cv::mcc::CCheckerDraw::create(cv::Ptr<cv::mcc::CChecker>(mc), color, thickness));
-    }
-    catch (const cv::Exception &e)
-    {
-        setExceptionInfo(e.code, e.what());
-        return nullptr;
-    }
-}
-
-void MccCCheckerDraw_Draw(MccCCheckerDraw md, Mat img)
-{
-    try
-    {
-        (*md)->draw(*img);
+        (*md)->draw(*checkers, *img, cv::Scalar(b, g, r, a), thickness);
     }
     catch (const cv::Exception &e)
     {
@@ -247,10 +227,6 @@ void MccCCheckerDraw_Draw(MccCCheckerDraw md, Mat img)
     }
 }
 
-void MccCCheckerDraw_Close(MccCCheckerDraw md)
-{
-    delete md;
-}
 
 MccRectVector MccRectVector_New()
 {
@@ -271,7 +247,7 @@ MccDetectorParameters MccDetectorParameters_Create()
 {
     try
     {
-        return new cv::mcc::DetectorParameters();
+        return new cv::mcc::DetectorParametersMCC();
     }
     catch (const cv::Exception &e)
     {
