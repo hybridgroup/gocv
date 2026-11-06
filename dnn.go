@@ -392,28 +392,6 @@ func ReadNetFromCaffeBytes(prototxt []byte, caffeModel []byte) (Net, error) {
 	return Net{p: unsafe.Pointer(C.Net_ReadNetFromCaffeBytes(*bPrototxt, *bCaffeModel))}, nil
 }
 
-// ReadNetFromTensorflow reads a network model stored in Tensorflow framework's format.
-//
-// For further details, please see:
-// https://docs.opencv.org/master/d6/d0f/group__dnn.html#gad820b280978d06773234ba6841e77e8d
-func ReadNetFromTensorflow(model string) Net {
-	cmodel := C.CString(model)
-	defer C.free(unsafe.Pointer(cmodel))
-	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTensorflow(cmodel))}
-}
-
-// ReadNetFromTensorflowBytes reads a network model stored in Tensorflow framework's format.
-//
-// For further details, please see:
-// https://docs.opencv.org/master/d6/d0f/group__dnn.html#gacdba30a7c20db2788efbf5bb16a7884d
-func ReadNetFromTensorflowBytes(model []byte) (Net, error) {
-	bModel, err := toByteArray(model)
-	if err != nil {
-		return Net{}, err
-	}
-	return Net{p: unsafe.Pointer(C.Net_ReadNetFromTensorflowBytes(*bModel))}, nil
-}
-
 // ReadNetFromTorch reads a network model stored in Torch framework's format (t7).
 //
 //	check net.Empty() for read failure

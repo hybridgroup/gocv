@@ -148,43 +148,6 @@ func checkTensorflowNet(t *testing.T, net Net) {
 	}
 }
 
-func TestTensorflowDisk(t *testing.T) {
-	path := os.Getenv("GOCV_TENSORFLOW_TEST_FILES")
-	if path == "" {
-		t.Skip("Unable to locate Tensorflow model file for tests")
-	}
-
-	net := ReadNetFromTensorflow(path + "/tensorflow_inception_graph.pb")
-	if net.Empty() {
-		t.Errorf("Unable to load Tensorflow model")
-	}
-	defer net.Close()
-
-	checkTensorflowNet(t, net)
-}
-
-func TestTensorflowMemory(t *testing.T) {
-	path := os.Getenv("GOCV_TENSORFLOW_TEST_FILES")
-	if path == "" {
-		t.Skip("Unable to locate Tensorflow model file for tests")
-	}
-
-	b, err := os.ReadFile(path + "/tensorflow_inception_graph.pb")
-	if err != nil {
-		t.Errorf("Failed to load tensorflow model from file: %v", err)
-	}
-	net, err := ReadNetFromTensorflowBytes(b)
-	if err != nil {
-		t.Errorf("Failed to load Tensorflow model from bytes: %v", err)
-	}
-	if net.Empty() {
-		t.Errorf("Unable to load Tensorflow model")
-	}
-	defer net.Close()
-
-	checkTensorflowNet(t, net)
-}
-
 func TestOnnxMemory(t *testing.T) {
 	path := os.Getenv("GOCV_ONNX_TEST_FILES")
 	if path == "" {

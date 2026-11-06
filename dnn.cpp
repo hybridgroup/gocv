@@ -36,26 +36,6 @@ Net Net_ReadNetFromCaffeBytes(struct ByteArray prototxt, struct ByteArray caffeM
     return NULL;
 }
 
-Net Net_ReadNetFromTensorflow(const char* model) {
-    try {
-        Net n = new cv::dnn::Net(cv::dnn::readNetFromTensorflow(model));
-        return n;
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-        return NULL;
-    }
-}
-
-Net Net_ReadNetFromTensorflowBytes(struct ByteArray model) {
-    try {
-        Net n = new cv::dnn::Net(cv::dnn::readNetFromTensorflow(model.data, model.length));
-        return n;
-    } catch(const cv::Exception& e){
-        setExceptionInfo(e.code, e.what());
-        return NULL;
-    }
-}
-
 Net Net_ReadNetFromTorch(const char* model) {
     // TODO CV5: remove these functions, but for now temporarily disable
     setExceptionInfo(-1,"OpenCV 5 removed Torch support");
