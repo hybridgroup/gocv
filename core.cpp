@@ -1381,7 +1381,7 @@ OpenCVResult Mat_TransposeND(Mat src, struct IntVector order, Mat dst) {
             _order.push_back(*v);
         }
 
-        cv::transposeND(*src, _order, *dst);
+        cv::transpose(*src, _order, *dst);
         return successResult();
     } catch(const cv::Exception& e) {
         return errorResult(e.code, e.what());
