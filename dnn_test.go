@@ -33,7 +33,7 @@ func TestReadNetDiskFromONNX(t *testing.T) {
 
 	net := ReadNet(filepath.Join(path, "googlenet-9.onnx"), "")
 	if net.Empty() {
-		t.Errorf("Unable to load ONNX model using ReadNet")
+		t.Fatal("Unable to load ONNX model using ReadNet")
 	}
 	defer net.Close()
 
@@ -61,7 +61,7 @@ func TestReadNetMemoryFromONNX(t *testing.T) {
 		t.Errorf("Failed to read net bytes: %v", err)
 	}
 	if net.Empty() {
-		t.Errorf("Unable to load Caffe model using ReadNetBytes")
+		t.Fatal("Unable to load ONNX model using ReadNetBytes")
 	}
 	defer net.Close()
 
@@ -81,10 +81,10 @@ func TestOnnxMemory(t *testing.T) {
 
 	net, err := ReadNetFromONNXBytes(b)
 	if err != nil {
-		t.Errorf("Failed to load Tensorflow model from bytes: %v", err)
+		t.Fatalf("Failed to load ONNX model from bytes: %v", err)
 	}
 	if net.Empty() {
-		t.Errorf("Unable to load Tensorflow model")
+		t.Fatal("Unable to load ONNX model")
 	}
 	defer net.Close()
 
@@ -99,7 +99,7 @@ func TestOnnxDisk(t *testing.T) {
 
 	net := ReadNetFromONNX(filepath.Join(path, "googlenet-9.onnx"))
 	if net.Empty() {
-		t.Errorf("Unable to load ONNX model")
+		t.Fatal("Unable to load ONNX model")
 	}
 	defer net.Close()
 

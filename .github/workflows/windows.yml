@@ -89,11 +89,6 @@ jobs:
           echo "CGO_LDFLAGS=$libs" >> $env:GITHUB_ENV
           
           echo "${env:GITHUB_WORKSPACE}\opencv\build\install\x64\mingw\bin" >> $env:GITHUB_PATH
-      - name: Install Tensorflow test model
-        run: |
-            mkdir -p ./testdata
-            curl -sL https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip > ./testdata/inception5h.zip
-            unzip -o ./testdata/inception5h.zip tensorflow_inception_graph.pb -d ./testdata
       - name: Install ONNX test model
         run: |
           curl -sL https://huggingface.co/onnxmodelzoo/legacy_models/resolve/main/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-9.onnx > ./testdata/googlenet-9.onnx
@@ -103,7 +98,6 @@ jobs:
       - name: Set GoCV model env
         run: |
             go env
-            echo "GOCV_TENSORFLOW_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
             echo "GOCV_ONNX_TEST_FILES=${env:GITHUB_WORKSPACE}\testdata" >> $env:GITHUB_ENV
       - name: Test GoCV
         run: |         
