@@ -3,7 +3,7 @@
 # To build release:
 #   docker buildx build -f Dockerfile.static-alpine -t gocv-static-alpine --platform=linux/arm64,linux/amd64 --load .
 
-FROM --platform=$BUILDPLATFORM ghcr.io/hybridgroup/opencv:5.0.0-alpine AS builder-amd64
+FROM --platform=$BUILDPLATFORM ghcr.io/hybridgroup/opencv:5.1.0-alpine AS builder-amd64
 
 RUN apk update && apk add --no-cache \
     build-base \

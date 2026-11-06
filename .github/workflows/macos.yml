@@ -9,7 +9,7 @@ on:
       - release
 
 env:
-  OPENCV_VERSION: 5.0.0
+  OPENCV_VERSION: 5.1.0
   # Disable OpenCV AVFoundation camera permission prompts during CI.
   # GitHub runners have no GUI, so camera authorization requests cannot
   # be displayed and only generate warnings during video capture tests.

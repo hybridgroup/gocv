@@ -1,7 +1,7 @@
 FROM golang:1.25-bookworm
 
 # dev branch = 5.x
-ARG OPENCV_VERSION=5.0.0
+ARG OPENCV_VERSION=5.1.0
 
 RUN apt-get update && apt-get install -y \
     git build-essential cmake pkg-config unzip curl ca-certificates \

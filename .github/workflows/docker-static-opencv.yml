@@ -13,7 +13,7 @@ concurrency:
 env:
   HAS_DOCKERHUB: ${{ github.repository == 'hybridgroup/gocv' }}
   DOCKERHUB_NAMESPACE: gocv
-  OPENCV_VERSION: 5.0.0
+  OPENCV_VERSION: 5.1.0
   IMAGE_VARIANT: alpine-ffmpeg-gstreamer
 
 jobs:

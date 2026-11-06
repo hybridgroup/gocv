@@ -1,6 +1,6 @@
 # to build:
 #   docker build -f Dockerfile.opencv-gpu-cuda-12 \
-#     -t ghcr.io/hybridgroup/opencv:5.0.0-gpu-cuda-12 .
+#     -t ghcr.io/hybridgroup/opencv:5.1.0-gpu-cuda-12 .
 
 FROM nvidia/cuda:12.6.1-cudnn-devel-ubuntu22.04 AS opencv-gpu-cuda-12-base
 
@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     nasm && \
     rm -rf /var/lib/apt/lists/*
 
-ARG OPENCV_VERSION="5.0.0"
+ARG OPENCV_VERSION="5.1.0"
 ENV OPENCV_VERSION=${OPENCV_VERSION}
 
 ARG OPENCV_FILE="https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip"

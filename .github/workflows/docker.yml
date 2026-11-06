@@ -8,7 +8,7 @@ on:
 
 env:
   # Set OpenCV version here to be used by all image tags.
-  OPENCV_VERSION: 5.0.0
+  OPENCV_VERSION: 5.1.0
 
   # Docker Hub publishing policy.
   #

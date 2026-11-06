@@ -4,7 +4,7 @@ REM Save the starting directory
 set "START_DIR=%CD%"
 
 REM Use variables for version
-set "OPENCV_VERSION=5.0.0"
+set "OPENCV_VERSION=5.1.0"
 
 REM Set install directory, default to C:\opencv if not provided
 set "INSTALL_DIR=%~1"
