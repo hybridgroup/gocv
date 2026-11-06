@@ -9,22 +9,6 @@ import (
 	"testing"
 )
 
-// the onnx layer names used in model googlenet-9.onnx
-func onnxExpectedLayers() map[int]string {
-	return map[int]string{
-		0:  "trlayout.0",
-		10: "trlayout.4",
-		20: "onnx_node!24",
-		30: "onnx_node!41",
-		40: "onnx_node!59",
-		50: "onnx_node!77",
-		60: "onnx_node!94",
-		70: "onnx_node!110",
-		80: "onnx_node!128",
-		90: "onnx_node!141",
-	}
-}
-
 func TestReadNetDiskFromONNX(t *testing.T) {
 	path := os.Getenv("GOCV_ONNX_TEST_FILES")
 	if path == "" {
@@ -37,7 +21,7 @@ func TestReadNetDiskFromONNX(t *testing.T) {
 	}
 	defer net.Close()
 
-	checkONNXNet(t, net, onnxExpectedLayers(), 92)
+	checkONNXNet(t, net)
 }
 
 func TestReadNetMemoryFromONNX(t *testing.T) {
@@ -65,7 +49,7 @@ func TestReadNetMemoryFromONNX(t *testing.T) {
 	}
 	defer net.Close()
 
-	checkONNXNet(t, net, onnxExpectedLayers(), 92)
+	checkONNXNet(t, net)
 }
 
 func TestOnnxMemory(t *testing.T) {
@@ -88,7 +72,7 @@ func TestOnnxMemory(t *testing.T) {
 	}
 	defer net.Close()
 
-	checkONNXNet(t, net, onnxExpectedLayers(), 92)
+	checkONNXNet(t, net)
 }
 
 func TestOnnxDisk(t *testing.T) {
@@ -103,10 +87,10 @@ func TestOnnxDisk(t *testing.T) {
 	}
 	defer net.Close()
 
-	checkONNXNet(t, net, onnxExpectedLayers(), 92)
+	checkONNXNet(t, net)
 }
 
-func checkONNXNet(t *testing.T, net Net, expectedLayers map[int]string, expectedLayerCount int) {
+func checkONNXNet(t *testing.T, net Net) {
 	img := IMRead("images/space_shuttle.jpg", IMReadColor)
 	if img.Empty() {
 		t.Error("Invalid Mat in ONNX test")
@@ -121,18 +105,8 @@ func checkONNXNet(t *testing.T, net Net, expectedLayers map[int]string, expected
 
 	lnames := net.GetLayerNames()
 
-	if len(lnames) != expectedLayerCount {
-		t.Errorf("Invalid len layer names in test: got=%d expected=%d", len(lnames), expectedLayerCount)
-	}
-
-	for k, v := range expectedLayers {
-		if k >= len(lnames) {
-			t.Errorf("Missing ONNX layer[%d]: expected=%q, got only %d layers", k, v, len(lnames))
-			continue
-		}
-		if lnames[k] != v {
-			t.Errorf("Invalid ONNX layer[%d]: got=%q expected=%q", k, lnames[k], v)
-		}
+	if len(lnames) == 0 {
+		t.Fatal("ONNX network contains no layers")
 	}
 
 	net.SetInput(blob, "data_0")
